@@ -55,6 +55,36 @@
             </div>
 
         </div>
+        <!-- WAITING PAGE -->
+
+<div id="waitingPage" class="hidden">
+
+    <div class="success-box">
+
+        <h2>⏳ Waiting for Test Start</h2>
+
+        <p id="motivationText">
+            Believe in yourself. Your hard work will bring success.
+        </p>
+
+        <br>
+
+        <p>
+            Please wait, your test will start shortly...
+        </p>
+
+    </div>
+
+</div>
+        const lines=[
+"Believe in yourself. You are prepared.",
+"Stay focused, success is waiting for you.",
+"Your hard work today creates your success tomorrow.",
+"Be confident and give your best."
+];
+
+document.getElementById("motivationText").innerHTML =
+lines[Math.floor(Math.random()*lines.length)];
 
         <!-- TEST PAGE -->
 
