@@ -35,48 +35,53 @@ let timer;
 // START TEST
 //=============================
 
-function startTest(){
+function checkTestStatus(){
 
-    studentName = document.getElementById("studentName").value.trim();
-
-    regNo = document.getElementById("regNo").value.trim();
-
-
-    if(studentName=="" || regNo==""){
-
-        alert("Enter Name and Registration Number");
-
-        return;
-
-    }
-
-
-    // First Check Student Login
 
     fetch(
-        SCRIPT_URL +
-        "?action=login&regNo=" +
-        encodeURIComponent(regNo) +
-        "&name=" +
-        encodeURIComponent(studentName)
+        SCRIPT_URL + "?action=status"
     )
 
 
     .then(res=>res.text())
 
 
-    .then(result=>{
+    .then(status=>{
 
 
-        result = result.trim();
+        status=status.trim();
 
 
-        if(result=="VALID"){
+        console.log("TEST STATUS:",status);
 
 
-            // After Login Check Test Status
 
-            checkTestStatus();
+        if(status=="ON"){
+
+
+            document.getElementById("waitingPage")
+            .classList.add("hidden");
+
+
+            document.getElementById("loginPage")
+            .classList.add("hidden");
+
+
+            document.getElementById("testPage")
+            .classList.remove("hidden");
+
+
+            document.getElementById("showName")
+            .innerHTML=studentName;
+
+
+            document.getElementById("showReg")
+            .innerHTML=regNo;
+
+
+            loadQuestion();
+
+            startTimer();
 
 
         }
@@ -84,27 +89,76 @@ function startTest(){
         else{
 
 
-            alert("Invalid Name or Registration Number");
+            document.getElementById("loginPage")
+            .classList.add("hidden");
 
+
+            document.getElementById("waitingPage")
+            .classList.remove("hidden");
+
+
+            autoCheckTest();
 
         }
 
-
-    })
-
-
-    .catch(error=>{
-
-        console.log(error);
-
-        alert("Server Error. Please try again.");
 
     });
 
 
 }
 
+function autoCheckTest(){
 
+    let check = setInterval(()=>{
+
+
+        fetch(
+            SCRIPT_URL + "?action=status"
+        )
+
+
+        .then(res=>res.text())
+
+
+        .then(status=>{
+
+
+            if(status.trim()=="ON"){
+
+
+                clearInterval(check);
+
+
+                document.getElementById("waitingPage")
+                .classList.add("hidden");
+
+
+                document.getElementById("testPage")
+                .classList.remove("hidden");
+
+
+                document.getElementById("showName")
+                .innerHTML=studentName;
+
+
+                document.getElementById("showReg")
+                .innerHTML=regNo;
+
+
+                loadQuestion();
+
+                startTimer();
+
+
+            }
+
+
+        });
+
+
+    },5000);
+
+}
 
 //=============================
 // CHECK TEST STATUS
