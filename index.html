@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+        <h1>IKON ONLINE TEST</h1>
+        <p>Computer Based MCQ Examination</p>
+    </div>
+
+    <div class="content">
+
+        <!-- LOGIN -->
+
+        <div id="loginPage">
+
+            <div class="login-box">
+
+                <div>
+                    <label>Student Name</label>
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter your name">
+                </div>
+
+                <div>
+                    <label>Registration No.</label>
+                    <input
+                        type="text"
+                        id="regNo"
+                        placeholder="Enter Registration Number">
+                </div>
+
+                <button
+                    class="primary"
+                    onclick="startTest()">
+                    Start Test
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TEST PAGE -->
+
+        <div id="testPage" class="hidden">
+
+            <!-- Top -->
+
+            <div class="top-bar">
+
+                <div class="student-info">
+
+                    <span id="showName"></span>
+
+                    <br>
+
+                    <small id="showReg"></small>
+
+                </div>
+
+                <div class="timer">
+
+                    Time Left :
+                    <span id="timer">
+                        30:00
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Progress -->
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    id="progressBar">
+                </div>
+
+            </div>
+
+            <!-- Question -->
+
+            <div class="question-card">
+
+                <div
+                    class="question-number"
+                    id="questionNumber">
+
+                    Question 1
+
+                </div>
+
+                <div
+                    class="question"
+                    id="questionText">
+
+                    Question
+
+                </div>
+
+                <div
+                    class="options"
+                    id="options">
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="navigation">
+
+                <button
+                    class="secondary"
+                    onclick="previousQuestion()">
+
+                    Previous
+
+                </button>
+
+                <button
+                    class="primary"
+                    onclick="nextQuestion()">
+
+                    Next
+
+                </button>
+
+            </div>
+
+            <!-- Submit -->
+
+            <div class="submit-area">
+
+                <button
+                    class="success"
+                    onclick="submitTest()">
+
+                    Submit Test
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- SUCCESS PAGE -->
+
+        <div
+            id="successPage"
+            class="hidden">
+
+            <div class="success-box">
+
+                <h2>
+                    Test Submitted Successfully
+                </h2>
+
+                <p>
+
+                    Thank You
+
+                    <br><br>
+
+                    Your responses have been recorded.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+ <script src="questions.js"></script>
+<script src="script.js"></script>   
+</body>
+</html>
