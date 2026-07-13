@@ -57,15 +57,52 @@ function startTest(){
 
     .then(result=>{
 
-        if(result=="VALID"){
+        if(result.trim()=="VALID"){
 
-            document.getElementById("loginPage").classList.add("hidden");
+    checkTestStatus();
 
-            document.getElementById("testPage").classList.remove("hidden");
+}
 
-            document.getElementById("showName").innerHTML=studentName;
+            alert("Invalid Name or Registration Number");
 
-            document.getElementById("showReg").innerHTML=regNo;
+        }
+
+    });
+
+}
+//=============================
+// CHECK TEST STATUS
+//=============================
+
+function checkTestStatus(){
+
+    fetch(
+        SCRIPT_URL + "?action=status"
+    )
+
+    .then(res=>res.text())
+
+    .then(status=>{
+
+        status = status.trim();
+
+        if(status=="ON"){
+
+            document.getElementById("loginPage")
+            .classList.add("hidden");
+
+
+            document.getElementById("testPage")
+            .classList.remove("hidden");
+
+
+            document.getElementById("showName")
+            .innerHTML = studentName;
+
+
+            document.getElementById("showReg")
+            .innerHTML = regNo;
+
 
             loadQuestion();
 
@@ -75,7 +112,7 @@ function startTest(){
 
         else{
 
-            alert("Invalid Name or Registration Number");
+            alert("⏳ Test abhi start nahi hua hai.\n\nPlease wait for teacher instructions.");
 
         }
 
