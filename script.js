@@ -364,7 +364,7 @@ function loadQuestion(){
         name="answer"
         value="${index}"
         ${checked}
-       onclick="saveAnswer(${index}, '${option}')">
+       onclick="saveAnswer(${index})"
 
         ${option}
 
@@ -394,9 +394,10 @@ function loadQuestion(){
 // SAVE ANSWER
 //=============================
 
-function saveAnswer(index, optionText){
+function saveAnswer(index){
 
-    answers[currentQuestion]=optionText;
+    answers[currentQuestion] =
+        questions[currentQuestion].options[index];
 
 }
 
