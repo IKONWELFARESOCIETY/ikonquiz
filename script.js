@@ -86,20 +86,37 @@ function checkTestStatus(){
 
         }
 
-        else{
+       else{
 
 
-            document.getElementById("loginPage")
-            .classList.add("hidden");
+    document.getElementById("loginPage")
+    .classList.add("hidden");
 
 
-            document.getElementById("waitingPage")
-            .classList.remove("hidden");
+    document.getElementById("waitingPage")
+    .classList.remove("hidden");
 
 
-            autoCheckTest();
 
-        }
+    // Random Motivation Line
+
+    const lines = [
+        "Believe in yourself. You are prepared.",
+        "Stay focused, success is waiting for you.",
+        "Your hard work today creates your success tomorrow.",
+        "Be confident and give your best.",
+        "Every question is a step towards success."
+    ];
+
+
+    document.getElementById("motivationText").innerHTML =
+    lines[Math.floor(Math.random()*lines.length)];
+
+
+
+    autoCheckTest();
+
+}
 
 
     });
