@@ -4,7 +4,15 @@
 
 // Replace with Apps Script URL later
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
+window.onload = function(){
 
+    document.getElementById("testTitle").innerHTML =
+    testConfig.testTitle;
+
+    document.getElementById("testDate").innerHTML =
+    "Test Date : " + testConfig.testDate;
+
+};
 // Student Details
 let studentName = "";
 let regNo = "";
