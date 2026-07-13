@@ -31,6 +31,51 @@ let timer;
 // START TEST
 //=============================
 
+function startTest(){
+
+    studentName = document.getElementById("studentName").value.trim();
+
+    regNo = document.getElementById("regNo").value.trim();
+
+
+    if(studentName=="" || regNo==""){
+
+        alert("Enter Name and Registration Number");
+        return;
+
+    }
+
+
+    fetch(
+        SCRIPT_URL+
+        "?action=login&regNo="+
+        encodeURIComponent(regNo)+
+        "&name="+
+        encodeURIComponent(studentName)
+    )
+
+    .then(res=>res.text())
+
+    .then(result=>{
+
+
+        if(result.trim()=="VALID"){
+
+            checkTestStatus();
+
+        }
+
+        else{
+
+            alert("Invalid Name or Registration Number");
+
+        }
+
+
+    });
+
+
+}
 //=============================
 // START TEST
 //=============================
@@ -177,134 +222,6 @@ function autoCheckTest(){
 
 }
 
-//=============================
-// CHECK TEST STATUS
-//=============================
-
-function checkTestStatus(){
-
-
-    fetch(
-        SCRIPT_URL + "?action=status"
-    )
-
-
-    .then(res=>res.text())
-
-
-    .then(status=>{
-
-
-        status = status.trim();
-
-
-        console.log("TEST STATUS:",status);
-
-
-
-        if(status=="ON"){
-
-
-            document.getElementById("loginPage")
-            .classList.add("hidden");
-
-
-            document.getElementById("testPage")
-            .classList.remove("hidden");
-
-
-            document.getElementById("showName")
-            .innerHTML = studentName;
-
-
-            document.getElementById("showReg")
-            .innerHTML = regNo;
-
-
-            loadQuestion();
-
-
-            startTimer();
-
-
-        }
-
-
-        else{
-
-
-            alert(
-            "⏳ Test abhi start nahi hua hai.\n\nPlease wait for teacher instructions."
-            );
-
-
-        }
-
-
-    })
-
-
-    .catch(error=>{
-
-
-        console.log(error);
-
-        alert("Unable to check test status");
-
-
-    });
-
-
-}
-//=============================
-// CHECK TEST STATUS
-//=============================
-
-function checkTestStatus(){
-
-    fetch(
-        SCRIPT_URL + "?action=status"
-    )
-
-    .then(res=>res.text())
-
-    .then(status=>{
-
-        status = status.trim();
-
-        if(status=="ON"){
-
-            document.getElementById("loginPage")
-            .classList.add("hidden");
-
-
-            document.getElementById("testPage")
-            .classList.remove("hidden");
-
-
-            document.getElementById("showName")
-            .innerHTML = studentName;
-
-
-            document.getElementById("showReg")
-            .innerHTML = regNo;
-
-
-            loadQuestion();
-
-            startTimer();
-
-        }
-
-        else{
-
-            alert("⏳ Test abhi start nahi hua hai.\n\nPlease wait for teacher instructions.");
-
-        }
-
-    });
-
-}
 
 //=============================
 // LOAD QUESTION
