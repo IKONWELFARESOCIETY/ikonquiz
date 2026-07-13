@@ -31,11 +31,16 @@ let timer;
 // START TEST
 //=============================
 
+//=============================
+// START TEST
+//=============================
+
 function startTest(){
 
     studentName = document.getElementById("studentName").value.trim();
 
     regNo = document.getElementById("regNo").value.trim();
+
 
     if(studentName=="" || regNo==""){
 
@@ -45,6 +50,9 @@ function startTest(){
 
     }
 
+
+    // First Check Student Login
+
     fetch(
         SCRIPT_URL +
         "?action=login&regNo=" +
@@ -53,21 +61,128 @@ function startTest(){
         encodeURIComponent(studentName)
     )
 
+
     .then(res=>res.text())
+
 
     .then(result=>{
 
-        if(result.trim()=="VALID"){
 
-    checkTestStatus();
+        result = result.trim();
 
-}
 
-            alert("Invalid Name or Registration Number");
+        if(result=="VALID"){
+
+
+            // After Login Check Test Status
+
+            checkTestStatus();
+
 
         }
 
+        else{
+
+
+            alert("Invalid Name or Registration Number");
+
+
+        }
+
+
+    })
+
+
+    .catch(error=>{
+
+        console.log(error);
+
+        alert("Server Error. Please try again.");
+
     });
+
+
+}
+
+
+
+//=============================
+// CHECK TEST STATUS
+//=============================
+
+function checkTestStatus(){
+
+
+    fetch(
+        SCRIPT_URL + "?action=status"
+    )
+
+
+    .then(res=>res.text())
+
+
+    .then(status=>{
+
+
+        status = status.trim();
+
+
+        console.log("TEST STATUS:",status);
+
+
+
+        if(status=="ON"){
+
+
+            document.getElementById("loginPage")
+            .classList.add("hidden");
+
+
+            document.getElementById("testPage")
+            .classList.remove("hidden");
+
+
+            document.getElementById("showName")
+            .innerHTML = studentName;
+
+
+            document.getElementById("showReg")
+            .innerHTML = regNo;
+
+
+            loadQuestion();
+
+
+            startTimer();
+
+
+        }
+
+
+        else{
+
+
+            alert(
+            "⏳ Test abhi start nahi hua hai.\n\nPlease wait for teacher instructions."
+            );
+
+
+        }
+
+
+    })
+
+
+    .catch(error=>{
+
+
+        console.log(error);
+
+        alert("Unable to check test status");
+
+
+    });
+
 
 }
 //=============================
