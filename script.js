@@ -2,81 +2,61 @@
 // IKON ONLINE TEST
 //=============================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
+const SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
 
+//=============================
+// TEST TITLE
+//=============================
 
-// Test Title & Date
+window.onload = function () {
 
-window.onload = function(){
-
-    if(document.getElementById("testTitle")){
-
+    if (document.getElementById("testTitle")) {
         document.getElementById("testTitle").innerHTML =
-        testConfig.testTitle;
-
+            testConfig.testTitle;
     }
 
-
-    if(document.getElementById("testDate")){
-
+    if (document.getElementById("testDate")) {
         document.getElementById("testDate").innerHTML =
-        "Test Date : " + testConfig.testDate;
-
+            "Test Date : " + testConfig.testDate;
     }
 
 };
 
-
-// Student Details
+//=============================
+// VARIABLES
+//=============================
 
 let studentName = "";
 let regNo = "";
 
-
-// Question Control
-
 let currentQuestion = 0;
 
-
-// Answers
-
-let answers = new Array(questions.length).fill(null);
-
-
-// Timer
+let answers = new Array(questions.length).fill("");
 
 let totalTime = 30 * 60;
-let timer;
+let timer = null;
 
-
+let statusChecker = null;
 
 //=============================
-// START TEST LOGIN
+// LOGIN
 //=============================
 
-function startTest(){
-
+function startTest() {
 
     studentName =
-    document.getElementById("studentName")
-    .value.trim();
-
+        document.getElementById("studentName").value.trim();
 
     regNo =
-    document.getElementById("regNo")
-    .value.trim();
+        document.getElementById("regNo").value.trim();
 
+    if (studentName == "" || regNo == "") {
 
-
-    if(studentName=="" || regNo==""){
-
-        alert("Enter Name and Registration Number");
+        alert("Please enter Name and Registration Number.");
 
         return;
 
     }
-
-
 
     fetch(
         SCRIPT_URL +
@@ -86,427 +66,300 @@ function startTest(){
         encodeURIComponent(studentName)
     )
 
+        .then(res => res.text())
 
-    .then(res=>res.text())
+        .then(result => {
 
+            result = result.trim();
 
-    .then(result=>{
+            if (result == "VALID") {
 
+                checkTestStatus();
 
-        result=result.trim();
+            }
 
+            else {
 
-        if(result=="VALID"){
+                alert("Invalid Registration Number or Name.");
 
+            }
 
-            // Login Success
-            // Now Check Test Status
+        })
 
-            checkTestStatus();
+        .catch(err => {
 
+            console.log(err);
 
-        }
+            alert("Unable to connect.");
 
-        else{
-
-
-            alert("Invalid Name or Registration Number");
-
-
-        }
-
-
-    })
-
-
-    .catch(error=>{
-
-        console.log(error);
-
-        alert("Server Error");
-
-    });
-
+        });
 
 }
 
-
-
 //=============================
-// CHECK TEST STATUS
+// CHECK STATUS
 //=============================
 
-function checkTestStatus(){
-
+function checkTestStatus() {
 
     fetch(
         SCRIPT_URL + "?action=status"
     )
 
+        .then(res => res.text())
 
-    .then(res=>res.text())
+        .then(status => {
 
+            status = status.trim().toUpperCase();
 
-    .then(status=>{
+            if (status == "ON") {
 
+                openTest();
 
-        status=status.trim();
+            }
 
+            else {
 
-        console.log("STATUS:",status);
+                document.getElementById("loginPage")
+                    .classList.add("hidden");
 
+                document.getElementById("waitingPage")
+                    .classList.remove("hidden");
 
+                showRandomLine();
 
-        if(status=="ON"){
+                autoCheckStatus();
 
+            }
 
-            openTest();
-
-
-        }
-
-        else{
-
-
-            document.getElementById("loginPage")
-            .classList.add("hidden");
-
-
-            document.getElementById("waitingPage")
-            .classList.remove("hidden");
-
-
-
-            showMotivation();
-
-
-
-            autoCheckTest();
-
-
-        }
-
-
-    });
-
+        });
 
 }
 
-
-
 //=============================
-// WAITING AUTO CHECK
+// AUTO CHECK
 //=============================
 
-function autoCheckTest(){
+function autoCheckStatus() {
 
+    if (statusChecker != null)
+        return;
 
-    let check=setInterval(function(){
-
+    statusChecker = setInterval(function () {
 
         fetch(
             SCRIPT_URL + "?action=status"
         )
 
+            .then(res => res.text())
 
-        .then(res=>res.text())
+            .then(status => {
 
+                status = status.trim().toUpperCase();
 
-        .then(status=>{
+                if (status == "ON") {
 
+                    clearInterval(statusChecker);
 
-            if(status.trim()=="ON"){
+                    statusChecker = null;
 
+                    openTest();
 
-                clearInterval(check);
+                }
 
+            });
 
-                openTest();
-
-
-            }
-
-
-        });
-
-
-
-    },5000);
-
+    }, 5000);
 
 }
-
-
-
 
 //=============================
 // OPEN TEST
 //=============================
 
-function openTest(){
-
+function openTest() {
 
     document.getElementById("waitingPage")
-    .classList.add("hidden");
-
+        .classList.add("hidden");
 
     document.getElementById("loginPage")
-    .classList.add("hidden");
-
+        .classList.add("hidden");
 
     document.getElementById("testPage")
-    .classList.remove("hidden");
-
-
+        .classList.remove("hidden");
 
     document.getElementById("showName")
-    .innerHTML=studentName;
-
-
+        .innerHTML = studentName;
 
     document.getElementById("showReg")
-    .innerHTML=regNo;
-
-
+        .innerHTML = regNo;
 
     loadQuestion();
 
-
-    startTimer();
-
-
 }
 
-
-
-
 //=============================
-// RANDOM MOTIVATION
+// MOTIVATION
 //=============================
 
-function showMotivation(){
+function showRandomLine() {
 
+    const lines = [
 
-    const lines=[
-
-    "Believe in yourself. You are prepared.",
-
-    "Stay focused, success is waiting for you.",
-
-    "Your hard work today creates your success tomorrow.",
-
-    "Be confident and give your best.",
-
-    "Every question is a step towards success."
+        "Believe in yourself.",
+        "Stay calm and focused.",
+        "Success begins with confidence.",
+        "Give your best today.",
+        "Every question is an opportunity.",
+        "Hard work always pays.",
+        "Think before you answer.",
+        "You are ready to succeed."
 
     ];
 
-
-
-    document.getElementById("motivationText")
-    .innerHTML =
-    lines[Math.floor(Math.random()*lines.length)];
-
+    document.getElementById("motivationText").innerHTML =
+        lines[Math.floor(Math.random() * lines.length)];
 
 }
-
-
-
 
 //=============================
 // LOAD QUESTION
 //=============================
 
-function loadQuestion(){
+function loadQuestion() {
 
+    const q = questions[currentQuestion];
 
-    const q=questions[currentQuestion];
+    document.getElementById("questionNumber").innerHTML =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
 
+    document.getElementById("questionText").innerHTML =
+        q.question;
 
-    document.getElementById("questionNumber")
-    .innerHTML=
-    "Question "+
-    (currentQuestion+1)+
-    " of "+
-    questions.length;
+    let html = "";
 
+    q.options.forEach(function (option, index) {
 
+        let checked = "";
 
-    document.getElementById("questionText")
-    .innerHTML=q.question;
+        if (answers[currentQuestion] == option) {
 
+            checked = "checked";
 
+        }
 
-    let html="";
+        html += `
+<label class="option">
+<input
+type="radio"
+name="answer"
+${checked}
+onclick="saveAnswer(${index})">
+${option}
+</label>
+`;
 
+    });
 
-
-    q.options.forEach(function(option,index){
-
-    let checked="";
-
-    if(answers[currentQuestion]===option){
-
-        checked="checked";
-
-    }
-
-    html += `
-    <label class="option">
-        <input
-            type="radio"
-            name="answer"
-            value="${index}"
-            ${checked}
-            onclick="saveAnswer(${index})">
-        ${option}
-    </label>
-    `;
-
-});
-
-
-
-    document.getElementById("options")
-    .innerHTML=html;
-
-
+    document.getElementById("options").innerHTML = html;
 
     updateProgress();
 
-
 }
-
-
-
 
 //=============================
 // SAVE ANSWER
 //=============================
 
-function saveAnswer(index){
+function saveAnswer(index) {
 
     answers[currentQuestion] =
         questions[currentQuestion].options[index];
 
 }
 
-
-
 //=============================
 // NEXT
 //=============================
 
-function nextQuestion(){
+function nextQuestion() {
 
-
-    if(currentQuestion < questions.length-1){
-
+    if (currentQuestion < questions.length - 1) {
 
         currentQuestion++;
 
         loadQuestion();
 
-
     }
 
 }
-
-
-
 
 //=============================
 // PREVIOUS
 //=============================
 
-function previousQuestion(){
+function previousQuestion() {
 
-
-    if(currentQuestion>0){
-
+    if (currentQuestion > 0) {
 
         currentQuestion--;
 
         loadQuestion();
 
-
     }
 
 }
-
-
-
 
 //=============================
 // PROGRESS
 //=============================
 
-function updateProgress(){
+function updateProgress() {
 
+    let percent =
+        ((currentQuestion + 1) / questions.length) * 100;
 
-    let percent=
-    ((currentQuestion+1)/questions.length)*100;
-
-
-
-    document.getElementById("progressBar")
-    .style.width=
-    percent+"%";
-
+    document.getElementById("progressBar").style.width =
+        percent + "%";
 
 }
-
-
-
 //=============================
-// TIMER
+// START TIMER
 //=============================
 
 function startTimer(){
 
+    if(timer!=null){
+        clearInterval(timer);
+    }
 
-timer=setInterval(function(){
+    timer=setInterval(function(){
 
+        totalTime--;
 
-totalTime--;
+        let minutes=Math.floor(totalTime/60);
+        let seconds=totalTime%60;
 
+        minutes=minutes<10?"0"+minutes:minutes;
+        seconds=seconds<10?"0"+seconds:seconds;
 
-let minutes=Math.floor(totalTime/60);
+        document.getElementById("timer").innerHTML=
+        minutes+":"+seconds;
 
-let seconds=totalTime%60;
+        if(totalTime<=0){
 
+            clearInterval(timer);
 
+            submitTest(true);
 
-minutes=minutes<10?"0"+minutes:minutes;
+        }
 
-seconds=seconds<10?"0"+seconds:seconds;
-
-
-
-document.getElementById("timer")
-.innerHTML=
-minutes+":"+seconds;
-
-
-
-if(totalTime<=0){
-
-
-clearInterval(timer);
-
-submitTest();
-
+    },1000);
 
 }
-
-
-
-},1000);
-
-
-
-}
-
 
 
 
@@ -514,92 +367,165 @@ submitTest();
 // SUBMIT TEST
 //=============================
 
-function submitTest(){
+function submitTest(autoSubmit=false){
+
+    if(!autoSubmit){
+
+        if(!confirm("Are you sure you want to submit the test?")){
+            return;
+        }
+
+    }
+
+    if(timer!=null){
+        clearInterval(timer);
+    }
+
+    const data={
+
+        name:studentName,
+
+        regNo:regNo,
+
+        submittedAt:new Date().toLocaleString(),
+
+        answers:answers
+
+    };
 
 
-if(!confirm("Are you sure you want to submit the test?")){
 
-return;
+    fetch(SCRIPT_URL,{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(data)
+
+    })
+
+    .then(res=>res.text())
+
+    .then(result=>{
+
+        console.log(result);
+
+        if(result.trim()=="SUCCESS"){
+
+            showSuccess();
+
+        }else{
+
+            alert(result);
+
+        }
+
+    })
+
+    .catch(err=>{
+
+        console.log(err);
+
+        alert("Unable to submit responses.");
+
+    });
 
 }
 
 
 
-clearInterval(timer);
+//=============================
+// SUCCESS PAGE
+//=============================
+
+function showSuccess(){
+
+    document.getElementById("testPage")
+    .classList.add("hidden");
+
+    document.getElementById("waitingPage")
+    .classList.add("hidden");
+
+    document.getElementById("successPage")
+    .classList.remove("hidden");
+
+}
 
 
 
-const data={
+//=============================
+// DISABLE RIGHT CLICK
+//=============================
 
-name:studentName,
+document.addEventListener("contextmenu",function(e){
 
-regNo:regNo,
-
-submittedAt:new Date().toLocaleString(),
-
-answers:answers
-
-};
-
-
-
-fetch(SCRIPT_URL,{
-
-method:"POST",
-
-body:JSON.stringify(data)
-
-})
-
-
-.then(res=>res.text())
-
-
-.then(result=>{
-
-
-showSuccess();
-
+    e.preventDefault();
 
 });
 
 
 
-}
+//=============================
+// DISABLE COPY
+//=============================
 
+document.addEventListener("copy",function(e){
+
+    e.preventDefault();
+
+});
 
 
 
 //=============================
-// SUCCESS
+// DISABLE CUT
 //=============================
 
-function showSuccess(){
+document.addEventListener("cut",function(e){
 
+    e.preventDefault();
 
-document.getElementById("testPage")
-.classList.add("hidden");
-
-
-
-document.getElementById("successPage")
-.classList.remove("hidden");
-
-
-}
-
+});
 
 
 
 //=============================
-// BACK BUTTON BLOCK
+// DISABLE F12
+//=============================
+
+document.addEventListener("keydown",function(e){
+
+    if(
+        e.key==="F12" ||
+
+        (e.ctrlKey && e.shiftKey && e.key==="I") ||
+
+        (e.ctrlKey && e.shiftKey && e.key==="J") ||
+
+        (e.ctrlKey && e.shiftKey && e.key==="C") ||
+
+        (e.ctrlKey && e.key==="U")
+    ){
+
+        e.preventDefault();
+
+    }
+
+});
+
+
+
+//=============================
+// PREVENT BACK
 //=============================
 
 history.pushState(null,null,location.href);
 
-
 window.onpopstate=function(){
 
-history.go(1);
+    history.go(1);
 
 };
