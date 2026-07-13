@@ -343,37 +343,27 @@ function loadQuestion(){
 
     q.options.forEach(function(option,index){
 
+    let checked="";
 
-        let checked="";
+    if(answers[currentQuestion]===option){
 
+        checked="checked";
 
-        if(answers[currentQuestion]===index){
+    }
 
-            checked="checked";
-
-        }
-
-
-
-        html+=`
-
-        <label class="option">
-
-        <input 
-        type="radio"
-        name="answer"
-        value="${index}"
-        ${checked}
-       onclick="saveAnswer(${index})"
-
+    html += `
+    <label class="option">
+        <input
+            type="radio"
+            name="answer"
+            value="${index}"
+            ${checked}
+            onclick="saveAnswer(${index})">
         ${option}
+    </label>
+    `;
 
-        </label>
-
-        `;
-
-
-    });
+});
 
 
 
