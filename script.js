@@ -493,7 +493,53 @@ waiting.classList.remove("hidden");
 
 showRandomLine();
 
+//================================
+// INSTRUCTION PAGE
+//================================
 
+function enableStartExam(){
+
+    let check =
+    document.getElementById("acceptRules");
+
+    let btn =
+    document.getElementById("startExamBtn");
+
+    btn.disabled = !check.checked;
+
+}
+
+
+//================================
+// START EXAM
+//================================
+
+function startExam(){
+
+    document
+    .getElementById("instructionPage")
+    .classList.add("hidden");
+
+    document
+    .getElementById("examArea")
+    .classList.remove("hidden");
+
+    // Load Questions
+    loadPaperQuestions();
+
+    // Start Timer
+    startTimer();
+
+    // Full Screen
+    if(document.documentElement.requestFullscreen){
+
+        document.documentElement
+        .requestFullscreen()
+        .catch(()=>{});
+
+    }
+
+}
 autoCheckStatus();
 
 
@@ -686,16 +732,23 @@ paperBox.innerHTML=paperName;
 
 }
 
-loadPaperQuestions();
+// Show Instructions
 
+document
+.getElementById("instructionPage")
+.classList.remove("hidden");
 
-startTimer();
+document
+.getElementById("examArea")
+.classList.add("hidden");
 
-// Full Screen Start
-if (document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen().catch(() => {});
-}
+document
+.getElementById("acceptRules")
+.checked = false;
 
+document
+.getElementById("startExamBtn")
+.disabled = true;
 }
 
 
