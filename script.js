@@ -1279,7 +1279,11 @@ success.classList.remove("hidden");
 }
 
 
+function goLogin(){
 
+location.reload();
+
+}
 }
 
 
