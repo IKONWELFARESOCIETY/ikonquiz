@@ -140,33 +140,43 @@ function showTimer() {
 // LOAD TEST DATE
 //================================
 
-function loadTestDate() {
+//================================
+// LOAD HEADER DATE TIME FROM SHEET
+//================================
 
-    fetch(SCRIPT_URL + "?action=testDate")
-        .then(res => res.text())
-        .then(data => {
+function loadHeaderDateTime(){
 
-            const el = document.getElementById("testDate");
 
-            if (el) {
-                el.innerHTML = "📅 Test Date : " + data;
-            }
+fetch(SCRIPT_URL + "?action=testDate")
 
-        })
-        .catch(err => {
+.then(res => res.text())
 
-            console.log("Test Date Error :", err);
+.then(date => {
 
-            const el = document.getElementById("testDate");
+    document.getElementById("testDate").innerHTML =
+    "📅 Test Date : " + date;
 
-            if (el) {
-                el.innerHTML = "📅 Test Date : Not Available";
-            }
+});
 
-        });
+
+
+fetch(SCRIPT_URL + "?action=testTime")
+
+.then(res => res.text())
+
+.then(time => {
+
+    document.getElementById("testTime").innerHTML =
+    "🕒 Test Time : " + time;
+
+});
+
 
 }
 
+
+// PAGE LOAD
+loadHeaderDateTime();
 
 
 //================================
