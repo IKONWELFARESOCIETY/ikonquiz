@@ -81,34 +81,32 @@ body{
 ========================*/
 
 
+/*========================
+ HEADER FINAL CENTER FIX
+========================*/
+
 .header{
 
+    display:flex;
 
-    display:grid;
+    flex-direction:column;
 
-    grid-template-columns:120px 1fr auto;
+    justify-content:center;
 
     align-items:center;
 
-    gap:20px;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
 
-    padding:25px 35px;
+    color:#fff;
 
-    background:
-    linear-gradient(
-    135deg,
-    #0047ab,
-    #008cff
-    );
+    padding:25px;
 
-    color:white;
+    text-align:center;
 
 }
 
 
-
-/* LOGO */
-
+/* LOGO CENTER */
 
 .header-left{
 
@@ -116,36 +114,84 @@ body{
 
     justify-content:center;
 
-}
+    align-items:center;
 
+    margin-bottom:12px;
+
+}
 
 
 .logo{
 
-    width:85px;
+    width:90px;
 
-    height:85px;
+    height:90px;
 
-    background:white;
-
-    padding:8px;
+    background:#fff;
 
     border-radius:50%;
 
+    padding:8px;
+
     object-fit:contain;
 
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.25);
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
 
 }
 
 
 
-
-/* TITLE */
-
+/* TITLE CENTER */
 
 .header-center{
+
+    width:100%;
+
+}
+
+
+#testTitle{
+
+    font-size:32px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    margin-bottom:18px;
+
+}
+
+
+
+/* DATE TIME BOX */
+
+.header-right{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+.header-right .info-box{
+
+    background:rgba(255,255,255,.18);
+
+    min-width:170px;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:600;
 
     text-align:center;
 
@@ -153,18 +199,25 @@ body{
 
 
 
-#testTitle{
+/* REMOVE OLD SMALL STYLE */
 
-    font-size:34px;
+.info-box small{
 
-    font-weight:800;
-
-    letter-spacing:.8px;
-
-    text-transform:uppercase;
+    display:none;
 
 }
 
+
+#testDate,
+#testTime{
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+}
 
 
 /*========================
