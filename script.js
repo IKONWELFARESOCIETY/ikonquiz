@@ -95,6 +95,67 @@ let studentName = "";
 let regNo = "";
 
 let currentQuestion = 0;
+//==============================
+// QUESTION PALETTE
+//==============================
+
+
+function createQuestionPalette(){
+
+
+    let box = document.getElementById("questionNumbers");
+
+
+    if(!box) return;
+
+
+    box.innerHTML = "";
+
+
+    questions.forEach((q,index)=>{
+
+
+        let btn = document.createElement("button");
+
+
+        btn.innerHTML = index + 1;
+
+
+        btn.className = "q-btn";
+
+
+
+        // Current question
+
+        if(index === currentQuestion){
+
+            btn.classList.add("active");
+
+        }
+
+
+
+        // Attempted question
+
+       if(answers[index] !== ""){
+    btn.classList.add("done");
+}
+
+
+        btn.onclick = function(){
+
+            loadQuestion(index);
+
+        };
+
+
+        box.appendChild(btn);
+
+
+    });
+
+
+}
 
 let answers = new Array(questions.length).fill("");
 
@@ -334,8 +395,12 @@ ${option}
     document.getElementById("options").innerHTML = html;
 
     updateProgress();
-
+createQuestionPalette();
 }
+
+//=============================
+// SAVE ANSWER
+//=============================
 
 //=============================
 // SAVE ANSWER
@@ -345,6 +410,11 @@ function saveAnswer(index) {
 
     answers[currentQuestion] =
         questions[currentQuestion].options[index];
+
+
+    // Question Palette refresh
+
+    createQuestionPalette();
 
 }
 
