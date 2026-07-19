@@ -1817,53 +1817,88 @@ button:disabled{
 
 }
 /* ==============================
-   FINAL HEADER CENTER OVERRIDE
+   FINAL HEADER PERFECT CENTER
 ============================== */
 
 .header{
-    display:flex !important;
-    flex-direction:column !important;
-    justify-content:center !important;
-    align-items:center !important;
-    text-align:center !important;
-    padding:30px !important;
+
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+
+    padding:30px;
+
 }
 
 
-/* LOGO CENTER */
+/* LOGO */
 
 .header-left{
-    width:100% !important;
-    display:flex !important;
-    justify-content:center !important;
-    align-items:center !important;
-    margin-bottom:15px !important;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
 
 .logo{
-    width:95px !important;
-    height:95px !important;
-    border-radius:50% !important;
-    object-fit:contain !important;
+
+    width:100px;
+    height:100px;
+
+    background:white;
+
+    padding:8px;
+
+    border-radius:50%;
+
+    object-fit:contain;
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,.25);
+
 }
 
 
 
-/* TITLE CENTER */
+/* TITLE */
 
 .header-center{
 
-    width:100% !important;
-    text-align:center !important;
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
 
 #testTitle{
 
-    text-align:center !important;
-    font-size:32px !important;
-    margin:10px 0 20px !important;
+    width:100%;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin:15px 0 25px;
 
 }
 
@@ -1873,35 +1908,60 @@ button:disabled{
 
 .header-right{
 
-    width:100% !important;
+    width:100%;
 
-    display:flex !important;
+    display:flex;
 
-    justify-content:center !important;
+    justify-content:center;
 
-    align-items:center !important;
+    align-items:center;
 
-    gap:20px !important;
+    gap:20px;
 
 }
+
 
 
 .header-right .info-box{
 
-    min-width:170px !important;
+    display:flex;
 
-    text-align:center !important;
+    justify-content:center;
 
-    padding:12px 20px !important;
+    align-items:center;
+
+    min-width:180px;
+
+    height:55px;
+
+    background:rgba(255,255,255,.20);
+
+    border-radius:15px;
+
+    color:white;
+
+    font-weight:700;
 
 }
 
 
 
-/* hide small heading */
+/* REMOVE SMALL */
 
 .header-right small{
 
-    display:none !important;
+    display:none;
+
+}
+
+
+#testDate,
+#testTime{
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
 
 }
