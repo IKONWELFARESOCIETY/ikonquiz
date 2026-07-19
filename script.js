@@ -1961,6 +1961,11 @@ window.onpopstate=function(){
 
 history.go(1);
 
+console.log("Script Loaded");
 
+window.nextQuestion = nextQuestion;
+window.previousQuestion = previousQuestion;
+window.submitTest = submitTest;
 };
+
 
