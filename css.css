@@ -516,36 +516,58 @@ button:disabled{
 
 .student-info{
 
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+
+
+.student-info .info-box{
+
     background:#fff;
 
-    padding:12px 18px;
+    padding:10px 20px;
 
     border-radius:10px;
 
-    box-shadow:
+    min-width:150px;
 
+    text-align:center;
+
+    box-shadow:
     0 5px 15px rgba(0,0,0,.08);
 
 }
 
 
 
-.student-info strong{
+.student-info .info-box b{
+
+    display:block;
 
     color:#005bea;
 
-    font-size:18px;
+    font-size:14px;
+
+    margin-bottom:5px;
 
 }
 
 
 
-.student-info small{
+.student-info .info-box span{
 
-    color:#555;
+    color:#333;
+
+    font-size:16px;
+
+    font-weight:700;
 
 }
-
 
 
 
