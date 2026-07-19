@@ -1281,7 +1281,32 @@ success.classList.remove("hidden");
 
 function goLogin(){
 
-location.reload();
+    // hide all pages
+    document.getElementById("successPage").classList.add("hidden");
+    document.getElementById("waitingPage").classList.add("hidden");
+    document.getElementById("testPage").classList.add("hidden");
+
+    // show login
+    document.getElementById("loginPage").classList.remove("hidden");
+
+
+    // reset data
+    studentName="";
+    regNo="";
+    currentQuestion=0;
+    answers=[];
+
+
+    // clear input boxes
+    document.getElementById("studentName").value="";
+    document.getElementById("regNo").value="";
+
+
+    // stop timer
+    if(timer!==null){
+        clearInterval(timer);
+        timer=null;
+    }
 
 }
 }
