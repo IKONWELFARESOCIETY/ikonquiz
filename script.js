@@ -970,59 +970,36 @@ function submitTest(autoSubmit = false) {
 
     fetch(SCRIPT_URL, {
 
-        method: "POST",
+    method:"POST",
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+    body:JSON.stringify(data)
 
-        body: JSON.stringify(data)
+})
+.then(res=>res.text())
 
-    })
+.then(result=>{
 
-    .then(res => res.text())
+    console.log(result);
 
-    .then(result => {
+    if(result.trim()=="SUCCESS"){
 
-        result = result.trim();
+        showSuccess();
 
-        if (result === "SUCCESS") {
+    }
+    else{
 
-            showSuccess();
+        alert(result);
 
-        } else {
+    }
 
-            examSubmitted = false;
+})
+.catch(err=>{
 
-            if (submitBtn) {
+    console.log(err);
 
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = "Submit Test";
+    alert("Unable to submit responses");
 
-            }
-
-            alert(result);
-
-        }
-
-    })
-
-    .catch(err => {
-
-        console.error(err);
-
-        examSubmitted = false;
-
-        if (submitBtn) {
-
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = "Submit Test";
-
-        }
-
-        alert("Unable to submit responses.");
-
-    });
+});
 
 }
     //================================
