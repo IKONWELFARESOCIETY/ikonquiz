@@ -108,6 +108,7 @@
 <!-- ================= TEST PAGE ================= -->
 
 <div id="testPage" class="hidden">
+    
 
     <!-- TOP BAR -->
 
@@ -138,6 +139,52 @@
         </div>
 
     </div>
+    <div id="instructionPage">
+        
+
+<h2>📋 Exam Instructions</h2>
+
+<ul>
+
+<li>Test शुरू होने के बाद Browser Tab Change या Window Switch करने पर warning मिलेगी।</li>
+
+<li>बार-बार Window Switch करने पर Test Automatically Submit हो जाएगा।</li>
+
+<li>किसी भी प्रकार का Copy, Paste या Right Click allowed नहीं है।</li>
+
+<li>सभी प्रश्न ध्यान से पढ़कर सही विकल्प चुनें।</li>
+
+<li>Test Timer खत्म होने पर Test Automatically Submit हो जाएगा।</li>
+
+<li>Test के दौरान Full Screen में रहें।</li>
+
+<li>Internet connection stable रखें।</li>
+
+</ul>
+
+
+<label>
+
+<input type="checkbox" id="acceptRules" onchange="enableStartExam()">
+
+I have read and accept all instructions.
+
+</label>
+
+
+<br><br>
+
+
+<button id="startExamBtn" 
+onclick="startExam()" disabled>
+
+Start Exam
+
+</button>
+
+
+</div>
+    <div id="examArea" class="hidden">
 
     <!-- PROGRESS BAR -->
 
@@ -255,7 +302,7 @@
     </div>
 
 </div>
-
+</div>
 </div>
 <!-- CONTENT END -->
 
