@@ -598,8 +598,9 @@ openTest();
 function openTest(){
 
 examSubmitted = false;
-securityWarnings = 0;
-submitReason = "Manual Submit";
+focusWarnings = 0;
+focusLock = false;
+    submitReason="Manual Submit";
 
 
 let login=document.getElementById("loginPage");
