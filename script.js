@@ -1969,187 +1969,232 @@ window.onpopstate=function(){
 history.go(1);
 };
 //================================
-// EXAM SECURITY
+//================================
+// EXAM SECURITY SYSTEM
 //================================
 
-//================================
-// EXAM SECURITY (2 WARNINGS)
-//================================
 
 function securitySubmit(reason){
 
     if(examSubmitted) return;
 
     submitReason = reason;
+
     examSubmitted = true;
+
+
+    alert(
+        "Test submitted automatically.\n\nReason:\n"+reason
+    );
+
 
     submitTest(true);
 
 }
 
-//================================
+
+
+//==============================
 // WARNING SYSTEM
-//================================
+//==============================
+
 
 function giveWarning(reason){
 
+
     if(examSubmitted) return;
+
 
     securityWarnings++;
 
-    if(securityWarnings <= MAX_WARNINGS){
+
+    if(securityWarnings < MAX_WARNINGS){
+
 
         alert(
-            "⚠ Warning " +
-            securityWarnings +
-            " of " +
-            MAX_WARNINGS +
-            "\n\nReason:\n" +
-            reason +
-            "\n\nIf this happens again your test will be submitted automatically."
+        "⚠ Warning "+securityWarnings+
+        " of "+MAX_WARNINGS+
+        "\n\nReason: "+reason+
+        "\n\nNext violation will auto submit your test."
         );
 
-        return;
+
+    }
+    else{
+
+
+        securitySubmit(reason);
+
 
     }
 
-    securitySubmit(reason);
 
 }
 
-//================================
-// FULL SCREEN EXIT
-//================================
 
-document.addEventListener("fullscreenchange",function(){
 
-    if(!document.fullscreenElement){
+//==============================
+// FULLSCREEN EXIT
+//==============================
 
-        giveWarning("Fullscreen exited");
 
-    }
+document.addEventListener(
+"fullscreenchange",
+function(){
 
-});
 
-//================================
-// TAB CHANGE / MINIMIZE
-//================================
+if(
+!document.fullscreenElement &&
+!examSubmitted
+){
 
-document.addEventListener("visibilitychange",function(){
+giveWarning("Fullscreen exited");
 
-    if(document.hidden){
 
-        giveWarning("Tab changed or browser minimized");
+}
 
-    }
 
 });
 
-//================================
-// BROWSER LOST FOCUS
-//================================
 
-window.addEventListener("blur",function(){
 
-    giveWarning("Browser focus lost");
+
+//==============================
+// TAB CHANGE
+//==============================
+
+
+document.addEventListener(
+"visibilitychange",
+function(){
+
+
+if(
+document.hidden &&
+!examSubmitted
+){
+
+
+giveWarning(
+"Tab changed or browser minimized"
+);
+
+
+}
+
 
 });
 
-//================================
-// PREVENT REFRESH
-//================================
 
-window.addEventListener("beforeunload",function(e){
 
-    e.preventDefault();
 
-    e.returnValue="";
+//==============================
+// WINDOW FOCUS LOST
+//==============================
+
+
+window.addEventListener(
+"blur",
+function(){
+
+
+if(!examSubmitted){
+
+giveWarning(
+"Browser focus lost"
+);
+
+}
+
 
 });
 
-//================================
-// KEYBOARD SECURITY
-//================================
 
-document.addEventListener("keydown",function(e){
 
-    // Windows Key
-    if(e.key==="Meta"){
 
-        e.preventDefault();
+//==============================
+// BLOCK REFRESH
+//==============================
 
-        giveWarning("Windows key pressed");
 
-    }
+window.addEventListener(
+"beforeunload",
+function(e){
 
-    // Alt + Tab
-    if(e.altKey && e.key==="Tab"){
 
-        e.preventDefault();
+if(!examSubmitted){
 
-        giveWarning("Alt + Tab detected");
+e.preventDefault();
 
-    }
+e.returnValue="";
 
-    // Ctrl + Esc
-    if(e.ctrlKey && e.key==="Escape"){
+}
 
-        e.preventDefault();
 
-        giveWarning("Ctrl + Esc detected");
+});
 
-    }
 
-    // Ctrl + N
-    if(e.ctrlKey && e.key.toLowerCase()==="n"){
 
-        e.preventDefault();
 
-        giveWarning("Ctrl + N (New Window)");
+//==============================
+// KEY SECURITY
+//==============================
 
-    }
 
-    // Ctrl + T
-    if(e.ctrlKey && e.key.toLowerCase()==="t"){
+document.addEventListener(
+"keydown",
+function(e){
 
-        e.preventDefault();
 
-        giveWarning("Ctrl + T (New Tab)");
 
-    }
+if(
+e.altKey &&
+e.key==="Tab"
+){
 
-    // Ctrl + W
-    if(e.ctrlKey && e.key.toLowerCase()==="w"){
 
-        e.preventDefault();
+e.preventDefault();
 
-        giveWarning("Ctrl + W");
+giveWarning(
+"Alt + Tab detected"
+);
 
-    }
 
-    // Ctrl + R
-    if(e.ctrlKey && e.key.toLowerCase()==="r"){
+}
 
-        e.preventDefault();
 
-        giveWarning("Ctrl + R (Refresh)");
 
-    }
+if(
+e.ctrlKey &&
+e.key.toLowerCase()==="r"
+){
 
-    // F5
-    if(e.key==="F5"){
 
-        e.preventDefault();
+e.preventDefault();
 
-        giveWarning("F5 Refresh");
+giveWarning(
+"Refresh attempt"
+);
 
-    }
 
-    // Print
-    if(e.key==="PrintScreen"){
+}
 
-        giveWarning("Print Screen");
 
-    }
+
+if(
+e.key==="F5"
+){
+
+
+e.preventDefault();
+
+giveWarning(
+"F5 Refresh"
+);
+
+
+}
+
+
 
 });
