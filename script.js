@@ -25,52 +25,44 @@ let questions = [];
 let currentQuestion = 0;
 let answers = [];
 //================================
-// LOAD DATE TIME FROM GOOGLE SHEET
+// LOAD SETTINGS FROM GOOGLE SHEET
 //================================
 
-function loadHeaderDateTime(){
+function loadExamSettings(){
 
+fetch(SCRIPT_URL+"?action=status")
+.then(res=>res.text())
+.then(status=>{
 
-fetch(SCRIPT_URL)
-
-
-.then(function(response){
-
-    return response.json();
-
-})
-
-
-.then(function(data){
-
-
-    if(data.testDate){
-
-        document.getElementById("testDate").innerHTML =
-        "📅 Test Date : " + data.testDate;
-
-    }
-
-
-    if(data.testTime){
-
-        document.getElementById("testTime").innerHTML =
-        "🕒 Test Time : " + data.testTime;
-
-    }
-
-
-})
-
-
-.catch(function(error){
-
-    console.log("Date Time Error :",error);
+    console.log("Status:",status);
 
 });
 
 
+fetch(SCRIPT_URL+"?action=duration")
+.then(res=>res.text())
+.then(duration=>{
+
+    totalTime = Number(duration) * 60;
+
+    console.log("Duration:",duration);
+
+});
+
+
+fetch(SCRIPT_URL+"?action=totalQuestions")
+.then(res=>res.text())
+.then(total=>{
+
+    console.log("Total Questions:",total);
+
+});
+
 }
+
+
+// PAGE LOAD
+loadExamSettings();
 
 
 
@@ -141,39 +133,6 @@ function showTimer() {
 //================================
 
 //================================
-// LOAD HEADER DATE TIME FROM SHEET
-//================================
-
-function loadHeaderDateTime(){
-
-
-fetch(SCRIPT_URL + "?action=testDate")
-
-.then(res => res.text())
-
-.then(date => {
-
-    document.getElementById("testDate").innerHTML =
-    "📅 Test Date : " + date;
-
-});
-
-
-
-fetch(SCRIPT_URL + "?action=testTime")
-
-.then(res => res.text())
-
-.then(time => {
-
-    document.getElementById("testTime").innerHTML =
-    "🕒 Test Time : " + time;
-
-});
-
-
-}
-
 
 // PAGE LOAD
 loadHeaderDateTime();
