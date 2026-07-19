@@ -31,9 +31,16 @@ let answers = [];
 let totalTime = 30 * 60;
 
 let timer = null;
-
 let statusChecker = null;
 
+//==============================
+// EXAM SECURITY
+//==============================
+
+let examSubmitted = false;
+let securityWarnings = 0;
+const MAX_WARNINGS = 2;
+let submitReason = "Manual Submit";
 
 
 
@@ -590,6 +597,9 @@ openTest();
 
 function openTest(){
 
+examSubmitted = false;
+securityWarnings = 0;
+submitReason = "Manual Submit";
 
 
 let login=document.getElementById("loginPage");
@@ -700,7 +710,10 @@ loadQuestion();
 
 startTimer();
 
-
+// Full Screen Start
+if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(() => {});
+}
 
 }
 
@@ -1410,25 +1423,17 @@ clearInterval(timer);
 
 const data={
 
-
-
 name:studentName,
-
 
 regNo:regNo,
 
-
 paperName:paperName,
 
+submittedAt:new Date().toLocaleString(),
 
-submittedAt:
-new Date().toLocaleString(),
-
-
+submitReason:submitReason,
 
 answers:answers
-
-
 
 };
 
@@ -1623,7 +1628,6 @@ success.classList.remove("hidden");
 function goLogin(){
 
 
-
 let success =
 document.getElementById(
 "successPage"
@@ -1730,6 +1734,9 @@ currentQuestion=0;
 
 answers=[];
 
+examSubmitted=false;
+securityWarnings=0;
+submitReason="Manual Submit";
 
 
 
@@ -1961,5 +1968,188 @@ window.onpopstate=function(){
 
 history.go(1);
 };
+//================================
+// EXAM SECURITY
+//================================
 
+//================================
+// EXAM SECURITY (2 WARNINGS)
+//================================
 
+function securitySubmit(reason){
+
+    if(examSubmitted) return;
+
+    submitReason = reason;
+    examSubmitted = true;
+
+    submitTest(true);
+
+}
+
+//================================
+// WARNING SYSTEM
+//================================
+
+function giveWarning(reason){
+
+    if(examSubmitted) return;
+
+    securityWarnings++;
+
+    if(securityWarnings <= MAX_WARNINGS){
+
+        alert(
+            "⚠ Warning " +
+            securityWarnings +
+            " of " +
+            MAX_WARNINGS +
+            "\n\nReason:\n" +
+            reason +
+            "\n\nIf this happens again your test will be submitted automatically."
+        );
+
+        return;
+
+    }
+
+    securitySubmit(reason);
+
+}
+
+//================================
+// FULL SCREEN EXIT
+//================================
+
+document.addEventListener("fullscreenchange",function(){
+
+    if(!document.fullscreenElement){
+
+        giveWarning("Fullscreen exited");
+
+    }
+
+});
+
+//================================
+// TAB CHANGE / MINIMIZE
+//================================
+
+document.addEventListener("visibilitychange",function(){
+
+    if(document.hidden){
+
+        giveWarning("Tab changed or browser minimized");
+
+    }
+
+});
+
+//================================
+// BROWSER LOST FOCUS
+//================================
+
+window.addEventListener("blur",function(){
+
+    giveWarning("Browser focus lost");
+
+});
+
+//================================
+// PREVENT REFRESH
+//================================
+
+window.addEventListener("beforeunload",function(e){
+
+    e.preventDefault();
+
+    e.returnValue="";
+
+});
+
+//================================
+// KEYBOARD SECURITY
+//================================
+
+document.addEventListener("keydown",function(e){
+
+    // Windows Key
+    if(e.key==="Meta"){
+
+        e.preventDefault();
+
+        giveWarning("Windows key pressed");
+
+    }
+
+    // Alt + Tab
+    if(e.altKey && e.key==="Tab"){
+
+        e.preventDefault();
+
+        giveWarning("Alt + Tab detected");
+
+    }
+
+    // Ctrl + Esc
+    if(e.ctrlKey && e.key==="Escape"){
+
+        e.preventDefault();
+
+        giveWarning("Ctrl + Esc detected");
+
+    }
+
+    // Ctrl + N
+    if(e.ctrlKey && e.key.toLowerCase()==="n"){
+
+        e.preventDefault();
+
+        giveWarning("Ctrl + N (New Window)");
+
+    }
+
+    // Ctrl + T
+    if(e.ctrlKey && e.key.toLowerCase()==="t"){
+
+        e.preventDefault();
+
+        giveWarning("Ctrl + T (New Tab)");
+
+    }
+
+    // Ctrl + W
+    if(e.ctrlKey && e.key.toLowerCase()==="w"){
+
+        e.preventDefault();
+
+        giveWarning("Ctrl + W");
+
+    }
+
+    // Ctrl + R
+    if(e.ctrlKey && e.key.toLowerCase()==="r"){
+
+        e.preventDefault();
+
+        giveWarning("Ctrl + R (Refresh)");
+
+    }
+
+    // F5
+    if(e.key==="F5"){
+
+        e.preventDefault();
+
+        giveWarning("F5 Refresh");
+
+    }
+
+    // Print
+    if(e.key==="PrintScreen"){
+
+        giveWarning("Print Screen");
+
+    }
+
+});
