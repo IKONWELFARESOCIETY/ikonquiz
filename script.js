@@ -1970,16 +1970,23 @@ history.go(1);
 };
 //================================
 //================================
+//================================
 // EXAM SECURITY SYSTEM
 //================================
 
+let focusWarnings = 0;
+const MAX_FOCUS_WARNING = 3;
+
+let focusLock = false;
+
+
+// AUTO SUBMIT
 
 function securitySubmit(reason){
 
     if(examSubmitted) return;
 
     submitReason = reason;
-
     examSubmitted = true;
 
 
@@ -1994,93 +2001,70 @@ function securitySubmit(reason){
 
 
 
-//==============================
 // WARNING SYSTEM
-//==============================
 
-
-function giveWarning(reason){
+function giveFocusWarning(reason){
 
 
     if(examSubmitted) return;
 
 
-    securityWarnings++;
+    if(focusLock) return;
 
 
-    if(securityWarnings < MAX_WARNINGS){
+    focusLock = true;
 
 
-        alert(
-        "⚠ Warning "+securityWarnings+
-        " of "+MAX_WARNINGS+
-        "\n\nReason: "+reason+
-        "\n\nNext violation will auto submit your test."
-        );
+    focusWarnings++;
 
 
-    }
-    else{
+    if(focusWarnings >= MAX_FOCUS_WARNING){
 
 
         securitySubmit(reason);
 
+        return;
 
     }
 
 
+
+    let result = confirm(
+        "⚠ Warning "+focusWarnings+
+        " of "+MAX_FOCUS_WARNING+
+        "\n\nReason:\n"+
+        reason+
+        "\n\nClick OK to continue test."
+    );
+
+
+
+    setTimeout(()=>{
+
+        focusLock=false;
+
+    },1000);
+
+
+
 }
 
 
 
-//==============================
-// FULLSCREEN EXIT
-//==============================
-
-
-document.addEventListener(
-"fullscreenchange",
-function(){
-
-
-if(
-!document.fullscreenElement &&
-!examSubmitted
-){
-
-giveWarning("Fullscreen exited");
-
-
-}
-
-
-});
-
-
-
-
-//==============================
-// TAB CHANGE
-//==============================
-
+// TAB CHANGE / MINIMIZE
 
 document.addEventListener(
 "visibilitychange",
 function(){
 
 
-if(
-document.hidden &&
-!examSubmitted
-){
+    if(document.hidden){
 
+        giveFocusWarning(
+        "Tab changed or browser minimized"
+        );
 
-giveWarning(
-"Tab changed or browser minimized"
-);
-
-
-}
+    }
 
 
 });
@@ -2088,23 +2072,16 @@ giveWarning(
 
 
 
-//==============================
 // WINDOW FOCUS LOST
-//==============================
-
 
 window.addEventListener(
 "blur",
 function(){
 
 
-if(!examSubmitted){
-
-giveWarning(
-"Browser focus lost"
-);
-
-}
+    giveFocusWarning(
+    "Browser focus lost"
+    );
 
 
 });
@@ -2112,89 +2089,46 @@ giveWarning(
 
 
 
-//==============================
-// BLOCK REFRESH
-//==============================
+// FULLSCREEN EXIT
 
+document.addEventListener(
+"fullscreenchange",
+function(){
+
+
+    if(
+    !document.fullscreenElement &&
+    !examSubmitted
+    ){
+
+
+        giveFocusWarning(
+        "Fullscreen exited"
+        );
+
+
+    }
+
+
+});
+
+
+
+
+// REFRESH BLOCK
 
 window.addEventListener(
 "beforeunload",
 function(e){
 
 
-if(!examSubmitted){
+    if(!examSubmitted){
 
-e.preventDefault();
+        e.preventDefault();
 
-e.returnValue="";
+        e.returnValue="";
 
-}
-
-
-});
-
-
-
-
-//==============================
-// KEY SECURITY
-//==============================
-
-
-document.addEventListener(
-"keydown",
-function(e){
-
-
-
-if(
-e.altKey &&
-e.key==="Tab"
-){
-
-
-e.preventDefault();
-
-giveWarning(
-"Alt + Tab detected"
-);
-
-
-}
-
-
-
-if(
-e.ctrlKey &&
-e.key.toLowerCase()==="r"
-){
-
-
-e.preventDefault();
-
-giveWarning(
-"Refresh attempt"
-);
-
-
-}
-
-
-
-if(
-e.key==="F5"
-){
-
-
-e.preventDefault();
-
-giveWarning(
-"F5 Refresh"
-);
-
-
-}
-
+    }
 
 
 });
