@@ -70,21 +70,25 @@ function startTest() {
 
         .then(result => {
 
-            result = result.trim();
+    result = result.trim();
 
-            if (result == "VALID") {
+    if (result == "VALID") {
 
-                checkTestStatus();
+        checkTestStatus();
 
-            }
+    }
+    else if (result == "ALREADY_SUBMITTED") {
 
-            else {
+        alert("You have already submitted this test.");
 
-                alert("Invalid Registration Number or Name.");
+    }
+    else {
 
-            }
+        alert("Invalid Registration Number or Name.");
 
-        })
+    }
+
+})
 
         .catch(err => {
 
