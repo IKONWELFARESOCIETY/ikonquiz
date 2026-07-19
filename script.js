@@ -23,7 +23,7 @@ let studentName = "";
 let regNo = "";
 
 let paperName = "";
-
+let questions = [];
 let currentQuestion = 0;
 
 let answers = [];
@@ -706,7 +706,7 @@ new Array(questions.length)
 
 
 
-loadQuestion();
+loadPaperQuestions();
 
 
 startTimer();
