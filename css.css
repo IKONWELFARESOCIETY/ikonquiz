@@ -1998,3 +1998,125 @@ button:disabled{
     object-fit:contain !important;
 
 }
+/* ==============================
+   FINAL IKON HEADER FIX
+============================== */
+
+.header{
+
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    align-items:center !important;
+
+    text-align:center !important;
+
+    width:100%;
+
+}
+
+
+/* LOGO */
+
+.header-left{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.logo{
+
+    width:95px !important;
+
+    height:95px !important;
+
+    display:block;
+
+    object-fit:contain;
+
+    margin:auto;
+
+}
+
+
+
+/* TITLE */
+
+.header-center{
+
+    width:100%;
+
+    display:block;
+
+    text-align:center;
+
+}
+
+
+#testTitle{
+
+    display:block;
+
+    width:100%;
+
+    text-align:center !important;
+
+    color:white;
+
+    font-size:32px;
+
+    margin:15px 0;
+
+}
+
+
+
+/* DATE TIME */
+
+.header-right{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+}
+
+
+.header-right .info-box{
+
+    text-align:center;
+
+}
+
+
+/* mobile */
+
+@media(max-width:700px){
+
+    .logo{
+
+        width:75px !important;
+
+        height:75px !important;
+
+    }
+
+
+    #testTitle{
+
+        font-size:24px;
+
+    }
+
+}
