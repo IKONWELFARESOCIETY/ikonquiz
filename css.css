@@ -87,31 +87,59 @@ body{
  HEADER
 ========================*/
 
-
 .header{
 
     display:flex;
 
+    align-items:center;
+
     justify-content:space-between;
 
-    align-items:center;
+    gap:20px;
+
+    padding:20px 30px;
 
     background:linear-gradient(135deg,#005bea,#0b7cff);
 
     color:#fff;
 
-    padding:22px 28px;
-
 }
 
-
-
-
-.header-left{
+.header-left,
+.header-center,
+.header-right{
 
     display:flex;
 
     align-items:center;
+
+}
+
+.header-left{
+
+    flex:0 0 90px;
+
+    justify-content:flex-start;
+
+}
+
+.header-center{
+
+    flex:1;
+
+    justify-content:center;
+
+    text-align:center;
+
+}
+
+.header-right{
+
+    flex:0 0 auto;
+
+    justify-content:flex-end;
+
+    gap:12px;
 
 }
 
@@ -120,13 +148,13 @@ body{
 
 .logo{
 
-    width:72px;
+    width:75px;
 
-    height:72px;
-
-    background:#fff;
+    height:75px;
 
     border-radius:50%;
+
+    background:#fff;
 
     padding:6px;
 
@@ -153,7 +181,9 @@ body{
 
     font-weight:700;
 
-    letter-spacing:.5px;
+    color:#fff;
+
+    line-height:1.2;
 
 }
 
