@@ -1,111 +1,1438 @@
-.header{
+/*==================================================
+IKON ONLINE TEST
+PREMIUM CSS
+Part 1
+==================================================*/
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:#edf3fb;
+
+    min-height:100vh;
+
     display:flex;
+
+    justify-content:center;
+
     align-items:center;
+
+    padding:25px;
+
+    color:#222;
+
+}
+
+/* CONTAINER */
+
+.container{
+
+    width:100%;
+
+    max-width:1200px;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,.12);
+
+}
+
+/*====================================
+HEADER
+====================================*/
+
+.header{
+
+    display:flex;
+
     justify-content:space-between;
+
+    align-items:center;
+
     background:linear-gradient(135deg,#005bea,#0b7cff);
+
     color:#fff;
-    padding:20px 25px;
-    border-radius:12px 12px 0 0;
+
+    padding:22px 28px;
+
 }
 
 .header-left{
+
     display:flex;
+
     align-items:center;
+
 }
 
 .logo{
+
+    width:72px;
+
+    height:72px;
+
+    background:#fff;
+
+    border-radius:50%;
+
+    padding:6px;
+
+    object-fit:contain;
+
+}
+
+.header-center{
+
+    flex:1;
+
+    text-align:center;
+
+}
+
+#testTitle{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+/*====================================
+HEADER RIGHT
+====================================*/
+
+.header-right{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.info-box{
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(10px);
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    min-width:170px;
+
+    transition:.3s;
+
+}
+
+.info-box:hover{
+
+    transform:translateY(-3px);
+
+    background:rgba(255,255,255,.22);
+
+}
+
+.info-box small{
+
+    display:block;
+
+    color:#dcecff;
+
+    font-size:13px;
+
+    margin-bottom:6px;
+
+    font-weight:600;
+
+}
+
+#testDate,
+#testTime{
+
+    color:#fff;
+
+    font-size:17px;
+
+    font-weight:700;
+
+}
+
+/*====================================
+CONTENT
+====================================*/
+
+.content{
+
+    padding:35px;
+
+}
+
+/*====================================
+LOGIN CARD
+====================================*/
+
+.login-box{
+
+    width:100%;
+
+    max-width:520px;
+
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:35px;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.login-box h2{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+    color:#005bea;
+
+}
+
+.login-box label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+.login-box input{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #d6d6d6;
+
+    border-radius:10px;
+
+    margin-bottom:18px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.login-box input:focus{
+
+    outline:none;
+
+    border-color:#0b7cff;
+
+    box-shadow:
+    0 0 10px rgba(11,124,255,.25);
+
+}
+
+/*====================================
+BUTTON
+====================================*/
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    padding:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.primary{
+
+    background:#0b7cff;
+
+    color:#fff;
+
+}
+
+.primary:hover{
+
+    background:#005bea;
+
+    transform:translateY(-2px);
+
+}
+/*=============================
+   LOGIN SECTION
+=============================*/
+
+.login-box{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    margin:auto;
+}
+
+.login-box h2{
+    text-align:center;
+    color:#005bea;
+    margin-bottom:25px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    font-weight:600;
+    margin-bottom:7px;
+    color:#333;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+.input-group input:focus{
+    border-color:#005bea;
+    box-shadow:0 0 8px rgba(0,91,234,.2);
+}
+
+
+.btn{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:8px;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    opacity:.9;
+}
+
+
+/*=============================
+   QUIZ AREA
+=============================*/
+
+.quiz-container{
+    width:100%;
+    max-width:850px;
+    background:#fff;
+    margin:20px auto;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+}
+
+
+.quiz-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#005bea;
+    color:white;
+    padding:15px 20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+
+.timer{
+    background:#fff;
+    color:#005bea;
+    padding:8px 15px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+
+.question{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:20px;
+    color:#222;
+}
+
+
+.option{
+    display:block;
+    background:#f5f7fb;
+    padding:14px;
+    margin:12px 0;
+    border-radius:10px;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:.3s;
+}
+
+
+.option:hover{
+    background:#e7f0ff;
+    border-color:#005bea;
+}
+
+
+.option input{
+    margin-right:10px;
+}
+
+
+/* Selected Option */
+
+.option.selected{
+    background:#005bea;
+    color:#fff;
+}
+
+
+/*=============================
+   NAVIGATION BUTTONS
+=============================*/
+
+.quiz-buttons{
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+}
+
+
+.next-btn,
+.prev-btn,
+.submit-btn{
+
+    padding:12px 25px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+
+.next-btn{
+    background:#005bea;
+    color:white;
+}
+
+
+.prev-btn{
+    background:#777;
+    color:white;
+}
+
+
+.submit-btn{
+    background:#16a34a;
+    color:white;
+}
+
+
+.next-btn:hover,
+.prev-btn:hover,
+.submit-btn:hover{
+    transform:scale(1.05);
+}
+
+
+
+/*=============================
+   RESULT PAGE
+=============================*/
+
+.result-box{
+    max-width:500px;
+    margin:30px auto;
+    background:#fff;
+    padding:30px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+
+.result-box h1{
+    color:#005bea;
+}
+
+
+.score{
+    font-size:40px;
+    font-weight:bold;
+    color:#16a34a;
+    margin:20px 0;
+}
+
+
+
+@media(max-width:600px){
+
+    .header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+
+    .quiz-header{
+        flex-direction:column;
+        gap:15px;
+    }
+
+
+    .quiz-container{
+        margin:10px;
+        padding:15px;
+    }
+
+
+    .question{
+        font-size:17px;
+    }
+
+
+    .quiz-buttons{
+        flex-direction:column;
+        gap:10px;
+    }
+
+
+    .next-btn,
+    .prev-btn,
+    .submit-btn{
+        width:100%;
+    }
+
+}
+/*=============================
+   QUIZ PROGRESS BAR
+=============================*/
+
+.progress-area{
+    width:100%;
+    height:10px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    border-radius:20px;
+    transition:.4s;
+}
+
+
+/*=============================
+   QUESTION NUMBER
+=============================*/
+
+.question-number{
+    display:inline-block;
+    background:#005bea;
+    color:white;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+
+
+/*=============================
+   QUIZ CARD EFFECT
+=============================*/
+
+.question-card{
+    background:#fff;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+    animation:slideQuestion .4s ease;
+}
+
+
+@keyframes slideQuestion{
+
+    from{
+        opacity:0;
+        transform:translateX(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+
+}
+
+
+
+/*=============================
+   OPTION RADIO DESIGN
+=============================*/
+
+.option-box{
+    position:relative;
+    margin:12px 0;
+}
+
+
+.option-box input{
+    display:none;
+}
+
+
+.option-box label{
+
+    display:block;
+    padding:14px 18px;
+    background:#f8fafc;
+    border:2px solid #e2e8f0;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+
+
+.option-box label:hover{
+
+    border-color:#005bea;
+    background:#eef5ff;
+
+}
+
+
+
+.option-box input:checked + label{
+
+    background:#005bea;
+    color:#fff;
+    border-color:#005bea;
+
+}
+
+
+
+/*=============================
+   TOP INFO BAR
+=============================*/
+
+
+.student-info{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f1f5f9;
+    padding:15px 20px;
+    border-radius:10px;
+    margin-bottom:20px;
+
+}
+
+
+.student-info span{
+
+    font-weight:600;
+    color:#333;
+
+}
+
+
+
+@media(max-width:600px){
+
+    .student-info{
+
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+
+    }
+
+}
+
+
+
+/*=============================
+   WARNING / ERROR MESSAGE
+=============================*/
+
+
+.message{
+
+    padding:12px 15px;
+    border-radius:8px;
+    margin:15px 0;
+    font-weight:600;
+    text-align:center;
+
+}
+
+
+.error-msg{
+
+    background:#fee2e2;
+    color:#b91c1c;
+    border:1px solid #fecaca;
+
+}
+
+
+.success-msg{
+
+    background:#dcfce7;
+    color:#166534;
+    border:1px solid #bbf7d0;
+
+}
+
+
+
+/*=============================
+   LOADING ANIMATION
+=============================*/
+
+
+.loader{
+
+    width:45px;
+    height:45px;
+    border:5px solid #ddd;
+    border-top:5px solid #005bea;
+    border-radius:50%;
+    animation:rotate 1s linear infinite;
+    margin:auto;
+
+}
+
+
+
+@keyframes rotate{
+
+    100%{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+
+/*=============================
+   FULL SCREEN QUIZ MODE
+=============================*/
+
+
+.quiz-screen{
+
+    min-height:100vh;
+    background:#f1f5f9;
+    padding:20px;
+
+}
+
+
+.hide{
+
+    display:none;
+
+}
+
+
+/*=============================
+   DISABLE BUTTON
+=============================*/
+
+
+button:disabled{
+
+    opacity:.5;
+    cursor:not-allowed;
+    transform:none;
+
+}
+/*=============================
+   MAIN HEADER FINAL DESIGN
+=============================*/
+
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    color:#fff;
+    padding:20px 25px;
+    border-radius:15px 15px 0 0;
+
+}
+
+
+.header-left{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+}
+
+
+.logo{
+
     width:70px;
     height:70px;
     background:#fff;
     border-radius:50%;
     padding:5px;
     object-fit:contain;
+
 }
 
-.header-center{
-    flex:1;
-    padding:0 20px;
-}
 
-#testTitle{
-    font-size:30px;
-    font-weight:700;
-    color:#fff;
+.header-title h1{
+
     margin:0;
+    font-size:28px;
+
 }
 
-.header-right{
+
+.header-title p{
+
+    margin:5px 0 0;
+    font-size:14px;
+    opacity:.9;
+
+}
+
+
+
+/*=============================
+   LOGIN PAGE SPLIT DESIGN
+=============================*/
+
+
+.login-page{
+
+    min-height:100vh;
     display:flex;
-    gap:15px;
-}
-
-.info-box{
-    background:rgba(255,255,255,.15);
-    border-radius:10px;
-    padding:10px 15px;
-    min-width:170px;
-}
-
-.info-box small{
-    display:block;
-    color:#dbeafe;
-    font-size:13px;
-    margin-bottom:4px;
-}
-
-#testDate,
-#testTime{
-    color:#fff;
-    font-size:16px;
-    font-weight:700;
-}
-.container{
-    width:100%;
-    max-width:900px;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 10px 25px rgba(0,0,0,.12);
-    overflow:hidden;
-}
-
-.content{
-    padding:30px;
-}
-.login-box{
-    max-width:600px;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-@media(max-width:768px){
-
-.header{
-    flex-direction:column;
-    text-align:center;
-    gap:15px;
-}
-
-.header-center{
-    padding:0;
-}
-
-.header-right{
-    width:100%;
     justify-content:center;
-    flex-wrap:wrap;
-}
-
-.info-box{
-    width:170px;
-}
-
-#testTitle{
-    font-size:24px;
-}
-
-.content{
+    align-items:center;
+    background:#f1f5f9;
     padding:20px;
+
 }
+
+
+.login-wrapper{
+
+    width:900px;
+    max-width:100%;
+    display:flex;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+
+
+.login-image{
+
+    width:50%;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+
+}
+
+
+.login-image img{
+
+    width:100%;
+    max-width:350px;
+
+}
+
+
+
+.login-form{
+
+    width:50%;
+    padding:40px;
+
+}
+
+
+.login-form h2{
+
+    text-align:center;
+    color:#005bea;
+    margin-bottom:25px;
+
+}
+
+
+
+/*=============================
+   COURSE CARD SECTION
+=============================*/
+
+
+.course-section{
+
+    padding:30px 0;
+
+}
+
+
+.course-title{
+
+    text-align:center;
+    font-size:28px;
+    color:#005bea;
+    margin-bottom:25px;
+
+}
+
+
+
+.course-container{
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+
+}
+
+
+
+.course-card{
+
+    background:#fff;
+    padding:25px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+    transition:.3s;
+
+}
+
+
+.course-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+
+
+.course-card img{
+
+    width:80px;
+    height:80px;
+    object-fit:contain;
+    margin-bottom:15px;
+
+}
+
+
+
+.course-card h3{
+
+    color:#005bea;
+    margin:10px 0;
+
+}
+
+
+
+.course-card p{
+
+    color:#555;
+    font-size:14px;
+
+}
+
+
+
+/*=============================
+   INSTRUCTION BOX
+=============================*/
+
+
+.instruction-box{
+
+    background:#fff;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+    margin:20px auto;
+    max-width:800px;
+
+}
+
+
+
+.instruction-box h3{
+
+    color:#005bea;
+    margin-bottom:15px;
+
+}
+
+
+.instruction-box li{
+
+    margin:10px 0;
+    color:#444;
+
+}
+
+
+
+/*=============================
+   FOOTER
+=============================*/
+
+
+.footer{
+
+    background:#005bea;
+    color:white;
+    text-align:center;
+    padding:15px;
+    border-radius:0 0 15px 15px;
+    font-size:14px;
+
+}
+
+
+/*=============================
+   MOBILE RESPONSIVE
+=============================*/
+
+
+@media(max-width:900px){
+
+
+    .course-container{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+
+    .login-wrapper{
+
+        flex-direction:column;
+
+    }
+
+
+    .login-image,
+    .login-form{
+
+        width:100%;
+
+    }
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+    .header{
+
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+
+    }
+
+
+    .header-left{
+
+        flex-direction:column;
+
+    }
+
+
+    .header-title h1{
+
+        font-size:22px;
+
+    }
+
+
+    .course-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .login-form{
+
+        padding:25px;
+
+    }
+
+
+    .login-image{
+
+        padding:20px;
+
+    }
+
+
+}
+/*=============================
+   QUIZ TIMER PREMIUM DESIGN
+=============================*/
+
+.timer-box{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    color:#005bea;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+
+.timer-icon{
+
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#005bea;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+
+}
+
+
+.timer-text{
+
+    font-size:18px;
+
+}
+
+
+
+/*=============================
+   START QUIZ BUTTON
+=============================*/
+
+
+.start-btn{
+
+    display:inline-block;
+    padding:14px 35px;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+
+.start-btn:hover{
+
+    transform:scale(1.05);
+
+}
+
+
+
+/*=============================
+   SUBMIT CONFIRM POPUP
+=============================*/
+
+
+.popup-overlay{
+
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+
+}
+
+
+
+.popup-box{
+
+    width:90%;
+    max-width:400px;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    animation:popup .3s ease;
+
+}
+
+
+
+@keyframes popup{
+
+    from{
+        transform:scale(.7);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+
+
+.popup-box h3{
+
+    color:#005bea;
+    margin-bottom:15px;
+
+}
+
+
+.popup-buttons{
+
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+
+}
+
+
+.confirm-btn{
+
+    background:#16a34a;
+    color:#fff;
+    padding:10px 25px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+
+
+.cancel-btn{
+
+    background:#dc2626;
+    color:#fff;
+    padding:10px 25px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+
+
+/*=============================
+   QUIZ TOP STATUS
+=============================*/
+
+
+.quiz-status{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    padding:12px 15px;
+    background:#f8fafc;
+    border-radius:10px;
+
+}
+
+
+
+.status-item{
+
+    font-size:14px;
+    font-weight:600;
+    color:#333;
+
+}
+
+
+
+/*=============================
+   SMOOTH PAGE TRANSITION
+=============================*/
+
+
+.fade-in{
+
+    animation:fade .5s ease;
+
+}
+
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+/*=============================
+   DISABLE SELECTION
+=============================*/
+
+
+.quiz-container{
+
+    user-select:none;
+
+}
+
+
+
+/*=============================
+   FINAL SHADOW POLISH
+=============================*/
+
+
+.card-shadow{
+
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+
+}
+
+
+/*=============================
+   EXTRA MOBILE FIX
+=============================*/
+
+
+@media(max-width:600px){
+
+    .quiz-status{
+
+        flex-direction:column;
+        gap:10px;
+
+    }
+
+
+    .popup-buttons{
+
+        flex-direction:column;
+
+    }
+
+
+    .confirm-btn,
+    .cancel-btn{
+
+        width:100%;
+
+    }
+
 
 }
