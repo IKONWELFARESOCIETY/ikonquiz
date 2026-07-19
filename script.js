@@ -1,667 +1,1418 @@
-//=============================
-// IKON ONLINE TEST
-//=============================
+//================================
+// IKON ONLINE TEST SYSTEM
+//================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
 
-//=============================
-// TEST TITLE
-//=============================
+// GOOGLE APP SCRIPT URL
 
-window.onload = function(){
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
 
-    loadPaperName();
-    loadTestDate();
-    loadTestTime();
-    loadDuration();
 
-};
-//=============================
-// LOAD PAPER DETAILS
-//=============================
+//================================
+// GLOBAL VARIABLES
+//================================
 
-function loadPaperName(){
-
-    fetch(SCRIPT_URL + "?action=paperName")
-    .then(res => res.text())
-    .then(data => {
-
-        document.getElementById("testTitle").innerHTML = data;
-
-    })
-    .catch(err => console.log(err));
-
-}
-
-function loadTestDate(){
-
-    fetch(SCRIPT_URL + "?action=testDate")
-    .then(res => res.text())
-    .then(data => {
-
-        document.getElementById("testDate").innerHTML =
-        "📅 Test Date : " + data;
-
-    })
-    .catch(err => console.log(err));
-
-}
-
-function loadTestTime(){
-
-    fetch(SCRIPT_URL + "?action=testTime")
-    .then(res => res.text())
-    .then(data => {
-
-        const el = document.getElementById("testTime");
-
-        if(el){
-
-            el.innerHTML = "🕒 Test Time : " + data;
-
-        }
-
-    })
-    .catch(err => console.log(err));
-
-}
-function loadDuration(){
-
-    fetch(SCRIPT_URL + "?action=duration")
-    .then(res => res.text())
-    .then(data => {
-
-        totalTime = parseInt(data) * 60;
-
-        if(isNaN(totalTime)){
-            totalTime = 30 * 60;
-        }
-
-        let minutes = Math.floor(totalTime/60);
-        let seconds = totalTime % 60;
-
-        document.getElementById("timer").innerHTML =
-        (minutes<10?"0":"")+minutes + ":" +
-        (seconds<10?"0":"")+seconds;
-
-    });
-
-}
-//=============================
-// VARIABLES
-//=============================
 
 let studentName = "";
+
 let regNo = "";
 
 let currentQuestion = 0;
-//==============================
+
+let answers = [];
+
+let totalTime = 30 * 60;
+
+let timer = null;
+
+let statusChecker = null;
+
+
+
+//================================
+// PAGE LOAD
+//================================
+
+
+window.onload = function(){
+
+
+    loadPaperName();
+
+    loadTestDate();
+
+    loadTestTime();
+
+    loadDuration();
+
+
+};
+
+
+
+//================================
+// LOAD PAPER NAME
+//================================
+
+
+function loadPaperName(){
+
+
+fetch(SCRIPT_URL+"?action=paperName")
+
+.then(res=>res.text())
+
+.then(data=>{
+
+
+let title=document.getElementById("testTitle");
+
+
+if(title){
+
+title.innerHTML=data;
+
+}
+
+
+})
+
+.catch(err=>console.log(err));
+
+
+}
+
+
+
+
+
+//================================
+// LOAD TEST DATE
+//================================
+
+
+function loadTestDate(){
+
+
+fetch(SCRIPT_URL+"?action=testDate")
+
+.then(res=>res.text())
+
+.then(data=>{
+
+
+let el=document.getElementById("testDate");
+
+
+if(el){
+
+el.innerHTML="📅 Test Date : "+data;
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+//================================
+// LOAD TEST TIME
+//================================
+
+
+function loadTestTime(){
+
+
+fetch(SCRIPT_URL+"?action=testTime")
+
+.then(res=>res.text())
+
+.then(data=>{
+
+
+let el=document.getElementById("testTime");
+
+
+if(el){
+
+el.innerHTML="🕒 Test Time : "+data;
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+//================================
+// LOAD DURATION
+//================================
+
+
+function loadDuration(){
+
+
+fetch(SCRIPT_URL+"?action=duration")
+
+.then(res=>res.text())
+
+.then(data=>{
+
+
+let min=parseInt(data);
+
+
+if(isNaN(min)){
+
+min=30;
+
+}
+
+
+totalTime=min*60;
+
+
+showTimer();
+
+
+});
+
+
+}
+
+
+
+
+
+function showTimer(){
+
+
+let minutes=Math.floor(totalTime/60);
+
+let seconds=totalTime%60;
+
+
+minutes=minutes<10?"0"+minutes:minutes;
+
+seconds=seconds<10?"0"+seconds:seconds;
+
+
+
+let timerBox=document.getElementById("timer");
+
+
+if(timerBox){
+
+timerBox.innerHTML=
+minutes+":"+seconds;
+
+}
+//================================
+// LOGIN SYSTEM
+//================================
+
+
+function startTest(){
+
+
+studentName =
+document.getElementById("studentName").value.trim();
+
+
+regNo =
+document.getElementById("regNo").value.trim();
+
+
+
+if(studentName==="" || regNo===""){
+
+
+alert("Please enter Name and Registration Number.");
+
+return;
+
+
+}
+
+
+
+
+fetch(
+SCRIPT_URL+
+"?action=login"+
+"&regNo="+encodeURIComponent(regNo)+
+"&name="+encodeURIComponent(studentName)
+
+)
+
+
+.then(res=>res.text())
+
+
+.then(result=>{
+
+
+result=result.trim();
+
+
+
+if(result==="VALID"){
+
+
+checkTestStatus();
+
+
+}
+
+
+
+else if(result==="ALREADY_SUBMITTED"){
+
+
+alert("You have already submitted this test.");
+
+
+}
+
+
+
+else{
+
+
+alert("Invalid Registration Number or Name.");
+
+
+}
+
+
+
+})
+
+
+.catch(err=>{
+
+
+console.log(err);
+
+alert("Unable to connect with server.");
+
+
+});
+
+
+
+}
+
+
+
+
+
+//================================
+// CHECK TEST STATUS
+//================================
+
+
+function checkTestStatus(){
+
+
+fetch(
+SCRIPT_URL+"?action=status"
+)
+
+
+.then(res=>res.text())
+
+
+.then(status=>{
+
+
+status=status.trim().toUpperCase();
+
+
+
+if(status==="ON"){
+
+
+openTest();
+
+
+}
+
+
+else{
+
+
+let login=document.getElementById("loginPage");
+
+let waiting=document.getElementById("waitingPage");
+
+
+
+if(login){
+
+login.classList.add("hidden");
+
+}
+
+
+
+if(waiting){
+
+waiting.classList.remove("hidden");
+
+}
+
+
+
+showRandomLine();
+
+
+autoCheckStatus();
+
+
+}
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+//================================
+// AUTO CHECK TEST START
+//================================
+
+
+function autoCheckStatus(){
+
+
+
+if(statusChecker!==null){
+
+return;
+
+}
+
+
+
+statusChecker=setInterval(function(){
+
+
+
+fetch(
+SCRIPT_URL+"?action=status"
+)
+
+
+.then(res=>res.text())
+
+
+.then(status=>{
+
+
+status=status.trim().toUpperCase();
+
+
+
+if(status==="ON"){
+
+
+
+clearInterval(statusChecker);
+
+
+statusChecker=null;
+
+
+openTest();
+
+
+
+}
+
+
+
+});
+
+
+
+},5000);
+
+
+
+}
+
+
+
+
+
+//================================
+// OPEN TEST
+//================================
+
+
+function openTest(){
+
+
+
+let login=document.getElementById("loginPage");
+
+let waiting=document.getElementById("waitingPage");
+
+let test=document.getElementById("testPage");
+
+
+
+if(login){
+
+login.classList.add("hidden");
+
+}
+
+
+
+if(waiting){
+
+waiting.classList.add("hidden");
+
+}
+
+
+
+if(test){
+
+test.classList.remove("hidden");
+
+}
+
+
+
+
+
+let nameBox=document.getElementById("showName");
+
+let regBox=document.getElementById("showReg");
+
+
+
+if(nameBox){
+
+nameBox.innerHTML=studentName;
+
+}
+
+
+
+if(regBox){
+
+regBox.innerHTML=regNo;
+
+}
+
+
+
+
+// initialize answers
+
+if(typeof questions !== "undefined"){
+
+
+answers=new Array(questions.length).fill("");
+
+
+}
+
+
+
+loadQuestion();
+
+
+startTimer();
+
+
+
+}
+
+
+
+
+
+//================================
+// MOTIVATION MESSAGE
+//================================
+
+
+function showRandomLine(){
+
+
+
+const lines=[
+
+
+"Believe in yourself.",
+
+"Stay calm and focused.",
+
+"Success begins with confidence.",
+
+"Give your best today.",
+
+"Every question is an opportunity.",
+
+"Hard work always pays.",
+
+"Think before you answer.",
+
+"You are ready to succeed."
+
+
+];
+
+
+
+let box=document.getElementById("motivationText");
+
+
+
+if(box){
+
+
+box.innerHTML =
+lines[Math.floor(Math.random()*lines.length)];
+
+
+}
+
+
+
+}
+//================================
+// LOAD QUESTION
+//================================
+
+
+function loadQuestion(){
+
+
+
+if(typeof questions==="undefined"){
+
+
+console.log("Questions not loaded");
+
+return;
+
+
+}
+
+
+
+const q = questions[currentQuestion];
+
+
+
+if(!q){
+
+return;
+
+}
+
+
+
+
+// Question Number
+
+
+let qNo=document.getElementById("questionNumber");
+
+
+if(qNo){
+
+
+qNo.innerHTML =
+"Question "+
+(currentQuestion+1)+
+" of "+
+questions.length;
+
+
+}
+
+
+
+
+// Question Text
+
+
+let qText=document.getElementById("questionText");
+
+
+if(qText){
+
+
+qText.innerHTML=q.question;
+
+
+}
+
+
+
+
+
+// OPTIONS
+
+
+let html="";
+
+
+
+q.options.forEach(function(option,index){
+
+
+
+let checked="";
+
+
+
+if(answers[currentQuestion]===option){
+
+
+checked="checked";
+
+
+}
+
+
+
+html += `
+
+
+<label class="option">
+
+
+<input
+
+type="radio"
+
+name="answer"
+
+${checked}
+
+onclick="saveAnswer(${index})">
+
+
+<span>${option}</span>
+
+
+</label>
+
+
+`;
+
+
+
+});
+
+
+
+
+
+let optionBox=document.getElementById("options");
+
+
+
+if(optionBox){
+
+
+optionBox.innerHTML=html;
+
+
+}
+
+
+
+
+
+updateProgress();
+
+
+createQuestionPalette();
+
+
+
+}
+
+
+
+
+
+//================================
+// SAVE ANSWER
+//================================
+
+
+function saveAnswer(index){
+
+
+
+answers[currentQuestion] =
+questions[currentQuestion].options[index];
+
+
+
+createQuestionPalette();
+
+
+
+}
+
+
+
+
+
+//================================
 // QUESTION PALETTE
-//==============================
+//================================
 
 
 function createQuestionPalette(){
 
 
-    let box = document.getElementById("questionNumbers");
 
-
-    if(!box) return;
-
-
-    box.innerHTML = "";
-
-
-    questions.forEach((q,index)=>{
-
-
-        let btn = document.createElement("button");
-
-
-        btn.innerHTML = index + 1;
-
-
-        btn.className = "q-btn";
+let box=document.getElementById("questionNumbers");
 
 
 
-        // Current question
+if(!box){
 
-        if(index === currentQuestion){
+return;
 
-            btn.classList.add("active");
-
-        }
-
-
-
-        // Attempted question
-
-       if(answers[index] !== ""){
-    btn.classList.add("done");
 }
 
 
-       btn.addEventListener("click", function(){
 
-    currentQuestion = index;
+box.innerHTML="";
 
-    loadQuestion();
+
+
+
+
+questions.forEach(function(q,index){
+
+
+
+let btn=document.createElement("button");
+
+
+
+btn.innerHTML=index+1;
+
+
+
+btn.className="q-btn";
+
+
+
+
+
+// CURRENT QUESTION
+
+
+if(index===currentQuestion){
+
+
+btn.classList.add("active");
+
+
+}
+
+
+
+
+
+// ANSWERED QUESTION
+
+
+if(answers[index]!=="" && answers[index]!==undefined){
+
+
+btn.classList.add("done");
+
+
+}
+
+
+
+
+
+
+
+btn.onclick=function(){
+
+
+
+currentQuestion=index;
+
+
+loadQuestion();
+
+
+
+};
+
+
+
+
+
+box.appendChild(btn);
+
+
 
 });
 
-        box.appendChild(btn);
-
-
-    });
 
 
 }
 
-let answers = new Array(questions.length).fill("");
 
-let totalTime = 30 * 60;
-let timer = null;
 
-let statusChecker = null;
 
-//=============================
-// LOGIN
-//=============================
 
-function startTest() {
+//================================
+// NEXT QUESTION
+//================================
 
-    studentName =
-        document.getElementById("studentName").value.trim();
 
-    regNo =
-        document.getElementById("regNo").value.trim();
+function nextQuestion(){
 
-    if (studentName == "" || regNo == "") {
 
-        alert("Please enter Name and Registration Number.");
 
-        return;
+if(currentQuestion < questions.length-1){
 
-    }
 
-    fetch(
-        SCRIPT_URL +
-        "?action=login&regNo=" +
-        encodeURIComponent(regNo) +
-        "&name=" +
-        encodeURIComponent(studentName)
-    )
 
-        .then(res => res.text())
+currentQuestion++;
 
-        .then(result => {
 
-    result = result.trim();
+loadQuestion();
 
-    if (result == "VALID") {
 
-        checkTestStatus();
-
-    }
-    else if (result == "ALREADY_SUBMITTED") {
-
-        alert("You have already submitted this test.");
-
-    }
-    else {
-
-        alert("Invalid Registration Number or Name.");
-
-    }
-
-})
-
-        .catch(err => {
-
-            console.log(err);
-
-            alert("Unable to connect.");
-
-        });
 
 }
 
-//=============================
-// CHECK STATUS
-//=============================
 
-function checkTestStatus() {
-
-    fetch(
-        SCRIPT_URL + "?action=status"
-    )
-
-        .then(res => res.text())
-
-        .then(status => {
-
-            status = status.trim().toUpperCase();
-
-            if (status == "ON") {
-
-                openTest();
-
-            }
-
-            else {
-
-                document.getElementById("loginPage")
-                    .classList.add("hidden");
-
-                document.getElementById("waitingPage")
-                    .classList.remove("hidden");
-
-                showRandomLine();
-
-                autoCheckStatus();
-
-            }
-
-        });
 
 }
 
-//=============================
-// AUTO CHECK
-//=============================
 
-function autoCheckStatus() {
 
-    if (statusChecker != null)
-        return;
 
-    statusChecker = setInterval(function () {
 
-        fetch(
-            SCRIPT_URL + "?action=status"
-        )
+//================================
+// PREVIOUS QUESTION
+//================================
 
-            .then(res => res.text())
 
-            .then(status => {
+function previousQuestion(){
 
-                status = status.trim().toUpperCase();
 
-                if (status == "ON") {
 
-                    clearInterval(statusChecker);
+if(currentQuestion>0){
 
-                    statusChecker = null;
 
-                    openTest();
 
-                }
+currentQuestion--;
 
-            });
 
-    }, 5000);
+loadQuestion();
+
+
 
 }
 
-//=============================
-// OPEN TEST
-//=============================
 
-function openTest() {
-
-    document.getElementById("waitingPage")
-        .classList.add("hidden");
-
-    document.getElementById("loginPage")
-        .classList.add("hidden");
-
-    document.getElementById("testPage")
-        .classList.remove("hidden");
-
-    document.getElementById("showName").innerHTML = studentName;
-    document.getElementById("showReg").innerHTML = regNo;
-
-    loadQuestion();
-
-    startTimer();
-
-}
-//=============================
-// MOTIVATION
-//=============================
-
-function showRandomLine() {
-
-    const lines = [
-
-        "Believe in yourself.",
-        "Stay calm and focused.",
-        "Success begins with confidence.",
-        "Give your best today.",
-        "Every question is an opportunity.",
-        "Hard work always pays.",
-        "Think before you answer.",
-        "You are ready to succeed."
-
-    ];
-
-    document.getElementById("motivationText").innerHTML =
-        lines[Math.floor(Math.random() * lines.length)];
 
 }
 
-//=============================
-// LOAD QUESTION
-//=============================
-
-function loadQuestion() {
-     if(index !== undefined){
-
-        currentQuestion = index;
-
-    }
-
-    const q = questions[currentQuestion];
-
-    document.getElementById("questionNumber").innerHTML =
-        "Question " +
-        (currentQuestion + 1) +
-        " of " +
-        questions.length;
-
-    document.getElementById("questionText").innerHTML =
-        q.question;
-
-    let html = "";
-
-    q.options.forEach(function (option, index) {
-
-        let checked = "";
-
-        if (answers[currentQuestion] == option) {
-
-            checked = "checked";
-
-        }
-
-        html += `
-<label class="option">
-<input
-type="radio"
-name="answer"
-${checked}
-onclick="saveAnswer(${index})">
-${option}
-</label>
-`;
-
-    });
-
-    document.getElementById("options").innerHTML = html;
-
-    updateProgress();
-createQuestionPalette();
-}
-
-//=============================
-// SAVE ANSWER
-//=============================
-
-//=============================
-// SAVE ANSWER
-//=============================
-
-function saveAnswer(index) {
-
-    answers[currentQuestion] =
-    questions[currentQuestion].options[index];
 
 
-    createQuestionPalette();
+
+
+//================================
+// PROGRESS BAR
+//================================
+
+
+function updateProgress(){
+
+
+
+let bar=document.getElementById("progressBar");
+
+
+
+if(!bar){
+
+return;
 
 }
 
-//=============================
-// NEXT
-//=============================
 
-function nextQuestion() {
 
-    if (currentQuestion < questions.length - 1) {
+let percent =
+((currentQuestion+1)/questions.length)*100;
 
-        currentQuestion++;
 
-        loadQuestion();
 
-    }
+bar.style.width=percent+"%";
+
+
 
 }
-
-//=============================
-// PREVIOUS
-//=============================
-
-function previousQuestion() {
-
-    if (currentQuestion > 0) {
-
-        currentQuestion--;
-
-        loadQuestion();
-
-    }
-
-}
-
-//=============================
-// PROGRESS
-//=============================
-
-function updateProgress() {
-
-    let percent =
-        ((currentQuestion + 1) / questions.length) * 100;
-
-    document.getElementById("progressBar").style.width =
-        percent + "%";
-
-}
-//=============================
+//================================
 // START TIMER
-//=============================
+//================================
+
 
 function startTimer(){
 
-    if(timer!=null){
-        clearInterval(timer);
-    }
 
-    timer=setInterval(function(){
 
-        totalTime--;
+if(timer!==null){
 
-        let minutes=Math.floor(totalTime/60);
-        let seconds=totalTime%60;
 
-        minutes=minutes<10?"0"+minutes:minutes;
-        seconds=seconds<10?"0"+seconds:seconds;
+clearInterval(timer);
 
-        document.getElementById("timer").innerHTML=
-        minutes+":"+seconds;
-
-        if(totalTime<=0){
-
-            clearInterval(timer);
-
-            submitTest(true);
-
-        }
-
-    },1000);
 
 }
 
 
 
-//=============================
+
+
+timer=setInterval(function(){
+
+
+
+totalTime--;
+
+
+
+
+
+let minutes=Math.floor(totalTime/60);
+
+
+let seconds=totalTime%60;
+
+
+
+minutes =
+minutes<10 ?
+"0"+minutes :
+minutes;
+
+
+
+seconds =
+seconds<10 ?
+"0"+seconds :
+seconds;
+
+
+
+
+
+let timerBox=document.getElementById("timer");
+
+
+
+if(timerBox){
+
+
+timerBox.innerHTML=
+minutes+":"+seconds;
+
+
+}
+
+
+
+
+
+
+if(totalTime<=0){
+
+
+
+clearInterval(timer);
+
+
+
+submitTest(true);
+
+
+
+}
+
+
+
+
+},1000);
+
+
+
+}
+
+
+
+
+
+
+
+//================================
 // SUBMIT TEST
-//=============================
+//================================
+
 
 function submitTest(autoSubmit=false){
 
-    if(!autoSubmit){
 
-        if(!confirm("Are you sure you want to submit the test?")){
-            return;
-        }
 
-    }
+if(!autoSubmit){
 
-    if(timer!=null){
-        clearInterval(timer);
-    }
 
-    const data={
 
-        name:studentName,
+let confirmSubmit =
+confirm("Are you sure you want to submit the test?");
 
-        regNo:regNo,
 
-        submittedAt:new Date().toLocaleString(),
 
-        answers:answers
+if(!confirmSubmit){
 
-    };
+
+return;
+
+
+}
+
+
+
+}
+
+
+
+
+if(timer!==null){
+
+
+clearInterval(timer);
+
+
+}
+
+
+
+
+
+const data={
+
+
+
+name:studentName,
+
+
+
+regNo:regNo,
+
+
+
+submittedAt:new Date().toLocaleString(),
+
+
+
+answers:answers
+
+
+
+};
+
+
+
+
 
 
 fetch(SCRIPT_URL,{
 
-    method:"POST",
+method:"POST",
 
-    body:JSON.stringify(data)
+body:JSON.stringify(data)
 
 })
 
-    .then(res=>res.text())
 
-    .then(result=>{
 
-        console.log(result);
+.then(res=>res.text())
 
-        if(result.trim()=="SUCCESS"){
 
-            showSuccess();
 
-        }else{
+.then(result=>{
 
-            alert(result);
 
-        }
 
-    })
+result=result.trim();
 
-    .catch(err=>{
 
-        console.log(err);
 
-        alert("Unable to submit responses.");
 
-    });
+if(result==="SUCCESS"){
+
+
+
+showSuccess();
+
+
+
+}
+
+else{
+
+
+alert(result);
+
+
 
 }
 
 
 
-//=============================
+})
+
+
+
+.catch(err=>{
+
+
+
+console.log(err);
+
+
+
+alert("Unable to submit responses.");
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+//================================
 // SUCCESS PAGE
-//=============================
+//================================
+
 
 function showSuccess(){
 
-    document.getElementById("testPage")
-    .classList.add("hidden");
 
-    document.getElementById("waitingPage")
-    .classList.add("hidden");
 
-    document.getElementById("successPage")
-    .classList.remove("hidden");
+let test=document.getElementById("testPage");
+
+
+let waiting=document.getElementById("waitingPage");
+
+
+let success=document.getElementById("successPage");
+
+
+
+
+if(test){
+
+
+test.classList.add("hidden");
+
 
 }
 
 
 
-//=============================
+if(waiting){
+
+
+waiting.classList.add("hidden");
+
+
+}
+
+
+
+if(success){
+
+
+success.classList.remove("hidden");
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+//================================
 // DISABLE RIGHT CLICK
-//=============================
+//================================
 
-document.addEventListener("contextmenu",function(e){
 
-    e.preventDefault();
+document.addEventListener(
+"contextmenu",
+function(e){
+
+
+e.preventDefault();
+
 
 });
 
 
 
-//=============================
+
+
+
+
+//================================
 // DISABLE COPY
-//=============================
+//================================
 
-document.addEventListener("copy",function(e){
 
-    e.preventDefault();
+document.addEventListener(
+"copy",
+function(e){
+
+
+e.preventDefault();
+
 
 });
 
 
 
-//=============================
+
+
+
+//================================
 // DISABLE CUT
-//=============================
+//================================
 
-document.addEventListener("cut",function(e){
 
-    e.preventDefault();
+document.addEventListener(
+"cut",
+function(e){
+
+
+e.preventDefault();
+
 
 });
 
 
 
-//=============================
-// DISABLE F12
-//=============================
 
-document.addEventListener("keydown",function(e){
 
-    if(
-        e.key==="F12" ||
 
-        (e.ctrlKey && e.shiftKey && e.key==="I") ||
+//================================
+// KEYBOARD SECURITY
+//================================
 
-        (e.ctrlKey && e.shiftKey && e.key==="J") ||
 
-        (e.ctrlKey && e.shiftKey && e.key==="C") ||
+document.addEventListener(
+"keydown",
+function(e){
 
-        (e.ctrlKey && e.key==="U")
-    ){
 
-        e.preventDefault();
 
-    }
+if(
+
+
+e.key==="F12" ||
+
+
+(e.ctrlKey && e.shiftKey && e.key==="I") ||
+
+
+(e.ctrlKey && e.shiftKey && e.key==="J") ||
+
+
+(e.ctrlKey && e.shiftKey && e.key==="C") ||
+
+
+(e.ctrlKey && e.key==="U")
+
+
+
+){
+
+
+
+e.preventDefault();
+
+
+
+}
+
+
 
 });
 
 
 
-//=============================
-// PREVENT BACK
-//=============================
+
+
+
+//================================
+// PREVENT BACK BUTTON
+//================================
+
 
 history.pushState(null,null,location.href);
 
+
+
 window.onpopstate=function(){
 
-    history.go(1);
+
+
+history.go(1);
+
+
 
 };
+
+}
