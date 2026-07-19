@@ -1978,7 +1978,17 @@ let focusWarnings = 0;
 const MAX_FOCUS_WARNING = 3;
 
 let focusLock = false;
+function isExamRunning(){
 
+    let test = document.getElementById("testPage");
+
+    if(test && !test.classList.contains("hidden")){
+        return true;
+    }
+
+    return false;
+
+}
 
 // AUTO SUBMIT
 
@@ -2074,14 +2084,20 @@ function(){
 
 // WINDOW FOCUS LOST
 
-window.addEventListener(
-"blur",
+// TAB CHANGE / MINIMIZE
+
+document.addEventListener(
+"visibilitychange",
 function(){
 
 
-    giveFocusWarning(
-    "Browser focus lost"
-    );
+    if(document.hidden){
+
+        giveFocusWarning(
+        "Tab changed or browser minimized"
+        );
+
+    }
 
 
 });
