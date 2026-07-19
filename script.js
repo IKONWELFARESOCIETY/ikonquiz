@@ -24,6 +24,63 @@ let paperName = "";
 let questions = [];
 let currentQuestion = 0;
 let answers = [];
+//================================
+// LOAD DATE TIME FROM GOOGLE SHEET
+//================================
+
+function loadHeaderDateTime(){
+
+
+fetch(SCRIPT_URL)
+
+
+.then(function(response){
+
+    return response.json();
+
+})
+
+
+.then(function(data){
+
+
+    if(data.testDate){
+
+        document.getElementById("testDate").innerHTML =
+        "📅 Test Date : " + data.testDate;
+
+    }
+
+
+    if(data.testTime){
+
+        document.getElementById("testTime").innerHTML =
+        "🕒 Test Time : " + data.testTime;
+
+    }
+
+
+})
+
+
+.catch(function(error){
+
+    console.log("Date Time Error :",error);
+
+});
+
+
+}
+
+
+
+// PAGE LOAD
+
+window.addEventListener("DOMContentLoaded",function(){
+
+    loadHeaderDateTime();
+
+});
 
 // Timer
 let totalTime = 30 * 60;
