@@ -1,12 +1,16 @@
 //================================
 // IKON ONLINE TEST SYSTEM
+// SCRIPT.JS PART 1
 //================================
+
 
 
 // GOOGLE APP SCRIPT URL
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
+
+
 
 
 //================================
@@ -17,6 +21,8 @@ const SCRIPT_URL =
 let studentName = "";
 
 let regNo = "";
+
+let paperName = "";
 
 let currentQuestion = 0;
 
@@ -30,6 +36,8 @@ let statusChecker = null;
 
 
 
+
+
 //================================
 // PAGE LOAD
 //================================
@@ -37,8 +45,6 @@ let statusChecker = null;
 
 window.onload = function(){
 
-
-    loadPaperName();
 
     loadTestDate();
 
@@ -51,37 +57,6 @@ window.onload = function(){
 
 
 
-//================================
-// LOAD PAPER NAME
-//================================
-
-
-function loadPaperName(){
-
-
-fetch(SCRIPT_URL+"?action=paperName")
-
-.then(res=>res.text())
-
-.then(data=>{
-
-
-let title=document.getElementById("testTitle");
-
-
-if(title){
-
-title.innerHTML=data;
-
-}
-
-
-})
-
-.catch(err=>console.log(err));
-
-
-}
 
 
 
@@ -97,7 +72,9 @@ function loadTestDate(){
 
 fetch(SCRIPT_URL+"?action=testDate")
 
+
 .then(res=>res.text())
+
 
 .then(data=>{
 
@@ -121,6 +98,10 @@ el.innerHTML="📅 Test Date : "+data;
 
 
 
+
+
+
+
 //================================
 // LOAD TEST TIME
 //================================
@@ -131,7 +112,9 @@ function loadTestTime(){
 
 fetch(SCRIPT_URL+"?action=testTime")
 
+
 .then(res=>res.text())
+
 
 .then(data=>{
 
@@ -141,7 +124,9 @@ let el=document.getElementById("testTime");
 
 if(el){
 
+
 el.innerHTML="🕒 Test Time : "+data;
+
 
 }
 
@@ -150,6 +135,10 @@ el.innerHTML="🕒 Test Time : "+data;
 
 
 }
+
+
+
+
 
 
 
@@ -165,7 +154,9 @@ function loadDuration(){
 
 fetch(SCRIPT_URL+"?action=duration")
 
+
 .then(res=>res.text())
+
 
 .then(data=>{
 
@@ -173,11 +164,15 @@ fetch(SCRIPT_URL+"?action=duration")
 let min=parseInt(data);
 
 
+
 if(isNaN(min)){
+
 
 min=30;
 
+
 }
+
 
 
 totalTime=min*60;
@@ -186,10 +181,15 @@ totalTime=min*60;
 showTimer();
 
 
+
 });
 
 
 }
+
+
+
+
 
 
 
@@ -200,12 +200,23 @@ function showTimer(){
 
 let minutes=Math.floor(totalTime/60);
 
+
 let seconds=totalTime%60;
 
 
-minutes=minutes<10?"0"+minutes:minutes;
 
-seconds=seconds<10?"0"+seconds:seconds;
+minutes =
+minutes<10 ?
+"0"+minutes :
+minutes;
+
+
+
+seconds =
+seconds<10 ?
+"0"+seconds :
+seconds;
+
 
 
 
@@ -214,11 +225,25 @@ let timerBox=document.getElementById("timer");
 
 if(timerBox){
 
-timerBox.innerHTML=
+
+timerBox.innerHTML =
 minutes+":"+seconds;
 
+
 }
+
+
+
 }
+
+
+
+
+
+
+
+
+
 //================================
 // LOGIN SYSTEM
 //================================
@@ -227,19 +252,30 @@ minutes+":"+seconds;
 function startTest(){
 
 
+
 studentName =
-document.getElementById("studentName").value.trim();
+document.getElementById("studentName")
+.value.trim();
+
+
 
 
 regNo =
-document.getElementById("regNo").value.trim();
+document.getElementById("regNo")
+.value.trim();
+
+
+
 
 
 
 if(studentName==="" || regNo===""){
 
 
-alert("Please enter Name and Registration Number.");
+alert(
+"Please enter Name and Registration Number."
+);
+
 
 return;
 
@@ -249,7 +285,13 @@ return;
 
 
 
+
+
+
+
+
 fetch(
+
 SCRIPT_URL+
 "?action=login"+
 "&regNo="+encodeURIComponent(regNo)+
@@ -258,47 +300,114 @@ SCRIPT_URL+
 )
 
 
+
+
+
+
 .then(res=>res.text())
+
 
 
 .then(result=>{
 
 
-result=result.trim();
+
+let data;
 
 
 
-if(result==="VALID"){
+try{
+
+
+data=JSON.parse(result);
+
+
+}
+
+catch(e){
+
+
+alert("Server Response Error");
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+if(data.status==="VALID"){
+
+
+
+studentName=data.name;
+
+
+regNo=data.regNo;
+
+
+paperName=data.paperName;
+
+
+
 
 
 checkTestStatus();
 
 
+
+
+}
+
+
+
+
+
+
+else if(data.status==="ALREADY_SUBMITTED"){
+
+
+
+alert(
+"You have already submitted this test."
+);
+
+
+
 }
 
 
 
-else if(result==="ALREADY_SUBMITTED"){
-
-
-alert("You have already submitted this test.");
-
-
-}
 
 
 
 else{
 
 
-alert("Invalid Registration Number or Name.");
+
+alert(
+"Invalid Registration Number or Name."
+);
+
 
 
 }
 
 
 
+
+
+
 })
+
+
+
+
 
 
 .catch(err=>{
@@ -306,18 +415,14 @@ alert("Invalid Registration Number or Name.");
 
 console.log(err);
 
-alert("Unable to connect with server.");
+
+alert(
+"Unable to connect with server."
+);
+
 
 
 });
-
-
-
-}
-
-
-
-
 
 //================================
 // CHECK TEST STATUS
@@ -332,6 +437,7 @@ SCRIPT_URL+"?action=status"
 )
 
 
+
 .then(res=>res.text())
 
 
@@ -339,6 +445,7 @@ SCRIPT_URL+"?action=status"
 
 
 status=status.trim().toUpperCase();
+
 
 
 
@@ -396,6 +503,10 @@ autoCheckStatus();
 
 
 
+
+
+
+
 //================================
 // AUTO CHECK TEST START
 //================================
@@ -422,6 +533,7 @@ SCRIPT_URL+"?action=status"
 )
 
 
+
 .then(res=>res.text())
 
 
@@ -429,6 +541,7 @@ SCRIPT_URL+"?action=status"
 
 
 status=status.trim().toUpperCase();
+
 
 
 
@@ -454,11 +567,16 @@ openTest();
 
 
 
+
 },5000);
 
 
 
 }
+
+
+
+
 
 
 
@@ -481,6 +599,8 @@ let test=document.getElementById("testPage");
 
 
 
+
+
 if(login){
 
 login.classList.add("hidden");
@@ -489,11 +609,14 @@ login.classList.add("hidden");
 
 
 
+
 if(waiting){
 
 waiting.classList.add("hidden");
 
 }
+
+
 
 
 
@@ -507,9 +630,21 @@ test.classList.remove("hidden");
 
 
 
-let nameBox=document.getElementById("showName");
 
-let regBox=document.getElementById("showReg");
+
+
+let nameBox =
+document.getElementById("showName");
+
+let regBox =
+document.getElementById("showReg");
+
+let paperBox =
+document.getElementById("showPaper");
+
+
+
+
 
 
 
@@ -518,6 +653,8 @@ if(nameBox){
 nameBox.innerHTML=studentName;
 
 }
+
+
 
 
 
@@ -530,15 +667,30 @@ regBox.innerHTML=regNo;
 
 
 
-// initialize answers
+
+if(paperBox){
+
+paperBox.innerHTML=paperName;
+
+}
+
+
+
+
+
+
 
 if(typeof questions !== "undefined"){
 
 
-answers=new Array(questions.length).fill("");
+answers =
+new Array(questions.length)
+.fill("");
+
 
 
 }
+
 
 
 
@@ -550,6 +702,11 @@ startTimer();
 
 
 }
+
+
+
+
+
 
 
 
@@ -588,7 +745,10 @@ const lines=[
 
 
 
-let box=document.getElementById("motivationText");
+
+
+let box =
+document.getElementById("motivationText");
 
 
 
@@ -596,14 +756,29 @@ if(box){
 
 
 box.innerHTML =
-lines[Math.floor(Math.random()*lines.length)];
+lines[
+Math.floor(
+Math.random()*lines.length
+)
+];
 
 
 }
 
 
 
+
 }
+
+
+
+
+
+
+
+
+
+
 //================================
 // LOAD QUESTION
 //================================
@@ -616,7 +791,10 @@ function loadQuestion(){
 if(typeof questions==="undefined"){
 
 
-console.log("Questions not loaded");
+console.log(
+"Questions not loaded"
+);
+
 
 return;
 
@@ -625,7 +803,13 @@ return;
 
 
 
-const q = questions[currentQuestion];
+
+
+
+const q =
+questions[currentQuestion];
+
+
 
 
 
@@ -638,13 +822,17 @@ return;
 
 
 
-// Question Number
 
 
-let qNo=document.getElementById("questionNumber");
+
+
+let qNo =
+document.getElementById("questionNumber");
+
 
 
 if(qNo){
+
 
 
 qNo.innerHTML =
@@ -654,21 +842,26 @@ qNo.innerHTML =
 questions.length;
 
 
+
 }
 
 
 
 
-// Question Text
 
 
-let qText=document.getElementById("questionText");
+
+let qText =
+document.getElementById("questionText");
+
+
 
 
 if(qText){
 
 
-qText.innerHTML=q.question;
+qText.innerHTML =
+q.question;
 
 
 }
@@ -677,10 +870,15 @@ qText.innerHTML=q.question;
 
 
 
-// OPTIONS
+
+
 
 
 let html="";
+
+
+
+
 
 
 
@@ -692,7 +890,9 @@ let checked="";
 
 
 
-if(answers[currentQuestion]===option){
+if(
+answers[currentQuestion]===option
+){
 
 
 checked="checked";
@@ -702,7 +902,10 @@ checked="checked";
 
 
 
-html += `
+
+
+
+html+=`
 
 
 <label class="option">
@@ -725,6 +928,7 @@ onclick="saveAnswer(${index})">
 </label>
 
 
+
 `;
 
 
@@ -735,7 +939,11 @@ onclick="saveAnswer(${index})">
 
 
 
-let optionBox=document.getElementById("options");
+
+
+
+let optionBox =
+document.getElementById("options");
 
 
 
@@ -758,7 +966,15 @@ createQuestionPalette();
 
 
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -774,7 +990,8 @@ function saveAnswer(index){
 
 
 answers[currentQuestion] =
-questions[currentQuestion].options[index];
+questions[currentQuestion]
+.options[index];
 
 
 
@@ -783,6 +1000,10 @@ createQuestionPalette();
 
 
 }
+
+
+
+
 
 
 
@@ -797,7 +1018,11 @@ function createQuestionPalette(){
 
 
 
-let box=document.getElementById("questionNumbers");
+let box =
+document.getElementById(
+"questionNumbers"
+);
+
 
 
 
@@ -809,7 +1034,11 @@ return;
 
 
 
+
+
 box.innerHTML="";
+
+
 
 
 
@@ -819,7 +1048,8 @@ questions.forEach(function(q,index){
 
 
 
-let btn=document.createElement("button");
+let btn =
+document.createElement("button");
 
 
 
@@ -831,9 +1061,6 @@ btn.className="q-btn";
 
 
 
-
-
-// CURRENT QUESTION
 
 
 if(index===currentQuestion){
@@ -848,10 +1075,12 @@ btn.classList.add("active");
 
 
 
-// ANSWERED QUESTION
 
 
-if(answers[index]!=="" && answers[index]!==undefined){
+if(
+answers[index]!=="" &&
+answers[index]!==undefined
+){
 
 
 btn.classList.add("done");
@@ -864,16 +1093,13 @@ btn.classList.add("done");
 
 
 
-
 btn.onclick=function(){
-
 
 
 currentQuestion=index;
 
 
 loadQuestion();
-
 
 
 };
@@ -890,7 +1116,12 @@ box.appendChild(btn);
 
 
 
+
 }
+
+
+
+
 
 
 
@@ -905,8 +1136,10 @@ function nextQuestion(){
 
 
 
-if(currentQuestion < questions.length-1){
-
+if(
+currentQuestion <
+questions.length-1
+){
 
 
 currentQuestion++;
@@ -915,12 +1148,16 @@ currentQuestion++;
 loadQuestion();
 
 
-
 }
 
 
 
 }
+
+
+
+
+
 
 
 
@@ -956,6 +1193,10 @@ loadQuestion();
 
 
 
+
+
+
+
 //================================
 // PROGRESS BAR
 //================================
@@ -965,7 +1206,11 @@ function updateProgress(){
 
 
 
-let bar=document.getElementById("progressBar");
+let bar =
+document.getElementById(
+"progressBar"
+);
+
 
 
 
@@ -977,16 +1222,29 @@ return;
 
 
 
+
 let percent =
-((currentQuestion+1)/questions.length)*100;
+((currentQuestion+1)/
+questions.length)*100;
 
 
 
-bar.style.width=percent+"%";
+
+bar.style.width =
+percent+"%";
 
 
 
 }
+
+
+
+
+
+
+
+
+
 //================================
 // START TIMER
 //================================
@@ -1008,6 +1266,8 @@ clearInterval(timer);
 
 
 
+
+
 timer=setInterval(function(){
 
 
@@ -1018,10 +1278,15 @@ totalTime--;
 
 
 
-let minutes=Math.floor(totalTime/60);
+let minutes =
+Math.floor(totalTime/60);
 
 
-let seconds=totalTime%60;
+
+let seconds =
+totalTime%60;
+
+
 
 
 
@@ -1041,14 +1306,20 @@ seconds;
 
 
 
-let timerBox=document.getElementById("timer");
+
+let timerBox =
+document.getElementById(
+"timer"
+);
+
+
 
 
 
 if(timerBox){
 
 
-timerBox.innerHTML=
+timerBox.innerHTML =
 minutes+":"+seconds;
 
 
@@ -1080,15 +1351,10 @@ submitTest(true);
 
 
 
+
+
 }
-
-
-
-
-
-
-
-//================================
+    //================================
 // SUBMIT TEST
 //================================
 
@@ -1102,7 +1368,9 @@ if(!autoSubmit){
 
 
 let confirmSubmit =
-confirm("Are you sure you want to submit the test?");
+confirm(
+"Are you sure you want to submit the test?"
+);
 
 
 
@@ -1115,8 +1383,10 @@ return;
 }
 
 
-
 }
+
+
+
 
 
 
@@ -1133,6 +1403,10 @@ clearInterval(timer);
 
 
 
+
+
+
+
 const data={
 
 
@@ -1140,12 +1414,14 @@ const data={
 name:studentName,
 
 
-
 regNo:regNo,
 
 
+paperName:paperName,
 
-submittedAt:new Date().toLocaleString(),
+
+submittedAt:
+new Date().toLocaleString(),
 
 
 
@@ -1160,13 +1436,24 @@ answers:answers
 
 
 
+
+
+
 fetch(SCRIPT_URL,{
+
 
 method:"POST",
 
+
 body:JSON.stringify(data)
 
+
+
 })
+
+
+
+
 
 
 
@@ -1183,6 +1470,7 @@ result=result.trim();
 
 
 
+
 if(result==="SUCCESS"){
 
 
@@ -1192,6 +1480,7 @@ showSuccess();
 
 
 }
+
 
 else{
 
@@ -1208,6 +1497,10 @@ alert(result);
 
 
 
+
+
+
+
 .catch(err=>{
 
 
@@ -1216,11 +1509,16 @@ console.log(err);
 
 
 
-alert("Unable to submit responses.");
+alert(
+"Unable to submit responses."
+);
 
 
 
 });
+
+
+
 
 
 
@@ -1230,9 +1528,10 @@ alert("Unable to submit responses.");
 
 
 
-//================================
-// SUCCESS PAGE
-//================================
+
+
+
+
 
 
 //================================
@@ -1243,36 +1542,75 @@ alert("Unable to submit responses.");
 function showSuccess(){
 
 
-let test=document.getElementById("testPage");
 
-let waiting=document.getElementById("waitingPage");
+let test =
+document.getElementById(
+"testPage"
+);
 
-let success=document.getElementById("successPage");
+
+
+let waiting =
+document.getElementById(
+"waitingPage"
+);
+
+
+
+let success =
+document.getElementById(
+"successPage"
+);
+
+
+
+
 
 
 
 if(test){
 
+
 test.classList.add("hidden");
 
+
 }
+
+
+
+
 
 
 if(waiting){
 
+
 waiting.classList.add("hidden");
 
+
 }
+
+
+
+
 
 
 if(success){
 
+
 success.classList.remove("hidden");
 
+
 }
 
 
+
 }
+
+
+
+
+
+
 
 
 
@@ -1284,142 +1622,186 @@ success.classList.remove("hidden");
 function goLogin(){
 
 
-let success=document.getElementById("successPage");
 
-let waiting=document.getElementById("waitingPage");
+let success =
+document.getElementById(
+"successPage"
+);
 
-let test=document.getElementById("testPage");
 
-let login=document.getElementById("loginPage");
+
+let test =
+document.getElementById(
+"testPage"
+);
+
+
+
+let waiting =
+document.getElementById(
+"waitingPage"
+);
+
+
+
+let login =
+document.getElementById(
+"loginPage"
+);
+
+
+
+
+
+
 
 
 
 if(success){
 
+
 success.classList.add("hidden");
 
-}
-
-
-if(waiting){
-
-waiting.classList.add("hidden");
 
 }
+
+
+
+
 
 
 if(test){
 
+
 test.classList.add("hidden");
 
+
 }
+
+
+
+
+
+
+if(waiting){
+
+
+waiting.classList.add("hidden");
+
+
+}
+
+
+
+
 
 
 if(login){
 
+
 login.classList.remove("hidden");
+
 
 }
 
 
 
-// reset values
+
+
+
+
+
+
+// RESET DATA
+
 
 studentName="";
 
+
 regNo="";
 
+
+paperName="";
+
+
 currentQuestion=0;
+
 
 answers=[];
 
 
 
-let name=document.getElementById("studentName");
 
-let reg=document.getElementById("regNo");
+
+
+
+
+
+let name =
+document.getElementById(
+"studentName"
+);
+
+
+
+let reg =
+document.getElementById(
+"regNo"
+);
+
+
+
+
+
 
 
 if(name){
 
+
 name.value="";
 
+
 }
+
+
+
+
 
 
 if(reg){
 
+
 reg.value="";
+
 
 }
 
 
 
-// stop timer
+
+
+
 
 if(timer!==null){
 
+
 clearInterval(timer);
+
 
 timer=null;
 
+
+}
+
+
+
+
 }
 
 
 
-}
-
-//================================
-// GO TO LOGIN PAGE
-//================================
-
-function goLogin(){
-
-    let success=document.getElementById("successPage");
-    let test=document.getElementById("testPage");
-    let waiting=document.getElementById("waitingPage");
-    let login=document.getElementById("loginPage");
 
 
-    if(success){
-        success.classList.add("hidden");
-    }
-
-    if(test){
-        test.classList.add("hidden");
-    }
-
-    if(waiting){
-        waiting.classList.add("hidden");
-    }
-
-    if(login){
-        login.classList.remove("hidden");
-    }
-
-
-    // reset data
-    studentName="";
-    regNo="";
-    currentQuestion=0;
-    answers=[];
-
-
-    // clear inputs
-    let name=document.getElementById("studentName");
-    let reg=document.getElementById("regNo");
-
-    if(name) name.value="";
-    if(reg) reg.value="";
-
-
-    // stop timer
-    if(timer){
-        clearInterval(timer);
-        timer=null;
-    }
-
-}
 
 
 
@@ -1438,6 +1820,8 @@ e.preventDefault();
 
 
 });
+
+
 
 
 
@@ -1465,6 +1849,9 @@ e.preventDefault();
 
 
 
+
+
+
 //================================
 // DISABLE CUT
 //================================
@@ -1485,6 +1872,9 @@ e.preventDefault();
 
 
 
+
+
+
 //================================
 // KEYBOARD SECURITY
 //================================
@@ -1496,22 +1886,36 @@ function(e){
 
 
 
+
+
 if(
+
 
 
 e.key==="F12" ||
 
 
-(e.ctrlKey && e.shiftKey && e.key==="I") ||
+
+(e.ctrlKey &&
+e.shiftKey &&
+e.key==="I") ||
 
 
-(e.ctrlKey && e.shiftKey && e.key==="J") ||
+
+(e.ctrlKey &&
+e.shiftKey &&
+e.key==="J") ||
 
 
-(e.ctrlKey && e.shiftKey && e.key==="C") ||
+
+(e.ctrlKey &&
+e.shiftKey &&
+e.key==="C") ||
 
 
-(e.ctrlKey && e.key==="U")
+
+(e.ctrlKey &&
+e.key==="U")
 
 
 
@@ -1527,7 +1931,11 @@ e.preventDefault();
 
 
 
+
 });
+
+
+
 
 
 
@@ -1539,17 +1947,22 @@ e.preventDefault();
 //================================
 
 
-history.pushState(null,null,location.href);
+history.pushState(
+null,
+null,
+location.href
+);
 
 
 
 window.onpopstate=function(){
 
 
-
 history.go(1);
-
 
 
 };
 
+
+
+}
