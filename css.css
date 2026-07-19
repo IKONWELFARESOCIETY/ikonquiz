@@ -183,14 +183,27 @@ body{
 
     border-radius:12px;
 
-    min-width:160px;
+    min-width:180px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#fff;
 
     transition:.3s;
 
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:55px;
+
 }
-
-
-
 
 .info-box:hover{
 
@@ -200,34 +213,16 @@ body{
 
 }
 
-
-
-
-.info-box small{
-
-    display:block;
-
-    color:#dcecff;
-
-    font-size:13px;
-
-    margin-bottom:5px;
-
-    font-weight:600;
-
-}
-
-
-
-
 #testDate,
 #testTime{
 
     color:#fff;
 
-    font-size:17px;
+    font-size:15px;
 
-    font-weight:700;
+    font-weight:600;
+
+    line-height:1.4;
 
 }
 
