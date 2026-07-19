@@ -192,16 +192,14 @@ function openTest() {
     document.getElementById("testPage")
         .classList.remove("hidden");
 
-    document.getElementById("showName")
-        .innerHTML = studentName;
-
-    document.getElementById("showReg")
-        .innerHTML = regNo;
+    document.getElementById("showName").innerHTML = studentName;
+    document.getElementById("showReg").innerHTML = regNo;
 
     loadQuestion();
 
-}
+    startTimer();
 
+}
 //=============================
 // MOTIVATION
 //=============================
