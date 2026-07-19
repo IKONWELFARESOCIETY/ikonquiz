@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -11,13 +12,17 @@
 
 </head>
 
+
 <body>
 
+
 <div class="container">
+
 
 <!-- ================= HEADER ================= -->
 
 <div class="header">
+
 
     <div class="header-left">
 
@@ -25,79 +30,101 @@
 
     </div>
 
+
     <div class="header-center">
 
-        <h1 id="testTitle">Loading...</h1>
+        <h1 id="testTitle">
+            Loading...
+        </h1>
 
     </div>
+
+
 
     <div class="header-right">
 
+
         <div class="info-box">
 
-            <div>
+            <small>
+                📅 Test Date
+            </small>
 
-                <small>📅 Test Date</small>
-
-                <div id="testDate">Loading...</div>
-
+            <div id="testDate">
+                Loading...
             </div>
 
         </div>
 
+
+
         <div class="info-box">
 
-            <div>
+            <small>
+                🕒 Test Time
+            </small>
 
-                <small>🕒 Test Time</small>
-
-                <div id="testTime">Loading...</div>
-
+            <div id="testTime">
+                Loading...
             </div>
 
         </div>
+
 
     </div>
 
+
 </div>
 
-<!-- ================= BODY ================= -->
+
+
+<!-- ================= CONTENT ================= -->
+
 
 <div class="content">
 
+
+
 <!-- ================= LOGIN PAGE ================= -->
+
 
 <div id="loginPage">
 
+
 <div class="login-box">
 
-<h2 style="text-align:center;margin-bottom:20px;">
+
+<h2>
 Candidate Login
 </h2>
 
-<div>
 
-<label>Registration Number</label>
 
-<input
+<label>
+Registration Number
+</label>
+
+
+<input 
 type="text"
 id="regNo"
 placeholder="Enter Registration Number">
 
-</div>
 
-<div>
 
-<label>Student Name</label>
+<label>
+Student Name
+</label>
 
-<input
+
+<input 
 type="text"
 id="studentName"
 placeholder="Enter Student Name">
 
-</div>
 
-<button
+
+<button 
 class="primary"
 onclick="startTest()">
 
@@ -105,17 +132,32 @@ Start Test
 
 </button>
 
-</div>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
 
 <!-- ================= WAITING PAGE ================= -->
 
+
 <div id="waitingPage" class="hidden">
+
 
 <div class="success-box">
 
-<h2>⏳ Waiting For Test Start</h2>
+
+<h2>
+⏳ Waiting For Test Start
+</h2>
+
+
 
 <p id="motivationText">
 
@@ -123,157 +165,282 @@ Believe in yourself. Your hard work will bring success.
 
 </p>
 
-<br>
+
 
 <p>
 
-Please wait...
+Please wait...<br>
+
 The test will start automatically.
 
 </p>
 
-</div>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+
 <!-- ================= TEST PAGE ================= -->
+
 
 <div id="testPage" class="hidden">
 
-    <!-- Top Bar -->
 
-    <div class="top-bar">
 
-        <div class="student-info">
+<div class="top-bar">
 
-            <strong id="showName"></strong><br>
 
-            <small id="showReg"></small>
 
-        </div>
+<div class="student-info">
 
-        <div class="timer">
 
-            ⏱ Time Left :
-            <span id="timer">30:00</span>
+<strong id="showName">
 
-        </div>
+</strong>
 
-    </div>
 
-    <!-- Progress -->
+<br>
 
-    <div class="progress">
 
-        <div
-            class="progress-bar"
-            id="progressBar">
-        </div>
+<small id="showReg">
 
-    </div>
+</small>
 
-    <!-- Question Card -->
 
-    <div class="question-card">
-
-        <div
-            class="question-number"
-            id="questionNumber">
-
-            Question 1 of 10
-
-        </div>
-
-        <div
-            class="question"
-            id="questionText">
-
-            Question Loading...
-
-        </div>
-
-        <div
-            class="options"
-            id="options">
-
-        </div>
-
-    </div>
-
-    <!-- Navigation -->
-
-    <div class="navigation">
-
-        <button
-            class="secondary"
-            onclick="previousQuestion()">
-
-            ⬅ Previous
-
-        </button>
-
-        <button
-            class="primary"
-            onclick="nextQuestion()">
-
-            Next ➜
-
-        </button>
-
-    </div>
-
-    <!-- Submit -->
-
-    <div class="submit-area">
-
-        <button
-            class="success"
-            onclick="submitTest()">
-
-            ✅ Submit Test
-
-        </button>
-
-    </div>
 
 </div>
+
+
+
+
+<div class="timer">
+
+
+⏱ Time Left :
+
+<span id="timer">
+
+30:00
+
+</span>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PROGRESS BAR -->
+
+
+<div class="progress">
+
+
+<div 
+class="progress-bar"
+id="progressBar">
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- QUESTION AREA -->
+
+
+<div class="question-card">
+
+
+
+<div 
+class="question-number"
+id="questionNumber">
+
+</div>
+
+
+
+
+<div 
+class="question"
+id="questionText">
+
+</div>
+
+
+
+
+<div 
+class="options"
+id="options">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- BUTTONS -->
+
+
+<div class="navigation">
+
+
+
+<button
+class="secondary"
+onclick="previousQuestion()">
+
+⬅ Previous
+
+</button>
+
+
+
+
+<button
+class="primary"
+onclick="nextQuestion()">
+
+Next ➜
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="submit-area">
+
+
+<button
+class="success"
+onclick="submitTest()">
+
+✅ Submit Test
+
+</button>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
 
 <!-- ================= SUCCESS PAGE ================= -->
 
+
 <div id="successPage" class="hidden">
 
-    <div class="success-box">
 
-        <h2>
 
-            🎉 Test Submitted Successfully
+<div class="success-box">
 
-        </h2>
 
-        <br>
 
-        <p>
+<h2>
 
-            Thank You
+🎉 Test Submitted Successfully
 
-            <br><br>
+</h2>
 
-            Your responses have been recorded successfully.
 
-        </p>
 
-    </div>
+
+<p>
+
+Thank You
+
+<br><br>
+
+Your responses have been recorded successfully.
+
+</p>
+
+
+
 
 </div>
 
-</div>
-<!-- End Content -->
 
 </div>
-<!-- End Container -->
+
+
+
+
+
+
+
+</div>
+<!-- CONTENT END -->
+
+
+
+</div>
+<!-- CONTAINER END -->
+
+
+
+
+
 
 <script src="config.js"></script>
+
 <script src="questions.js"></script>
+
 <script src="script.js"></script>
 
+
+
 </body>
+
 </html>
