@@ -78,6 +78,7 @@ function showTimer() {
         timerBox.innerHTML = minutes + ":" + seconds;
 
     }
+}
 //================================
 // LOAD TEST DATE
 //================================
@@ -981,94 +982,7 @@ function showSuccess() {
 // GO TO LOGIN PAGE
 //================================
 
-function goLogin() {
 
-    // Stop Timer
-    stopTimer();
-
-    // Stop Waiting Checker
-    if (statusChecker !== null) {
-
-        clearInterval(statusChecker);
-        statusChecker = null;
-
-    }
-
-    //--------------------------------
-    // Hide All Pages
-    //--------------------------------
-
-    document.getElementById("successPage")?.classList.add("hidden");
-    document.getElementById("testPage")?.classList.add("hidden");
-    document.getElementById("waitingPage")?.classList.add("hidden");
-
-    //--------------------------------
-    // Show Login
-    //--------------------------------
-
-    document.getElementById("loginPage")?.classList.remove("hidden");
-
-    //--------------------------------
-    // Reset Variables
-    //--------------------------------
-
-    studentName = "";
-    regNo = "";
-    paperName = "";
-
-    questions = [];
-    answers = [];
-
-    currentQuestion = 0;
-
-    examSubmitted = false;
-    submitReason = "Manual Submit";
-
-    focusWarnings = 0;
-    focusLock = false;
-
-    //--------------------------------
-    // Reset Input Boxes
-    //--------------------------------
-
-    const name = document.getElementById("studentName");
-    const reg = document.getElementById("regNo");
-
-    if (name) name.value = "";
-    if (reg) reg.value = "";
-
-    //--------------------------------
-    // Reset Timer
-    //--------------------------------
-
-    totalTime = 30 * 60;
-    showTimer();
-
-    //--------------------------------
-    // Reset Progress
-    //--------------------------------
-
-    const bar = document.getElementById("progressBar");
-    const text = document.getElementById("progressText");
-
-    if (bar) bar.style.width = "0%";
-    if (text) text.innerHTML = "0 / 0";
-
-    //--------------------------------
-    // Clear Question Area
-    //--------------------------------
-
-    const qNo = document.getElementById("questionNumber");
-    const qText = document.getElementById("questionText");
-    const options = document.getElementById("options");
-    const palette = document.getElementById("questionNumbers");
-
-    if (qNo) qNo.innerHTML = "";
-    if (qText) qText.innerHTML = "";
-    if (options) options.innerHTML = "";
-    if (palette) palette.innerHTML = "";
-
-}
     //================================
 // EXAM SECURITY - BASIC
 //================================
@@ -1396,24 +1310,6 @@ function goLogin() {
 // SHOW SUCCESS
 //================================
 
-function showSuccess() {
-
-    stopTimer();
-
-    document.getElementById("testPage").classList.add("hidden");
-
-    document.getElementById("waitingPage").classList.add("hidden");
-
-    document.getElementById("successPage").classList.remove("hidden");
-
-}
-
-
-
-//================================
-// LOGOUT
-//================================
-
 function logoutExam() {
 
     if(confirm("Do you want to exit the test?")){
@@ -1463,4 +1359,3 @@ window.addEventListener("load",function(){
 console.log(
 "IKON ONLINE TEST SYSTEM LOADED SUCCESSFULLY"
 );
-}
