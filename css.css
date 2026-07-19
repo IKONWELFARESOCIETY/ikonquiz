@@ -1305,3 +1305,158 @@ button:disabled{
     }
 
 }
+/*==================================================
+ QUESTION PALETTE (NIELIT STYLE)
+==================================================*/
+
+
+.quiz-layout{
+
+    display:grid;
+
+    grid-template-columns: 1fr 280px;
+
+    gap:20px;
+
+    align-items:start;
+
+}
+
+
+
+.question-panel{
+
+    background:#f8fafc;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.10);
+
+    position:sticky;
+
+    top:20px;
+
+}
+
+
+
+.question-panel h3{
+
+    text-align:center;
+
+    color:#005bea;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+#questionNumbers{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:10px;
+
+}
+
+
+
+
+.q-btn{
+
+    height:38px;
+
+    border-radius:8px;
+
+    border:none;
+
+    background:#e5e7eb;
+
+    color:#333;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    padding:0;
+
+}
+
+
+
+
+/* Current Question */
+
+.q-btn.active{
+
+    background:#005bea;
+
+    color:white;
+
+}
+
+
+
+/* Answered Question */
+
+.q-btn.done{
+
+    background:#16a34a;
+
+    color:white;
+
+}
+
+
+
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+
+    .quiz-layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .question-panel{
+
+        position:relative;
+
+        order:-1;
+
+    }
+
+
+    #questionNumbers{
+
+        grid-template-columns:repeat(8,1fr);
+
+    }
+
+
+}
+
+
+
+@media(max-width:500px){
+
+
+    #questionNumbers{
+
+        grid-template-columns:repeat(5,1fr);
+
+    }
+
+
+}
