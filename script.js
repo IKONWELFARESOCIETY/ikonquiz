@@ -94,6 +94,7 @@ let submitReason = "Manual Submit";
 let focusWarnings = 0;
 const MAX_FOCUS_WARNING = 3;
 let focusLock = false;
+let examStarted = false;
 //================================
 // WINDOW SWITCH SECURITY
 //================================
@@ -166,13 +167,12 @@ document.addEventListener("fullscreenchange", function(){
     let examArea = document.getElementById("examArea");
 
 
-    if(
-        examArea &&
-        !examArea.classList.contains("hidden") &&
-        !document.fullscreenElement &&
-        !examSubmitted &&
-        !focusLock
-    ){
+   if(
+    examStarted &&
+    !document.fullscreenElement &&
+    !examSubmitted &&
+    !focusLock
+){
 
 
         focusWarnings++;
@@ -589,6 +589,7 @@ function enableStartExam() {
 //================================
 
 function startExam() {
+    examStarted = true;
 
     // Hide Instructions
     document.getElementById("instructionPage")
