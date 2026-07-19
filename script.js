@@ -1961,18 +1961,5 @@ window.onpopstate=function(){
 
 history.go(1);
 };
-document.querySelector(".navigation .secondary").onclick = function () {
-    alert("Previous Click");
-    previousQuestion();
-};
 
-document.querySelector(".navigation .primary").onclick = function () {
-    alert("Next Click");
-    nextQuestion();
-};
-
-document.querySelector(".submit-area .success").onclick = function () {
-    alert("Submit Click");
-    submitTest();
-};
 
