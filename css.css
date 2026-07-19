@@ -1965,3 +1965,36 @@ button:disabled{
     font-weight:700;
 
 }
+/* ==============================
+   LOGO PERFECT CENTER FIX
+============================== */
+
+.header-left{
+
+    width:100% !important;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    position:relative !important;
+
+}
+
+
+
+.header-left .logo{
+
+    display:block !important;
+
+    margin:0 auto !important;
+
+    width:100px !important;
+
+    height:100px !important;
+
+    object-fit:contain !important;
+
+}
