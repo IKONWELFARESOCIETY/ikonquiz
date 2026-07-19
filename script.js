@@ -142,12 +142,13 @@ function createQuestionPalette(){
 }
 
 
-        btn.onclick = function(){
+       btn.addEventListener("click", function(){
 
-            loadQuestion(index);
+    currentQuestion = index;
 
-        };
+    loadQuestion();
 
+});
 
         box.appendChild(btn);
 
@@ -355,6 +356,11 @@ function showRandomLine() {
 //=============================
 
 function loadQuestion() {
+     if(index !== undefined){
+
+        currentQuestion = index;
+
+    }
 
     const q = questions[currentQuestion];
 
@@ -409,10 +415,8 @@ createQuestionPalette();
 function saveAnswer(index) {
 
     answers[currentQuestion] =
-        questions[currentQuestion].options[index];
+    questions[currentQuestion].options[index];
 
-
-    // Question Palette refresh
 
     createQuestionPalette();
 
