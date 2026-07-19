@@ -1816,3 +1816,92 @@ button:disabled{
 
 
 }
+/* ==============================
+   FINAL HEADER CENTER OVERRIDE
+============================== */
+
+.header{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    align-items:center !important;
+    text-align:center !important;
+    padding:30px !important;
+}
+
+
+/* LOGO CENTER */
+
+.header-left{
+    width:100% !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    margin-bottom:15px !important;
+}
+
+
+.logo{
+    width:95px !important;
+    height:95px !important;
+    border-radius:50% !important;
+    object-fit:contain !important;
+}
+
+
+
+/* TITLE CENTER */
+
+.header-center{
+
+    width:100% !important;
+    text-align:center !important;
+}
+
+
+#testTitle{
+
+    text-align:center !important;
+    font-size:32px !important;
+    margin:10px 0 20px !important;
+
+}
+
+
+
+/* DATE TIME */
+
+.header-right{
+
+    width:100% !important;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    gap:20px !important;
+
+}
+
+
+.header-right .info-box{
+
+    min-width:170px !important;
+
+    text-align:center !important;
+
+    padding:12px 20px !important;
+
+}
+
+
+
+/* hide small heading */
+
+.header-right small{
+
+    display:none !important;
+
+}
