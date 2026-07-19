@@ -1,111 +1,113 @@
 //================================
 // IKON ONLINE TEST SYSTEM
-// SCRIPT.JS PART 1
+// SCRIPT.JS - PART 1A-1
 //================================
 
-
-
+//--------------------------------
 // GOOGLE APP SCRIPT URL
+//--------------------------------
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
-
-
 
 
 //================================
 // GLOBAL VARIABLES
 //================================
 
-
+// Student Details
 let studentName = "";
-
 let regNo = "";
-
 let paperName = "";
+
+// Questions
 let questions = [];
 let currentQuestion = 0;
-
 let answers = [];
 
+// Timer
 let totalTime = 30 * 60;
-
 let timer = null;
+
+// Waiting Page Checker
 let statusChecker = null;
 
-//==============================
+
+//================================
 // EXAM SECURITY
-//==============================
+//================================
 
 let examSubmitted = false;
-let securityWarnings = 0;
-const MAX_WARNINGS = 2;
 let submitReason = "Manual Submit";
 
-
+// Focus Warning
+let focusWarnings = 0;
+const MAX_FOCUS_WARNING = 3;
+let focusLock = false;
 
 
 //================================
 // PAGE LOAD
 //================================
 
-
-window.onload = function(){
-
+window.onload = function () {
 
     loadTestDate();
-
     loadTestTime();
-
     loadDuration();
-
 
 };
 
 
+//================================
+// SHOW TIMER
+//================================
 
+function showTimer() {
 
+    let minutes = Math.floor(totalTime / 60);
+    let seconds = totalTime % 60;
 
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
 
+    const timerBox = document.getElementById("timer");
 
+    if (timerBox) {
 
+        timerBox.innerHTML = minutes + ":" + seconds;
+
+    }
 //================================
 // LOAD TEST DATE
 //================================
 
+function loadTestDate() {
 
-function loadTestDate(){
+    fetch(SCRIPT_URL + "?action=testDate")
+        .then(res => res.text())
+        .then(data => {
 
+            const el = document.getElementById("testDate");
 
-fetch(SCRIPT_URL+"?action=testDate")
+            if (el) {
+                el.innerHTML = "📅 Test Date : " + data;
+            }
 
+        })
+        .catch(err => {
 
-.then(res=>res.text())
+            console.log("Test Date Error :", err);
 
+            const el = document.getElementById("testDate");
 
-.then(data=>{
+            if (el) {
+                el.innerHTML = "📅 Test Date : Not Available";
+            }
 
-
-let el=document.getElementById("testDate");
-
-
-if(el){
-
-el.innerHTML="📅 Test Date : "+data;
+        });
 
 }
-
-
-});
-
-
-}
-
-
-
-
-
-
 
 
 
@@ -113,504 +115,346 @@ el.innerHTML="📅 Test Date : "+data;
 // LOAD TEST TIME
 //================================
 
+function loadTestTime() {
 
-function loadTestTime(){
+    fetch(SCRIPT_URL + "?action=testTime")
+        .then(res => res.text())
+        .then(data => {
 
+            const el = document.getElementById("testTime");
 
-fetch(SCRIPT_URL+"?action=testTime")
+            if (el) {
+                el.innerHTML = "🕒 Test Time : " + data;
+            }
 
+        })
+        .catch(err => {
 
-.then(res=>res.text())
+            console.log("Test Time Error :", err);
 
+            const el = document.getElementById("testTime");
 
-.then(data=>{
+            if (el) {
+                el.innerHTML = "🕒 Test Time : Not Available";
+            }
 
-
-let el=document.getElementById("testTime");
-
-
-if(el){
-
-
-el.innerHTML="🕒 Test Time : "+data;
-
-
-}
-
-
-});
-
+        });
 
 }
-
-
-
-
-
-
 
 
 
 //================================
-// LOAD DURATION
+// LOAD TEST DURATION
 //================================
 
+function loadDuration() {
 
-function loadDuration(){
+    fetch(SCRIPT_URL + "?action=duration")
+        .then(res => res.text())
+        .then(data => {
 
+            let minutes = parseInt(data);
 
-fetch(SCRIPT_URL+"?action=duration")
+            if (isNaN(minutes) || minutes <= 0) {
+                minutes = 30;
+            }
 
+            totalTime = minutes * 60;
 
-.then(res=>res.text())
+            showTimer();
 
+        })
+        .catch(err => {
 
-.then(data=>{
+            console.log("Duration Error :", err);
 
+            totalTime = 30 * 60;
 
-let min=parseInt(data);
+            showTimer();
 
-
-
-if(isNaN(min)){
-
-
-min=30;
-
-
-}
-
-
-
-totalTime=min*60;
-
-
-showTimer();
-
-
-
-});
-
+        });
 
 }
-
-
-
-
-
-
-
-
-
-function showTimer(){
-
-
-let minutes=Math.floor(totalTime/60);
-
-
-let seconds=totalTime%60;
-
-
-
-minutes =
-minutes<10 ?
-"0"+minutes :
-minutes;
-
-
-
-seconds =
-seconds<10 ?
-"0"+seconds :
-seconds;
-
-
-
-
-let timerBox=document.getElementById("timer");
-
-
-if(timerBox){
-
-
-timerBox.innerHTML =
-minutes+":"+seconds;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
 //================================
 // LOGIN SYSTEM
 //================================
 
+function startTest() {
 
-function startTest(){
+    // Student Details
+    studentName = document
+        .getElementById("studentName")
+        .value
+        .trim();
 
+    regNo = document
+        .getElementById("regNo")
+        .value
+        .trim();
 
+    // Validation
+    if (studentName === "" || regNo === "") {
 
-studentName =
-document.getElementById("studentName")
-.value.trim();
+        alert("Please enter Name and Registration Number.");
+        return;
 
+    }
 
+    // Disable Button
+    const btn = document.getElementById("loginBtn");
 
+    if (btn) {
 
-regNo =
-document.getElementById("regNo")
-.value.trim();
+        btn.disabled = true;
+        btn.innerHTML = "Please Wait...";
 
+    }
 
+    // Login Request
+    fetch(
+        SCRIPT_URL +
+        "?action=login" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&name=" + encodeURIComponent(studentName)
+    )
 
+    .then(res => res.json())
 
+    .then(data => {
 
+        // Enable Button
+        if (btn) {
 
-if(studentName==="" || regNo===""){
+            btn.disabled = false;
+            btn.innerHTML = "Start Test";
 
+        }
 
-alert(
-"Please enter Name and Registration Number."
-);
+        if (data.status === "VALID") {
 
+            studentName = data.name;
+            regNo = data.regNo;
+            paperName = data.paperName;
 
-return;
+            checkTestStatus();
 
+        }
+
+        else if (data.status === "ALREADY_SUBMITTED") {
+
+            alert("You have already submitted this test.");
+
+        }
+
+        else {
+
+            alert("Invalid Registration Number or Name.");
+
+        }
+
+    })
+
+    .catch(err => {
+
+        console.log(err);
+
+        if (btn) {
+
+            btn.disabled = false;
+            btn.innerHTML = "Start Test";
+
+        }
+
+        alert("Unable to connect with server.");
+
+    });
 
 }
-
-
-
-
-
-
-
-
-
-fetch(
-
-SCRIPT_URL+
-"?action=login"+
-"&regNo="+encodeURIComponent(regNo)+
-"&name="+encodeURIComponent(studentName)
-
-)
-
-
-
-
-
-
-.then(res=>res.text())
-
-
-
-.then(result=>{
-
-
-
-let data;
-
-
-
-try{
-
-
-data=JSON.parse(result);
-
-
-}
-
-catch(e){
-
-
-alert("Server Response Error");
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-if(data.status==="VALID"){
-
-
-
-studentName=data.name;
-
-
-regNo=data.regNo;
-
-
-paperName=data.paperName;
-
-
-
-
-
-checkTestStatus();
-
-
-
-
-}
-
-
-
-
-
-
-else if(data.status==="ALREADY_SUBMITTED"){
-
-
-
-alert(
-"You have already submitted this test."
-);
-
-
-
-}
-
-
-
-
-
-
-else{
-
-
-
-alert(
-"Invalid Registration Number or Name."
-);
-
-
-
-}
-
-
-
-
-
-
-})
-
-
-
-
-
-
-.catch(err=>{
-
-
-console.log(err);
-
-
-alert(
-"Unable to connect with server."
-);
-
-
-
-});
-}
-
 //================================
 // CHECK TEST STATUS
 //================================
 
+function checkTestStatus() {
 
-function checkTestStatus(){
+    fetch(SCRIPT_URL + "?action=status")
 
+    .then(res => res.text())
 
-fetch(
-SCRIPT_URL+"?action=status"
-)
+    .then(status => {
 
+        status = status.trim().toUpperCase();
 
+        if (status === "ON") {
 
-.then(res=>res.text())
+            openTest();
 
+        } else {
 
-.then(status=>{
+            const login = document.getElementById("loginPage");
+            const waiting = document.getElementById("waitingPage");
 
+            if (login) login.classList.add("hidden");
+            if (waiting) waiting.classList.remove("hidden");
 
-status=status.trim().toUpperCase();
+            showRandomLine();
 
+            autoCheckStatus();
 
+        }
 
+    })
 
-if(status==="ON"){
+    .catch(err => {
 
+        console.log(err);
+        alert("Unable to check test status.");
 
-openTest();
-
-
-}
-
-
-else{
-
-
-let login=document.getElementById("loginPage");
-
-let waiting=document.getElementById("waitingPage");
-
-
-
-if(login){
-
-login.classList.add("hidden");
+    });
 
 }
-
-
-
-if(waiting){
-
-waiting.classList.remove("hidden");
-
-}
-
-
-
-showRandomLine();
-
-//================================
-// INSTRUCTION PAGE
-//================================
-
-
-autoCheckStatus();
-
-
-}
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
 
 
 
 //================================
-// AUTO CHECK TEST START
+// AUTO CHECK TEST STATUS
 //================================
 
+function autoCheckStatus() {
 
-function autoCheckStatus(){
+    if (statusChecker !== null) return;
 
+    statusChecker = setInterval(function () {
 
+        fetch(SCRIPT_URL + "?action=status")
 
-if(statusChecker!==null){
+        .then(res => res.text())
 
-return;
+        .then(status => {
 
-}
+            status = status.trim().toUpperCase();
 
+            if (status === "ON") {
 
+                clearInterval(statusChecker);
+                statusChecker = null;
 
-statusChecker=setInterval(function(){
+                openTest();
 
+            }
 
+        })
 
-fetch(
-SCRIPT_URL+"?action=status"
-)
+        .catch(err => {
 
+            console.log(err);
 
+        });
 
-.then(res=>res.text())
-
-
-.then(status=>{
-
-
-status=status.trim().toUpperCase();
-
-
-
-
-if(status==="ON"){
-
-
-
-clearInterval(statusChecker);
-
-
-statusChecker=null;
-
-
-openTest();
-
-
+    }, 5000);
 
 }
 
 
 
-});
+//================================
+// MOTIVATION MESSAGE
+//================================
 
+function showRandomLine() {
 
+    const lines = [
 
+        "Believe in yourself.",
+        "Stay calm and focused.",
+        "Success begins with confidence.",
+        "Give your best today.",
+        "Every question is an opportunity.",
+        "Hard work always pays.",
+        "Think before you answer.",
+        "You are ready to succeed."
 
-},5000);
+    ];
 
+    const box = document.getElementById("motivationText");
 
+    if (box) {
+
+        box.innerHTML =
+            lines[Math.floor(Math.random() * lines.length)];
+
+    }
 
 }
-function enableStartExam(){
+//================================
+// OPEN TEST
+//================================
 
-    let check =
-    document.getElementById("acceptRules");
+function openTest() {
 
-    let btn =
-    document.getElementById("startExamBtn");
+    examSubmitted = false;
+    submitReason = "Manual Submit";
+    focusWarnings = 0;
+    focusLock = false;
+
+    // Pages
+    const login = document.getElementById("loginPage");
+    const waiting = document.getElementById("waitingPage");
+    const test = document.getElementById("testPage");
+
+    if (login) login.classList.add("hidden");
+    if (waiting) waiting.classList.add("hidden");
+    if (test) test.classList.remove("hidden");
+
+    // Student Details
+    const nameBox = document.getElementById("showName");
+    const regBox = document.getElementById("showReg");
+    const paperBox = document.getElementById("showPaper");
+
+    if (nameBox) nameBox.innerHTML = studentName;
+    if (regBox) regBox.innerHTML = regNo;
+    if (paperBox) paperBox.innerHTML = paperName;
+
+    // Show Instruction Page
+    document.getElementById("instructionPage").classList.remove("hidden");
+    document.getElementById("examArea").classList.add("hidden");
+
+    // Reset Checkbox
+    document.getElementById("acceptRules").checked = false;
+    document.getElementById("startExamBtn").disabled = true;
+
+}
+
+
+
+//================================
+// ENABLE START BUTTON
+//================================
+
+function enableStartExam() {
+
+    const check = document.getElementById("acceptRules");
+    const btn = document.getElementById("startExamBtn");
 
     btn.disabled = !check.checked;
 
 }
 
 
+
 //================================
 // START EXAM
 //================================
 
-function startExam(){
+function startExam() {
 
-    document
-    .getElementById("instructionPage")
-    .classList.add("hidden");
+    // Hide Instructions
+    document.getElementById("instructionPage")
+        .classList.add("hidden");
 
-    document
-    .getElementById("examArea")
-    .classList.remove("hidden");
+    // Show Exam Area
+    document.getElementById("examArea")
+        .classList.remove("hidden");
 
     // Load Questions
     loadPaperQuestions();
@@ -619,510 +463,172 @@ function startExam(){
     startTimer();
 
     // Full Screen
-    if(document.documentElement.requestFullscreen){
+    if (document.documentElement.requestFullscreen) {
 
         document.documentElement
-        .requestFullscreen()
-        .catch(()=>{});
+            .requestFullscreen()
+            .catch(() => {});
 
     }
 
 }
-
-
-
-
-
-
-
-
-//================================
-// OPEN TEST
-//================================
-
-
-function openTest(){
-
-examSubmitted = false;
-focusWarnings = 0;
-focusLock = false;
-    submitReason="Manual Submit";
-
-
-let login=document.getElementById("loginPage");
-
-let waiting=document.getElementById("waitingPage");
-
-let test=document.getElementById("testPage");
-
-
-
-
-
-if(login){
-
-login.classList.add("hidden");
-
-}
-
-
-
-
-if(waiting){
-
-waiting.classList.add("hidden");
-
-}
-
-
-
-
-
-if(test){
-
-test.classList.remove("hidden");
-
-}
-
-
-
-
-
-
-
-
-let nameBox =
-document.getElementById("showName");
-
-let regBox =
-document.getElementById("showReg");
-
-let paperBox =
-document.getElementById("showPaper");
-
-
-
-
-
-
-
-if(nameBox){
-
-nameBox.innerHTML=studentName;
-
-}
-
-
-
-
-
-if(regBox){
-
-regBox.innerHTML=regNo;
-
-}
-
-
-
-
-
-if(paperBox){
-
-paperBox.innerHTML=paperName;
-
-}
-
-// Show Instructions
-
-document
-.getElementById("instructionPage")
-.classList.remove("hidden");
-
-document
-.getElementById("examArea")
-.classList.add("hidden");
-
-document
-.getElementById("acceptRules")
-.checked = false;
-
-document
-.getElementById("startExamBtn")
-.disabled = true;
-}
-
-
-
-
-
-
-
-
-
-
-//================================
-// MOTIVATION MESSAGE
-//================================
-
-
-function showRandomLine(){
-
-
-
-const lines=[
-
-
-"Believe in yourself.",
-
-"Stay calm and focused.",
-
-"Success begins with confidence.",
-
-"Give your best today.",
-
-"Every question is an opportunity.",
-
-"Hard work always pays.",
-
-"Think before you answer.",
-
-"You are ready to succeed."
-
-
-];
-
-
-
-
-
-let box =
-document.getElementById("motivationText");
-
-
-
-if(box){
-
-
-box.innerHTML =
-lines[
-Math.floor(
-Math.random()*lines.length
-)
-];
-
-
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-//================================
-// LOAD QUESTION
-//================================
-
 //================================
 // LOAD PAPER QUESTIONS
 //================================
 
-function loadPaperQuestions(){
+function loadPaperQuestions() {
 
+    fetch(
+        SCRIPT_URL +
+        "?action=questions" +
+        "&paper=" + encodeURIComponent(paperName)
+    )
 
-fetch(
-SCRIPT_URL+
-"?action=questions"+
-"&paper="+encodeURIComponent(paperName)
-)
+    .then(res => {
 
+        if (!res.ok) {
+            throw new Error("Server Error");
+        }
 
-.then(res=>res.json())
+        return res.json();
 
+    })
 
-.then(data=>{
+    .then(data => {
 
+        // Check Questions
+        if (!Array.isArray(data) || data.length === 0) {
 
-questions = data;
+            alert("No questions found for " + paperName);
+            return;
 
+        }
 
+        // Store Questions
+        questions = data;
 
-if(!questions || questions.length===0){
+        // Reset Answers
+        answers = new Array(questions.length).fill("");
 
+        // Start From Question 1
+        currentQuestion = 0;
 
-alert(
-"No questions found for "+paperName
-);
+        // Load First Question
+        loadQuestion();
 
+    })
 
-return;
+    .catch(err => {
 
+        console.error("Question Loading Error :", err);
 
-}
+        alert(
+            "Unable to load questions.\nPlease contact administrator."
+        );
 
-
-
-
-answers =
-new Array(questions.length)
-.fill("");
-
-
-
-currentQuestion=0;
-
-
-loadQuestion();
-
-
-})
-
-
-.catch(err=>{
-
-
-console.log(err);
-
-
-alert(
-"Question loading error"
-);
-
-
-});
-
+    });
 
 }
-function loadQuestion(){
+//================================
+// LOAD QUESTION
+//================================
 
+function loadQuestion() {
 
+    // Safety Check
+    if (!questions || questions.length === 0) {
+        return;
+    }
 
-if(typeof questions==="undefined"){
+    // Current Question
+    const q = questions[currentQuestion];
 
+    if (!q) {
+        return;
+    }
 
-console.log(
-"Questions not loaded"
-);
+    //--------------------------------
+    // Question Number
+    //--------------------------------
 
+    const qNo = document.getElementById("questionNumber");
 
-return;
+    if (qNo) {
 
+        qNo.innerHTML =
+            "Question " +
+            (currentQuestion + 1) +
+            " of " +
+            questions.length;
+
+    }
+
+    //--------------------------------
+    // Question Text
+    //--------------------------------
+
+    const qText = document.getElementById("questionText");
+
+    if (qText) {
+
+        qText.innerHTML = q.question;
+
+    }
+
+    //--------------------------------
+    // Options
+    //--------------------------------
+
+    const optionBox = document.getElementById("options");
+
+    let html = "";
+
+    q.options.forEach(function (option, index) {
+
+        const checked =
+            answers[currentQuestion] === option
+                ? "checked"
+                : "";
+
+        html += `
+            <label class="option">
+                <input
+                    type="radio"
+                    name="answer"
+                    ${checked}
+                    onclick="saveAnswer(${index})">
+
+                <span>${option}</span>
+            </label>
+        `;
+
+    });
+
+    optionBox.innerHTML = html;
+
+    //--------------------------------
+    // Update UI
+    //--------------------------------
+
+    updateProgress();
+
+    createQuestionPalette();
 
 }
-
-
-
-
-
-
-const q =
-questions[currentQuestion];
-
-
-
-
-
-if(!q){
-
-return;
-
-}
-
-
-
-
-
-
-
-
-let qNo =
-document.getElementById("questionNumber");
-
-
-
-if(qNo){
-
-
-
-qNo.innerHTML =
-"Question "+
-(currentQuestion+1)+
-" of "+
-questions.length;
-
-
-
-}
-
-
-
-
-
-
-
-let qText =
-document.getElementById("questionText");
-
-
-
-
-if(qText){
-
-
-qText.innerHTML =
-q.question;
-
-
-}
-
-
-
-
-
-
-
-
-
-let html="";
-
-
-
-
-
-
-
-q.options.forEach(function(option,index){
-
-
-
-let checked="";
-
-
-
-if(
-answers[currentQuestion]===option
-){
-
-
-checked="checked";
-
-
-}
-
-
-
-
-
-
-html+=`
-
-
-<label class="option">
-
-
-<input
-
-type="radio"
-
-name="answer"
-
-${checked}
-
-onclick="saveAnswer(${index})">
-
-
-<span>${option}</span>
-
-
-</label>
-
-
-
-`;
-
-
-
-});
-
-
-
-
-
-
-
-
-let optionBox =
-document.getElementById("options");
-
-
-
-if(optionBox){
-
-
-optionBox.innerHTML=html;
-
-
-}
-
-
-
-
-
-updateProgress();
-
-
-createQuestionPalette();
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
 //================================
 // SAVE ANSWER
 //================================
 
+function saveAnswer(index) {
 
-function saveAnswer(index){
+    // Save Selected Option
+    answers[currentQuestion] =
+        questions[currentQuestion].options[index];
 
-
-
-answers[currentQuestion] =
-questions[currentQuestion]
-.options[index];
-
-
-
-createQuestionPalette();
-
-
+    // Refresh Palette
+    createQuestionPalette();
 
 }
-
-
-
-
-
-
 
 
 
@@ -1130,1150 +636,76 @@ createQuestionPalette();
 // QUESTION PALETTE
 //================================
 
+function createQuestionPalette() {
 
-function createQuestionPalette(){
+    const box =
+        document.getElementById("questionNumbers");
 
+    if (!box) return;
 
+    // Clear Old Buttons
+    box.innerHTML = "";
 
-let box =
-document.getElementById(
-"questionNumbers"
-);
+    // Create Buttons
+    questions.forEach(function (q, index) {
 
+        const btn = document.createElement("button");
 
+        btn.innerHTML = index + 1;
 
+        btn.className = "q-btn";
 
-if(!box){
+        //--------------------------------
+        // Current Question
+        //--------------------------------
 
-return;
+        if (index === currentQuestion) {
 
-}
+            btn.classList.add("active");
 
+        }
 
+        //--------------------------------
+        // Answered Question
+        //--------------------------------
 
+        if (
+            answers[index] !== "" &&
+            answers[index] !== undefined
+        ) {
 
+            btn.classList.add("done");
 
-box.innerHTML="";
+        }
 
+        //--------------------------------
+        // Jump to Question
+        //--------------------------------
 
+        btn.onclick = function () {
 
+            currentQuestion = index;
 
+            loadQuestion();
 
+        };
 
+        box.appendChild(btn);
 
-questions.forEach(function(q,index){
-
-
-
-let btn =
-document.createElement("button");
-
-
-
-btn.innerHTML=index+1;
-
-
-
-btn.className="q-btn";
-
-
-
-
-
-if(index===currentQuestion){
-
-
-btn.classList.add("active");
-
-
-}
-
-
-
-
-
-
-
-if(
-answers[index]!=="" &&
-answers[index]!==undefined
-){
-
-
-btn.classList.add("done");
-
-
-}
-
-
-
-
-
-
-btn.onclick=function(){
-
-
-currentQuestion=index;
-
-
-loadQuestion();
-
-
-};
-
-
-
-
-
-box.appendChild(btn);
-
-
-
-});
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// NEXT QUESTION
-//================================
-
-
-function nextQuestion(){
-
-
-
-if(
-currentQuestion <
-questions.length-1
-){
-
-
-currentQuestion++;
-
-
-loadQuestion();
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-//================================
-// PREVIOUS QUESTION
-//================================
-
-
-function previousQuestion(){
-
-
-
-if(currentQuestion>0){
-
-
-
-currentQuestion--;
-
-
-loadQuestion();
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// PROGRESS BAR
-//================================
-
-
-function updateProgress(){
-
-
-
-let bar =
-document.getElementById(
-"progressBar"
-);
-
-
-
-
-if(!bar){
-
-return;
-
-}
-
-
-
-
-let percent =
-((currentQuestion+1)/
-questions.length)*100;
-
-
-
-
-bar.style.width =
-percent+"%";
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// START TIMER
-//================================
-
-
-function startTimer(){
-
-
-
-if(timer!==null){
-
-
-clearInterval(timer);
-
-
-}
-
-
-
-
-
-
-
-timer=setInterval(function(){
-
-
-
-totalTime--;
-
-
-
-
-
-let minutes =
-Math.floor(totalTime/60);
-
-
-
-let seconds =
-totalTime%60;
-
-
-
-
-
-minutes =
-minutes<10 ?
-"0"+minutes :
-minutes;
-
-
-
-seconds =
-seconds<10 ?
-"0"+seconds :
-seconds;
-
-
-
-
-
-
-let timerBox =
-document.getElementById(
-"timer"
-);
-
-
-
-
-
-if(timerBox){
-
-
-timerBox.innerHTML =
-minutes+":"+seconds;
-
-
-}
-
-
-
-
-
-
-if(totalTime<=0){
-
-
-
-clearInterval(timer);
-
-
-
-submitTest(true);
-
-
-
-}
-
-
-
-
-},1000);
-
-
-
-
+    });
 
 }
     //================================
-// SUBMIT TEST
+// NEXT QUESTION
 //================================
 
+function nextQuestion() {
 
-function submitTest(autoSubmit=false){
+    if (currentQuestion < questions.length - 1) {
 
+        currentQuestion++;
 
-
-if(!autoSubmit){
-
-
-
-let confirmSubmit =
-confirm(
-"Are you sure you want to submit the test?"
-);
-
-
-
-if(!confirmSubmit){
-
-
-return;
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-if(timer!==null){
-
-
-clearInterval(timer);
-
-
-}
-
-
-
-
-
-
-
-
-
-const data={
-
-name:studentName,
-
-regNo:regNo,
-
-paperName:paperName,
-
-submittedAt:new Date().toLocaleString(),
-
-submitReason:submitReason,
-
-answers:answers
-
-};
-
-
-
-
-
-
-
-
-
-fetch(SCRIPT_URL,{
-
-
-method:"POST",
-
-
-body:JSON.stringify(data)
-
-
-
-})
-
-
-
-
-
-
-
-.then(res=>res.text())
-
-
-
-.then(result=>{
-
-
-
-result=result.trim();
-
-
-
-
-
-if(result==="SUCCESS"){
-
-
-
-showSuccess();
-
-
-
-}
-
-
-else{
-
-
-alert(result);
-
-
-
-}
-
-
-
-})
-
-
-
-
-
-
-
-.catch(err=>{
-
-
-
-console.log(err);
-
-
-
-alert(
-"Unable to submit responses."
-);
-
-
-
-});
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-//================================
-// SUCCESS PAGE
-//================================
-
-
-//================================
-// IKON ONLINE TEST SYSTEM
-// SCRIPT.JS PART 1
-//================================
-
-
-
-// GOOGLE APP SCRIPT URL
-
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
-
-
-
-
-//================================
-// GLOBAL VARIABLES
-//================================
-
-
-let studentName = "";
-
-let regNo = "";
-
-let paperName = "";
-let questions = [];
-let currentQuestion = 0;
-
-let answers = [];
-
-let totalTime = 30 * 60;
-
-let timer = null;
-let statusChecker = null;
-
-//==============================
-// EXAM SECURITY
-//==============================
-
-let examSubmitted = false;
-let securityWarnings = 0;
-const MAX_WARNINGS = 2;
-let submitReason = "Manual Submit";
-
-
-
-
-//================================
-// PAGE LOAD
-//================================
-
-
-window.onload = function(){
-
-
-    loadTestDate();
-
-    loadTestTime();
-
-    loadDuration();
-
-
-};
-
-
-
-
-
-
-
-
-//================================
-// LOAD TEST DATE
-//================================
-
-
-function loadTestDate(){
-
-
-fetch(SCRIPT_URL+"?action=testDate")
-
-
-.then(res=>res.text())
-
-
-.then(data=>{
-
-
-let el=document.getElementById("testDate");
-
-
-if(el){
-
-el.innerHTML="📅 Test Date : "+data;
-
-}
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// LOAD TEST TIME
-//================================
-
-
-function loadTestTime(){
-
-
-fetch(SCRIPT_URL+"?action=testTime")
-
-
-.then(res=>res.text())
-
-
-.then(data=>{
-
-
-let el=document.getElementById("testTime");
-
-
-if(el){
-
-
-el.innerHTML="🕒 Test Time : "+data;
-
-
-}
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// LOAD DURATION
-//================================
-
-
-function loadDuration(){
-
-
-fetch(SCRIPT_URL+"?action=duration")
-
-
-.then(res=>res.text())
-
-
-.then(data=>{
-
-
-let min=parseInt(data);
-
-
-
-if(isNaN(min)){
-
-
-min=30;
-
-
-}
-
-
-
-totalTime=min*60;
-
-
-showTimer();
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-
-function showTimer(){
-
-
-let minutes=Math.floor(totalTime/60);
-
-
-let seconds=totalTime%60;
-
-
-
-minutes =
-minutes<10 ?
-"0"+minutes :
-minutes;
-
-
-
-seconds =
-seconds<10 ?
-"0"+seconds :
-seconds;
-
-
-
-
-let timerBox=document.getElementById("timer");
-
-
-if(timerBox){
-
-
-timerBox.innerHTML =
-minutes+":"+seconds;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// LOGIN SYSTEM
-//================================
-
-
-function startTest(){
-
-
-
-studentName =
-document.getElementById("studentName")
-.value.trim();
-
-
-
-
-regNo =
-document.getElementById("regNo")
-.value.trim();
-
-
-
-
-
-
-if(studentName==="" || regNo===""){
-
-
-alert(
-"Please enter Name and Registration Number."
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-
-
-fetch(
-
-SCRIPT_URL+
-"?action=login"+
-"&regNo="+encodeURIComponent(regNo)+
-"&name="+encodeURIComponent(studentName)
-
-)
-
-
-
-
-
-
-.then(res=>res.text())
-
-
-
-.then(result=>{
-
-
-
-let data;
-
-
-
-try{
-
-
-data=JSON.parse(result);
-
-
-}
-
-catch(e){
-
-
-alert("Server Response Error");
-
-
-return;
-
-
-}
-
-
-
-
-
-
-
-if(data.status==="VALID"){
-
-
-
-studentName=data.name;
-
-
-regNo=data.regNo;
-
-
-paperName=data.paperName;
-
-
-
-
-
-checkTestStatus();
-
-
-
-
-}
-
-
-
-
-
-
-else if(data.status==="ALREADY_SUBMITTED"){
-
-
-
-alert(
-"You have already submitted this test."
-);
-
-
-
-}
-
-
-
-
-
-
-else{
-
-
-
-alert(
-"Invalid Registration Number or Name."
-);
-
-
-
-}
-
-
-
-
-
-
-})
-
-
-
-
-
-
-.catch(err=>{
-
-
-console.log(err);
-
-
-alert(
-"Unable to connect with server."
-);
-
-
-
-});
-}
-
-//================================
-// CHECK TEST STATUS
-//================================
-
-
-function checkTestStatus(){
-
-
-fetch(
-SCRIPT_URL+"?action=status"
-)
-
-
-
-.then(res=>res.text())
-
-
-.then(status=>{
-
-
-status=status.trim().toUpperCase();
-
-
-
-
-if(status==="ON"){
-
-
-openTest();
-
-
-}
-
-
-else{
-
-
-let login=document.getElementById("loginPage");
-
-let waiting=document.getElementById("waitingPage");
-
-
-
-if(login){
-
-login.classList.add("hidden");
-
-}
-
-
-
-if(waiting){
-
-waiting.classList.remove("hidden");
-
-}
-
-
-
-showRandomLine();
-
-//================================
-// INSTRUCTION PAGE
-//================================
-
-
-autoCheckStatus();
-
-
-}
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// AUTO CHECK TEST START
-//================================
-
-
-function autoCheckStatus(){
-
-
-
-if(statusChecker!==null){
-
-return;
-
-}
-
-
-
-statusChecker=setInterval(function(){
-
-
-
-fetch(
-SCRIPT_URL+"?action=status"
-)
-
-
-
-.then(res=>res.text())
-
-
-.then(status=>{
-
-
-status=status.trim().toUpperCase();
-
-
-
-
-if(status==="ON"){
-
-
-
-clearInterval(statusChecker);
-
-
-statusChecker=null;
-
-
-openTest();
-
-
-
-}
-
-
-
-});
-
-
-
-
-},5000);
-
-
-
-}
-function enableStartExam(){
-
-    let check =
-    document.getElementById("acceptRules");
-
-    let btn =
-    document.getElementById("startExamBtn");
-
-    btn.disabled = !check.checked;
-
-}
-
-
-//================================
-// START EXAM
-//================================
-
-function startExam(){
-
-    document
-    .getElementById("instructionPage")
-    .classList.add("hidden");
-
-    document
-    .getElementById("examArea")
-    .classList.remove("hidden");
-
-    // Load Questions
-    loadPaperQuestions();
-
-    // Start Timer
-    startTimer();
-
-    // Full Screen
-    if(document.documentElement.requestFullscreen){
-
-        document.documentElement
-        .requestFullscreen()
-        .catch(()=>{});
+        loadQuestion();
 
     }
 
@@ -2281,1095 +713,267 @@ function startExam(){
 
 
 
-
-
-
-
-
-//================================
-// OPEN TEST
-//================================
-
-
-function openTest(){
-
-examSubmitted = false;
-focusWarnings = 0;
-focusLock = false;
-    submitReason="Manual Submit";
-
-
-let login=document.getElementById("loginPage");
-
-let waiting=document.getElementById("waitingPage");
-
-let test=document.getElementById("testPage");
-
-
-
-
-
-if(login){
-
-login.classList.add("hidden");
-
-}
-
-
-
-
-if(waiting){
-
-waiting.classList.add("hidden");
-
-}
-
-
-
-
-
-if(test){
-
-test.classList.remove("hidden");
-
-}
-
-
-
-
-
-
-
-
-let nameBox =
-document.getElementById("showName");
-
-let regBox =
-document.getElementById("showReg");
-
-let paperBox =
-document.getElementById("showPaper");
-
-
-
-
-
-
-
-if(nameBox){
-
-nameBox.innerHTML=studentName;
-
-}
-
-
-
-
-
-if(regBox){
-
-regBox.innerHTML=regNo;
-
-}
-
-
-
-
-
-if(paperBox){
-
-paperBox.innerHTML=paperName;
-
-}
-
-// Show Instructions
-
-document
-.getElementById("instructionPage")
-.classList.remove("hidden");
-
-document
-.getElementById("examArea")
-.classList.add("hidden");
-
-document
-.getElementById("acceptRules")
-.checked = false;
-
-document
-.getElementById("startExamBtn")
-.disabled = true;
-}
-
-
-
-
-
-
-
-
-
-
-//================================
-// MOTIVATION MESSAGE
-//================================
-
-
-function showRandomLine(){
-
-
-
-const lines=[
-
-
-"Believe in yourself.",
-
-"Stay calm and focused.",
-
-"Success begins with confidence.",
-
-"Give your best today.",
-
-"Every question is an opportunity.",
-
-"Hard work always pays.",
-
-"Think before you answer.",
-
-"You are ready to succeed."
-
-
-];
-
-
-
-
-
-let box =
-document.getElementById("motivationText");
-
-
-
-if(box){
-
-
-box.innerHTML =
-lines[
-Math.floor(
-Math.random()*lines.length
-)
-];
-
-
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-//================================
-// LOAD QUESTION
-//================================
-
-//================================
-// LOAD PAPER QUESTIONS
-//================================
-
-function loadPaperQuestions(){
-
-
-fetch(
-SCRIPT_URL+
-"?action=questions"+
-"&paper="+encodeURIComponent(paperName)
-)
-
-
-.then(res=>res.json())
-
-
-.then(data=>{
-
-
-questions = data;
-
-
-
-if(!questions || questions.length===0){
-
-
-alert(
-"No questions found for "+paperName
-);
-
-
-return;
-
-
-}
-
-
-
-
-answers =
-new Array(questions.length)
-.fill("");
-
-
-
-currentQuestion=0;
-
-
-loadQuestion();
-
-
-})
-
-
-.catch(err=>{
-
-
-console.log(err);
-
-
-alert(
-"Question loading error"
-);
-
-
-});
-
-
-}
-function loadQuestion(){
-
-
-
-if(typeof questions==="undefined"){
-
-
-console.log(
-"Questions not loaded"
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-
-const q =
-questions[currentQuestion];
-
-
-
-
-
-if(!q){
-
-return;
-
-}
-
-
-
-
-
-
-
-
-let qNo =
-document.getElementById("questionNumber");
-
-
-
-if(qNo){
-
-
-
-qNo.innerHTML =
-"Question "+
-(currentQuestion+1)+
-" of "+
-questions.length;
-
-
-
-}
-
-
-
-
-
-
-
-let qText =
-document.getElementById("questionText");
-
-
-
-
-if(qText){
-
-
-qText.innerHTML =
-q.question;
-
-
-}
-
-
-
-
-
-
-
-
-
-let html="";
-
-
-
-
-
-
-
-q.options.forEach(function(option,index){
-
-
-
-let checked="";
-
-
-
-if(
-answers[currentQuestion]===option
-){
-
-
-checked="checked";
-
-
-}
-
-
-
-
-
-
-html+=`
-
-
-<label class="option">
-
-
-<input
-
-type="radio"
-
-name="answer"
-
-${checked}
-
-onclick="saveAnswer(${index})">
-
-
-<span>${option}</span>
-
-
-</label>
-
-
-
-`;
-
-
-
-});
-
-
-
-
-
-
-
-
-let optionBox =
-document.getElementById("options");
-
-
-
-if(optionBox){
-
-
-optionBox.innerHTML=html;
-
-
-}
-
-
-
-
-
-updateProgress();
-
-
-createQuestionPalette();
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-//================================
-// SAVE ANSWER
-//================================
-
-
-function saveAnswer(index){
-
-
-
-answers[currentQuestion] =
-questions[currentQuestion]
-.options[index];
-
-
-
-createQuestionPalette();
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// QUESTION PALETTE
-//================================
-
-
-function createQuestionPalette(){
-
-
-
-let box =
-document.getElementById(
-"questionNumbers"
-);
-
-
-
-
-if(!box){
-
-return;
-
-}
-
-
-
-
-
-box.innerHTML="";
-
-
-
-
-
-
-
-questions.forEach(function(q,index){
-
-
-
-let btn =
-document.createElement("button");
-
-
-
-btn.innerHTML=index+1;
-
-
-
-btn.className="q-btn";
-
-
-
-
-
-if(index===currentQuestion){
-
-
-btn.classList.add("active");
-
-
-}
-
-
-
-
-
-
-
-if(
-answers[index]!=="" &&
-answers[index]!==undefined
-){
-
-
-btn.classList.add("done");
-
-
-}
-
-
-
-
-
-
-btn.onclick=function(){
-
-
-currentQuestion=index;
-
-
-loadQuestion();
-
-
-};
-
-
-
-
-
-box.appendChild(btn);
-
-
-
-});
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// NEXT QUESTION
-//================================
-
-
-function nextQuestion(){
-
-
-
-if(
-currentQuestion <
-questions.length-1
-){
-
-
-currentQuestion++;
-
-
-loadQuestion();
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
 //================================
 // PREVIOUS QUESTION
 //================================
 
+function previousQuestion() {
 
-function previousQuestion(){
+    if (currentQuestion > 0) {
 
+        currentQuestion--;
 
+        loadQuestion();
 
-if(currentQuestion>0){
-
-
-
-currentQuestion--;
-
-
-loadQuestion();
-
-
+    }
 
 }
-
-
-
-}
-
-
-
-
-
-
 
 
 
 //================================
-// PROGRESS BAR
+// GO TO QUESTION
 //================================
 
+function gotoQuestion(index) {
 
-function updateProgress(){
+    if (index < 0 || index >= questions.length) {
+        return;
+    }
 
+    currentQuestion = index;
 
-
-let bar =
-document.getElementById(
-"progressBar"
-);
-
-
-
-
-if(!bar){
-
-return;
+    loadQuestion();
 
 }
 
 
 
+//================================
+// UPDATE PROGRESS BAR
+//================================
 
-let percent =
-((currentQuestion+1)/
-questions.length)*100;
+function updateProgress() {
 
+    const bar = document.getElementById("progressBar");
 
+    const text = document.getElementById("progressText");
 
+    if (!bar) return;
 
-bar.style.width =
-percent+"%";
+    // Progress %
+    const percent =
+        ((currentQuestion + 1) / questions.length) * 100;
 
+    bar.style.width = percent + "%";
 
+    // Optional Text
+    if (text) {
+
+        text.innerHTML =
+            (currentQuestion + 1) +
+            " / " +
+            questions.length;
+
+    }
 
 }
-
-
-
-
-
-
-
-
-
-//================================
+    //================================
 // START TIMER
 //================================
 
+function startTimer() {
 
-function startTimer(){
+    // Stop old timer if running
+    if (timer !== null) {
 
+        clearInterval(timer);
 
+    }
 
-if(timer!==null){
+    // Show current timer
+    showTimer();
 
+    timer = setInterval(function () {
 
-clearInterval(timer);
+        totalTime--;
 
+        // Update Timer UI
+        showTimer();
 
-}
+        // Time Over
+        if (totalTime <= 0) {
 
+            clearInterval(timer);
+            timer = null;
 
+            submitReason = "Time Over";
 
+            alert("Time is over.\nYour test will be submitted automatically.");
 
+            submitTest(true);
 
+        }
 
-
-timer=setInterval(function(){
-
-
-
-totalTime--;
-
-
-
-
-
-let minutes =
-Math.floor(totalTime/60);
-
-
-
-let seconds =
-totalTime%60;
-
-
-
-
-
-minutes =
-minutes<10 ?
-"0"+minutes :
-minutes;
-
-
-
-seconds =
-seconds<10 ?
-"0"+seconds :
-seconds;
-
-
-
-
-
-
-let timerBox =
-document.getElementById(
-"timer"
-);
-
-
-
-
-
-if(timerBox){
-
-
-timerBox.innerHTML =
-minutes+":"+seconds;
-
+    }, 1000);
 
 }
 
 
 
+//================================
+// STOP TIMER
+//================================
 
+function stopTimer() {
 
+    if (timer !== null) {
 
-if(totalTime<=0){
+        clearInterval(timer);
 
+        timer = null;
 
-
-clearInterval(timer);
-
-
-
-submitTest(true);
-
-
-
-}
-
-
-
-
-},1000);
-
-
-
-
+    }
 
 }
     //================================
 // SUBMIT TEST
 //================================
 
+function submitTest(autoSubmit = false) {
 
-function submitTest(autoSubmit=false){
+    // Prevent Duplicate Submit
+    if (examSubmitted) {
+        return;
+    }
 
+    examSubmitted = true;
 
+    // Manual Confirmation
+    if (!autoSubmit) {
 
-if(!autoSubmit){
+        const ok = confirm(
+            "Are you sure you want to submit the test?"
+        );
 
+        if (!ok) {
 
+            examSubmitted = false;
+            return;
 
-let confirmSubmit =
-confirm(
-"Are you sure you want to submit the test?"
-);
+        }
 
+    }
 
+    // Stop Timer
+    stopTimer();
 
-if(!confirmSubmit){
+    // Disable Submit Button
+    const submitBtn = document.getElementById("submitBtn");
 
+    if (submitBtn) {
 
-return;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "Submitting...";
 
+    }
+
+    //--------------------------------
+    // Prepare Data
+    //--------------------------------
+
+    const data = {
+
+        name: studentName,
+        regNo: regNo,
+        paperName: paperName,
+
+        submittedAt: new Date().toLocaleString(),
+
+        submitReason: submitReason,
+
+        answers: answers
+
+    };
+
+    //--------------------------------
+    // Send to Apps Script
+    //--------------------------------
+
+    fetch(SCRIPT_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(data)
+
+    })
+
+    .then(res => res.text())
+
+    .then(result => {
+
+        result = result.trim();
+
+        if (result === "SUCCESS") {
+
+            showSuccess();
+
+        } else {
+
+            examSubmitted = false;
+
+            if (submitBtn) {
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "Submit Test";
+
+            }
+
+            alert(result);
+
+        }
+
+    })
+
+    .catch(err => {
+
+        console.error(err);
+
+        examSubmitted = false;
+
+        if (submitBtn) {
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "Submit Test";
+
+        }
+
+        alert("Unable to submit responses.");
+
+    });
 
 }
-
-
-}
-
-
-
-
-
-
-
-if(timer!==null){
-
-
-clearInterval(timer);
-
-
-}
-
-
-
-
-
-
-
-
-
-const data={
-
-name:studentName,
-
-regNo:regNo,
-
-paperName:paperName,
-
-submittedAt:new Date().toLocaleString(),
-
-submitReason:submitReason,
-
-answers:answers
-
-};
-
-
-
-
-
-
-
-
-
-fetch(SCRIPT_URL,{
-
-
-method:"POST",
-
-
-body:JSON.stringify(data)
-
-
-
-})
-
-
-
-
-
-
-
-.then(res=>res.text())
-
-
-
-.then(result=>{
-
-
-
-result=result.trim();
-
-
-
-
-
-if(result==="SUCCESS"){
-
-
-
-showSuccess();
-
-
-
-}
-
-
-else{
-
-
-alert(result);
-
-
-
-}
-
-
-
-})
-
-
-
-
-
-
-
-.catch(err=>{
-
-
-
-console.log(err);
-
-
-
-alert(
-"Unable to submit responses."
-);
-
-
-
-});
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-//================================
+    //================================
 // SUCCESS PAGE
 //================================
 
+function showSuccess() {
 
-function showSuccess(){
+    // Stop Timer
+    stopTimer();
 
+    // Hide Pages
+    document.getElementById("testPage")?.classList.add("hidden");
+    document.getElementById("waitingPage")?.classList.add("hidden");
 
-
-let test =
-document.getElementById(
-"testPage"
-);
-
-
-
-let waiting =
-document.getElementById(
-"waitingPage"
-);
-
-
-
-let success =
-document.getElementById(
-"successPage"
-);
-
-
-
-
-
-
-
-if(test){
-
-
-test.classList.add("hidden");
-
+    // Show Success Page
+    document.getElementById("successPage")?.classList.remove("hidden");
 
 }
-
-
-
-
-
-
-if(waiting){
-
-
-waiting.classList.add("hidden");
-
-
-}
-
-
-
-
-
-
-if(success){
-
-
-success.classList.remove("hidden");
-
-
-}
-
-
-
-}
-
-
-
-
-
-
 
 
 
@@ -3377,386 +981,239 @@ success.classList.remove("hidden");
 // GO TO LOGIN PAGE
 //================================
 
+function goLogin() {
 
-function goLogin(){
+    // Stop Timer
+    stopTimer();
 
+    // Stop Waiting Checker
+    if (statusChecker !== null) {
 
-let success =
-document.getElementById(
-"successPage"
-);
+        clearInterval(statusChecker);
+        statusChecker = null;
 
+    }
 
+    //--------------------------------
+    // Hide All Pages
+    //--------------------------------
 
-let test =
-document.getElementById(
-"testPage"
-);
+    document.getElementById("successPage")?.classList.add("hidden");
+    document.getElementById("testPage")?.classList.add("hidden");
+    document.getElementById("waitingPage")?.classList.add("hidden");
 
+    //--------------------------------
+    // Show Login
+    //--------------------------------
 
+    document.getElementById("loginPage")?.classList.remove("hidden");
 
-let waiting =
-document.getElementById(
-"waitingPage"
-);
+    //--------------------------------
+    // Reset Variables
+    //--------------------------------
 
+    studentName = "";
+    regNo = "";
+    paperName = "";
 
+    questions = [];
+    answers = [];
 
-let login =
-document.getElementById(
-"loginPage"
-);
+    currentQuestion = 0;
 
+    examSubmitted = false;
+    submitReason = "Manual Submit";
 
+    focusWarnings = 0;
+    focusLock = false;
 
+    //--------------------------------
+    // Reset Input Boxes
+    //--------------------------------
 
+    const name = document.getElementById("studentName");
+    const reg = document.getElementById("regNo");
 
+    if (name) name.value = "";
+    if (reg) reg.value = "";
 
+    //--------------------------------
+    // Reset Timer
+    //--------------------------------
 
+    totalTime = 30 * 60;
+    showTimer();
 
+    //--------------------------------
+    // Reset Progress
+    //--------------------------------
 
-if(success){
+    const bar = document.getElementById("progressBar");
+    const text = document.getElementById("progressText");
 
+    if (bar) bar.style.width = "0%";
+    if (text) text.innerHTML = "0 / 0";
 
-success.classList.add("hidden");
+    //--------------------------------
+    // Clear Question Area
+    //--------------------------------
 
+    const qNo = document.getElementById("questionNumber");
+    const qText = document.getElementById("questionText");
+    const options = document.getElementById("options");
+    const palette = document.getElementById("questionNumbers");
+
+    if (qNo) qNo.innerHTML = "";
+    if (qText) qText.innerHTML = "";
+    if (options) options.innerHTML = "";
+    if (palette) palette.innerHTML = "";
 
 }
-
-
-
-
-
-
-if(test){
-
-
-test.classList.add("hidden");
-
-
-}
-
-
-
-
-
-
-if(waiting){
-
-
-waiting.classList.add("hidden");
-
-
-}
-
-
-
-
-
-
-if(login){
-
-
-login.classList.remove("hidden");
-
-
-}
-
-
-
-
-
-
-
-
-
-// RESET DATA
-
-
-studentName="";
-
-
-regNo="";
-
-
-paperName="";
-
-
-currentQuestion=0;
-
-
-answers=[];
-
-examSubmitted=false;
-securityWarnings=0;
-submitReason="Manual Submit";
-
-
-
-
-
-
-
-
-let name =
-document.getElementById(
-"studentName"
-);
-
-
-
-let reg =
-document.getElementById(
-"regNo"
-);
-
-
-
-
-
-
-
-if(name){
-
-
-name.value="";
-
-
-}
-
-
-
-
-
-
-if(reg){
-
-
-reg.value="";
-
-
-}
-
-
-
-
-
-
-
-if(timer!==null){
-
-
-clearInterval(timer);
-
-
-timer=null;
-
-
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-//================================
-// DISABLE RIGHT CLICK
+    //================================
+// EXAM SECURITY - BASIC
 //================================
 
+// Disable Right Click
+document.addEventListener("contextmenu", function (e) {
 
-document.addEventListener(
-"contextmenu",
-function(e){
-
-
-e.preventDefault();
-
+    e.preventDefault();
 
 });
 
+// Disable Copy
+document.addEventListener("copy", function (e) {
 
-
-
-
-
-
-
-
-//================================
-// DISABLE COPY
-//================================
-
-
-document.addEventListener(
-"copy",
-function(e){
-
-
-e.preventDefault();
-
+    e.preventDefault();
 
 });
 
+// Disable Cut
+document.addEventListener("cut", function (e) {
 
-
-
-
-
-
-
-
-//================================
-// DISABLE CUT
-//================================
-
-
-document.addEventListener(
-"cut",
-function(e){
-
-
-e.preventDefault();
-
+    e.preventDefault();
 
 });
 
+// Disable Paste
+document.addEventListener("paste", function (e) {
 
+    e.preventDefault();
 
+});
 
+// Disable Drag
+document.addEventListener("dragstart", function (e) {
 
+    e.preventDefault();
 
+});
 
+// Disable Select
+document.addEventListener("selectstart", function (e) {
+
+    e.preventDefault();
+
+});
 
 
 //================================
 // KEYBOARD SECURITY
 //================================
 
+document.addEventListener("keydown", function (e) {
 
-document.addEventListener(
-"keydown",
-function(e){
+    // F12
+    if (e.key === "F12") {
 
+        e.preventDefault();
+        return;
 
+    }
 
+    // Ctrl + U
+    if (e.ctrlKey && e.key.toLowerCase() === "u") {
 
+        e.preventDefault();
+        return;
 
-if(
+    }
 
+    // Ctrl + Shift + I
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
 
+        e.preventDefault();
+        return;
 
-e.key==="F12" ||
+    }
 
+    // Ctrl + Shift + J
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
 
+        e.preventDefault();
+        return;
 
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="I") ||
+    }
 
+    // Ctrl + Shift + C
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
 
+        e.preventDefault();
+        return;
 
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="J") ||
+    }
 
+    // Ctrl + S
+    if (e.ctrlKey && e.key.toLowerCase() === "s") {
 
+        e.preventDefault();
+        return;
 
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="C") ||
+    }
 
+    // Ctrl + P
+    if (e.ctrlKey && e.key.toLowerCase() === "p") {
 
+        e.preventDefault();
+        return;
 
-(e.ctrlKey &&
-e.key==="U")
-
-
-
-){
-
-
-
-e.preventDefault();
-
-
-
-}
-
-
-
+    }
 
 });
-
-
-
-
-
-
-
-
-
-//================================
-// PREVENT BACK BUTTON
-//================================
-
-
-history.pushState(
-null,
-null,
-location.href
-);
-
-
-
-window.onpopstate=function(){
-
-
-history.go(1);
-};
-//================================
-//================================
-//================================
+    //================================
 // EXAM SECURITY SYSTEM
 //================================
 
-let focusWarnings = 0;
-const MAX_FOCUS_WARNING = 3;
+// Check if Exam is Running
+function isExamRunning() {
 
-let focusLock = false;
-function isExamRunning(){
+    const examArea = document.getElementById("examArea");
 
-    let test = document.getElementById("testPage");
-
-    if(test && !test.classList.contains("hidden")){
-        return true;
-    }
-
-    return false;
+    return (
+        examArea &&
+        !examArea.classList.contains("hidden") &&
+        !examSubmitted
+    );
 
 }
 
+
+
+//================================
 // AUTO SUBMIT
+//================================
 
-function securitySubmit(reason){
+function securitySubmit(reason) {
 
-    if(examSubmitted) return;
+    if (examSubmitted) return;
 
     submitReason = reason;
+
     examSubmitted = true;
 
-
     alert(
-        "Test submitted automatically.\n\nReason:\n"+reason
+        "⚠ Test Submitted Automatically.\n\nReason:\n" +
+        reason
     );
-
 
     submitTest(true);
 
@@ -3764,479 +1221,246 @@ function securitySubmit(reason){
 
 
 
+//================================
 // WARNING SYSTEM
+//================================
 
-function giveFocusWarning(reason){
+function giveFocusWarning(reason) {
 
+    if (!isExamRunning()) return;
 
-    if(examSubmitted) return;
-
-
-    if(focusLock) return;
-
+    if (focusLock) return;
 
     focusLock = true;
 
-
     focusWarnings++;
 
-
-    if(focusWarnings >= MAX_FOCUS_WARNING){
-
+    if (focusWarnings >= MAX_FOCUS_WARNING) {
 
         securitySubmit(reason);
-
         return;
 
     }
 
-
-
-    let result = confirm(
-        "⚠ Warning "+focusWarnings+
-        " of "+MAX_FOCUS_WARNING+
-        "\n\nReason:\n"+
-        reason+
-        "\n\nClick OK to continue test."
+    alert(
+        "⚠ Warning " +
+        focusWarnings +
+        " of " +
+        MAX_FOCUS_WARNING +
+        "\n\n" +
+        reason +
+        "\n\nNext violation may submit your test automatically."
     );
 
+    setTimeout(function () {
 
+        focusLock = false;
 
-    setTimeout(()=>{
-
-        focusLock=false;
-
-    },1000);
-
-
+    }, 1000);
 
 }
 
 
-// WINDOW FOCUS LOST
 
+//================================
 // TAB CHANGE / MINIMIZE
+//================================
 
-document.addEventListener(
-"visibilitychange",
-function(){
+document.addEventListener("visibilitychange", function () {
 
-
-    if(document.hidden){
+    if (document.hidden) {
 
         giveFocusWarning(
-        "Tab changed or browser minimized"
+            "Tab changed or browser minimized."
         );
 
     }
-
 
 });
 
 
 
-
+//================================
 // FULLSCREEN EXIT
+//================================
 
-document.addEventListener(
-"fullscreenchange",
-function(){
+document.addEventListener("fullscreenchange", function () {
 
-
-    if(
-    !document.fullscreenElement &&
-    !examSubmitted
-    ){
-
+    if (
+        isExamRunning() &&
+        !document.fullscreenElement
+    ) {
 
         giveFocusWarning(
-        "Fullscreen exited"
+            "Fullscreen mode exited."
         );
 
-
     }
-
 
 });
 
 
 
+//================================
+// REFRESH / CLOSE WARNING
+//================================
 
-// REFRESH BLOCK
+window.addEventListener("beforeunload", function (e) {
 
-window.addEventListener(
-"beforeunload",
-function(e){
+    if (!isExamRunning()) return;
 
-
-    if(!examSubmitted){
-
-        e.preventDefault();
-
-        e.returnValue="";
-
-    }
-
+    e.preventDefault();
+    e.returnValue = "";
 
 });
 
 
 
-
-
-
-
-
-
 //================================
-// GO TO LOGIN PAGE
+// BACK BUTTON BLOCK
 //================================
 
+history.pushState(null, "", location.href);
 
-function goLogin(){
+window.addEventListener("popstate", function () {
 
-    document.getElementById("successPage").classList.add("hidden");
-    document.getElementById("testPage").classList.add("hidden");
-    document.getElementById("waitingPage").classList.add("hidden");
-    document.getElementById("loginPage").classList.remove("hidden");
+    history.pushState(null, "", location.href);
+
+    if (isExamRunning()) {
+
+        giveFocusWarning(
+            "Back button is not allowed."
+        );
+
+    }
+
+});
+    //================================
+// RESET EXAM
+//================================
+
+function resetExam() {
 
     studentName = "";
     regNo = "";
     paperName = "";
-    currentQuestion = 0;
+
     questions = [];
     answers = [];
 
-    submitReason = "Manual Submit";
+    currentQuestion = 0;
+
     examSubmitted = false;
+
+    submitReason = "Manual Submit";
+
     focusWarnings = 0;
+
     focusLock = false;
 
-    document.getElementById("studentName").value = "";
-    document.getElementById("regNo").value = "";
+    stopTimer();
 
     totalTime = 30 * 60;
+
     showTimer();
 
 }
 
 
 
-
-
-
-
-
-
 //================================
-// DISABLE RIGHT CLICK
+// RESTART LOGIN PAGE
 //================================
 
+function goLogin() {
 
-document.addEventListener(
-"contextmenu",
-function(e){
+    resetExam();
 
+    document.getElementById("loginPage").classList.remove("hidden");
 
-e.preventDefault();
+    document.getElementById("waitingPage").classList.add("hidden");
 
+    document.getElementById("testPage").classList.add("hidden");
 
-});
+    document.getElementById("successPage").classList.add("hidden");
 
+    document.getElementById("studentName").value = "";
 
-
-
-
-
-
-
-
-//================================
-// DISABLE COPY
-//================================
-
-
-document.addEventListener(
-"copy",
-function(e){
-
-
-e.preventDefault();
-
-
-});
-
-
-
-
-
-
-
-
-
-//================================
-// DISABLE CUT
-//================================
-
-
-document.addEventListener(
-"cut",
-function(e){
-
-
-e.preventDefault();
-
-
-});
-
-
-
-
-
-
-
-
-
-//================================
-// KEYBOARD SECURITY
-//================================
-
-
-document.addEventListener(
-"keydown",
-function(e){
-
-
-
-
-
-if(
-
-
-
-e.key==="F12" ||
-
-
-
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="I") ||
-
-
-
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="J") ||
-
-
-
-(e.ctrlKey &&
-e.shiftKey &&
-e.key==="C") ||
-
-
-
-(e.ctrlKey &&
-e.key==="U")
-
-
-
-){
-
-
-
-e.preventDefault();
-
-
+    document.getElementById("regNo").value = "";
 
 }
 
 
 
+//================================
+// SHOW SUCCESS
+//================================
+
+function showSuccess() {
+
+    stopTimer();
+
+    document.getElementById("testPage").classList.add("hidden");
+
+    document.getElementById("waitingPage").classList.add("hidden");
+
+    document.getElementById("successPage").classList.remove("hidden");
+
+}
+
+
+
+//================================
+// LOGOUT
+//================================
+
+function logoutExam() {
+
+    if(confirm("Do you want to exit the test?")){
+
+        goLogin();
+
+    }
+
+}
+
+
+
+//================================
+// CLEAR WAITING TIMER
+//================================
+
+function stopStatusChecker(){
+
+    if(statusChecker!=null){
+
+        clearInterval(statusChecker);
+
+        statusChecker=null;
+
+    }
+
+}
+
+
+
+//================================
+// WINDOW LOAD SAFETY
+//================================
+
+window.addEventListener("load",function(){
+
+    showTimer();
 
 });
 
 
 
-
-
-
-
-
-
 //================================
-// PREVENT BACK BUTTON
+// END OF SCRIPT
 //================================
 
-
-history.pushState(
-null,
-null,
-location.href
+console.log(
+"IKON ONLINE TEST SYSTEM LOADED SUCCESSFULLY"
 );
-
-
-
-window.onpopstate=function(){
-
-
-history.go(1);
-};
-//================================
-//================================
-//================================
-// EXAM SECURITY SYSTEM
-//================================
-
-let focusWarnings = 0;
-const MAX_FOCUS_WARNING = 3;
-
-let focusLock = false;
-function isExamRunning(){
-
-    let test = document.getElementById("testPage");
-
-    if(test && !test.classList.contains("hidden")){
-        return true;
-    }
-
-    return false;
-
 }
-
-// AUTO SUBMIT
-
-function securitySubmit(reason){
-
-    if(examSubmitted) return;
-
-    submitReason = reason;
-    examSubmitted = true;
-
-
-    alert(
-        "Test submitted automatically.\n\nReason:\n"+reason
-    );
-
-
-    submitTest(true);
-
-}
-
-
-
-// WARNING SYSTEM
-
-function giveFocusWarning(reason){
-
-
-    if(examSubmitted) return;
-
-
-    if(focusLock) return;
-
-
-    focusLock = true;
-
-
-    focusWarnings++;
-
-
-    if(focusWarnings >= MAX_FOCUS_WARNING){
-
-
-        securitySubmit(reason);
-
-        return;
-
-    }
-
-
-
-    let result = confirm(
-        "⚠ Warning "+focusWarnings+
-        " of "+MAX_FOCUS_WARNING+
-        "\n\nReason:\n"+
-        reason+
-        "\n\nClick OK to continue test."
-    );
-
-
-
-    setTimeout(()=>{
-
-        focusLock=false;
-
-    },1000);
-
-
-
-}
-
-
-// WINDOW FOCUS LOST
-
-// TAB CHANGE / MINIMIZE
-
-document.addEventListener(
-"visibilitychange",
-function(){
-
-
-    if(document.hidden){
-
-        giveFocusWarning(
-        "Tab changed or browser minimized"
-        );
-
-    }
-
-
-});
-
-
-
-
-// FULLSCREEN EXIT
-
-document.addEventListener(
-"fullscreenchange",
-function(){
-
-
-    if(
-    !document.fullscreenElement &&
-    !examSubmitted
-    ){
-
-
-        giveFocusWarning(
-        "Fullscreen exited"
-        );
-
-
-    }
-
-
-});
-
-
-
-
-// REFRESH BLOCK
-
-window.addEventListener(
-"beforeunload",
-function(e){
-
-
-    if(!examSubmitted){
-
-        e.preventDefault();
-
-        e.returnValue="";
-
-    }
-
-
-});
