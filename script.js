@@ -8,20 +8,85 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuR
 // TEST TITLE
 //=============================
 
-window.onload = function () {
+window.onload = function(){
 
-    if (document.getElementById("testTitle")) {
-        document.getElementById("testTitle").innerHTML =
-            testConfig.testTitle;
-    }
-
-    if (document.getElementById("testDate")) {
-        document.getElementById("testDate").innerHTML =
-            "Test Date : " + testConfig.testDate;
-    }
+    loadPaperName();
+    loadTestDate();
+    loadTestTime();
+    loadDuration();
 
 };
+//=============================
+// LOAD PAPER DETAILS
+//=============================
 
+function loadPaperName(){
+
+    fetch(SCRIPT_URL + "?action=paperName")
+    .then(res => res.text())
+    .then(data => {
+
+        document.getElementById("testTitle").innerHTML = data;
+
+    })
+    .catch(err => console.log(err));
+
+}
+
+function loadTestDate(){
+
+    fetch(SCRIPT_URL + "?action=testDate")
+    .then(res => res.text())
+    .then(data => {
+
+        document.getElementById("testDate").innerHTML =
+        "📅 Test Date : " + data;
+
+    })
+    .catch(err => console.log(err));
+
+}
+
+function loadTestTime(){
+
+    fetch(SCRIPT_URL + "?action=testTime")
+    .then(res => res.text())
+    .then(data => {
+
+        const el = document.getElementById("testTime");
+
+        if(el){
+
+            el.innerHTML = "🕒 Test Time : " + data;
+
+        }
+
+    })
+    .catch(err => console.log(err));
+
+}
+function loadDuration(){
+
+    fetch(SCRIPT_URL + "?action=duration")
+    .then(res => res.text())
+    .then(data => {
+
+        totalTime = parseInt(data) * 60;
+
+        if(isNaN(totalTime)){
+            totalTime = 30 * 60;
+        }
+
+        let minutes = Math.floor(totalTime/60);
+        let seconds = totalTime % 60;
+
+        document.getElementById("timer").innerHTML =
+        (minutes<10?"0":"")+minutes + ":" +
+        (seconds<10?"0":"")+seconds;
+
+    });
+
+}
 //=============================
 // VARIABLES
 //=============================
