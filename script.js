@@ -1235,59 +1235,167 @@ alert("Unable to submit responses.");
 //================================
 
 
-function showSuccess(){
+//================================
+// SUCCESS PAGE
+//================================
 
+
+function showSuccess(){
 
 
 let test=document.getElementById("testPage");
 
-
 let waiting=document.getElementById("waitingPage");
-
 
 let success=document.getElementById("successPage");
 
 
 
-
 if(test){
-
 
 test.classList.add("hidden");
 
-
 }
-
 
 
 if(waiting){
 
-
 waiting.classList.add("hidden");
+
+}
+
+
+if(success){
+
+success.classList.remove("hidden");
+
+}
 
 
 }
+
+
+
+//================================
+// GO TO LOGIN PAGE
+//================================
+
+
+function goLogin(){
+
+
+let success=document.getElementById("successPage");
+
+let waiting=document.getElementById("waitingPage");
+
+let test=document.getElementById("testPage");
+
+let login=document.getElementById("loginPage");
 
 
 
 if(success){
 
-
-success.classList.remove("hidden");
-
+success.classList.add("hidden");
 
 }
 
 
+if(waiting){
+
+waiting.classList.add("hidden");
+
+}
+
+
+if(test){
+
+test.classList.add("hidden");
+
+}
+
+
+if(login){
+
+login.classList.remove("hidden");
+
+}
+
+
+
+// reset values
+
+studentName="";
+
+regNo="";
+
+currentQuestion=0;
+
+answers=[];
+
+
+
+let name=document.getElementById("studentName");
+
+let reg=document.getElementById("regNo");
+
+
+if(name){
+
+name.value="";
+
+}
+
+
+if(reg){
+
+reg.value="";
+
+}
+
+
+
+// stop timer
+
+if(timer!==null){
+
+clearInterval(timer);
+
+timer=null;
+
+}
+
+
+
+}
+
+//================================
+// GO TO LOGIN PAGE
+//================================
+
 function goLogin(){
 
-    // hide all pages
-    document.getElementById("successPage").classList.add("hidden");
-    document.getElementById("waitingPage").classList.add("hidden");
-    document.getElementById("testPage").classList.add("hidden");
+    let success=document.getElementById("successPage");
+    let test=document.getElementById("testPage");
+    let waiting=document.getElementById("waitingPage");
+    let login=document.getElementById("loginPage");
 
-    // show login
-    document.getElementById("loginPage").classList.remove("hidden");
+
+    if(success){
+        success.classList.add("hidden");
+    }
+
+    if(test){
+        test.classList.add("hidden");
+    }
+
+    if(waiting){
+        waiting.classList.add("hidden");
+    }
+
+    if(login){
+        login.classList.remove("hidden");
+    }
 
 
     // reset data
@@ -1297,21 +1405,21 @@ function goLogin(){
     answers=[];
 
 
-    // clear input boxes
-    document.getElementById("studentName").value="";
-    document.getElementById("regNo").value="";
+    // clear inputs
+    let name=document.getElementById("studentName");
+    let reg=document.getElementById("regNo");
+
+    if(name) name.value="";
+    if(reg) reg.value="";
 
 
     // stop timer
-    if(timer!==null){
+    if(timer){
         clearInterval(timer);
         timer=null;
     }
 
 }
-}
-
-
 
 
 
