@@ -23,6 +23,7 @@ let studentName = "";
 let regNo = "";
 
 let paperName = "";
+let questions = [];
 let currentQuestion = 0;
 
 let answers = [];
