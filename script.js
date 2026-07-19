@@ -686,26 +686,6 @@ paperBox.innerHTML=paperName;
 
 }
 
-
-
-
-
-
-
-if(typeof questions !== "undefined"){
-
-
-answers =
-new Array(questions.length)
-.fill("");
-
-
-
-}
-
-
-
-
 loadPaperQuestions();
 
 
@@ -798,7 +778,76 @@ Math.random()*lines.length
 // LOAD QUESTION
 //================================
 
+//================================
+// LOAD PAPER QUESTIONS
+//================================
 
+function loadPaperQuestions(){
+
+
+fetch(
+SCRIPT_URL+
+"?action=questions"+
+"&paper="+encodeURIComponent(paperName)
+)
+
+
+.then(res=>res.json())
+
+
+.then(data=>{
+
+
+questions = data;
+
+
+
+if(!questions || questions.length===0){
+
+
+alert(
+"No questions found for "+paperName
+);
+
+
+return;
+
+
+}
+
+
+
+
+answers =
+new Array(questions.length)
+.fill("");
+
+
+
+currentQuestion=0;
+
+
+loadQuestion();
+
+
+})
+
+
+.catch(err=>{
+
+
+console.log(err);
+
+
+alert(
+"Question loading error"
+);
+
+
+});
+
+
+}
 function loadQuestion(){
 
 
@@ -2059,28 +2108,6 @@ function giveFocusWarning(reason){
 
 
 }
-
-
-
-// TAB CHANGE / MINIMIZE
-
-document.addEventListener(
-"visibilitychange",
-function(){
-
-
-    if(document.hidden){
-
-        giveFocusWarning(
-        "Tab changed or browser minimized"
-        );
-
-    }
-
-
-});
-
-
 
 
 // WINDOW FOCUS LOST
