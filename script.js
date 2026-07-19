@@ -78,6 +78,7 @@ window.addEventListener("DOMContentLoaded",function(){
 let totalTime = 30 * 60;
 let timer = null;
 
+
 // Waiting Page Checker
 let statusChecker = null;
 
@@ -93,16 +94,130 @@ let submitReason = "Manual Submit";
 let focusWarnings = 0;
 const MAX_FOCUS_WARNING = 3;
 let focusLock = false;
+//================================
+// WINDOW SWITCH SECURITY
+//================================
 
+document.addEventListener("visibilitychange", function(){
+
+    let examArea = document.getElementById("examArea");
+
+
+    // केवल exam शुरू होने के बाद चलेगा
+
+    if(
+        document.hidden &&
+        examArea &&
+        !examArea.classList.contains("hidden") &&
+        !examSubmitted &&
+        !focusLock
+    ){
+
+
+        focusWarnings++;
+
+
+        if(focusWarnings < MAX_FOCUS_WARNING){
+
+            alert(
+            "⚠️ Warning "+focusWarnings+"/"+MAX_FOCUS_WARNING+
+            "\n\nWindow switch ya tab change allowed nahi hai."
+            );
+
+        }
+
+
+
+        if(focusWarnings >= MAX_FOCUS_WARNING){
+
+
+            focusLock = true;
+
+            submitReason =
+            "Auto Submit - Window Switch";
+
+
+            alert(
+            "❌ 3 warnings complete.\nTest automatically submit hoga."
+            );
+
+
+            submitTest(true);
+
+
+        }
+
+
+    }
+
+
+});
+
+
+
+
+//================================
+// FULLSCREEN SECURITY
+//================================
+
+document.addEventListener("fullscreenchange", function(){
+
+
+    let examArea = document.getElementById("examArea");
+
+
+    if(
+        examArea &&
+        !examArea.classList.contains("hidden") &&
+        !document.fullscreenElement &&
+        !examSubmitted &&
+        !focusLock
+    ){
+
+
+        focusWarnings++;
+
+
+        if(focusWarnings < MAX_FOCUS_WARNING){
+
+            alert(
+            "⚠️ Warning "+focusWarnings+"/"+MAX_FOCUS_WARNING+
+            "\n\nPlease remain in fullscreen mode."
+            );
+
+        }
+
+
+
+        if(focusWarnings >= MAX_FOCUS_WARNING){
+
+
+            focusLock = true;
+
+            submitReason =
+            "Auto Submit - Fullscreen Exit";
+
+
+            alert(
+            "❌ 3 warnings complete.\nTest submitted."
+            );
+
+
+            submitTest(true);
+
+        }
+
+
+    }
+
+
+});
 
 //================================
 // PAGE LOAD
 //================================
 
 window.onload = function () {
-
-    loadTestDate();
-    loadTestTime();
     loadDuration();
 
 };
