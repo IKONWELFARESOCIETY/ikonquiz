@@ -1,13 +1,156 @@
 /*==========================
 IKON ONLINE TEST
 ===========================*/
+/*==========================
+PREMIUM HEADER
+==========================*/
+
 .header{
-    background:#0d6efd;
-    color:#fff;
-    padding:20px;
+
     display:flex;
     align-items:center;
-    gap:20px;
+    justify-content:space-between;
+
+    padding:18px 25px;
+
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+
+    color:#fff;
+
+    border-radius:15px 15px 0 0;
+
+}
+
+.header-left{
+
+    width:90px;
+
+}
+
+.logo{
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    padding:5px;
+
+}
+
+.header-center{
+
+    flex:1;
+    padding-left:15px;
+
+}
+
+#testTitle{
+
+    margin:0;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:#fff;
+
+}
+@media(max-width:768px){
+
+.header{
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+.header-center{
+
+    padding:15px 0;
+
+}
+
+.header-right{
+
+    width:100%;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+}
+
+.info-box{
+
+    width:170px;
+
+}
+
+#testTitle{
+
+    font-size:24px;
+
+}
+
+}
+
+.header-right{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.info-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:rgba(255,255,255,.18);
+
+    padding:10px 15px;
+
+    border-radius:12px;
+
+    min-width:165px;
+
+}
+
+.icon{
+
+    font-size:22px;
+
+}
+
+.info-box small{
+
+    display:block;
+
+    color:#dfefff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+#testDate,
+#testTime{
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#ffffff;
+
 }
 
 .logo{
