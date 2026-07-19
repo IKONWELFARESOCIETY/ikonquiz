@@ -1966,55 +1966,90 @@ button:disabled{
 
 }
 /* ==============================
-   IKON HEADER FINAL
+ FINAL HEADER FIX
 ============================== */
 
 .header{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
+
+    width:100%;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    text-align:center !important;
+
     background:linear-gradient(135deg,#005bea,#0b7cff);
+
     padding:30px;
+
 }
 
 
 /* LOGO */
 
 .header-left{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+
     width:100%;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
 }
 
 
-.logo{
-    width:100px;
-    height:100px;
-    background:white;
-    padding:8px;
-    border-radius:50%;
+.header-left img.logo{
+
+    width:100px !important;
+
+    height:100px !important;
+
+    display:block !important;
+
+    margin:auto !important;
+
     object-fit:contain;
-    display:block;
+
 }
+
 
 
 /* TITLE */
 
 .header-center{
+
     width:100%;
-    text-align:center;
+
+    display:block !important;
+
+    text-align:center !important;
+
 }
 
 
-#testTitle{
-    text-align:center;
-    color:white;
+.header-center h1#testTitle{
+
+    display:block !important;
+
+    width:100%;
+
+    text-align:center !important;
+
+    color:white !important;
+
     font-size:34px;
+
     font-weight:800;
+
     margin:15px 0;
+
 }
 
 
@@ -2022,32 +2057,50 @@ button:disabled{
 /* DATE TIME */
 
 .header-right{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+
+    width:100%;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
     gap:20px;
+
 }
 
 
 .header-right .info-box{
-    background:rgba(255,255,255,.20);
-    padding:12px 20px;
-    border-radius:15px;
+
     min-width:180px;
+
+    padding:12px 20px;
+
+    background:rgba(255,255,255,.20);
+
+    border-radius:15px;
+
     color:white;
+
     text-align:center;
+
 }
 
 
+
 .header-right small{
+
     display:none;
+
 }
 
 
 #testDate,
 #testTime{
-    color:white;
+
+    color:white !important;
+
     font-weight:700;
-}
 
 }
