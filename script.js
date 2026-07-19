@@ -461,18 +461,13 @@ function submitTest(autoSubmit=false){
     };
 
 
+fetch(SCRIPT_URL,{
 
-    fetch(SCRIPT_URL,{
+    method:"POST",
 
-        method:"POST",
+    body:JSON.stringify(data)
 
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify(data)
-
-    })
+})
 
     .then(res=>res.text())
 
