@@ -435,6 +435,11 @@ function showPaperSelection(){
 
     select.style.display = "block";
 
+    // Login button ko paper select ke baad Start Test bana do
+    const btn = document.getElementById("loginBtn");
+    btn.innerHTML = "Start Test";
+    btn.onclick = selectPaper;
+
 }
 function selectPaper(){
 
@@ -442,7 +447,10 @@ function selectPaper(){
     document.getElementById("paperSelect").value;
 
     if(paperName==""){
+
+        alert("Please Select Paper");
         return;
+
     }
 
     checkTestStatus();
