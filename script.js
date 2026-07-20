@@ -1525,7 +1525,7 @@ function loadStudentPhoto(regNo) {
     const img = document.getElementById("studentPhoto");
 
     // Root folder me image
-    img.src = regNo + ".jpg";
+    img.src = regNo + ".jpeg";
 
     img.onerror = function () {
         this.onerror = null;
