@@ -24,6 +24,17 @@ let paperList = [];
 let questions = [];
 let currentQuestion = 0;
 let answers = [];
+let examStarted = false;
+
+let examSubmitted = false;
+
+let submitReason = "Manual Submit";
+
+let focusWarnings = 0;
+
+const MAX_FOCUS_WARNING = 3;
+
+let focusLock = false;
 //================================
 // LOAD SETTINGS FROM GOOGLE SHEET
 //================================
@@ -581,38 +592,42 @@ function enableStartExam() {
 
 function startExam() {
 
+
+    // Exam ab start hua
     examStarted = true;
 
-    // Enable security only after exam starts
-    securityActive = true;
+
+    examSubmitted = false;
+
+    focusWarnings = 0;
+
+    focusLock = false;
 
 
-    // Hide Instructions
     document.getElementById("instructionPage")
-        .classList.add("hidden");
+    .classList.add("hidden");
 
 
-    // Show Exam Area
     document.getElementById("examArea")
-        .classList.remove("hidden");
+    .classList.remove("hidden");
 
 
-    // Load Questions
     loadPaperQuestions();
 
 
-    // Start Timer
     startTimer();
 
 
-    // Full Screen
-    if (document.documentElement.requestFullscreen) {
 
-        document.documentElement
-            .requestFullscreen()
-            .catch(() => {});
+    // Fullscreen only after exam start
+
+    if(document.documentElement.requestFullscreen){
+
+        document.documentElement.requestFullscreen()
+        .catch(()=>{});
 
     }
+
 
 }
 //================================
@@ -1221,16 +1236,16 @@ document.addEventListener("keydown", function (e) {
 // CHECK EXAM RUNNING
 //================================
 
-function isExamRunning() {
+function isExamRunning(){
 
-    const examArea = document.getElementById("examArea");
+
+    const examArea =
+    document.getElementById("examArea");
 
 
     return (
 
-        securityActive &&
-
-        examStarted &&
+        examStarted === true &&
 
         examArea &&
 
@@ -1239,6 +1254,7 @@ function isExamRunning() {
         !examSubmitted
 
     );
+
 
 }
 
@@ -1271,38 +1287,71 @@ function securitySubmit(reason) {
 // WARNING SYSTEM
 //================================
 
-function giveFocusWarning(reason) {
+function giveFocusWarning(reason){
 
-    if (!isExamRunning()) return;
 
-    if (focusLock) return;
+    if(!isExamRunning()){
 
-    focusLock = true;
-
-    focusWarnings++;
-
-    if (focusWarnings >= MAX_FOCUS_WARNING) {
-
-        securitySubmit(reason);
         return;
 
     }
 
+
+    if(focusLock){
+
+        return;
+
+    }
+
+
+    focusLock=true;
+
+
+    focusWarnings++;
+
+
+
+    if(focusWarnings >= MAX_FOCUS_WARNING){
+
+
+        submitReason = reason;
+
+
+        alert(
+        "❌ Test Automatically Submitted\n\nReason:\n"
+        +reason
+        );
+
+
+        submitTest(true);
+
+
+        return;
+
+
+    }
+
+
+
     alert(
-        "⚠ Warning " +
-        focusWarnings +
-        " of " +
-        MAX_FOCUS_WARNING +
-        "\n\n" +
-        reason +
-        "\n\nNext violation may submit your test automatically."
+
+    "⚠ Warning "
+    +focusWarnings+
+    "/"+MAX_FOCUS_WARNING+
+    "\n\n"+
+    reason
+
     );
 
-    setTimeout(function () {
 
-        focusLock = false;
 
-    }, 1000);
+    setTimeout(()=>{
+
+        focusLock=false;
+
+    },1000);
+
+
 
 }
 
@@ -1312,15 +1361,21 @@ function giveFocusWarning(reason) {
 // TAB CHANGE / MINIMIZE
 //================================
 
-document.addEventListener("visibilitychange", function () {
+document.addEventListener(
+"visibilitychange",
+function(){
 
-    if (document.hidden) {
 
-        giveFocusWarning(
-            "Tab changed or browser minimized."
-        );
+if(document.hidden){
 
-    }
+
+    giveFocusWarning(
+    "Tab changed or browser minimized."
+    );
+
+
+}
+
 
 });
 
@@ -1330,18 +1385,24 @@ document.addEventListener("visibilitychange", function () {
 // FULLSCREEN EXIT
 //================================
 
-document.addEventListener("fullscreenchange", function () {
+ddocument.addEventListener(
+"fullscreenchange",
+function(){
 
-    if (
-        isExamRunning() &&
-        !document.fullscreenElement
-    ) {
 
-        giveFocusWarning(
-            "Fullscreen mode exited."
-        );
+if(
+isExamRunning() &&
+!document.fullscreenElement
+){
 
-    }
+
+giveFocusWarning(
+"Fullscreen mode exited."
+);
+
+
+}
+
 
 });
 
@@ -1366,19 +1427,28 @@ window.addEventListener("beforeunload", function (e) {
 // BACK BUTTON BLOCK
 //================================
 
-history.pushState(null, "", location.href);
+history.pushState(null,"",location.href);
 
-window.addEventListener("popstate", function () {
 
-    history.pushState(null, "", location.href);
+window.addEventListener(
+"popstate",
+function(){
 
-    if (isExamRunning()) {
 
-        giveFocusWarning(
-            "Back button is not allowed."
-        );
+history.pushState(null,"",location.href);
 
-    }
+
+
+if(isExamRunning()){
+
+
+giveFocusWarning(
+"Back button is not allowed."
+);
+
+
+}
+
 
 });
     //================================
