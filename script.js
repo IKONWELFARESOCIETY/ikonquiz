@@ -324,7 +324,6 @@ function loadDuration() {
 
 function startTest() {
 
-    // Student Details
     studentName = document
         .getElementById("studentName")
         .value
@@ -335,7 +334,6 @@ function startTest() {
         .value
         .trim();
 
-    // Validation
     if (studentName === "" || regNo === "") {
 
         alert("Please enter Name and Registration Number.");
@@ -343,17 +341,11 @@ function startTest() {
 
     }
 
-    // Disable Button
     const btn = document.getElementById("loginBtn");
 
-    if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = "Please Wait...";
 
-        btn.disabled = true;
-        btn.innerHTML = "Please Wait...";
-
-    }
-
-    // Login Request
     fetch(
         SCRIPT_URL +
         "?action=login" +
@@ -365,41 +357,44 @@ function startTest() {
 
     .then(data => {
 
-        // Enable Button
-        if (btn) {
+        console.log("Login Response :", data);
 
-            btn.disabled = false;
-            btn.innerHTML = "Start Test";
-
-        }
+        btn.disabled = false;
+        btn.innerHTML = "Start Test";
 
         if (data.status === "VALID") {
 
-    studentName = data.name;
-    regNo = data.regNo;
+            studentName = data.name;
+            regNo = data.regNo;
 
-    paperList = data.papers || [];
+            paperList = data.papers || [];
 
-    // Single Paper
-    if(paperList.length == 1){
+            console.log("Paper List :", paperList);
 
-        paperName = paperList[0];
+            if (paperList.length === 0) {
 
-        checkTestStatus();
+                alert("No Paper Found.");
+                return;
 
-    }
+            }
 
-    // Multiple Papers
-    else{
+            if (paperList.length === 1) {
 
-        showPaperSelection();
+                paperName = paperList[0];
 
-    }
+                checkTestStatus();
 
-}
+            } else {
+
+                showPaperSelection();
+
+            }
+
+        }
+
         else if (data.status === "ALREADY_SUBMITTED") {
 
-            alert("You have already submitted this test.");
+            alert("All Papers Already Submitted.");
 
         }
 
@@ -415,12 +410,8 @@ function startTest() {
 
         console.log(err);
 
-        if (btn) {
-
-            btn.disabled = false;
-            btn.innerHTML = "Start Test";
-
-        }
+        btn.disabled = false;
+        btn.innerHTML = "Start Test";
 
         alert("Unable to connect with server.");
 
