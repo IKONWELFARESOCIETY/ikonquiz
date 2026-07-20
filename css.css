@@ -33,7 +33,27 @@
 
 }
 
+.header-left img.logo{
 
+    width:260px !important;
+
+    height:140px !important;
+
+    display:block !important;
+
+    margin:20px auto !important;
+
+    object-fit:contain;
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:30px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
 body{
 
     min-height:100vh;
@@ -134,20 +154,6 @@ body{
     margin-bottom:12px;
 
 }
-
-
-.logo{
-    width:260px;
-    height:140px;
-    object-fit:contain;
-    border-radius:30px;
-    background:#fff;
-    padding:15px;
-    display:block;
-    margin:20px auto;
-    box-shadow:0 5px 20px rgba(0,0,0,0.25);
-}
-
 
 
 /* TITLE CENTER */
@@ -1763,16 +1769,7 @@ button:disabled{
 
 
 
-    .logo{
-
-
-        width:75px;
-
-        height:75px;
-
-
-    }
-
+ 
 
 
     #questionNumbers{
@@ -1858,26 +1855,6 @@ button:disabled{
     align-items:center;
 
 }
-
-
-.logo{
-
-    width:100px;
-    height:100px;
-
-    background:white;
-
-    padding:8px;
-
-    border-radius:50%;
-
-    object-fit:contain;
-
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.25);
-
-}
-
 
 
 /* TITLE */
