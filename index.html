@@ -64,17 +64,12 @@
     placeholder="Enter Student Name">
 
 
-<label>Select Paper</label>
+<label id="paperLabel" style="display:none;">Select Paper</label>
 
 <select
     id="paperSelect"
-    onchange="selectPaper()"
-    style="display:none;">
-
-    <option value="">
-        Select Paper
-    </option>
-
+    style="display:none;"
+    onchange="selectPaper()">
 </select>
 
 <button
