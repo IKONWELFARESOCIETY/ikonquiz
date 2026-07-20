@@ -95,6 +95,9 @@ let focusWarnings = 0;
 const MAX_FOCUS_WARNING = 3;
 let focusLock = false;
 let examStarted = false;
+
+// Security will start only after Start Exam button
+let securityActive = false;
 //================================
 // WINDOW SWITCH SECURITY
 //================================
@@ -572,22 +575,35 @@ function enableStartExam() {
 // START EXAM
 //================================
 
+//================================
+// START EXAM
+//================================
+
 function startExam() {
+
     examStarted = true;
+
+    // Enable security only after exam starts
+    securityActive = true;
+
 
     // Hide Instructions
     document.getElementById("instructionPage")
         .classList.add("hidden");
 
+
     // Show Exam Area
     document.getElementById("examArea")
         .classList.remove("hidden");
 
+
     // Load Questions
     loadPaperQuestions();
 
+
     // Start Timer
     startTimer();
+
 
     // Full Screen
     if (document.documentElement.requestFullscreen) {
@@ -1201,14 +1217,27 @@ document.addEventListener("keydown", function (e) {
 //================================
 
 // Check if Exam is Running
+//================================
+// CHECK EXAM RUNNING
+//================================
+
 function isExamRunning() {
 
     const examArea = document.getElementById("examArea");
 
+
     return (
+
+        securityActive &&
+
+        examStarted &&
+
         examArea &&
+
         !examArea.classList.contains("hidden") &&
+
         !examSubmitted
+
     );
 
 }
@@ -1375,7 +1404,13 @@ function resetExam() {
 
     focusLock = false;
 
+    examStarted = false;
+
+    securityActive = false;
+
+
     stopTimer();
+
 
     totalTime = 30 * 60;
 
