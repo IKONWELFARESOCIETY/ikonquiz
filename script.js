@@ -99,64 +99,6 @@ let examStarted = false;
 // WINDOW SWITCH SECURITY
 //================================
 
-document.addEventListener("visibilitychange", function(){
-
-    let examArea = document.getElementById("examArea");
-
-
-    // केवल exam शुरू होने के बाद चलेगा
-
-    if(
-        document.hidden &&
-        examArea &&
-        !examArea.classList.contains("hidden") &&
-        !examSubmitted &&
-        !focusLock
-    ){
-
-
-        focusWarnings++;
-
-
-        if(focusWarnings < MAX_FOCUS_WARNING){
-
-            alert(
-            "⚠️ Warning "+focusWarnings+"/"+MAX_FOCUS_WARNING+
-            "\n\nWindow switch ya tab change allowed nahi hai."
-            );
-
-        }
-
-
-
-        if(focusWarnings >= MAX_FOCUS_WARNING){
-
-
-            focusLock = true;
-
-            submitReason =
-            "Auto Submit - Window Switch";
-
-
-            alert(
-            "❌ 3 warnings complete.\nTest automatically submit hoga."
-            );
-
-
-            submitTest(true);
-
-
-        }
-
-
-    }
-
-
-});
-
-
-
-
 //================================
 // FULLSCREEN SECURITY
 //================================
