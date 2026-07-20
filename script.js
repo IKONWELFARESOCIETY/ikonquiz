@@ -97,16 +97,6 @@ let statusChecker = null;
 //================================
 // EXAM SECURITY
 //================================
-
-let examSubmitted = false;
-let submitReason = "Manual Submit";
-
-// Focus Warning
-let focusWarnings = 0;
-const MAX_FOCUS_WARNING = 3;
-let focusLock = false;
-let examStarted = false;
-
 // Security will start only after Start Exam button
 let securityActive = false;
 //================================
@@ -1385,7 +1375,7 @@ if(document.hidden){
 // FULLSCREEN EXIT
 //================================
 
-ddocument.addEventListener(
+document.addEventListener(
 "fullscreenchange",
 function(){
 
