@@ -19,7 +19,7 @@ const SCRIPT_URL =
 let studentName = "";
 let regNo = "";
 let paperName = "";
-
+let paperList = [];
 // Questions
 let questions = [];
 let currentQuestion = 0;
@@ -375,14 +375,28 @@ function startTest() {
 
         if (data.status === "VALID") {
 
-            studentName = data.name;
-            regNo = data.regNo;
-            paperName = data.paperName;
+    studentName = data.name;
+    regNo = data.regNo;
 
-            checkTestStatus();
+    paperList = data.papers || [];
 
-        }
+    // Single Paper
+    if(paperList.length == 1){
 
+        paperName = paperList[0];
+
+        checkTestStatus();
+
+    }
+
+    // Multiple Papers
+    else{
+
+        showPaperSelection();
+
+    }
+
+}
         else if (data.status === "ALREADY_SUBMITTED") {
 
             alert("You have already submitted this test.");
@@ -411,6 +425,36 @@ function startTest() {
         alert("Unable to connect with server.");
 
     });
+
+}
+function showPaperSelection(){
+
+    const select =
+    document.getElementById("paperSelect");
+
+    select.innerHTML =
+    '<option value="">Select Paper</option>';
+
+    paperList.forEach(function(p){
+
+        select.innerHTML +=
+        '<option value="'+p+'">'+p+'</option>';
+
+    });
+
+    select.style.display = "block";
+
+}
+function selectPaper(){
+
+    paperName =
+    document.getElementById("paperSelect").value;
+
+    if(paperName==""){
+        return;
+    }
+
+    checkTestStatus();
 
 }
 //================================
