@@ -420,25 +420,24 @@ function startTest() {
 }
 function showPaperSelection(){
 
-    const select =
-    document.getElementById("paperSelect");
+    const select = document.getElementById("paperSelect");
+    const label = document.getElementById("paperLabel");
 
-    select.innerHTML =
-    '<option value="">Select Paper</option>';
+    select.innerHTML = "";
 
     paperList.forEach(function(p){
 
-        select.innerHTML +=
-        '<option value="'+p+'">'+p+'</option>';
+        let option = document.createElement("option");
+
+        option.value = p;
+        option.text = p;
+
+        select.appendChild(option);
 
     });
 
+    label.style.display = "block";
     select.style.display = "block";
-
-    // Login button ko paper select ke baad Start Test bana do
-    const btn = document.getElementById("loginBtn");
-    btn.innerHTML = "Start Test";
-    btn.onclick = selectPaper;
 
 }
 function selectPaper(){
