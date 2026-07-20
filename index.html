@@ -56,21 +56,36 @@
             id="regNo"
             placeholder="Enter Registration Number">
 
-        <label>Student Name</label>
+       <label>Student Name</label>
 
-        <input
-            type="text"
-            id="studentName"
-            placeholder="Enter Student Name">
+<input
+    type="text"
+    id="studentName"
+    placeholder="Enter Student Name">
 
-        <button
-            id="loginBtn"
-            class="primary"
-            onclick="startTest()">
 
-            Start Test
+<label>Select Paper</label>
 
-        </button>
+<select
+    id="paperSelect"
+    onchange="selectPaper()">
+
+    <option value="">
+        Select Paper
+    </option>
+
+</select>
+
+
+<button
+    id="loginBtn"
+    class="primary"
+    onclick="startTest()"
+    disabled>
+
+    Start Test
+
+</button>
 
     </div>
 
