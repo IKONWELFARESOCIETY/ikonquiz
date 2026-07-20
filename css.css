@@ -8,7 +8,16 @@
 /*========================
  RESET
 ========================*/
+.student-photo{
 
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #0d6efd;
+    margin-right:15px;
+
+}
 *{
 
     margin:0;
