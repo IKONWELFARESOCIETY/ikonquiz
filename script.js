@@ -598,7 +598,7 @@ function openTest() {
     if (nameBox) nameBox.innerHTML = studentName;
     if (regBox) regBox.innerHTML = regNo;
     if (paperBox) paperBox.innerHTML = paperName;
-
+    loadStudentPhoto(regNo);
     // Show Instruction Page
     document.getElementById("instructionPage").classList.remove("hidden");
     document.getElementById("examArea").classList.add("hidden");
@@ -1520,3 +1520,16 @@ window.addEventListener("load",function(){
 console.log(
 "IKON ONLINE TEST SYSTEM LOADED SUCCESSFULLY"
 );
+function loadStudentPhoto(regNo) {
+
+    const img = document.getElementById("studentPhoto");
+
+    // Root folder me image
+    img.src = regNo + ".jpg";
+
+    img.onerror = function () {
+        this.onerror = null;
+        this.src = regNo + ".jpeg";
+    };
+
+}
