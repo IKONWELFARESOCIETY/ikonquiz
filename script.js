@@ -90,7 +90,7 @@ function initializeSystem() {
 
     loadDuration();
 
-    loadHeaderDateTime();
+
 
     loadTestTime();
 
