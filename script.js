@@ -786,6 +786,9 @@ function openTest() {
     //------------------------------------------
     // Instructions
     //------------------------------------------
+    document
+    .getElementById("verificationPage")
+    ?.classList.remove("hidden");
 
     document
         .getElementById("instructionPage")
@@ -1238,7 +1241,42 @@ function startExam() {
 
 }
 
+function verifyStudentID(){
 
+    let enteredId =
+    document.getElementById("studentIdInput")
+    .value
+    .trim();
+
+    if(enteredId===""){
+
+        alert("Please enter Student ID.");
+
+        return;
+
+    }
+
+    if(
+        enteredId.toUpperCase() ===
+        studentId.toUpperCase()
+    ){
+
+        document
+        .getElementById("verificationPage")
+        .classList.add("hidden");
+
+        document
+        .getElementById("instructionPage")
+        .classList.remove("hidden");
+
+    }
+    else{
+
+        alert("Invalid Student ID.");
+
+    }
+
+}
 
 //====================================================
 // LOAD PAPER QUESTIONS
