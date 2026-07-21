@@ -2045,7 +2045,11 @@ function showSuccess() {
 
 }
 
+function goLogin(){
 
+    window.location.href = "index.html";
+
+}
 
 //====================================================
 // RESET COMPLETE EXAM
