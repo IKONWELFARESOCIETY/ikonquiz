@@ -22,7 +22,7 @@ let studentName = "";
 let regNo = "";
 let paperName = "";
 let paperList = [];
-
+let studentId = "";
 
 
 //====================================================
@@ -388,6 +388,7 @@ function startTest() {
             studentName = data.name;
 
             regNo = data.regNo;
+            studentId = data.idNo;
 
             paperList = data.papers || [];
 
