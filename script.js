@@ -1,201 +1,193 @@
-//================================
+//====================================================
 // IKON ONLINE TEST SYSTEM
-// SCRIPT.JS - PART 1A-1
-//================================
+// script.js
+// PART 1A : CONFIGURATION + GLOBAL VARIABLES
+//====================================================
 
-//--------------------------------
-// GOOGLE APP SCRIPT URL
-//--------------------------------
+
+//====================================================
+// GOOGLE APPS SCRIPT URL
+//====================================================
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
 
 
-//================================
-// GLOBAL VARIABLES
-//================================
 
-// Student Details
+//====================================================
+// STUDENT DETAILS
+//====================================================
+
 let studentName = "";
 let regNo = "";
 let paperName = "";
 let paperList = [];
-// Questions
-let questions = [];
-let currentQuestion = 0;
-let answers = [];
-let examStarted = false;
 
+
+
+//====================================================
+// QUESTION DATA
+//====================================================
+
+let questions = [];
+let answers = [];
+let currentQuestion = 0;
+
+
+
+//====================================================
+// EXAM STATE
+//====================================================
+
+let examStarted = false;
 let examSubmitted = false;
 
 let submitReason = "Manual Submit";
+
+
+
+//====================================================
+// SECURITY
+//====================================================
 
 let focusWarnings = 0;
 
 const MAX_FOCUS_WARNING = 3;
 
 let focusLock = false;
-//================================
-// LOAD SETTINGS FROM GOOGLE SHEET
-//================================
-
-function loadExamSettings(){
-
-fetch(SCRIPT_URL+"?action=status")
-.then(res=>res.text())
-.then(status=>{
-
-    console.log("Status:",status);
-
-});
-
-
-fetch(SCRIPT_URL+"?action=duration")
-.then(res=>res.text())
-.then(duration=>{
-
-    totalTime = Number(duration) * 60;
-
-    console.log("Duration:",duration);
-
-});
-
-
-fetch(SCRIPT_URL+"?action=totalQuestions")
-.then(res=>res.text())
-.then(total=>{
-
-    console.log("Total Questions:",total);
-
-});
-
-}
-
-
-// PAGE LOAD
-loadExamSettings();
 
 
 
-// PAGE LOAD
+//====================================================
+// TIMER
+//====================================================
 
-window.addEventListener("DOMContentLoaded",function(){
-
-    loadHeaderDateTime();
-
-});
-
-// Timer
 let totalTime = 30 * 60;
+
 let timer = null;
 
 
-// Waiting Page Checker
+
+//====================================================
+// WAITING PAGE STATUS CHECKER
+//====================================================
+
 let statusChecker = null;
 
 
-//================================
-// EXAM SECURITY
-//================================
-// Security will start only after Start Exam button
-let securityActive = false;
-//================================
-// WINDOW SWITCH SECURITY
-//================================
 
-//================================
-// FULLSCREEN SECURITY
-//================================
+//====================================================
+// PAGE INITIALIZATION
+//====================================================
 
+window.addEventListener("DOMContentLoaded", initializeSystem);
 
+function initializeSystem() {
 
-//================================
-// PAGE LOAD
-//================================
+    console.log("IKON ONLINE TEST SYSTEM");
 
-window.onload = function () {
+    loadExamSettings();
+
     loadDuration();
 
-};
+    loadHeaderDateTime();
 
+    loadTestTime();
 
-//================================
-// SHOW TIMER
-//================================
+    showTimer();
 
-function showTimer() {
-
-    let minutes = Math.floor(totalTime / 60);
-    let seconds = totalTime % 60;
-
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    const timerBox = document.getElementById("timer");
-
-    if (timerBox) {
-
-        timerBox.innerHTML = minutes + ":" + seconds;
-
-    }
 }
-//================================
-// LOAD TEST DATE
-//================================
-
-//================================
-
-// PAGE LOAD
-loadHeaderDateTime();
 
 
-//================================
-// LOAD TEST TIME
-//================================
 
-function loadTestTime() {
+//====================================================
+// LOAD EXAM SETTINGS
+//====================================================
 
-    fetch(SCRIPT_URL + "?action=testTime")
+function loadExamSettings() {
+
+    //--------------------------
+    // STATUS
+    //--------------------------
+
+    fetch(SCRIPT_URL + "?action=status")
+
         .then(res => res.text())
-        .then(data => {
 
-            const el = document.getElementById("testTime");
+        .then(status => {
 
-            if (el) {
-                el.innerHTML = "🕒 Test Time : " + data;
+            console.log("Exam Status :", status);
+
+        })
+
+        .catch(err => console.log(err));
+
+
+
+    //--------------------------
+    // DURATION
+    //--------------------------
+
+    fetch(SCRIPT_URL + "?action=duration")
+
+        .then(res => res.text())
+
+        .then(duration => {
+
+            let min = parseInt(duration);
+
+            if (!isNaN(min) && min > 0) {
+
+                totalTime = min * 60;
+
+                showTimer();
+
             }
 
         })
-        .catch(err => {
 
-            console.log("Test Time Error :", err);
+        .catch(err => console.log(err));
 
-            const el = document.getElementById("testTime");
 
-            if (el) {
-                el.innerHTML = "🕒 Test Time : Not Available";
-            }
 
-        });
+    //--------------------------
+    // TOTAL QUESTIONS
+    //--------------------------
+
+    fetch(SCRIPT_URL + "?action=totalQuestions")
+
+        .then(res => res.text())
+
+        .then(total => {
+
+            console.log("Questions :", total);
+
+        })
+
+        .catch(err => console.log(err));
 
 }
 
 
 
-//================================
+//====================================================
 // LOAD TEST DURATION
-//================================
+//====================================================
 
 function loadDuration() {
 
     fetch(SCRIPT_URL + "?action=duration")
+
         .then(res => res.text())
+
         .then(data => {
 
             let minutes = parseInt(data);
 
             if (isNaN(minutes) || minutes <= 0) {
+
                 minutes = 30;
+
             }
 
             totalTime = minutes * 60;
@@ -203,9 +195,8 @@ function loadDuration() {
             showTimer();
 
         })
-        .catch(err => {
 
-            console.log("Duration Error :", err);
+        .catch(() => {
 
             totalTime = 30 * 60;
 
@@ -214,11 +205,111 @@ function loadDuration() {
         });
 
 }
-//================================
+
+
+
+//====================================================
+// LOAD TEST TIME
+//====================================================
+
+function loadTestTime() {
+
+    fetch(SCRIPT_URL + "?action=testTime")
+
+        .then(res => res.text())
+
+        .then(data => {
+
+            const box = document.getElementById("testTime");
+
+            if (box) {
+
+                box.innerHTML = "🕒 Test Time : " + data;
+
+            }
+
+        })
+
+        .catch(() => {
+
+            const box = document.getElementById("testTime");
+
+            if (box) {
+
+                box.innerHTML = "🕒 Test Time : Not Available";
+
+            }
+
+        });
+
+}
+
+
+
+//====================================================
+// TIMER DISPLAY
+//====================================================
+
+function showTimer() {
+
+    const minute = Math.floor(totalTime / 60);
+
+    const second = totalTime % 60;
+
+    const text =
+        String(minute).padStart(2, "0") +
+        ":" +
+        String(second).padStart(2, "0");
+
+    const timerBox = document.getElementById("timer");
+
+    if (timerBox) {
+
+        timerBox.innerHTML = text;
+
+    }
+
+}
+
+
+
+//====================================================
+// LOAD STUDENT PHOTO
+//====================================================
+
+function loadStudentPhoto(regNo) {
+
+    const img = document.getElementById("studentPhoto");
+
+    if (!img) return;
+
+    img.src = regNo + ".jpeg";
+
+    img.onerror = function () {
+
+        this.onerror = null;
+
+        this.src = "no-photo.jpeg";
+
+    };
+
+}
+
+
+
+//====================================================
+// END OF PART 1A
+//====================================================
+//====================================================
+// PART 1B-1
 // LOGIN SYSTEM
-//================================
+//====================================================
 
 function startTest() {
+
+    //----------------------------------
+    // Read Input
+    //----------------------------------
 
     studentName = document
         .getElementById("studentName")
@@ -230,49 +321,87 @@ function startTest() {
         .value
         .trim();
 
+    //----------------------------------
+    // Validation
+    //----------------------------------
+
     if (studentName === "" || regNo === "") {
 
         alert("Please enter Name and Registration Number.");
+
         return;
 
     }
 
-    const btn = document.getElementById("loginBtn");
+    //----------------------------------
+    // Login Button
+    //----------------------------------
 
-    btn.disabled = true;
-    btn.innerHTML = "Please Wait...";
+    const loginBtn = document.getElementById("loginBtn");
+
+    loginBtn.disabled = true;
+
+    loginBtn.innerHTML = "Please Wait...";
+
+    //----------------------------------
+    // Login API
+    //----------------------------------
 
     fetch(
+
         SCRIPT_URL +
+
         "?action=login" +
+
         "&regNo=" + encodeURIComponent(regNo) +
+
         "&name=" + encodeURIComponent(studentName)
+
     )
 
-    .then(res => res.json())
+    .then(function (res) {
 
-    .then(data => {
+        if (!res.ok) {
+
+            throw new Error("Server Error");
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(function (data) {
 
         console.log("Login Response :", data);
 
-        btn.disabled = false;
-        btn.innerHTML = "Start Test";
+        loginBtn.disabled = false;
+
+        loginBtn.innerHTML = "Start Test";
+
+        //----------------------------------
+        // Valid Student
+        //----------------------------------
 
         if (data.status === "VALID") {
 
             studentName = data.name;
+
             regNo = data.regNo;
 
             paperList = data.papers || [];
 
-            console.log("Paper List :", paperList);
-
             if (paperList.length === 0) {
 
-                alert("No Paper Found.");
+                alert("No Paper Assigned.");
+
                 return;
 
             }
+
+            //----------------------------------
+            // Single Paper
+            //----------------------------------
 
             if (paperList.length === 1) {
 
@@ -280,70 +409,126 @@ function startTest() {
 
                 checkTestStatus();
 
-            } else {
-
-                showPaperSelection();
+                return;
 
             }
 
-        }
+            //----------------------------------
+            // Multiple Papers
+            //----------------------------------
 
-        else if (data.status === "ALREADY_SUBMITTED") {
+            showPaperSelection();
 
-            alert("All Papers Already Submitted.");
-
-        }
-
-        else {
-
-            alert("Invalid Registration Number or Name.");
+            return;
 
         }
+
+        //----------------------------------
+        // Already Submitted
+        //----------------------------------
+
+        if (data.status === "ALREADY_SUBMITTED") {
+
+            alert("All papers already submitted.");
+
+            return;
+
+        }
+
+        //----------------------------------
+        // Invalid Login
+        //----------------------------------
+
+        alert("Invalid Registration Number or Student Name.");
 
     })
 
-    .catch(err => {
+    .catch(function (err) {
 
         console.log(err);
 
-        btn.disabled = false;
-        btn.innerHTML = "Start Test";
+        loginBtn.disabled = false;
+
+        loginBtn.innerHTML = "Start Test";
 
         alert("Unable to connect with server.");
 
     });
 
 }
-function showPaperSelection(){
+
+
+
+//====================================================
+// PAPER SELECTION
+//====================================================
+
+function showPaperSelection() {
+
+    const label = document.getElementById("paperLabel");
 
     const select = document.getElementById("paperSelect");
-    const label = document.getElementById("paperLabel");
+
+    if (!label || !select) return;
+
+    //----------------------------------
+    // Reset List
+    //----------------------------------
 
     select.innerHTML = "";
 
-    paperList.forEach(function(p){
+    //----------------------------------
+    // Default Option
+    //----------------------------------
+
+    let defaultOption = document.createElement("option");
+
+    defaultOption.value = "";
+
+    defaultOption.text = "-- Select Paper --";
+
+    select.appendChild(defaultOption);
+
+    //----------------------------------
+    // Paper List
+    //----------------------------------
+
+    paperList.forEach(function (paper) {
 
         let option = document.createElement("option");
 
-        option.value = p;
-        option.text = p;
+        option.value = paper;
+
+        option.text = paper;
 
         select.appendChild(option);
 
     });
 
     label.style.display = "block";
+
     select.style.display = "block";
 
 }
-function selectPaper(){
 
-    paperName =
-    document.getElementById("paperSelect").value;
 
-    if(paperName==""){
 
-        alert("Please Select Paper");
+//====================================================
+// SELECT PAPER
+//====================================================
+
+function selectPaper() {
+
+    const select = document.getElementById("paperSelect");
+
+    if (!select) return;
+
+    paperName = select.value;
+
+    if (paperName === "") {
+
+        alert("Please select a paper.");
+
         return;
 
     }
@@ -351,44 +536,77 @@ function selectPaper(){
     checkTestStatus();
 
 }
-//================================
+//====================================================
+// PART 1B-2
+// TEST STATUS + WAITING PAGE
+//====================================================
+
+
+//====================================================
 // CHECK TEST STATUS
-//================================
+//====================================================
 
 function checkTestStatus() {
 
     fetch(SCRIPT_URL + "?action=status")
 
-    .then(res => res.text())
+    .then(function (res) {
 
-    .then(status => {
+        if (!res.ok) {
+
+            throw new Error("Unable to connect");
+
+        }
+
+        return res.text();
+
+    })
+
+    .then(function (status) {
 
         status = status.trim().toUpperCase();
+
+        console.log("Current Status :", status);
+
+        //------------------------------------------
+        // TEST STARTED
+        //------------------------------------------
 
         if (status === "ON") {
 
             openTest();
 
-        } else {
-
-            const login = document.getElementById("loginPage");
-            const waiting = document.getElementById("waitingPage");
-
-            if (login) login.classList.add("hidden");
-            if (waiting) waiting.classList.remove("hidden");
-
-            showRandomLine();
-
-            autoCheckStatus();
+            return;
 
         }
 
+        //------------------------------------------
+        // WAITING PAGE
+        //------------------------------------------
+
+        const loginPage =
+            document.getElementById("loginPage");
+
+        const waitingPage =
+            document.getElementById("waitingPage");
+
+        if (loginPage)
+            loginPage.classList.add("hidden");
+
+        if (waitingPage)
+            waitingPage.classList.remove("hidden");
+
+        showRandomLine();
+
+        autoCheckStatus();
+
     })
 
-    .catch(err => {
+    .catch(function (err) {
 
         console.log(err);
-        alert("Unable to check test status.");
+
+        alert("Unable to check exam status.");
 
     });
 
@@ -396,27 +614,33 @@ function checkTestStatus() {
 
 
 
-//================================
-// AUTO CHECK TEST STATUS
-//================================
+//====================================================
+// AUTO STATUS CHECK
+//====================================================
 
 function autoCheckStatus() {
 
-    if (statusChecker !== null) return;
+    if (statusChecker !== null)
+        return;
 
     statusChecker = setInterval(function () {
 
         fetch(SCRIPT_URL + "?action=status")
 
-        .then(res => res.text())
+        .then(function (res) {
 
-        .then(status => {
+            return res.text();
+
+        })
+
+        .then(function (status) {
 
             status = status.trim().toUpperCase();
 
             if (status === "ON") {
 
                 clearInterval(statusChecker);
+
                 statusChecker = null;
 
                 openTest();
@@ -425,7 +649,7 @@ function autoCheckStatus() {
 
         })
 
-        .catch(err => {
+        .catch(function (err) {
 
             console.log(err);
 
@@ -437,105 +661,554 @@ function autoCheckStatus() {
 
 
 
-//================================
-// MOTIVATION MESSAGE
-//================================
+//====================================================
+// STOP AUTO CHECK
+//====================================================
 
-function showRandomLine() {
+function stopStatusChecker() {
 
-    const lines = [
+    if (statusChecker !== null) {
 
-        "Believe in yourself.",
-        "Stay calm and focused.",
-        "Success begins with confidence.",
-        "Give your best today.",
-        "Every question is an opportunity.",
-        "Hard work always pays.",
-        "Think before you answer.",
-        "You are ready to succeed."
+        clearInterval(statusChecker);
 
-    ];
-
-    const box = document.getElementById("motivationText");
-
-    if (box) {
-
-        box.innerHTML =
-            lines[Math.floor(Math.random() * lines.length)];
+        statusChecker = null;
 
     }
 
 }
-//================================
-// OPEN TEST
-//================================
 
-function openTest() {
 
-    examSubmitted = false;
-    submitReason = "Manual Submit";
-    focusWarnings = 0;
-    focusLock = false;
 
-    // Pages
-    const login = document.getElementById("loginPage");
-    const waiting = document.getElementById("waitingPage");
-    const test = document.getElementById("testPage");
+//====================================================
+// MOTIVATION LINES
+//====================================================
 
-    if (login) login.classList.add("hidden");
-    if (waiting) waiting.classList.add("hidden");
-    if (test) test.classList.remove("hidden");
+const motivationLines = [
 
-    // Student Details
-    const nameBox = document.getElementById("showName");
-    const regBox = document.getElementById("showReg");
-    const paperBox = document.getElementById("showPaper");
+    "Believe in yourself.",
 
-    if (nameBox) nameBox.innerHTML = studentName;
-    if (regBox) regBox.innerHTML = regNo;
-    if (paperBox) paperBox.innerHTML = paperName;
-    loadStudentPhoto(regNo);
-    // Show Instruction Page
-    document.getElementById("instructionPage").classList.remove("hidden");
-    document.getElementById("examArea").classList.add("hidden");
+    "Stay calm and focused.",
 
-    // Reset Checkbox
-    document.getElementById("acceptRules").checked = false;
-    document.getElementById("startExamBtn").disabled = true;
+    "Every question is an opportunity.",
+
+    "Hard work always pays.",
+
+    "Success begins with confidence.",
+
+    "Stay positive and give your best.",
+
+    "Read every question carefully.",
+
+    "Confidence is your biggest strength.",
+
+    "You can do it!",
+
+    "Never lose your focus."
+
+];
+
+
+
+//====================================================
+// SHOW RANDOM LINE
+//====================================================
+
+function showRandomLine() {
+
+    const box =
+        document.getElementById("motivationText");
+
+    if (!box)
+        return;
+
+    const random =
+        Math.floor(
+            Math.random() *
+            motivationLines.length
+        );
+
+    box.innerHTML =
+        motivationLines[random];
 
 }
 
 
 
-//================================
+//====================================================
+// OPEN TEST
+//====================================================
+
+function openTest() {
+
+    //------------------------------------------
+    // Stop Waiting Timer
+    //------------------------------------------
+
+    stopStatusChecker();
+
+    //------------------------------------------
+    // Reset Flags
+    //------------------------------------------
+
+    examSubmitted = false;
+
+    submitReason = "Manual Submit";
+
+    focusWarnings = 0;
+
+    focusLock = false;
+
+    //------------------------------------------
+    // Hide Other Pages
+    //------------------------------------------
+
+    document
+        .getElementById("loginPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("waitingPage")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
+    // Show Test Page
+    //------------------------------------------
+
+    document
+        .getElementById("testPage")
+        ?.classList.remove("hidden");
+
+    //------------------------------------------
+    // Student Details
+    //------------------------------------------
+
+    const nameBox =
+        document.getElementById("showName");
+
+    const regBox =
+        document.getElementById("showReg");
+
+    const paperBox =
+        document.getElementById("showPaper");
+
+    if (nameBox)
+        nameBox.innerHTML = studentName;
+
+    if (regBox)
+        regBox.innerHTML = regNo;
+
+    if (paperBox)
+        paperBox.innerHTML = paperName;
+
+    //------------------------------------------
+    // Student Photo
+    //------------------------------------------
+
+    loadStudentPhoto(regNo);
+
+    //------------------------------------------
+    // Instructions
+    //------------------------------------------
+
+    document
+        .getElementById("instructionPage")
+        ?.classList.remove("hidden");
+
+    document
+        .getElementById("examArea")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
+    // Rules Checkbox
+    //------------------------------------------
+
+    const check =
+        document.getElementById("acceptRules");
+
+    if (check)
+        check.checked = false;
+
+    //------------------------------------------
+    // Start Button
+    //------------------------------------------
+
+    const startBtn =
+        document.getElementById("startExamBtn");
+
+    if (startBtn)
+        startBtn.disabled = true;
+
+}
+
+
+
+//====================================================
 // ENABLE START BUTTON
-//================================
+//====================================================
 
 function enableStartExam() {
 
-    const check = document.getElementById("acceptRules");
-    const btn = document.getElementById("startExamBtn");
+    const check =
+        document.getElementById("acceptRules");
+
+    const btn =
+        document.getElementById("startExamBtn");
+
+    if (!check || !btn)
+        return;
 
     btn.disabled = !check.checked;
 
 }
+//====================================================
+// PART 1B-2
+// TEST STATUS + WAITING PAGE
+//====================================================
+
+
+//====================================================
+// CHECK TEST STATUS
+//====================================================
+
+function checkTestStatus() {
+
+    fetch(SCRIPT_URL + "?action=status")
+
+    .then(function (res) {
+
+        if (!res.ok) {
+
+            throw new Error("Unable to connect");
+
+        }
+
+        return res.text();
+
+    })
+
+    .then(function (status) {
+
+        status = status.trim().toUpperCase();
+
+        console.log("Current Status :", status);
+
+        //------------------------------------------
+        // TEST STARTED
+        //------------------------------------------
+
+        if (status === "ON") {
+
+            openTest();
+
+            return;
+
+        }
+
+        //------------------------------------------
+        // WAITING PAGE
+        //------------------------------------------
+
+        const loginPage =
+            document.getElementById("loginPage");
+
+        const waitingPage =
+            document.getElementById("waitingPage");
+
+        if (loginPage)
+            loginPage.classList.add("hidden");
+
+        if (waitingPage)
+            waitingPage.classList.remove("hidden");
+
+        showRandomLine();
+
+        autoCheckStatus();
+
+    })
+
+    .catch(function (err) {
+
+        console.log(err);
+
+        alert("Unable to check exam status.");
+
+    });
+
+}
 
 
 
-//================================
+//====================================================
+// AUTO STATUS CHECK
+//====================================================
+
+function autoCheckStatus() {
+
+    if (statusChecker !== null)
+        return;
+
+    statusChecker = setInterval(function () {
+
+        fetch(SCRIPT_URL + "?action=status")
+
+        .then(function (res) {
+
+            return res.text();
+
+        })
+
+        .then(function (status) {
+
+            status = status.trim().toUpperCase();
+
+            if (status === "ON") {
+
+                clearInterval(statusChecker);
+
+                statusChecker = null;
+
+                openTest();
+
+            }
+
+        })
+
+        .catch(function (err) {
+
+            console.log(err);
+
+        });
+
+    }, 5000);
+
+}
+
+
+
+//====================================================
+// STOP AUTO CHECK
+//====================================================
+
+function stopStatusChecker() {
+
+    if (statusChecker !== null) {
+
+        clearInterval(statusChecker);
+
+        statusChecker = null;
+
+    }
+
+}
+
+
+
+//====================================================
+// MOTIVATION LINES
+//====================================================
+
+const motivationLines = [
+
+    "Believe in yourself.",
+
+    "Stay calm and focused.",
+
+    "Every question is an opportunity.",
+
+    "Hard work always pays.",
+
+    "Success begins with confidence.",
+
+    "Stay positive and give your best.",
+
+    "Read every question carefully.",
+
+    "Confidence is your biggest strength.",
+
+    "You can do it!",
+
+    "Never lose your focus."
+
+];
+
+
+
+//====================================================
+// SHOW RANDOM LINE
+//====================================================
+
+function showRandomLine() {
+
+    const box =
+        document.getElementById("motivationText");
+
+    if (!box)
+        return;
+
+    const random =
+        Math.floor(
+            Math.random() *
+            motivationLines.length
+        );
+
+    box.innerHTML =
+        motivationLines[random];
+
+}
+
+
+
+//====================================================
+// OPEN TEST
+//====================================================
+
+function openTest() {
+
+    //------------------------------------------
+    // Stop Waiting Timer
+    //------------------------------------------
+
+    stopStatusChecker();
+
+    //------------------------------------------
+    // Reset Flags
+    //------------------------------------------
+
+    examSubmitted = false;
+
+    submitReason = "Manual Submit";
+
+    focusWarnings = 0;
+
+    focusLock = false;
+
+    //------------------------------------------
+    // Hide Other Pages
+    //------------------------------------------
+
+    document
+        .getElementById("loginPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("waitingPage")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
+    // Show Test Page
+    //------------------------------------------
+
+    document
+        .getElementById("testPage")
+        ?.classList.remove("hidden");
+
+    //------------------------------------------
+    // Student Details
+    //------------------------------------------
+
+    const nameBox =
+        document.getElementById("showName");
+
+    const regBox =
+        document.getElementById("showReg");
+
+    const paperBox =
+        document.getElementById("showPaper");
+
+    if (nameBox)
+        nameBox.innerHTML = studentName;
+
+    if (regBox)
+        regBox.innerHTML = regNo;
+
+    if (paperBox)
+        paperBox.innerHTML = paperName;
+
+    //------------------------------------------
+    // Student Photo
+    //------------------------------------------
+
+    loadStudentPhoto(regNo);
+
+    //------------------------------------------
+    // Instructions
+    //------------------------------------------
+
+    document
+        .getElementById("instructionPage")
+        ?.classList.remove("hidden");
+
+    document
+        .getElementById("examArea")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
+    // Rules Checkbox
+    //------------------------------------------
+
+    const check =
+        document.getElementById("acceptRules");
+
+    if (check)
+        check.checked = false;
+
+    //------------------------------------------
+    // Start Button
+    //------------------------------------------
+
+    const startBtn =
+        document.getElementById("startExamBtn");
+
+    if (startBtn)
+        startBtn.disabled = true;
+
+}
+
+
+
+//====================================================
+// ENABLE START BUTTON
+//====================================================
+
+function enableStartExam() {
+
+    const check =
+        document.getElementById("acceptRules");
+
+    const btn =
+        document.getElementById("startExamBtn");
+
+    if (!check || !btn)
+        return;
+
+    btn.disabled = !check.checked;
+
+}
+//====================================================
+// PART 2A
+// START EXAM + LOAD QUESTIONS
+//====================================================
+
+
+//====================================================
 // START EXAM
-//================================
-
-//================================
-// START EXAM
-//================================
+//====================================================
 
 function startExam() {
 
+    //------------------------------------------
+    // Prevent Double Click
+    //------------------------------------------
 
-    // Exam ab start hua
+    if (examStarted) {
+        return;
+    }
+
+    //------------------------------------------
+    // Exam State
+    //------------------------------------------
+
     examStarted = true;
-
 
     examSubmitted = false;
 
@@ -543,117 +1216,182 @@ function startExam() {
 
     focusLock = false;
 
+    //------------------------------------------
+    // Hide Instructions
+    //------------------------------------------
 
-    document.getElementById("instructionPage")
-    .classList.add("hidden");
+    document
+        .getElementById("instructionPage")
+        ?.classList.add("hidden");
 
+    //------------------------------------------
+    // Show Exam Area
+    //------------------------------------------
 
-    document.getElementById("examArea")
-    .classList.remove("hidden");
+    document
+        .getElementById("examArea")
+        ?.classList.remove("hidden");
 
-
-    loadPaperQuestions();
-
+    //------------------------------------------
+    // Start Timer
+    //------------------------------------------
 
     startTimer();
 
+    //------------------------------------------
+    // Load Questions
+    //------------------------------------------
 
+    loadPaperQuestions();
 
-    // Fullscreen only after exam start
+    //------------------------------------------
+    // Fullscreen
+    //------------------------------------------
 
-    if(document.documentElement.requestFullscreen){
+    if (
+        document.documentElement.requestFullscreen &&
+        !document.fullscreenElement
+    ) {
 
-        document.documentElement.requestFullscreen()
-        .catch(()=>{});
+        document.documentElement
+            .requestFullscreen()
+            .catch(function () {});
 
     }
 
-
 }
-//================================
+
+
+
+//====================================================
 // LOAD PAPER QUESTIONS
-//================================
+//====================================================
 
 function loadPaperQuestions() {
 
-    fetch(
+    const url =
         SCRIPT_URL +
-        "?action=questions" +
-        "&paper=" + encodeURIComponent(paperName)
-    )
+        "?action=questions&paper=" +
+        encodeURIComponent(paperName);
 
-    .then(res => {
+    fetch(url)
+
+    .then(function (res) {
 
         if (!res.ok) {
+
             throw new Error("Server Error");
+
         }
 
         return res.json();
 
     })
 
-    .then(data => {
+    .then(function (data) {
 
-        // Check Questions
-        if (!Array.isArray(data) || data.length === 0) {
+        //--------------------------------------
+        // Validate
+        //--------------------------------------
 
-            alert("No questions found for " + paperName);
+        if (
+            !Array.isArray(data) ||
+            data.length === 0
+        ) {
+
+            alert(
+                "No questions found for this paper."
+            );
+
             return;
 
         }
 
+        //--------------------------------------
         // Store Questions
+        //--------------------------------------
+
         questions = data;
 
+        //--------------------------------------
         // Reset Answers
-        answers = new Array(questions.length).fill("");
+        //--------------------------------------
 
-        // Start From Question 1
+        answers =
+            new Array(questions.length).fill("");
+
+        //--------------------------------------
+        // First Question
+        //--------------------------------------
+
         currentQuestion = 0;
 
-        // Load First Question
+        //--------------------------------------
+        // Progress
+        //--------------------------------------
+
+        updateProgress();
+
+        //--------------------------------------
+        // Load
+        //--------------------------------------
+
         loadQuestion();
 
     })
 
-    .catch(err => {
+    .catch(function (err) {
 
-        console.error("Question Loading Error :", err);
+        console.log(err);
 
         alert(
-            "Unable to load questions.\nPlease contact administrator."
+            "Unable to load questions.\nPlease contact Administrator."
         );
 
     });
 
 }
-//================================
+
+
+
+//====================================================
 // LOAD QUESTION
-//================================
+//====================================================
 
 function loadQuestion() {
 
-    // Safety Check
-    if (!questions || questions.length === 0) {
+    //------------------------------------------
+    // Safety
+    //------------------------------------------
+
+    if (
+        !questions ||
+        questions.length === 0
+    ) {
         return;
     }
 
+    //------------------------------------------
     // Current Question
-    const q = questions[currentQuestion];
+    //------------------------------------------
 
-    if (!q) {
-        return;
-    }
+    const q =
+        questions[currentQuestion];
 
-    //--------------------------------
+    if (!q) return;
+
+    //------------------------------------------
     // Question Number
-    //--------------------------------
+    //------------------------------------------
 
-    const qNo = document.getElementById("questionNumber");
+    const number =
+        document.getElementById(
+            "questionNumber"
+        );
 
-    if (qNo) {
+    if (number) {
 
-        qNo.innerHTML =
+        number.innerHTML =
             "Question " +
             (currentQuestion + 1) +
             " of " +
@@ -661,182 +1399,268 @@ function loadQuestion() {
 
     }
 
-    //--------------------------------
+    //------------------------------------------
     // Question Text
-    //--------------------------------
+    //------------------------------------------
 
-    const qText = document.getElementById("questionText");
+    const text =
+        document.getElementById(
+            "questionText"
+        );
 
-    if (qText) {
+    if (text) {
 
-        qText.innerHTML = q.question;
+        text.innerHTML = q.question;
 
     }
 
-    //--------------------------------
+    //------------------------------------------
     // Options
-    //--------------------------------
+    //------------------------------------------
 
-    const optionBox = document.getElementById("options");
+    const optionBox =
+        document.getElementById(
+            "options"
+        );
 
-    let html = "";
+    if (!optionBox)
+        return;
 
-    q.options.forEach(function (option, index) {
+    optionBox.innerHTML = "";
 
-        const checked =
-            answers[currentQuestion] === option
-                ? "checked"
-                : "";
+    //------------------------------------------
+    // Create Options
+    //------------------------------------------
 
-        html += `
-            <label class="option">
-                <input
-                    type="radio"
-                    name="answer"
-                    ${checked}
-                    onclick="saveAnswer(${index})">
+    q.options.forEach(function (
+        option,
+        index
+    ) {
 
-                <span>${option}</span>
-            </label>
-        `;
+        const label =
+            document.createElement("label");
+
+        label.className = "option";
+
+        const input =
+            document.createElement("input");
+
+        input.type = "radio";
+
+        input.name = "answer";
+
+        input.checked =
+            answers[currentQuestion] === option;
+
+        input.onclick = function () {
+
+            saveAnswer(index);
+
+        };
+
+        const span =
+            document.createElement("span");
+
+        span.innerHTML = option;
+
+        label.appendChild(input);
+
+        label.appendChild(span);
+
+        optionBox.appendChild(label);
 
     });
 
-    optionBox.innerHTML = html;
+    //------------------------------------------
+    // Navigation Button
+    //------------------------------------------
 
-    //--------------------------------
-    // Update UI
-    //--------------------------------
+    const prev =
+        document.getElementById(
+            "prevBtn"
+        );
+
+    const next =
+        document.getElementById(
+            "nextBtn"
+        );
+
+    if (prev) {
+
+        prev.disabled =
+            currentQuestion === 0;
+
+    }
+
+    if (next) {
+
+        next.disabled =
+            currentQuestion ===
+            questions.length - 1;
+
+    }
+
+    //------------------------------------------
+    // Refresh UI
+    //------------------------------------------
 
     updateProgress();
 
     createQuestionPalette();
 
 }
-//================================
+//====================================================
+// PART 2B
+// ANSWER SYSTEM + QUESTION NAVIGATION
+//====================================================
+
+
+//====================================================
 // SAVE ANSWER
-//================================
+//====================================================
 
-function saveAnswer(index) {
+function saveAnswer(optionIndex) {
 
-    // Save Selected Option
+    if (
+        !questions.length ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
     answers[currentQuestion] =
-        questions[currentQuestion].options[index];
+        questions[currentQuestion].options[optionIndex];
 
-    // Refresh Palette
     createQuestionPalette();
 
 }
 
 
 
-//================================
-// QUESTION PALETTE
-//================================
+//====================================================
+// CREATE QUESTION PALETTE
+//====================================================
 
 function createQuestionPalette() {
 
-    const box =
+    const container =
         document.getElementById("questionNumbers");
 
-    if (!box) return;
+    if (!container) return;
 
-    // Clear Old Buttons
-    box.innerHTML = "";
+    container.innerHTML = "";
 
-    // Create Buttons
-    questions.forEach(function (q, index) {
+    questions.forEach(function (question, index) {
 
-        const btn = document.createElement("button");
+        const button =
+            document.createElement("button");
 
-        btn.innerHTML = index + 1;
+        button.type = "button";
 
-        btn.className = "q-btn";
+        button.innerHTML = index + 1;
 
-        //--------------------------------
+        button.className = "q-btn";
+
+        //------------------------------------
         // Current Question
-        //--------------------------------
+        //------------------------------------
 
         if (index === currentQuestion) {
 
-            btn.classList.add("active");
+            button.classList.add("active");
 
         }
 
-        //--------------------------------
+        //------------------------------------
         // Answered Question
-        //--------------------------------
+        //------------------------------------
 
         if (
             answers[index] !== "" &&
             answers[index] !== undefined
         ) {
 
-            btn.classList.add("done");
+            button.classList.add("done");
 
         }
 
-        //--------------------------------
-        // Jump to Question
-        //--------------------------------
+        //------------------------------------
+        // Jump Question
+        //------------------------------------
 
-        btn.onclick = function () {
+        button.addEventListener("click", function () {
 
-            currentQuestion = index;
+            gotoQuestion(index);
 
-            loadQuestion();
+        });
 
-        };
-
-        box.appendChild(btn);
+        container.appendChild(button);
 
     });
 
 }
-    //================================
+
+
+
+//====================================================
 // NEXT QUESTION
-//================================
+//====================================================
 
 function nextQuestion() {
 
-    if (currentQuestion < questions.length - 1) {
+    if (
+        currentQuestion >=
+        questions.length - 1
+    ) {
 
-        currentQuestion++;
-
-        loadQuestion();
+        return;
 
     }
+
+    currentQuestion++;
+
+    loadQuestion();
 
 }
 
 
 
-//================================
+//====================================================
 // PREVIOUS QUESTION
-//================================
+//====================================================
 
 function previousQuestion() {
 
-    if (currentQuestion > 0) {
+    if (currentQuestion <= 0) {
 
-        currentQuestion--;
-
-        loadQuestion();
+        return;
 
     }
+
+    currentQuestion--;
+
+    loadQuestion();
 
 }
 
 
 
-//================================
-// GO TO QUESTION
-//================================
+//====================================================
+// GOTO QUESTION
+//====================================================
 
 function gotoQuestion(index) {
 
-    if (index < 0 || index >= questions.length) {
+    if (
+
+        index < 0 ||
+
+        index >= questions.length
+
+    ) {
+
         return;
+
     }
 
     currentQuestion = index;
@@ -847,67 +1671,139 @@ function gotoQuestion(index) {
 
 
 
-//================================
-// UPDATE PROGRESS BAR
-//================================
+//====================================================
+// UPDATE PROGRESS
+//====================================================
 
 function updateProgress() {
 
-    const bar = document.getElementById("progressBar");
+    if (!questions.length)
+        return;
 
-    const text = document.getElementById("progressText");
+    const progressBar =
+        document.getElementById("progressBar");
 
-    if (!bar) return;
+    const progressText =
+        document.getElementById("progressText");
 
-    // Progress %
     const percent =
-        ((currentQuestion + 1) / questions.length) * 100;
 
-    bar.style.width = percent + "%";
+        ((currentQuestion + 1) /
 
-    // Optional Text
-    if (text) {
+        questions.length) * 100;
 
-        text.innerHTML =
+    if (progressBar) {
+
+        progressBar.style.width =
+            percent + "%";
+
+    }
+
+    if (progressText) {
+
+        progressText.innerHTML =
+
+            "Question " +
+
             (currentQuestion + 1) +
+
             " / " +
+
             questions.length;
 
     }
 
 }
-    //================================
+
+
+
+//====================================================
+// ANSWER SUMMARY
+//====================================================
+
+function getAnsweredCount() {
+
+    return answers.filter(function (answer) {
+
+        return answer !== "";
+
+    }).length;
+
+}
+
+
+
+//====================================================
+// UNANSWERED COUNT
+//====================================================
+
+function getUnansweredCount() {
+
+    return questions.length -
+
+           getAnsweredCount();
+
+}
+//====================================================
+// PART 3A-1
+// TIMER SYSTEM
+//====================================================
+
+
+//====================================================
 // START TIMER
-//================================
+//====================================================
 
 function startTimer() {
 
-    // Stop old timer if running
-    if (timer !== null) {
+    //------------------------------------------
+    // Prevent Duplicate Timer
+    //------------------------------------------
 
-        clearInterval(timer);
+    stopTimer();
 
-    }
-
-    // Show current timer
     showTimer();
 
     timer = setInterval(function () {
 
         totalTime--;
 
-        // Update Timer UI
         showTimer();
 
+        //----------------------------------
+        // Last 5 Minutes
+        //----------------------------------
+
+        const timerBox =
+            document.getElementById("timer");
+
+        if (timerBox) {
+
+            if (totalTime <= 300) {
+
+                timerBox.classList.add("timer-danger");
+
+            } else {
+
+                timerBox.classList.remove("timer-danger");
+
+            }
+
+        }
+
+        //----------------------------------
         // Time Over
+        //----------------------------------
+
         if (totalTime <= 0) {
 
-            clearInterval(timer);
-            timer = null;
+            stopTimer();
 
             submitReason = "Time Over";
 
-            alert("Time is over.\nYour test will be submitted automatically.");
+            alert(
+                "Time is over.\nYour test will be submitted automatically."
+            );
 
             submitTest(true);
 
@@ -919,13 +1815,13 @@ function startTimer() {
 
 
 
-//================================
+//====================================================
 // STOP TIMER
-//================================
+//====================================================
 
 function stopTimer() {
 
-    if (timer !== null) {
+    if (timer) {
 
         clearInterval(timer);
 
@@ -934,23 +1830,26 @@ function stopTimer() {
     }
 
 }
-    //================================
+//====================================================
 // SUBMIT TEST
-//================================
+//====================================================
 
 function submitTest(autoSubmit = false) {
 
+    //------------------------------------------
     // Prevent Duplicate Submit
+    //------------------------------------------
+
     if (examSubmitted) {
+
         return;
+
     }
 
-    // ADD THIS LINE
-    focusLock = true;
-
-    examSubmitted = true;
-
+    //------------------------------------------
     // Manual Confirmation
+    //------------------------------------------
+
     if (!autoSubmit) {
 
         const ok = confirm(
@@ -959,38 +1858,54 @@ function submitTest(autoSubmit = false) {
 
         if (!ok) {
 
-            examSubmitted = false;
-            focusLock = false; // Optional but recommended
             return;
 
         }
 
     }
 
+    //------------------------------------------
+    // Lock Exam
+    //------------------------------------------
+
+    examSubmitted = true;
+
+    focusLock = true;
+
+    examStarted = false;
+
+    //------------------------------------------
     // Stop Timer
+    //------------------------------------------
+
     stopTimer();
 
+    //------------------------------------------
     // Disable Submit Button
-    const submitBtn = document.getElementById("submitBtn");
+    //------------------------------------------
+
+    const submitBtn =
+        document.getElementById("submitBtn");
 
     if (submitBtn) {
 
         submitBtn.disabled = true;
+
         submitBtn.innerHTML = "Submitting...";
 
     }
 
-    //--------------------------------
-    // Prepare Data
-    //--------------------------------
+    //------------------------------------------
+    // Data
+    //------------------------------------------
 
-    const data = {
+    const payload = {
 
         name: studentName,
-        regNo: regNo,
-        paperName: paperName,
 
-        submittedAt: new Date().toLocaleString(),
+        regNo: regNo,
+
+        paperName: paperName,
 
         submitReason: submitReason,
 
@@ -998,220 +1913,378 @@ function submitTest(autoSubmit = false) {
 
     };
 
-    //--------------------------------
-    // Send to Apps Script
-    //--------------------------------
+    console.log(payload);
+
+    //------------------------------------------
+    // Send
+    //------------------------------------------
 
     fetch(SCRIPT_URL, {
 
-        method:"POST",
+        method: "POST",
 
-        body:JSON.stringify(data)
+        body: JSON.stringify(payload)
 
     })
-    .then(res=>res.text())
-    .then(result=>{
+
+    .then(function (res) {
+
+        return res.text();
+
+    })
+
+    .then(function (result) {
+
+        result = result.trim();
 
         console.log(result);
 
-        if(result.trim()=="SUCCESS"){
+        //--------------------------------------
+        // Success
+        //--------------------------------------
+
+        if (result === "SUCCESS") {
 
             showSuccess();
 
-        } else {
+            return;
 
-            alert(result);
+        }
+
+        //--------------------------------------
+        // Already Submitted
+        //--------------------------------------
+
+        if (result === "ALREADY_SUBMITTED") {
+
+            alert(
+                "This paper has already been submitted."
+            );
+
+            showSuccess();
+
+            return;
+
+        }
+
+        //--------------------------------------
+        // Other Error
+        //--------------------------------------
+
+        examSubmitted = false;
+
+        focusLock = false;
+
+        alert(result);
+
+        if (submitBtn) {
+
+            submitBtn.disabled = false;
+
+            submitBtn.innerHTML = "Submit Test";
 
         }
 
     })
-    .catch(err=>{
+
+    .catch(function (err) {
 
         console.log(err);
 
-        alert("Unable to submit responses");
+        examSubmitted = false;
+
+        focusLock = false;
+
+        alert(
+            "Unable to submit your responses."
+        );
+
+        if (submitBtn) {
+
+            submitBtn.disabled = false;
+
+            submitBtn.innerHTML = "Submit Test";
+
+        }
 
     });
 
 }
-    //================================
-// SUCCESS PAGE
-//================================
+//====================================================
+// PART 3B
+// SUCCESS PAGE + RESET + LOGOUT
+//====================================================
+
+
+//====================================================
+// SHOW SUCCESS PAGE
+//====================================================
 
 function showSuccess() {
 
-    // Stop Timer
+    //------------------------------------------
+    // Stop Everything
+    //------------------------------------------
+
     stopTimer();
+    stopStatusChecker();
+
+    //------------------------------------------
+    // Reset Exam Flags
+    //------------------------------------------
+
     examStarted = false;
     examSubmitted = true;
     focusLock = true;
 
-    // Hide Pages
-    document.getElementById("testPage")?.classList.add("hidden");
-    document.getElementById("waitingPage")?.classList.add("hidden");
+    //------------------------------------------
+    // Hide All Pages
+    //------------------------------------------
 
+    document.getElementById("loginPage")
+        ?.classList.add("hidden");
+
+    document.getElementById("waitingPage")
+        ?.classList.add("hidden");
+
+    document.getElementById("testPage")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
+    // Hide Exam Sections
+    //------------------------------------------
+
+    document.getElementById("instructionPage")
+        ?.classList.add("hidden");
+
+    document.getElementById("examArea")
+        ?.classList.add("hidden");
+
+    //------------------------------------------
     // Show Success Page
-    document.getElementById("successPage")?.classList.remove("hidden");
+    //------------------------------------------
+
+    document.getElementById("successPage")
+        ?.classList.remove("hidden");
 
 }
 
 
 
-//================================
-// GO TO LOGIN PAGE
-//================================
+//====================================================
+// RESET COMPLETE EXAM
+//====================================================
+
+function resetExam() {
+
+    //------------------------------------------
+    // Stop Timers
+    //------------------------------------------
+
+    stopTimer();
+    stopStatusChecker();
+
+    //------------------------------------------
+    // Student
+    //------------------------------------------
+
+    studentName = "";
+    regNo = "";
+    paperName = "";
+    paperList = [];
+
+    //------------------------------------------
+    // Questions
+    //------------------------------------------
+
+    questions = [];
+    answers = [];
+    currentQuestion = 0;
+
+    //------------------------------------------
+    // Exam State
+    //------------------------------------------
+
+    examStarted = false;
+    examSubmitted = false;
+
+    submitReason = "Manual Submit";
+
+    //------------------------------------------
+    // Security
+    //------------------------------------------
+
+    focusWarnings = 0;
+    focusLock = false;
+
+    //------------------------------------------
+    // Timer
+    //------------------------------------------
+
+    totalTime = 30 * 60;
+
+    showTimer();
+
+    //------------------------------------------
+    // Clear Photo
+    //------------------------------------------
+
+    const img =
+        document.getElementById("studentPhoto");
+
+    if (img) {
+
+        img.src = "no-photo.png";
+
+    }
+
+}
 
 
-    //================================
-// EXAM SECURITY - BASIC
-//================================
 
-// Disable Right Click
-document.addEventListener("contextmenu", function (e) {
+//====================================================
+// BACK TO LOGIN PAGE
+//====================================================
 
-    e.preventDefault();
+function goLogin() {
 
-});
+    resetExam();
 
-// Disable Copy
-document.addEventListener("copy", function (e) {
+    //------------------------------------------
+    // Show Login
+    //------------------------------------------
 
-    e.preventDefault();
+    document.getElementById("loginPage")
+        ?.classList.remove("hidden");
 
-});
+    //------------------------------------------
+    // Hide Other Pages
+    //------------------------------------------
 
-// Disable Cut
-document.addEventListener("cut", function (e) {
+    document.getElementById("waitingPage")
+        ?.classList.add("hidden");
 
-    e.preventDefault();
+    document.getElementById("testPage")
+        ?.classList.add("hidden");
 
-});
+    document.getElementById("successPage")
+        ?.classList.add("hidden");
 
-// Disable Paste
-document.addEventListener("paste", function (e) {
+    //------------------------------------------
+    // Clear Inputs
+    //------------------------------------------
 
-    e.preventDefault();
+    const studentInput =
+        document.getElementById("studentName");
 
-});
+    const regInput =
+        document.getElementById("regNo");
 
-// Disable Drag
-document.addEventListener("dragstart", function (e) {
+    if (studentInput)
+        studentInput.value = "";
 
-    e.preventDefault();
+    if (regInput)
+        regInput.value = "";
 
-});
+    //------------------------------------------
+    // Hide Paper Selection
+    //------------------------------------------
 
-// Disable Select
-document.addEventListener("selectstart", function (e) {
+    const label =
+        document.getElementById("paperLabel");
 
-    e.preventDefault();
+    const select =
+        document.getElementById("paperSelect");
 
-});
+    if (label)
+        label.style.display = "none";
+
+    if (select) {
+
+        select.style.display = "none";
+        select.innerHTML = "";
+
+    }
+
+}
 
 
-//================================
-// KEYBOARD SECURITY
-//================================
 
-document.addEventListener("keydown", function (e) {
+//====================================================
+// EXIT EXAM
+//====================================================
 
-    // F12
-    if (e.key === "F12") {
+function logoutExam() {
 
-        e.preventDefault();
+    if (!confirm(
+        "Do you want to exit the test?"
+    )) {
+
         return;
 
     }
 
-    // Ctrl + U
-    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+    goLogin();
 
-        e.preventDefault();
-        return;
+}
 
-    }
 
-    // Ctrl + Shift + I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
 
-        e.preventDefault();
-        return;
+//====================================================
+// WINDOW LOAD SAFETY
+//====================================================
 
-    }
+window.addEventListener("load", function () {
 
-    // Ctrl + Shift + J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
-
-        e.preventDefault();
-        return;
-
-    }
-
-    // Ctrl + Shift + C
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
-
-        e.preventDefault();
-        return;
-
-    }
-
-    // Ctrl + S
-    if (e.ctrlKey && e.key.toLowerCase() === "s") {
-
-        e.preventDefault();
-        return;
-
-    }
-
-    // Ctrl + P
-    if (e.ctrlKey && e.key.toLowerCase() === "p") {
-
-        e.preventDefault();
-        return;
-
-    }
+    showTimer();
 
 });
-    //================================
-// EXAM SECURITY SYSTEM
-//================================
 
-// Check if Exam is Running
-//================================
+
+
+//====================================================
+// END OF PART 3B
+//====================================================
+//====================================================
+// PART 4A
+// EXAM SECURITY
+//====================================================
+
+
+//====================================================
 // CHECK EXAM RUNNING
-//================================
+//====================================================
 
-function isExamRunning(){
-
+function isExamRunning() {
 
     const examArea =
-    document.getElementById("examArea");
-
+        document.getElementById("examArea");
 
     return (
 
-        examStarted === true &&
+        examStarted &&
+
+        !examSubmitted &&
 
         examArea &&
 
-        !examArea.classList.contains("hidden") &&
-
-        !examSubmitted
+        !examArea.classList.contains("hidden")
 
     );
-
 
 }
 
 
 
-//================================
-// AUTO SUBMIT
-//================================
+//====================================================
+// SECURITY SUBMIT
+//====================================================
 
-function securitySubmit(reason){
+function securitySubmit(reason) {
 
-    if(examSubmitted) return;
+    if (!isExamRunning()) return;
+
+    if (examSubmitted) return;
 
     submitReason = reason;
 
@@ -1221,268 +2294,512 @@ function securitySubmit(reason){
 
 
 
-//================================
-// WARNING SYSTEM
-//================================
+//====================================================
+// GIVE WARNING
+//====================================================
 
-function giveFocusWarning(reason){
+function giveFocusWarning(reason) {
 
-    // Security sirf exam ke dauran
-    if(!isExamRunning()) return;
+    //----------------------------------
+    // Security only during exam
+    //----------------------------------
 
-    // Agar already submit ho gaya
-    if(examSubmitted) return;
+    if (!isExamRunning()) return;
 
-    // Ek hi event ko baar-baar fire hone se roko
-    if(focusLock) return;
+    //----------------------------------
+    // Already submitted
+    //----------------------------------
+
+    if (examSubmitted) return;
+
+    //----------------------------------
+    // Prevent duplicate alerts
+    //----------------------------------
+
+    if (focusLock) return;
 
     focusLock = true;
 
-    // Warning Count
     focusWarnings++;
 
-    // 3 Warnings = Auto Submit
-    if(focusWarnings >= MAX_FOCUS_WARNING){
+    //----------------------------------
+    // Auto Submit
+    //----------------------------------
+
+    if (focusWarnings >= MAX_FOCUS_WARNING) {
 
         submitReason = reason;
 
         alert(
-            "❌ 3 Warnings Completed.\n\nYour test has been submitted automatically."
+
+            "❌ Maximum warnings reached.\n\n" +
+
+            "Your test has been submitted automatically."
+
         );
 
-        submitTest(true);
+        securitySubmit(reason);
 
         return;
+
     }
 
-    // Warning Alert
+    //----------------------------------
+    // Warning Message
+    //----------------------------------
+
     alert(
+
         "⚠ Warning " +
-        focusWarnings + "/" + MAX_FOCUS_WARNING +
-        "\n\n" + reason +
-        "\n\nNext violation will lead to auto submit."
+
+        focusWarnings +
+
+        "/" +
+
+        MAX_FOCUS_WARNING +
+
+        "\n\n" +
+
+        reason +
+
+        "\n\nPlease continue the exam carefully."
+
     );
 
-    // Fullscreen me wapas lane ki koshish
-    if(
+    //----------------------------------
+    // Re-enter Fullscreen
+    //----------------------------------
+
+    if (
+
         !document.fullscreenElement &&
+
         document.documentElement.requestFullscreen
-    ){
-        document.documentElement.requestFullscreen().catch(function(){});
+
+    ) {
+
+        document.documentElement
+
+            .requestFullscreen()
+
+            .catch(function () {});
+
     }
 
-    // Lock release
-    setTimeout(function(){
+    //----------------------------------
+    // Unlock
+    //----------------------------------
 
-        if(!examSubmitted){
+    setTimeout(function () {
+
+        if (!examSubmitted) {
+
             focusLock = false;
+
         }
 
-    },800);
+    }, 1000);
 
 }
-//================================
-// TAB CHANGE / MINIMIZE
-//================================
+
+
+
+//====================================================
+// RIGHT CLICK
+//====================================================
 
 document.addEventListener(
-"visibilitychange",
-function(){
 
+    "contextmenu",
 
-if(document.hidden && isExamRunning()){
-    giveFocusWarning("Tab changed or browser minimized.");
-}
+    function (e) {
 
+        if (isExamRunning()) {
 
-});
+            e.preventDefault();
 
+        }
 
-
-//================================
-// FULLSCREEN EXIT
-//================================
-
-document.addEventListener("fullscreenchange",function(){
-
-    if(!isExamRunning()) return;
-
-    if(!document.fullscreenElement){
-        giveFocusWarning("Fullscreen mode exited.");
     }
 
-});
-
-
-//================================
-// REFRESH / CLOSE WARNING
-//================================
-
-window.addEventListener("beforeunload", function (e) {
-
-    if (!isExamRunning()) return;
-
-    e.preventDefault();
-    e.returnValue = "";
-
-});
+);
 
 
 
-//================================
-// BACK BUTTON BLOCK
-//================================
+//====================================================
+// COPY
+//====================================================
 
-history.pushState(null,"",location.href);
+document.addEventListener(
 
+    "copy",
+
+    function (e) {
+
+        if (isExamRunning()) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+
+
+
+//====================================================
+// CUT
+//====================================================
+
+document.addEventListener(
+
+    "cut",
+
+    function (e) {
+
+        if (isExamRunning()) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+
+
+
+//====================================================
+// PASTE
+//====================================================
+
+document.addEventListener(
+
+    "paste",
+
+    function (e) {
+
+        if (isExamRunning()) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+
+
+
+//====================================================
+// DRAG
+//====================================================
+
+document.addEventListener(
+
+    "dragstart",
+
+    function (e) {
+
+        if (isExamRunning()) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+
+
+
+//====================================================
+// TEXT SELECT
+//====================================================
+
+document.addEventListener(
+
+    "selectstart",
+
+    function (e) {
+
+        if (isExamRunning()) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+
+
+
+//====================================================
+// KEYBOARD SECURITY
+//====================================================
+
+document.addEventListener(
+
+    "keydown",
+
+    function (e) {
+
+        if (!isExamRunning()) return;
+
+        const key =
+            e.key.toLowerCase();
+
+        //----------------------------------
+
+        if (e.key === "F12") {
+
+            e.preventDefault();
+
+        }
+
+        //----------------------------------
+
+        if (e.ctrlKey && key === "u") {
+
+            e.preventDefault();
+
+        }
+
+        //----------------------------------
+
+        if (
+
+            e.ctrlKey &&
+
+            e.shiftKey &&
+
+            (
+
+                key === "i" ||
+
+                key === "j" ||
+
+                key === "c"
+
+            )
+
+        ) {
+
+            e.preventDefault();
+
+        }
+
+        //----------------------------------
+
+        if (
+
+            e.ctrlKey &&
+
+            (
+
+                key === "s" ||
+
+                key === "p"
+
+            )
+
+        ) {
+
+            e.preventDefault();
+
+        }
+
+    }
+
+);
+//====================================================
+// PART 4B
+// SECURITY EVENTS
+//====================================================
+
+
+//====================================================
+// TAB CHANGE / MINIMIZE
+//====================================================
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (!isExamRunning()) {
+            return;
+        }
+
+        if (document.hidden) {
+
+            giveFocusWarning(
+                "Tab changed or browser minimized."
+            );
+
+        }
+
+    }
+);
+
+
+
+//====================================================
+// FULLSCREEN EXIT
+//====================================================
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+        if (!isExamRunning()) {
+            return;
+        }
+
+        if (!document.fullscreenElement) {
+
+            giveFocusWarning(
+                "Fullscreen mode exited."
+            );
+
+        }
+
+    }
+);
+
+
+
+//====================================================
+// WINDOW LOST FOCUS
+//====================================================
 
 window.addEventListener(
-"popstate",
-function(){
+    "blur",
+    function () {
 
+        if (!isExamRunning()) {
+            return;
+        }
 
-history.pushState(null,"",location.href);
+        // Ignore if browser is still visible
+        if (!document.hidden) {
 
+            giveFocusWarning(
+                "Window lost focus."
+            );
 
+        }
 
-if(isExamRunning()){
-
-
-giveFocusWarning(
-"Back button is not allowed."
+    }
 );
 
 
-}
 
+//====================================================
+// BEFORE REFRESH / CLOSE
+//====================================================
 
-});
-    //================================
-// RESET EXAM
-//================================
+window.addEventListener(
+    "beforeunload",
+    function (e) {
 
-function resetExam() {
+        if (!isExamRunning()) {
+            return;
+        }
 
-    studentName = "";
-    regNo = "";
-    paperName = "";
+        e.preventDefault();
 
-    questions = [];
-    answers = [];
-
-    currentQuestion = 0;
-
-    examSubmitted = false;
-
-    submitReason = "Manual Submit";
-
-    focusWarnings = 0;
-
-    focusLock = false;
-
-    examStarted = false;
-
-    securityActive = false;
-
-
-    stopTimer();
-
-
-    totalTime = 30 * 60;
-
-    showTimer();
-
-}
-
-
-
-//================================
-// RESTART LOGIN PAGE
-//================================
-
-function goLogin() {
-
-    resetExam();
-
-    document.getElementById("loginPage").classList.remove("hidden");
-
-    document.getElementById("waitingPage").classList.add("hidden");
-
-    document.getElementById("testPage").classList.add("hidden");
-
-    document.getElementById("successPage").classList.add("hidden");
-
-    document.getElementById("studentName").value = "";
-
-    document.getElementById("regNo").value = "";
-
-}
-
-
-
-//================================
-// SHOW SUCCESS
-//================================
-
-function logoutExam() {
-
-    if(confirm("Do you want to exit the test?")){
-
-        goLogin();
+        e.returnValue = "";
 
     }
-
-}
-
+);
 
 
-//================================
-// CLEAR WAITING TIMER
-//================================
 
-function stopStatusChecker(){
+//====================================================
+// BLOCK BACK BUTTON
+//====================================================
 
-    if(statusChecker!=null){
+history.pushState(
+    null,
+    "",
+    location.href
+);
 
-        clearInterval(statusChecker);
+window.addEventListener(
+    "popstate",
+    function () {
 
-        statusChecker=null;
+        history.pushState(
+            null,
+            "",
+            location.href
+        );
+
+        if (!isExamRunning()) {
+            return;
+        }
+
+        giveFocusWarning(
+            "Back button is not allowed."
+        );
 
     }
-
-}
-
-
-
-//================================
-// WINDOW LOAD SAFETY
-//================================
-
-window.addEventListener("load",function(){
-
-    showTimer();
-
-});
+);
 
 
 
-//================================
-// END OF SCRIPT
-//================================
+//====================================================
+// PAGE HIDE (Mobile Support)
+//====================================================
+
+window.addEventListener(
+    "pagehide",
+    function () {
+
+        if (!isExamRunning()) {
+            return;
+        }
+
+        giveFocusWarning(
+            "Page was hidden."
+        );
+
+    }
+);
+
+
+
+//====================================================
+// WINDOW RESIZE
+//====================================================
+
+window.addEventListener(
+    "resize",
+    function () {
+
+        if (!isExamRunning()) {
+            return;
+        }
+
+        if (!document.fullscreenElement) {
+
+            giveFocusWarning(
+                "Fullscreen mode exited."
+            );
+
+        }
+
+    }
+);
+
+
+
+//====================================================
+// END OF SECURITY
+//====================================================
 
 console.log(
-"IKON ONLINE TEST SYSTEM LOADED SUCCESSFULLY"
+    "Security System Loaded Successfully"
 );
-function loadStudentPhoto(regNo) {
-
-    const img = document.getElementById("studentPhoto");
-
-    // Root folder me image
-    img.src = regNo + ".jpeg";
-
-    img.onerror = function () {
-        this.onerror = null;
-        this.src = regNo + ".jpeg";
-    };
-
-}
