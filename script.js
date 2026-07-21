@@ -107,57 +107,7 @@ let securityActive = false;
 // FULLSCREEN SECURITY
 //================================
 
-document.addEventListener("fullscreenchange", function(){
 
-
-    let examArea = document.getElementById("examArea");
-
-
-   if(
-    examStarted &&
-    !document.fullscreenElement &&
-    !examSubmitted &&
-    !focusLock
-){
-
-
-        focusWarnings++;
-
-
-        if(focusWarnings < MAX_FOCUS_WARNING){
-
-            alert(
-            "⚠️ Warning "+focusWarnings+"/"+MAX_FOCUS_WARNING+
-            "\n\nPlease remain in fullscreen mode."
-            );
-
-        }
-
-
-
-        if(focusWarnings >= MAX_FOCUS_WARNING){
-
-
-            focusLock = true;
-
-            submitReason =
-            "Auto Submit - Fullscreen Exit";
-
-
-            alert(
-            "❌ 3 warnings complete.\nTest submitted."
-            );
-
-
-            submitTest(true);
-
-        }
-
-
-    }
-
-
-});
 
 //================================
 // PAGE LOAD
@@ -995,6 +945,9 @@ function submitTest(autoSubmit = false) {
         return;
     }
 
+    // ADD THIS LINE
+    focusLock = true;
+
     examSubmitted = true;
 
     // Manual Confirmation
@@ -1007,6 +960,7 @@ function submitTest(autoSubmit = false) {
         if (!ok) {
 
             examSubmitted = false;
+            focusLock = false; // Optional but recommended
             return;
 
         }
@@ -1050,36 +1004,34 @@ function submitTest(autoSubmit = false) {
 
     fetch(SCRIPT_URL, {
 
-    method:"POST",
+        method:"POST",
 
-    body:JSON.stringify(data)
+        body:JSON.stringify(data)
 
-})
-.then(res=>res.text())
+    })
+    .then(res=>res.text())
+    .then(result=>{
 
-.then(result=>{
+        console.log(result);
 
-    console.log(result);
+        if(result.trim()=="SUCCESS"){
 
-    if(result.trim()=="SUCCESS"){
+            showSuccess();
 
-        showSuccess();
+        } else {
 
-    }
-    else{
+            alert(result);
 
-        alert(result);
+        }
 
-    }
+    })
+    .catch(err=>{
 
-})
-.catch(err=>{
+        console.log(err);
 
-    console.log(err);
+        alert("Unable to submit responses");
 
-    alert("Unable to submit responses");
-
-});
+    });
 
 }
     //================================
@@ -1090,6 +1042,9 @@ function showSuccess() {
 
     // Stop Timer
     stopTimer();
+    examStarted = false;
+    examSubmitted = true;
+    focusLock = true;
 
     // Hide Pages
     document.getElementById("testPage")?.classList.add("hidden");
@@ -1254,18 +1209,11 @@ function isExamRunning(){
 // AUTO SUBMIT
 //================================
 
-function securitySubmit(reason) {
+function securitySubmit(reason){
 
-    if (examSubmitted) return;
+    if(examSubmitted) return;
 
     submitReason = reason;
-
-    examSubmitted = true;
-
-    alert(
-        "⚠ Test Submitted Automatically.\n\nReason:\n" +
-        reason
-    );
 
     submitTest(true);
 
@@ -1279,74 +1227,60 @@ function securitySubmit(reason) {
 
 function giveFocusWarning(reason){
 
+    // Security sirf exam ke dauran
+    if(!isExamRunning()) return;
 
-    if(!isExamRunning()){
+    // Agar already submit ho gaya
+    if(examSubmitted) return;
 
-        return;
+    // Ek hi event ko baar-baar fire hone se roko
+    if(focusLock) return;
 
-    }
+    focusLock = true;
 
-
-    if(focusLock){
-
-        return;
-
-    }
-
-
-    focusLock=true;
-
-
+    // Warning Count
     focusWarnings++;
 
-
-
+    // 3 Warnings = Auto Submit
     if(focusWarnings >= MAX_FOCUS_WARNING){
-
 
         submitReason = reason;
 
-
         alert(
-        "❌ Test Automatically Submitted\n\nReason:\n"
-        +reason
+            "❌ 3 Warnings Completed.\n\nYour test has been submitted automatically."
         );
-
 
         submitTest(true);
 
-
         return;
-
-
     }
 
-
-
+    // Warning Alert
     alert(
-
-    "⚠ Warning "
-    +focusWarnings+
-    "/"+MAX_FOCUS_WARNING+
-    "\n\n"+
-    reason
-
+        "⚠ Warning " +
+        focusWarnings + "/" + MAX_FOCUS_WARNING +
+        "\n\n" + reason +
+        "\n\nNext violation will lead to auto submit."
     );
 
+    // Fullscreen me wapas lane ki koshish
+    if(
+        !document.fullscreenElement &&
+        document.documentElement.requestFullscreen
+    ){
+        document.documentElement.requestFullscreen().catch(function(){});
+    }
 
+    // Lock release
+    setTimeout(function(){
 
-    setTimeout(()=>{
+        if(!examSubmitted){
+            focusLock = false;
+        }
 
-        focusLock=false;
-
-    },1000);
-
-
+    },800);
 
 }
-
-
-
 //================================
 // TAB CHANGE / MINIMIZE
 //================================
@@ -1356,14 +1290,8 @@ document.addEventListener(
 function(){
 
 
-if(document.hidden){
-
-
-    giveFocusWarning(
-    "Tab changed or browser minimized."
-    );
-
-
+if(document.hidden && isExamRunning()){
+    giveFocusWarning("Tab changed or browser minimized.");
 }
 
 
@@ -1375,27 +1303,15 @@ if(document.hidden){
 // FULLSCREEN EXIT
 //================================
 
-document.addEventListener(
-"fullscreenchange",
-function(){
+document.addEventListener("fullscreenchange",function(){
 
+    if(!isExamRunning()) return;
 
-if(
-isExamRunning() &&
-!document.fullscreenElement
-){
-
-
-giveFocusWarning(
-"Fullscreen mode exited."
-);
-
-
-}
-
+    if(!document.fullscreenElement){
+        giveFocusWarning("Fullscreen mode exited.");
+    }
 
 });
-
 
 
 //================================
