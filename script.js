@@ -790,13 +790,13 @@ function openTest() {
     .getElementById("verificationPage")
     ?.classList.remove("hidden");
 
-    document
-        .getElementById("instructionPage")
-        ?.classList.remove("hidden");
+document
+    .getElementById("instructionPage")
+    ?.classList.add("hidden");
 
-    document
-        .getElementById("examArea")
-        ?.classList.add("hidden");
+document
+    .getElementById("examArea")
+    ?.classList.add("hidden");
 
     //------------------------------------------
     // Rules Checkbox
@@ -1041,109 +1041,6 @@ function showRandomLine() {
 //====================================================
 // OPEN TEST
 //====================================================
-
-function openTest() {
-
-    //------------------------------------------
-    // Stop Waiting Timer
-    //------------------------------------------
-
-    stopStatusChecker();
-
-    //------------------------------------------
-    // Reset Flags
-    //------------------------------------------
-
-    examSubmitted = false;
-
-    submitReason = "Manual Submit";
-
-    focusWarnings = 0;
-
-    focusLock = false;
-
-    //------------------------------------------
-    // Hide Other Pages
-    //------------------------------------------
-
-    document
-        .getElementById("loginPage")
-        ?.classList.add("hidden");
-
-    document
-        .getElementById("waitingPage")
-        ?.classList.add("hidden");
-
-    //------------------------------------------
-    // Show Test Page
-    //------------------------------------------
-
-    document
-        .getElementById("testPage")
-        ?.classList.remove("hidden");
-
-    //------------------------------------------
-    // Student Details
-    //------------------------------------------
-
-    const nameBox =
-        document.getElementById("showName");
-
-    const regBox =
-        document.getElementById("showReg");
-
-    const paperBox =
-        document.getElementById("showPaper");
-
-    if (nameBox)
-        nameBox.innerHTML = studentName;
-
-    if (regBox)
-        regBox.innerHTML = regNo;
-
-    if (paperBox)
-        paperBox.innerHTML = paperName;
-
-    //------------------------------------------
-    // Student Photo
-    //------------------------------------------
-
-    loadStudentPhoto(regNo);
-
-    //------------------------------------------
-    // Instructions
-    //------------------------------------------
-
-    document
-        .getElementById("instructionPage")
-        ?.classList.remove("hidden");
-
-    document
-        .getElementById("examArea")
-        ?.classList.add("hidden");
-
-    //------------------------------------------
-    // Rules Checkbox
-    //------------------------------------------
-
-    const check =
-        document.getElementById("acceptRules");
-
-    if (check)
-        check.checked = false;
-
-    //------------------------------------------
-    // Start Button
-    //------------------------------------------
-
-    const startBtn =
-        document.getElementById("startExamBtn");
-
-    if (startBtn)
-        startBtn.disabled = true;
-
-}
-
 
 
 //====================================================
