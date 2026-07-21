@@ -683,30 +683,6 @@ function stopStatusChecker() {
 // MOTIVATION LINES
 //====================================================
 
-const motivationLines = [
-
-    "Believe in yourself.",
-
-    "Stay calm and focused.",
-
-    "Every question is an opportunity.",
-
-    "Hard work always pays.",
-
-    "Success begins with confidence.",
-
-    "Stay positive and give your best.",
-
-    "Read every question carefully.",
-
-    "Confidence is your biggest strength.",
-
-    "You can do it!",
-
-    "Never lose your focus."
-
-];
-
 
 
 //====================================================
