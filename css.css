@@ -8,14 +8,7 @@
 /*========================
  RESET
 ========================*/
-#studentPhoto{
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-    margin: auto;
-}
+
 #studentPhoto{
     width: 200px;
     height: 200px;
@@ -91,14 +84,6 @@ body{
 
 
 
-/*========================
- HEADER
-========================*/
-
-
-/*========================
- HEADER FINAL CENTER FIX
-========================*/
 
 .header{
 
@@ -145,33 +130,11 @@ body{
 }
 
 
-#testTitle{
-
-    font-size:32px;
-
-    font-weight:800;
-
-    letter-spacing:1px;
-
-    margin-bottom:18px;
-
-}
 
 
 
 /* DATE TIME BOX */
 
-.header-right{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:15px;
-
-}
 
 
 .header-right .info-box{
@@ -1614,15 +1577,7 @@ button:disabled{
 
 
 
-    .header-left{
-
-
-        justify-content:center;
-
-
-    }
-
-
+  
 
     .header-right{
 
@@ -1637,16 +1592,7 @@ button:disabled{
 
 
 
-    #testTitle{
-
-
-        font-size:24px;
-
-
-    }
-
-
-
+ 
     .content{
 
 
@@ -1802,39 +1748,10 @@ button:disabled{
 
 
 }
-/* ==============================
-   FINAL HEADER PERFECT CENTER
-============================== */
 
-.header{
-
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-
-    background:linear-gradient(135deg,#005bea,#0b7cff);
-
-    padding:30px;
-
-}
 
 
 /* LOGO */
-
-.header-left{
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
 
 
 /* TITLE */
@@ -1888,37 +1805,11 @@ button:disabled{
 
 
 
-.header-right .info-box{
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    min-width:180px;
-
-    height:55px;
-
-    background:rgba(255,255,255,.20);
-
-    border-radius:15px;
-
-    color:white;
-
-    font-weight:700;
-
-}
 
 
 
 /* REMOVE SMALL */
-
-.header-right small{
-
-    display:none;
-
-}
 
 
 #testDate,
@@ -2031,23 +1922,6 @@ button:disabled{
     align-items:center !important;
 
     gap:20px;
-
-}
-
-
-.header-right .info-box{
-
-    min-width:180px;
-
-    padding:12px 20px;
-
-    background:rgba(255,255,255,.20);
-
-    border-radius:15px;
-
-    color:white;
-
-    text-align:center;
 
 }
 
