@@ -30,25 +30,6 @@ let passingMarks = "";
 // MOTIVATIONAL LINES
 //================================
 
-const motivationLines = [
-
-"Success is the sum of small efforts repeated day after day.",
-
-"Believe in yourself. You are capable of amazing things.",
-
-"Every exam is a step toward your dreams.",
-
-"Hard work always beats talent when talent doesn't work hard.",
-
-"Keep learning. Keep growing. Keep winning.",
-
-"Your future is created by what you do today.",
-
-"Small progress every day leads to big success.",
-
-"Never stop learning because life never stops teaching."
-
-];
 
 //====================================================
 // QUESTION DATA
@@ -722,10 +703,6 @@ function stopStatusChecker() {
 
 
 
-//====================================================
-// MOTIVATION LINES
-//====================================================
-
 
 
 //====================================================
@@ -1053,6 +1030,21 @@ const motivationLines = [
     "You can do it!",
 
     "Never lose your focus."
+ "Success is the sum of small efforts repeated day after day.",
+
+"Believe in yourself. You are capable of amazing things.",
+
+"Every exam is a step toward your dreams.",
+
+"Hard work always beats talent when talent doesn't work hard.",
+
+"Keep learning. Keep growing. Keep winning.",
+
+"Your future is created by what you do today.",
+
+"Small progress every day leads to big success.",
+
+"Never stop learning because life never stops teaching."
 
 ];
 
