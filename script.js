@@ -1029,7 +1029,7 @@ const motivationLines = [
 
     "You can do it!",
 
-    "Never lose your focus."
+    "Never lose your focus.",
  "Success is the sum of small efforts repeated day after day.",
 
 "Believe in yourself. You are capable of amazing things.",
