@@ -5,9 +5,16 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Official IKON Institute Online Test Portal. Student Login, Class Tests, MCQ Exams, Computer Courses, DCA, ADCA, Tally, MS Office, Power BI and Online Assessment System.">
-<meta name="google-site-verification" content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ" />
-<title>IKON Institute Online Test Portal | Student Login & Class Test</title>
+
+<meta name="description"
+content="Official IKON Institute Online Test Portal. Student Login, Class Tests, MCQ Exams, Computer Courses, DCA, ADCA, Tally, MS Office, Power BI and Online Assessment System.">
+
+<meta name="google-site-verification"
+content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ" />
+
+<title>
+IKON Institute Online Test Portal | Student Login & Class Test
+</title>
 
 <link rel="stylesheet" href="css.css">
 
@@ -22,18 +29,26 @@
 <div class="header">
 
     <div class="header-left">
-        <img src="ikon.jpg" class="logo" alt="IKON Logo">
+
+        <img
+            src="ikon.jpg"
+            class="logo"
+            alt="IKON Logo">
+
     </div>
 
     <div class="header-center">
+
         <h1 id="testTitle">
+
             IKON INSTITUTE CLASS TEST
+
         </h1>
+
     </div>
 
     <div class="header-right">
 
-   
     </div>
 
 </div>
@@ -41,7 +56,8 @@
 <!-- ================= CONTENT ================= -->
 
 <div class="content">
-    <!-- ================= LOGIN PAGE ================= -->
+
+<!-- ================= LOGIN PAGE ================= -->
 
 <div id="loginPage">
 
@@ -56,51 +72,66 @@
             id="regNo"
             placeholder="Enter Registration Number">
 
-       <label>Student Name</label>
+        <label>Student Name</label>
 
-<input
-    type="text"
-    id="studentName"
-    placeholder="Enter Student Name">
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter Student Name">
 
+        <label
+            id="paperLabel"
+            style="display:none;">
 
-<label id="paperLabel" style="display:none;">Select Paper</label>
+            Select Paper
 
-<select
-    id="paperSelect"
-    style="display:none;"
-    onchange="selectPaper()">
-</select>
+        </label>
 
-<button
-    id="loginBtn"
-    class="primary"
-    onclick="startTest()">
+        <select
+            id="paperSelect"
+            style="display:none;"
+            onchange="selectPaper()">
+        </select>
 
-    Start Test
+        <button
+            id="loginBtn"
+            class="primary"
+            onclick="startTest()">
 
-</button>
+            Start Test
+
+        </button>
 
     </div>
 
 </div>
 
-
 <!-- ================= WAITING PAGE ================= -->
 
-<div id="waitingPage" class="hidden">
+<div
+    id="waitingPage"
+    class="hidden">
 
     <div class="success-box">
 
-        <h2>⏳ Waiting For Test Start</h2>
+        <h2>
+            ⏳ Waiting For Test Start
+        </h2>
 
         <p id="motivationText">
-            Believe in yourself. Your hard work will bring success.
+
+            Believe in yourself.
+            Your hard work will bring success.
+
         </p>
 
         <p>
-            Please wait...<br>
+
+            Please wait...
+            <br>
+
             The test will start automatically.
+
         </p>
 
     </div>
@@ -109,26 +140,19 @@
 <!-- ================= TEST PAGE ================= -->
 
 <div id="testPage" class="hidden">
-    
 
-    <!-- TOP BAR -->
-
-  <div class="student-info">
-                 The test will start automatically.
-        </p>
-
-    </div>
-
-</div>
-<!-- ================= TEST PAGE ================= -->
-
- <!-- TIMER -->
-    <div id="timer" class="timer-box">00:00</div>
+    <!-- TIMER -->
+   
 
     <!-- STUDENT INFO -->
-    <div class="student-info">
 
-        <img id="studentPhoto" src="" class="student-photo" alt="Student Photo">
+    <div class="student-info">
+ <div id="timer" class="timer-box">00:00</div>
+        <img
+            id="studentPhoto"
+            src=""
+            class="student-photo"
+            alt="Student Photo">
 
         <div class="student-details">
 
@@ -166,17 +190,23 @@
 
     </div>
 
-    <!-- TOP INFO -->
+    <!-- EXAM TOP -->
+
     <div class="exam-top">
+
         <div id="progressText"></div>
+
     </div>
 
-    <!-- VERIFICATION PAGE -->
+    <!-- ================= VERIFICATION PAGE ================= -->
+
     <div id="verificationPage" class="hidden">
 
         <h2>Student Verification</h2>
 
-        <p>Please enter your Student ID to continue.</p>
+        <p>
+            Please enter your Student ID to continue.
+        </p>
 
         <input
             type="text"
@@ -188,61 +218,67 @@
         <button
             class="primary"
             onclick="verifyStudentID()">
+
             Verify
+
         </button>
 
     </div>
 
+    <!-- ================= INSTRUCTION PAGE ================= -->
 
-</div>
     <div id="instructionPage" class="hidden">
-        
 
-<h2>📋 Exam Instructions</h2>
+        <h2>📋 Exam Instructions</h2>
 
-<ul>
+        <ul>
 
-<li>Test शुरू होने के बाद Browser Tab Change या Window Switch करने पर warning मिलेगी।</li>
+            <li>Test शुरू होने के बाद Browser Tab Change या Window Switch करने पर warning मिलेगी.</li>
 
-<li>बार-बार Window Switch करने पर Test Automatically Submit हो जाएगा।</li>
+            <li>बार-बार Window Switch करने पर Test Automatically Submit हो जाएगा.</li>
 
-<li>किसी भी प्रकार का Copy, Paste या Right Click allowed नहीं है।</li>
+            <li>किसी भी प्रकार का Copy, Paste या Right Click allowed नहीं है.</li>
 
-<li>सभी प्रश्न ध्यान से पढ़कर सही विकल्प चुनें।</li>
+            <li>सभी प्रश्न ध्यान से पढ़कर सही विकल्प चुनें.</li>
 
-<li>Test Timer खत्म होने पर Test Automatically Submit हो जाएगा।</li>
+            <li>Test Timer खत्म होने पर Test Automatically Submit हो जाएगा.</li>
 
-<li>Test के दौरान Full Screen में रहें।</li>
+            <li>Test के दौरान Full Screen में रहें.</li>
 
-<li>Internet connection stable रखें।</li>
-<li>Passing Marks is 40</li>
-</ul>
+            <li>Internet connection stable रखें.</li>
 
+            <li>Passing Marks is 40.</li>
 
-<label>
+        </ul>
 
-<input type="checkbox" id="acceptRules" onchange="enableStartExam()">
+        <label>
 
-I have read and accept all instructions.
+            <input
+                type="checkbox"
+                id="acceptRules"
+                onchange="enableStartExam()">
 
-</label>
+            I have read and accept all instructions.
 
+        </label>
 
-<br><br>
+        <br><br>
 
+        <button
+            id="startExamBtn"
+            onclick="startExam()"
+            disabled>
 
-<button id="startExamBtn" 
-onclick="startExam()" disabled>
+            Start Exam
 
-Start Exam
+        </button>
 
-</button>
+    </div>
 
+    <!-- ================= EXAM AREA ================= -->
 
-</div>
     <div id="examArea" class="hidden">
-
-    <!-- PROGRESS BAR -->
+            <!-- ================= PROGRESS BAR ================= -->
 
     <div class="progress">
 
@@ -253,10 +289,11 @@ Start Exam
 
     </div>
 
-    <!-- QUESTION AREA START -->
+    <!-- ================= QUESTION AREA ================= -->
 
     <div class="quiz-layout">
-                <!-- ================= LEFT QUESTION CARD ================= -->
+
+        <!-- LEFT PANEL -->
 
         <div class="question-card">
 
@@ -277,8 +314,7 @@ Start Exam
 
         </div>
 
-
-        <!-- ================= RIGHT QUESTION PALETTE ================= -->
+        <!-- RIGHT PANEL -->
 
         <div class="question-panel">
 
@@ -289,46 +325,48 @@ Start Exam
         </div>
 
     </div>
-    <!-- quiz-layout END -->
 
+    <!-- ================= NAVIGATION ================= -->
 
-  <!-- ================= NAVIGATION ================= -->
+    <div class="navigation">
 
-<div class="navigation">
+        <button
+            id="prevBtn"
+            class="secondary"
+            onclick="previousQuestion()">
 
-    <button id="prevBtn"
-        class="secondary"
-        onclick="previousQuestion()">
+            ⬅ Previous
 
-        ⬅ Previous
+        </button>
 
-    </button>
+        <button
+            id="nextBtn"
+            class="primary"
+            onclick="nextQuestion()">
 
+            Next ➜
 
-    <button id="nextBtn"
-        class="primary"
-        onclick="nextQuestion()">
+        </button>
 
-        Next ➜
+    </div>
 
-    </button>
+    <!-- ================= SUBMIT ================= -->
+
+    <div class="submit-area">
+
+        <button
+            id="submitBtn"
+            class="success"
+            onclick="submitTest()">
+
+            ✅ Submit Test
+
+        </button>
+
+    </div>
 
 </div>
-
-
-<!-- ================= SUBMIT ================= -->
-
-<div class="submit-area">
-
-    <button id="submitBtn"
-        class="success"
-        onclick="submitTest()">
-
-        ✅ Submit Test
-
-    </button>
-
-</div>
+<!-- EXAM AREA END -->
 
 </div>
 <!-- TEST PAGE END -->
@@ -355,7 +393,7 @@ Start Exam
     </div>
 
 </div>
-</div>
+
 </div>
 <!-- CONTENT END -->
 
