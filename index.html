@@ -122,86 +122,77 @@
 </div>
 <!-- ================= TEST PAGE ================= -->
 
-<div id="testPage" class="hidden">
-     <div id="timer" class="timer">00:00</div>
+ <!-- TIMER -->
+    <div id="timer" class="timer-box">00:00</div>
 
-    <!-- TOP BAR -->
+    <!-- STUDENT INFO -->
+    <div class="student-info">
 
-  <div class="student-info">
+        <img id="studentPhoto" src="" class="student-photo" alt="Student Photo">
 
-    <img id="studentPhoto" src="" class="student-photo">
+        <div class="student-details">
 
-    <div class="student-details">
+            <div class="detail-box">
+                <span class="label">Name</span>
+                <span id="showName"></span>
+            </div>
 
-        <div class="detail-box">
-            <span class="label">Name</span>
+            <div class="detail-box">
+                <span class="label">Reg No</span>
+                <span id="showReg"></span>
+            </div>
 
-    <img id="studentPhoto" src="" class="student-photo">
+            <div class="detail-box">
+                <span class="label">Paper</span>
+                <span id="showPaper"></span>
+            </div>
 
-    <div class="student-details">
+            <div class="detail-box">
+                <span class="label">Course</span>
+                <span id="showCourse"></span>
+            </div>
 
-        <div class="detail-box">
-            <span class="label">Name</span>
-            <span id="showName"></span>
-        </div>
+            <div class="detail-box">
+                <span class="label">Total Marks</span>
+                <span id="showMarks"></span>
+            </div>
 
-        <div class="detail-box">
-            <span class="label">Reg No</span>
-            <span id="showReg"></span>
-        </div>
+            <div class="detail-box">
+                <span class="label">Passing Marks</span>
+                <span id="showPassingMarks"></span>
+            </div>
 
-        <div class="detail-box">
-            <span class="label">Paper</span>
-            <span id="showPaper"></span>
-        </div>
-
-        <div class="detail-box">
-            <span class="label">Course</span>
-            <span id="showCourse"></span>
-        </div>
-
-        <div class="detail-box">
-            <span class="label">Total Marks</span>
-            <span id="showMarks"></span>
-        </div>
-
-        <div class="detail-box">
-            <span class="label">Passing Marks</span>
-            <span id="showPassingMarks"></span>
         </div>
 
     </div>
 
-</div>
+    <!-- TOP INFO -->
     <div class="exam-top">
+        <div id="progressText"></div>
+    </div>
 
-    <div id="progressText"></div>
-
-   
-
-</div>
+    <!-- VERIFICATION PAGE -->
     <div id="verificationPage" class="hidden">
 
-    <h2>Student Verification</h2>
+        <h2>Student Verification</h2>
 
-    <p>
-        Please enter your Student ID to continue.
-    </p>
+        <p>Please enter your Student ID to continue.</p>
 
-    <input
-        type="text"
-        id="studentIdInput"
-        placeholder="Enter Student ID">
+        <input
+            type="text"
+            id="studentIdInput"
+            placeholder="Enter Student ID">
 
-    <br><br>
+        <br><br>
 
-    <button
-        class="primary"
-        onclick="verifyStudentID()">
+        <button
+            class="primary"
+            onclick="verifyStudentID()">
+            Verify
+        </button>
 
-        Verify
+    </div>
 
-    </button>
 
 </div>
     <div id="instructionPage" class="hidden">
