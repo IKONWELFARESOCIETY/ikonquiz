@@ -26,7 +26,29 @@ let studentId = "";
 let courseName = "";
 let totalMarks = "";
 let passingMarks = "";
+//================================
+// MOTIVATIONAL LINES
+//================================
 
+const motivationLines = [
+
+"Success is the sum of small efforts repeated day after day.",
+
+"Believe in yourself. You are capable of amazing things.",
+
+"Every exam is a step toward your dreams.",
+
+"Hard work always beats talent when talent doesn't work hard.",
+
+"Keep learning. Keep growing. Keep winning.",
+
+"Your future is created by what you do today.",
+
+"Small progress every day leads to big success.",
+
+"Never stop learning because life never stops teaching."
+
+];
 
 //====================================================
 // QUESTION DATA
@@ -2006,6 +2028,22 @@ function showSuccess() {
 
     document.getElementById("successPage")
         ?.classList.remove("hidden");
+
+    //------------------------------------------
+    // Show Student Name
+    //------------------------------------------
+
+    document.getElementById("thankStudent").innerHTML =
+        "Thank You, <b>" + studentName + "</b>";
+
+    //------------------------------------------
+    // Random Motivational Line
+    //------------------------------------------
+
+    let random = Math.floor(Math.random() * motivationLines.length);
+
+    document.getElementById("motivationLine").innerText =
+        motivationLines[random];
 
 }
 
