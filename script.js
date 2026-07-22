@@ -23,6 +23,9 @@ let regNo = "";
 let paperName = "";
 let paperList = [];
 let studentId = "";
+let courseName = "";
+let totalMarks = "";
+let passingMarks = "";
 
 
 //====================================================
@@ -403,6 +406,9 @@ function startTest() {
 
             regNo = data.regNo;
             studentId = data.idNo;
+         courseName = data.course;
+        totalMarks = data.totalMarks;
+        passingMarks = data.passingMarks;
 
             paperList = data.papers || [];
 
@@ -790,6 +796,9 @@ function openTest() {
 
     if (paperBox)
         paperBox.innerHTML = paperName;
+    document.getElementById("showCourse").innerHTML = courseName;
+document.getElementById("showMarks").innerHTML = totalMarks;
+document.getElementById("showPassingMarks").innerHTML = passingMarks;
 
     //------------------------------------------
     // Student Photo
