@@ -152,6 +152,13 @@
     </div>
 
 </div>
+    <div class="exam-top">
+
+    <div id="progressText"></div>
+
+    <div id="timer" class="timer">00:00</div>
+
+</div>
     <div id="verificationPage" class="hidden">
 
     <h2>Student Verification</h2>
@@ -196,7 +203,7 @@
 <li>Test के दौरान Full Screen में रहें।</li>
 
 <li>Internet connection stable रखें।</li>
-
+<li>Passing Marks is 40</li>
 </ul>
 
 
@@ -277,7 +284,7 @@ Start Exam
 
 <div class="navigation">
 
-    <button
+    <button id="prevBtn"
         class="secondary"
         onclick="previousQuestion()">
 
@@ -286,7 +293,7 @@ Start Exam
     </button>
 
 
-    <button
+    <button id="nextBtn"
         class="primary"
         onclick="nextQuestion()">
 
@@ -301,7 +308,7 @@ Start Exam
 
 <div class="submit-area">
 
-    <button
+    <button id="submitBtn"
         class="success"
         onclick="submitTest()">
 
