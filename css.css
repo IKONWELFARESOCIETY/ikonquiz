@@ -1942,3 +1942,45 @@ button:disabled{
     font-weight:700;
 
 }
+.student-info{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.student-details{
+    flex:1;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.detail-box{
+    background:#ffffff;
+    border:1px solid #dbe4f0;
+    border-radius:12px;
+    padding:12px 15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.detail-box .label{
+    display:block;
+    font-size:13px;
+    color:#0066cc;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.detail-box span:last-child{
+    font-size:16px;
+    font-weight:600;
+    color:#222;
+}
+
+.student-photo{
+    width:140px;
+    height:170px;
+    object-fit:cover;
+    border-radius:10px;
+    border:3px solid #0b7cff;
+}
