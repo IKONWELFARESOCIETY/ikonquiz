@@ -1863,7 +1863,8 @@ function submitTest(autoSubmit = false) {
 
         submitReason: submitReason,
 
-        answers: answers
+        answers: answers,
+         
 
     };
 
