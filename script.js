@@ -1866,7 +1866,7 @@ function submitTest(autoSubmit = false) {
     //------------------------------------------
     // Data
     //------------------------------------------
-
+const unattemptedCount = answers.filter(answer => answer === "").length;
     const payload = {
 
         name: studentName,
@@ -1878,8 +1878,8 @@ function submitTest(autoSubmit = false) {
         submitReason: submitReason,
 
         answers: answers,
-        questions: questions
-         
+        questions: questions,
+     unattempted: unattemptedCount
 
     };
 
