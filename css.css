@@ -25,8 +25,8 @@
 
     text-align:center;
 
-    font-size:18px;
-    font-weight:700;
+    font-size:35px;
+    font-weight:800;
     color:#fff;
 
     background:rgba(255,255,255,.18);
@@ -222,16 +222,6 @@ body{
 }
 
 
-#testDate,
-#testTime{
-
-    color:white;
-
-    font-size:15px;
-
-    font-weight:700;
-
-}
 
 
 /*========================
@@ -291,17 +281,8 @@ body{
 
 
 
-#testDate,
-#testTime{
 
 
-    font-size:15px;
-
-    font-weight:700;
-
-    color:white;
-
-}
 
 
 
@@ -1868,16 +1849,7 @@ button:disabled{
 /* REMOVE SMALL */
 
 
-#testDate,
-#testTime{
 
-    color:white;
-
-    font-size:16px;
-
-    font-weight:700;
-
-}
 /* ==============================
  FINAL HEADER FIX
 ============================== */
@@ -1990,14 +1962,6 @@ button:disabled{
 }
 
 
-#testDate,
-#testTime{
-
-    color:white !important;
-
-    font-weight:700;
-
-}
 /*==========================
  PREMIUM STUDENT INFO
 ==========================*/
