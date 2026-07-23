@@ -93,13 +93,8 @@ function initializeSystem() {
     console.log("IKON ONLINE TEST SYSTEM");
 
     loadExamSettings();
-
     loadDuration();
-
-
-
-    loadTestTime();
-
+    loadTestDate();
     showTimer();
 
 }
@@ -249,7 +244,30 @@ function loadTestTime() {
         });
 
 }
+function loadTestDate() {
 
+    fetch(SCRIPT_URL + "?action=testDate")
+    .then(res => res.text())
+    .then(date => {
+
+        const box = document.getElementById("testDate");
+
+        if(box){
+            box.innerHTML = "📅 Exam Date : " + date;
+        }
+
+    })
+    .catch(() => {
+
+        const box = document.getElementById("testDate");
+
+        if(box){
+            box.innerHTML = "📅 Exam Date : --";
+        }
+
+    });
+
+}
 
 
 //====================================================
