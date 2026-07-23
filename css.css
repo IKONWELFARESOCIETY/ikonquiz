@@ -66,8 +66,8 @@
     box-shadow:0 8px 25px rgba(0,0,0,.25);
 }
 #studentPhoto{
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     display: block;
     margin: auto;
@@ -992,7 +992,7 @@ button:disabled{
 
 
     align-items:start;
-
+    height:520px;
 
 }
 
@@ -1015,11 +1015,10 @@ button:disabled{
     border-radius:25px;
 
 
-    box-shadow:
+    box-shadow:  0 15px 40px rgba(0,0,0,.10);
+     height:450px;
 
-
-    0 15px 40px rgba(0,0,0,.10);
-
+    overflow-y:auto;
 
 }
 
@@ -1335,7 +1334,11 @@ button:disabled{
     gap:20px;
 
 
-    margin-top:25px;
+     margin-top:15px;
+
+    position:relative;
+
+    z-index:5;
 
 
 }
@@ -1696,7 +1699,9 @@ button:disabled{
 
 
         order:-1;
+         max-height:520px;
 
+    overflow-y:auto;
 
     }
 
