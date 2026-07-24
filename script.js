@@ -1425,18 +1425,20 @@ function loadQuestion() {
             saveAnswer(index);
 
         };
-
-        const span =
-            document.createElement("span");
-
-        span.innerHTML = option;
-
+        const letters = ["A","B","C","D"];
+        
+        const letter = document.createElement("span");
+        letter.className = "option-letter";
+        letter.innerHTML = letters[index] + ".";
+        
+        const text = document.createElement("span");
+        text.className = "option-text";
+        text.innerHTML = option;
+        
         label.appendChild(input);
-
-        label.appendChild(span);
-
+        label.appendChild(letter);
+        label.appendChild(text);
         optionBox.appendChild(label);
-
     });
 
     //------------------------------------------
