@@ -1082,87 +1082,58 @@ button:disabled{
 /* OPTIONS */
 
 
-.options{
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-    gap:15px;
-
-
-}
-
-
+/*==============================
+OPTION DESIGN
+==============================*/
 
 .option{
-
-
     display:flex;
-
-
     align-items:center;
-
-
-    gap:12px;
-
-
-    background:#f8fafc;
-
-
-    border:2px solid #e2e8f0;
-
-
-    padding:16px;
-
-
-    border-radius:15px;
-
-
+    gap:15px;
+    padding:14px 18px;
+    margin:12px 0;
+    background:#fff;
+    border:2px solid #d8dee9;
+    border-radius:10px;
     cursor:pointer;
-
-
-    transition:.3s;
-
-
-    font-size:16px;
-
-
+    transition:.25s;
 }
-
-
 
 .option:hover{
-
-
-    border-color:#007bff;
-
-
-    background:#eff6ff;
-
-
-    transform:translateX(5px);
-
-
+    border-color:#0d6efd;
+    background:#f5f9ff;
+    box-shadow:0 4px 12px rgba(13,110,253,.15);
 }
 
+.option input[type="radio"]{
+    transform:scale(1.2);
+    cursor:pointer;
+}
 
+.option-letter{
+    width:36px;
+    height:36px;
+    min-width:36px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    font-weight:bold;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
 
-.option input{
+.option-text{
+    flex:1;
+    font-size:16px;
+    color:#222;
+    font-weight:500;
+    line-height:1.5;
+}
 
-
-    width:18px;
-
-
-    height:18px;
-
-
-    accent-color:#0047ab;
-
-
+.option input[type="radio"]:checked + .option-letter{
+    background:#28a745;
 }
 /*==================================================
  IKON ONLINE TEST SYSTEM
