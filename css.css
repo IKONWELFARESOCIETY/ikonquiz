@@ -992,7 +992,7 @@ button:disabled{
 
 
     align-items:start;
-    height:520px;
+   
 
 }
 
@@ -1016,7 +1016,7 @@ button:disabled{
 
 
     box-shadow:  0 15px 40px rgba(0,0,0,.10);
-     height:450px;
+
 
     overflow-y:auto;
 
@@ -1297,31 +1297,17 @@ OPTION DESIGN
 
 
 .navigation{
-
-
     display:flex;
-
-
-    gap:20px;
-
-
-     margin-top:15px;
-
-    position:relative;
-
-    z-index:5;
-
-
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-top:25px;
 }
 
-
-
 .navigation button{
-
-
-    flex:1;
-
-
+    flex:none;
+    width:150px;
+    height:48px;
 }
 
 
