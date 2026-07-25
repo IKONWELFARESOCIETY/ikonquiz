@@ -859,7 +859,21 @@ document
 
 }
 
+function openResultPortal() {
+    // Result page open karega
+}
 
+function loadStudentResults() {
+    // Google Sheet se data layega
+}
+
+function showResultList(data) {
+    // Student list dikhayega
+}
+
+function viewResult(regNo) {
+    // Professional result page dikhayega
+}
 
 //====================================================
 // ENABLE START BUTTON
