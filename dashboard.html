@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IKON Student Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Header -->
+
+    <header>
+
+        <img src="logo.png" class="logo">
+
+        <h1>IKON INSTITUTE</h1>
+
+        <p>Student Dashboard</p>
+
+    </header>
+
+    <!-- Student Card -->
+
+    <div class="student-card">
+
+        <img id="studentPhoto"
+        src="images/default.png">
+
+        <h2 id="studentName">Loading...</h2>
+
+        <p>
+            <b>Registration No :</b>
+            <span id="regNo"></span>
+        </p>
+
+        <p>
+            <b>Course :</b>
+            <span id="course"></span>
+        </p>
+
+    </div>
+
+    <!-- Buttons -->
+
+    <div class="menu">
+
+        <div class="card" onclick="startExam()">
+
+            <i class="fa-solid fa-laptop-file"></i>
+
+            <h3>Start Exam</h3>
+
+            <p>Attend Online Test</p>
+
+        </div>
+
+        <div class="card" onclick="viewResult()">
+
+            <i class="fa-solid fa-square-poll-vertical"></i>
+
+            <h3>View Result</h3>
+
+            <p>Check Published Results</p>
+
+        </div>
+
+        <div class="card logout" onclick="logout()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <h3>Logout</h3>
+
+            <p>Sign Out</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>
