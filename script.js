@@ -574,7 +574,7 @@ function selectPaper() {
 
     }
 
-    checkTestStatus();
+ 
 
 }
 //====================================================
@@ -586,73 +586,6 @@ function selectPaper() {
 //====================================================
 // CHECK TEST STATUS
 //====================================================
-
-function checkTestStatus() {
-
-    fetch(SCRIPT_URL + "?action=status")
-
-    .then(function (res) {
-
-        if (!res.ok) {
-
-            throw new Error("Unable to connect");
-
-        }
-
-        return res.text();
-
-    })
-
-    .then(function (status) {
-
-        status = status.trim().toUpperCase();
-
-        console.log("Current Status :", status);
-
-        //------------------------------------------
-        // TEST STARTED
-        //------------------------------------------
-
-        if (status === "ON") {
-            alert("STATUS ON");
-
-            openTest();
-
-            return;
-
-        }
-
-        //------------------------------------------
-        // WAITING PAGE
-        //------------------------------------------
-
-        const loginPage =
-            document.getElementById("loginPage");
-
-        const waitingPage =
-            document.getElementById("waitingPage");
-
-        if (loginPage)
-            loginPage.classList.add("hidden");
-
-        if (waitingPage)
-            waitingPage.classList.remove("hidden");
-
-        showRandomLine();
-
-        autoCheckStatus();
-
-    })
-
-    .catch(function (err) {
-
-        console.log(err);
-
-        alert("Unable to check exam status.");
-
-    });
-
-}
 
 
 
