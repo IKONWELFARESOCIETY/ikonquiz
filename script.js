@@ -2720,48 +2720,33 @@ console.log(
 // RESULT PORTAL
 //====================================================
 
-
 function openResultPage(){
 
-    document
-    .getElementById("loginPage")
-    ?.classList.add("hidden");
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
 
 
-    document
-    .getElementById("resultPage")
-    ?.classList.remove("hidden");
+document
+.getElementById("resultVerifyPage")
+.classList.remove("hidden");
+
 
 }
+function verifyStudentForResult(){
 
 
-
-function backToLogin(){
-
-    document
-    .getElementById("resultPage")
-    ?.classList.add("hidden");
-
-
-    document
-    .getElementById("loginPage")
-    ?.classList.remove("hidden");
-
-}
+let id =
+document
+.getElementById("studentIdVerify")
+.value
+.trim();
 
 
+if(id===""){
 
-
-function checkResult(){
-
-let reg =
-document.getElementById("resultRegNo")
-.value.trim();
-
-
-if(reg===""){
-
-alert("Enter Registration Number");
+alert("Enter Student ID");
 return;
 
 }
@@ -2770,94 +2755,46 @@ return;
 
 fetch(
 SCRIPT_URL+
-"?action=result&regNo="+
-encodeURIComponent(reg)
-
+"?action=resultVerify&id="+id
 )
 
-
 .then(res=>res.json())
-
 
 .then(data=>{
 
 
-if(data.status==="NOT_FOUND"){
+if(data.status==="VALID"){
 
 
-document.getElementById("resultBox")
-.innerHTML =
-"No Result Found";
+document
+.getElementById("resultVerifyPage")
+.classList.add("hidden");
 
 
-return;
+document
+.getElementById("studentResultList")
+.classList.remove("hidden");
+
+
+loadStudentList();
+
+
+}
+
+else{
+
+
+alert("Invalid Student ID");
+
 
 }
 
 
-
-document.getElementById("resultBox")
-.innerHTML = `
-
-
-<h3>${data.name}</h3>
-
-<p>
-Registration No :
-${data.regNo}
-</p>
-
-
-<p>
-Paper :
-${data.paper}
-</p>
-
-
-<p>
-Total Questions :
-${data.total}
-</p>
-
-
-<p>
-Correct :
-${data.correct}
-</p>
-
-
-<p>
-Wrong :
-${data.wrong}
-</p>
-
-
-<p>
-Unattempted :
-${data.unattempted}
-</p>
-
-
-<p>
-Marks :
-${data.marks}
-</p>
-
-
-`;
-
-
-
-})
-
-
-.catch(err=>{
-
-console.log(err);
-
-alert("Unable to load result");
 
 });
 
 
 }
+
+
+
