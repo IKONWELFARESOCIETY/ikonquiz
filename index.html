@@ -137,6 +137,110 @@ IKON Institute Online Test Portal | Student Login & Class Test
     </div>
 
 </div>
+    <!-- ==========================================
+STUDENT DASHBOARD
+========================================== -->
+
+<div id="dashboardPage" class="hidden">
+
+    <div class="dashboard-container">
+
+        <!-- Header -->
+
+        <div class="dashboard-header">
+
+            <img src="logo.png" class="dashboard-logo">
+
+            <h1>IKON INSTITUTE</h1>
+
+            <p>Student Dashboard</p>
+
+        </div>
+
+        <!-- Student Card -->
+
+        <div class="student-card">
+
+            <img id="dashboardPhoto"
+                 src="no-photo.jpeg"
+                 class="student-photo">
+
+            <h2 id="dashboardName">
+                Student Name
+            </h2>
+
+            <p>
+                <strong>Registration No :</strong>
+                <span id="dashboardReg"></span>
+            </p>
+
+            <p>
+                <strong>Course :</strong>
+                <span id="dashboardCourse"></span>
+            </p>
+
+        </div>
+
+        <!-- Menu -->
+
+        <div class="dashboard-grid">
+
+            <!-- Start Exam -->
+
+            <div class="dashboard-card"
+                 onclick="openTest()">
+
+                <div class="dashboard-icon">
+                    📝
+                </div>
+
+                <h3>Start Exam</h3>
+
+                <p>
+                    Attend Online Examination
+                </p>
+
+            </div>
+
+            <!-- View Result -->
+
+            <div class="dashboard-card"
+                 onclick="openResultList()">
+
+                <div class="dashboard-icon">
+                    📊
+                </div>
+
+                <h3>View Result</h3>
+
+                <p>
+                    Check Published Results
+                </p>
+
+            </div>
+
+            <!-- Logout -->
+
+            <div class="dashboard-card logout-card"
+                 onclick="goLogin()">
+
+                <div class="dashboard-icon">
+                    🚪
+                </div>
+
+                <h3>Logout</h3>
+
+                <p>
+                    Back to Login
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- ================= TEST PAGE ================= -->
 
 <div id="testPage" class="hidden">
