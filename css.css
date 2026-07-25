@@ -38,200 +38,59 @@
 
 }
 
-#resultBtn:hover{
+/*========================
+ VIEW RESULT BUTTON
+========================*/
 
-    transform:translateY(-2px);
+#resultBtn{
 
-    box-shadow:0 8px 18px rgba(40,167,69,.45);
+    width:100%;
+
+    margin-top:15px;
+
+    padding:14px 20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 8px 20px rgba(22,163,74,.35);
+
+    transition:.3s;
 
 }
+
+
+#resultBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 12px 25px rgba(22,163,74,.45);
+
+}
+
 
 #resultBtn:active{
 
     transform:scale(.98);
 
-}
-
-#resultBtn::before{
-
-    content:"📊 ";
-
-}
-/* ===========================
-   RESULT PAGE
-=========================== */
-
-#resultPage{
-    display:none;
-    min-height:100vh;
-    justify-content:center;
-    align-items:center;
-    padding:40px 20px;
-    animation:fadeIn .4s ease;
-}
-
-.result-box{
-
-    width:100%;
-    max-width:520px;
-
-    background:#fff;
-
-    border-radius:18px;
-
-    padding:35px;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.15);
-
-}
-
-.result-box h2{
-
-    text-align:center;
-
-    color:#0b5ed7;
-
-    font-size:30px;
-
-    margin-bottom:30px;
-
-}
-
-.result-box label{
-
-    display:block;
-
-    margin-bottom:8px;
-
-    font-weight:600;
-
-    color:#333;
-
-}
-
-.result-box input{
-
-    width:100%;
-
-    padding:14px 16px;
-
-    border:1px solid #d8d8d8;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    margin-bottom:20px;
-
-    transition:.3s;
-
-    box-sizing:border-box;
-
-}
-
-.result-box input:focus{
-
-    border-color:#0b5ed7;
-
-    outline:none;
-
-    box-shadow:0 0 8px rgba(13,110,253,.25);
-
-}
-
-.result-box button{
-
-    width:100%;
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    transition:.3s;
-
-    margin-top:10px;
-
-}
-
-.result-box .searchBtn{
-
-    background:#0b5ed7;
-
-    color:#fff;
-
-}
-
-.result-box .searchBtn:hover{
-
-    background:#084298;
-
-}
-
-.result-box .backBtn{
-
-    background:#6c757d;
-
-    color:#fff;
-
-}
-
-.result-box .backBtn:hover{
-
-    background:#495057;
-
-}
-
-#resultContainer{
-
-    margin-top:25px;
-
-    text-align:center;
-
-}
-
-@keyframes fadeIn{
-
-    from{
-
-        opacity:0;
-        transform:translateY(20px);
-
-    }
-
-    to{
-
-        opacity:1;
-        transform:translateY(0);
-
-    }
-
-}
-
-@media(max-width:768px){
-
-.result-box{
-
-    padding:25px;
-
-}
-
-.result-box h2{
-
-    font-size:24px;
-
-}
-
-}
-.container{
-    position:relative;
 }
 .examDate{
 
