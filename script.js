@@ -754,105 +754,117 @@ function showRandomLine() {
 
 function openTest() {
 
-    //------------------------------------------
-    // Stop Waiting Timer
-    //------------------------------------------
-
+    // Stop waiting checker
     stopStatusChecker();
 
-    //------------------------------------------
-    // Reset Flags
-    //------------------------------------------
-
+    // Reset flags
     examSubmitted = false;
-
     submitReason = "Manual Submit";
-
     focusWarnings = 0;
-
     focusLock = false;
 
-    //------------------------------------------
-    // Hide Other Pages
-    //------------------------------------------
 
-    document
-        .getElementById("loginPage")
-        ?.classList.add("hidden");
+    // Hide Login
+    const loginPage = document.getElementById("loginPage");
+    if(loginPage)
+        loginPage.classList.add("hidden");
 
-    document
-        .getElementById("waitingPage")
-        ?.classList.add("hidden");
 
-    //------------------------------------------
+    // Hide Waiting
+    const waitingPage = document.getElementById("waitingPage");
+    if(waitingPage)
+        waitingPage.classList.add("hidden");
+
+
     // Show Test Page
-    //------------------------------------------
+    const testPage = document.getElementById("testPage");
+    if(testPage)
+        testPage.classList.remove("hidden");
 
-    document
-        .getElementById("testPage")
-        ?.classList.remove("hidden");
-          
-    //------------------------------------------
+
     // Student Details
-    //------------------------------------------
 
-    const nameBox =
-        document.getElementById("showName");
+    const showName = document.getElementById("showName");
+    const showReg = document.getElementById("showReg");
+    const showPaper = document.getElementById("showPaper");
+    const showCourse = document.getElementById("showCourse");
+    const showMarks = document.getElementById("showMarks");
+    const showPassing = document.getElementById("showPassingMarks");
 
-    const regBox =
-        document.getElementById("showReg");
 
-    const paperBox =
-        document.getElementById("showPaper");
+    if(showName)
+        showName.innerHTML = studentName;
 
-    if (nameBox)
-        nameBox.innerHTML = studentName;
 
-    if (regBox)
-        regBox.innerHTML = regNo;
+    if(showReg)
+        showReg.innerHTML = regNo;
 
-    //------------------------------------------
-    // Student Photo
-    //------------------------------------------
 
-    loadStudentPhoto(regNo);
+    if(showPaper)
+        showPaper.innerHTML = paperName;
 
-    //------------------------------------------
-    // Instructions
-    //------------------------------------------
-   
-document
-    .getElementById("instructionPage")
-    ?.classList.add("hidden");
 
-document
-    .getElementById("examArea")
-    ?.classList.add("hidden");
+    if(showCourse)
+        showCourse.innerHTML = courseName;
 
-    //------------------------------------------
-    // Rules Checkbox
-    //------------------------------------------
 
-    const check =
+    if(showMarks)
+        showMarks.innerHTML = totalMarks;
+
+
+    if(showPassing)
+        showPassing.innerHTML = passingMarks;
+
+
+
+    // Load Photo safely
+
+    if(typeof loadStudentPhoto === "function"){
+        loadStudentPhoto(regNo);
+    }
+
+
+
+    // Hide Exam Area
+
+    const examArea = document.getElementById("examArea");
+
+    if(examArea)
+        examArea.classList.add("hidden");
+
+
+
+    // Show Instruction Page
+
+    const instructionPage =
+        document.getElementById("instructionPage");
+
+
+    if(instructionPage)
+        instructionPage.classList.remove("hidden");
+
+
+
+    // Reset checkbox
+
+    const rules =
         document.getElementById("acceptRules");
 
-    if (check)
-        check.checked = false;
+    if(rules)
+        rules.checked = false;
 
-    //------------------------------------------
-    // Start Button
-    //------------------------------------------
+
+
+    // Disable Start Button
 
     const startBtn =
         document.getElementById("startExamBtn");
 
-    if (startBtn)
-        startBtn.disabled = true;
-document
-    .getElementById("instructionPage")
-    ?.classList.remove("hidden");
-}
 
+    if(startBtn)
+        startBtn.disabled = true;
+
+}
 
 //====================================================
 // ENABLE START BUTTON
