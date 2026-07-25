@@ -115,33 +115,85 @@ IKON Institute Online Test Portal | Student Login & Class Test
 </div>
 
 </div>
-<!-- RESULT VERIFY PAGE -->
+    <!-- ================= RESULT VERIFY PAGE ================= -->
 
 <div id="resultVerifyPage" class="hidden">
 
     <div class="result-box">
 
-        <h2>Student Result Verification</h2>
+        <h2>
+            📊 Student Result Portal
+        </h2>
 
-        <input 
+
+        <label>
+            Enter Student ID
+        </label>
+
+
+        <input
         type="text"
-        id="studentIdVerify"
+        id="resultStudentID"
         placeholder="Enter Student ID">
 
 
         <button
         class="primary"
-        onclick="verifyStudentForResult()">
+        onclick="verifyResult()">
 
-        Verify
+        Verify Result
 
         </button>
+
+
+        <button
+        class="secondary"
+        onclick="backToLogin()">
+
+        Back To Login
+
+        </button>
+
 
     </div>
 
 </div>
 
 
+
+<!-- ================= RESULT DISPLAY PAGE ================= -->
+
+
+<div id="studentResultPage" class="hidden">
+
+    <div class="result-box">
+
+
+        <h2>
+            🎓 Result Details
+        </h2>
+
+
+        <div id="studentInfo"></div>
+
+
+        <div id="resultData"></div>
+
+
+
+        <button
+        class="secondary"
+        onclick="backToLogin()">
+
+        Back To Login
+
+        </button>
+
+
+    </div>
+
+
+</div>
 
 <!-- RESULT LIST PAGE -->
 
