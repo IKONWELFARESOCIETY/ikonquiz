@@ -791,8 +791,7 @@ function openTest() {
     document
         .getElementById("testPage")
         ?.classList.remove("hidden");
-          alert("TEST PAGE OPEN");
-
+          
     //------------------------------------------
     // Student Details
     //------------------------------------------
@@ -821,10 +820,7 @@ function openTest() {
     //------------------------------------------
     // Instructions
     //------------------------------------------
-    document
-    .getElementById("verificationPage")
-    ?.classList.remove("hidden");
-
+   
 document
     .getElementById("instructionPage")
     ?.classList.add("hidden");
