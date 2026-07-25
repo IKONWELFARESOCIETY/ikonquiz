@@ -2716,85 +2716,210 @@ window.addEventListener(
 console.log(
     "Security System Loaded Successfully"
 );
-//====================================================
-// RESULT PORTAL
-//====================================================
+//====================================
+// OPEN RESULT VERIFY PAGE
+//====================================
 
 function openResultPage(){
 
 
-document
-.getElementById("loginPage")
-.classList.add("hidden");
+    document
+    .getElementById("loginPage")
+    .classList.add("hidden");
 
 
-document
-.getElementById("resultVerifyPage")
-.classList.remove("hidden");
-
-
-}
-function verifyStudentForResult(){
-
-
-let id =
-document
-.getElementById("studentIdVerify")
-.value
-.trim();
-
-
-if(id===""){
-
-alert("Enter Student ID");
-return;
-
-}
-
-
-
-fetch(
-SCRIPT_URL+
-"?action=resultVerify&id="+id
-)
-
-.then(res=>res.json())
-
-.then(data=>{
-
-
-if(data.status==="VALID"){
-
-
-document
-.getElementById("resultVerifyPage")
-.classList.add("hidden");
-
-
-document
-.getElementById("studentResultList")
-.classList.remove("hidden");
-
-
-loadStudentList();
+    document
+    .getElementById("resultVerifyPage")
+    .classList.remove("hidden");
 
 
 }
+//====================================
+// VERIFY RESULT
+//====================================
 
-else{
+function verifyResult(){
 
 
-alert("Invalid Student ID");
+    let id =
+    document
+    .getElementById("resultStudentID")
+    .value
+    .trim();
+
+
+
+    if(id===""){
+
+        alert("Please Enter Student ID");
+        return;
+
+    }
+
+
+
+    fetch(
+        SCRIPT_URL+
+        "?action=studentResult&id="+
+        id
+    )
+
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+
+    .then(function(data){
+
+
+        console.log(data);
+
+
+
+        if(data.status==="SUCCESS"){
+
+
+            showStudentResult(data);
+
+
+        }
+
+        else{
+
+
+            alert("Invalid Student ID");
+
+
+        }
+
+
+
+    })
+
+
+    .catch(function(err){
+
+
+        console.log(err);
+
+        alert("Server Error");
+
+
+    });
+
 
 
 }
+//====================================
+// SHOW RESULT
+//====================================
+
+function showStudentResult(data){
+
+
+    document
+    .getElementById("resultVerifyPage")
+    .classList.add("hidden");
+
+
+    document
+    .getElementById("studentResultPage")
+    .classList.remove("hidden");
 
 
 
-});
+    let student =
+    data.student;
+
+
+
+    document
+    .getElementById("studentInfo")
+    .innerHTML = `
+
+
+    <h3>Name : ${student.name}</h3>
+
+    <h3>Reg No : ${student.regNo}</h3>
+
+
+    `;
+
+
+
+    let html="";
+
+
+
+    data.results.forEach(function(r){
+
+
+        html += `
+
+        <div class="result-card">
+
+
+        <h3>
+        ${r.paper}
+        </h3>
+
+
+        <p>
+        ✅ Correct : ${r.correct}
+        </p>
+
+
+        <p>
+        ❌ Wrong : ${r.wrong}
+        </p>
+
+
+        <p>
+        ⭕ Unattempted : ${r.unattempted}
+        </p>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+    document
+    .getElementById("resultData")
+    .innerHTML=html;
+
 
 
 }
+//====================================
+// BACK LOGIN
+//====================================
+
+function backToLogin(){
+
+
+    document
+    .getElementById("resultVerifyPage")
+    .classList.add("hidden");
+
+
+    document
+    .getElementById("studentResultPage")
+    .classList.add("hidden");
 
 
 
+    document
+    .getElementById("loginPage")
+    .classList.remove("hidden");
+
+
+}
