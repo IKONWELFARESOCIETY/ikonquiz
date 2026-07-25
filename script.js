@@ -810,12 +810,6 @@ function openTest() {
     if (regBox)
         regBox.innerHTML = regNo;
 
-    if (paperBox)
-        paperBox.innerHTML = paperName;
-    document.getElementById("showCourse").innerHTML = courseName;
-document.getElementById("showMarks").innerHTML = totalMarks;
-document.getElementById("showPassingMarks").innerHTML = passingMarks;
-
     //------------------------------------------
     // Student Photo
     //------------------------------------------
