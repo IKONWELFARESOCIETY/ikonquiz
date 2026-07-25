@@ -202,10 +202,42 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     <div class="result-box">
 
-        <h2>Student Result List</h2>
+        <h2>📊 Student Result List</h2>
 
 
-        <div id="studentList"></div>
+        <table border="1" width="100%">
+
+            <thead>
+
+                <tr>
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>Paper</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody id="resultTableBody">
+
+            </tbody>
+
+
+        </table>
+
+
+        <br>
+
+        <button
+        class="secondary"
+        onclick="backToLogin()">
+
+        Back To Login
+
+        </button>
 
 
     </div>
