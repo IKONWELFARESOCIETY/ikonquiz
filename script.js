@@ -859,21 +859,6 @@ document
 
 }
 
-function openResultPortal() {
-    // Result page open karega
-}
-
-function loadStudentResults() {
-    // Google Sheet se data layega
-}
-
-function showResultList(data) {
-    // Student list dikhayega
-}
-
-function viewResult(regNo) {
-    // Professional result page dikhayega
-}
 
 //====================================================
 // ENABLE START BUTTON
@@ -2810,3 +2795,148 @@ window.addEventListener(
 console.log(
     "Security System Loaded Successfully"
 );
+//====================================================
+// RESULT PORTAL
+//====================================================
+
+
+function openResultPage(){
+
+    document
+    .getElementById("loginPage")
+    ?.classList.add("hidden");
+
+
+    document
+    .getElementById("resultPage")
+    ?.classList.remove("hidden");
+
+}
+
+
+
+function backToLogin(){
+
+    document
+    .getElementById("resultPage")
+    ?.classList.add("hidden");
+
+
+    document
+    .getElementById("loginPage")
+    ?.classList.remove("hidden");
+
+}
+
+
+
+
+function checkResult(){
+
+let reg =
+document.getElementById("resultRegNo")
+.value.trim();
+
+
+if(reg===""){
+
+alert("Enter Registration Number");
+return;
+
+}
+
+
+
+fetch(
+SCRIPT_URL+
+"?action=result&regNo="+
+encodeURIComponent(reg)
+
+)
+
+
+.then(res=>res.json())
+
+
+.then(data=>{
+
+
+if(data.status==="NOT_FOUND"){
+
+
+document.getElementById("resultBox")
+.innerHTML =
+"No Result Found";
+
+
+return;
+
+}
+
+
+
+document.getElementById("resultBox")
+.innerHTML = `
+
+
+<h3>${data.name}</h3>
+
+<p>
+Registration No :
+${data.regNo}
+</p>
+
+
+<p>
+Paper :
+${data.paper}
+</p>
+
+
+<p>
+Total Questions :
+${data.total}
+</p>
+
+
+<p>
+Correct :
+${data.correct}
+</p>
+
+
+<p>
+Wrong :
+${data.wrong}
+</p>
+
+
+<p>
+Unattempted :
+${data.unattempted}
+</p>
+
+
+<p>
+Marks :
+${data.marks}
+</p>
+
+
+`;
+
+
+
+})
+
+
+.catch(err=>{
+
+console.log(err);
+
+alert("Unable to load result");
+
+});
+
+
+}
