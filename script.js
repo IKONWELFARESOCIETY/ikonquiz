@@ -790,6 +790,7 @@ function openTest() {
     document
         .getElementById("testPage")
         ?.classList.remove("hidden");
+          alert("TEST PAGE OPEN");
 
     //------------------------------------------
     // Student Details
