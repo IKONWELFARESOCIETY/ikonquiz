@@ -101,13 +101,29 @@ IKON Institute Online Test Portal | Student Login & Class Test
             Start Test
 
         </button>
-        <button  id="resultpage"
-    class="secondary"
-    onclick="openResultPortal()">
+       <div id="resultPage" class="hidden">
 
-    📊 View Result
+    <h2>Student Result Portal</h2>
 
-</button>
+    <input 
+    type="text"
+    id="resultRegNo"
+    placeholder="Enter Registration Number">
+
+
+    <button onclick="checkResult()">
+    View Result
+    </button>
+
+
+    <div id="resultBox"></div>
+
+
+    <button onclick="backToLogin()">
+    Back To Login
+    </button>
+
+</div>
 
 
 
@@ -403,57 +419,11 @@ IKON Institute Online Test Portal | Student Login & Class Test
     </div>
 
 </div>
-    <!-- ================= RESULT PAGE ================= -->
-
-<div id="resultPage" class="hidden">
-
-    <div class="login-box">
-
-        <h2>View Result</h2>
-
-        <label>Registration Number</label>
-
-        <input
-            type="text"
-            id="resultRegNo"
-            placeholder="Enter Registration Number">
-
-        <label>Date of Birth</label>
-
-        <input
-            type="date"
-            id="resultDOB">
-
-        <button
-            class="primary"
-            onclick="searchResult()">
-
-            Search Result
-
-        </button>
-
-        <br><br>
-
-        <button
-            class="secondary"
-            onclick="goLogin()">
-
-            Back
-
-        </button>
-
-        <div id="resultContainer"></div>
-
-    </div>
-
-</div>
-
+ 
 </div>
 <!-- CONTENT END -->
 
 </div>
-<!-- CONTAINER END -->
-
 <script src="script.js"></script>
 
 </body>
