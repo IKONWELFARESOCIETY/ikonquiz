@@ -1895,7 +1895,8 @@ const unattemptedCount = answers.filter(answer => answer === "").length;
 
         answers: answers,
         questions: questions,
-     unattempted: unattemptedCount
+     unattempted: unattemptedCount,
+          passingMarks: passingMarks
 
     };
 
