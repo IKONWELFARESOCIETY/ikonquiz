@@ -2740,76 +2740,42 @@ function openResultPage(){
 
 function verifyResult(){
 
-
-    let id =
-    document
+    let id = document
     .getElementById("resultStudentID")
     .value
     .trim();
 
 
-
     if(id===""){
-
-        alert("Please Enter Student ID");
+        alert("Enter Student ID");
         return;
-
     }
 
 
+    // सिर्फ verification
+    fetch(SCRIPT_URL + "?action=verifyResult&id=" + id)
 
-    fetch(
-        SCRIPT_URL+
-        "?action=studentResult&id="+
-        id
-    )
+    .then(res=>res.json())
 
-
-    .then(function(res){
-
-        return res.json();
-
-    })
+    .then(data=>{
 
 
-    .then(function(data){
+        if(data.status==="success"){
 
 
-        console.log(data);
-
-
-
-        if(data.status==="SUCCESS"){
-
-
-            showStudentResult(data);
+            // ID सही है तो पूरा result load करो
+            loadAllResults();
 
 
         }
-
         else{
-
 
             alert("Invalid Student ID");
 
-
         }
 
 
-
-    })
-
-
-    .catch(function(err){
-
-
-        console.log(err);
-
-        alert("Server Error");
-
-
     });
-
 
 
 }
@@ -2920,6 +2886,68 @@ function backToLogin(){
     document
     .getElementById("loginPage")
     .classList.remove("hidden");
+
+
+}
+function loadAllResults(){
+
+
+fetch(SCRIPT_URL + "?action=allResults")
+
+
+.then(res=>res.json())
+
+
+.then(data=>{
+
+
+let html="";
+
+
+data.results.forEach(row=>{
+
+
+html += `
+
+<tr>
+
+<td>${row.regNo}</td>
+
+<td>${row.name}</td>
+
+<td>${row.paper}</td>
+
+<td>${row.correct}</td>
+
+<td>${row.incorrect}</td>
+
+<td>${row.unattempted}</td>
+
+
+</tr>
+
+`;
+
+
+});
+
+
+document.getElementById("resultTableBody").innerHTML = html;
+
+
+
+document
+.getElementById("resultVerifyPage")
+.classList.add("hidden");
+
+
+document
+.getElementById("resultDashboard")
+.classList.remove("hidden");
+
+
+
+});
 
 
 }
