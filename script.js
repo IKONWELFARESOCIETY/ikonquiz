@@ -614,6 +614,7 @@ function checkTestStatus() {
         //------------------------------------------
 
         if (status === "ON") {
+            alert("STATUS ON");
 
             openTest();
 
