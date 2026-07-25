@@ -1983,3 +1983,255 @@ OPTION DESIGN
     line-height:1.4;
     word-break:break-word;
 }
+/*==================================================
+DASHBOARD PAGE
+==================================================*/
+
+#dashboardPage{
+    min-height:100vh;
+    padding:30px 15px;
+    background:linear-gradient(135deg,#eef5ff,#dfeeff);
+}
+
+/*==============================
+Container
+==============================*/
+
+#dashboardPage .dashboard-container{
+
+    max-width:1200px;
+    margin:auto;
+
+}
+
+/*==============================
+Header
+==============================*/
+
+#dashboardPage .dashboard-header{
+
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+#dashboardPage .dashboard-logo{
+
+    width:80px;
+
+    margin-bottom:10px;
+
+}
+
+#dashboardPage .dashboard-header h1{
+
+    font-size:32px;
+
+    margin-bottom:8px;
+
+}
+
+#dashboardPage .dashboard-header p{
+
+    font-size:18px;
+
+    opacity:.9;
+
+}
+
+/*==============================
+Student Card
+==============================*/
+
+#dashboardPage .student-card{
+
+    background:#fff;
+
+    max-width:500px;
+
+    margin:35px auto;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+#dashboardPage .student-photo{
+
+    width:140px;
+
+    height:140px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:5px solid #1976d2;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .student-card h2{
+
+    color:#0d47a1;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .student-card p{
+
+    font-size:17px;
+
+    margin:12px 0;
+
+    color:#444;
+
+}
+
+/*==============================
+Cards
+==============================*/
+
+#dashboardPage .dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+    margin-top:30px;
+
+}
+
+#dashboardPage .dashboard-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    border-top:6px solid #1976d2;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.10);
+
+}
+
+#dashboardPage .dashboard-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 35px rgba(0,0,0,.18);
+
+}
+
+#dashboardPage .dashboard-icon{
+
+    font-size:55px;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .dashboard-card h3{
+
+    color:#0d47a1;
+
+    margin-bottom:10px;
+
+    font-size:24px;
+
+}
+
+#dashboardPage .dashboard-card p{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+/*==============================
+Logout Card
+==============================*/
+
+#dashboardPage .logout-card{
+
+    border-top:6px solid #e53935;
+
+}
+
+/*==============================
+Responsive
+==============================*/
+
+@media(max-width:768px){
+
+#dashboardPage{
+
+    padding:20px 10px;
+
+}
+
+#dashboardPage .dashboard-header h1{
+
+    font-size:24px;
+
+}
+
+#dashboardPage .dashboard-header p{
+
+    font-size:15px;
+
+}
+
+#dashboardPage .student-photo{
+
+    width:110px;
+
+    height:110px;
+
+}
+
+#dashboardPage .student-card{
+
+    padding:20px;
+
+}
+
+#dashboardPage .dashboard-card{
+
+    padding:28px 18px;
+
+}
+
+#dashboardPage .dashboard-icon{
+
+    font-size:45px;
+
+}
+
+}
