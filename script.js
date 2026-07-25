@@ -848,7 +848,9 @@ document
 
     if (startBtn)
         startBtn.disabled = true;
-
+document
+    .getElementById("instructionPage")
+    ?.classList.remove("hidden");
 }
 
 
