@@ -2943,7 +2943,7 @@ document
 
 document
 .getElementById("studentResultList")
-.classList.remove("hidden");
+
 
 
 
