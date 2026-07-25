@@ -2942,7 +2942,7 @@ document
 
 
 document
-.getElementById("resultDashboard")
+.getElementById("studentResultList")
 .classList.remove("hidden");
 
 
