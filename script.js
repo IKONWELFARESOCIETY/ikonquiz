@@ -898,63 +898,45 @@ function checkTestStatus() {
 
     fetch(SCRIPT_URL + "?action=status")
 
-    .then(function (res) {
-
-        if (!res.ok) {
-
-            throw new Error("Unable to connect");
-
-        }
-
+    .then(function(res){
         return res.text();
-
     })
 
-    .then(function (status) {
+    .then(function(status){
 
         status = status.trim().toUpperCase();
 
-        console.log("Current Status :", status);
+        console.log("STATUS =", status);
 
-        //------------------------------------------
-        // TEST STARTED
-        //------------------------------------------
 
-        if (status === "ON") {
+        if(status === "ON"){
 
             openTest();
 
-            return;
+        }
+        else{
+
+            document
+            .getElementById("loginPage")
+            ?.classList.add("hidden");
+
+
+            document
+            .getElementById("waitingPage")
+            ?.classList.remove("hidden");
+
+
+            startStatusChecker();
 
         }
 
-        //------------------------------------------
-        // WAITING PAGE
-        //------------------------------------------
-
-        const loginPage =
-            document.getElementById("loginPage");
-
-        const waitingPage =
-            document.getElementById("waitingPage");
-
-        if (loginPage)
-            loginPage.classList.add("hidden");
-
-        if (waitingPage)
-            waitingPage.classList.remove("hidden");
-
-        showRandomLine();
-
-        autoCheckStatus();
-
     })
 
-    .catch(function (err) {
+    .catch(function(error){
 
-        console.log(err);
+        console.log(error);
 
-        alert("Unable to check exam status.");
+        alert("Status check failed");
 
     });
 
