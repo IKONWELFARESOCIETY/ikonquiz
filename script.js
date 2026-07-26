@@ -2840,51 +2840,59 @@ function verifyResult(){
         // VALID STUDENT ID
         //================================
 
-     if(data.status === "SUCCESS"){
+        if(data.status === "SUCCESS"){
 
-    console.log(
-        "Student ID verified successfully:",
-        data
-    );
+            console.log(
+                "Student ID verified successfully:",
+                data
+            );
 
-    isAdminMode = false;
-document
-    .getElementById("studentResultPage")
-    ?.classList.add("hidden");
-
-document
-    .getElementById("studentResultPage")
-    ?.classList.remove("hidden");
-    loadAllResults();
-    return;
-
-}
+            isAdminMode = false;
 
 
-if(data.status === "INVALID_ID"){
+            //================================
+            // SHOW STUDENT RESULT
+            //================================
 
-    alert(
-        "Invalid Student ID."
-    );
+            showStudentResult(data);
 
-    idBox.focus();
+            return;
 
-    return;
-
-}
+        }
 
 
-if(data.status === "NO_ID"){
+        //================================
+        // INVALID ID
+        //================================
 
-    alert(
-        "Please enter Student ID."
-    );
+        if(data.status === "INVALID_ID"){
 
-    idBox.focus();
+            alert(
+                "Invalid Student ID."
+            );
 
-    return;
+            idBox.focus();
 
-}
+            return;
+
+        }
+
+
+        //================================
+        // NO ID
+        //================================
+
+        if(data.status === "NO_ID"){
+
+            alert(
+                "Please enter Student ID."
+            );
+
+            idBox.focus();
+
+            return;
+
+        }
 
 
         //================================
@@ -2911,13 +2919,12 @@ if(data.status === "NO_ID"){
     });
 
 }
-//====================================
-// SHOW RESULT
-//====================================
 
-//====================================
-// SHOW RESULT
-//====================================
+
+
+//==================================================
+// SHOW STUDENT RESULT
+//==================================================
 
 function showStudentResult(data){
 
@@ -2994,6 +3001,10 @@ function showStudentResult(data){
 
             <h3>Reg No : ${student.regNo || ""}</h3>
 
+            <h3>Student ID : ${student.id || ""}</h3>
+
+            <h3>Course : ${student.course || ""}</h3>
+
         `;
 
     }
@@ -3031,15 +3042,31 @@ function showStudentResult(data){
                 </h3>
 
                 <p>
-                    ✅ Correct : ${r.correct ?? 0}
+                    Date : ${r.date || ""}
                 </p>
 
                 <p>
-                    ❌ Wrong : ${r.wrong ?? 0}
+                    Correct : ${r.correct ?? 0}
                 </p>
 
                 <p>
-                    ⭕ Unattempted : ${r.unattempted ?? 0}
+                    Wrong : ${r.wrong ?? 0}
+                </p>
+
+                <p>
+                    Unattempted : ${r.unattempted ?? 0}
+                </p>
+
+                <p>
+                    Total : ${r.total ?? 0}
+                </p>
+
+                <p>
+                    Percentage : ${r.percentage || ""}
+                </p>
+
+                <p>
+                    Result : ${r.result || ""}
                 </p>
 
             </div>
