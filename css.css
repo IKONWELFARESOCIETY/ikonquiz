@@ -2305,8 +2305,8 @@ button:disabled{
 
 /* Hover */
 
-.exam-status-bar .#testDate:hover,
-.exam-status-bar .timer:hover{
+.exam-status-bar #testDate:hover,
+.exam-status-bar timer:hover{
 
     transform:translateY(-2px);
 
