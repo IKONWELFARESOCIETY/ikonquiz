@@ -62,7 +62,11 @@ const MAX_FOCUS_WARNING = 3;
 
 let focusLock = false;
 
+//====================================================
+// RESULT ACCESS MODE
+//====================================================
 
+let isAdminMode = false;
 
 //====================================================
 // TIMER
@@ -2693,45 +2697,30 @@ function openResultPage(){
 // VERIFY RESULT
 //====================================
 
+//====================================
+// VERIFY STUDENT RESULT
+//====================================
+
 function verifyResult(){
 
     let id = document
-    .getElementById("resultStudentID")
-    .value
-    .trim();
+        .getElementById("resultStudentID")
+        .value
+        .trim();
 
+    if(id === ""){
 
-    if(id===""){
         alert("Enter Student ID");
+
         return;
+
     }
 
+    // Student Mode
+    isAdminMode = false;
 
-    // सिर्फ verification
-    fetch(SCRIPT_URL + "?action=verifyResult&id=" + id)
-
-    .then(res=>res.json())
-
-    .then(data=>{
-
-
-        if(data.status==="success"){
-
-
-            // ID सही है तो पूरा result load करो
-            loadAllResults();
-
-
-        }
-        else{
-
-            alert("Invalid Student ID");
-
-        }
-
-
-    });
-
+    // Sabhi students ka result list load hoga
+    loadAllResults();
 
 }
 //====================================
@@ -2862,75 +2851,193 @@ function backToLogin(){
     }
 
 }
+//====================================
+// LOAD ALL RESULTS
+// STUDENT + ADMIN
+//====================================
+
 function loadAllResults(){
 
+    fetch(
+        SCRIPT_URL + "?action=allResults"
+    )
 
-fetch(SCRIPT_URL + "?action=allResults")
+    .then(res => res.json())
+
+    .then(data => {
+
+        let html = "";
+
+        data.results.forEach(function(row){
+
+            //====================================
+            // STUDENT RESULT ROW
+            //====================================
+
+            if(!isAdminMode){
+
+                html += `
+
+                <tr>
+
+                    <td>${row.regNo}</td>
+
+                    <td>${row.name}</td>
+
+                    <td>${row.paper}</td>
+
+                    <td class="correct">
+                        ${row.correct}
+                    </td>
+
+                    <td class="wrong">
+                        ${row.wrong}
+                    </td>
+
+                    <td class="skip">
+                        ${row.unattempted}
+                    </td>
+
+                </tr>
+
+                `;
+
+            }
+
+            //====================================
+            // ADMIN RESULT ROW
+            //====================================
+
+            else{
+
+                html += `
+
+                <tr>
+
+                    <td>${row.regNo}</td>
+
+                    <td>${row.name}</td>
+
+                    <td>${row.paper}</td>
+
+                    <td class="correct">
+                        ${row.correct}
+                    </td>
+
+                    <td class="wrong">
+                        ${row.wrong}
+                    </td>
+
+                    <td class="skip">
+                        ${row.unattempted}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="primary"
+                            onclick="openAnswerDetails(
+                                '${String(row.regNo).replace(/'/g, "\\'")}',
+                                '${String(row.paper).replace(/'/g, "\\'")}'
+                            )">
+
+                            View Answer
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `;
+
+            }
+
+        });
 
 
-.then(res=>res.json())
+        //====================================
+        // TABLE HEADER CHANGE
+        //====================================
+
+        const tableHead =
+            document.querySelector(
+                "#studentResultList table thead tr"
+            );
 
 
-.then(data=>{
+        if(tableHead){
+
+            if(isAdminMode){
+
+                tableHead.innerHTML = `
+
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>Paper</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+                    <th>View Answer</th>
+
+                `;
+
+            }
+            else{
+
+                tableHead.innerHTML = `
+
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>Paper</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+
+                `;
+
+            }
+
+        }
 
 
-let html="";
+        //====================================
+        // SHOW RESULT TABLE
+        //====================================
+
+        const body =
+            document.getElementById(
+                "resultTableBody"
+            );
 
 
-data.results.forEach(row=>{
+        if(body){
+
+            body.innerHTML = html;
+
+        }
 
 
-html += `
-
-<tr>
-
-<td>${row.regNo}</td>
-
-<td>${row.name}</td>
-
-<td>${row.paper}</td>
-
-<td class="correct">${row.correct}</td>
-
-<td class="wrong">${row.wrong}</td>
-
-<td class="skip">${row.unattempted}</td>
-<td>
-    <button
-        class="primary"
-        onclick="openMarksheet('${row.regNo}')">
-
-        View Result
-
-    </button>
-    
-</td>
-
-</tr>
-
-`;
+        document
+            .getElementById("resultVerifyPage")
+            ?.classList.add("hidden");
 
 
-});
+        document
+            .getElementById("studentResultList")
+            ?.classList.remove("hidden");
 
+    })
 
-document.getElementById("resultTableBody").innerHTML = html;
+    .catch(function(err){
 
+        console.log(err);
 
+        alert(
+            "Unable to load result list."
+        );
 
-document
-.getElementById("resultVerifyPage")
-.classList.add("hidden");
-
-
-document
-.getElementById("studentResultList")
-.classList.remove("hidden");
-
-
-
-});
-
+    });
 
 }
 function searchResult(){
@@ -3336,7 +3443,8 @@ function verifyAdmin(){
             document
                 .getElementById("adminVerifyPage")
                 ?.classList.add("hidden");
-
+            // Admin Mode ON
+    isAdminMode = true;
             // Admin ke liye result list open
             loadAllResults();
 
