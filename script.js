@@ -3035,3 +3035,14 @@ document.getElementById("msPhoto").src=
 data.regNo+".jpeg";
 
 }
+function backToResultList(){
+
+document
+.getElementById("studentMarksheetPage")
+.classList.add("hidden");
+
+document
+.getElementById("studentResultList")
+.classList.remove("hidden");
+
+}
