@@ -3288,7 +3288,7 @@ function loadAllResults(){
 
 
         document
-            .getElementById("studentResullPage")
+            .getElementById("studentResultPage")
             ?.classList.remove("hidden");
 
     })
