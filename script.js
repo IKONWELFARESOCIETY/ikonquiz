@@ -2853,7 +2853,7 @@ document
     ?.classList.add("hidden");
 
 document
-    .getElementById("studentResultList")
+    .getElementById("studentResultPage")
     ?.classList.remove("hidden");
     loadAllResults();
     return;
@@ -3073,7 +3073,7 @@ function backToLogin(){
     document.getElementById("resultVerifyPage")
         ?.classList.add("hidden");
 
-    document.getElementById("studentResultList")
+    document.getElementById("studentResultPage")
         ?.classList.add("hidden");
 
     document.getElementById("studentMarksheetPage")
@@ -3226,7 +3226,7 @@ function loadAllResults(){
 
         const tableHead =
             document.querySelector(
-                "#studentResultList table thead tr"
+                "#studentResultPage table thead tr"
             );
 
 
@@ -3288,7 +3288,7 @@ function loadAllResults(){
 
 
         document
-            .getElementById("studentResultList")
+            .getElementById("studentResullPage")
             ?.classList.remove("hidden");
 
     })
@@ -3356,7 +3356,7 @@ if(data.status!="SUCCESS"){
 
         // Hide Result List
         document
-        .getElementById("studentResultList")
+        .getElementById("studentResultPage")
         .classList.add("hidden");
 
         // Show Marksheet
@@ -3428,7 +3428,7 @@ function openAnswerDetails(regNo, paperName){
         // Hide Result List
 
         document
-        .getElementById("studentResultList")
+        .getElementById("studentResultPage")
         ?.classList.add("hidden");
 
 
@@ -3539,14 +3539,14 @@ function backToResultListFromAnswers(){
     // Show Result List
 
     document
-        .getElementById("studentResultList")
+        .getElementById("studentResultPage")
         ?.classList.remove("hidden");
 
 }
 function showMarksheet(data){
 
 document
-.getElementById("studentResultList")
+.getElementById("studentResultPage")
 .classList.add("hidden");
 
 document
@@ -3583,7 +3583,7 @@ document
 .classList.add("hidden");
 
 document
-.getElementById("studentResultList")
+.getElementById("studentResultPage")
 .classList.remove("hidden");
 
 }
