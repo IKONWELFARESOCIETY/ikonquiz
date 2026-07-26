@@ -2833,7 +2833,7 @@ function backToLogin(){
 
 
     document
-    .getElementById("studentResultPage")
+    .getElementById("resultVerifyPage")
     .classList.add("hidden");
 
 
