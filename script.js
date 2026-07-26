@@ -3158,6 +3158,26 @@ function openAnswerDetails(regNo, paperName){
     });
 
 }
+//====================================================
+// BACK TO RESULT LIST FROM ANSWER DETAILS
+//====================================================
+
+function backToResultListFromAnswers(){
+
+    // Hide Answer Details Page
+
+    document
+        .getElementById("adminAnswerDetailsPage")
+        ?.classList.add("hidden");
+
+
+    // Show Result List
+
+    document
+        .getElementById("studentResultList")
+        ?.classList.remove("hidden");
+
+}
 function showMarksheet(data){
 
 document
