@@ -3021,6 +3021,143 @@ if(data.status!="SUCCESS"){
     });
 
 }
+//====================================================
+// ADMIN - VIEW QUESTION WISE ANSWERS
+//====================================================
+
+function openAnswerDetails(regNo, paperName){
+
+    if(!regNo || !paperName){
+
+        alert("Student details not found.");
+
+        return;
+
+    }
+
+
+    fetch(
+        SCRIPT_URL +
+        "?action=adminAnswerDetails" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&paper=" + encodeURIComponent(paperName)
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        if(data.status !== "SUCCESS"){
+
+            alert("Answer details not found.");
+
+            return;
+
+        }
+
+
+        // Hide Result List
+
+        document
+        .getElementById("studentResultList")
+        ?.classList.add("hidden");
+
+
+        // Show Answer Details Page
+
+        document
+        .getElementById("adminAnswerDetailsPage")
+        ?.classList.remove("hidden");
+
+
+        // Student Name
+
+        const nameBox =
+            document.getElementById("answerStudentName");
+
+        if(nameBox){
+
+            nameBox.innerHTML =
+                data.name || "";
+
+        }
+
+
+        // Paper Name
+
+        const paperBox =
+            document.getElementById("answerPaperName");
+
+        if(paperBox){
+
+            paperBox.innerHTML =
+                data.paper || paperName;
+
+        }
+
+
+        // Create Question Details
+
+        let html = "";
+
+
+        data.details.forEach(function(item){
+
+            html += `
+
+                <div class="answer-detail-card">
+
+                    <p>
+                        <b>Question:</b>
+                        ${item.question || ""}
+                    </p>
+
+                    <p>
+                        <b>Correct Answer:</b>
+                        ${item.correctAnswer || ""}
+                    </p>
+
+                    <p>
+                        <b>Student Answer:</b>
+                        ${
+                            item.studentAnswer
+                            ? item.studentAnswer
+                            : "Not Attempted"
+                        }
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+
+        const detailsBox =
+            document.getElementById("adminAnswerDetailsData");
+
+
+        if(detailsBox){
+
+            detailsBox.innerHTML = html;
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to load answer details.");
+
+    });
+
+}
 function showMarksheet(data){
 
 document
