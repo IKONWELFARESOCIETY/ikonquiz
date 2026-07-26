@@ -211,8 +211,24 @@ STUDENT MARKSHEET PAGE
 =======================================-->
 
 <div id="studentMarksheetPage" class="hidden">
+    <div class="marksheet-buttons">
+
+    <button
+        class="secondary"
+        onclick="backToResultList()">
+        ⬅ Back
+    </button>
+
+    <button
+        class="primary"
+        onclick="window.print()">
+        🖨 Print
+    </button>
+
+</div>
 
     <div class="marksheet-card">
+        
 
         <div class="marksheet-header">
 
@@ -298,25 +314,7 @@ STUDENT MARKSHEET PAGE
         </div>
 
     </div>
-   <div class="marksheet-footer">
-
-<button
-class="backBtn"
-onclick="backToResultList()">
-
-← Back
-
-</button>
-
-<button
-class="printBtn"
-onclick="window.print()">
-
-🖨 Print
-
-</button>
-
-</div>
+ 
 </div>
  
     
