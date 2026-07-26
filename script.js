@@ -2826,22 +2826,40 @@ function showStudentResult(data){
 
 function backToLogin(){
 
+    // Hide all Result Pages
+    document.getElementById("resultVerifyPage")
+        ?.classList.add("hidden");
 
-    document
-    .getElementById("resultVerifyPage")
-    .classList.add("hidden");
+    document.getElementById("studentResultList")
+        ?.classList.add("hidden");
 
+    document.getElementById("studentMarksheetPage")
+        ?.classList.add("hidden");
 
-    document
-    .getElementById("resultVerifyPage")
-    .classList.add("hidden");
+    document.getElementById("studentResultPage")
+        ?.classList.add("hidden");
 
+    // Show Login Page
+    document.getElementById("loginPage")
+        ?.classList.remove("hidden");
 
+    // Clear Search Box
+    const search = document.getElementById("searchResult");
+    if(search){
+        search.value = "";
+    }
 
-    document
-    .getElementById("loginPage")
-    .classList.remove("hidden");
+    // Clear Student ID
+    const id = document.getElementById("resultStudentID");
+    if(id){
+        id.value = "";
+    }
 
+    // Clear Table
+    const body = document.getElementById("resultTableBody");
+    if(body){
+        body.innerHTML = "";
+    }
 
 }
 function loadAllResults(){
@@ -2877,6 +2895,17 @@ html += `
 <td class="wrong">${row.wrong}</td>
 
 <td class="skip">${row.unattempted}</td>
+td>
+
+<button
+class="primary"
+onclick="openMarksheet('${row.regNo}')">
+
+Click Here to View Result
+
+</button>
+
+</td>
 
 
 </tr>
@@ -2919,5 +2948,73 @@ let text=row.innerText.toUpperCase();
 row.style.display=text.includes(input)?"":"none";
 
 });
+
+}
+function openMarksheet(regNo){
+
+let studentId = prompt("Enter Student ID");
+
+if(studentId==null) return;
+
+fetch(
+
+SCRIPT_URL+
+
+"?action=getMarksheet"+
+
+"&regNo="+encodeURIComponent(regNo)+
+
+"&id="+encodeURIComponent(studentId)
+
+)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(data.status!="success"){
+
+alert("Invalid Student ID");
+
+return;
+
+}
+
+showMarksheet(data);
+
+});
+
+}
+function showMarksheet(data){
+
+document
+.getElementById("studentResultList")
+.classList.add("hidden");
+
+document
+.getElementById("studentMarksheetPage")
+.classList.remove("hidden");
+
+
+document.getElementById("msRegNo").innerHTML=data.regNo;
+
+document.getElementById("msName").innerHTML=data.name;
+
+document.getElementById("msCourse").innerHTML=data.course;
+
+document.getElementById("msPaper").innerHTML=data.paper;
+
+document.getElementById("msCorrect").innerHTML=data.correct;
+
+document.getElementById("msGrade").innerHTML=data.grade;
+
+document.getElementById("msResult").innerHTML=data.result;
+
+
+// Student Photo
+
+document.getElementById("msPhoto").src=
+
+data.regNo+".jpeg";
 
 }
