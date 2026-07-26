@@ -3143,84 +3143,104 @@ function loadAllResults(){
         SCRIPT_URL + "?action=allResults"
     )
 
-    .then(res => res.json())
+    .then(function(res){
 
-    .then(data => {
+        return res.json();
+
+    })
+
+    .then(function(data){
 
         let html = "";
 
-        data.results.forEach(function(row){
 
-            //====================================
-            // STUDENT RESULT ROW
-            //====================================
+        //====================================
+        // STUDENT MODE
+        //====================================
 
-            if(!isAdminMode){
+        if(!isAdminMode){
+
+            data.results.forEach(function(row){
 
                 html += `
 
                 <tr>
 
-                    <td>${row.regNo}</td>
+                    <td>
+                        ${row.name || ""}
+                    </td>
 
-                    <td>${row.name}</td>
-
-                    <td>${row.paper}</td>
+                    <td>
+                        ${row.regNo || ""}
+                    </td>
 
                     <td class="correct">
-                        ${row.correct}
+                        ${row.correct ?? 0}
                     </td>
 
                     <td class="wrong">
-                        ${row.wrong}
+                        ${row.wrong ?? 0}
                     </td>
 
                     <td class="skip">
-                        ${row.unattempted}
+                        ${row.unattempted ?? 0}
                     </td>
-                     <td>
 
-            <button
-                class="primary"
-                onclick="openMarksheet('${String(row.regNo).replace(/'/g, "\\'")}')">
+                    <td>
 
-                View Result
+                        <button
+                            class="primary"
+                            onclick="openMarksheet('${String(row.regNo || "").replace(/'/g, "\\'")}')">
 
-            </button>
+                            View Result
 
-        </td>
+                        </button>
+
+                    </td>
+
                 </tr>
 
                 `;
 
-            }
+            });
 
-            //====================================
-            // ADMIN RESULT ROW
-            //====================================
+        }
 
-            else{
+
+        //====================================
+        // ADMIN MODE
+        //====================================
+
+        else{
+
+            data.results.forEach(function(row){
 
                 html += `
 
                 <tr>
 
-                    <td>${row.regNo}</td>
+                    <td>
+                        ${row.regNo || ""}
+                    </td>
 
-                    <td>${row.name}</td>
+                    <td>
+                        ${row.name || ""}
+                    </td>
 
-                    <td>${row.paper}</td>
+                    <td>
+                        ${row.paper || ""}
+                    </td>
 
                     <td class="correct">
-                        ${row.correct}
+                        ${row.correct ?? 0}
                     </td>
 
                     <td class="wrong">
-                        ${row.wrong}
+                        ${row.wrong ?? 0}
                     </td>
 
                     <td class="skip">
-                        ${row.unattempted}
+                        ${row.unattempted ?? 0}
                     </td>
 
                     <td>
@@ -3228,8 +3248,8 @@ function loadAllResults(){
                         <button
                             class="primary"
                             onclick="openAnswerDetails(
-                                '${String(row.regNo).replace(/'/g, "\\'")}',
-                                '${String(row.paper).replace(/'/g, "\\'")}'
+                                '${String(row.regNo || "").replace(/'/g, "\\'")}',
+                                '${String(row.paper || "").replace(/'/g, "\\'")}'
                             )">
 
                             View Answer
@@ -3242,13 +3262,13 @@ function loadAllResults(){
 
                 `;
 
-            }
+            });
 
-        });
+        }
 
 
         //====================================
-        // TABLE HEADER CHANGE
+        // TABLE HEADER
         //====================================
 
         const tableHead =
@@ -3259,7 +3279,21 @@ function loadAllResults(){
 
         if(tableHead){
 
-            if(isAdminMode){
+            if(!isAdminMode){
+
+                tableHead.innerHTML = `
+
+                    <th>Name</th>
+                    <th>Reg No</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+                    <th>View Result</th>
+
+                `;
+
+            }
+            else{
 
                 tableHead.innerHTML = `
 
@@ -3274,26 +3308,12 @@ function loadAllResults(){
                 `;
 
             }
-            else{
-
-                tableHead.innerHTML = `
-
-                    <th>Reg No</th>
-                    <th>Name</th>
-                    <th>Paper</th>
-                    <th>Correct</th>
-                    <th>Incorrect</th>
-                    <th>Unattempted</th>
-
-                `;
-
-            }
 
         }
 
 
         //====================================
-        // SHOW RESULT TABLE
+        // TABLE BODY
         //====================================
 
         const body =
@@ -3309,20 +3329,90 @@ function loadAllResults(){
         }
 
 
+        //====================================
+        // HIDE VERIFY PAGE
+        //====================================
+
         document
             .getElementById("resultVerifyPage")
             ?.classList.add("hidden");
 
 
+        //====================================
+        // SHOW RESULT PAGE
+        //====================================
+
         document
             .getElementById("studentResultPage")
             ?.classList.remove("hidden");
+
+
+        //====================================
+        // STUDENT TOP DETAILS
+        //====================================
+
+        if(!isAdminMode){
+
+            const studentInfo =
+                document.getElementById(
+                    "studentInfo"
+                );
+
+
+            if(studentInfo){
+
+                /*
+                 * Yahan sirf Name, Reg No, Paper No
+                 * dikhaya jayega.
+                 *
+                 * Ye details result list ke
+                 * pehle record se li ja rahi hain.
+                 */
+
+                const first =
+                    data.results &&
+                    data.results.length > 0
+                        ? data.results[0]
+                        : null;
+
+
+                if(first){
+
+                    studentInfo.innerHTML = `
+
+                        <h3>
+                            Name : ${first.name || ""}
+                        </h3>
+
+                        <h3>
+                            Reg No : ${first.regNo || ""}
+                        </h3>
+
+                        <h3>
+                            Paper No : ${first.paper || ""}
+                        </h3>
+
+                    `;
+
+                }
+                else{
+
+                    studentInfo.innerHTML = "";
+
+                }
+
+            }
+
+        }
 
     })
 
     .catch(function(err){
 
-        console.log(err);
+        console.log(
+            "LOAD ALL RESULTS ERROR:",
+            err
+        );
 
         alert(
             "Unable to load result list."
