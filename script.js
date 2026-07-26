@@ -2895,18 +2895,15 @@ html += `
 <td class="wrong">${row.wrong}</td>
 
 <td class="skip">${row.unattempted}</td>
-td>
+<td>
+    <button
+        class="primary"
+        onclick="openMarksheet('${row.regNo}')">
 
-<button
-class="primary"
-onclick="openMarksheet('${row.regNo}')">
+        View Result
 
-Click Here to View Result
-
-</button>
-
+    </button>
 </td>
-
 
 </tr>
 
