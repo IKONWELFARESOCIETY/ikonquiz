@@ -99,6 +99,7 @@ function initializeSystem() {
     loadExamSettings();
     loadDuration();
     loadTestDate();
+    loadTestTime();
     showTimer();
 
 }
@@ -217,62 +218,119 @@ function loadDuration() {
 // LOAD TEST TIME
 //====================================================
 
+//====================================================
+// LOAD TEST TIME
+//====================================================
+
 function loadTestTime() {
 
     fetch(SCRIPT_URL + "?action=testTime")
 
-        .then(res => res.text())
+        .then(function(res) {
 
-        .then(data => {
+            return res.text();
 
-            const box = document.getElementById("testTime");
+        })
 
-            if (box) {
+        .then(function(data) {
 
-                box.innerHTML = "🕒 Test Time : " + data;
+            data = data.trim();
+
+            const box =
+                document.getElementById("testTime");
+
+            if (!box) return;
+
+            if (data !== "") {
+
+                box.innerHTML =
+                    "🕒 Test Time : " + data;
+
+            }
+            else {
+
+                box.innerHTML =
+                    "🕒 Test Time : --";
 
             }
 
         })
 
-        .catch(() => {
+        .catch(function(err) {
 
-            const box = document.getElementById("testTime");
+            console.log("Test Time Error :", err);
+
+            const box =
+                document.getElementById("testTime");
 
             if (box) {
 
-                box.innerHTML = "🕒 Test Time : Not Available";
+                box.innerHTML =
+                    "🕒 Test Time : --";
 
             }
 
         });
 
 }
+
+
+
+//====================================================
+// LOAD TEST DATE
+//====================================================
+
 function loadTestDate() {
 
     fetch(SCRIPT_URL + "?action=testDate")
-    .then(res => res.text())
-    .then(date => {
 
-        const box = document.getElementById("testDate");
+        .then(function(res) {
 
-        if(box){
-            box.innerHTML = "📅 Exam Date : " + date;
-        }
+            return res.text();
 
-    })
-    .catch(() => {
+        })
 
-        const box = document.getElementById("testDate");
+        .then(function(data) {
 
-        if(box){
-            box.innerHTML = "📅 Exam Date : --";
-        }
+            data = data.trim();
 
-    });
+            const box =
+                document.getElementById("testDate");
+
+            if (!box) return;
+
+            if (data !== "") {
+
+                box.innerHTML =
+                    "📅 Exam Date : " + data;
+
+            }
+            else {
+
+                box.innerHTML =
+                    "📅 Exam Date : --";
+
+            }
+
+        })
+
+        .catch(function(err) {
+
+            console.log("Test Date Error :", err);
+
+            const box =
+                document.getElementById("testDate");
+
+            if (box) {
+
+                box.innerHTML =
+                    "📅 Exam Date : --";
+
+            }
+
+        });
 
 }
-
 
 //====================================================
 // TIMER DISPLAY
