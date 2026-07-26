@@ -171,8 +171,8 @@ body{
 
  
 
-.examDate,
-.timer-box{
+#testDate,
+#timer{
     position:relative;
     z-index:10;
 }
@@ -1362,14 +1362,14 @@ button:disabled{
         gap:12px;
     }
 
-    .exam-status-bar .examDate{
+    .exam-status-bar #testDate{
 
         font-size:15px;
         padding:0 15px;
         min-height:52px;
     }
 
-    .exam-status-bar .timer-box{
+    .exam-status-bar #timer{
 
         min-width:120px;
         min-height:52px;
@@ -2267,8 +2267,8 @@ button:disabled{
 
 /* Common Style */
 
-.exam-status-bar .examDate,
-.exam-status-bar .timer-box{
+.exam-status-bar #testDate,
+.exam-status-bar #timer{
 
     display:flex;
     align-items:center;
@@ -2305,8 +2305,8 @@ button:disabled{
 
 /* Hover */
 
-.exam-status-bar .examDate:hover,
-.exam-status-bar .timer-box:hover{
+.exam-status-bar .#testDate:hover,
+.exam-status-bar .timer:hover{
 
     transform:translateY(-2px);
 
@@ -2318,7 +2318,7 @@ button:disabled{
 
 /* DATE */
 
-.exam-status-bar .examDate{
+.exam-status-bar #testDate{
 
     font-size:18px;
     letter-spacing:.4px;
@@ -2327,7 +2327,7 @@ button:disabled{
 
 /* TIMER */
 
-.exam-status-bar .timer-box{
+.exam-status-bar #timer{
 
     min-width:145px;
 
