@@ -3058,3 +3058,171 @@ document
 .classList.remove("hidden");
 
 }
+//====================================================
+// ADMIN PAGE - 3 TAP ON IKON LOGO
+//====================================================
+
+let ikonTapCount = 0;
+let ikonTapTimer = null;
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const logo =
+        document.getElementById("ikonLogo");
+
+    if(!logo) return;
+
+    logo.addEventListener("click", function(){
+
+        ikonTapCount++;
+
+        clearTimeout(ikonTapTimer);
+
+        ikonTapTimer = setTimeout(function(){
+
+            ikonTapCount = 0;
+
+        }, 1000);
+
+
+        if(ikonTapCount === 3){
+
+            ikonTapCount = 0;
+
+            openAdminVerify();
+
+        }
+
+    });
+
+});
+
+
+//====================================================
+// OPEN ADMIN VERIFICATION
+//====================================================
+
+function openAdminVerify(){
+
+    document
+        .getElementById("adminVerifyPage")
+        ?.classList.remove("hidden");
+
+
+    const codeBox =
+        document.getElementById("adminVerifyCode");
+
+    if(codeBox){
+
+        codeBox.value = "";
+
+        setTimeout(function(){
+
+            codeBox.focus();
+
+        },100);
+
+    }
+
+}
+
+
+//====================================================
+// VERIFY ADMIN
+//====================================================
+
+function verifyAdmin(){
+
+    const codeBox =
+        document.getElementById("adminVerifyCode");
+
+    if(!codeBox){
+
+        alert("Verification box not found.");
+
+        return;
+
+    }
+
+
+    const code =
+        codeBox.value.trim();
+
+
+    if(code === ""){
+
+        alert("Please Enter Verification Code");
+
+        return;
+
+    }
+
+
+    fetch(
+        SCRIPT_URL +
+        "?action=verifyAdmin" +
+        "&code=" +
+        encodeURIComponent(code)
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        if(data.status === "SUCCESS"){
+
+            document
+                .getElementById("adminVerifyPage")
+                ?.classList.add("hidden");
+
+            // Admin ke liye result list open
+            loadAllResults();
+
+            return;
+
+        }
+
+
+        alert("Invalid Admin Verification Code");
+
+        codeBox.value = "";
+
+        codeBox.focus();
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to verify Admin.");
+
+    });
+
+}
+
+
+//====================================================
+// CLOSE ADMIN VERIFICATION
+//====================================================
+
+function closeAdminVerify(){
+
+    document
+        .getElementById("adminVerifyPage")
+        ?.classList.add("hidden");
+
+    const codeBox =
+        document.getElementById("adminVerifyCode");
+
+    if(codeBox){
+
+        codeBox.value = "";
+
+    }
+
+}
