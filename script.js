@@ -2701,26 +2701,135 @@ function openResultPage(){
 // VERIFY STUDENT RESULT
 //====================================
 
+//====================================
+// VERIFY STUDENT RESULT ID
+//====================================
+
 function verifyResult(){
 
-    let id = document
-        .getElementById("resultStudentID")
-        .value
-        .trim();
+    const idBox =
+        document.getElementById("resultStudentID");
 
-    if(id === ""){
+    if(!idBox){
 
-        alert("Enter Student ID");
+        alert("Student ID box not found.");
 
         return;
 
     }
 
-    // Student Mode
+
+    const id =
+        idBox.value.trim();
+
+
+    //====================================
+    // EMPTY ID
+    //====================================
+
+    if(id === ""){
+
+        alert("Enter Student ID");
+
+        idBox.focus();
+
+        return;
+
+    }
+
+
+    //====================================
+    // STUDENT MODE
+    //====================================
+
     isAdminMode = false;
 
-    // Sabhi students ka result list load hoga
-    loadAllResults();
+
+    //====================================
+    // VERIFY ID FROM GOOGLE APPS SCRIPT
+    //====================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=verifyResultStudent" +
+        "&studentId=" +
+        encodeURIComponent(id)
+    )
+
+    .then(function(res){
+
+        if(!res.ok){
+
+            throw new Error(
+                "Server Error"
+            );
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "Student ID Verification :",
+            data
+        );
+
+
+        //================================
+        // VALID STUDENT ID
+        //================================
+
+        if(data.status === "VALID"){
+
+            loadAllResults();
+
+            return;
+
+        }
+
+
+        //================================
+        // INVALID STUDENT ID
+        //================================
+
+        if(data.status === "INVALID"){
+
+            alert(
+                "Invalid Student ID."
+            );
+
+            idBox.focus();
+
+            return;
+
+        }
+
+
+        //================================
+        // OTHER RESPONSE
+        //================================
+
+        alert(
+            "Unable to verify Student ID."
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.log(
+            "Student ID Verification Error :",
+            error
+        );
+
+        alert(
+            "Unable to connect with Google Sheet."
+        );
+
+    });
 
 }
 //====================================
