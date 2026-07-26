@@ -2949,54 +2949,67 @@ row.style.display=text.includes(input)?"":"none";
 }
 function openMarksheet(regNo){
 
-fetch(
-SCRIPT_URL +
-"?action=marksheet&regNo=" +
-encodeURIComponent(regNo)
-)
+    let studentId = prompt("Enter Student ID");
 
-.then(res=>res.json())
+    if(studentId == null){
+        return;
+    }
 
-.then(data=>{
+    studentId = studentId.trim();
 
-if(data.status!="SUCCESS"){
+    if(studentId == ""){
+        alert("Please Enter Student ID");
+        return;
+    }
 
-alert("Result Not Found");
+    fetch(
+        SCRIPT_URL +
+        "?action=marksheet" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&studentId=" + encodeURIComponent(studentId)
+    )
 
-return;
+    .then(res => res.json())
 
-}
+    .then(data => {
 
-// Hide Result List
-document
-.getElementById("studentResultList")
-.classList.add("hidden");
+        if(data.status != "SUCCESS"){
 
-// Show Marksheet
-document
-.getElementById("studentMarksheetPage")
-.classList.remove("hidden");
+            alert("Invalid Student ID or Result Not Found");
+            return;
 
-// Fill Details
+        }
 
-document.getElementById("msRegNo").innerHTML=data.regNo;
+        // Hide Result List
+        document
+        .getElementById("studentResultList")
+        .classList.add("hidden");
 
-document.getElementById("msName").innerHTML=data.name;
+        // Show Marksheet
+        document
+        .getElementById("studentMarksheetPage")
+        .classList.remove("hidden");
 
-document.getElementById("msCourse").innerHTML=data.course;
+        // Fill Details
+        document.getElementById("msRegNo").innerHTML = data.regNo;
+        document.getElementById("msName").innerHTML = data.name;
+        document.getElementById("msCourse").innerHTML = data.course;
+        document.getElementById("msPaper").innerHTML = data.paper;
+        document.getElementById("msCorrect").innerHTML = data.correct;
+        document.getElementById("msGrade").innerHTML = data.grade;
+        document.getElementById("msResult").innerHTML = data.result;
 
-document.getElementById("msPaper").innerHTML=data.paper;
+        // Student Photo
+        document.getElementById("msPhoto").src = data.photo;
 
-document.getElementById("msCorrect").innerHTML=data.correct;
+    })
 
-document.getElementById("msGrade").innerHTML=data.grade;
+    .catch(err => {
 
-document.getElementById("msResult").innerHTML=data.result;
+        console.log(err);
+        alert("Unable to load marksheet.");
 
-// Student Photo
-document.getElementById("msPhoto").src=data.photo;
-
-});
+    });
 
 }
 function showMarksheet(data){
