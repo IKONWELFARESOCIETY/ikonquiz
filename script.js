@@ -2952,35 +2952,52 @@ row.style.display=text.includes(input)?"":"none";
 }
 function openMarksheet(regNo){
 
-let studentId = prompt("Enter Student ID");
-
-if(studentId==null) return;
-
 fetch(
-
-SCRIPT_URL+
-
-"?action=getMarksheet"+
-
-"&regNo="+encodeURIComponent(regNo)+
-
-"&id="+encodeURIComponent(studentId)
-
+SCRIPT_URL +
+"?action=marksheet&regNo=" +
+encodeURIComponent(regNo)
 )
 
 .then(res=>res.json())
 
 .then(data=>{
 
-if(data.status!="success"){
+if(data.status!="SUCCESS"){
 
-alert("Invalid Student ID");
+alert("Result Not Found");
 
 return;
 
 }
 
-showMarksheet(data);
+// Hide Result List
+document
+.getElementById("studentResultList")
+.classList.add("hidden");
+
+// Show Marksheet
+document
+.getElementById("studentMarksheetPage")
+.classList.remove("hidden");
+
+// Fill Details
+
+document.getElementById("msRegNo").innerHTML=data.regNo;
+
+document.getElementById("msName").innerHTML=data.name;
+
+document.getElementById("msCourse").innerHTML=data.course;
+
+document.getElementById("msPaper").innerHTML=data.paper;
+
+document.getElementById("msCorrect").innerHTML=data.correct;
+
+document.getElementById("msGrade").innerHTML=data.grade;
+
+document.getElementById("msResult").innerHTML=data.result;
+
+// Student Photo
+document.getElementById("msPhoto").src=data.photo;
 
 });
 
