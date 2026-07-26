@@ -134,25 +134,35 @@ function loadExamSettings() {
     // DURATION
     //--------------------------
 
-    fetch(SCRIPT_URL + "?action=duration")
+    //--------------------------
+// DURATION
+//--------------------------
 
-        .then(res => res.text())
+fetch(SCRIPT_URL + "?action=duration")
 
-        .then(duration => {
+.then(res => res.text())
 
-            let min = parseInt(duration);
+.then(duration => {
 
-            if (!isNaN(min) && min > 0) {
+    examDuration = parseInt(duration);
 
-                totalTime = min * 60;
+    if (!isNaN(examDuration) && examDuration > 0) {
 
-                showTimer();
+        totalTime = examDuration * 60;
 
-            }
+        showTimer();
 
-        })
+        console.log("Exam Duration :", examDuration);
 
-        .catch(err => console.log(err));
+    } else {
+
+        console.log("Invalid Duration :", duration);
+
+    }
+
+})
+
+.catch(err => console.log(err));
 
 
 
@@ -1103,7 +1113,9 @@ function startExam() {
     //------------------------------------------
     // Start Timer
     //------------------------------------------
+    totalTime = examDuration * 60;
 
+    showTimer();
     startTimer();
 
     //------------------------------------------
