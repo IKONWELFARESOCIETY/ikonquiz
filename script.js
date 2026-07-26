@@ -3453,47 +3453,139 @@ function openMarksheet(regNo){
         "&studentId=" + encodeURIComponent(studentId)
     )
 
-    .then(res => res.json())
+    .then(function(res){
 
-    .then(data => {
-if(data.status=="INVALID_ID"){
-    alert("Invalid Student ID");
-    return;
-}
+        if(!res.ok){
+            throw new Error("Server Error: " + res.status);
+        }
 
-if(data.status!="SUCCESS"){
-    alert("Result Not Found");
-    return;
-}
-
-        // Hide Result List
-        document
-        .getElementById("studentResultPage")
-        .classList.add("hidden");
-
-        // Show Marksheet
-        document
-        .getElementById("studentMarksheetPage")
-        .classList.remove("hidden");
-
-        // Fill Details
-        document.getElementById("msRegNo").innerHTML = data.regNo;
-        document.getElementById("msName").innerHTML = data.name;
-        document.getElementById("msCourse").innerHTML = data.course;
-        document.getElementById("msPaper").innerHTML = data.paper;
-        document.getElementById("msCorrect").innerHTML = data.correct;
-        document.getElementById("msGrade").innerHTML = data.grade;
-        document.getElementById("msResult").innerHTML = data.result;
-
-        // Student Photo
-        document.getElementById("msPhoto").src = data.photo;
+        return res.json();
 
     })
 
-    .catch(err => {
+    .then(function(data){
 
-        console.log(err);
-        alert("Unable to load marksheet.");
+        console.log("MARKSHEET DATA:", data);
+
+        if(data.status === "INVALID_ID"){
+
+            alert("Invalid Student ID");
+            return;
+
+        }
+
+        if(data.status !== "SUCCESS"){
+
+            alert("Result Not Found");
+            return;
+
+        }
+
+        if(
+            !data.results ||
+            !Array.isArray(data.results) ||
+            data.results.length === 0
+        ){
+
+            alert("Result Not Found");
+            return;
+
+        }
+
+
+        //========================================
+        // STUDENT DATA
+        //========================================
+
+        const student =
+            data.student || {};
+
+        const result =
+            data.results[0] || {};
+
+
+        //========================================
+        // HIDE RESULT LIST
+        //========================================
+
+        const resultPage =
+            document.getElementById(
+                "studentResultPage"
+            );
+
+        if(resultPage){
+            resultPage.classList.add("hidden");
+        }
+
+
+        //========================================
+        // SHOW MARKSHEET
+        //========================================
+
+        const marksheetPage =
+            document.getElementById(
+                "studentMarksheetPage"
+            );
+
+        if(marksheetPage){
+            marksheetPage.classList.remove("hidden");
+        }
+
+
+        //========================================
+        // FILL MARKSHEET
+        //========================================
+
+        document.getElementById("msRegNo").textContent =
+            student.regNo || result.regNo || "";
+
+        document.getElementById("msName").textContent =
+            student.name || result.name || "";
+
+        document.getElementById("msCourse").textContent =
+            student.course || result.course || "";
+
+        document.getElementById("msPaper").textContent =
+            result.paper || "";
+
+        document.getElementById("msCorrect").textContent =
+            result.correct ?? "";
+
+        document.getElementById("msGrade").textContent =
+            result.grade || "";
+
+        document.getElementById("msResult").textContent =
+            result.result || "";
+
+
+        //========================================
+        // STUDENT PHOTO
+        //========================================
+
+        const photo =
+            document.getElementById("msPhoto");
+
+        if(photo){
+
+            photo.src =
+                result.photo ||
+                student.photo ||
+                "";
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.error(
+            "MARKSHEET ERROR:",
+            err
+        );
+
+        alert(
+            "Unable to load marksheet."
+        );
 
     });
 
