@@ -2903,6 +2903,13 @@ html += `
         View Result
 
     </button>
+     <button
+        class="primary"
+        onclick="openAnswerDetails('${row.regNo}', '${row.paper}')">
+
+        View Answers
+
+    </button>
 </td>
 
 </tr>
