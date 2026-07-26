@@ -3379,12 +3379,7 @@ function loadAllResults(){
             ?.classList.remove("hidden");
 
 
-        //====================================
-        // STUDENT TOP DETAILS
-        // ONLY:
-        // NAME + REG NO + PAPER NO
-        //====================================
-
+       
         if(!isAdminMode){
 
             const studentInfo =
@@ -3399,33 +3394,7 @@ function loadAllResults(){
                     data.results &&
                     data.results.length > 0
                         ? data.results[0]
-                        : null;
-
-
-                if(first){
-
-                    studentInfo.innerHTML = `
-
-                        <h3>
-                            Name : ${first.name || ""}
-                        </h3>
-
-                        <h3>
-                            Reg No : ${first.regNo || ""}
-                        </h3>
-
-                        <h3>
-                            Paper No : ${first.paper || ""}
-                        </h3>
-
-                    `;
-
-                }
-                else{
-
-                    studentInfo.innerHTML = "";
-
-                }
+                        : null;  
 
             }
 
