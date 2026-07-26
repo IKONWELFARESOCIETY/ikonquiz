@@ -1,9 +1,8 @@
 /*==================================================
  IKON ONLINE TEST SYSTEM
  PREMIUM CBT STYLE CSS
- CLEAN CSS - PART 1
+ PART 1 : RESET + HEADER + LOGIN
 ==================================================*/
-
 
 /*========================
  RESET
@@ -15,7 +14,6 @@
     box-sizing:border-box;
     font-family:"Segoe UI",Arial,sans-serif;
 }
-
 
 /*========================
  BODY
@@ -31,15 +29,13 @@ body{
     color:#1e293b;
 }
 
-
 /*========================
- HIDDEN
+ COMMON
 ========================*/
 
 .hidden{
     display:none !important;
 }
-
 
 /*========================
  MAIN CONTAINER
@@ -54,129 +50,119 @@ body{
     box-shadow:0 20px 60px rgba(0,0,0,.12);
 }
 
-
 /*==================================================
  HEADER
 ==================================================*/
 
 .header{
+
     width:100%;
+
     display:flex;
     flex-direction:column;
-    align-items:center;
+
     justify-content:center;
+    align-items:center;
+
     text-align:center;
-    background:linear-gradient(135deg,#005bea,#0b7cff);
-    color:#fff;
+
     padding:30px;
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #005bea,
+        #0b7cff
+    );
 }
 
-
 /*========================
- LOGO
+ HEADER LOGO
 ========================*/
 
 .header-left{
+
     width:100%;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     margin-bottom:12px;
+
 }
 
-.header-left img.logo{
+.header-left .logo{
+
     width:400px;
-    height:auto;
-    display:block;
-    margin:auto;
-    object-fit:contain;
-}
 
+    max-width:100%;
+
+    height:auto;
+
+    display:block;
+
+    object-fit:contain;
+
+}
 
 /*========================
- TITLE
+ HEADER TITLE
 ========================*/
 
 .header-center{
+
     width:100%;
-    display:block;
-    text-align:center;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
-.header-center h1#testTitle{
-    display:block;
+#testTitle{
+
     width:100%;
+
+    color:#fff;
+
     text-align:center;
-    color:white;
+
     font-size:34px;
+
     font-weight:800;
+
     margin:15px 0;
+
 }
 
-
-/*==================================================
- HEADER DATE / TIME
-==================================================*/
-
-/*
-   IMPORTANT:
-   Date + Timer agar header ke andar hain,
-   to ye dono center me rahenge.
-*/
+/*========================
+ HEADER RIGHT
+========================*/
 
 .header-right{
+
     width:100%;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     gap:20px;
-    margin-top:5px;
+
+    margin-top:10px;
+
 }
 
-
-/* HEADER INFO BOX */
-
-.header-right .info-box{
-    background:rgba(255,255,255,.18);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    padding:15px 20px;
-    min-width:170px;
-    border-radius:15px;
-    text-align:center;
-    color:white;
-    font-weight:600;
-    border:1px solid rgba(255,255,255,.25);
-    transition:.3s;
-}
-
-.header-right .info-box:hover{
-    transform:translateY(-3px);
-    background:rgba(255,255,255,.30);
-}
-
-
-/* OLD SMALL TEXT HIDE */
-
-.header-right small,
-.info-box small{
+.header-right small{
     display:none;
 }
-
-
-/*==================================================
- EXAM DATE + TIMER
-==================================================*/
-
-
- 
-
-#testDate,
-#timer{
-    position:relative;
-    z-index:10;
-}
-
 
 /*==================================================
  CONTENT
@@ -186,346 +172,245 @@ body{
     padding:45px;
 }
 
-
 /*==================================================
  LOGIN PAGE
 ==================================================*/
 
 #loginPage{
+
     min-height:500px;
+
     display:flex;
-    align-items:center;
+
     justify-content:center;
+
+    align-items:center;
+
 }
 
-
-/* LOGIN CARD */
+/*========================
+ LOGIN CARD
+========================*/
 
 .login-box{
+
     width:100%;
+
     max-width:420px;
 
-    background:white;
+    background:#fff;
 
     padding:40px;
 
     border-radius:25px;
 
-    box-shadow:0 15px 40px rgba(0,0,0,.12);
-
     border:1px solid #e5e7eb;
 
-    animation:loginShow .5s ease;
-}
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
 
+    animation:loginShow .5s ease;
+
+}
 
 @keyframes loginShow{
 
     from{
+
         opacity:0;
+
         transform:translateY(30px);
+
     }
 
     to{
+
         opacity:1;
+
         transform:translateY(0);
+
     }
 
 }
 
-
-/* LOGIN HEADING */
+/*========================
+ LOGIN TITLE
+========================*/
 
 .login-box h2{
+
     text-align:center;
-    margin-bottom:30px;
+
     color:#0047ab;
+
     font-size:28px;
+
+    margin-bottom:30px;
+
 }
 
-
-/* LOGIN LABEL */
+/*========================
+ LABEL
+========================*/
 
 .login-box label{
+
     display:block;
-    font-weight:700;
+
     color:#334155;
+
+    font-weight:700;
+
     margin-bottom:8px;
+
 }
 
+/*========================
+ INPUT
+========================*/
 
-/* LOGIN INPUT */
+.login-box input,
+.login-box select{
 
-.login-box input{
     width:100%;
+
     padding:15px;
+
     margin-bottom:20px;
 
-    border-radius:12px;
     border:2px solid #e2e8f0;
 
-    font-size:16px;
+    border-radius:12px;
+
     outline:none;
 
+    font-size:16px;
+
     transition:.3s;
+
+    background:#fff;
+
 }
 
+.login-box input:focus,
+.login-box select:focus{
 
-.login-box input:focus{
     border-color:#007bff;
 
-    box-shadow:
-    0 0 12px rgba(0,123,255,.25);
-}
+    box-shadow:0 0 12px rgba(0,123,255,.25);
 
+}
 
 /*==================================================
  BUTTON
 ==================================================*/
 
 button{
+
     border:none;
+
     cursor:pointer;
 
-    font-size:16px;
-    font-weight:700;
-
     border-radius:12px;
+
     padding:14px 20px;
 
+    font-size:16px;
+
+    font-weight:700;
+
     transition:.3s;
+
 }
 
-
-/* PRIMARY BUTTON */
+/*========================
+ PRIMARY
+========================*/
 
 .primary{
-    width:100%;
-    color:white;
 
-    background:
-    linear-gradient(
+    width:100%;
+
+    color:#fff;
+
+    background:linear-gradient(
         135deg,
         #0047ab,
         #008cff
     );
 
-    box-shadow:
-    0 8px 20px rgba(0,123,255,.35);
-}
+    box-shadow:0 8px 20px rgba(0,123,255,.35);
 
+}
 
 .primary:hover{
+
     transform:translateY(-3px);
 
-    box-shadow:
-    0 12px 25px rgba(0,123,255,.45);
+    box-shadow:0 12px 25px rgba(0,123,255,.45);
+
 }
 
+/*========================
+ SECONDARY
+========================*/
 
-button:disabled{
-    opacity:.5;
-    cursor:not-allowed;
+.secondary{
+
+    width:100%;
+
+    margin-top:12px;
+
+    background:#64748b;
+
+    color:#fff;
+
 }
 
+.secondary:hover{
 
-/*==================================================
- VIEW RESULT BUTTON
-==================================================*/
+    background:#475569;
+
+    transform:translateY(-3px);
+
+}
+
+/*========================
+ RESULT BUTTON
+========================*/
 
 #resultBtn{
-    width:100%;
 
     margin-top:15px;
 
-    padding:14px 20px;
-
-    border:none;
-    border-radius:12px;
-
-    background:
-    linear-gradient(
+    background:linear-gradient(
         135deg,
         #16a34a,
         #22c55e
     );
 
-    color:white;
+    box-shadow:0 8px 20px rgba(22,163,74,.35);
 
-    font-size:16px;
-    font-weight:700;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 8px 20px rgba(22,163,74,.35);
-
-    transition:.3s;
 }
-
 
 #resultBtn:hover{
+
     transform:translateY(-3px);
 
-    box-shadow:
-    0 12px 25px rgba(22,163,74,.45);
+    box-shadow:0 12px 25px rgba(22,163,74,.45);
+
 }
 
+button:disabled{
 
-#resultBtn:active{
-    transform:scale(.98);
-}
+    opacity:.5;
 
+    cursor:not-allowed;
 
-/*==================================================
- RESULT BOX
-==================================================*/
-
-.result-box{
-    max-width:1100px;
-
-    margin:40px auto;
-
-    background:#fff;
-
-    padding:25px;
-
-    border-radius:15px;
-
-    box-shadow:
-    0 10px 35px rgba(0,0,0,.15);
-}
-
-
-.result-box h2{
-    text-align:center;
-    color:#0d47a1;
-
-    margin-bottom:20px;
-
-    font-size:28px;
-}
-
-
-.result-box table{
-    width:100%;
-    border-collapse:collapse;
-    overflow:hidden;
-    border-radius:12px;
-}
-
-
-.result-box table thead{
-    background:#0d47a1;
-    color:#fff;
-}
-
-
-.result-box table th{
-    padding:14px;
-
-    font-size:15px;
-
-    text-transform:uppercase;
-    letter-spacing:.5px;
-}
-
-
-.result-box table td{
-    padding:13px;
-
-    text-align:center;
-
-    border-bottom:1px solid #e5e5e5;
-}
-
-
-.result-box table tbody tr:nth-child(even){
-    background:#f8f9fa;
-}
-
-
-.result-box table tbody tr:hover{
-    background:#e8f0fe;
-    transition:.3s;
-}
-
-
-/* RESULT STATUS */
-
-.correct{
-    color:#28a745;
-    font-weight:bold;
-}
-
-
-.wrong{
-    color:#dc3545;
-    font-weight:bold;
-}
-
-
-.skip{
-    color:#ff9800;
-    font-weight:bold;
-}
-
-
-/* RESULT SEARCH */
-
-#searchResult{
-    width:100%;
-
-    padding:12px;
-
-    margin-bottom:18px;
-
-    border:1px solid #ccc;
-    border-radius:8px;
-
-    font-size:15px;
-}
-
-
-/* RESULT SUMMARY */
-
-.result-summary{
-    display:flex;
-    justify-content:center;
-    margin-bottom:20px;
-}
-
-
-.summary-card{
-    background:#0d47a1;
-    color:#fff;
-
-    padding:12px 30px;
-
-    border-radius:10px;
-
-    font-size:18px;
-    font-weight:bold;
-
-    box-shadow:
-    0 6px 18px rgba(0,0,0,.2);
-}
-
-
-/* RESULT VERIFY INPUT */
-
-#resultVerifyPage #resultStudentID{
-    margin-bottom:25px;
-}
-
-
-#resultVerifyPage .primary{
-    margin-top:10px;
 }
 /*==================================================
  IKON ONLINE TEST SYSTEM
  PREMIUM CBT STYLE CSS
- CLEAN CSS - PART 2
+ PART 2 : WAITING + STUDENT INFO + TIMER
 ==================================================*/
 
 
@@ -533,47 +418,74 @@ button:disabled{
  WAITING PAGE
 ==================================================*/
 
+#waitingPage{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:500px;
+
+}
+
 .success-box{
-    max-width:600px;
 
-    margin:40px auto;
+    width:100%;
 
-    background:white;
+    max-width:650px;
+
+    background:#fff;
 
     padding:45px;
 
-    border-radius:25px;
-
     text-align:center;
 
-    box-shadow:
-    0 15px 40px rgba(0,0,0,.12);
+    border-radius:25px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
+
 }
 
-
 .success-box h2{
+
     color:#0047ab;
 
     font-size:28px;
 
     margin-bottom:20px;
+
 }
 
-
 .success-box p{
+
     color:#475569;
 
     font-size:17px;
 
     line-height:1.7;
+
 }
 
 
 /*==================================================
- TEST TOP BAR
+ TEST PAGE
 ==================================================*/
 
-.top-bar{
+#testPage{
+
+    width:100%;
+
+}
+
+
+/*==================================================
+ EXAM STATUS BAR
+==================================================*/
+
+.exam-status-bar{
+
     display:flex;
 
     justify-content:space-between;
@@ -582,15 +494,141 @@ button:disabled{
 
     gap:20px;
 
-    background:#f8fafc;
+    margin:0 0 25px;
 
-    padding:20px;
+}
 
-    border-radius:20px;
 
-    margin-bottom:25px;
+/*==================================================
+ TEST DATE
+==================================================*/
 
-    border:1px solid #e2e8f0;
+#testDate{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:60px;
+
+    padding:0 25px;
+
+    border-radius:16px;
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    letter-spacing:.4px;
+
+    background:linear-gradient(
+        135deg,
+        #0b57d0,
+        #2d8cff
+    );
+
+    box-shadow:
+    0 10px 25px rgba(11,87,208,.30);
+
+    transition:.3s;
+
+}
+
+
+/*==================================================
+ TIMER
+==================================================*/
+
+#timer{
+
+    width:170px;
+
+    min-width:170px;
+
+    height:60px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:16px;
+
+    color:#fff;
+
+    font-size:30px;
+
+    font-weight:800;
+
+    font-family:Consolas,monospace;
+
+    background:linear-gradient(
+        135deg,
+        #0047ab,
+        #008cff
+    );
+
+    box-shadow:
+    0 12px 28px rgba(0,123,255,.45);
+
+    transition:.3s;
+
+}
+
+
+/*==================================================
+ HOVER
+==================================================*/
+
+#testDate:hover,
+#timer:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/*==================================================
+ TIMER GLOW
+==================================================*/
+
+.timer-box{
+
+    animation:timerGlow 2s infinite;
+
+}
+
+@keyframes timerGlow{
+
+    0%{
+
+        box-shadow:
+        0 12px 28px rgba(0,123,255,.35);
+
+    }
+
+    50%{
+
+        box-shadow:
+        0 12px 35px rgba(0,123,255,.70),
+        0 0 18px rgba(0,123,255,.50);
+
+    }
+
+    100%{
+
+        box-shadow:
+        0 12px 28px rgba(0,123,255,.35);
+
+    }
+
 }
 
 
@@ -598,17 +636,7 @@ button:disabled{
  STUDENT INFO
 ==================================================*/
 
-/*
-   IMPORTANT:
-   Ye .student-info sirf TEST PAGE ke
-   student information section ke liye hai.
-
-   Photo ko corner me jaane se rokne ke liye
-   student-info ko proper width + alignment diya gaya hai.
-*/
-
 .student-info{
-    width:100%;
 
     display:flex;
 
@@ -616,9 +644,8 @@ button:disabled{
 
     gap:30px;
 
-    margin:20px 0 30px;
+    margin:25px 0;
 
-    flex-wrap:nowrap;
 }
 
 
@@ -626,58 +653,26 @@ button:disabled{
  STUDENT PHOTO
 ==================================================*/
 
-.student-photo{
-    width:150px;
-    height:180px;
-
-    min-width:150px;
-
-    object-fit:cover;
-
-    object-position:center;
-
-    display:block;
-
-    margin:0;
-
-    border-radius:12px;
-
-    border:4px solid #0b7cff;
-
-    background:#fff;
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.18);
-}
-
-
-/*
-   Agar HTML me photo id="studentPhoto"
-   hai to ye bhi same proper alignment dega.
-*/
-
+.student-photo,
 #studentPhoto{
+
     width:150px;
+
     height:180px;
 
     min-width:150px;
 
-    object-fit:cover;
-
-    object-position:center;
-
-    display:block;
-
-    margin:0;
-
     border-radius:12px;
 
-    border:4px solid #0b7cff;
+    border:4px solid #0b57d0;
+
+    object-fit:cover;
 
     background:#fff;
 
     box-shadow:
-    0 10px 25px rgba(0,0,0,.18);
+    0 10px 25px rgba(0,0,0,.15);
+
 }
 
 
@@ -686,16 +681,15 @@ button:disabled{
 ==================================================*/
 
 .student-details{
-    flex:1;
 
-    min-width:0;
+    flex:1;
 
     display:grid;
 
-    grid-template-columns:
-    repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,1fr);
 
     gap:20px;
+
 }
 
 
@@ -704,11 +698,10 @@ button:disabled{
 ==================================================*/
 
 .detail-box{
-    width:100%;
 
     background:#fff;
 
-    border:2px solid #d8e6f7;
+    border:2px solid #dbe8fb;
 
     border-radius:14px;
 
@@ -718,25 +711,22 @@ button:disabled{
     0 6px 18px rgba(0,0,0,.08);
 
     transition:.3s;
-}
 
+}
 
 .detail-box:hover{
+
     transform:translateY(-3px);
 
-    box-shadow:
-    0 12px 25px rgba(0,0,0,.12);
 }
 
-
-/* DETAIL LABEL */
-
 .detail-box .label{
+
     display:block;
 
     color:#0066cc;
 
-    font-size:15px;
+    font-size:14px;
 
     font-weight:700;
 
@@ -744,169 +734,31 @@ button:disabled{
 
     text-transform:uppercase;
 
-    letter-spacing:.5px;
 }
 
-
-/* DETAIL VALUE */
-
 .detail-box span:last-child{
+
     display:block;
 
     color:#222;
 
-    font-size:22px;
+    font-size:21px;
 
     font-weight:700;
-
-    line-height:1.4;
 
     word-break:break-word;
+
 }
 
 
 /*==================================================
- OLD INFO BOX SUPPORT
+ EXAM TOP
 ==================================================*/
 
-.student-info .info-box{
-    background:white;
+.exam-top{
 
-    min-width:160px;
+    margin:20px 0;
 
-    padding:12px 20px;
-
-    border-radius:15px;
-
-    text-align:center;
-
-    box-shadow:
-    0 5px 15px rgba(0,0,0,.08);
-
-    border:1px solid #e5e7eb;
-}
-
-
-.student-info .info-box b{
-    display:block;
-
-    color:#0047ab;
-
-    font-size:14px;
-
-    margin-bottom:6px;
-}
-
-
-.student-info .info-box span{
-    color:#1e293b;
-
-    font-size:16px;
-
-    font-weight:700;
-}
-
-
-/*==================================================
- TIMER - NORMAL TEST TIMER
-==================================================*/
-
-.timer{
-    background:
-    linear-gradient(
-        135deg,
-        #0047ab,
-        #008cff
-    );
-
-    color:white;
-
-    padding:15px 25px;
-
-    border-radius:50px;
-
-    font-size:18px;
-
-    font-weight:800;
-
-    box-shadow:
-    0 10px 25px rgba(0,123,255,.35);
-
-    white-space:nowrap;
-}
-
-
-/*==================================================
- INSTRUCTION PAGE
-==================================================*/
-
-#instructionPage{
-    background:white;
-
-    padding:35px;
-
-    border-radius:22px;
-
-    box-shadow:
-    0 15px 40px rgba(0,0,0,.10);
-}
-
-
-#instructionPage h2{
-    color:#0047ab;
-
-    margin-bottom:25px;
-
-    text-align:center;
-}
-
-
-#instructionPage ul{
-    padding-left:25px;
-}
-
-
-#instructionPage li{
-    margin-bottom:15px;
-
-    font-size:16px;
-
-    color:#334155;
-
-    line-height:1.6;
-}
-
-
-#instructionPage label{
-    display:block;
-
-    margin-top:25px;
-
-    font-weight:600;
-
-    color:#334155;
-}
-
-
-/*==================================================
- START EXAM BUTTON
-==================================================*/
-
-#startExamBtn{
-    display:block;
-
-    margin:25px auto 0;
-
-    width:250px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #16a34a,
-        #22c55e
-    );
-
-    color:white;
 }
 
 
@@ -915,6 +767,7 @@ button:disabled{
 ==================================================*/
 
 .progress{
+
     height:12px;
 
     background:#e2e8f0;
@@ -924,345 +777,211 @@ button:disabled{
     overflow:hidden;
 
     margin:20px 0;
+
 }
 
-
 .progress-bar{
-    width:0%;
+
+    width:0;
 
     height:100%;
 
-    background:
-    linear-gradient(
+    background:linear-gradient(
         135deg,
         #0047ab,
         #008cff
     );
 
     transition:.4s;
+
 }
 
 
 /*==================================================
- QUIZ LAYOUT
+ INSTRUCTION PAGE
 ==================================================*/
 
-.quiz-layout{
-    display:grid;
-
-    grid-template-columns:
-    1fr 300px;
-
-    gap:25px;
-
-    align-items:start;
-}
-
-
-/*==================================================
- QUESTION CARD
-==================================================*/
-
-.question-card{
-    background:white;
-
-    padding:35px;
-
-    border-radius:25px;
-
-    box-shadow:
-    0 15px 40px rgba(0,0,0,.10);
-
-    overflow-y:auto;
-}
-
-
-/* QUESTION NUMBER */
-
-.question-number{
-    display:inline-block;
-
-    background:#0047ab;
-
-    color:white;
-
-    padding:8px 18px;
-
-    border-radius:25px;
-
-    font-weight:700;
-
-    margin-bottom:20px;
-}
-
-
-/* QUESTION */
-
-.question{
-    font-size:22px;
-
-    font-weight:700;
-
-    color:#1e293b;
-
-    line-height:1.6;
-
-    margin-bottom:30px;
-}
-
-
-/*==================================================
- OPTIONS
-==================================================*/
-
-.option{
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    padding:14px 18px;
-
-    margin:12px 0;
+#instructionPage{
 
     background:#fff;
 
-    border:2px solid #d8dee9;
+    padding:35px;
 
-    border-radius:10px;
-
-    cursor:pointer;
-
-    transition:.25s;
-}
-
-
-.option:hover{
-    border-color:#0d6efd;
-
-    background:#f5f9ff;
-
-    box-shadow:
-    0 4px 12px rgba(13,110,253,.15);
-}
-
-
-.option input[type="radio"]{
-    transform:scale(1.2);
-
-    cursor:pointer;
-}
-
-
-.option-letter{
-    width:36px;
-
-    height:36px;
-
-    min-width:36px;
-
-    border-radius:50%;
-
-    background:#0d6efd;
-
-    color:#fff;
-
-    font-weight:bold;
-
-    font-size:16px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-}
-
-
-.option-text{
-    flex:1;
-
-    font-size:16px;
-
-    color:#222;
-
-    font-weight:500;
-
-    line-height:1.5;
-}
-
-
-.option input[type="radio"]:checked + .option-letter{
-    background:#28a745;
-}
-/*==================================================
- IKON ONLINE TEST SYSTEM
- PREMIUM CBT STYLE CSS
- CLEAN CSS - PART 3
-==================================================*/
-
-
-/*==================================================
- QUESTION PALETTE
-==================================================*/
-
-.question-panel{
-    background:white;
-
-    padding:25px;
-
-    border-radius:25px;
+    border-radius:22px;
 
     box-shadow:
     0 15px 40px rgba(0,0,0,.10);
 
-    position:sticky;
-
-    top:20px;
 }
 
+#instructionPage h2{
 
-.question-panel h3{
     text-align:center;
 
     color:#0047ab;
 
     margin-bottom:25px;
+
 }
 
+#instructionPage ul{
 
-/*==================================================
- QUESTION NUMBERS
-==================================================*/
+    padding-left:25px;
 
-#questionNumbers{
-    display:grid;
-
-    grid-template-columns:
-    repeat(5,1fr);
-
-    gap:12px;
 }
 
+#instructionPage li{
 
-.q-btn{
-    height:42px;
+    margin-bottom:15px;
 
-    border-radius:10px;
-
-    border:none;
-
-    background:#e2e8f0;
+    font-size:16px;
 
     color:#334155;
 
-    font-weight:700;
+    line-height:1.6;
 
-    cursor:pointer;
-
-    padding:0;
-
-    transition:.3s;
 }
 
+#instructionPage label{
 
-.q-btn:hover{
-    transform:scale(1.05);
-}
-
-
-/* CURRENT QUESTION */
-
-.q-btn.active{
-    background:#0047ab;
-
-    color:white;
-}
-
-
-/* ANSWERED QUESTION */
-
-.q-btn.done{
-    background:#16a34a;
-
-    color:white;
-}
-
-
-/*==================================================
- NAVIGATION
-==================================================*/
-
-.navigation{
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
+    display:block;
 
     margin-top:25px;
+
+    font-weight:600;
+
 }
 
+#startExamBtn{
 
-.navigation button{
-    flex:none;
+    display:block;
 
-    width:150px;
+    width:250px;
 
-    height:48px;
-}
+    margin:25px auto 0;
 
-
-/*==================================================
- SECONDARY BUTTON
-==================================================*/
-
-.secondary{
-    background:#64748b;
-
-    color:white;
-}
-
-
-.secondary:hover{
-    background:#475569;
-
-    transform:translateY(-3px);
-}
-
-
-.navigation .primary{
-    width:auto;
-}
-
-
-/*==================================================
- SUBMIT AREA
-==================================================*/
-
-.submit-area{
-    text-align:center;
-
-    margin:35px 0;
-}
-
-
-.submit-area .success{
-    width:260px;
-
-    background:
-    linear-gradient(
+    background:linear-gradient(
         135deg,
         #16a34a,
         #22c55e
     );
 
-    color:white;
+    color:#fff;
+
+}
+/*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM CBT STYLE CSS
+ PART 3
+ QUESTION AREA + PALETTE + SUCCESS + RESPONSIVE
+==================================================*/
+
+
+/*==================================================
+QUESTION PANEL
+==================================================*/
+
+.question-panel{
+    background:#fff;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.10);
+    position:sticky;
+    top:20px;
 }
 
+.question-panel h3{
+    text-align:center;
+    color:#005bea;
+    margin-bottom:20px;
+    font-size:22px;
+    font-weight:700;
+}
+
+
+/*==================================================
+QUESTION NUMBER BUTTONS
+==================================================*/
+
+#questionNumbers{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+}
+
+.q-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background:#e2e8f0;
+    color:#1e293b;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.q-btn:hover{
+    transform:scale(1.06);
+}
+
+.q-btn.active{
+    background:#005bea;
+    color:#fff;
+}
+
+.q-btn.done{
+    background:#16a34a;
+    color:#fff;
+}
+
+
+/*==================================================
+NAVIGATION BUTTON
+==================================================*/
+
+.navigation{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:30px;
+    gap:15px;
+}
+
+.navigation button{
+    width:150px;
+}
+
+
+/*==================================================
+SECONDARY BUTTON
+==================================================*/
+
+.secondary{
+    background:#64748b;
+    color:#fff;
+}
+
+.secondary:hover{
+    background:#475569;
+    transform:translateY(-3px);
+}
+
+
+/*==================================================
+SUBMIT AREA
+==================================================*/
+
+.submit-area{
+    text-align:center;
+    margin-top:35px;
+}
+
+.submit-area .success{
+    width:250px;
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:#fff;
+}
 
 .submit-area .success:hover{
     transform:translateY(-3px);
@@ -1270,37 +989,29 @@ button:disabled{
 
 
 /*==================================================
- SUCCESS PAGE
+SUCCESS PAGE
 ==================================================*/
 
 #successPage{
-    min-height:450px;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
+    min-height:450px;
 }
-
 
 #successPage .success-box{
-    animation:
-    successShow .5s ease;
+    animation:successPopup .5s ease;
 }
 
-
-@keyframes successShow{
+@keyframes successPopup{
 
     from{
         opacity:0;
-
         transform:scale(.8);
     }
 
     to{
         opacity:1;
-
         transform:scale(1);
     }
 
@@ -1308,43 +1019,35 @@ button:disabled{
 
 
 /*==================================================
- FOOTER
+FOOTER
 ==================================================*/
 
 .footer{
-    background:#0047ab;
-
-    color:white;
-
-    padding:15px;
-
+    background:#005bea;
+    color:#fff;
     text-align:center;
-
+    padding:15px;
     font-size:14px;
 }
 
 
 /*==================================================
- ANIMATION
+FADE ANIMATION
 ==================================================*/
 
 .fade-in{
-    animation:
-    fade .5s ease;
+    animation:fadeUp .4s ease;
 }
 
-
-@keyframes fade{
+@keyframes fadeUp{
 
     from{
         opacity:0;
-
         transform:translateY(20px);
     }
 
     to{
         opacity:1;
-
         transform:translateY(0);
     }
 
@@ -1352,34 +1055,40 @@ button:disabled{
 
 
 /*==================================================
- MOBILE RESPONSIVE
+TABLET RESPONSIVE
 ==================================================*/
 
 @media(max-width:900px){
 
-    .exam-status-bar{
-
-        gap:12px;
+    .quiz-layout{
+        grid-template-columns:1fr;
     }
 
-    .exam-status-bar #testDate{
-
-        font-size:15px;
-        padding:0 15px;
-        min-height:52px;
+    .question-panel{
+        position:relative;
+        top:0;
+        margin-top:20px;
     }
 
-    .exam-status-bar #timer{
+    #questionNumbers{
+        grid-template-columns:repeat(5,1fr);
+    }
 
-        min-width:120px;
-        min-height:52px;
-        font-size:24px;
+    .student-info{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .student-details{
+        width:100%;
+        grid-template-columns:1fr;
     }
 
 }
 
+
 /*==================================================
- SMALL MOBILE
+MOBILE
 ==================================================*/
 
 @media(max-width:500px){
@@ -1388,872 +1097,221 @@ button:disabled{
         padding:25px;
     }
 
-
-    #questionNumbers{
-        grid-template-columns:
-        repeat(5,1fr);
-    }
-
-
     .question-card{
         padding:20px;
     }
-
 
     .question{
         font-size:18px;
     }
 
-
     .navigation{
         flex-direction:column;
     }
 
+    .navigation button{
+        width:100%;
+    }
 
     .submit-area .success{
         width:100%;
     }
 
-
-    /*
-      SMALL MOBILE STUDENT PHOTO
-    */
-
-    .student-info{
-        gap:12px;
-    }
-
-
-    .student-photo,
-    #studentPhoto{
+    .student-photo{
         width:100px;
-
-        height:125px;
-
-        min-width:100px;
-
-        border-width:3px;
+        height:120px;
     }
-
-
-    .student-details{
-        grid-template-columns:1fr;
-
-        gap:10px;
-    }
-
 
     .detail-box{
         padding:12px;
     }
 
-
-    .detail-box .label{
-        font-size:12px;
-
-        margin-bottom:5px;
+    .detail-box span:last-child{
+        font-size:16px;
     }
 
-
-    .detail-box span:last-child{
-        font-size:15px;
+    .q-btn{
+        width:42px;
+        height:42px;
     }
 
 }
 /*==================================================
  IKON ONLINE TEST SYSTEM
- PREMIUM CBT STYLE CSS
- CLEAN CSS - PART 4
+ PART 4
+ DASHBOARD + MARKSHEET + PRINT + FINAL DATE/TIMER
 ==================================================*/
 
 
 /*==================================================
- LOGO + TITLE
-==================================================*/
-
-.header-center{
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-}
-
-
-#testTitle{
-    width:100%;
-
-    text-align:center;
-
-    color:white;
-
-    font-size:34px;
-
-    font-weight:800;
-
-    margin:15px 0 25px;
-}
-
-
-/*==================================================
- HEADER LOGO
-==================================================*/
-
-.header-left{
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    margin-bottom:12px;
-}
-
-
-.header-left img.logo{
-    width:400px;
-
-    height:auto;
-
-    display:block;
-
-    margin:auto;
-
-    object-fit:contain;
-}
-
-
-/*==================================================
- HEADER DATE + TIME
-==================================================*/
-
-.header-right{
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:20px;
-}
-
-
-.header-right .info-box{
-    background:
-    rgba(255,255,255,.18);
-
-    backdrop-filter:blur(10px);
-
-    -webkit-backdrop-filter:blur(10px);
-
-    padding:15px 20px;
-
-    min-width:170px;
-
-    border-radius:15px;
-
-    text-align:center;
-
-    border:1px solid rgba(255,255,255,.25);
-
-    color:white;
-
-    font-weight:600;
-
-    transition:.3s;
-}
-
-
-.header-right .info-box:hover{
-    transform:translateY(-5px);
-
-    background:
-    rgba(255,255,255,.30);
-}
-
-
-.header-right small{
-    display:none;
-}
-
-
-/*==================================================
- EXAM DATE + TIMER
- IMPORTANT:
- Ye dono ab absolute nahi hain.
- Isliye zoom in/out par corner me nahi jayenge.
-==================================================*/
-
-
-/* EXAM DATE */
-
-
-
-/* TIMER */
-
-
-
-/*==================================================
- DASHBOARD PAGE
+DASHBOARD
 ==================================================*/
 
 #dashboardPage{
     min-height:100vh;
-
     padding:30px 15px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #eef5ff,
-        #dfeeff
-    );
+    background:linear-gradient(135deg,#eef5ff,#dfeeff);
 }
-
 
 #dashboardPage .dashboard-container{
     max-width:1200px;
-
     margin:auto;
 }
 
-
-/* DASHBOARD HEADER */
-
-#dashboardPage .dashboard-header{
-    background:
-    linear-gradient(
-        135deg,
-        #0d47a1,
-        #1976d2
-    );
-
+.dashboard-header{
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
     color:#fff;
-
     text-align:center;
-
     padding:25px;
-
-    border-radius:18px;
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.15);
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
-
-#dashboardPage .dashboard-logo{
+.dashboard-logo{
     width:80px;
-
     margin-bottom:10px;
 }
 
-
-#dashboardPage .dashboard-header h1{
-    font-size:32px;
-
+.dashboard-header h1{
+    font-size:30px;
     margin-bottom:8px;
 }
 
-
-#dashboardPage .dashboard-header p{
-    font-size:18px;
-
-    opacity:.9;
-}
-
-
-/*==================================================
- DASHBOARD STUDENT CARD
-==================================================*/
-
-#dashboardPage .student-card{
-    background:#fff;
-
-    max-width:500px;
-
-    margin:35px auto;
-
-    padding:30px;
-
-    border-radius:20px;
-
-    text-align:center;
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.12);
-}
-
-
-#dashboardPage .student-photo{
-    width:140px;
-
-    height:140px;
-
-    object-fit:cover;
-
-    border-radius:50%;
-
-    border:5px solid #1976d2;
-
-    margin-bottom:20px;
-}
-
-
-#dashboardPage .student-card h2{
-    color:#0d47a1;
-
-    margin-bottom:20px;
-}
-
-
-#dashboardPage .student-card p{
+.dashboard-header p{
     font-size:17px;
-
-    margin:12px 0;
-
-    color:#444;
 }
 
-
-/*==================================================
- DASHBOARD CARDS
-==================================================*/
-
-#dashboardPage .dashboard-grid{
+.dashboard-grid{
     display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
-
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:25px;
-
     margin-top:30px;
 }
 
-
-#dashboardPage .dashboard-card{
+.dashboard-card{
     background:#fff;
-
     border-radius:20px;
-
-    padding:35px 20px;
-
+    padding:30px;
     text-align:center;
-
     cursor:pointer;
-
-    transition:.35s;
-
+    transition:.3s;
     border-top:6px solid #1976d2;
-
-    box-shadow:
-    0 10px 20px rgba(0,0,0,.10);
+    box-shadow:0 10px 25px rgba(0,0,0,.10);
 }
 
-
-#dashboardPage .dashboard-card:hover{
-    transform:translateY(-8px);
-
-    box-shadow:
-    0 20px 35px rgba(0,0,0,.18);
+.dashboard-card:hover{
+    transform:translateY(-6px);
 }
 
-
-#dashboardPage .dashboard-icon{
-    font-size:55px;
-
-    margin-bottom:20px;
+.dashboard-icon{
+    font-size:50px;
+    margin-bottom:18px;
 }
 
-
-#dashboardPage .dashboard-card h3{
-    color:#0d47a1;
-
-    margin-bottom:10px;
-
-    font-size:24px;
-}
-
-
-#dashboardPage .dashboard-card p{
-    color:#666;
-
-    font-size:15px;
-}
-
-
-/* LOGOUT CARD */
-
-#dashboardPage .logout-card{
-    border-top:6px solid #e53935;
+.logout-card{
+    border-top-color:#dc2626;
 }
 
 
 /*==================================================
- MARKSHEET PAGE
+MARKSHEET
 ==================================================*/
 
 #studentMarksheetPage{
     display:flex;
-
     justify-content:center;
-
     padding:20px;
-
     background:#eef3fb;
 }
 
-
 .marksheet-card{
     width:210mm;
-
     min-height:297mm;
-
     background:#fff;
-
     border:3px solid #0b57d0;
-
-    border-radius:12px;
-
+    border-radius:10px;
     padding:20mm 15mm;
-
-    box-sizing:border-box;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.15);
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
-
-
-/*==================================================
- MARKSHEET HEADER
-==================================================*/
 
 .marksheet-header{
     text-align:center;
-
     border-bottom:2px solid #0b57d0;
-
     padding-bottom:15px;
-
     margin-bottom:20px;
 }
 
-
 .marksheet-logo{
     width:85px;
-
     height:85px;
-
     object-fit:contain;
 }
-
 
 .marksheet-header h2{
-    margin:10px 0 0;
-
     color:#003366;
-
     font-size:30px;
-}
-
-
-.marksheet-header p{
-    margin:5px 0;
-
-    font-size:18px;
-}
-
-
-.marksheet-header h3{
-    display:inline-block;
-
-    margin-top:12px;
-
-    background:#0b57d0;
-
-    color:#fff;
-
-    padding:8px 20px;
-
-    border-radius:5px;
-}
-
-
-/*==================================================
- MARKSHEET BODY
-==================================================*/
-
-.marksheet-body{
-    display:block;
-}
-
-
-/*==================================================
- MARKSHEET PHOTO
-==================================================*/
-
-.photo-section{
-    text-align:center;
-
-    margin:20px 0;
-}
-
-
-.marksheet-photo{
-    width:120px;
-
-    height:145px;
-
-    border:2px solid #333;
-
-    border-radius:6px;
-
-    object-fit:contain;
-
-    object-position:center;
-
-    background:#fff;
-
-    padding:4px;
-}
-
-
-/*==================================================
- MARKSHEET DETAIL TABLE
-==================================================*/
-
-.detail-section{
-    width:100%;
-}
-
-
-.detail-section table{
-    width:100%;
-
-    border-collapse:collapse;
-}
-
-
-.detail-section td{
-    border:1px solid #bbb;
-
-    padding:12px;
-
-    font-size:17px;
-}
-
-
-.detail-section td:first-child{
-    width:35%;
-
-    background:#f3f7ff;
-
-    font-weight:bold;
-}
-
-
-/*==================================================
- MARKSHEET BUTTONS
-==================================================*/
-
-.marksheet-top-buttons{
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:10px;
-
-    margin:15px 0 20px;
-}
-
-
-.marksheet-top-buttons button{
-    width:120px;
-
-    padding:10px 0;
-
-    border-radius:8px;
-}
-
-
-/*==================================================
- RESULT VERIFY
-==================================================*/
-
-#resultVerifyPage #resultStudentID{
-    margin-bottom:25px;
-}
-
-
-#resultVerifyPage .primary{
     margin-top:10px;
 }
 
+.marksheet-header p{
+    margin:5px 0;
+    font-size:18px;
+}
 
-/*==================================================
- MOBILE - HEADER
-==================================================*/
+.marksheet-header h3{
+    display:inline-block;
+    margin-top:12px;
+    background:#0b57d0;
+    color:#fff;
+    padding:8px 20px;
+    border-radius:5px;
+}
 
-@media(max-width:900px){
+.photo-section{
+    text-align:center;
+    margin:20px 0;
+}
 
-    .header-left img.logo{
-        width:280px;
-    }
+.marksheet-photo{
+    width:120px;
+    height:145px;
+    border:2px solid #333;
+    border-radius:6px;
+    object-fit:cover;
+}
 
+.detail-section table{
+    width:100%;
+    border-collapse:collapse;
+}
 
-    #testTitle{
-        font-size:28px;
-    }
+.detail-section td{
+    border:1px solid #bbb;
+    padding:12px;
+    font-size:16px;
+}
 
+.detail-section td:first-child{
+    width:35%;
+    background:#f3f7ff;
+    font-weight:bold;
+}
 
-    .header-right{
-        gap:12px;
-    }
+.marksheet-top-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+}
 
-
-   
-   
-
-
-    #dashboardPage{
-        padding:20px 10px;
-    }
-
-
-    #dashboardPage .dashboard-header h1{
-        font-size:24px;
-    }
-
-
-    #dashboardPage .dashboard-header p{
-        font-size:15px;
-    }
-
-
-    #dashboardPage .student-photo{
-        width:110px;
-
-        height:110px;
-    }
-
-
-    #dashboardPage .student-card{
-        padding:20px;
-    }
-
-
-    #dashboardPage .dashboard-card{
-        padding:28px 18px;
-    }
-
-
-    #dashboardPage .dashboard-icon{
-        font-size:45px;
-    }
-
-
-    .marksheet-top-buttons{
-        justify-content:center;
-
-        flex-wrap:wrap;
-    }
-
-
-    .marksheet-top-buttons button{
-        width:48%;
-    }
-
-
-    .marksheet-card{
-        width:100%;
-
-        min-height:auto;
-
-        padding:20px;
-    }
-
-
-    .marksheet-header h2{
-        font-size:24px;
-    }
-
-
-    .marksheet-header p{
-        font-size:15px;
-    }
-
-
-    .marksheet-photo{
-        width:100px;
-
-        height:120px;
-    }
-
-
-    .detail-section td{
-        font-size:15px;
-
-        padding:10px;
-    }
-
-
-    .marksheet-buttons{
-        flex-direction:column;
-    }
-
-
-    .marksheet-buttons button{
-        width:100%;
-    }
-
+.marksheet-top-buttons button{
+    width:130px;
 }
 
 
 /*==================================================
- SMALL MOBILE - DATE + TIMER
+DATE + TIMER
 ==================================================*/
-
-@media(max-width:500px){
-
-    .header-left img.logo{
-        width:220px;
-    }
-
-
-    #testTitle{
-        font-size:23px;
-
-        margin:12px 0 18px;
-    }
-
-
-    .header-right{
-        gap:8px;
-    }
-
-
-    
-
-
-/*==================================================
- PRINT
-==================================================*/
-
-@page{
-    size:A4 portrait;
-
-    margin:0;
-}
-
-
-@media print{
-
-    body{
-        margin:0 !important;
-
-        padding:0 !important;
-
-        background:#fff !important;
-
-        min-height:0 !important;
-    }
-
-
-    .container{
-        width:100% !important;
-
-        max-width:none !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        border-radius:0 !important;
-
-        box-shadow:none !important;
-
-        overflow:visible !important;
-    }
-
-
-    .header,
-    #loginPage,
-    #waitingPage,
-    #testPage,
-    #successPage,
-    #resultVerifyPage,
-    #studentResultList,
-    .marksheet-top-buttons{
-        display:none !important;
-    }
-
-
-    .content{
-        padding:0 !important;
-
-        margin:0 !important;
-    }
-
-
-    #studentMarksheetPage{
-        display:block !important;
-
-        width:210mm !important;
-
-        min-height:297mm !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        background:#fff !important;
-    }
-
-
-    .marksheet-card{
-        display:block !important;
-
-        width:210mm !important;
-
-        min-height:297mm !important;
-
-        margin:0 !important;
-
-        padding:15mm 15mm !important;
-
-        background:#fff !important;
-
-        border:2px solid #000 !important;
-
-        border-radius:0 !important;
-
-        box-shadow:none !important;
-
-        box-sizing:border-box !important;
-
-        page-break-inside:avoid !important;
-    }
-
-
-    .marksheet-header{
-        page-break-inside:avoid !important;
-    }
-
-
-    .marksheet-body{
-        page-break-inside:avoid !important;
-    }
-
-}
-/*=========================================
- EXAM DATE + TIMER (PREMIUM)
-=========================================*/
 
 .exam-status-bar{
     width:100%;
@@ -2261,121 +1319,216 @@ button:disabled{
     justify-content:space-between;
     align-items:center;
     gap:20px;
-    margin:15px 0 25px;
+    margin-bottom:25px;
 }
 
-
-/* Common Style */
-
-.exam-status-bar #testDate,
-.exam-status-bar #timer{
+#testDate,
+#timer{
 
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
     min-height:60px;
 
     padding:0 22px;
 
-    border-radius:16px;
+    border-radius:15px;
 
     color:#fff;
 
     font-weight:700;
 
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,.22),
-        rgba(255,255,255,.08)
-    );
+    border:1px solid rgba(255,255,255,.25);
 
-    border:1px solid rgba(255,255,255,.35);
+    backdrop-filter:blur(12px);
 
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
 
-    box-shadow:
-        0 10px 25px rgba(0,0,0,.18),
-        inset 0 1px 0 rgba(255,255,255,.30);
-
-    transition:.35s;
 }
 
+#testDate{
 
-/* Hover */
+    flex:1;
 
-.exam-status-bar #testDate:hover,
-.exam-status-bar #timer:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.25),
-        0 0 18px rgba(255,255,255,.18);
-}
-
-
-/* DATE */
-
-.exam-status-bar #testDate{
+    background:linear-gradient(135deg,#1976d2,#42a5f5);
 
     font-size:18px;
-    letter-spacing:.4px;
+
 }
 
+#timer{
 
-/* TIMER */
+    width:150px;
 
-.exam-status-bar #timer{
-
-    min-width:145px;
+    background:linear-gradient(135deg,#0047ab,#008cff);
 
     font-size:30px;
 
-    font-weight:800;
-
-    font-family:"Consolas","Segoe UI",monospace;
-
-    letter-spacing:1px;
-
-    background:linear-gradient(
-        135deg,
-        #0b57d0,
-        #2d8cff
-    );
-
-    border:2px solid rgba(255,255,255,.45);
-
-    box-shadow:
-        0 12px 28px rgba(11,87,208,.45),
-        inset 0 1px 0 rgba(255,255,255,.35);
-}
-
-
-/* TIMER Glow Animation */
-
-@keyframes timerGlow{
-
-    0%{
-        box-shadow:
-        0 12px 28px rgba(11,87,208,.40);
-    }
-
-    50%{
-        box-shadow:
-        0 12px 35px rgba(11,87,208,.70),
-        0 0 20px rgba(66,165,245,.55);
-    }
-
-    100%{
-        box-shadow:
-        0 12px 28px rgba(11,87,208,.40);
-    }
+    font-family:Consolas,monospace;
 
 }
 
-.exam-status-bar .timer-box{
+#testDate:hover,
+#timer:hover{
 
-    animation:timerGlow 2s infinite;
+    transform:translateY(-2px);
+
+    transition:.3s;
+
+}
+
+
+/*==================================================
+TABLET
+==================================================*/
+
+@media(max-width:900px){
+
+.exam-status-bar{
+
+    flex-direction:column;
+
+}
+
+#testDate,
+#timer{
+
+    width:100%;
+
+}
+
+.marksheet-card{
+
+    width:100%;
+    min-height:auto;
+    padding:20px;
+
+}
+
+.dashboard-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+}
+
+
+/*==================================================
+MOBILE
+==================================================*/
+
+@media(max-width:500px){
+
+.dashboard-header h1{
+
+    font-size:24px;
+
+}
+
+.dashboard-header p{
+
+    font-size:14px;
+
+}
+
+.marksheet-photo{
+
+    width:100px;
+    height:120px;
+
+}
+
+.detail-section td{
+
+    font-size:14px;
+    padding:10px;
+
+}
+
+.marksheet-top-buttons{
+
+    flex-direction:column;
+
+}
+
+.marksheet-top-buttons button{
+
+    width:100%;
+
+}
+
+#testDate{
+
+    font-size:15px;
+
+}
+
+#timer{
+
+    font-size:24px;
+
+}
+
+}
+
+
+/*==================================================
+PRINT
+==================================================*/
+
+@page{
+
+    size:A4 portrait;
+    margin:0;
+
+}
+
+@media print{
+
+body{
+
+    background:#fff !important;
+    margin:0 !important;
+    padding:0 !important;
+
+}
+
+.header,
+#loginPage,
+#waitingPage,
+#testPage,
+#successPage,
+#resultVerifyPage,
+#studentResultPage,
+.marksheet-top-buttons{
+
+    display:none !important;
+
+}
+
+.content{
+
+    padding:0 !important;
+
+}
+
+#studentMarksheetPage{
+
+    display:block !important;
+
+}
+
+.marksheet-card{
+
+    width:210mm !important;
+    min-height:297mm !important;
+    margin:0 !important;
+    border:2px solid #000 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+
+}
+
 }
