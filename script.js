@@ -2910,86 +2910,152 @@ if(data.status === "NO_ID"){
 // SHOW RESULT
 //====================================
 
+//====================================
+// SHOW RESULT
+//====================================
+
 function showStudentResult(data){
 
+    //================================
+    // CHECK RESULT VERIFY PAGE
+    //================================
 
-    document
-    .getElementById("resultVerifyPage")
-    .classList.add("hidden");
+    const verifyPage =
+        document.getElementById("resultVerifyPage");
 
+    if(verifyPage){
 
-    document
-    .getElementById("studentResultPage")
-    .classList.remove("hidden");
+        verifyPage.classList.add("hidden");
 
-
-
-    let student =
-    data.student;
+    }
 
 
+    //================================
+    // SHOW STUDENT RESULT PAGE
+    //================================
 
-    document
-    .getElementById("studentInfo")
-    .innerHTML = `
+    const resultPage =
+        document.getElementById("studentResultPage");
+
+    if(!resultPage){
+
+        console.error(
+            "ERROR: studentResultPage element not found in HTML."
+        );
+
+        alert(
+            "Result page HTML element not found.\nPlease check studentResultPage ID."
+        );
+
+        return;
+
+    }
+
+    resultPage.classList.remove("hidden");
 
 
-    <h3>Name : ${student.name}</h3>
+    //================================
+    // STUDENT DATA
+    //================================
 
-    <h3>Reg No : ${student.regNo}</h3>
+    const student = data.student;
+
+    if(!student){
+
+        console.error(
+            "Student data not found:",
+            data
+        );
+
+        alert("Student information not found.");
+
+        return;
+
+    }
 
 
-    `;
+    //================================
+    // STUDENT INFORMATION
+    //================================
+
+    const studentInfo =
+        document.getElementById("studentInfo");
+
+    if(studentInfo){
+
+        studentInfo.innerHTML = `
+
+            <h3>Name : ${student.name || ""}</h3>
+
+            <h3>Reg No : ${student.regNo || ""}</h3>
+
+        `;
+
+    }
 
 
+    //================================
+    // RESULT DATA
+    //================================
 
-    let html="";
+    let html = "";
 
+
+    if(!Array.isArray(data.results)){
+
+        console.error(
+            "Result array not found:",
+            data
+        );
+
+        alert("Result data not found.");
+
+        return;
+
+    }
 
 
     data.results.forEach(function(r){
 
-
         html += `
 
-        <div class="result-card">
+            <div class="result-card">
 
+                <h3>
+                    ${r.paper || ""}
+                </h3>
 
-        <h3>
-        ${r.paper}
-        </h3>
+                <p>
+                    ✅ Correct : ${r.correct ?? 0}
+                </p>
 
+                <p>
+                    ❌ Wrong : ${r.wrong ?? 0}
+                </p>
 
-        <p>
-        ✅ Correct : ${r.correct}
-        </p>
+                <p>
+                    ⭕ Unattempted : ${r.unattempted ?? 0}
+                </p>
 
-
-        <p>
-        ❌ Wrong : ${r.wrong}
-        </p>
-
-
-        <p>
-        ⭕ Unattempted : ${r.unattempted}
-        </p>
-
-
-        </div>
-
+            </div>
 
         `;
-
 
     });
 
 
+    //================================
+    // DISPLAY RESULT
+    //================================
 
-    document
-    .getElementById("resultData")
-    .innerHTML=html;
+    const resultData =
+        document.getElementById("resultData");
 
+    if(resultData){
 
+        resultData.innerHTML = html;
+
+    }
 
 }
 //====================================
