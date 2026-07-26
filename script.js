@@ -2849,7 +2849,7 @@ function verifyResult(){
 
     // Apps Script ne already student ke
     // saare results bhej diye hain
-    showStudentResults(data);
+    showStudentResult(data);
 
     return;
 
