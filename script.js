@@ -2874,7 +2874,7 @@ html += `
 
 <td>${row.correct}</td>
 
-<td>${row.incorrect}</td>
+<td>${row.wrong}</td>
 
 <td>${row.unattempted}</td>
 
@@ -2898,7 +2898,7 @@ document
 
 document
 .getElementById("studentResultList")
-
+.classList.remove("hidden");
 
 
 
