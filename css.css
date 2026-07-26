@@ -2609,18 +2609,43 @@ DETAIL TABLE
 BUTTONS
 =========================*/
 
-.marksheet-buttons{
+/*=========================
+TOP BUTTONS
+=========================*/
+
+.marksheet-top-buttons{
 
     display:flex;
-
-    justify-content:center;
-
-    gap:15px;
-
-    margin-top:25px;
+    justify-content:flex-end;
+    gap:10px;
+    margin:15px 0 20px;
 
 }
 
+.marksheet-top-buttons button{
+
+    width:120px;
+    padding:10px 0;
+    border-radius:8px;
+
+}
+
+@media(max-width:768px){
+
+.marksheet-top-buttons{
+
+    justify-content:center;
+    flex-wrap:wrap;
+
+}
+
+.marksheet-top-buttons button{
+
+    width:48%;
+
+}
+
+}
 /*=========================
 MOBILE
 =========================*/
@@ -2675,9 +2700,7 @@ MOBILE
 
     width:100%;
 
-}
 
-}
 
 /*=========================
 PRINT
@@ -2700,11 +2723,7 @@ PRINT
 #successPage,
 #resultVerifyPage,
 #studentResultList,
-.marksheet-buttons{
-
-    display:none !important;
-
-}
+.
 
 #studentMarksheetPage{
 
