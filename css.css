@@ -870,192 +870,155 @@ button:disabled{
 
 }
 /*==================================================
-/*==================================================
  IKON ONLINE TEST SYSTEM
- PREMIUM CBT STYLE CSS
- PART 3
- QUESTION AREA + PALETTE + SUCCESS + RESPONSIVE
+ NIELIT CBT STYLE
+ QUESTION + OPTION + PALETTE
+ REPLACE PART 3
 ==================================================*/
 
 
-/*==================================================
-QUESTION PANEL / RIGHT PALETTE
-==================================================*/
+/*==============================
+ MAIN EXAM LAYOUT
+==============================*/
 
-.question-panel{
+.quiz-layout{
 
-    background:#ffffff;
-    padding:20px;
-    border-radius:16px;
+    display:grid;
 
-    box-shadow:
-    0 5px 20px rgba(0,0,0,.12);
+    grid-template-columns:
+    minmax(0,1fr) 300px;
 
-    border:1px solid #e5e7eb;
+    gap:25px;
 
-    position:sticky;
-    top:15px;
+    align-items:start;
 
 }
 
 
-/* Question Title */
+/*==============================
+ QUESTION CARD
+==============================*/
 
-.question-panel h3{
 
-    text-align:center;
+.question-card{
 
-    background:linear-gradient(
-        135deg,
-        #005bea,
-        #00c6fb
-    );
+    background:#ffffff;
 
-    color:white;
+    border-radius:12px;
 
-    padding:12px;
+    padding:25px;
 
-    border-radius:10px;
+    border:1px solid #d9e2ec;
 
-    font-size:18px;
+    box-shadow:
+    0 4px 15px rgba(0,0,0,.08);
+
+}
+
+
+
+/* Question Number */
+
+.question-number{
+
+    background:#eef5ff;
+
+    color:#005bea;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    padding:12px 15px;
+
+    border-left:5px solid #005bea;
+
+    border-radius:6px;
 
     margin-bottom:20px;
 
 }
 
 
+/* Question Text */
 
-/*==================================================
-QUESTION PALETTE
-==================================================*/
+.question{
 
+    font-size:20px;
 
-#questionNumbers{
+    font-weight:600;
 
-    display:grid;
+    color:#1f2937;
 
-    grid-template-columns:
-    repeat(5,1fr);
+    line-height:1.6;
 
-    gap:12px;
-
-    justify-content:center;
+    margin-bottom:25px;
 
 }
 
 
 
-.q-btn{
+/*==============================
+ OPTIONS
+==============================*/
 
-    width:42px;
-    height:42px;
 
-    border-radius:50%;
+.options{
 
-    border:2px solid #cbd5e1;
+    display:flex;
 
-    background:#f8fafc;
+    flex-direction:column;
 
-    color:#334155;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.25s;
+    gap:14px;
 
 }
 
-
-
-.q-btn:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:
-    0 5px 12px rgba(0,0,0,.15);
-
-}
-
-
-/* Current Question */
-
-.q-btn.active{
-
-    background:#005bea;
-
-    border-color:#005bea;
-
-    color:white;
-
-    box-shadow:
-    0 0 0 4px rgba(0,91,234,.20);
-
-}
-
-
-
-/* Answered */
-
-.q-btn.done{
-
-    background:#16a34a;
-
-    border-color:#16a34a;
-
-    color:white;
-
-}
-
-
-/* Not Attempt */
-
-.q-btn:not(.done):not(.active){
-
-    background:#f1f5f9;
-
-}
-
-
-
-/*==================================================
-OPTION AREA
-==================================================*/
 
 
 .option{
+
 
     display:flex;
 
     align-items:center;
 
-    gap:15px;
+
+    width:100%;
+
 
     padding:15px 18px;
 
-    margin-bottom:14px;
 
-    background:#ffffff;
+    background:#fff;
 
-    border:2px solid #e2e8f0;
 
-    border-radius:12px;
+    border:1.5px solid #cbd5e1;
+
+
+    border-radius:8px;
+
 
     cursor:pointer;
 
+
     transition:.25s;
+
 
 }
 
 
 
+/* Hover */
+
+
 .option:hover{
+
 
     border-color:#005bea;
 
-    background:#eff6ff;
 
-    transform:translateX(5px);
+    background:#f0f7ff;
+
 
 }
 
@@ -1066,47 +1029,38 @@ OPTION AREA
 
 .option-letter{
 
-    min-width:35px;
 
-    height:35px;
+    width:38px;
+
+    height:38px;
+
+
+    min-width:38px;
+
 
     display:flex;
 
-    align-items:center;
 
     justify-content:center;
 
+
+    align-items:center;
+
+
+    margin-right:15px;
+
+
     border-radius:50%;
 
-    background:#e0f2fe;
+
+    background:#e8f1ff;
+
 
     color:#005bea;
 
+
     font-weight:800;
 
-}
-
-
-
-/* Selected Option */
-
-
-.option.selected{
-
-    background:#dbeafe;
-
-    border-color:#005bea;
-
-}
-
-
-
-.option.selected 
-.option-letter{
-
-    background:#005bea;
-
-    color:white;
 
 }
 
@@ -1117,32 +1071,225 @@ OPTION AREA
 
 .option-text{
 
-    font-size:16px;
+
+    font-size:17px;
+
+    color:#334155;
 
     font-weight:500;
-
-    color:#1e293b;
 
 }
 
 
 
-/*==================================================
-NAVIGATION BUTTON
-==================================================*/
+/* Selected Answer */
+
+
+.option.selected{
+
+
+    background:#e0edff;
+
+
+    border:2px solid #005bea;
+
+
+}
+
+
+
+.option.selected .option-letter{
+
+
+    background:#005bea;
+
+    color:#fff;
+
+}
+
+
+
+/*==============================
+ RIGHT QUESTION PALETTE
+==============================*/
+
+
+.question-panel{
+
+
+    background:#fff;
+
+
+    border-radius:12px;
+
+
+    padding:20px;
+
+
+    border:1px solid #d9e2ec;
+
+
+    box-shadow:
+    0 5px 18px rgba(0,0,0,.10);
+
+
+    position:sticky;
+
+
+    top:20px;
+
+
+}
+
+
+
+
+.question-panel h3{
+
+
+    text-align:center;
+
+
+    background:#005bea;
+
+
+    color:white;
+
+
+    padding:12px;
+
+
+    border-radius:8px;
+
+
+    font-size:18px;
+
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+/* Palette Grid */
+
+
+#questionNumbers{
+
+
+    display:grid;
+
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+
+    gap:12px;
+
+
+}
+
+
+
+/* Question Buttons */
+
+
+.q-btn{
+
+
+    width:42px;
+
+
+    height:42px;
+
+
+    border-radius:6px;
+
+
+    border:1px solid #94a3b8;
+
+
+    background:#fff;
+
+
+    color:#334155;
+
+
+    font-size:15px;
+
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+/* Current */
+
+.q-btn.active{
+
+
+    background:#005bea;
+
+    color:white;
+
+    border-color:#005bea;
+
+
+}
+
+
+
+/* Answered */
+
+.q-btn.done{
+
+
+    background:#16a34a;
+
+    color:white;
+
+    border-color:#16a34a;
+
+
+}
+
+
+
+/* Not Answered */
+
+
+.q-btn:not(.done):not(.active){
+
+
+    background:#f8fafc;
+
+
+}
+
+
+
+/*==============================
+ NAVIGATION
+==============================*/
 
 
 .navigation{
 
+
     display:flex;
+
 
     justify-content:space-between;
 
-    align-items:center;
 
-    margin-top:25px;
+    margin-top:30px;
 
-    gap:12px;
 
 }
 
@@ -1150,189 +1297,94 @@ NAVIGATION BUTTON
 
 .navigation button{
 
-    width:120px;
 
-    height:42px;
+    width:130px;
 
-    border-radius:8px;
+
+    height:45px;
+
 
     font-size:15px;
+
 
 }
 
 
 
-/* Previous Button */
+/* Previous */
 
 
-.secondary{
+.navigation .secondary{
+
 
     background:#64748b;
 
     color:white;
 
-}
-
-
-
-.secondary:hover{
-
-    background:#475569;
 
 }
 
 
 
-/* Next Button */
+/* Next */
 
 
-.primary{
+.navigation .primary{
 
-    background:
-    linear-gradient(
-    135deg,
-    #005bea,
-    #00c6fb
-    );
+
+    background:#005bea;
 
     color:white;
 
-}
-
-
-
-/*==================================================
-SUBMIT BUTTON
-==================================================*/
-
-
-.submit-area{
-
-    text-align:center;
-
-    margin-top:25px;
 
 }
 
 
 
-.submit-area .success{
-
-    width:180px;
-
-    height:45px;
-
-    border-radius:10px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #16a34a,
-    #22c55e
-    );
-
-    color:white;
-
-    font-weight:700;
-
-}
-
-
-
-/*==================================================
-SUCCESS PAGE
-==================================================*/
-
-
-#successPage{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    min-height:450px;
-
-}
-
-
-
-.success-box{
-
-    background:white;
-
-    padding:35px;
-
-    border-radius:20px;
-
-    text-align:center;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.15);
-
-}
-
-
-
-@keyframes successPopup{
-
-
-from{
-
-opacity:0;
-
-transform:scale(.8);
-
-}
-
-
-to{
-
-opacity:1;
-
-transform:scale(1);
-
-}
-
-
-}
-
-
-
-/*==================================================
-PALETTE LEGEND
-==================================================*/
+/*==============================
+ LEGEND
+==============================*/
 
 
 .palette-info{
 
+
     margin-top:20px;
+
 
     display:grid;
 
+
     grid-template-columns:1fr 1fr;
 
-    gap:10px;
+
+    gap:12px;
+
 
 }
+
 
 
 .palette-info span{
 
+
     font-size:13px;
+
 
     display:flex;
 
+
     align-items:center;
 
+
     gap:8px;
+
 
 }
 
 
-
 .palette-info i{
+
 
     width:18px;
 
@@ -1340,63 +1392,12 @@ PALETTE LEGEND
 
     border-radius:50%;
 
-    display:inline-block;
-
 }
 
 
-
-.current{
-
-    background:#005bea;
-
-}
-
-
-.answered{
-
-    background:#16a34a;
-
-}
-
-
-.unanswered{
-
-    background:#cbd5e1;
-
-}
-
-
-.review{
-
-    background:#f59e0b;
-
-}
-
-
-
-/*==================================================
-FOOTER
-==================================================*/
-
-
-.footer{
-
-    background:#005bea;
-
-    color:white;
-
-    text-align:center;
-
-    padding:15px;
-
-}
-
-
-
-/*==================================================
-TABLET
-==================================================*/
+/*==============================
+ MOBILE
+==============================*/
 
 
 @media(max-width:900px){
@@ -1404,48 +1405,48 @@ TABLET
 
 .quiz-layout{
 
+
     grid-template-columns:1fr;
 
+
 }
+
 
 
 .question-panel{
 
+
     position:relative;
 
+
+    order:2;
+
+
 }
 
 
 
 }
 
-
-
-/*==================================================
-MOBILE
-==================================================*/
 
 
 @media(max-width:500px){
 
 
-#questionNumbers{
+.question-card{
 
-    grid-template-columns:
-    repeat(5,1fr);
 
-    gap:8px;
+    padding:15px;
+
 
 }
 
 
-.q-btn{
+.question{
 
-    width:38px;
 
-    height:38px;
+    font-size:17px;
 
-    font-size:13px;
 
 }
 
@@ -1453,7 +1454,9 @@ MOBILE
 
 .option{
 
+
     padding:12px;
+
 
 }
 
@@ -1461,29 +1464,37 @@ MOBILE
 
 .option-text{
 
-    font-size:14px;
+
+    font-size:15px;
+
+
+}
+
+
+
+#questionNumbers{
+
+
+    grid-template-columns:
+    repeat(5,1fr);
+
 
 }
 
 
 
-.navigation{
-
-    flex-direction:row;
-
-}
+.q-btn{
 
 
+    width:35px;
 
-.navigation button{
-
-    width:50%;
-
-}
-
+    height:35px;
 
 
 }
+
+}
+
 /*==================================================
  IKON ONLINE TEST SYSTEM
  PART 4
