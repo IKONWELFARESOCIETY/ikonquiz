@@ -33,6 +33,7 @@ IKON Institute Online Test Portal | Student Login & Class Test
         <img
             src="ikon.jpg"
             class="logo"
+            id="ikonLogo
             alt="IKON Logo">
 
     </div>
@@ -608,6 +609,39 @@ STUDENT MARKSHEET PAGE
 
 </div>
 <script src="script.js"></script>
+<!--====================================
+    ADMIN VERIFICATION PAGE
+=====================================-->
 
+<div id="adminVerifyPage" class="hidden">
+
+    <div class="result-box">
+
+        <h2>🔐 Admin Verification</h2>
+
+        <p>Enter Admin Verification Code</p>
+
+        <input
+            type="password"
+            id="adminVerifyCode"
+            placeholder="Enter Verification Code"
+            autocomplete="off">
+
+        <button
+            type="button"
+            class="primary"
+            onclick="verifyAdmin()">
+            Verify
+        </button>
+
+        <button
+            type="button"
+            onclick="closeAdminVerify()">
+            Back
+        </button>
+
+    </div>
+
+</div>
 </body>
 </html>
