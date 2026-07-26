@@ -2854,7 +2854,7 @@ function verifyResult(){
             // SHOW STUDENT RESULT
             //================================
 
-            showStudentResult(data);
+            loadAllResults();
 
             return;
 
@@ -3137,6 +3137,11 @@ function backToLogin(){
 // STUDENT + ADMIN
 //====================================
 
+//====================================
+// LOAD ALL RESULTS
+// STUDENT + ADMIN
+//====================================
+
 function loadAllResults(){
 
     fetch(
@@ -3145,11 +3150,28 @@ function loadAllResults(){
 
     .then(function(res){
 
+        if(!res.ok){
+
+            throw new Error(
+                "Server Error"
+            );
+
+        }
+
         return res.json();
 
     })
 
     .then(function(data){
+
+        if(!data || !Array.isArray(data.results)){
+
+            alert("Result data not found.");
+
+            return;
+
+        }
+
 
         let html = "";
 
@@ -3279,6 +3301,10 @@ function loadAllResults(){
 
         if(tableHead){
 
+            //================================
+            // STUDENT HEADER
+            //================================
+
             if(!isAdminMode){
 
                 tableHead.innerHTML = `
@@ -3293,6 +3319,12 @@ function loadAllResults(){
                 `;
 
             }
+
+
+            //================================
+            // ADMIN HEADER
+            //================================
+
             else{
 
                 tableHead.innerHTML = `
@@ -3349,6 +3381,8 @@ function loadAllResults(){
 
         //====================================
         // STUDENT TOP DETAILS
+        // ONLY:
+        // NAME + REG NO + PAPER NO
         //====================================
 
         if(!isAdminMode){
@@ -3360,14 +3394,6 @@ function loadAllResults(){
 
 
             if(studentInfo){
-
-                /*
-                 * Yahan sirf Name, Reg No, Paper No
-                 * dikhaya jayega.
-                 *
-                 * Ye details result list ke
-                 * pehle record se li ja rahi hain.
-                 */
 
                 const first =
                     data.results &&
