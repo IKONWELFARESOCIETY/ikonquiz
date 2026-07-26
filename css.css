@@ -2429,3 +2429,188 @@ Responsive
 }
 
 }
+/*=====================================
+PROFESSIONAL MARKSHEET
+=====================================*/
+
+.marksheet-card{
+
+width:850px;
+max-width:95%;
+margin:30px auto;
+background:#fff;
+border:6px solid #0d6efd;
+border-radius:15px;
+padding:30px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+}
+
+.marksheet-header{
+
+text-align:center;
+border-bottom:3px solid #0d6efd;
+padding-bottom:15px;
+margin-bottom:20px;
+
+}
+
+.marksheet-logo{
+
+width:90px;
+height:90px;
+border-radius:50%;
+margin-bottom:10px;
+
+}
+
+.marksheet-header h2{
+
+margin:5px;
+font-size:32px;
+color:#0d6efd;
+
+}
+
+.marksheet-header p{
+
+margin:0;
+font-size:18px;
+font-weight:bold;
+
+}
+
+.marksheet-header h3{
+
+margin-top:15px;
+color:#198754;
+letter-spacing:2px;
+
+}
+
+.marksheet-body{
+
+display:flex;
+gap:30px;
+align-items:flex-start;
+justify-content:center;
+flex-wrap:wrap;
+
+}
+
+.photo-box{
+
+text-align:center;
+
+}
+
+.marksheet-photo{
+
+width:140px;
+height:170px;
+border:4px solid #0d6efd;
+border-radius:10px;
+object-fit:cover;
+
+}
+
+.detail-section{
+
+flex:1;
+
+}
+
+.detail-section table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+.detail-section td{
+
+padding:12px;
+border:1px solid #ddd;
+font-size:18px;
+
+}
+
+.detail-section td:first-child{
+
+background:#f5f5f5;
+font-weight:bold;
+width:220px;
+
+}
+
+.result-pass{
+
+color:green;
+font-weight:bold;
+font-size:22px;
+
+}
+
+.result-fail{
+
+color:red;
+font-weight:bold;
+font-size:22px;
+
+}
+
+.grade-box{
+
+background:#0d6efd;
+color:#fff;
+padding:6px 20px;
+border-radius:20px;
+font-weight:bold;
+display:inline-block;
+
+}
+
+.marksheet-footer{
+
+margin-top:40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+.signature{
+
+text-align:center;
+
+}
+
+.signature hr{
+
+width:180px;
+
+}
+
+.printBtn{
+
+background:#198754;
+color:#fff;
+padding:12px 25px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:17px;
+
+}
+
+.backBtn{
+
+background:#dc3545;
+color:#fff;
+padding:12px 25px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:17px;
+
+}
