@@ -146,16 +146,6 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
         </button>
 
-
-        <button
-        class="secondary"
-        onclick="backToLogin()">
-
-        Back To Login
-
-        </button>
-
-
     </div>
 
 </div>
@@ -196,6 +186,7 @@ IKON Institute Online Test Portal | Student Login & Class Test
                     <th>Correct</th>
                     <th>Incorrect</th>
                     <th>Unattempted</th>
+                    <th>Marksheet</th>
                 </tr>
 
             </thead>
@@ -223,6 +214,101 @@ IKON Institute Online Test Portal | Student Login & Class Test
     </div>
 
 </div>
+    <!--======================================
+STUDENT MARKSHEET PAGE
+=======================================-->
+
+<div id="studentMarksheetPage" class="hidden">
+
+    <div class="marksheet-card">
+
+        <div class="marksheet-header">
+
+            <img
+            src="logo.png"
+            class="marksheet-logo">
+
+            <h2>IKON INSTITUTE</h2>
+
+            <p>ONLINE CLASS TEST</p>
+
+            <h3>STUDENT MARKSHEET</h3>
+
+        </div>
+
+
+        <div class="marksheet-body">
+
+            <div class="photo-section">
+
+                <img
+                id="msPhoto"
+                src="no-photo.jpeg">
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <table>
+
+                    <tr>
+                        <td><b>Registration No</b></td>
+                        <td id="msRegNo"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Student Name</b></td>
+                        <td id="msName"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Course</b></td>
+                        <td id="msCourse"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Paper</b></td>
+                        <td id="msPaper"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Correct Marks</b></td>
+                        <td id="msCorrect"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Grade</b></td>
+                        <td id="msGrade"></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Result</b></td>
+                        <td id="msResult"></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="marksheet-footer">
+
+            <button
+            onclick="backToResultList()">
+
+                Back
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+    
 <!-- ================= WAITING PAGE ================= -->
 
 <div
