@@ -769,12 +769,17 @@ function openTest() {
 
     // Show Instruction Page
 
-    const instructionPage =
-        document.getElementById("instructionPage");
+    //=====================================
+// Show Verification Page First
+//=====================================
 
+document
+.getElementById("verificationPage")
+?.classList.remove("hidden");
 
-    if(instructionPage)
-        instructionPage.classList.remove("hidden");
+document
+.getElementById("instructionPage")
+?.classList.add("hidden");
 
 
 
@@ -859,7 +864,7 @@ function checkTestStatus() {
             ?.classList.remove("hidden");
 
 
-            startStatusChecker();
+            autoCheckStatus();
 
         }
 
@@ -1115,13 +1120,14 @@ function startExam() {
 function verifyStudentID(){
 
     let enteredId =
-    document.getElementById("studentIdInput")
+    document
+    .getElementById("studentIdInput")
     .value
     .trim();
 
     if(enteredId===""){
 
-        alert("Please enter Student ID.");
+        alert("Please Enter Student ID");
 
         return;
 
@@ -1143,12 +1149,11 @@ function verifyStudentID(){
     }
     else{
 
-        alert("Invalid Student ID.");
+        alert("Invalid Student ID");
 
     }
 
 }
-
 //====================================================
 // LOAD PAPER QUESTIONS
 //====================================================
