@@ -2652,54 +2652,57 @@ MOBILE
 
 @media(max-width:768px){
 
-.marksheet-card{
+    .marksheet-card{
 
-    width:100%;
+        width:100%;
 
-    min-height:auto;
+        min-height:auto;
 
-    padding:20px;
+        padding:20px;
+
+    }
+
+    .marksheet-header h2{
+
+        font-size:24px;
+
+    }
+
+    .marksheet-header p{
+
+        font-size:15px;
+
+    }
+
+    .marksheet-photo{
+
+        width:100px;
+
+        height:120px;
+
+    }
+
+    .detail-section td{
+
+        font-size:15px;
+
+        padding:10px;
+
+    }
+
+    .marksheet-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .marksheet-buttons button{
+
+        width:100%;
+
+    }
 
 }
-
-.marksheet-header h2{
-
-    font-size:24px;
-
-}
-
-.marksheet-header p{
-
-    font-size:15px;
-
-}
-
-.marksheet-photo{
-
-    width:100px;
-
-    height:120px;
-
-}
-
-.detail-section td{
-
-    font-size:15px;
-
-    padding:10px;
-
-}
-
-.marksheet-buttons{
-
-    flex-direction:column;
-
-}
-
-.marksheet-buttons button{
-
-    width:100%;
-
 
 
 /*=========================
@@ -2710,45 +2713,127 @@ PRINT
 
     size:A4 portrait;
 
-    margin:10mm;
+    margin:0;
 
 }
+
 
 @media print{
 
-.header,
-#loginPage,
-#waitingPage,
-#testPage,
-#successPage,
-#resultVerifyPage,
-#studentResultList,
-.
+    /* HIDE EVERYTHING EXCEPT MARKSHEET */
 
-#studentMarksheetPage{
+    body{
 
-    display:block !important;
+        margin:0 !important;
 
-    background:#fff;
+        padding:0 !important;
 
-    padding:0;
+        background:#fff !important;
+
+        min-height:0 !important;
+
+    }
+
+    .container{
+
+        width:100% !important;
+
+        max-width:none !important;
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+        overflow:visible !important;
+
+    }
+
+    .header,
+    #loginPage,
+    #waitingPage,
+    #testPage,
+    #successPage,
+    #resultVerifyPage,
+    #studentResultList,
+    .marksheet-top-buttons{
+
+        display:none !important;
+
+    }
+
+    .content{
+
+        padding:0 !important;
+
+        margin:0 !important;
+
+    }
+
+    #studentMarksheetPage{
+
+        display:block !important;
+
+        width:210mm !important;
+
+        min-height:297mm !important;
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        background:#fff !important;
+
+    }
+
+    .marksheet-card{
+
+        display:block !important;
+
+        width:210mm !important;
+
+        min-height:297mm !important;
+
+        margin:0 !important;
+
+        padding:15mm 15mm !important;
+
+        background:#fff !important;
+
+        border:2px solid #000 !important;
+
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+        box-sizing:border-box !important;
+
+        page-break-inside:avoid !important;
+
+    }
+
+    .marksheet-header{
+
+        page-break-inside:avoid !important;
+
+    }
+
+    .marksheet-body{
+
+        page-break-inside:avoid !important;
+
+    }
 
 }
+/* RESULT VERIFY INPUT - BUTTON GAP */
 
-.marksheet-card{
-
-    width:190mm;
-
-    min-height:277mm;
-
-    border:2px solid #000;
-
-    box-shadow:none;
-
-    margin:auto;
-
-    page-break-inside:avoid;
-
+#resultVerifyPage #resultStudentID{
+    margin-bottom:25px;
 }
 
+#resultVerifyPage .primary{
+    margin-top:10px;
 }
