@@ -75,7 +75,7 @@ let isAdminMode = false;
 let totalTime = 30 * 60;
 
 let timer = null;
-
+let examDuration = 30;
 
 
 //====================================================
@@ -194,34 +194,32 @@ function loadDuration() {
 
     fetch(SCRIPT_URL + "?action=duration")
 
-        .then(res => res.text())
+    .then(res => res.text())
 
-        .then(data => {
+    .then(data => {
 
-            let minutes = parseInt(data);
+        examDuration = parseInt(data);
 
-            if (isNaN(minutes) || minutes <= 0) {
+        if (isNaN(examDuration) || examDuration <= 0) {
+            examDuration = 30;
+        }
 
-                minutes = 30;
+        totalTime = examDuration * 60;
 
-            }
+        showTimer();
 
-            totalTime = minutes * 60;
+    })
 
-            showTimer();
+    .catch(() => {
 
-        })
+        examDuration = 30;
+        totalTime = examDuration * 60;
 
-        .catch(() => {
+        showTimer();
 
-            totalTime = 30 * 60;
-
-            showTimer();
-
-        });
+    });
 
 }
-
 
 
 //====================================================
@@ -1043,25 +1041,6 @@ function showRandomLine() {
 // OPEN TEST
 //====================================================
 
-
-//====================================================
-// ENABLE START BUTTON
-//====================================================
-
-function enableStartExam() {
-
-    const check =
-        document.getElementById("acceptRules");
-
-    const btn =
-        document.getElementById("startExamBtn");
-
-    if (!check || !btn)
-        return;
-
-    btn.disabled = !check.checked;
-
-}
 //====================================================
 // PART 2A
 // START EXAM + LOAD QUESTIONS
