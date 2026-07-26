@@ -874,59 +874,9 @@ function checkTestStatus() {
 
         console.log(error);
 
-        alert("Status check failed");
-
     });
 
 }
-
-
-
-//====================================================
-// AUTO STATUS CHECK
-//====================================================
-
-function autoCheckStatus() {
-
-    if (statusChecker !== null)
-        return;
-
-    statusChecker = setInterval(function () {
-
-        fetch(SCRIPT_URL + "?action=status")
-
-        .then(function (res) {
-
-            return res.text();
-
-        })
-
-        .then(function (status) {
-
-            status = status.trim().toUpperCase();
-
-            if (status === "ON") {
-
-                clearInterval(statusChecker);
-
-                statusChecker = null;
-
-                openTest();
-
-            }
-
-        })
-
-        .catch(function (err) {
-
-            console.log(err);
-
-        });
-
-    }, 5000);
-
-}
-
 
 
 //====================================================
