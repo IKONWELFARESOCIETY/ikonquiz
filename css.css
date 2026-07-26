@@ -870,6 +870,7 @@ button:disabled{
 
 }
 /*==================================================
+/*==================================================
  IKON ONLINE TEST SYSTEM
  PREMIUM CBT STYLE CSS
  PART 3
@@ -878,262 +879,609 @@ button:disabled{
 
 
 /*==================================================
-QUESTION PANEL
+QUESTION PANEL / RIGHT PALETTE
 ==================================================*/
 
 .question-panel{
-    background:#fff;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.10);
+
+    background:#ffffff;
+    padding:20px;
+    border-radius:16px;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.12);
+
+    border:1px solid #e5e7eb;
+
     position:sticky;
-    top:20px;
+    top:15px;
+
 }
 
+
+/* Question Title */
+
 .question-panel h3{
+
     text-align:center;
-    color:#005bea;
+
+    background:linear-gradient(
+        135deg,
+        #005bea,
+        #00c6fb
+    );
+
+    color:white;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
     margin-bottom:20px;
-    font-size:22px;
-    font-weight:700;
+
 }
+
 
 
 /*==================================================
-QUESTION NUMBER BUTTONS
+QUESTION PALETTE
 ==================================================*/
 
+
 #questionNumbers{
+
     display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:10px;
+
+    grid-template-columns:
+    repeat(5,1fr);
+
+    gap:12px;
+
+    justify-content:center;
+
 }
+
+
 
 .q-btn{
-    width:45px;
-    height:45px;
-    border:none;
-    border-radius:10px;
-    background:#e2e8f0;
-    color:#1e293b;
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    border:2px solid #cbd5e1;
+
+    background:#f8fafc;
+
+    color:#334155;
+
     font-weight:700;
+
     cursor:pointer;
+
     transition:.25s;
+
 }
+
+
 
 .q-btn:hover{
-    transform:scale(1.06);
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 5px 12px rgba(0,0,0,.15);
+
 }
+
+
+/* Current Question */
 
 .q-btn.active{
+
     background:#005bea;
-    color:#fff;
+
+    border-color:#005bea;
+
+    color:white;
+
+    box-shadow:
+    0 0 0 4px rgba(0,91,234,.20);
+
 }
 
+
+
+/* Answered */
+
 .q-btn.done{
+
     background:#16a34a;
-    color:#fff;
+
+    border-color:#16a34a;
+
+    color:white;
+
 }
+
+
+/* Not Attempt */
+
+.q-btn:not(.done):not(.active){
+
+    background:#f1f5f9;
+
+}
+
+
+
+/*==================================================
+OPTION AREA
+==================================================*/
+
+
+.option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px 18px;
+
+    margin-bottom:14px;
+
+    background:#ffffff;
+
+    border:2px solid #e2e8f0;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+
+
+.option:hover{
+
+    border-color:#005bea;
+
+    background:#eff6ff;
+
+    transform:translateX(5px);
+
+}
+
+
+
+/* Option Letter */
+
+
+.option-letter{
+
+    min-width:35px;
+
+    height:35px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#e0f2fe;
+
+    color:#005bea;
+
+    font-weight:800;
+
+}
+
+
+
+/* Selected Option */
+
+
+.option.selected{
+
+    background:#dbeafe;
+
+    border-color:#005bea;
+
+}
+
+
+
+.option.selected 
+.option-letter{
+
+    background:#005bea;
+
+    color:white;
+
+}
+
+
+
+/* Option Text */
+
+
+.option-text{
+
+    font-size:16px;
+
+    font-weight:500;
+
+    color:#1e293b;
+
+}
+
 
 
 /*==================================================
 NAVIGATION BUTTON
 ==================================================*/
 
+
 .navigation{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
-    margin-top:30px;
-    gap:15px;
+
+    margin-top:25px;
+
+    gap:12px;
+
 }
+
+
 
 .navigation button{
-    width:150px;
+
+    width:120px;
+
+    height:42px;
+
+    border-radius:8px;
+
+    font-size:15px;
+
 }
 
 
-/*==================================================
-SECONDARY BUTTON
-==================================================*/
+
+/* Previous Button */
+
 
 .secondary{
+
     background:#64748b;
-    color:#fff;
+
+    color:white;
+
 }
 
+
+
 .secondary:hover{
+
     background:#475569;
-    transform:translateY(-3px);
+
 }
+
+
+
+/* Next Button */
+
+
+.primary{
+
+    background:
+    linear-gradient(
+    135deg,
+    #005bea,
+    #00c6fb
+    );
+
+    color:white;
+
+}
+
 
 
 /*==================================================
-SUBMIT AREA
+SUBMIT BUTTON
 ==================================================*/
 
+
 .submit-area{
+
     text-align:center;
-    margin-top:35px;
+
+    margin-top:25px;
+
 }
+
+
 
 .submit-area .success{
-    width:250px;
-    background:linear-gradient(135deg,#16a34a,#22c55e);
-    color:#fff;
+
+    width:180px;
+
+    height:45px;
+
+    border-radius:10px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+    color:white;
+
+    font-weight:700;
+
 }
 
-.submit-area .success:hover{
-    transform:translateY(-3px);
-}
 
 
 /*==================================================
 SUCCESS PAGE
 ==================================================*/
 
+
 #successPage{
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     min-height:450px;
+
 }
 
-#successPage .success-box{
-    animation:successPopup .5s ease;
+
+
+.success-box{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
 }
+
+
 
 @keyframes successPopup{
 
-    from{
-        opacity:0;
-        transform:scale(.8);
-    }
 
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
+from{
+
+opacity:0;
+
+transform:scale(.8);
 
 }
+
+
+to{
+
+opacity:1;
+
+transform:scale(1);
+
+}
+
+
+}
+
+
+
+/*==================================================
+PALETTE LEGEND
+==================================================*/
+
+
+.palette-info{
+
+    margin-top:20px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+}
+
+
+.palette-info span{
+
+    font-size:13px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+
+.palette-info i{
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    display:inline-block;
+
+}
+
+
+
+.current{
+
+    background:#005bea;
+
+}
+
+
+.answered{
+
+    background:#16a34a;
+
+}
+
+
+.unanswered{
+
+    background:#cbd5e1;
+
+}
+
+
+.review{
+
+    background:#f59e0b;
+
+}
+
 
 
 /*==================================================
 FOOTER
 ==================================================*/
 
+
 .footer{
+
     background:#005bea;
-    color:#fff;
+
+    color:white;
+
     text-align:center;
+
     padding:15px;
-    font-size:14px;
+
 }
+
 
 
 /*==================================================
-FADE ANIMATION
+TABLET
 ==================================================*/
 
-.fade-in{
-    animation:fadeUp .4s ease;
-}
-
-@keyframes fadeUp{
-
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
-}
-
-
-/*==================================================
-TABLET RESPONSIVE
-==================================================*/
 
 @media(max-width:900px){
 
-    .quiz-layout{
-        grid-template-columns:1fr;
-    }
 
-    .question-panel{
-        position:relative;
-        top:0;
-        margin-top:20px;
-    }
+.quiz-layout{
 
-    #questionNumbers{
-        grid-template-columns:repeat(5,1fr);
-    }
-
-    .student-info{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    .student-details{
-        width:100%;
-        grid-template-columns:1fr;
-    }
+    grid-template-columns:1fr;
 
 }
+
+
+.question-panel{
+
+    position:relative;
+
+}
+
+
+
+}
+
 
 
 /*==================================================
 MOBILE
 ==================================================*/
 
+
 @media(max-width:500px){
 
-    .login-box{
-        padding:25px;
-    }
 
-    .question-card{
-        padding:20px;
-    }
+#questionNumbers{
 
-    .question{
-        font-size:18px;
-    }
+    grid-template-columns:
+    repeat(5,1fr);
 
-    .navigation{
-        flex-direction:column;
-    }
+    gap:8px;
 
-    .navigation button{
-        width:100%;
-    }
+}
 
-    .submit-area .success{
-        width:100%;
-    }
 
-    .student-photo{
-        width:100px;
-        height:120px;
-    }
+.q-btn{
 
-    .detail-box{
-        padding:12px;
-    }
+    width:38px;
 
-    .detail-box span:last-child{
-        font-size:16px;
-    }
+    height:38px;
 
-    .q-btn{
-        width:42px;
-        height:42px;
-    }
+    font-size:13px;
+
+}
+
+
+
+.option{
+
+    padding:12px;
+
+}
+
+
+
+.option-text{
+
+    font-size:14px;
+
+}
+
+
+
+.navigation{
+
+    flex-direction:row;
+
+}
+
+
+
+.navigation button{
+
+    width:50%;
+
+}
+
+
 
 }
 /*==================================================
