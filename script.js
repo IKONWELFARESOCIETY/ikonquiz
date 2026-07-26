@@ -2872,11 +2872,11 @@ html += `
 
 <td>${row.paper}</td>
 
-<td>${row.correct}</td>
+<td class="correct">${row.correct}</td>
 
-<td>${row.wrong}</td>
+<td class="wrong">${row.wrong}</td>
 
-<td>${row.unattempted}</td>
+<td class="skip">${row.unattempted}</td>
 
 
 </tr>
@@ -2904,5 +2904,20 @@ document
 
 });
 
+
+}
+function searchResult(){
+
+let input=document.getElementById("searchResult").value.toUpperCase();
+
+let tr=document.querySelectorAll("#resultTableBody tr");
+
+tr.forEach(function(row){
+
+let text=row.innerText.toUpperCase();
+
+row.style.display=text.includes(input)?"":"none";
+
+});
 
 }
