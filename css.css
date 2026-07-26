@@ -205,6 +205,2725 @@ font-weight:bold;
 box-shadow:0 6px 18px rgba(0,0,0,.2);
 
 }
+
+
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(135deg,#eaf3ff,#f8fbff);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    color:#1e293b;
+
+}
+
+
+/*========================
+ HIDDEN
+========================*/
+
+
+.hidden{
+
+    display:none !important;
+
+}
+
+
+
+/*========================
+ MAIN CONTAINER
+========================*/
+
+
+.container{
+
+    width:100%;
+
+    max-width:1250px;
+
+    background:#fff;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.12);
+
+}
+
+
+
+
+.header{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+
+    color:#fff;
+
+    padding:25px;
+
+    text-align:center;
+
+}
+
+
+/* LOGO CENTER */
+
+.header-left{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:12px;
+
+}
+
+
+/* TITLE CENTER */
+
+.header-center{
+
+    width:100%;
+
+}
+
+
+
+
+
+/* DATE TIME BOX */
+
+
+
+.header-right .info-box{
+
+    background:rgba(255,255,255,.18);
+
+    min-width:170px;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:600;
+
+    text-align:center;
+
+}
+
+
+
+/* REMOVE OLD SMALL STYLE */
+
+.info-box small{
+
+    display:none;
+
+}
+
+
+
+
+/*========================
+ DATE TIME BOX
+========================*/
+
+
+.header-right{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+
+.header-right .info-box{
+
+
+    background:
+    rgba(255,255,255,.18);
+
+
+    backdrop-filter:blur(10px);
+
+
+    padding:15px 20px;
+
+
+    min-width:170px;
+
+
+    border-radius:15px;
+
+
+    text-align:center;
+
+
+    border:1px solid rgba(255,255,255,.25);
+
+
+    transition:.3s;
+
+
+}
+
+
+.header-right .info-box:hover{
+
+    transform:translateY(-5px);
+
+    background:
+    rgba(255,255,255,.30);
+
+}
+
+
+
+
+
+
+
+
+/*========================
+ CONTENT
+========================*/
+
+
+.content{
+
+    padding:45px;
+
+}
+
+
+
+/*========================
+ LOGIN PAGE
+========================*/
+
+
+#loginPage{
+
+    min-height:500px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+/* LOGIN CARD */
+
+
+.login-box{
+
+
+    width:100%;
+
+    max-width:420px;
+
+
+    background:white;
+
+
+    padding:40px;
+
+
+    border-radius:25px;
+
+
+    box-shadow:
+
+    0 15px 40px rgba(0,0,0,.12);
+
+
+    border:1px solid #e5e7eb;
+
+
+    animation:loginShow .5s ease;
+
+
+}
+
+
+
+@keyframes loginShow{
+
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+
+}
+
+
+
+
+.login-box h2{
+
+
+    text-align:center;
+
+
+    margin-bottom:30px;
+
+
+    color:#0047ab;
+
+
+    font-size:28px;
+
+
+}
+
+
+
+/* LABEL */
+
+
+.login-box label{
+
+
+    display:block;
+
+
+    font-weight:700;
+
+
+    color:#334155;
+
+
+    margin-bottom:8px;
+
+
+}
+
+
+
+/* INPUT */
+
+
+.login-box input{
+
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    margin-bottom:20px;
+
+
+    border-radius:12px;
+
+
+    border:2px solid #e2e8f0;
+
+
+    font-size:16px;
+
+
+    outline:none;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.login-box input:focus{
+
+
+    border-color:#007bff;
+
+
+    box-shadow:
+
+    0 0 12px rgba(0,123,255,.25);
+
+
+}
+
+
+
+
+/* BUTTON */
+
+
+button{
+
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    border-radius:12px;
+
+    padding:14px 20px;
+
+    transition:.3s;
+
+}
+
+
+
+.primary{
+
+
+    width:100%;
+
+
+    color:white;
+
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #0047ab,
+    #008cff
+    );
+
+
+    box-shadow:
+
+    0 8px 20px rgba(0,123,255,.35);
+
+
+}
+
+
+
+.primary:hover{
+
+
+    transform:translateY(-3px);
+
+
+    box-shadow:
+
+    0 12px 25px rgba(0,123,255,.45);
+
+
+}
+
+
+
+button:disabled{
+
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+
+}
+/*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM CBT STYLE CSS
+ PART 2
+==================================================*/
+
+
+/*========================
+ WAITING PAGE
+========================*/
+
+
+.success-box{
+
+
+    max-width:600px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    box-shadow:
+
+    0 15px 40px rgba(0,0,0,.12);
+
+
+}
+
+
+
+.success-box h2{
+
+
+    color:#0047ab;
+
+    font-size:28px;
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+.success-box p{
+
+
+    color:#475569;
+
+    font-size:17px;
+
+    line-height:1.7;
+
+
+}
+
+
+
+
+
+/*========================
+ TEST TOP BAR
+========================*/
+
+
+.top-bar{
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    gap:20px;
+
+
+    background:#f8fafc;
+
+
+    padding:20px;
+
+
+    border-radius:20px;
+
+
+    margin-bottom:25px;
+
+
+    border:1px solid #e2e8f0;
+
+
+}
+
+
+
+
+
+/* STUDENT INFO */
+
+
+.student-info{
+
+
+    display:flex;
+
+
+    gap:15px;
+
+
+    flex-wrap:wrap;
+
+
+}
+
+
+
+
+
+.student-info .info-box{
+
+
+    background:white;
+
+
+    min-width:160px;
+
+
+    padding:12px 20px;
+
+
+    border-radius:15px;
+
+
+    text-align:center;
+
+
+    box-shadow:
+
+
+    0 5px 15px rgba(0,0,0,.08);
+
+
+    border:1px solid #e5e7eb;
+
+
+}
+
+
+
+
+
+.student-info .info-box b{
+
+
+    display:block;
+
+
+    color:#0047ab;
+
+
+    font-size:14px;
+
+
+    margin-bottom:6px;
+
+
+}
+
+
+
+.student-info .info-box span{
+
+
+    color:#1e293b;
+
+
+    font-size:16px;
+
+
+    font-weight:700;
+
+
+}
+
+
+
+
+
+
+/*========================
+ TIMER
+========================*/
+
+
+.timer{
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #0047ab,
+    #008cff
+    );
+
+
+    color:white;
+
+
+    padding:15px 25px;
+
+
+    border-radius:50px;
+
+
+    font-size:18px;
+
+
+    font-weight:800;
+
+
+    box-shadow:
+
+
+    0 10px 25px rgba(0,123,255,.35);
+
+
+    white-space:nowrap;
+
+
+}
+
+
+
+
+
+/*========================
+ INSTRUCTION PAGE
+========================*/
+
+
+#instructionPage{
+
+
+    background:white;
+
+
+    padding:35px;
+
+
+    border-radius:22px;
+
+
+    box-shadow:
+
+
+    0 15px 40px rgba(0,0,0,.10);
+
+
+}
+
+
+
+#instructionPage h2{
+
+
+    color:#0047ab;
+
+
+    margin-bottom:25px;
+
+
+    text-align:center;
+
+
+}
+
+
+
+#instructionPage ul{
+
+
+    padding-left:25px;
+
+
+}
+
+
+
+#instructionPage li{
+
+
+    margin-bottom:15px;
+
+
+    font-size:16px;
+
+
+    color:#334155;
+
+
+    line-height:1.6;
+
+
+}
+
+
+
+#instructionPage label{
+
+
+    display:block;
+
+
+    margin-top:25px;
+
+
+    font-weight:600;
+
+
+    color:#334155;
+
+
+}
+
+
+
+/* START EXAM BUTTON */
+
+
+#startExamBtn{
+
+
+    display:block;
+
+
+    margin:25px auto 0;
+
+
+    width:250px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+/*========================
+ PROGRESS BAR
+========================*/
+
+
+.progress{
+
+
+    height:12px;
+
+
+    background:#e2e8f0;
+
+
+    border-radius:30px;
+
+
+    overflow:hidden;
+
+
+    margin:20px 0;
+
+
+}
+
+
+
+.progress-bar{
+
+
+    width:0%;
+
+
+    height:100%;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #0047ab,
+    #008cff
+    );
+
+
+    transition:.4s;
+
+
+}
+
+
+
+
+
+/*========================
+ QUIZ LAYOUT
+========================*/
+
+
+.quiz-layout{
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    1fr 300px;
+
+
+    gap:25px;
+
+
+    align-items:start;
+   
+
+}
+
+
+
+
+
+/* QUESTION CARD */
+
+
+.question-card{
+
+
+    background:white;
+
+
+    padding:35px;
+
+
+    border-radius:25px;
+
+
+    box-shadow:  0 15px 40px rgba(0,0,0,.10);
+
+
+    overflow-y:auto;
+
+}
+
+
+
+
+
+.question-number{
+
+
+    display:inline-block;
+
+
+    background:#0047ab;
+
+
+    color:white;
+
+
+    padding:8px 18px;
+
+
+    border-radius:25px;
+
+
+    font-weight:700;
+
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+
+.question{
+
+
+    font-size:22px;
+
+
+    font-weight:700;
+
+
+    color:#1e293b;
+
+
+    line-height:1.6;
+
+
+    margin-bottom:30px;
+
+
+}
+
+
+
+
+
+/* OPTIONS */
+
+
+/*==============================
+OPTION DESIGN
+==============================*/
+
+.option{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:14px 18px;
+    margin:12px 0;
+    background:#fff;
+    border:2px solid #d8dee9;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.option:hover{
+    border-color:#0d6efd;
+    background:#f5f9ff;
+    box-shadow:0 4px 12px rgba(13,110,253,.15);
+}
+
+.option input[type="radio"]{
+    transform:scale(1.2);
+    cursor:pointer;
+}
+
+.option-letter{
+    width:36px;
+    height:36px;
+    min-width:36px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    font-weight:bold;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.option-text{
+    flex:1;
+    font-size:16px;
+    color:#222;
+    font-weight:500;
+    line-height:1.5;
+}
+
+.option input[type="radio"]:checked + .option-letter{
+    background:#28a745;
+}
+/*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM CBT STYLE CSS
+ PART 3
+==================================================*/
+
+
+/*========================
+ QUESTION PALETTE
+========================*/
+
+
+.question-panel{
+
+
+    background:white;
+
+
+    padding:25px;
+
+
+    border-radius:25px;
+
+
+    box-shadow:
+
+
+    0 15px 40px rgba(0,0,0,.10);
+
+
+    position:sticky;
+
+
+    top:20px;
+
+
+}
+
+
+
+.question-panel h3{
+
+
+    text-align:center;
+
+
+    color:#0047ab;
+
+
+    margin-bottom:25px;
+
+
+}
+
+
+
+
+
+#questionNumbers{
+
+
+    display:grid;
+
+
+    grid-template-columns:repeat(5,1fr);
+
+
+    gap:12px;
+
+
+}
+
+
+
+
+.q-btn{
+
+
+    height:42px;
+
+
+    border-radius:10px;
+
+
+    border:none;
+
+
+    background:#e2e8f0;
+
+
+    color:#334155;
+
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+
+    padding:0;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.q-btn:hover{
+
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+
+
+/* CURRENT QUESTION */
+
+
+.q-btn.active{
+
+
+    background:#0047ab;
+
+
+    color:white;
+
+
+}
+
+
+
+
+/* ANSWERED QUESTION */
+
+
+.q-btn.done{
+
+
+    background:#16a34a;
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+/*========================
+ NAVIGATION
+========================*/
+
+
+.navigation{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-top:25px;
+}
+
+.navigation button{
+    flex:none;
+    width:150px;
+    height:48px;
+}
+
+
+
+.secondary{
+
+
+    background:#64748b;
+
+
+    color:white;
+
+
+}
+
+
+
+.secondary:hover{
+
+
+    background:#475569;
+
+
+    transform:translateY(-3px);
+
+
+}
+
+
+
+
+.navigation .primary{
+
+
+    width:auto;
+
+
+}
+
+
+
+
+
+/*========================
+ SUBMIT AREA
+========================*/
+
+
+.submit-area{
+
+
+    text-align:center;
+
+
+    margin:35px 0;
+
+
+}
+
+
+
+.submit-area .success{
+
+
+    width:260px;
+
+
+    background:
+
+
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+
+    color:white;
+
+
+}
+
+
+
+.submit-area .success:hover{
+
+
+    transform:translateY(-3px);
+
+
+}
+
+
+
+
+
+/*========================
+ SUCCESS PAGE
+========================*/
+
+
+#successPage{
+
+
+    min-height:450px;
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+}
+
+
+
+
+
+#successPage .success-box{
+
+
+    animation:successShow .5s ease;
+
+
+}
+
+
+
+@keyframes successShow{
+
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.8);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+
+}
+
+
+
+
+
+
+/*========================
+ FOOTER
+========================*/
+
+
+.footer{
+
+
+    background:#0047ab;
+
+
+    color:white;
+
+
+    padding:15px;
+
+
+    text-align:center;
+
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+/*========================
+ ANIMATION
+========================*/
+
+
+.fade-in{
+
+
+    animation:fade .5s ease;
+
+
+}
+
+
+
+@keyframes fade{
+
+
+    from{
+
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+
+    }
+
+
+    to{
+
+
+        opacity:1;
+
+        transform:translateY(0);
+
+
+    }
+
+
+}
+
+
+
+
+/*==================================================
+ MOBILE RESPONSIVE
+==================================================*/
+
+
+
+@media(max-width:900px){
+
+
+    body{
+
+
+        padding:10px;
+
+
+    }
+
+
+
+    .header{
+
+
+        grid-template-columns:1fr;
+
+
+        text-align:center;
+
+
+    }
+
+
+
+  
+
+    .header-right{
+
+
+        justify-content:center;
+
+
+        flex-wrap:wrap;
+
+
+    }
+
+
+
+ 
+    .content{
+
+
+        padding:20px;
+
+
+    }
+
+
+
+
+    .top-bar{
+
+
+        flex-direction:column;
+
+
+    }
+
+    .quiz-layout{
+
+
+        grid-template-columns:1fr;
+
+
+    }
+
+
+
+
+    .question-panel{
+
+
+        position:relative;
+
+
+        order:-1;
+         max-height:520px;
+
+    overflow-y:auto;
+
+    }
+
+
+
+
+    #questionNumbers{
+
+
+        grid-template-columns:repeat(8,1fr);
+
+
+    }
+
+
+
+}
+
+
+
+
+
+@media(max-width:500px){
+
+
+    .login-box{
+
+
+        padding:25px;
+
+
+    }
+
+
+
+ 
+
+
+    #questionNumbers{
+
+
+        grid-template-columns:repeat(5,1fr);
+
+
+    }
+
+
+
+    .question-card{
+
+
+        padding:20px;
+
+
+    }
+
+
+
+    .question{
+
+
+        font-size:18px;
+
+
+    }
+
+
+
+    .navigation{
+
+
+        flex-direction:column;
+
+
+    }
+
+
+
+    .submit-area .success{
+
+
+        width:100%;
+
+
+    }
+
+
+}
+
+
+
+/* LOGO */
+
+
+/* TITLE */
+
+.header-center{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+#testTitle{
+
+    width:100%;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin:15px 0 25px;
+
+}
+
+
+
+/* DATE TIME */
+
+.header-right{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+
+
+
+
+
+/* REMOVE SMALL */
+
+
+
+/* ==============================
+ FINAL HEADER FIX
+============================== */
+
+.header{
+
+    width:100%;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    text-align:center !important;
+
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+
+    padding:30px;
+
+}
+
+
+/* LOGO */
+
+.header-left{
+
+    width:100%;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+}
+
+
+.header-left img.logo{
+
+    width:400px !important;
+    height:auto !important;
+
+    display:block !important;
+    margin:auto !important;
+
+    object-fit:contain;
+
+}
+
+
+
+/* TITLE */
+
+.header-center{
+
+    width:100%;
+
+    display:block !important;
+
+    text-align:center !important;
+
+}
+
+
+.header-center h1#testTitle{
+
+    display:block !important;
+
+    width:100%;
+
+    text-align:center !important;
+
+    color:white !important;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin:15px 0;
+
+}
+
+
+
+/* DATE TIME */
+
+.header-right{
+
+    width:100%;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    gap:20px;
+
+}
+
+
+
+.header-right small{
+
+    display:none;
+
+}
+
+
+/*==========================
+ PREMIUM STUDENT INFO
+==========================*/
+
+.detail-box{
+    background:#fff;
+    border:2px solid #d8e6f7;
+    border-radius:14px;
+    padding:18px 22px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.detail-box:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(0,0,0,.12);
+}
+
+.detail-box .label{
+    display:block;
+    color:#0066cc;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:8px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.detail-box span:last-child{
+    display:block;
+    color:#222;
+    font-size:22px;
+    font-weight:700;
+    line-height:1.4;
+    word-break:break-word;
+}
+/*==================================================
+DASHBOARD PAGE
+==================================================*/
+
+#dashboardPage{
+    min-height:100vh;
+    padding:30px 15px;
+    background:linear-gradient(135deg,#eef5ff,#dfeeff);
+}
+
+/*==============================
+Container
+==============================*/
+
+#dashboardPage .dashboard-container{
+
+    max-width:1200px;
+    margin:auto;
+
+}
+
+/*==============================
+Header
+==============================*/
+
+#dashboardPage .dashboard-header{
+
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+#dashboardPage .dashboard-logo{
+
+    width:80px;
+
+    margin-bottom:10px;
+
+}
+
+#dashboardPage .dashboard-header h1{
+
+    font-size:32px;
+
+    margin-bottom:8px;
+
+}
+
+#dashboardPage .dashboard-header p{
+
+    font-size:18px;
+
+    opacity:.9;
+
+}
+
+/*==============================
+Student Card
+==============================*/
+
+#dashboardPage .student-card{
+
+    background:#fff;
+
+    max-width:500px;
+
+    margin:35px auto;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+#dashboardPage .student-photo{
+
+    width:140px;
+
+    height:140px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:5px solid #1976d2;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .student-card h2{
+
+    color:#0d47a1;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .student-card p{
+
+    font-size:17px;
+
+    margin:12px 0;
+
+    color:#444;
+
+}
+
+/*==============================
+Cards
+==============================*/
+
+#dashboardPage .dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+    margin-top:30px;
+
+}
+
+#dashboardPage .dashboard-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    border-top:6px solid #1976d2;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.10);
+
+}
+
+#dashboardPage .dashboard-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 35px rgba(0,0,0,.18);
+
+}
+
+#dashboardPage .dashboard-icon{
+
+    font-size:55px;
+
+    margin-bottom:20px;
+
+}
+
+#dashboardPage .dashboard-card h3{
+
+    color:#0d47a1;
+
+    margin-bottom:10px;
+
+    font-size:24px;
+
+}
+
+#dashboardPage .dashboard-card p{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+/*==============================
+Logout Card
+==============================*/
+
+#dashboardPage .logout-card{
+
+    border-top:6px solid #e53935;
+
+}
+
+/*==============================
+Responsive
+==============================*/
+
+@media(max-width:768px){
+
+#dashboardPage{
+
+    padding:20px 10px;
+
+}
+
+#dashboardPage .dashboard-header h1{
+
+    font-size:24px;
+
+}
+
+#dashboardPage .dashboard-header p{
+
+    font-size:15px;
+
+}
+
+#dashboardPage .student-photo{
+
+    width:110px;
+
+    height:110px;
+
+}
+
+#dashboardPage .student-card{
+
+    padding:20px;
+
+}
+
+#dashboardPage .dashboard-card{
+
+    padding:28px 18px;
+
+}
+
+#dashboardPage .dashboard-icon{
+
+    font-size:45px;
+
+}
+
+}
+/*=====================================
+PROFESSIONAL MARKSHEET
+=====================================*/
+
+/*====================================
+MARKSHEET DESIGN
+====================================*/
+
+/*=========================
+MARKSHEET PAGE
+=========================*/
+
+#studentMarksheetPage{
+
+    display:flex;
+    justify-content:center;
+    padding:20px;
+    background:#eef3fb;
+
+}
+
+.marksheet-card{
+
+    width:210mm;
+    min-height:297mm;
+
+    background:#fff;
+
+    border:3px solid #0b57d0;
+
+    border-radius:12px;
+
+    padding:20mm 15mm;
+
+    box-sizing:border-box;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+
+/*=========================
+HEADER
+=========================*/
+
+.marksheet-header{
+
+    text-align:center;
+
+    border-bottom:2px solid #0b57d0;
+
+    padding-bottom:15px;
+
+    margin-bottom:20px;
+
+}
+
+.marksheet-logo{
+
+    width:85px;
+    height:85px;
+
+    object-fit:contain;
+
+}
+
+.marksheet-header h2{
+
+    margin:10px 0 0;
+    color:#003366;
+    font-size:30px;
+
+}
+
+.marksheet-header p{
+
+    margin:5px 0;
+    font-size:18px;
+
+}
+
+.marksheet-header h3{
+
+    display:inline-block;
+
+    margin-top:12px;
+
+    background:#0b57d0;
+
+    color:#fff;
+
+    padding:8px 20px;
+
+    border-radius:5px;
+
+}
+
+/*=========================
+BODY
+=========================*/
+
+.marksheet-body{
+
+    display:block;
+
+}
+
+/*=========================
+PHOTO
+=========================*/
+
+.photo-section{
+
+    text-align:center;
+
+    margin:20px 0;
+
+}
+
+.marksheet-photo{
+
+    width:120px;
+
+    height:145px;
+
+    border:2px solid #333;
+
+    border-radius:6px;
+
+    object-fit:contain;
+
+    object-position:center;
+
+    background:#fff;
+
+    padding:4px;
+
+}
+
+/*=========================
+DETAIL TABLE
+=========================*/
+
+.detail-section{
+
+    width:100%;
+
+}
+
+.detail-section table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.detail-section td{
+
+    border:1px solid #bbb;
+
+    padding:12px;
+
+    font-size:17px;
+
+}
+
+.detail-section td:first-child{
+
+    width:35%;
+
+    background:#f3f7ff;
+
+    font-weight:bold;
+
+}
+
+/*=========================
+BUTTONS
+=========================*/
+
+/*=========================
+TOP BUTTONS
+=========================*/
+
+.marksheet-top-buttons{
+
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin:15px 0 20px;
+
+}
+
+.marksheet-top-buttons button{
+
+    width:120px;
+    padding:10px 0;
+    border-radius:8px;
+
+}
+
+@media(max-width:768px){
+
+.marksheet-top-buttons{
+
+    justify-content:center;
+    flex-wrap:wrap;
+
+}
+
+.marksheet-top-buttons button{
+
+    width:48%;
+
+}
+
+}
+/*=========================
+MOBILE
+=========================*/
+
+@media(max-width:768px){
+
+    .marksheet-card{
+
+        width:100%;
+
+        min-height:auto;
+
+        padding:20px;
+
+    }
+
+    .marksheet-header h2{
+
+        font-size:24px;
+
+    }
+
+    .marksheet-header p{
+
+        font-size:15px;
+
+    }
+
+    .marksheet-photo{
+
+        width:100px;
+
+        height:120px;
+
+    }
+
+    .detail-section td{
+
+        font-size:15px;
+
+        padding:10px;
+
+    }
+
+    .marksheet-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .marksheet-buttons button{
+
+        width:100%;
+
+    }
+
+}
+
+
+/*=========================
+PRINT
+=========================*/
+
+@page{
+
+    size:A4 portrait;
+
+    margin:0;
+
+}
+
+
+@media print{
+
+    /* HIDE EVERYTHING EXCEPT MARKSHEET */
+
+    body{
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        background:#fff !important;
+
+        min-height:0 !important;
+
+    }
+
+    .container{
+
+        width:100% !important;
+
+        max-width:none !important;
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+        overflow:visible !important;
+
+    }
+
+    .header,
+    #loginPage,
+    #waitingPage,
+    #testPage,
+    #successPage,
+    #resultVerifyPage,
+    #studentResultList,
+    .marksheet-top-buttons{
+
+        display:none !important;
+
+    }
+
+    .content{
+
+        padding:0 !important;
+
+        margin:0 !important;
+
+    }
+
+    #studentMarksheetPage{
+
+        display:block !important;
+
+        width:210mm !important;
+
+        min-height:297mm !important;
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        background:#fff !important;
+
+    }
+
+    .marksheet-card{
+
+        display:block !important;
+
+        width:210mm !important;
+
+        min-height:297mm !important;
+
+        margin:0 !important;
+
+        padding:15mm 15mm !important;
+
+        background:#fff !important;
+
+        border:2px solid #000 !important;
+
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+        box-sizing:border-box !important;
+
+        page-break-inside:avoid !important;
+
+    }
+
+    .marksheet-header{
+
+        page-break-inside:avoid !important;
+
+    }
+
+    .marksheet-body{
+
+        page-break-inside:avoid !important;
+
+    }
+
+}
+/* RESULT VERIFY INPUT - BUTTON GAP */
+
+#resultVerifyPage #resultStudentID{
+    margin-bottom:25px;
+}
+
+#resultVerifyPage .primary{
+    margin-top:10px;
+}
+
+/*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM CBT STYLE CSS
+ PART 1
+==================================================*/
+
+
+/*========================
+ RESET
+========================*/
+/* View Result Button */
+
+#resultBtn{
+
+    margin-top:12px;
+
+    width:100%;
+
+    padding:12px 18px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:linear-gradient(135deg,#28a745,#1e7e34);
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 4px 12px rgba(40,167,69,.35);
+
+}
+
+/*========================
+ VIEW RESULT BUTTON
+========================*/
+
+#resultBtn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:14px 20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #16a34a,
+    #22c55e
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 8px 20px rgba(22,163,74,.35);
+
+    transition:.3s;
+
+}
+
+
+#resultBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 12px 25px rgba(22,163,74,.45);
+
+}
+
+
+#resultBtn:active{
+
+    transform:scale(.98);
+
+}
+.result-box{
+
+max-width:1100px;
+margin:40px auto;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 35px rgba(0,0,0,.15);
+
+}
+
+.result-box h2{
+
+text-align:center;
+color:#0d47a1;
+margin-bottom:20px;
+font-size:28px;
+
+}
+.result-box table{
+
+width:100%;
+border-collapse:collapse;
+overflow:hidden;
+border-radius:12px;
+
+}
+
+.result-box table thead{
+
+background:#0d47a1;
+color:#fff;
+
+}
+
+.result-box table th{
+
+padding:14px;
+font-size:15px;
+text-transform:uppercase;
+letter-spacing:.5px;
+
+}
+
+.result-box table td{
+
+padding:13px;
+text-align:center;
+border-bottom:1px solid #e5e5e5;
+
+}
+
+.result-box table tbody tr:nth-child(even){
+
+background:#f8f9fa;
+
+}
+
+.result-box table tbody tr:hover{
+
+background:#e8f0fe;
+transition:.3s;
+
+}
+.correct{
+
+color:#28a745;
+font-weight:bold;
+
+}
+
+.wrong{
+
+color:#dc3545;
+font-weight:bold;
+
+}
+
+.skip{
+
+color:#ff9800;
+font-weight:bold;
+
+}
+#searchResult{
+
+width:100%;
+padding:12px;
+margin-bottom:18px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+
+}
+.result-summary{
+
+display:flex;
+justify-content:center;
+margin-bottom:20px;
+
+}
+
+.summary-card{
+
+background:#0d47a1;
+color:#fff;
+padding:12px 30px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+box-shadow:0 6px 18px rgba(0,0,0,.2);
+
+}
 .examDate{
 
     position:absolute;
@@ -3018,6 +5737,114 @@ PRINT
 
         padding:8px 11px;
 
+    }
+
+}
+/*==================================================
+ STUDENT INFORMATION + PHOTO
+==================================================*/
+
+.student-info{
+    width:100%;
+    display:flex;
+    align-items:flex-start;
+    gap:28px;
+    margin:25px 0 30px;
+}
+
+.student-photo{
+    width:120px;
+    height:150px;
+
+    flex:0 0 120px;
+
+    object-fit:cover;
+    object-position:center;
+
+    display:block;
+
+    border-radius:10px;
+    border:3px solid #0b7cff;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+
+.student-details{
+    flex:1;
+
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:18px;
+}
+
+.detail-box{
+    background:#fff;
+
+    border:2px solid #d8e6f7;
+
+    border-radius:14px;
+
+    padding:16px 20px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+    transition:.3s;
+}
+
+.detail-box:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(0,0,0,.12);
+}
+
+.detail-box .label{
+    display:block;
+
+    color:#0066cc;
+
+    font-size:14px;
+    font-weight:700;
+
+    margin-bottom:7px;
+
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.detail-box span:last-child{
+    display:block;
+
+    color:#222;
+
+    font-size:20px;
+    font-weight:700;
+
+    line-height:1.4;
+
+    word-break:break-word;
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .student-info{
+        flex-direction:column;
+        align-items:center;
+        gap:20px;
+    }
+
+    .student-photo{
+        width:130px;
+        height:160px;
+        flex:0 0 160px;
+    }
+
+    .student-details{
+        width:100%;
+        grid-template-columns:1fr;
+        gap:12px;
     }
 
 }
