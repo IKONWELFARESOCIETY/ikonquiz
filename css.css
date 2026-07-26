@@ -92,6 +92,119 @@
     transform:scale(.98);
 
 }
+.result-box{
+
+max-width:1100px;
+margin:40px auto;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 35px rgba(0,0,0,.15);
+
+}
+
+.result-box h2{
+
+text-align:center;
+color:#0d47a1;
+margin-bottom:20px;
+font-size:28px;
+
+}
+.result-box table{
+
+width:100%;
+border-collapse:collapse;
+overflow:hidden;
+border-radius:12px;
+
+}
+
+.result-box table thead{
+
+background:#0d47a1;
+color:#fff;
+
+}
+
+.result-box table th{
+
+padding:14px;
+font-size:15px;
+text-transform:uppercase;
+letter-spacing:.5px;
+
+}
+
+.result-box table td{
+
+padding:13px;
+text-align:center;
+border-bottom:1px solid #e5e5e5;
+
+}
+
+.result-box table tbody tr:nth-child(even){
+
+background:#f8f9fa;
+
+}
+
+.result-box table tbody tr:hover{
+
+background:#e8f0fe;
+transition:.3s;
+
+}
+.correct{
+
+color:#28a745;
+font-weight:bold;
+
+}
+
+.wrong{
+
+color:#dc3545;
+font-weight:bold;
+
+}
+
+.skip{
+
+color:#ff9800;
+font-weight:bold;
+
+}
+#searchResult{
+
+width:100%;
+padding:12px;
+margin-bottom:18px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+
+}
+.result-summary{
+
+display:flex;
+justify-content:center;
+margin-bottom:20px;
+
+}
+
+.summary-card{
+
+background:#0d47a1;
+color:#fff;
+padding:12px 30px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+box-shadow:0 6px 18px rgba(0,0,0,.2);
+
+}
 .examDate{
 
     position:absolute;
