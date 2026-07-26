@@ -901,18 +901,18 @@ button:disabled{
 
 
 .question-card{
-
-    background:#ffffff;
-
-    border-radius:12px;
-
-    padding:25px;
-
-    border:1px solid #d9e2ec;
-
+    background:linear-gradient(180deg,#ffffff,#fbfdff);
+    border-radius:18px;
+    padding:32px;
+    border:1px solid #dce9ff;
     box-shadow:
-    0 4px 15px rgba(0,0,0,.08);
+        0 15px 40px rgba(0,72,180,.08),
+        0 3px 10px rgba(0,0,0,.05);
+    transition:.3s;
+}
 
+.question-card:hover{
+    transform:translateY(-2px);
 }
 
 
@@ -921,41 +921,45 @@ button:disabled{
 
 .question-number{
 
-    background:#eef5ff;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
 
-    color:#005bea;
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+    color:#fff;
 
-    font-size:16px;
+    padding:12px 22px;
 
+    border-radius:30px;
+
+    font-size:17px;
     font-weight:700;
 
-    padding:12px 15px;
-
-    border-left:5px solid #005bea;
-
-    border-radius:6px;
-
-    margin-bottom:20px;
-
-}
-
-
-/* Question Text */
-
-.question{
-
-    font-size:20px;
-
-    font-weight:600;
-
-    color:#1f2937;
-
-    line-height:1.6;
+    box-shadow:0 8px 20px rgba(0,91,234,.25);
 
     margin-bottom:25px;
 
 }
 
+/* Question Text */
+
+.question{
+
+    font-size:24px;
+    line-height:1.8;
+    font-weight:700;
+    color:#1f2937;
+
+    padding:20px;
+    background:#f8fbff;
+
+    border-left:6px solid #0b7cff;
+
+    border-radius:10px;
+
+    margin-bottom:28px;
+
+}
 
 
 /*==============================
@@ -977,51 +981,36 @@ button:disabled{
 
 .option{
 
-
     display:flex;
-
     align-items:center;
 
-
-    width:100%;
-
-
-    padding:15px 18px;
-
+    padding:18px;
 
     background:#fff;
 
+    border:2px solid #dce6f5;
 
-    border:1.5px solid #cbd5e1;
-
-
-    border-radius:8px;
-
+    border-radius:14px;
 
     cursor:pointer;
 
+    transition:.30s;
 
-    transition:.25s;
-
+    box-shadow:0 4px 10px rgba(0,0,0,.04);
 
 }
-
-
-
-/* Hover */
-
 
 .option:hover{
 
+    border-color:#0b7cff;
 
-    border-color:#005bea;
+    background:#f5faff;
 
+    transform:translateX(6px);
 
-    background:#f0f7ff;
-
+    box-shadow:0 10px 20px rgba(0,91,234,.12);
 
 }
-
 
 
 /* Option Letter */
@@ -1029,38 +1018,25 @@ button:disabled{
 
 .option-letter{
 
+    width:44px;
+    height:44px;
 
-    width:38px;
-
-    height:38px;
-
-
-    min-width:38px;
-
-
-    display:flex;
-
-
-    justify-content:center;
-
-
-    align-items:center;
-
-
-    margin-right:15px;
-
+    min-width:44px;
 
     border-radius:50%;
 
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-    background:#e8f1ff;
+    margin-right:18px;
 
+    background:linear-gradient(135deg,#e8f2ff,#d5e7ff);
 
     color:#005bea;
 
-
+    font-size:18px;
     font-weight:800;
-
 
 }
 
@@ -1087,21 +1063,19 @@ button:disabled{
 
 .option.selected{
 
+    background:linear-gradient(135deg,#dcebff,#eef7ff);
 
-    background:#e0edff;
+    border-color:#005bea;
 
-
-    border:2px solid #005bea;
-
+    box-shadow:
+    0 12px 25px rgba(0,91,234,.18);
 
 }
 
 
-
 .option.selected .option-letter{
 
-
-    background:#005bea;
+    background:linear-gradient(135deg,#005bea,#008cff);
 
     color:#fff;
 
@@ -1116,57 +1090,41 @@ button:disabled{
 
 .question-panel{
 
-
     background:#fff;
 
+    border-radius:18px;
 
-    border-radius:12px;
+    padding:22px;
 
-
-    padding:20px;
-
-
-    border:1px solid #d9e2ec;
-
+    border:1px solid #dce6f7;
 
     box-shadow:
-    0 5px 18px rgba(0,0,0,.10);
-
+        0 15px 35px rgba(0,0,0,.10);
 
     position:sticky;
 
-
     top:20px;
-
 
 }
 
 
 
 
-.question-panel h3{
+..question-panel h3{
 
+    background:linear-gradient(135deg,#005bea,#0b7cff);
+
+    color:#fff;
 
     text-align:center;
 
+    padding:14px;
 
-    background:#005bea;
+    border-radius:12px;
 
+    font-size:20px;
 
-    color:white;
-
-
-    padding:12px;
-
-
-    border-radius:8px;
-
-
-    font-size:18px;
-
-
-    margin-bottom:20px;
-
+    margin-bottom:22px;
 
 }
 
@@ -1197,49 +1155,43 @@ button:disabled{
 
 .q-btn{
 
+    width:46px;
+    height:46px;
 
-    width:42px;
+    border:none;
 
+    border-radius:12px;
 
-    height:42px;
-
-
-    border-radius:6px;
-
-
-    border:1px solid #94a3b8;
-
-
-    background:#fff;
-
+    background:#edf4ff;
 
     color:#334155;
 
-
     font-size:15px;
-
 
     font-weight:700;
 
-
     cursor:pointer;
 
+    transition:.25s;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.08);
 
 }
 
+.q-btn:hover{
+
+    transform:translateY(-3px);
+
+}
 
 
 /* Current */
 
 .q-btn.active{
 
+    background:linear-gradient(135deg,#005bea,#008cff);
 
-    background:#005bea;
-
-    color:white;
-
-    border-color:#005bea;
-
+    color:#fff;
 
 }
 
@@ -1249,16 +1201,11 @@ button:disabled{
 
 .q-btn.done{
 
+    background:linear-gradient(135deg,#16a34a,#22c55e);
 
-    background:#16a34a;
-
-    color:white;
-
-    border-color:#16a34a;
-
+    color:#fff;
 
 }
-
 
 
 /* Not Answered */
@@ -1297,18 +1244,15 @@ button:disabled{
 
 .navigation button{
 
+    width:150px;
 
-    width:130px;
+    height:50px;
 
+    border-radius:12px;
 
-    height:45px;
-
-
-    font-size:15px;
-
+    font-size:16px;
 
 }
-
 
 
 /* Previous */
@@ -1436,7 +1380,7 @@ button:disabled{
 .question-card{
 
 
-    padding:15px;
+    padding:16px;
 
 
 }
@@ -1584,20 +1528,26 @@ MARKSHEET
 }
 
 .marksheet-card{
-    width:210mm;
-    min-height:297mm;
-    background:#fff;
-    border:3px solid #0b57d0;
-    border-radius:10px;
-    padding:20mm 15mm;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
-}
 
-.marksheet-header{
-    text-align:center;
-    border-bottom:2px solid #0b57d0;
-    padding-bottom:15px;
-    margin-bottom:20px;
+    width:210mm;
+
+    min-height:297mm;
+
+    background:#fff;
+
+    border:4px solid #0b57d0;
+
+    border-radius:15px;
+
+    padding:18mm;
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.15);
+
+    position:relative;
+
+    overflow:hidden;
+
 }
 
 .marksheet-logo{
@@ -1605,38 +1555,30 @@ MARKSHEET
     height:85px;
     object-fit:contain;
 }
-
-.marksheet-header h2{
-    color:#003366;
-    font-size:30px;
-    margin-top:10px;
+.marksheet-logo{
+    width:85px;
+    height:85px;
+    object-fit:contain;
 }
-
-.marksheet-header p{
-    margin:5px 0;
-    font-size:18px;
-}
-
-.marksheet-header h3{
-    display:inline-block;
-    margin-top:12px;
-    background:#0b57d0;
-    color:#fff;
-    padding:8px 20px;
-    border-radius:5px;
-}
-
 .photo-section{
     text-align:center;
     margin:20px 0;
 }
 
-.marksheet-photo{
-    width:120px;
-    height:145px;
-    border:2px solid #333;
-    border-radius:6px;
+..marksheet-photo{
+
+    width:130px;
+
+    height:155px;
+
+    border:3px solid #005bea;
+
+    border-radius:8px;
+
     object-fit:cover;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.20);
+
 }
 
 .detail-section table{
@@ -1645,17 +1587,24 @@ MARKSHEET
 }
 
 .detail-section td{
-    border:1px solid #bbb;
-    padding:12px;
+
+    border:1px solid #d6d6d6;
+
+    padding:14px;
+
     font-size:16px;
+
 }
 
 .detail-section td:first-child{
-    width:35%;
-    background:#f3f7ff;
-    font-weight:bold;
-}
 
+    background:#edf5ff;
+
+    color:#003366;
+
+    font-weight:700;
+
+}
 .marksheet-top-buttons{
     display:flex;
     justify-content:center;
@@ -1889,5 +1838,25 @@ body{
     box-shadow:none !important;
 
 }
+
+}
+.success-box{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+}
+
+.success-box button,
+.success-box .primary,
+.success-box .secondary,
+#goLoginBtn{
+
+    width:260px;
+
+    margin:30px auto 0;
+
+    display:block;
 
 }
