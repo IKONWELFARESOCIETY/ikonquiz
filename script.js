@@ -2972,13 +2972,15 @@ function openMarksheet(regNo){
     .then(res => res.json())
 
     .then(data => {
+if(data.status=="INVALID_ID"){
+    alert("Invalid Student ID");
+    return;
+}
 
-        if(data.status != "SUCCESS"){
-
-            alert("Invalid Student ID or Result Not Found");
-            return;
-
-        }
+if(data.status!="SUCCESS"){
+    alert("Result Not Found");
+    return;
+}
 
         // Hide Result List
         document
