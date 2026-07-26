@@ -2810,7 +2810,7 @@ function verifyResult(){
     fetch(
         SCRIPT_URL +
         "?action=verifyResultStudent" +
-        "&studentId=" +
+        "&id=" +
         encodeURIComponent(id)
     )
 
@@ -2840,30 +2840,46 @@ function verifyResult(){
         // VALID STUDENT ID
         //================================
 
-        if(data.status === "VALID"){
+     if(data.status === "SUCCESS"){
 
-            loadAllResults();
+    console.log(
+        "Student ID verified successfully:",
+        data
+    );
 
-            return;
+    // Apps Script ne already student ke
+    // saare results bhej diye hain
+    showStudentResults(data);
 
-        }
+    return;
+
+}
 
 
-        //================================
-        // INVALID STUDENT ID
-        //================================
+if(data.status === "INVALID_ID"){
 
-        if(data.status === "INVALID"){
+    alert(
+        "Invalid Student ID."
+    );
 
-            alert(
-                "Invalid Student ID."
-            );
+    idBox.focus();
 
-            idBox.focus();
+    return;
 
-            return;
+}
 
-        }
+
+if(data.status === "NO_ID"){
+
+    alert(
+        "Please enter Student ID."
+    );
+
+    idBox.focus();
+
+    return;
+
+}
 
 
         //================================
