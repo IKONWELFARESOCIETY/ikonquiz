@@ -2847,10 +2847,15 @@ function verifyResult(){
         data
     );
 
-    // Apps Script ne already student ke
-    // saare results bhej diye hain
-    showStudentResult(data);
+    isAdminMode = false;
+document
+    .getElementById("studentResultPage")
+    ?.classList.add("hidden");
 
+document
+    .getElementById("studentResultList")
+    ?.classList.remove("hidden");
+    loadAllResults();
     return;
 
 }
@@ -3146,7 +3151,17 @@ function loadAllResults(){
                     <td class="skip">
                         ${row.unattempted}
                     </td>
+                     <td>
 
+            <button
+                class="primary"
+                onclick="openMarksheet('${String(row.regNo).replace(/'/g, "\\'")}')">
+
+                View Result
+
+            </button>
+
+        </td>
                 </tr>
 
                 `;
