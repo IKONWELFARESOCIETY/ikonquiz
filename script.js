@@ -3133,19 +3133,305 @@ function backToLogin(){
 // STUDENT + ADMIN
 //====================================
 
-if(data.status !== "SUCCESS"){
+function loadAllResults(){
 
-    alert("Unable to load result.");
+    fetch(
+        SCRIPT_URL + "?action=allResults"
+    )
 
-    return;
+    .then(function(res){
 
-}
+        if(!res.ok){
 
-if(!Array.isArray(data.results) || data.results.length === 0){
+            throw new Error(
+                "Server Error"
+            );
 
-    alert("No Result Published Yet.");
+        }
 
-    return;
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        if(!data || !Array.isArray(data.results)){
+
+            alert("Result data not found.");
+
+            return;
+
+        }
+
+
+        let html = "";
+
+
+        //====================================
+        // STUDENT MODE
+        //====================================
+
+        if(!isAdminMode){
+
+            data.results.forEach(function(row){
+
+                html += `
+
+                <tr>
+
+                    <td>
+                        ${row.name || ""}
+                    </td>
+
+                    <td>
+                        ${row.regNo || ""}
+                    </td>
+
+                    <td>
+                        ${row.paper || ""}
+                    </td>
+
+                    <td class="correct">
+                        ${row.correct ?? 0}
+                    </td>
+
+                    <td class="wrong">
+                        ${row.wrong ?? 0}
+                    </td>
+
+                    <td class="skip">
+                        ${row.unattempted ?? 0}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="primary"
+                            onclick="openMarksheet(
+                                '${String(row.regNo || "").replace(/'/g,"\\'")}',
+                                '${String(row.paper || "").replace(/'/g,"\\'")}'
+                            )">
+
+                            View Result
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `;
+
+            });
+
+        }
+
+
+        //====================================
+        // ADMIN MODE
+        //====================================
+
+        else{
+
+            data.results.forEach(function(row){
+
+                html += `
+
+                <tr>
+
+                    <td>
+                        ${row.regNo || ""}
+                    </td>
+
+                    <td>
+                        ${row.name || ""}
+                    </td>
+
+                    <td>
+                        ${row.paper || ""}
+                    </td>
+
+                    <td class="correct">
+                        ${row.correct ?? 0}
+                    </td>
+
+                    <td class="wrong">
+                        ${row.wrong ?? 0}
+                    </td>
+
+                    <td class="skip">
+                        ${row.unattempted ?? 0}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="primary"
+                            onclick="openAnswerDetails(
+                                '${String(row.regNo || "").replace(/'/g,"\\'")}',
+                                '${String(row.paper || "").replace(/'/g,"\\'")}'
+                            )">
+
+                            View Answer
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `;
+
+            });
+
+        }
+
+
+        //====================================
+        // TABLE HEADER
+        //====================================
+
+        const tableHead =
+            document.querySelector(
+                "#studentResultPage table thead tr"
+            );
+
+
+        if(tableHead){
+
+            //================================
+            // STUDENT HEADER
+            //================================
+
+            if(!isAdminMode){
+
+                tableHead.innerHTML = `
+
+                    <th>Name</th>
+                    <th>Reg No</th>
+                    <th>Paper</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+                    <th>View Result</th>
+
+                `;
+
+            }
+
+
+            //================================
+            // ADMIN HEADER
+            //================================
+
+            else{
+
+                tableHead.innerHTML = `
+
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>Paper</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
+                    <th>Unattempted</th>
+                    <th>View Answer</th>
+
+                `;
+
+            }
+
+        }
+
+
+        //====================================
+        // TABLE BODY
+        //====================================
+
+        const body =
+            document.getElementById(
+                "resultTableBody"
+            );
+
+
+        if(body){
+
+            if(html === ""){
+
+                body.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="7"
+                            style="text-align:center;padding:20px;">
+
+                            No published result available.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }else{
+
+                body.innerHTML = html;
+
+            }
+
+        }
+
+
+        //====================================
+        // HIDE VERIFY PAGE
+        //====================================
+
+        document
+            .getElementById("resultVerifyPage")
+            ?.classList.add("hidden");
+
+
+        //====================================
+        // SHOW RESULT PAGE
+        //====================================
+
+        document
+            .getElementById("studentResultPage")
+            ?.classList.remove("hidden");
+
+
+        //====================================
+        // STUDENT INFO (OPTIONAL)
+        //====================================
+
+        if(!isAdminMode){
+
+            const studentInfo =
+                document.getElementById(
+                    "studentInfo"
+                );
+
+            if(studentInfo){
+
+                studentInfo.innerHTML = "";
+
+            }
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.log(
+            "LOAD ALL RESULTS ERROR:",
+            err
+        );
+
+        alert(
+            "Unable to load result list."
+        );
+
+    });
 
 }
 function searchResult(){
