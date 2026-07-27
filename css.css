@@ -1641,7 +1641,7 @@ button:disabled{
 
     color:#334155;
 
-    font-size:17px;
+    font-size:18px;
 
     font-weight:600;
 
@@ -1768,7 +1768,7 @@ button:disabled{
 
 .question{
 
-    font-size:18px;
+    font-size:20px;
 
     padding:18px;
 
@@ -1882,7 +1882,7 @@ button:disabled{
 
     grid-template-columns:repeat(5, minmax(0,1fr));
 
-    gap:8px;
+    gap:10px;
 
     width:100%;
 
