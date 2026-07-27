@@ -1360,13 +1360,15 @@ button:disabled{
 
 .quiz-layout{
 
-    display:grid;
+     display:grid;
 
     grid-template-columns:minmax(0,1fr) 300px;
 
-    gap:28px;
+    gap:35px;          /* 25px se 35px */
 
     align-items:start;
+
+    padding-right:15px; /* Right side breathing space */
 
 }
 
