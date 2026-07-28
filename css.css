@@ -2837,1058 +2837,6 @@ button:disabled{
 
 }
 
-}
-/*==================================================
- IKON ONLINE TEST SYSTEM
- PREMIUM A4 MARKSHEET
- PART 3B-1
-==================================================*/
-
-
-/*==================================================
- MARKSHEET PAGE
-==================================================*/
-
-#studentMarksheetPage{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-
-    padding:30px;
-
-    background:#eef3fb;
-
-}
-
-
-/*==================================================
- A4 MARKSHEET
-==================================================*/
-
-.marksheet-card{
-
-    width:210mm;
-
-    min-height:297mm;
-
-    background:#fff;
-
-    border:2px solid #0b57d0;
-
-    border-radius:10px;
-
-    padding:15mm;
-
-    position:relative;
-
-    overflow:hidden;
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,.18);
-
-}
-
-
-/* Watermark */
-
-.marksheet-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:420px;
-
-    height:420px;
-
-    left:50%;
-
-    top:52%;
-
-    transform:translate(-50%,-50%);
-
-    background:url("logo.png") center center/contain no-repeat;
-
-    opacity:.04;
-
-    pointer-events:none;
-
-}
-
-
-/*==================================================
- HEADER
-==================================================*/
-
-.marksheet-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    border-bottom:3px solid #005bea;
-
-    padding-bottom:15px;
-
-    margin-bottom:18px;
-
-}
-
-
-/*==================================================
- LOGO
-==================================================*/
-
-.marksheet-logo{
-
-    width:85px;
-
-    height:85px;
-
-    object-fit:contain;
-
-}
-
-
-/*==================================================
- HEADER TEXT
-==================================================*/
-
-.marksheet-title{
-
-    flex:1;
-
-    text-align:center;
-
-    padding:0 20px;
-
-}
-
-.marksheet-title h1{
-
-    font-size:28px;
-
-    color:#0047ab;
-
-    font-weight:800;
-
-    margin-bottom:6px;
-
-    letter-spacing:.5px;
-
-}
-
-.marksheet-title h2{
-
-    font-size:18px;
-
-    color:#334155;
-
-    font-weight:700;
-
-    margin-bottom:5px;
-
-}
-
-.marksheet-title p{
-
-    color:#64748b;
-
-    font-size:14px;
-
-    line-height:1.6;
-
-}
-
-
-/*==================================================
- RESULT BADGE
-==================================================*/
-
-.result-badge{
-
-    min-width:120px;
-
-    text-align:center;
-
-    padding:12px;
-
-    border-radius:12px;
-
-    background:linear-gradient(
-        135deg,
-        #16a34a,
-        #22c55e
-    );
-
-    color:#fff;
-
-    font-weight:700;
-
-    font-size:18px;
-
-    box-shadow:
-        0 10px 25px rgba(22,163,74,.30);
-
-}
-
-
-/*==================================================
- PHOTO SECTION
-==================================================*/
-
-.photo-section{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    margin:20px 0;
-
-}
-
-
-/* Passport Size */
-
-.marksheet-photo{
-
-    width:35mm;
-
-    height:45mm;
-
-    object-fit:cover;
-
-    background:#fff;
-
-    border:2px solid #005bea;
-
-    border-radius:4px;
-
-    padding:2px;
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,.18);
-
-}
-
-
-/*==================================================
- STUDENT INFO HEADER
-==================================================*/
-
-.student-info-title{
-
-    margin:15px 0 10px;
-
-    padding:10px 15px;
-
-    background:linear-gradient(
-        135deg,
-        #005bea,
-        #008cff
-    );
-
-    color:#fff;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    border-radius:8px;
-
-}
-/*==================================================
- IKON ONLINE TEST SYSTEM
- PREMIUM A4 MARKSHEET
- PART 3B-2
- STUDENT DETAILS + RESULT + SIGNATURE
-==================================================*/
-
-
-/*==================================================
- STUDENT DETAIL TABLE
-==================================================*/
-
-.detail-section{
-
-    margin-top:12px;
-
-}
-
-.detail-section table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    table-layout:fixed;
-
-    background:#fff;
-
-}
-
-.detail-section tr{
-
-    transition:.25s;
-
-}
-
-.detail-section tr:nth-child(even){
-
-    background:#fafcff;
-
-}
-
-.detail-section tr:hover{
-
-    background:#f3f8ff;
-
-}
-
-.detail-section td{
-
-    border:1px solid #cfdcf3;
-
-    padding:12px 14px;
-
-    font-size:15px;
-
-    vertical-align:middle;
-
-    word-break:break-word;
-
-}
-
-.detail-section td:first-child{
-
-    width:32%;
-
-    font-weight:700;
-
-    color:#0047ab;
-
-    background:#edf5ff;
-
-}
-
-
-/*==================================================
- RESULT SUMMARY
-==================================================*/
-
-.result-summary{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:14px;
-
-    margin-top:25px;
-
-}
-
-.summary-box{
-
-    text-align:center;
-
-    background:linear-gradient(180deg,#ffffff,#f9fbff);
-
-    border:1px solid #dce8fb;
-
-    border-radius:12px;
-
-    padding:18px 10px;
-
-    box-shadow:
-        0 8px 18px rgba(0,0,0,.06);
-
-}
-
-.summary-box h4{
-
-    color:#64748b;
-
-    font-size:13px;
-
-    margin-bottom:8px;
-
-    text-transform:uppercase;
-
-    letter-spacing:.5px;
-
-}
-
-.summary-box span{
-
-    display:block;
-
-    font-size:24px;
-
-    font-weight:800;
-
-    color:#005bea;
-
-}
-
-
-/*==================================================
- PASS BOX
-==================================================*/
-
-.summary-box.pass span{
-
-    color:#16a34a;
-
-}
-
-.summary-box.fail span{
-
-    color:#dc2626;
-
-}
-
-
-/*==================================================
- REMARK
-==================================================*/
-
-.remark-box{
-
-    margin-top:22px;
-
-    padding:14px 18px;
-
-    border-left:5px solid #16a34a;
-
-    background:#f6fff8;
-
-    border-radius:8px;
-
-    color:#166534;
-
-    font-size:15px;
-
-    font-weight:600;
-
-}
-
-
-/*==================================================
- DECLARATION
-==================================================*/
-
-.declaration{
-
-    margin-top:24px;
-
-    padding:14px 16px;
-
-    border:1px dashed #b8c9e8;
-
-    border-radius:10px;
-
-    background:#fbfdff;
-
-    color:#475569;
-
-    font-size:14px;
-
-    line-height:1.8;
-
-}
-
-
-/*==================================================
- SIGNATURE AREA
-==================================================*/
-
-.signature-area{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-end;
-
-    margin-top:50px;
-
-    gap:40px;
-
-}
-
-.signature-box{
-
-    flex:1;
-
-    text-align:center;
-
-}
-
-.signature-line{
-
-    border-top:2px solid #222;
-
-    margin-bottom:8px;
-
-}
-
-.signature-box span{
-
-    font-size:14px;
-
-    font-weight:700;
-
-    color:#334155;
-
-}
-
-
-/*==================================================
- QR / VERIFY BOX
-==================================================*/
-
-.verify-box{
-
-    width:110px;
-
-    height:110px;
-
-    border:2px dashed #b8c9e8;
-
-    border-radius:10px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#64748b;
-
-    font-size:12px;
-
-    text-align:center;
-
-}
-
-
-/*==================================================
- TOP BUTTONS
-==================================================*/
-
-.marksheet-top-buttons{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:15px;
-
-    margin-top:25px;
-
-}
-
-.marksheet-top-buttons button{
-
-    width:140px;
-
-    height:48px;
-
-    border:none;
-
-    border-radius:12px;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.marksheet-top-buttons .primary{
-
-    background:linear-gradient(
-        135deg,
-        #005bea,
-        #008cff
-    );
-
-    color:#fff;
-
-}
-
-.marksheet-top-buttons .secondary{
-
-    background:linear-gradient(
-        135deg,
-        #64748b,
-        #475569
-    );
-
-    color:#fff;
-
-}
-
-.marksheet-top-buttons button:hover{
-
-    transform:translateY(-3px);
-
-}
-
-
-/*==================================================
- RESPONSIVE
-==================================================*/
-
-@media(max-width:900px){
-
-.marksheet-card{
-
-    width:100%;
-
-    min-height:auto;
-
-    padding:25px;
-
-}
-
-.result-summary{
-
-    grid-template-columns:repeat(2,1fr);
-
-}
-
-.signature-area{
-
-    flex-direction:column;
-
-    align-items:stretch;
-
-}
-
-.verify-box{
-
-    margin:auto;
-
-}
-
-}
-
-@media(max-width:600px){
-
-.result-summary{
-
-    grid-template-columns:1fr;
-
-}
-
-.detail-section td{
-
-    font-size:14px;
-
-    padding:10px;
-
-}
-
-.marksheet-top-buttons{
-
-    flex-direction:column;
-
-}
-
-.marksheet-top-buttons button{
-
-    width:100%;
-
-}
-
-.marksheet-title h1{
-
-    font-size:22px;
-
-}
-
-.marksheet-title h2{
-
-    font-size:16px;
-
-}
-
-}
-/*==================================================
- IKON ONLINE TEST SYSTEM
- PREMIUM CBT STYLE
- PART 3C
- PROFESSIONAL A4 PRINT CSS
-==================================================*/
-
-
-/*==================================================
- A4 PAGE
-==================================================*/
-
-@page{
-
-    size:A4 portrait;
-
-    margin:10mm;
-
-}
-
-
-/*==================================================
- PRINT
-==================================================*/
-
-@media print{
-
-/*----------------------------
- PAGE
-----------------------------*/
-
-html,
-body{
-
-    width:210mm;
-
-    height:297mm;
-
-    background:#ffffff !important;
-
-    margin:0 !important;
-
-    padding:0 !important;
-
-    color:#000 !important;
-
-    -webkit-print-color-adjust:exact;
-
-    print-color-adjust:exact;
-
-}
-
-
-/*----------------------------
- HIDE SCREEN ELEMENTS
-----------------------------*/
-
-.header,
-#loginPage,
-#waitingPage,
-#instructionPage,
-#testPage,
-#dashboardPage,
-#successPage,
-#studentResultPage,
-#resultVerifyPage,
-.exam-status-bar,
-.navigation,
-.question-panel,
-.progress,
-.progress-bar,
-.marksheet-top-buttons,
-button{
-
-    display:none !important;
-
-}
-
-
-/*----------------------------
- CONTENT
-----------------------------*/
-
-.content{
-
-    padding:0 !important;
-
-    margin:0 !important;
-
-    background:#fff !important;
-
-}
-
-
-/*----------------------------
- SHOW ONLY MARKSHEET
-----------------------------*/
-
-#studentMarksheetPage{
-
-    display:block !important;
-
-    background:#fff !important;
-
-    padding:0 !important;
-
-    margin:0 !important;
-
-}
-
-
-/*----------------------------
- MARKSHEET
-----------------------------*/
-
-.marksheet-card{
-
-    width:190mm !important;
-
-    min-height:277mm !important;
-
-    margin:auto !important;
-
-    padding:12mm !important;
-
-    border:2px solid #000 !important;
-
-    border-radius:0 !important;
-
-    background:#fff !important;
-
-    box-shadow:none !important;
-
-    overflow:hidden !important;
-
-}
-
-
-/* Remove Watermark */
-
-.marksheet-card::before,
-.marksheet-card::after{
-
-    opacity:.03 !important;
-
-}
-
-
-/*----------------------------
- HEADER
-----------------------------*/
-
-.marksheet-header{
-
-    border-bottom:2px solid #000 !important;
-
-    padding-bottom:10px !important;
-
-    margin-bottom:15px !important;
-
-}
-
-
-/*----------------------------
- LOGO
-----------------------------*/
-
-.marksheet-logo{
-
-    width:75px !important;
-
-    height:75px !important;
-
-}
-
-
-/*----------------------------
- PHOTO
-----------------------------*/
-
-.marksheet-photo{
-
-    width:35mm !important;
-
-    height:45mm !important;
-
-    border:1px solid #000 !important;
-
-    box-shadow:none !important;
-
-}
-
-
-/*----------------------------
- TABLE
-----------------------------*/
-
-.detail-section table{
-
-    width:100% !important;
-
-    border-collapse:collapse !important;
-
-}
-
-.detail-section td{
-
-    border:1px solid #000 !important;
-
-    padding:8px 10px !important;
-
-    font-size:13px !important;
-
-}
-
-.detail-section td:first-child{
-
-    font-weight:700;
-
-}
-
-
-/*----------------------------
- RESULT SUMMARY
-----------------------------*/
-
-.result-summary{
-
-    gap:8px !important;
-
-}
-
-.summary-box{
-
-    border:1px solid #000 !important;
-
-    box-shadow:none !important;
-
-    background:#fff !important;
-
-}
-
-.summary-box span{
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- DECLARATION
-----------------------------*/
-
-.declaration{
-
-    border:1px solid #000 !important;
-
-    background:#fff !important;
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- REMARK
-----------------------------*/
-
-.remark-box{
-
-    border-left:4px solid #000 !important;
-
-    background:#fff !important;
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- SIGNATURE
-----------------------------*/
-
-.signature-line{
-
-    border-top:1.5px solid #000 !important;
-
-}
-
-.signature-box span{
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- VERIFY BOX
-----------------------------*/
-
-.verify-box{
-
-    border:1px dashed #000 !important;
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- LINKS
-----------------------------*/
-
-a{
-
-    text-decoration:none !important;
-
-    color:#000 !important;
-
-}
-
-
-/*----------------------------
- IMAGE QUALITY
-----------------------------*/
-
-img{
-
-    image-rendering:auto;
-
-    max-width:100%;
-
-}
-
-
-/*----------------------------
- AVOID PAGE BREAKS
-----------------------------*/
-
-table,
-.photo-section,
-.signature-area,
-.result-summary{
-
-    page-break-inside:avoid;
-
-    break-inside:avoid;
-
-}
-
-
-/*----------------------------
- REMOVE ANIMATIONS
-----------------------------*/
-
-*{
-
-    animation:none !important;
-
-    transition:none !important;
-
-}
-
-}
-
 
 /*==================================================
  FINAL PREMIUM POLISH
@@ -3934,11 +2882,6 @@ button:focus{
 .login-box,
 .success-box,
 .dashboard-card,
-.marksheet-card{
-
-    transition:.30s ease;
-
-}
 
 .option{
 
@@ -3955,4 +2898,1544 @@ button:focus{
 .dashboard-card{
 
     will-change:transform;
+}
+/*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM A4 MARKSHEET
+ PART 3B-1
+ MAIN LAYOUT + HEADER + STUDENT INFO
+==================================================*/
+
+
+/*==================================================
+ MARKSHEET PAGE
+==================================================*/
+
+#studentMarksheetPage{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:35px;
+    background:#edf3fb;
+}
+
+
+/*==================================================
+ PRINT PAGE
+==================================================*/
+
+.print-page{
+    width:210mm;
+    min-height:297mm;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+
+/*==================================================
+ MAIN MARKSHEET
+==================================================*/
+
+.marksheet{
+
+    width:210mm;
+    min-height:297mm;
+
+    background:#fff;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
+
+}
+
+
+/*==================================================
+ OUTER BORDER
+==================================================*/
+
+.marksheet-border{
+
+    margin:8mm;
+
+    border:3px solid #0057d8;
+
+    padding:8mm;
+
+    position:relative;
+
+    min-height:calc(297mm - 16mm);
+
+}
+
+
+/*==================================================
+ INNER BORDER
+==================================================*/
+
+.marksheet-border::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:6px;
+    right:6px;
+    top:6px;
+    bottom:6px;
+
+    border:1px solid #6ea8ff;
+
+    pointer-events:none;
+
+}
+
+
+/*==================================================
+ WATERMARK
+==================================================*/
+
+.marksheet-border::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+    height:420px;
+
+    left:50%;
+    top:54%;
+
+    transform:translate(-50%,-50%);
+
+    background:url("ikon.jpg") center center/contain no-repeat;
+
+    opacity:.035;
+
+    pointer-events:none;
+
+}
+
+
+/*==================================================
+ HEADER
+==================================================*/
+
+.ms-header{
+
+    display:grid;
+
+    grid-template-columns:110px 1fr 230px;
+
+    gap:20px;
+
+    align-items:center;
+
+    border-bottom:3px solid #005bea;
+
+    padding-bottom:18px;
+
+    margin-bottom:18px;
+
+}
+
+
+/*==================================================
+ LOGO
+==================================================*/
+
+.ms-logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.ms-logo img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+}
+
+
+/*==================================================
+ TITLE
+==================================================*/
+
+.ms-title{
+
+    text-align:center;
+
+}
+
+
+.ms-title h1{
+
+    color:#0047ab;
+
+    font-size:33px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+
+    margin-bottom:6px;
+
+}
+
+
+.ms-title h2{
+
+    color:#222;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+}
+
+
+.ms-title p{
+
+    color:#666;
+
+    font-size:14px;
+
+    letter-spacing:.2px;
+
+}
+
+
+/*==================================================
+ HEADER INFO TABLE
+==================================================*/
+
+.ms-info table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+.ms-info td{
+
+    padding:4px 0;
+
+    font-size:14px;
+
+    color:#222;
+
+}
+
+
+.ms-info td:first-child{
+
+    font-weight:700;
+
+    width:110px;
+
+}
+
+
+.ms-info td:nth-child(2){
+
+    width:15px;
+
+    text-align:center;
+
+}
+
+
+.ms-info td:last-child{
+
+    font-weight:700;
+
+    color:#0057d8;
+
+}
+
+
+/*==================================================
+ RESULT TITLE
+==================================================*/
+
+.result-title{
+
+    margin:18px 0 22px;
+
+    text-align:center;
+
+    padding:10px;
+
+    font-size:20px;
+
+    font-weight:800;
+
+    color:#fff;
+
+    letter-spacing:1px;
+
+    background:linear-gradient(
+        90deg,
+        #0047ab,
+        #0b7cff
+    );
+
+}
+
+
+/*==================================================
+ STUDENT SECTION
+==================================================*/
+
+.student-section{
+
+    display:grid;
+
+    grid-template-columns:150px 1fr 140px;
+
+    gap:20px;
+
+    align-items:start;
+
+}
+
+
+/*==================================================
+ PHOTO BOX
+==================================================*/
+
+.student-photo-box{
+
+    text-align:center;
+
+}
+
+
+#msPhoto{
+
+    width:120px;
+
+    height:145px;
+
+    object-fit:cover;
+
+    border:2px solid #005bea;
+
+    padding:3px;
+
+    background:#fff;
+
+    margin:auto;
+
+}
+
+
+/*==================================================
+ PHOTO LABEL
+==================================================*/
+
+.photo-text{
+
+    margin-top:8px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    color:#444;
+
+    letter-spacing:.5px;
+
+}
+
+
+/*==================================================
+ STUDENT DETAILS
+==================================================*/
+
+.student-details table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+.student-details td{
+
+    padding:8px 6px;
+
+    border-bottom:1px solid #d9e7fb;
+
+    font-size:15px;
+
+}
+
+
+.student-details td:first-child{
+
+    font-weight:700;
+
+    color:#0047ab;
+
+}
+
+
+.student-details td:nth-child(2){
+
+    width:20px;
+
+    text-align:center;
+
+    font-weight:700;
+
+}
+
+
+.student-details td:last-child{
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+
+/*==================================================
+ QR BOX
+==================================================*/
+
+.qr-box{
+
+    text-align:center;
+
+}
+
+
+#msQR{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    border:2px solid #005bea;
+
+    padding:4px;
+
+    background:#fff;
+
+    margin:auto;
+
+}
+
+
+/*==================================================
+ SUMMARY STRIP
+==================================================*/
+
+.summary-strip{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+    margin:28px 0;
+
+}
+
+
+.summary-item{
+
+    border:1px solid #d8e5fb;
+
+    background:#f9fbff;
+
+    text-align:center;
+
+    padding:16px;
+
+}
+
+
+.summary-item label{
+
+    display:block;
+
+    color:#555;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    margin-bottom:10px;
+
+}
+
+
+.summary-item h2{
+
+    color:#005bea;
+
+    font-size:28px;
+
+    font-weight:800;
+
+}
+
+
+.final-result{
+
+    background:linear-gradient(
+        135deg,
+        #16a34a,
+        #22c55e
+    );
+
+    border:none;
+
+}
+
+
+.final-result label,
+.final-result h2{
+
+    color:#fff;
+
+}
+ /*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM A4 MARKSHEET
+ PART 3B-2
+ MARKS TABLE + RESULT DETAILS + SIGNATURE + BUTTONS
+==================================================*/
+
+
+/*==================================================
+ MARKS TABLE SECTION
+==================================================*/
+
+.marks-table-section{
+
+    margin-top:20px;
+
+}
+
+
+/*==================================================
+ MARKS TABLE
+==================================================*/
+
+.marks-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    table-layout:fixed;
+
+    background:#fff;
+
+}
+
+
+/*==================================================
+ TABLE HEADER
+==================================================*/
+
+.marks-table thead th{
+
+    background:linear-gradient(
+        135deg,
+        #005bea,
+        #0b7cff
+    );
+
+    color:#fff;
+
+    border:1px solid #0047ab;
+
+    padding:12px 8px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    text-align:center;
+
+}
+
+
+/*==================================================
+ TABLE BODY
+==================================================*/
+
+.marks-table tbody td{
+
+    border:1px solid #bfd5f6;
+
+    padding:11px 8px;
+
+    font-size:14px;
+
+    color:#222;
+
+    text-align:center;
+
+    transition:.25s;
+
+}
+
+
+.marks-table tbody td:nth-child(2){
+
+    text-align:left;
+
+    padding-left:15px;
+
+    font-weight:600;
+
+}
+
+
+.marks-table tbody tr:nth-child(even){
+
+    background:#fbfdff;
+
+}
+
+
+.marks-table tbody tr:hover{
+
+    background:#edf5ff;
+
+}
+
+
+/*==================================================
+ PASS STATUS
+==================================================*/
+
+#msTheoryStatus,
+#msPracticalStatus,
+#msAssignmentStatus,
+#msProjectStatus,
+#msVivaStatus{
+
+    font-weight:700;
+
+    color:#16a34a;
+
+}
+
+
+/*==================================================
+ FOOTER
+==================================================*/
+
+.marks-table tfoot th{
+
+    background:#edf5ff;
+
+    border:1px solid #7aaef6;
+
+    padding:12px 8px;
+
+    font-size:15px;
+
+    color:#003b8e;
+
+    font-weight:800;
+
+    text-align:center;
+
+}
+
+
+/*==================================================
+ RESULT DETAILS
+==================================================*/
+
+.result-details{
+
+    margin-top:25px;
+
+    border:1px solid #d6e4fb;
+
+    background:#fafcff;
+
+}
+
+
+.result-details table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+.result-details td{
+
+    border:1px solid #d6e4fb;
+
+    padding:10px 12px;
+
+    font-size:14px;
+
+}
+
+
+.result-details td:nth-child(1),
+.result-details td:nth-child(4){
+
+    font-weight:700;
+
+    color:#0047ab;
+
+    width:170px;
+
+}
+
+
+.result-details td:nth-child(2),
+.result-details td:nth-child(5){
+
+    width:20px;
+
+    text-align:center;
+
+    font-weight:700;
+
+}
+
+
+.result-details td:nth-child(3),
+.result-details td:nth-child(6){
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+
+/*==================================================
+ SIGNATURE AREA
+==================================================*/
+
+.signature-area{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    margin-top:60px;
+
+    gap:70px;
+
+}
+
+
+/*==================================================
+ SIGNATURE BOX
+==================================================*/
+
+.signature-box{
+
+    flex:1;
+
+    text-align:center;
+
+}
+
+
+/*==================================================
+ SIGNATURE LINE
+==================================================*/
+
+.sign-line{
+
+    border-top:2px solid #000;
+
+    margin-bottom:10px;
+
+    width:100%;
+
+}
+
+
+.signature-box p{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+
+/*==================================================
+ BUTTON AREA
+==================================================*/
+
+.marksheet-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+
+    margin-top:35px;
+
+}
+
+
+/*==================================================
+ BUTTON SIZE
+==================================================*/
+
+.marksheet-buttons button{
+
+    width:180px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.30s;
+
+}
+
+
+/*==================================================
+ PRIMARY
+==================================================*/
+
+.marksheet-buttons .primary{
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #005bea,
+        #008cff
+    );
+
+    box-shadow:
+        0 10px 24px rgba(0,91,234,.25);
+
+}
+
+
+.marksheet-buttons .primary:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 32px rgba(0,91,234,.35);
+
+}
+
+
+/*==================================================
+ SECONDARY
+==================================================*/
+
+.marksheet-buttons .secondary{
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #64748b,
+        #475569
+    );
+
+    box-shadow:
+        0 10px 24px rgba(71,85,105,.20);
+
+}
+
+
+.marksheet-buttons .secondary:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 30px rgba(71,85,105,.30);
+
+}
+
+
+/*==================================================
+ RESPONSIVE
+==================================================*/
+
+@media(max-width:900px){
+
+.print-page,
+.marksheet{
+
+    width:100%;
+
+    min-height:auto;
+
+}
+
+.marksheet-border{
+
+    margin:15px;
+
+    padding:15px;
+
+}
+
+.ms-header{
+
+    grid-template-columns:1fr;
+
+    text-align:center;
+
+}
+
+.student-section{
+
+    grid-template-columns:1fr;
+
+}
+
+.summary-strip{
+
+    grid-template-columns:1fr;
+
+}
+
+.signature-area{
+
+    flex-direction:column;
+
+    gap:35px;
+
+}
+
+.result-details td{
+
+    font-size:13px;
+
+}
+
+.marksheet-buttons{
+
+    flex-direction:column;
+
+}
+
+.marksheet-buttons button{
+
+    width:100%;
+
+}
+
+}
+
+
+@media(max-width:600px){
+
+.ms-title h1{
+
+    font-size:24px;
+
+}
+
+.ms-title h2{
+
+    font-size:15px;
+
+}
+
+.result-title{
+
+    font-size:17px;
+
+}
+
+.student-details td{
+
+    font-size:13px;
+
+}
+
+.marks-table thead th,
+.marks-table tbody td,
+.marks-table tfoot th{
+
+    font-size:12px;
+
+    padding:8px 5px;
+
+}
+
+#msPhoto{
+
+    width:100px;
+
+    height:120px;
+
+}
+
+#msQR{
+
+    width:90px;
+
+    height:90px;
+
+}
+
+}
+ /*==================================================
+ IKON ONLINE TEST SYSTEM
+ PREMIUM A4 MARKSHEET
+ PART 3C
+ PROFESSIONAL A4 PRINT CSS
+==================================================*/
+
+
+/*==================================================
+ PAGE
+==================================================*/
+
+@page{
+
+    size:A4 portrait;
+
+    margin:8mm;
+
+}
+
+
+/*==================================================
+ PRINT
+==================================================*/
+
+@media print{
+
+
+/*==================================================
+ PAGE RESET
+==================================================*/
+
+html,
+body{
+
+    width:210mm !important;
+
+    height:297mm !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    background:#ffffff !important;
+
+    color:#000 !important;
+
+    -webkit-print-color-adjust:exact;
+
+    print-color-adjust:exact;
+
+}
+
+
+/*==================================================
+ HIDE ALL OTHER PAGES
+==================================================*/
+
+.header,
+#loginPage,
+#waitingPage,
+#instructionPage,
+#testPage,
+#dashboardPage,
+#studentResultPage,
+#successPage,
+#resultVerifyPage,
+.exam-status-bar,
+.navigation,
+.question-panel,
+.progress,
+.progress-bar,
+.palette-info,
+button,
+.no-print{
+
+    display:none !important;
+
+}
+
+
+/*==================================================
+ CONTENT
+==================================================*/
+
+.content{
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    background:#fff !important;
+
+}
+
+
+/*==================================================
+ SHOW ONLY MARKSHEET
+==================================================*/
+
+#studentMarksheetPage{
+
+    display:block !important;
+
+    padding:0 !important;
+
+    margin:0 !important;
+
+    background:#fff !important;
+
+}
+
+
+/*==================================================
+ PAGE
+==================================================*/
+
+.print-page{
+
+    width:210mm !important;
+
+    min-height:297mm !important;
+
+    margin:auto !important;
+
+}
+
+
+/*==================================================
+ MARKSHEET
+==================================================*/
+
+.marksheet{
+
+    width:210mm !important;
+
+    min-height:297mm !important;
+
+    margin:0 auto !important;
+
+    box-shadow:none !important;
+
+    background:#fff !important;
+
+}
+
+
+/*==================================================
+ BORDER
+==================================================*/
+
+.marksheet-border{
+
+    margin:6mm !important;
+
+    padding:7mm !important;
+
+    border:2px solid #000 !important;
+
+}
+
+
+/*==================================================
+ REMOVE EFFECTS
+==================================================*/
+
+.marksheet-border::after{
+
+    opacity:.03 !important;
+
+}
+
+
+/*==================================================
+ HEADER
+==================================================*/
+
+.ms-header{
+
+    border-bottom:2px solid #000 !important;
+
+    padding-bottom:12px !important;
+
+    margin-bottom:15px !important;
+
+}
+
+
+/*==================================================
+ LOGO
+==================================================*/
+
+.ms-logo img{
+
+    width:80px !important;
+
+    height:80px !important;
+
+}
+
+
+/*==================================================
+ TITLES
+==================================================*/
+
+.ms-title h1{
+
+    color:#000 !important;
+
+    font-size:30px !important;
+
+}
+
+
+.ms-title h2{
+
+    color:#000 !important;
+
+}
+
+
+.ms-title p{
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ RESULT TITLE
+==================================================*/
+
+.result-title{
+
+    background:#000 !important;
+
+    color:#fff !important;
+
+    border:none !important;
+
+}
+
+
+/*==================================================
+ PHOTO
+==================================================*/
+
+#msPhoto{
+
+    width:35mm !important;
+
+    height:45mm !important;
+
+    border:1px solid #000 !important;
+
+    box-shadow:none !important;
+
+}
+
+
+/*==================================================
+ QR
+==================================================*/
+
+#msQR{
+
+    width:30mm !important;
+
+    height:30mm !important;
+
+    border:1px solid #000 !important;
+
+}
+
+
+/*==================================================
+ STUDENT TABLE
+==================================================*/
+
+.student-details td{
+
+    border-bottom:1px solid #bbb !important;
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ SUMMARY
+==================================================*/
+
+.summary-item{
+
+    border:1px solid #000 !important;
+
+    background:#fff !important;
+
+}
+
+
+.summary-item label{
+
+    color:#000 !important;
+
+}
+
+
+.summary-item h2{
+
+    color:#000 !important;
+
+}
+
+
+.final-result{
+
+    background:#fff !important;
+
+}
+
+
+.final-result label,
+.final-result h2{
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ MARKS TABLE
+==================================================*/
+
+.marks-table{
+
+    border-collapse:collapse !important;
+
+}
+
+
+.marks-table th,
+.marks-table td{
+
+    border:1px solid #000 !important;
+
+}
+
+
+.marks-table thead th{
+
+    background:#ddd !important;
+
+    color:#000 !important;
+
+}
+
+
+.marks-table tbody td{
+
+    background:#fff !important;
+
+    color:#000 !important;
+
+}
+
+
+.marks-table tfoot th{
+
+    background:#eee !important;
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ RESULT DETAILS
+==================================================*/
+
+.result-details{
+
+    border:1px solid #000 !important;
+
+}
+
+
+.result-details td{
+
+    border:1px solid #000 !important;
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ SIGNATURE
+==================================================*/
+
+.sign-line{
+
+    border-top:1.5px solid #000 !important;
+
+}
+
+
+.signature-box p{
+
+    color:#000 !important;
+
+}
+
+
+/*==================================================
+ IMAGE QUALITY
+==================================================*/
+
+img{
+
+    max-width:100%;
+
+    image-rendering:auto;
+
+}
+
+
+/*==================================================
+ AVOID PAGE BREAK
+==================================================*/
+
+.ms-header,
+.student-section,
+.summary-strip,
+.marks-table-section,
+.result-details,
+.signature-area{
+
+    page-break-inside:avoid;
+
+    break-inside:avoid;
+
+}
+
+
+/*==================================================
+ REMOVE ANIMATION
+==================================================*/
+
+*{
+
+    animation:none !important;
+
+    transition:none !important;
+
+    box-shadow:none !important;
+
+    text-shadow:none !important;
+
+}
+
+
+}
+
+
+/*==================================================
+ FINAL POLISH
+==================================================*/
+
+#studentMarksheetPage img{
+
+    user-select:none;
+
+    -webkit-user-drag:none;
+
+}
+
+.marksheet{
+
+    transition:.30s ease;
+
+}
+
+.marks-table tbody tr:hover{
+
+    background:#edf6ff;
+
+}
+
+.summary-item,
+.student-photo-box,
+.qr-box{
+
+    transition:.25s;
+
+}
+
+.student-photo-box:hover,
+.qr-box:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.marksheet-buttons button:focus{
+
+    outline:none;
+
 }
