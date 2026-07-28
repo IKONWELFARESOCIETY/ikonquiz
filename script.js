@@ -3088,7 +3088,7 @@ function backToLogin(){
     document.getElementById("studentResultPage")
         ?.classList.add("hidden");
 
-    document.getElementById("studentMarksheetPage")
+    document.getElementById("marksheetPage")
         ?.classList.add("hidden");
 
     document.getElementById("studentResultPage")
@@ -3526,7 +3526,7 @@ document
 // show marksheet
 
 document
-.getElementById("studentMarksheetPage")
+.getElementById("marksheetPage")
 ?.classList.remove("hidden");
 
 
@@ -3535,19 +3535,19 @@ document
 // student details
 
 
-document.getElementById("msRegNo").innerHTML =
+document.getElementById("msregNo").innerHTML =
 s.regNo || regNo;
 
 
-document.getElementById("msStudentName").innerHTML =
+document.getElementById("msstudentName").innerHTML =
 s.name || "";
 
 
-document.getElementById("msCourseName").innerHTML =
+document.getElementById("mscourseName").innerHTML =
 s.course || "";
 
 
-document.getElementById("msPaperName").innerHTML =
+document.getElementById("mspaperName").innerHTML =
 m["Paper Name"] || paperName;
 
 
@@ -3555,31 +3555,31 @@ m["Paper Name"] || paperName;
 // marks
 
 
-document.getElementById("msTheory").innerHTML =
+document.getElementById("theory").innerHTML =
 m["Theory"] || 0;
 
 
-document.getElementById("msPractical").innerHTML =
+document.getElementById("practical").innerHTML =
 m["Practical"] || 0;
 
 
-document.getElementById("msViva").innerHTML =
+document.getElementById("viva").innerHTML =
 m["Viva"] || 0;
 
 
-document.getElementById("msNotes").innerHTML =
+document.getElementById("notes").innerHTML =
 m["Notes"] || 0;
 
 
-document.getElementById("msBehaviour").innerHTML =
+document.getElementById("behaviour").innerHTML =
 m["Behaviour"] || 0;
 
 
-document.getElementById("msProject").innerHTML =
+document.getElementById("project").innerHTML =
 m["Project"] || 0;
 
 
-document.getElementById("msTotal").innerHTML =
+document.getElementById("totalmarks").innerHTML =
 m["Total Marks"] || 0;
 
 
@@ -3587,15 +3587,15 @@ m["Total Marks"] || 0;
 // result
 
 
-document.getElementById("msPercentage").innerHTML =
+document.getElementById("mspercentage").innerHTML =
 (m["Percentage"] || 0)+"%";
 
 
-document.getElementById("msGrade").innerHTML =
+document.getElementById("grade").innerHTML =
 m["Grade"] || "";
 
 
-document.getElementById("msResult").innerHTML =
+document.getElementById("msresult").innerHTML =
 m["Result"] || "";
 
 
@@ -3607,7 +3607,7 @@ let photo =
 "images/student/"+regNo+".jpeg";
 
 
-let img=document.getElementById("msPhoto");
+let img=document.getElementById("marksheetPhoto");
 
 
 if(img){
@@ -3826,11 +3826,11 @@ document
 .classList.add("hidden");
 
 document
-.getElementById("studentMarksheetPage")
+.getElementById("marksheetPage")
 .classList.remove("hidden");
 
 
-document.getElementById("msRegNo").innerHTML=data.regNo;
+document.getElementById("msregNo").innerHTML=data.regNo;
 
 document.getElementById("msName").innerHTML=data.name;
 
@@ -3855,7 +3855,7 @@ data.regNo+".jpeg";
 function backToResultList(){
 
 document
-.getElementById("studentMarksheetPage")
+.getElementById(marksheetPage")
 .classList.add("hidden");
 
 document
