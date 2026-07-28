@@ -877,7 +877,7 @@ document
 // VERIFY STUDENT ID
 //====================================================
 
-ffunction verifyStudentID() {
+function verifyStudentID() {
 
     const input = document.getElementById("studentIdInput");
 
@@ -1150,7 +1150,7 @@ function startExam() {
 
 }
 
-1212121
+
 //====================================================
 // LOAD PAPER QUESTIONS
 //====================================================
