@@ -877,40 +877,32 @@ document
 // VERIFY STUDENT ID
 //====================================================
 
-function verifyStudentID(){
+ffunction verifyStudentID() {
 
     const input = document.getElementById("studentIdInput");
 
-    if(!input){
+    if (!input) {
         alert("Student ID input not found.");
         return;
     }
 
-    const enteredId = input.value.trim();
+    const enteredId = String(input.value).trim();
+    const savedId = String(studentId || "").trim();
 
-    if(enteredId === ""){
+    if (enteredId === "") {
         alert("Please enter Student ID.");
         input.focus();
         return;
     }
 
-    // Login se mila hua Student ID
-    if(enteredId !== studentId){
+    if (enteredId.toUpperCase() !== savedId.toUpperCase()) {
         alert("Invalid Student ID.");
         input.focus();
         return;
     }
 
-    // Hide Verification Page
-    document
-        .getElementById("verificationPage")
-        ?.classList.add("hidden");
-
-    // Show Instruction Page
-    document
-        .getElementById("instructionPage")
-        ?.classList.remove("hidden");
-
+    document.getElementById("verificationPage")?.classList.add("hidden");
+    document.getElementById("instructionPage")?.classList.remove("hidden");
 }
 //====================================================
 // ENABLE START BUTTON
