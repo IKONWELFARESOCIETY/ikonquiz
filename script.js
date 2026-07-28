@@ -1120,43 +1120,7 @@ function startExam() {
 
 }
 
-function verifyStudentID(){
-
-    let enteredId =
-    document
-    .getElementById("studentIdInput")
-    .value
-    .trim();
-
-    if(enteredId===""){
-
-        alert("Please Enter Student ID");
-
-        return;
-
-    }
-
-    if(
-        enteredId.toUpperCase() ===
-        studentId.toUpperCase()
-    ){
-
-        document
-        .getElementById("verificationPage")
-        .classList.add("hidden");
-
-        document
-        .getElementById("instructionPage")
-        .classList.remove("hidden");
-
-    }
-    else{
-
-        alert("Invalid Student ID");
-
-    }
-
-}
+1212121
 //====================================================
 // LOAD PAPER QUESTIONS
 //====================================================
