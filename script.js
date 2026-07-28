@@ -3855,7 +3855,7 @@ data.regNo+".jpeg";
 function backToResultList(){
 
 document
-.getElementById(marksheetPage")
+.getElementById("marksheetPage")
 .classList.add("hidden");
 
 document
