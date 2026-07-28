@@ -4,13 +4,15 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <meta name="description"
 content="Official IKON Institute Online Test Portal. Student Login, Class Tests, MCQ Exams, Computer Courses, DCA, ADCA, Tally, MS Office, Power BI and Online Assessment System.">
 
 <meta name="google-site-verification"
-content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ" />
+content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 <title>
 IKON Institute Online Test Portal | Student Login & Class Test
@@ -20,13 +22,19 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-<!-- ================= HEADER ================= -->
+
+<!-- ==================================================
+                     HEADER
+================================================== -->
 
 <div class="header">
+
 
     <div class="header-left">
 
@@ -38,6 +46,7 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     </div>
 
+
     <div class="header-center">
 
         <h1 id="testTitle">
@@ -48,37 +57,62 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     </div>
 
+
     <div class="header-right">
 
     </div>
 
+
 </div>
 
-<!-- ================= CONTENT ================= -->
+
+
+<!-- ==================================================
+                     CONTENT
+================================================== -->
 
 <div class="content">
 
-<!-- ================= LOGIN PAGE ================= -->
+
+
+<!-- ==================================================
+                     LOGIN PAGE
+================================================== -->
 
 <div id="loginPage">
 
+
     <div class="login-box">
 
-        <h2>Candidate Login</h2>
 
-        <label>Registration Number</label>
+        <h2>
+            Candidate Login
+        </h2>
+
+
+        <label>
+            Registration Number
+        </label>
+
 
         <input
             type="text"
             id="regNo"
             placeholder="Enter Registration Number">
 
-        <label>Student Name</label>
+
+
+        <label>
+            Student Name
+        </label>
+
 
         <input
             type="text"
             id="studentName"
             placeholder="Enter Student Name">
+
+
 
         <label
             id="paperLabel"
@@ -88,44 +122,63 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
         </label>
 
+
+
         <select
             id="paperSelect"
             style="display:none;"
             onchange="selectPaper()">
+
         </select>
 
-  <button
-    id="loginBtn"
-    class="primary"
-    onclick="startTest()">
-
-    Start Test
-
-</button>
 
 
-<!-- VIEW RESULT BUTTON -->
+        <button
+            id="loginBtn"
+            class="primary"
+            onclick="startTest()">
 
-<button
-    id="resultBtn"
-    class="secondary"
-    onclick="openResultPage()">
+            Start Test
 
-    View Result
+        </button>
 
-</button>
+
+
+        <!-- ================= VIEW RESULT ================= -->
+
+        <button
+            id="resultBtn"
+            class="secondary"
+            onclick="openResultPage()">
+
+            View Result
+
+        </button>
+
+
+    </div>
+
+
 </div>
 
-</div>
-    <!-- ================= RESULT VERIFY PAGE ================= -->
 
-<div id="resultVerifyPage" class="hidden">
+
+<!-- ==================================================
+                RESULT VERIFY PAGE
+================================================== -->
+
+<div
+    id="resultVerifyPage"
+    class="hidden">
+
 
     <div class="result-box">
 
+
         <h2>
-             Student Result Portal
+            Student Result Portal
         </h2>
+
 
 
         <label>
@@ -133,121 +186,208 @@ IKON Institute Online Test Portal | Student Login & Class Test
         </label>
 
 
+
         <input
-        type="text"
-        id="resultStudentID"
-        placeholder="Enter Student ID">
+            type="text"
+            id="resultStudentID"
+            placeholder="Enter Student ID">
+
 
 
         <button
-        class="primary"
-        onclick="verifyResult()">
+            class="primary"
+            onclick="verifyResult()">
 
-        Verify Result
+            Verify Result
 
         </button>
 
+
     </div>
+
 
 </div>
 
 
 
-<!-- RESULT LIST PAGE -->
+<!-- ==================================================
+                  STUDENT RESULT LIST
+================================================== -->
 
-<div id="studentResultPage" class="hidden">
- <div id="studentInfo"></div>
+<div
+    id="studentResultPage"
+    class="hidden">
+
+
+    <div id="studentInfo"></div>
+
 
     <div id="resultData"></div>
+
+
+
     <div class="result-box">
 
-        <h2> Student Result List JULY 2026 </h2>
-             
-        </div>
-        <input
+
+        <h2>
+            Student Result List JULY 2026
+        </h2>
+
+
+    </div>
+
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <input
         type="text"
         id="searchResult"
         placeholder="Search Student..."
         onkeyup="searchResult()">
 
-        <table border="2" width="100%">
-
-            <thead>
-
-                <tr>
-                    <th>Reg No</th>
-                    <th>Name</th>
-                    <th>Paper</th>
-                    <th>Correct</th>
-                    <th>Incorrect</th>
-                    <th>Unattempted</th>
-                    <th>View Result</th>
-                </tr>
-
-            </thead>
 
 
-            <tbody id="resultTableBody">
+    <!-- ================= RESULT TABLE ================= -->
 
-            </tbody>
+    <table
+        border="2"
+        width="100%">
 
 
-        </table>
+        <thead>
 
 
-        <br>
+            <tr>
 
-        <button
+                <th>
+                    Reg No
+                </th>
+
+
+                <th>
+                    Name
+                </th>
+
+
+                <th>
+                    Paper
+                </th>
+
+
+                <th>
+                    Correct
+                </th>
+
+
+                <th>
+                    Incorrect
+                </th>
+
+
+                <th>
+                    Unattempted
+                </th>
+
+
+                <th>
+                    View Result
+                </th>
+
+            </tr>
+
+
+        </thead>
+
+
+
+        <tbody
+            id="resultTableBody">
+
+        </tbody>
+
+
+    </table>
+
+
+
+    <br>
+
+
+
+    <button
         class="secondary"
         onclick="backToLogin()">
 
         Back To Login
 
-        </button>
+    </button>
 
-
-    </div>
 
 </div>
-    <!--====================================================
-    ADMIN - QUESTION WISE ANSWER DETAILS
-=====================================================-->
+
+
+
+<!-- ==================================================
+          ADMIN QUESTION WISE ANSWER DETAILS
+================================================== -->
 
 <div
     id="adminAnswerDetailsPage"
-    class="hidden"
->
+    class="hidden">
+
 
     <div class="result-card">
 
-        <h2>Question Wise Answer Details</h2>
+
+        <h2>
+            Question Wise Answer Details
+        </h2>
+
 
 
         <!-- STUDENT NAME -->
 
         <h3>
+
             Student Name :
-            <span id="answerStudentName"></span>
+
+            <span
+                id="answerStudentName">
+            </span>
+
         </h3>
+
 
 
         <!-- PAPER NAME -->
 
         <h3>
+
             Paper :
-            <span id="answerPaperName"></span>
+
+            <span
+                id="answerPaperName">
+            </span>
+
         </h3>
+
 
 
         <hr>
 
 
+
         <!-- QUESTION DETAILS -->
 
-        <div id="adminAnswerDetailsData"></div>
+        <div
+            id="adminAnswerDetailsData">
+        </div>
+
 
 
         <br>
+
 
 
         <!-- BACK BUTTON -->
@@ -255,688 +395,722 @@ IKON Institute Online Test Portal | Student Login & Class Test
         <button
             type="button"
             class="primary"
-            onclick="backToResultListFromAnswers()"
-        >
+            onclick="backToResultListFromAnswers()">
+
             Back to Result List
+
         </button>
 
-    </div>
-
-</div>
-    <!--======================================
-STUDENT MARKSHEET PAGE
-=======================================-->
-<!--==================================================
-        PREMIUM A4 MARKSHEET
-        PART - 1
-===================================================-->
-
-<div id="studentMarksheetPage" class="hidden">
-
-<div class="print-page">
-
-<div class="marksheet">
-
-<div class="marksheet-border">
-
-
-<!--====================================
-        HEADER
-=====================================-->
-
-<div class="ms-header">
-
-    <div class="ms-logo">
-
-        <img src="ikon.jpg" alt="IKON Logo">
 
     </div>
 
 
-    <div class="ms-title">
-
-        <h1>IKON INSTITUTE</h1>
-
-        <h2>RESULT CUM DETAILED MARKS CARD</h2>
-
-        <p>
-            ISO Certified Computer Education Institute
-        </p>
-
-    </div>
-
-
-    <div class="ms-info">
-
-        <table>
-
-            <tr>
-
-                <td>Marksheet No.</td>
-
-                <td>:</td>
-
-                <td id="msMarksheetNo">
-                    IKON20260001
-                </td>
-
-            </tr>
-
-            <tr>
-
-                <td>Issue Date</td>
-
-                <td>:</td>
-
-                <td id="msIssueDate">
-                    01-08-2026
-                </td>
-
-            </tr>
-
-        </table>
-
-    </div>
-
 </div>
 
 
 
-<!--====================================
-        BLUE TITLE
-=====================================-->
+<!-- ==================================================
+                  STUDENT MARKSHEET PAGE
+================================================== -->
 
-<div class="result-title">
+<div
+    id="studentMarksheetPage"
+    class="hidden">
 
-    FINAL RESULT
 
-</div>
+    <!-- ==================================================
+                         A4 PRINT PAGE
+    ================================================== -->
 
+    <div class="print-page">
 
 
-<!--====================================
-        STUDENT INFO
-=====================================-->
+        <div class="marksheet">
 
-<div class="student-section">
 
+            <div class="marksheet-border">
 
 
-<!-- LEFT PHOTO -->
+                <!-- ==================================================
+                              MARKSHEET HEADER
+                ================================================== -->
 
-<div class="student-photo-box">
+                <div class="ms-header">
 
-<img
-id="msPhoto"
-src=""
-alt="Student Photo">
 
-<div class="photo-text">
+                    <!-- LOGO -->
 
-STUDENT PHOTO
+                    <div class="ms-logo">
 
-</div>
+                        <img
+                            src="ikon.jpg"
+                            alt="IKON Logo">
 
-</div>
+                    </div>
 
 
 
-<!-- CENTER DETAILS -->
+                    <!-- INSTITUTE TITLE -->
 
-<div class="student-details">
+                    <div class="ms-title">
 
-<table>
 
-<tr>
+                        <h1>
+                            IKON INSTITUTE
+                        </h1>
 
-<td width="220">
 
-Registration Number
+                        <h2>
+                            RESULT CUM DETAILED MARKS CARD
+                        </h2>
 
-</td>
 
-<td width="20">
+                        <p>
+                            Recognised Computer Education Institute
+                        </p>
 
-:
 
-</td>
+                    </div>
 
-<td id="msRegNo"></td>
 
-</tr>
 
+                    <!-- MARKSHEET INFORMATION -->
 
+                    <div class="ms-info">
 
-<tr>
 
-<td>
+                        <table>
 
-Student Name
 
-</td>
+                            <tr>
 
-<td>
+                                <td>
+                                    Marksheet No.
+                                </td>
 
-:
+                                <td>
+                                    :
+                                </td>
 
-</td>
+                                <td id="msMarksheetNo">
+                                    IKON20260001
+                                </td>
 
-<td id="msName"></td>
+                            </tr>
 
-</tr>
 
+                            <tr>
 
+                                <td>
+                                    Issue Date
+                                </td>
 
-<tr>
+                                <td>
+                                    :
+                                </td>
 
-<td>
+                                <td id="msIssueDate">
+                                    01-08-2026
+                                </td>
 
-Father's Name
+                            </tr>
 
-</td>
 
-<td>
+                        </table>
 
-:
 
-</td>
+                    </div>
 
-<td id="msFather">
 
-__________________
+                </div>
 
-</td>
 
-</tr>
 
+                <!-- ==================================================
+                              FINAL RESULT TITLE
+                ================================================== -->
 
+                <div class="result-title">
 
-<tr>
+                    FINAL RESULT
 
-<td>
+                </div>
 
-Course
 
-</td>
 
-<td>
+                <!-- ==================================================
+                              STUDENT INFORMATION
+                ================================================== -->
 
-:
+                <div class="student-section">
 
-</td>
 
-<td id="msCourse"></td>
+                    <!-- ================= STUDENT PHOTO ================= -->
 
-</tr>
+                    <div class="student-photo-box">
 
 
+                        <img
+                            id="msPhoto"
+                            src=""
+                            alt="Student Photo">
 
-<tr>
 
-<td>
+                        <div class="photo-text">
 
-Paper
+                            PHOTO
 
-</td>
+                        </div>
 
-<td>
 
-:
+                    </div>
 
-</td>
 
-<td id="msPaper"></td>
 
-</tr>
+                    <!-- ================= STUDENT DETAILS ================= -->
 
+                    <div class="student-details">
 
 
-<tr>
+                        <table>
 
-<td>
 
-Examination Session
+                            <tr>
 
-</td>
+                                <td>
+                                    Registration No.
+                                </td>
 
-<td>
+                                <td>
+                                    :
+                                </td>
 
-:
+                                <td id="msRegNo">
+                                </td>
 
-</td>
+                            </tr>
 
-<td id="msSession">
 
-JULY 2026
 
-</td>
+                            <tr>
 
-</tr>
+                                <td>
+                                    Student Name
+                                </td>
 
+                                <td>
+                                    :
+                                </td>
 
+                                <td id="msName">
+                                </td>
 
-<tr>
+                            </tr>
 
-<td>
 
-Date of Birth
 
-</td>
+                            <tr>
 
-<td>
+                                <td>
+                                    Course
+                                </td>
 
-:
+                                <td>
+                                    :
+                                </td>
 
-</td>
+                                <td id="msCourse">
+                                </td>
 
-<td id="msDOB">
+                            </tr>
 
---
 
-</td>
 
-</tr>
+                            <tr>
 
+                                <td>
+                                    Paper
+                                </td>
 
+                                <td>
+                                    :
+                                </td>
 
-<tr>
+                                <td id="msPaper">
+                                </td>
 
-<td>
+                            </tr>
 
-Institute
 
-</td>
+                        </table>
 
-<td>
 
-:
+                    </div>
 
-</td>
 
-<td>
 
-IKON INSTITUTE
+                    <!-- ================= QR CODE ================= -->
 
-</td>
+                    <div class="qr-box">
 
-</tr>
 
-</table>
+                        <img
+                            id="msQR"
+                            src=""
+                            alt="QR Code">
 
-</div>
 
+                        <div class="photo-text">
 
+                            QR
 
-<!-- RIGHT QR -->
+                        </div>
 
-<div class="qr-box">
 
-<img
-id="msQR"
-src=""
-alt="QR Code">
+                    </div>
 
-<div class="photo-text">
 
-QR CODE
+                </div>
 
-</div>
 
-</div>
 
-</div>
-
-
-
-<!--====================================
-        RESULT SUMMARY
-=====================================-->
-
-<div class="summary-strip">
-
-<div class="summary-item">
-
-<label>
-
-Percentage
-
-</label>
-
-<h2 id="msPercentage">
-
-0%
-
-</h2>
-
-</div>
-
-
-
-<div class="summary-item">
-
-<label>
-
-Grade
-
-</label>
-
-<h2 id="msGrade">
-
-A
-
-</h2>
-
-</div>
-
-
-
-<div class="summary-item final-result">
-
-<label>
-
-Final Result
-
-</label>
-
-<h2 id="msResult">
-
-PASS
-
-</h2>
-
-</div>
-
-</div>
-
-
-
-<!--====================================
-PART-2 CONTINUES...
-(MARKS TABLE + SIGNATURES)
-=====================================-->
-    <!--====================================
-        MARKS TABLE
-=====================================-->
+                <!-- ==================================================
+                         PART 1 END — MARKS TABLE NEXT
+                ================================================== -->
+                <!-- ==================================================
+                    MARKS TABLE
+================================================== -->
 
 <div class="marks-table-section">
 
-<table class="marks-table">
 
-<thead>
+    <table class="marks-table">
 
-<tr>
 
-<th width="40">S.No.</th>
+        <!-- ================= TABLE HEADER ================= -->
 
-<th>Course / Subject</th>
+        <thead>
 
-<th width="90">Full Marks</th>
+            <tr>
 
-<th width="90">Pass Marks</th>
+                <th>
+                    COURSE / SUBJECT
+                </th>
 
-<th width="110">Marks Obtained</th>
+                <th>
+                    FULL<br>
+                    MARKS
+                </th>
 
-<th width="90">Status</th>
+                <th>
+                    PASS<br>
+                    MARKS
+                </th>
 
-</tr>
+                <th>
+                    MARKS<br>
+                    OBTAINED
+                </th>
 
-</thead>
+                <th>
+                    STATUS
+                </th>
 
-<tbody>
+            </tr>
 
-<tr>
+        </thead>
 
-<td>1</td>
 
-<td id="msSubject1">Theory</td>
 
-<td>100</td>
+        <!-- ================= TABLE BODY ================= -->
 
-<td>40</td>
+        <tbody>
 
-<td id="msTheory">0</td>
 
-<td id="msTheoryStatus">PASS</td>
+            <!-- THEORY -->
 
-</tr>
+            <tr>
 
-<tr>
+                <td id="msSubject1">
+                    Theory
+                </td>
 
-<td>2</td>
+                <td>
+                    100
+                </td>
 
-<td id="msSubject2">Practical</td>
+                <td>
+                    40
+                </td>
 
-<td>50</td>
+                <td id="msTheory">
+                    0
+                </td>
 
-<td>20</td>
+                <td id="msTheoryStatus">
+                    PASS
+                </td>
 
-<td id="msPractical">0</td>
+            </tr>
 
-<td id="msPracticalStatus">PASS</td>
 
-</tr>
 
-<tr>
+            <!-- NOTES -->
 
-<td>3</td>
+            <tr>
 
-<td id="msSubject3">Assignment</td>
+                <td id="msSubject2">
+                    Notes
+                </td>
 
-<td>20</td>
+                <td>
+                    20
+                </td>
 
-<td>08</td>
+                <td>
+                    10
+                </td>
 
-<td id="msAssignment">0</td>
+                <td id="msNotes">
+                    0
+                </td>
 
-<td id="msAssignmentStatus">PASS</td>
+                <td id="msNotesStatus">
+                    PASS
+                </td>
 
-</tr>
+            </tr>
 
-<tr>
 
-<td>4</td>
 
-<td id="msSubject4">Project</td>
+            <!-- PRACTICAL -->
 
-<td>20</td>
+            <tr>
 
-<td>08</td>
+                <td id="msSubject3">
+                    Practical
+                </td>
 
-<td id="msProject">0</td>
+                <td>
+                    40
+                </td>
 
-<td id="msProjectStatus">PASS</td>
+                <td>
+                    20
+                </td>
 
-</tr>
+                <td id="msPractical">
+                    0
+                </td>
 
-<tr>
+                <td id="msPracticalStatus">
+                    PASS
+                </td>
 
-<td>5</td>
+            </tr>
 
-<td id="msSubject5">Viva</td>
 
-<td>10</td>
 
-<td>04</td>
+            <!-- VIVA -->
 
-<td id="msViva">0</td>
+            <tr>
 
-<td id="msVivaStatus">PASS</td>
+                <td id="msSubject4">
+                    Viva
+                </td>
 
-</tr>
+                <td>
+                    20
+                </td>
 
-</tbody>
+                <td>
+                    10
+                </td>
 
-<tfoot>
+                <td id="msViva">
+                    0
+                </td>
 
-<tr>
+                <td id="msVivaStatus">
+                    PASS
+                </td>
 
-<th colspan="2">
+            </tr>
 
-TOTAL
 
-</th>
 
-<th id="msTotalFullMarks">
+            <!-- PROJECT -->
 
-200
+            <tr>
 
-</th>
+                <td id="msSubject5">
+                    Project
+                </td>
 
-<th id="msTotalPassing">
+                <td>
+                    100
+                </td>
 
-80
+                <td>
+                    40
+                </td>
 
-</th>
+                <td id="msProject">
+                    0
+                </td>
 
-<th id="msTotalMarks">
+                <td id="msProjectStatus">
+                    PASS
+                </td>
 
-0
+            </tr>
 
-</th>
 
-<th id="msFinalStatus">
 
-PASS
+            <!-- BEHAVIOUR -->
 
-</th>
+            <tr>
 
-</tr>
+                <td id="msSubject6">
+                    Behaviour
+                </td>
 
-</tfoot>
+                <td>
+                    20
+                </td>
 
-</table>
+                <td>
+                    10
+                </td>
+
+                <td id="msBehaviour">
+                    0
+                </td>
+
+                <td id="msBehaviourStatus">
+                    PASS
+                </td>
+
+            </tr>
+
+
+        </tbody>
+
+
+
+        <!-- ================= TOTAL ================= -->
+
+        <tfoot>
+
+            <tr>
+
+                <th>
+                    TOTAL
+                </th>
+
+                <th id="msTotalFullMarks">
+                    300
+                </th>
+
+                <th id="msTotalPassing">
+                    130
+                </th>
+
+                <th id="msTotalMarks">
+                    0
+                </th>
+
+                <th id="msFinalStatus">
+                    PASS
+                </th>
+
+            </tr>
+
+        </tfoot>
+
+
+    </table>
+
 
 </div>
 
 
 
-<!--====================================
-        RESULT DETAILS
-=====================================-->
+<!-- ==================================================
+                    RESULT SUMMARY
+================================================== -->
 
-<div class="result-details">
+<div class="summary-strip">
 
-<table>
 
-<tr>
+    <!-- ================= PERCENTAGE ================= -->
 
-<td>Total Questions</td>
+    <div class="summary-item">
 
-<td>:</td>
 
-<td id="msTotalQuestions">0</td>
+        <label>
+            PERCENTAGE
+        </label>
 
-<td>Correct Answer</td>
 
-<td>:</td>
+        <h2 id="msPercentage">
+            0.00%
+        </h2>
 
-<td id="msCorrect">0</td>
 
-</tr>
+    </div>
 
-<tr>
 
-<td>Wrong Answer</td>
 
-<td>:</td>
+    <!-- ================= GRADE ================= -->
 
-<td id="msWrong">0</td>
+    <div class="summary-item">
 
-<td>Unattempted</td>
 
-<td>:</td>
+        <label>
+            GRADE
+        </label>
 
-<td id="msUnattempted">0</td>
 
-</tr>
+        <h2 id="msGrade">
+            A
+        </h2>
 
-</table>
+
+    </div>
+
+
+
+    <!-- ================= FINAL RESULT ================= -->
+
+    <div class="summary-item final-result">
+
+
+        <label>
+            FINAL RESULT
+        </label>
+
+
+        <h2 id="msResult">
+            PASS
+        </h2>
+
+
+    </div>
+
 
 </div>
 
 
 
-<!--====================================
-        SIGNATURE
-=====================================-->
+<!-- ==================================================
+                    SIGNATURE AREA
+================================================== -->
 
 <div class="signature-area">
 
-<div class="signature-box">
 
-<div class="sign-line"></div>
+    <!-- STUDENT SIGNATURE -->
 
-<p>
+    <div class="signature-box">
 
-Student Signature
 
-</p>
+        <div class="sign-line">
+        </div>
+
+
+        <p>
+            Student Signature
+        </p>
+
+
+    </div>
+
+
+
+    <!-- AUTHORIZED SIGNATORY -->
+
+    <div class="signature-box">
+
+
+        <div class="sign-line">
+        </div>
+
+
+        <p>
+            Authorized Signatory
+        </p>
+
+
+    </div>
+
 
 </div>
 
-<div class="signature-box">
-
-<div class="sign-line"></div>
-
-<p>
-
-Authorized Signatory
-
-</p>
-
-</div>
-
-</div>
 
 
-
-<!--====================================
-        BUTTONS
-=====================================-->
+<!-- ==================================================
+                    PRINT / BACK BUTTONS
+================================================== -->
 
 <div class="marksheet-buttons no-print">
 
-<button
-class="primary"
-onclick="window.print()">
 
-🖨 Print Marksheet
+    <button
+        type="button"
+        class="primary"
+        onclick="window.print()">
 
-</button>
+        🖨 Print Marksheet
 
-<button
-class="secondary"
-onclick="backToResultList()">
+    </button>
 
-⬅ Back
 
-</button>
+
+    <button
+        type="button"
+        class="secondary"
+        onclick="backToResultList()">
+
+        ⬅ Back
+
+    </button>
+
 
 </div>
 
 
 
-</div>
-</div>
-</div>
+<!-- ==================================================
+                MARKSHEET CONTAINER CLOSE
+================================================== -->
+
 </div>
 
-<!--====================================
-END OF PREMIUM MARKSHEET
-=====================================-->
- 
-    
-<!-- ================= WAITING PAGE ================= -->
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ==================================================
+                WAITING PAGE START
+================================================== -->
 
 <div
     id="waitingPage"
     class="hidden">
 
+
     <div class="success-box">
+
 
         <h2>
             ⏳ Waiting For Test Start
         </h2>
+
 
         <p id="motivationText">
 
@@ -944,6 +1118,7 @@ END OF PREMIUM MARKSHEET
             Your hard work will bring success.
 
         </p>
+
 
         <p>
 
@@ -954,91 +1129,203 @@ END OF PREMIUM MARKSHEET
 
         </p>
 
+
     </div>
+
 
 </div>
-  
+<!-- ==================================================
+                    TEST PAGE
+================================================== -->
 
-<!-- ================= TEST PAGE ================= -->
+<div
+    id="testPage"
+    class="hidden">
 
-<div id="testPage" class="hidden">
+
+    <!-- ==================================================
+                    EXAM STATUS BAR
+    ================================================== -->
+
     <div class="exam-status-bar">
-    <div id="testDate" class="examTime">
-        Exam Date : --
-    </div>
-<div id="timer" class="timer-box">00:00</div>
+
+
+        <div
+            id="testDate"
+            class="examTime">
+
+            Exam Date : --
+
+        </div>
+
+
+
+        <div
+            id="timer"
+            class="timer-box">
+
+            00:00
+
+        </div>
+
+
     </div>
 
-    <!-- STUDENT INFO -->
+
+
+    <!-- ==================================================
+                    STUDENT INFO
+    ================================================== -->
 
     <div class="student-info">
- 
+
+
+        <!-- STUDENT PHOTO -->
+
         <img
             id="studentPhoto"
             src=""
             class="student-photo"
             alt="Student Photo">
 
+
+
+        <!-- STUDENT DETAILS -->
+
         <div class="student-details">
 
-            <div class="detail-box">
-                <span class="label">Name</span>
-                <span id="showName"></span>
-            </div>
 
             <div class="detail-box">
-                <span class="label">Reg No</span>
-                <span id="showReg"></span>
+
+                <span class="label">
+                    Name
+                </span>
+
+                <span id="showName">
+                </span>
+
             </div>
 
-            <div class="detail-box">
-                <span class="label">Paper</span>
-                <span id="showPaper"></span>
-            </div>
+
 
             <div class="detail-box">
-                <span class="label">Course</span>
-                <span id="showCourse"></span>
+
+                <span class="label">
+                    Reg No
+                </span>
+
+                <span id="showReg">
+                </span>
+
             </div>
 
-            <div class="detail-box">
-                <span class="label">Total Marks</span>
-                <span id="showMarks"></span>
-            </div>
+
 
             <div class="detail-box">
-                <span class="label">Passing Marks</span>
-                <span id="showPassingMarks"></span>
+
+                <span class="label">
+                    Paper
+                </span>
+
+                <span id="showPaper">
+                </span>
+
             </div>
+
+
+
+            <div class="detail-box">
+
+                <span class="label">
+                    Course
+                </span>
+
+                <span id="showCourse">
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-box">
+
+                <span class="label">
+                    Total Marks
+                </span>
+
+                <span id="showMarks">
+                </span>
+
+            </div>
+
+
+
+            <div class="detail-box">
+
+                <span class="label">
+                    Passing Marks
+                </span>
+
+                <span id="showPassingMarks">
+                </span>
+
+            </div>
+
 
         </div>
 
+
     </div>
 
-    <!-- EXAM TOP -->
+
+
+    <!-- ==================================================
+                    EXAM TOP
+    ================================================== -->
 
     <div class="exam-top">
 
-        <div id="progressText"></div>
+
+        <div
+            id="progressText">
+        </div>
+
 
     </div>
 
-    <!-- ================= VERIFICATION PAGE ================= -->
 
-    <div id="verificationPage" class="hidden">
 
-        <h2>Student Verification</h2>
+    <!-- ==================================================
+                    VERIFICATION PAGE
+    ================================================== -->
+
+    <div
+        id="verificationPage"
+        class="hidden">
+
+
+        <h2>
+            Student Verification
+        </h2>
+
 
         <p>
             Please enter your Student ID to continue.
         </p>
+
+
 
         <input
             type="text"
             id="studentIdInput"
             placeholder="Enter Student ID">
 
-        <br><br>
+
+
+        <br>
+        <br>
+
+
 
         <button
             class="primary"
@@ -1048,46 +1335,96 @@ END OF PREMIUM MARKSHEET
 
         </button>
 
+
     </div>
 
-    <!-- ================= INSTRUCTION PAGE ================= -->
 
-    <div id="instructionPage" class="hidden">
 
-        <h2>📋 Exam Instructions</h2>
+    <!-- ==================================================
+                    INSTRUCTION PAGE
+    ================================================== -->
+
+    <div
+        id="instructionPage"
+        class="hidden">
+
+
+        <h2>
+            📋 Exam Instructions
+        </h2>
+
+
 
         <ul>
 
-            <li>Test शुरू होने के बाद Browser Tab Change या Window Switch करने पर warning मिलेगी.</li>
 
-            <li>बार-बार Window Switch करने पर Test Automatically Submit हो जाएगा.</li>
+            <li>
+                Test शुरू होने के बाद Browser Tab Change या Window Switch करने पर warning मिलेगी.
+            </li>
 
-            <li>किसी भी प्रकार का Copy, Paste या Right Click allowed नहीं है.</li>
 
-            <li>सभी प्रश्न ध्यान से पढ़कर सही विकल्प चुनें.</li>
+            <li>
+                बार-बार Window Switch करने पर Test Automatically Submit हो जाएगा.
+            </li>
 
-            <li>Test Timer खत्म होने पर Test Automatically Submit हो जाएगा.</li>
 
-            <li>Test के दौरान Full Screen में रहें.</li>
+            <li>
+                किसी भी प्रकार का Copy, Paste या Right Click allowed नहीं है.
+            </li>
 
-            <li>Internet connection stable रखें.</li>
 
-            <li>Passing Marks is 40.</li>
+            <li>
+                सभी प्रश्न ध्यान से पढ़कर सही विकल्प चुनें.
+            </li>
+
+
+            <li>
+                Test Timer खत्म होने पर Test Automatically Submit हो जाएगा.
+            </li>
+
+
+            <li>
+                Test के दौरान Full Screen में रहें.
+            </li>
+
+
+            <li>
+                Internet connection stable रखें.
+            </li>
+
+
+            <li>
+                Passing Marks is 40.
+            </li>
+
 
         </ul>
 
+
+
+        <!-- ACCEPT RULES -->
+
         <label>
+
 
             <input
                 type="checkbox"
                 id="acceptRules"
                 onchange="enableStartExam()">
 
+
+
             I have read and accept all instructions.
+
 
         </label>
 
-        <br><br>
+
+
+        <br>
+        <br>
+
+
 
         <button
             id="startExamBtn"
@@ -1098,114 +1435,191 @@ END OF PREMIUM MARKSHEET
 
         </button>
 
-    </div>
-
-    <!-- ================= EXAM AREA ================= -->
-
-    <div id="examArea" class="hidden">
-            <!-- ================= PROGRESS BAR ================= -->
-
-    <div class="progress">
-
-        <div
-            class="progress-bar"
-            id="progressBar">
-        </div>
 
     </div>
 
-    <!-- ================= QUESTION AREA ================= -->
 
-    <div class="quiz-layout">
 
-        <!-- LEFT PANEL -->
+    <!-- ==================================================
+                    EXAM AREA
+    ================================================== -->
 
-        <div class="question-card">
+    <div
+        id="examArea"
+        class="hidden">
+
+
+
+        <!-- ==================================================
+                    PROGRESS BAR
+        ================================================== -->
+
+        <div class="progress">
+
 
             <div
-                class="question-number"
-                id="questionNumber">
+                class="progress-bar"
+                id="progressBar">
             </div>
 
-            <div
-                class="question"
-                id="questionText">
-            </div>
-
-            <div
-                class="options"
-                id="options">
-            </div>
- <div class="navigation">
-
-        <button
-            id="prevBtn"
-            class="secondary"
-            onclick="previousQuestion()">
-
-            ⬅ Previous
-
-        </button>
-
-        <button
-            id="nextBtn"
-            class="primary"
-            onclick="nextQuestion()">
-
-            Next ➜
-
-        </button>
-
-    </div>
 
         </div>
 
-        <!-- RIGHT PANEL -->
 
-        <div class="question-panel">
 
-            <h3>Question Palette</h3>
+        <!-- ==================================================
+                    QUIZ LAYOUT
+        ================================================== -->
 
-            <div id="questionNumbers"></div>
+        <div class="quiz-layout">
+
+
+
+            <!-- ==================================================
+                        LEFT QUESTION PANEL
+            ================================================== -->
+
+            <div class="question-card">
+
+
+                <!-- QUESTION NUMBER -->
+
+                <div
+                    class="question-number"
+                    id="questionNumber">
+                </div>
+
+
+
+                <!-- QUESTION -->
+
+                <div
+                    class="question"
+                    id="questionText">
+                </div>
+
+
+
+                <!-- OPTIONS -->
+
+                <div
+                    class="options"
+                    id="options">
+                </div>
+
+
+
+                <!-- NAVIGATION -->
+
+                <div class="navigation">
+
+
+                    <button
+                        id="prevBtn"
+                        class="secondary"
+                        onclick="previousQuestion()">
+
+                        ⬅ Previous
+
+                    </button>
+
+
+
+                    <button
+                        id="nextBtn"
+                        class="primary"
+                        onclick="nextQuestion()">
+
+                        Next ➜
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==================================================
+                        RIGHT QUESTION PALETTE
+            ================================================== -->
+
+            <div class="question-panel">
+
+
+                <h3>
+                    Question Palette
+                </h3>
+
+
+
+                <div
+                    id="questionNumbers">
+                </div>
+
+
+            </div>
+
 
         </div>
 
+
+
+        <!-- ==================================================
+                        SUBMIT AREA
+        ================================================== -->
+
+        <div class="submit-area">
+
+
+            <button
+                id="submitBtn"
+                class="success"
+                onclick="submitTest()">
+
+                ✅ Submit Test
+
+            </button>
+
+
+        </div>
+
+
     </div>
+    <!-- EXAM AREA END -->
 
-    <!-- ================= NAVIGATION ================= -->
-
-   
-    <!-- ================= SUBMIT ================= -->
-
-    <div class="submit-area">
-
-        <button
-            id="submitBtn"
-            class="success"
-            onclick="submitTest()">
-
-            ✅ Submit Test
-
-        </button>
-
-    </div>
-
-</div>
-<!-- EXAM AREA END -->
 
 </div>
 <!-- TEST PAGE END -->
-    <!-- ================= SUCCESS PAGE ================= -->
+    <!-- ==================================================
+                    SUCCESS PAGE
+================================================== -->
 
-<div id="successPage" class="hidden">
+<div
+    id="successPage"
+    class="hidden">
+
 
     <div class="success-box">
 
-        <h2>🎉 Test Submitted Successfully</h2>
 
-        <p id="thankStudent"></p>
+        <h2>
+            🎉 Test Submitted Successfully
+        </h2>
 
-        <p id="motivationLine"></p>
+
+
+        <p id="thankStudent">
+        </p>
+
+
+
+        <p id="motivationLine">
+        </p>
+
+
 
         <button
             class="primary"
@@ -1215,26 +1629,61 @@ END OF PREMIUM MARKSHEET
 
         </button>
 
+
     </div>
 
-</div>
- 
-</div>
-<!-- CONTENT END -->
 
 </div>
+
+
+
+<!-- ==================================================
+                    CONTENT END
+================================================== -->
+
+</div>
+
+
+
+<!-- ==================================================
+                    CONTAINER END
+================================================== -->
+
+</div>
+
+
+
+<!-- ==================================================
+                    JAVASCRIPT
+================================================== -->
+
 <script src="script.js"></script>
-<!--====================================
-    ADMIN VERIFICATION PAGE
-=====================================-->
 
-<div id="adminVerifyPage" class="hidden">
+
+
+<!-- ==================================================
+                    ADMIN VERIFICATION PAGE
+================================================== -->
+
+<div
+    id="adminVerifyPage"
+    class="hidden">
+
 
     <div class="result-box">
 
-        <h2> Admin Verification</h2>
 
-        <p>Enter Admin Verification Code</p>
+        <h2>
+            Admin Verification
+        </h2>
+
+
+
+        <p>
+            Enter Admin Verification Code
+        </p>
+
+
 
         <input
             type="password"
@@ -1242,21 +1691,40 @@ END OF PREMIUM MARKSHEET
             placeholder="Enter Verification Code"
             autocomplete="off">
 
+
+
         <button
             type="button"
             class="primary"
             onclick="verifyAdmin()">
+
             Verify
+
         </button>
+
+
 
         <button
             type="button"
             onclick="closeAdminVerify()">
+
             Back
+
         </button>
+
 
     </div>
 
+
 </div>
+
+
+
+<!-- ==================================================
+                    BODY END
+================================================== -->
+
 </body>
+
+
 </html>
