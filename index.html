@@ -407,691 +407,346 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 </div>
 
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
 
-<!-- ==================================================
-                  STUDENT MARKSHEET PAGE
-================================================== -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div
-    id="studentMarksheetPage"
-    class="hidden">
+<title>IKON Result Cum Detailed Marks Card</title>
 
+<link rel="stylesheet" href="style.css">
 
-    <!-- ==================================================
-                         A4 PRINT PAGE
-    ================================================== -->
+</head>
 
-    <div class="print-page">
+<body>
 
+<div class="certificate">
 
-        <div class="marksheet">
+    <!-- Decorative Border -->
 
+    <div class="inner-border">
 
-            <div class="marksheet-border">
+        <!-- ================= HEADER ================= -->
 
+        <header class="header">
 
-                <!-- ==================================================
-                              MARKSHEET HEADER
-                ================================================== -->
+            <div class="header-left">
 
-                <div class="ms-header">
+                <img src="logo.png" class="logo">
 
+            </div>
 
-                    <!-- LOGO -->
+            <div class="header-center">
 
-                    <div class="ms-logo">
+                <h1>IKON INSTITUTE</h1>
 
-                        <img
-                            src="ikon.jpg"
-                            alt="IKON Logo">
+                <h2>RESULT CUM DETAILED MARKS CARD</h2>
 
-                    </div>
+                <p>Recognised Computer Education Institute</p>
 
+            </div>
 
+            <div class="header-right">
 
-                    <!-- INSTITUTE TITLE -->
+                <table>
 
-                    <div class="ms-title">
+                    <tr>
 
+                        <td>Marksheet No.</td>
 
-                        <h1>
-                            IKON INSTITUTE
-                        </h1>
+                        <td>:</td>
 
+                        <td>IKN25000125</td>
 
-                        <h2>
-                            RESULT CUM DETAILED MARKS CARD
-                        </h2>
+                    </tr>
 
+                    <tr>
 
-                        <p>
-                            Recognised Computer Education Institute
-                        </p>
+                        <td>Issue Date</td>
 
+                        <td>:</td>
 
-                    </div>
+                        <td>30 DEC 2025</td>
 
+                    </tr>
 
+                </table>
 
-                    <!-- MARKSHEET INFORMATION -->
+            </div>
 
-                    <div class="ms-info">
+        </header>
 
+        <!-- ================= TITLE RIBBON ================= -->
 
-                        <table>
+        <div class="title-ribbon">
 
-
-                            <tr>
-
-                                <td>
-                                    Marksheet No.
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msMarksheetNo">
-                                    IKON20260001
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    Issue Date
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msIssueDate">
-                                    01-08-2026
-                                </td>
-
-                            </tr>
-
-
-                        </table>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- ==================================================
-                              FINAL RESULT TITLE
-                ================================================== -->
-
-                <div class="result-title">
-
-                    FINAL RESULT
-
-                </div>
-
-
-
-                <!-- ==================================================
-                              STUDENT INFORMATION
-                ================================================== -->
-
-                <div class="student-section">
-
-
-                    <!-- ================= STUDENT PHOTO ================= -->
-
-                    <div class="student-photo-box">
-
-
-                        <img
-                            id="msPhoto"
-                            src=""
-                            alt="Student Photo">
-
-
-                        <div class="photo-text">
-
-                            PHOTO
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- ================= STUDENT DETAILS ================= -->
-
-                    <div class="student-details">
-
-
-                        <table>
-
-
-                            <tr>
-
-                                <td>
-                                    Registration No.
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msRegNo">
-                                </td>
-
-                            </tr>
-
-
-
-                            <tr>
-
-                                <td>
-                                    Student Name
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msName">
-                                </td>
-
-                            </tr>
-
-
-
-                            <tr>
-
-                                <td>
-                                    Course
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msCourse">
-                                </td>
-
-                            </tr>
-
-
-
-                            <tr>
-
-                                <td>
-                                    Paper
-                                </td>
-
-                                <td>
-                                    :
-                                </td>
-
-                                <td id="msPaper">
-                                </td>
-
-                            </tr>
-
-
-                        </table>
-
-
-                    </div>
-
-
-
-                    <!-- ================= QR CODE ================= -->
-
-                    <div class="qr-box">
-
-
-                        <img
-                            id="msQR"
-                            src=""
-                            alt="QR Code">
-
-
-                        <div class="photo-text">
-
-                            QR
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- ==================================================
-                         PART 1 END — MARKS TABLE NEXT
-                ================================================== -->
-                <!-- ==================================================
-                    MARKS TABLE
-================================================== -->
-
-<div class="marks-table-section">
-
-
-    <table class="marks-table">
-
-
-        <!-- ================= TABLE HEADER ================= -->
-
-        <thead>
-
-            <tr>
-
-                <th>
-                    COURSE / SUBJECT
-                </th>
-
-                <th>
-                    FULL<br>
-                    MARKS
-                </th>
-
-                <th>
-                    PASS<br>
-                    MARKS
-                </th>
-
-                <th>
-                    MARKS<br>
-                    OBTAINED
-                </th>
-
-                <th>
-                    STATUS
-                </th>
-
-            </tr>
-
-        </thead>
-
-
-
-        <!-- ================= TABLE BODY ================= -->
-
-        <tbody>
-
-
-            <!-- THEORY -->
-
-            <tr>
-
-                <td id="msSubject1">
-                    Theory
-                </td>
-
-                <td>
-                    100
-                </td>
-
-                <td>
-                    40
-                </td>
-
-                <td id="msTheory">
-                    0
-                </td>
-
-                <td id="msTheoryStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-
-            <!-- NOTES -->
-
-            <tr>
-
-                <td id="msSubject2">
-                    Notes
-                </td>
-
-                <td>
-                    20
-                </td>
-
-                <td>
-                    10
-                </td>
-
-                <td id="msNotes">
-                    0
-                </td>
-
-                <td id="msNotesStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-
-            <!-- PRACTICAL -->
-
-            <tr>
-
-                <td id="msSubject3">
-                    Practical
-                </td>
-
-                <td>
-                    40
-                </td>
-
-                <td>
-                    20
-                </td>
-
-                <td id="msPractical">
-                    0
-                </td>
-
-                <td id="msPracticalStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-
-            <!-- VIVA -->
-
-            <tr>
-
-                <td id="msSubject4">
-                    Viva
-                </td>
-
-                <td>
-                    20
-                </td>
-
-                <td>
-                    10
-                </td>
-
-                <td id="msViva">
-                    0
-                </td>
-
-                <td id="msVivaStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-
-            <!-- PROJECT -->
-
-            <tr>
-
-                <td id="msSubject5">
-                    Project
-                </td>
-
-                <td>
-                    100
-                </td>
-
-                <td>
-                    40
-                </td>
-
-                <td id="msProject">
-                    0
-                </td>
-
-                <td id="msProjectStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-
-            <!-- BEHAVIOUR -->
-
-            <tr>
-
-                <td id="msSubject6">
-                    Behaviour
-                </td>
-
-                <td>
-                    20
-                </td>
-
-                <td>
-                    10
-                </td>
-
-                <td id="msBehaviour">
-                    0
-                </td>
-
-                <td id="msBehaviourStatus">
-                    PASS
-                </td>
-
-            </tr>
-
-
-        </tbody>
-
-
-
-        <!-- ================= TOTAL ================= -->
-
-        <tfoot>
-
-            <tr>
-
-                <th>
-                    TOTAL
-                </th>
-
-                <th id="msTotalFullMarks">
-                    300
-                </th>
-
-                <th id="msTotalPassing">
-                    130
-                </th>
-
-                <th id="msTotalMarks">
-                    0
-                </th>
-
-                <th id="msFinalStatus">
-                    PASS
-                </th>
-
-            </tr>
-
-        </tfoot>
-
-
-    </table>
-
-
-</div>
-
-
-
-<!-- ==================================================
-                    RESULT SUMMARY
-================================================== -->
-
-<div class="summary-strip">
-
-
-    <!-- ================= PERCENTAGE ================= -->
-
-    <div class="summary-item">
-
-
-        <label>
-            PERCENTAGE
-        </label>
-
-
-        <h2 id="msPercentage">
-            0.00%
-        </h2>
-
-
-    </div>
-
-
-
-    <!-- ================= GRADE ================= -->
-
-    <div class="summary-item">
-
-
-        <label>
-            GRADE
-        </label>
-
-
-        <h2 id="msGrade">
-            A
-        </h2>
-
-
-    </div>
-
-
-
-    <!-- ================= FINAL RESULT ================= -->
-
-    <div class="summary-item final-result">
-
-
-        <label>
             FINAL RESULT
-        </label>
 
-
-        <h2 id="msResult">
-            PASS
-        </h2>
-
-
-    </div>
-
-
-</div>
-
-
-
-<!-- ==================================================
-                    SIGNATURE AREA
-================================================== -->
-
-<div class="signature-area">
-
-
-    <!-- STUDENT SIGNATURE -->
-
-    <div class="signature-box">
-
-
-        <div class="sign-line">
         </div>
 
+        <!-- ================= STUDENT CARD ================= -->
 
-        <p>
-            Student Signature
-        </p>
+        <section class="student-card">
 
+            <div class="photo-box">
 
-    </div>
+                <img src="photo.png">
 
+            </div>
 
+            <div class="student-info">
 
-    <!-- AUTHORIZED SIGNATORY -->
+                <table>
 
-    <div class="signature-box">
+                    <tr>
 
+                        <td>Registration No.</td>
 
-        <div class="sign-line">
+                        <td>:</td>
+
+                        <td>IKN202500145</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Student Name</td>
+
+                        <td>:</td>
+
+                        <td>MAHTAB ALAM</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Course</td>
+
+                        <td>:</td>
+
+                        <td>DCA</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Paper</td>
+
+                        <td>:</td>
+
+                        <td>DECEMBER 2025</td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="qr-box">
+
+                <img src="qr.png">
+
+            </div>
+
+        </section>
+
+        <!-- ================= WATERMARK ================= -->
+
+        <img src="watermark.png" class="watermark">
+
+        <!-- ================= RESULT TABLE ================= -->
+
+        <table class="marks-table">
+
+            <thead>
+
+                <tr>
+
+                    <th width="45%">Course / Subject</th>
+
+                    <th>Full Marks</th>
+
+                    <th>Pass Marks</th>
+
+                    <th>Marks Obtained</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Theory</td>
+
+                    <td>100</td>
+
+                    <td>40</td>
+
+                    <td>85</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Notes</td>
+
+                    <td>20</td>
+
+                    <td>10</td>
+
+                    <td>18</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Practical</td>
+
+                    <td>40</td>
+
+                    <td>20</td>
+
+                    <td>36</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Viva</td>
+
+                    <td>20</td>
+
+                    <td>10</td>
+
+                    <td>18</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Project</td>
+
+                    <td>100</td>
+
+                    <td>40</td>
+
+                    <td>90</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Behaviour</td>
+
+                    <td>20</td>
+
+                    <td>10</td>
+
+                    <td>20</td>
+
+                    <td>PASS</td>
+
+                </tr>
+
+                <tr class="total-row">
+
+                    <td><strong>TOTAL</strong></td>
+
+                    <td><strong>300</strong></td>
+
+                    <td><strong>130</strong></td>
+
+                    <td><strong>267</strong></td>
+
+                    <td><strong>PASS</strong></td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <!-- ================= RESULT SUMMARY ================= -->
+
+        <div class="summary">
+
+            <div class="summary-box">
+
+                <span>Percentage</span>
+
+                <h3>89.00%</h3>
+
+            </div>
+
+            <div class="summary-box">
+
+                <span>Grade</span>
+
+                <h3>A</h3>
+
+            </div>
+
+            <div class="summary-box pass-box">
+
+                <span>Final Result</span>
+
+                <h3>PASS</h3>
+
+            </div>
+
         </div>
 
+        <!-- ================= FOOTER ================= -->
 
-        <p>
-            Authorized Signatory
-        </p>
+        <footer>
 
+            <div class="sign">
+
+                ______________________
+
+                <br>
+
+                Course Coordinator
+
+            </div>
+
+           
+            <div class="sign">
+
+                ______________________
+
+                <br>
+
+                Issued By
+
+            </div>
+
+        </footer>
 
     </div>
 
-
 </div>
 
+</body>
+</html>
 
-
-<!-- ==================================================
-                    PRINT / BACK BUTTONS
-================================================== -->
-
-<div class="marksheet-buttons no-print">
-
-
-    <button
-        type="button"
-        class="primary"
-        onclick="window.print()">
-
-        🖨 Print Marksheet
-
-    </button>
-
-
-
-    <button
-        type="button"
-        class="secondary"
-        onclick="backToResultList()">
-
-        ⬅ Back
-
-    </button>
-
-
-</div>
-
-
-
-<!-- ==================================================
-                MARKSHEET CONTAINER CLOSE
-================================================== -->
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 
 
 
