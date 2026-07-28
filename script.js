@@ -873,7 +873,45 @@ document
         startBtn.disabled = true;
 
 }
+//====================================================
+// VERIFY STUDENT ID
+//====================================================
 
+function verifyStudentID(){
+
+    const input = document.getElementById("studentIdInput");
+
+    if(!input){
+        alert("Student ID input not found.");
+        return;
+    }
+
+    const enteredId = input.value.trim();
+
+    if(enteredId === ""){
+        alert("Please enter Student ID.");
+        input.focus();
+        return;
+    }
+
+    // Login se mila hua Student ID
+    if(enteredId !== studentId){
+        alert("Invalid Student ID.");
+        input.focus();
+        return;
+    }
+
+    // Hide Verification Page
+    document
+        .getElementById("verificationPage")
+        ?.classList.add("hidden");
+
+    // Show Instruction Page
+    document
+        .getElementById("instructionPage")
+        ?.classList.remove("hidden");
+
+}
 //====================================================
 // ENABLE START BUTTON
 //====================================================
