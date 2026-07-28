@@ -2900,1828 +2900,661 @@ button:focus{
     will-change:transform;
 }
 /*==================================================
- IKON ONLINE TEST SYSTEM
- MARKSHEET CSS
- PART 1
- A4 BASE + WATERMARK + MARKSHEET CONTAINER
+    IKON RESULT CUM DETAILED MARKS CARD
+    PART-2 : LAYOUT + HEADER + STUDENT CARD
 ==================================================*/
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-/*==================================================
- MARKSHEET PAGE
-==================================================*/
+body{
 
-#studentMarksheetPage{
-
-    width:100%;
-
-    padding:10px 0 30px;
-
-    background:#ffffff;
+    background:#d9dde3;
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+    padding:35px;
 
 }
 
+/*==============================
+A4 PAGE
+==============================*/
 
-/*==================================================
- A4 PRINT PAGE
-==================================================*/
+.certificate{
 
-.print-page{
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-
-}
-
-
-/*==================================================
- MAIN MARKSHEET
-==================================================*/
-
-.marksheet{
-
+    width:210mm;
+    min-height:297mm;
+    margin:auto;
+    background:#fffdf6;
+    box-shadow:0 12px 40px rgba(0,0,0,.18);
     position:relative;
 
-    width:794px;
-
-    min-height:1123px;
-
-    margin:0 auto;
-
-    padding:10px;
-
-    background:#fff;
-
-    color:#111827;
-
-    font-family:
-        "Arial",
-        "Segoe UI",
-        sans-serif;
-
-    box-sizing:border-box;
-
 }
 
+/*==============================
+DOUBLE BORDER
+==============================*/
 
-/*==================================================
- INNER BORDER
-==================================================*/
+.inner-border{
 
-.marksheet-border{
-
+    margin:10px;
+    border:4px solid #0d3f84;
+    min-height:calc(297mm - 20px);
     position:relative;
-
-    width:100%;
-
-    min-height:1103px;
-
-    padding:12px;
-
-    background:#fff;
-
-    border:1px solid #1d4f91;
-
-    box-sizing:border-box;
-
-    overflow:hidden;
+    padding:22px;
 
 }
 
-
-/*==================================================
- WATERMARK
-==================================================*/
-
-.marksheet-border::before{
+.inner-border:before{
 
     content:"";
-
     position:absolute;
-
-    left:50%;
-
-    top:52%;
-
-    width:310px;
-
-    height:310px;
-
-    transform:
-        translate(-50%,-50%);
-
-    background-image:
-        url("ikon.jpg");
-
-    background-repeat:no-repeat;
-
-    background-position:center;
-
-    background-size:contain;
-
-    opacity:.075;
-
+    inset:8px;
+    border:2px solid #d8b256;
     pointer-events:none;
 
-    z-index:0;
+}
+
+.inner-border:after{
+
+    content:"";
+    position:absolute;
+    inset:16px;
+    border:1px solid #cfd4dc;
+    pointer-events:none;
 
 }
 
-
-/*==================================================
- KEEP ALL CONTENT ABOVE WATERMARK
-==================================================*/
-
-.marksheet-border > *{
-
-    position:relative;
-
-    z-index:1;
-
-}
-
-
-/*==================================================
- MARKSHEET SCREEN SHADOW
-==================================================*/
-
-@media screen{
-
-    .marksheet{
-
-        box-shadow:
-            0 15px 45px rgba(15,23,42,.16);
-
-    }
-
-}
-
-
-/*==================================================
- PRINT PAGE
-==================================================*/
-
-@page{
-
-    size:A4 portrait;
-
-    margin:0;
-
-}
-
-
-@media print{
-
-    html,
-    body{
-
-        width:210mm;
-
-        min-width:210mm;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        background:#fff !important;
-
-    }
-}
-
-    body{
-
-        display:block;
-
-    }
-
-
-    .container{
-
-        width:100% !important;
-
-        max-width:none !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        border:none !important;
-
-        border-radius:0 !important;
-
-        box-shadow:none !important;
-
-        background:#fff !important;
-
-        overflow:visible !important;
-
-    }
-
-
-    .content{
-
-        padding:0 !important;
-
-        margin:0 !important;
-
-        background:#fff !important;
-
-    }
-
-
-    #studentMarksheetPage{
-
-        display:block !important;
-
-        width:210mm !important;
-
-        min-height:297mm !important;
-
-        padding:0 !important;
-
-        margin:0 !important;
-
-        background:#fff !important;
-
-    }
-
-
-    .print-page{
-
-        display:block !important;
-
-        width:210mm !important;
-
-        min-height:297mm !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-    }
-
-
-    .marksheet{
-
-        width:210mm !important;
-
-        min-height:297mm !important;
-
-        height:297mm !important;
-
-        margin:0 !important;
-
-        padding:3mm !important;
-
-        box-shadow:none !important;
-
-        background:#fff !important;
-
-    }
-
-
-    .marksheet-border{
-
-        width:100% !important;
-
-        min-height:100% !important;
-
-        height:100% !important;
-
-        padding:3mm !important;
-
-        border:1px solid #1d4f91 !important;
-
-        overflow:hidden !important;
-
-    }
-
-
-    .no-print{
-
-        display:none !important;
-
-    }
-
-}
- /*==================================================
- MARKSHEET CSS
- PART 2
- HEADER + LOGO + TITLE + MARKSHEET INFO
-==================================================*/
-
-
-/*==================================================
- MARKSHEET HEADER
-==================================================*/
-
-.ms-header{
-
-    width:100%;
-
-    min-height:105px;
-
-    display:grid;
-
-    grid-template-columns:90px 1fr 175px;
-
-    align-items:center;
-
-    gap:12px;
-
-    padding:5px 4px 10px;
-
-    border-bottom:1px solid #d7a928;
-
-}
-
-
-/*==================================================
- MARKSHEET LOGO
-==================================================*/
-
-.ms-logo{
-
-    width:85px;
-
-    height:85px;
+/*==============================
+HEADER
+==============================*/
+
+.header{
 
     display:flex;
-
-    justify-content:center;
-
+    justify-content:space-between;
     align-items:center;
+    border-bottom:3px solid #d8b256;
+    padding-bottom:18px;
 
 }
 
+.header-left{
 
-.ms-logo img{
+    width:120px;
+    text-align:center;
 
-    width:72px;
+}
 
-    height:72px;
+.logo{
 
+    width:90px;
+    height:90px;
     object-fit:contain;
 
 }
 
+.header-center{
 
-/*==================================================
- INSTITUTE TITLE
-==================================================*/
-
-.ms-title{
-
-    text-align:center;
-
-    line-height:1;
-
-}
-
-
-.ms-title h1{
-
-    margin:0;
-
-    color:#00458f;
-
-    font-size:27px;
-
-    font-weight:800;
-
-    letter-spacing:1.2px;
-
-}
-
-
-.ms-title h2{
-
-    margin:7px 0 5px;
-
-    color:#111827;
-
-    font-size:12px;
-
-    font-weight:800;
-
-    letter-spacing:.4px;
-
-}
-
-
-.ms-title p{
-
-    margin:0;
-
-    color:#64748b;
-
-    font-size:8px;
-
-}
-
-
-/*==================================================
- MARKSHEET INFO
-==================================================*/
-
-.ms-info{
-
-    width:100%;
-
-}
-
-
-.ms-info table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    font-size:7px;
-
-}
-
-
-.ms-info td{
-
-    padding:3px 1px;
-
-    border:none;
-
-    vertical-align:top;
-
-    color:#1f2937;
-
-}
-
-
-.ms-info td:first-child{
-
-    width:75px;
-
-    white-space:nowrap;
-
-}
-
-
-.ms-info td:nth-child(2){
-
-    width:8px;
-
+    flex:1;
     text-align:center;
 
 }
 
+.header-center h1{
 
-.ms-info td:last-child{
-
+    font-size:34px;
+    color:#0c3c81;
+    letter-spacing:2px;
     font-weight:700;
 
-    white-space:nowrap;
+}
+
+.header-center h2{
+
+    margin-top:8px;
+    color:#444;
+    font-size:19px;
+    letter-spacing:1px;
+    text-transform:uppercase;
 
 }
 
+.header-center p{
 
-/*==================================================
- FINAL RESULT TITLE
-==================================================*/
+    margin-top:8px;
+    color:#777;
+    font-size:13px;
 
-.result-title{
+}
+
+.header-right{
 
     width:210px;
 
-    height:32px;
-
-    margin:10px auto 12px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    border-radius:18px;
-
-    color:#fff;
-
-    background:#124c91;
-
-    font-size:11px;
-
-    font-weight:800;
-
-    letter-spacing:.7px;
-
-    box-shadow:
-        0 3px 8px rgba(18,76,145,.18);
-
 }
 
-
-/*==================================================
- HEADER PRINT
-==================================================*/
-
-@media print{
-
-    .ms-header{
-
-        min-height:25mm;
-
-        padding:1mm 1mm 2mm;
-
-    }
-
-
-    .ms-logo{
-
-        width:22mm;
-
-        height:22mm;
-
-    }
-
-
-    .ms-logo img{
-
-        width:18mm;
-
-        height:18mm;
-
-    }
-
-
-    .ms-title h1{
-
-        font-size:20pt;
-
-    }
-
-
-    .ms-title h2{
-
-        font-size:8pt;
-
-        margin:1.5mm 0;
-
-    }
-
-
-    .ms-title p{
-
-        font-size:5.5pt;
-
-    }
-
-
-    .ms-info table{
-
-        font-size:5.5pt;
-
-    }
-
-
-    .result-title{
-
-        width:55mm;
-
-        height:8mm;
-
-        margin:2.5mm auto 3mm;
-
-        font-size:7pt;
-
-    }
-
-}
- /*==================================================
- MARKSHEET CSS
- PART 3
- STUDENT INFORMATION + PHOTO + QR
-==================================================*/
-
-
-/*==================================================
- STUDENT SECTION
-==================================================*/
-
-.student-section{
+.header-right table{
 
     width:100%;
-
-    min-height:125px;
-
-    display:grid;
-
-    grid-template-columns:72px 1fr 62px;
-
-    align-items:center;
-
-    gap:15px;
-
-    padding:10px;
-
-    margin-bottom:14px;
-
-    background:#fff;
-
-    border:1px solid #d5dbe5;
-
-    border-radius:5px;
+    border-collapse:collapse;
 
 }
 
+.header-right td{
 
-/*==================================================
- STUDENT PHOTO BOX
-==================================================*/
+    padding:5px;
+    font-size:13px;
 
-.student-photo-box{
+}
 
-    width:70px;
+.header-right td:first-child{
 
-    height:88px;
+    color:#0c3c81;
+    font-weight:600;
 
+}
+
+/*==============================
+TITLE RIBBON
+==============================*/
+
+.title-ribbon{
+
+    width:320px;
+    margin:18px auto 25px;
+    background:#0c3c81;
+    color:#fff;
+    text-align:center;
+    padding:10px;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:2px;
+    border-radius:40px;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+
+}
+
+/*==============================
+STUDENT CARD
+==============================*/
+
+.student-card{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border:2px solid #d7d7d7;
+    background:#fbfdff;
+    border-radius:8px;
+    padding:18px;
+    position:relative;
+    z-index:2;
+    margin-bottom:30px;
+
+}
+
+.student-card:hover{
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+/*==============================
+PHOTO
+==============================*/
+
+.photo-box{
+
+    width:120px;
+    height:145px;
+    border:2px solid #8f8f8f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
     position:relative;
 
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    border:1px solid #8b929c;
-
-    background:#fafafa;
-
-    overflow:hidden;
-
 }
 
-
-.student-photo-box img{
+.photo-box img{
 
     width:100%;
-
-    height:70px;
-
+    height:100%;
     object-fit:cover;
 
 }
 
+.photo-box:after{
 
-.student-photo-box .photo-text{
-
+    content:"PHOTO";
+    position:absolute;
+    bottom:4px;
+    left:0;
     width:100%;
-
-    height:18px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#777;
-
-    font-size:5px;
-
-    background:#fff;
+    text-align:center;
+    font-size:10px;
+    color:#666;
+    background:rgba(255,255,255,.7);
 
 }
 
+/*==============================
+STUDENT DETAILS
+==============================*/
 
-/*==================================================
- STUDENT DETAILS
-==================================================*/
+.student-info{
 
-.student-details{
-
-    width:100%;
-
-    display:block;
+    width:58%;
 
 }
 
-
-.student-details table{
+.student-info table{
 
     width:100%;
-
     border-collapse:collapse;
 
 }
 
+.student-info td{
 
-.student-details td{
-
-    padding:4px 3px;
-
-    border:none;
-
-    color:#111827;
-
-    font-size:8px;
-
-    line-height:1.3;
-
-    vertical-align:middle;
+    padding:10px 6px;
+    font-size:16px;
 
 }
 
+.student-info td:first-child{
 
-.student-details td:first-child{
-
-    width:105px;
-
-    color:#00458f;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-}
-
-
-.student-details td:nth-child(2){
-
-    width:14px;
-
-    text-align:center;
-
-    color:#334155;
-
-    font-weight:700;
-
-}
-
-
-.student-details td:last-child{
-
+    width:180px;
+    color:#0c3c81;
     font-weight:600;
 
-    color:#111827;
-
 }
 
-
-/*==================================================
- QR BOX
-==================================================*/
-
-.qr-box{
-
-    width:60px;
-
-    height:75px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    border:1px solid #8b929c;
-
-    background:#fff;
-
-    overflow:hidden;
-
-}
-
-
-.qr-box img{
-
-    width:54px;
-
-    height:58px;
-
-    object-fit:contain;
-
-}
-
-
-.qr-box .photo-text{
-
-    font-size:5px;
-
-    color:#777;
-
-}
-
-
-/*==================================================
- STUDENT SECTION PRINT
-==================================================*/
-
-@media print{
-
-    .student-section{
-
-        min-height:32mm;
-
-        grid-template-columns:19mm 1fr 18mm;
-
-        gap:4mm;
-
-        padding:2.5mm;
-
-        margin-bottom:3.5mm;
-
-    }
-
-
-    .student-photo-box{
-
-        width:18mm;
-
-        height:23mm;
-
-    }
-
-
-    .student-photo-box img{
-
-        height:18mm;
-
-    }
-
-
-    .student-photo-box .photo-text{
-
-        height:5mm;
-
-        font-size:4pt;
-
-    }
-
-
-    .student-details td{
-
-        padding:1.1mm .8mm;
-
-        font-size:6.5pt;
-
-    }
-
-
-    .student-details td:first-child{
-
-        width:30mm;
-
-    }
-
-
-    .student-details td:nth-child(2){
-
-        width:4mm;
-
-    }
-
-
-    .qr-box{
-
-        width:17mm;
-
-        height:22mm;
-
-    }
-
-
-    .qr-box img{
-
-        width:15mm;
-
-        height:17mm;
-
-    }
-
-
-    .qr-box .photo-text{
-
-        font-size:4pt;
-
-    }
-
-}
- /*==================================================
- MARKSHEET CSS
- PART 4
- PROFESSIONAL 5 COLUMN MARKS TABLE
-==================================================*/
-
-
-/*==================================================
- MARKS TABLE SECTION
-==================================================*/
-
-.marks-table-section{
-
-    width:100%;
-
-    margin-top:5px;
-
-}
-
-
-/*==================================================
- MARKS TABLE
-==================================================*/
-
-.marks-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    table-layout:fixed;
-
-    background:#fff;
-
-    border:1px solid #9ba9ba;
-
-}
-
-
-/*==================================================
- COLUMN WIDTHS
-==================================================*/
-
-.marks-table th:nth-child(1),
-.marks-table td:nth-child(1){
-
-    width:43%;
-
-    text-align:left;
-
-}
-
-
-.marks-table th:nth-child(2),
-.marks-table td:nth-child(2){
-
-    width:13%;
-
-}
-
-
-.marks-table th:nth-child(3),
-.marks-table td:nth-child(3){
-
-    width:13%;
-
-}
-
-
-.marks-table th:nth-child(4),
-.marks-table td:nth-child(4){
-
-    width:17%;
-
-}
-
-
-.marks-table th:nth-child(5),
-.marks-table td:nth-child(5){
-
-    width:14%;
-
-}
-
-
-/*==================================================
- HEADER
-==================================================*/
-
-.marks-table thead th{
-
-    height:42px;
-
-    padding:5px 4px;
-
-    border:1px solid #174a82;
-
-    background:#06477f;
-
-    color:#fff;
-
-    text-align:center;
-
-    vertical-align:middle;
-
-    font-size:8px;
-
-    font-weight:800;
-
-    line-height:1.2;
-
-}
-
-
-/*==================================================
- BODY CELLS
-==================================================*/
-
-.marks-table tbody td{
-
-    height:31px;
-
-    padding:5px 7px;
-
-    border:1px solid #b9c5d3;
-
-    background:rgba(255,255,255,.93);
-
-    color:#111827;
-
-    text-align:center;
-
-    vertical-align:middle;
-
-    font-size:8px;
+.student-info td:last-child{
 
     font-weight:500;
 
 }
 
+/*==============================
+QR
+==============================*/
 
-/* Subject left aligned */
+.qr-box{
+
+    width:120px;
+    height:120px;
+    border:2px solid #8f8f8f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+
+}
+
+.qr-box img{
+
+    width:100%;
+    height:100%;
+    object-fit:contain;
+
+}
+
+.qr-box:after{
+
+    content:"QR";
+    position:absolute;
+    bottom:4px;
+    left:0;
+    width:100%;
+    text-align:center;
+    font-size:10px;
+    color:#666;
+    background:rgba(255,255,255,.7);
+
+}
+
+/*==============================
+WATERMARK
+==============================*/
+
+.watermark{
+
+    position:absolute;
+    width:430px;
+    left:50%;
+    top:53%;
+    transform:translate(-50%,-50%);
+    opacity:.05;
+    z-index:1;
+    pointer-events:none;
+
+}
+
+/*==============================
+MICRO SECURITY TEXT
+==============================*/
+
+.inner-border .security-top{
+
+    display:none;
+
+}
+
+/*==============================
+PRINT
+==============================*/
+
+@page{
+
+    size:A4;
+    margin:8mm;
+
+}
+
+@media print{
+
+body{
+
+    background:#fff;
+    padding:0;
+
+}
+
+.certificate{
+
+    box-shadow:none;
+    margin:0;
+    width:100%;
+
+}
+
+}
+/*==================================================
+PART-3 : RESULT TABLE + SUMMARY + FOOTER
+==================================================*/
+
+
+/*==========================
+RESULT TABLE
+==========================*/
+
+.marks-table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    position:relative;
+    z-index:2;
+    background:rgba(255,255,255,.90);
+
+}
+
+.marks-table thead th{
+
+    background:linear-gradient(180deg,#0d4f9c,#08356e);
+    color:#fff;
+    padding:14px 10px;
+    border:1px solid #063066;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+
+}
+
+.marks-table tbody td{
+
+    border:1px solid #cfd6df;
+    padding:12px;
+    font-size:15px;
+    text-align:center;
+
+}
 
 .marks-table tbody td:first-child{
 
     text-align:left;
-
+    padding-left:18px;
     font-weight:600;
 
 }
 
+.marks-table tbody tr:nth-child(odd){
 
-/*==================================================
- ALTERNATE ROW
-==================================================*/
-
-.marks-table tbody tr:nth-child(even) td{
-
-    background:rgba(239,246,255,.72);
+    background:#ffffff;
 
 }
 
+.marks-table tbody tr:nth-child(even){
 
-/*==================================================
- STATUS
-==================================================*/
+    background:#f5f9ff;
+
+}
+
+.marks-table tbody tr:hover{
+
+    background:#edf5ff;
+
+}
 
 .marks-table tbody td:last-child{
 
-    color:#008044;
-
-    font-weight:800;
-
-    text-transform:uppercase;
+    font-weight:bold;
+    color:#0a7b31;
 
 }
 
 
-/*==================================================
- TOTAL ROW
-==================================================*/
+/*==========================
+TOTAL ROW
+==========================*/
 
-.marks-table tfoot th{
+.total-row{
 
-    height:33px;
+    background:#e4eefc !important;
+    font-weight:bold;
 
-    padding:5px 4px;
+}
 
-    border:1px solid #9aaabd;
+.total-row td{
 
-    background:#dceafa;
-
-    color:#06477f;
-
-    text-align:center;
-
-    vertical-align:middle;
-
-    font-size:8px;
-
-    font-weight:800;
+    border-top:3px solid #0d4f9c;
+    border-bottom:3px solid #0d4f9c;
+    color:#0d3f84;
 
 }
 
 
-.marks-table tfoot th:first-child{
+/*==========================
+SUMMARY
+==========================*/
 
-    text-align:left;
+.summary{
 
-    padding-left:8px;
-
-}
-
-
-/*==================================================
- PRINT TABLE
-==================================================*/
-
-@media print{
-
-    .marks-table thead th{
-
-        height:11mm;
-
-        padding:1.5mm 1mm;
-
-        font-size:6.5pt;
-
-    }
-
-
-    .marks-table tbody td{
-
-        height:8mm;
-
-        padding:1.2mm 1.5mm;
-
-        font-size:6.5pt;
-
-    }
-
-
-    .marks-table tfoot th{
-
-        height:8.5mm;
-
-        padding:1.2mm 1mm;
-
-        font-size:6.5pt;
-
-    }
-
-
-    .marks-table tfoot th:first-child{
-
-        padding-left:2mm;
-
-    }
-
-}
- /*==================================================
- MARKSHEET CSS
- PART 5
- RESULT SUMMARY
-==================================================*/
-
-
-/*==================================================
- SUMMARY STRIP
-==================================================*/
-
-.summary-strip{
-
-    width:100%;
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr 1fr;
-
-    gap:10px;
-
-    margin-top:12px;
-
-}
-
-
-/*==================================================
- SUMMARY ITEM
-==================================================*/
-
-.summary-item{
-
-    min-height:58px;
-
+    margin-top:30px;
     display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-
-    padding:8px;
-
-    border:1px solid #ccd6e3;
-
-    border-radius:5px;
-
-    background:#fff;
-
-    box-shadow:
-        0 2px 7px rgba(15,23,42,.04);
+    justify-content:space-between;
+    gap:20px;
 
 }
 
+.summary-box{
 
-.summary-item label{
+    flex:1;
+    background:#fff;
+    border:2px solid #d5dbe4;
+    border-radius:8px;
+    text-align:center;
+    padding:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+
+}
+
+.summary-box span{
 
     display:block;
-
-    margin-bottom:4px;
-
-    color:#64748b;
-
-    font-size:6px;
-
-    font-weight:600;
-
-    letter-spacing:.4px;
+    color:#666;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1px;
 
 }
 
+.summary-box h3{
 
-.summary-item h2{
-
-    margin:0;
-
-    color:#06477f;
-
-    font-size:16px;
-
-    font-weight:800;
+    margin-top:10px;
+    color:#0d3f84;
+    font-size:28px;
 
 }
 
+.pass-box{
 
-/*==================================================
- FINAL RESULT BOX
-==================================================*/
-
-.summary-item.final-result{
-
-    color:#fff;
-
-    background:#0755a0;
-
-    border-color:#0755a0;
+    background:#0d4f9c;
 
 }
 
+.pass-box span{
 
-.summary-item.final-result label{
+    color:white;
+
+}
+
+.pass-box h3{
 
     color:#fff;
 
 }
 
 
-.summary-item.final-result h2{
+/*==========================
+REMARK BOX
+==========================*/
 
-    color:#fff;
+.remarks{
+
+    margin-top:25px;
+    padding:14px 18px;
+    border-left:6px solid #0d4f9c;
+    background:#f7faff;
+    font-size:15px;
+
+}
+
+.remarks strong{
+
+    color:#0d3f84;
 
 }
 
 
-/*==================================================
- PRINT SUMMARY
-==================================================*/
+/*==========================
+FOOTER
+==========================*/
 
-@media print{
+footer{
 
-    .summary-strip{
-
-        gap:3mm;
-
-        margin-top:3mm;
-
-    }
-
-
-    .summary-item{
-
-        min-height:16mm;
-
-        padding:2mm;
-
-    }
-
-
-    .summary-item label{
-
-        font-size:4.5pt;
-
-        margin-bottom:1mm;
-
-    }
-
-
-    .summary-item h2{
-
-        font-size:12pt;
-
-    }
+    margin-top:70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
 
 }
- /*==================================================
- MARKSHEET CSS
- PART 6
- SIGNATURE + BUTTONS + RESPONSIVE + PRINT
-==================================================*/
 
+.sign{
 
-/*==================================================
- SIGNATURE AREA
-==================================================*/
+    width:30%;
+    text-align:center;
+    font-size:15px;
+    color:#333;
+    line-height:28px;
 
-.signature-area{
+}
 
-    width:100%;
+.sign::before{
 
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:100px;
-
-    margin-top:48px;
-
-    padding:0 35px;
+    content:"";
+    display:block;
+    border-top:1.5px solid #444;
+    margin-bottom:8px;
 
 }
 
 
-/*==================================================
- SIGNATURE BOX
-==================================================*/
+/*==========================
+SEAL
+==========================*/
 
-.signature-box{
+.seal{
+
+    width:160px;
+    height:160px;
+
+    border:3px dashed #9b9b9b;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     text-align:center;
 
-}
+    color:#999;
+    font-weight:bold;
+    font-size:14px;
 
-
-.signature-box .sign-line{
-
-    width:100%;
-
-    height:1px;
-
-    margin-bottom:7px;
-
-    background:#475569;
+    margin:auto;
 
 }
 
 
-.signature-box p{
+/*==========================
+BOTTOM TEXT
+==========================*/
 
-    margin:0;
+.footer-note{
 
-    color:#334155;
+    margin-top:20px;
 
-    font-size:7px;
+    text-align:center;
 
-    font-weight:600;
+    font-size:11px;
 
-}
+    color:#666;
 
-
-/*==================================================
- MARKSHEET BUTTONS
-==================================================*/
-
-.marksheet-buttons{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:12px;
-
-    margin-top:28px;
+    letter-spacing:1px;
 
 }
 
 
-.marksheet-buttons button{
+/*==========================
+SMALL EFFECTS
+==========================*/
 
-    width:180px;
+.summary-box:hover{
 
-    min-height:44px;
+    transform:translateY(-4px);
+
+    transition:.3s;
 
 }
 
+.marks-table{
 
-/*==================================================
- MOBILE SCREEN
-==================================================*/
-
-@media(max-width:850px){
-
-    #studentMarksheetPage{
-
-        padding:5px;
-
-    }
-
-
-    .marksheet{
-
-        width:100%;
-
-        min-height:auto;
-
-        padding:6px;
-
-    }
-
-
-    .marksheet-border{
-
-        min-height:auto;
-
-        padding:8px;
-
-    }
-
-
-    .ms-header{
-
-        grid-template-columns:65px 1fr 125px;
-
-        gap:7px;
-
-    }
-
-
-    .ms-logo{
-
-        width:60px;
-
-        height:60px;
-
-    }
-
-
-    .ms-logo img{
-
-        width:52px;
-
-        height:52px;
-
-    }
-
-
-    .ms-title h1{
-
-        font-size:21px;
-
-    }
-
-
-    .ms-title h2{
-
-        font-size:9px;
-
-    }
-
-
-    .ms-title p{
-
-        font-size:6px;
-
-    }
-
-
-    .student-section{
-
-        grid-template-columns:65px 1fr 55px;
-
-        gap:9px;
-
-    }
-
-
-    .student-photo-box{
-
-        width:63px;
-
-        height:80px;
-
-    }
-
-
-    .qr-box{
-
-        width:53px;
-
-        height:68px;
-
-    }
-
-
-    .marks-table{
-
-        min-width:0;
-
-    }
-
-
-    .marks-table thead th{
-
-        font-size:7px;
-
-    }
-
-
-    .marks-table tbody td{
-
-        font-size:7px;
-
-    }
-
-
-    .marks-table tfoot th{
-
-        font-size:7px;
-
-    }
-
-
-    .signature-area{
-
-        gap:45px;
-
-        margin-top:35px;
-
-    }
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
 
 }
 
+.student-card{
 
-/*==================================================
- SMALL MOBILE
-==================================================*/
-
-@media(max-width:550px){
-
-    .ms-header{
-
-        grid-template-columns:55px 1fr 105px;
-
-    }
-
-
-    .ms-logo{
-
-        width:50px;
-
-        height:50px;
-
-    }
-
-
-    .ms-logo img{
-
-        width:43px;
-
-        height:43px;
-
-    }
-
-
-    .ms-title h1{
-
-        font-size:17px;
-
-        letter-spacing:.6px;
-
-    }
-
-
-    .ms-title h2{
-
-        font-size:7px;
-
-    }
-
-
-    .ms-title p{
-
-        font-size:5px;
-
-    }
-
-
-    .ms-info table{
-
-        font-size:5px;
-
-    }
-
-
-    .student-section{
-
-        grid-template-columns:55px 1fr 48px;
-
-        gap:6px;
-
-        padding:7px;
-
-    }
-
-
-    .student-photo-box{
-
-        width:53px;
-
-        height:68px;
-
-    }
-
-
-    .student-photo-box img{
-
-        height:54px;
-
-    }
-
-
-    .qr-box{
-
-        width:47px;
-
-        height:61px;
-
-    }
-
-
-    .qr-box img{
-
-        width:42px;
-
-        height:47px;
-
-    }
-
-
-    .student-details td{
-
-        font-size:6px;
-
-        padding:3px 1px;
-
-    }
-
-
-    .student-details td:first-child{
-
-        width:82px;
-
-    }
-
-
-    .marks-table thead th{
-
-        font-size:6px;
-
-        padding:4px 2px;
-
-    }
-
-
-    .marks-table tbody td{
-
-        font-size:6px;
-
-        padding:4px 2px;
-
-    }
-
-
-    .marks-table tfoot th{
-
-        font-size:6px;
-
-    }
-
-
-    .summary-strip{
-
-        gap:5px;
-
-    }
-
-
-    .summary-item{
-
-        min-height:50px;
-
-    }
-
-
-    .summary-item h2{
-
-        font-size:13px;
-
-    }
-
-
-    .signature-area{
-
-        gap:20px;
-
-        padding:0 15px;
-
-        margin-top:30px;
-
-    }
-
-
-    .marksheet-buttons{
-
-        flex-direction:column;
-
-    }
-
-
-    .marksheet-buttons button{
-
-        width:100%;
-
-    }
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
 
 }
-
-
-/*==================================================
- FINAL MARKSHEET PRINT SETTINGS
-==================================================*/
-
-@media print{
-
-    body{
-
-        -webkit-print-color-adjust:exact !important;
-
-        print-color-adjust:exact !important;
-
-    }
-
-
-    #studentMarksheetPage{
-
-        display:block !important;
-
-    }
-
-
-    .marksheet-border::before{
-
-        opacity:.075 !important;
-
-        -webkit-print-color-adjust:exact !important;
-
-        print-color-adjust:exact !important;
-
-    }
-
-
-    .signature-area{
-
-        gap:28mm;
-
-        margin-top:12mm;
-
-        padding:0 8mm;
-
-    }
-
-
-    .signature-box p{
-
-        font-size:6pt;
-
-    }
-
-
-    .marksheet-buttons{
-
-        display:none !important;
-
-    }
-
-}
- 
