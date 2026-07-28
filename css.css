@@ -3088,2101 +3088,604 @@ body {
     }
 
 }
- /* =========================================================
-   IKON MARKSHEET
-   PROFESSIONAL CSS
-   PART 2
-   HEADER + LOGO + TITLE + TOP INFORMATION
-========================================================= */
+/*==================================================
+ IKON PREMIUM A4 MARKSHEET CSS
+==================================================*/
 
 
-/* =========================================================
-   MARKSHEET HEADER
-========================================================= */
-
-.marksheet-header {
-    width: 100%;
-
-    padding: 13mm 14mm 7mm 14mm;
-
-    text-align: center;
-
-    position: relative;
-}
-
-
-/* =========================================================
-   LOGO AREA
-========================================================= */
-
-.marksheet-logo {
-    width: 30mm;
-    height: 30mm;
-
-    margin: 0 auto 3mm auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   LOGO IMAGE
-========================================================= */
-
-.marksheet-logo img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-}
-
-
-/* =========================================================
-   INSTITUTE NAME
-========================================================= */
-
-.institute-name {
-    font-size: 22px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    line-height: 1.25;
-
-    text-transform: uppercase;
-
-    color: #173b63;
-}
-
-
-/* =========================================================
-   INSTITUTE SUBTITLE
-========================================================= */
-
-.institute-subtitle {
-    margin-top: 2mm;
-
-    font-size: 11px;
-
-    font-weight: 500;
-
-    letter-spacing: 0.5px;
-
-    color: #596579;
-}
-
-
-/* =========================================================
-   ADDRESS / CONTACT
-========================================================= */
-
-.institute-contact {
-    margin-top: 1.5mm;
-
-    font-size: 9.5px;
-
-    line-height: 1.5;
-
-    color: #626b78;
-}
-
-
-/* =========================================================
-   HEADER SEPARATOR
-========================================================= */
-
-.header-divider {
-    width: 100%;
-
-    height: 2px;
-
-    margin-top: 5mm;
-
-    background: #173b63;
-
-    border-radius: 2px;
-}
-
-
-/* =========================================================
-   SECONDARY DIVIDER
-========================================================= */
-
-.header-divider::after {
-    content: "";
-
-    display: block;
-
-    width: 35%;
-
-    height: 1px;
-
-    margin-top: 3px;
-
-    background: #b7c0cc;
-}
-
-
-/* =========================================================
-   MARKSHEET TITLE AREA
-========================================================= */
-
-.marksheet-title-area {
-    width: 100%;
-
-    padding: 4mm 14mm 3mm 14mm;
-
-    text-align: center;
-}
-
-
-/* =========================================================
-   MAIN TITLE
-========================================================= */
-
-.marksheet-title {
-    font-size: 19px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-
-    text-transform: uppercase;
-
-    color: #172b4d;
-}
-
-
-/* =========================================================
-   TITLE SUBTEXT
-========================================================= */
-
-.marksheet-title-subtext {
-    margin-top: 1.5mm;
-
-    font-size: 9.5px;
-
-    color: #697586;
-
-    letter-spacing: 0.4px;
-}
-
-
-/* =========================================================
-   TOP INFORMATION AREA
-========================================================= */
-
-.marksheet-top-info {
-    width: calc(100% - 28mm);
-
-    margin: 3mm 14mm 0 14mm;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 2.5mm 5mm;
-}
-
-
-/* =========================================================
-   INFORMATION BOX
-========================================================= */
-
-.info-box {
-    min-height: 9mm;
-
-    display: flex;
-
-    align-items: center;
-
-    border: 1px solid #d5dae1;
-
-    background: #fafbfc;
-
-    border-radius: 2px;
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   INFORMATION LABEL
-========================================================= */
-
-.info-label {
-    min-width: 38mm;
-
-    align-self: stretch;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 2mm 3mm;
-
-    background: #f0f3f7;
-
-    border-right: 1px solid #d5dae1;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    color: #344054;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.3px;
-}
-
-
-/* =========================================================
-   INFORMATION VALUE
-========================================================= */
-
-.info-value {
-    flex: 1;
-
-    padding: 2mm 3mm;
-
-    font-size: 10px;
-
-    font-weight: 600;
-
-    color: #172b4d;
-
-    word-break: break-word;
-}
-
-
-/* =========================================================
-   STUDENT PHOTO AREA
-========================================================= */
-
-.student-photo-box {
-    width: 32mm;
-
-    height: 38mm;
-
-    border: 1px solid #cbd2dc;
-
-    background: #f8fafc;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-    border-radius: 2px;
-}
-
-
-/* =========================================================
-   STUDENT PHOTO
-========================================================= */
-
-.student-photo-box img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   PHOTO PLACEHOLDER
-========================================================= */
-
-.student-photo-placeholder {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 3mm;
-
-    font-size: 8px;
-
-    color: #8a94a3;
-}
-
-
-/* =========================================================
-   REGISTRATION / ROLL NUMBER
-========================================================= */
-
-.reg-number {
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-
-    color: #173b63;
-}
-
-
-/* =========================================================
-   COURSE / CLASS
-========================================================= */
-
-.course-value {
-    font-weight: 700;
-
-    color: #344054;
-}
-
-
-/* =========================================================
-   DATE VALUE
-========================================================= */
-
-.date-value {
-    white-space: nowrap;
-
-    font-variant-numeric: tabular-nums;
-}
-
-
-/* =========================================================
-   TOP INFO RESPONSIVE
-========================================================= */
-
-@media screen and (max-width: 700px) {
-
-    .marksheet-header {
-        padding-left: 10mm;
-        padding-right: 10mm;
-    }
-
-    .marksheet-title-area {
-        padding-left: 10mm;
-        padding-right: 10mm;
-    }
-
-    .marksheet-top-info {
-        width: calc(100% - 20mm);
-
-        margin-left: 10mm;
-        margin-right: 10mm;
-
-        grid-template-columns: 1fr;
-    }
-
-    .institute-name {
-        font-size: 18px;
-    }
-
-    .marksheet-title {
-        font-size: 16px;
-    }
-
-}
-  /* =========================================================
-    IKON MARKSHEET
-    PROFESSIONAL CSS
-    PART 3
-    STUDENT DETAILS + ACADEMIC DETAILS + MARKS TABLE
- ========================================================= */
-
-
-/* =========================================================
-    STUDENT DETAILS SECTION
- ========================================================= */
-
-.student-details-section {
-    width: calc(100% - 28mm);
-
-    margin: 4mm 14mm 0 14mm;
-}
-
-
-/* =========================================================
-    SECTION HEADING
- ========================================================= */
-
-.section-heading {
-    width: 100%;
-
-    padding: 2.5mm 3mm;
-
-    background: #173b63;
-
-    color: #ffffff;
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.7px;
-
-    border-radius: 2px 2px 0 0;
-}
-
-
-/* =========================================================
-    STUDENT DETAILS GRID
- ========================================================= */
-
-.student-details-grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    border-left: 1px solid #d5dae1;
-    border-bottom: 1px solid #d5dae1;
-}
-
-
-/* =========================================================
-    DETAIL ROW
- ========================================================= */
-
-.detail-row {
-    min-height: 9mm;
-
-    display: flex;
-
-    align-items: stretch;
-
-    border-right: 1px solid #d5dae1;
-    border-bottom: 1px solid #d5dae1;
-
-    background: #ffffff;
-}
-
-
-/* =========================================================
-    DETAIL LABEL
- ========================================================= */
-
-.detail-label {
-    width: 38%;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 2mm 2.5mm;
-
-    background: #f3f5f8;
-
-    border-right: 1px solid #d5dae1;
-
-    font-size: 8.5px;
-
-    font-weight: 700;
-
-    color: #475467;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.2px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
 }
-
-
-/* =========================================================
-    DETAIL VALUE
- ========================================================= */
-
-.detail-value {
-    width: 62%;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 2mm 2.5mm;
-
-    font-size: 9.5px;
 
-    font-weight: 600;
 
-    color: #172b4d;
 
-    word-break: break-word;
-}
-
+#marksheetPage{
 
-/* =========================================================
-    ACADEMIC DETAILS
- ========================================================= */
+    width:100%;
+    min-height:100vh;
+    background:#eef2f7;
+    padding:20px;
 
-.academic-details-section {
-    width: calc(100% - 28mm);
-
-    margin: 4mm 14mm 0 14mm;
 }
 
 
-/* =========================================================
-    ACADEMIC DETAILS GRID
- ========================================================= */
 
-.academic-details-grid {
-    width: 100%;
+.marksheet{
 
-    display: grid;
 
-    grid-template-columns: repeat(4, 1fr);
+    width:210mm;
+    min-height:297mm;
 
-    border-left: 1px solid #d5dae1;
-    border-bottom: 1px solid #d5dae1;
-}
+    margin:auto;
 
+    background:#fff;
 
-/* =========================================================
-    ACADEMIC ITEM
- ========================================================= */
+    position:relative;
 
-.academic-item {
-    min-height: 10mm;
+    padding:18mm 15mm;
 
-    padding: 2mm 2.5mm;
+    border:3px solid #0b3d91;
 
-    border-right: 1px solid #d5dae1;
-    border-top: 1px solid #d5dae1;
+    overflow:hidden;
 
-    background: #ffffff;
 
-    text-align: center;
 }
-
-
-/* =========================================================
-    ACADEMIC LABEL
- ========================================================= */
-
-.academic-label {
-    display: block;
-
-    margin-bottom: 1mm;
 
-    font-size: 7.5px;
 
-    font-weight: 700;
 
-    color: #667085;
+/*==============================
+ WATERMARK
+==============================*/
 
-    text-transform: uppercase;
 
-    letter-spacing: 0.3px;
-}
-
-
-/* =========================================================
-    ACADEMIC VALUE
- ========================================================= */
-
-.academic-value {
-    display: block;
+.marksheet::before{
 
-    font-size: 9.5px;
 
-    font-weight: 700;
+content:"";
 
-    color: #173b63;
-}
+position:absolute;
 
+top:50%;
+left:50%;
 
-/* =========================================================
-    MARKS SECTION
- ========================================================= */
+width:420px;
+height:420px;
 
-.marks-section {
-    width: calc(100% - 28mm);
 
-    margin: 5mm 14mm 0 14mm;
-}
+background-image:url("https://yourusername.github.io/ikonquiz/images/ikon.jpg");
 
 
-/* =========================================================
-    MARKS TABLE WRAPPER
- ========================================================= */
+background-size:contain;
 
-.marks-table-wrapper {
-    width: 100%;
+background-repeat:no-repeat;
 
-    overflow: hidden;
+background-position:center;
 
-    border: 1px solid #bfc7d2;
 
-    border-top: none;
-}
+transform:translate(-50%,-50%);
 
 
-/* =========================================================
-    MARKS TABLE
- ========================================================= */
+opacity:0.08;
 
-.marks-table {
-    width: 100%;
+z-index:0;
 
-    border-collapse: collapse;
 
-    table-layout: fixed;
 }
-
 
-/* =========================================================
-    MARKS TABLE HEADER
- ========================================================= */
 
-.marks-table thead th {
-    padding: 2.5mm 1.5mm;
 
-    background: #edf1f5;
 
-    color: #243b53;
+.marksheet > *{
 
-    border-right: 1px solid #cbd2dc;
-    border-bottom: 1px solid #aeb8c5;
+position:relative;
 
-    font-size: 8px;
+z-index:2;
 
-    font-weight: 800;
-
-    text-align: center;
-
-    vertical-align: middle;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.2px;
-}
-
-
-/* =========================================================
-    LAST HEADER CELL
- ========================================================= */
-
-.marks-table thead th:last-child {
-    border-right: none;
 }
-
-
-/* =========================================================
-    MARKS TABLE BODY
- ========================================================= */
-
-.marks-table tbody td {
-    padding: 2.2mm 1.5mm;
 
-    border-right: 1px solid #d5dae1;
-    border-bottom: 1px solid #d5dae1;
 
-    font-size: 8.5px;
 
-    color: #344054;
 
-    text-align: center;
+/*==============================
+ HEADER
+==============================*/
 
-    vertical-align: middle;
 
-    line-height: 1.35;
-}
+.marksheet-header{
 
 
-/* =========================================================
-    LAST BODY CELL
- ========================================================= */
+display:grid;
 
-.marks-table tbody td:last-child {
-    border-right: none;
-}
+grid-template-columns:120px 1fr 160px;
 
+align-items:center;
 
-/* =========================================================
-    LAST TABLE ROW
- ========================================================= */
 
-.marks-table tbody tr:last-child td {
-    border-bottom: none;
 }
-
-
-/* =========================================================
-    SUBJECT NAME
- ========================================================= */
 
-.marks-table .subject-name {
-    text-align: left;
 
-    padding-left: 3mm;
 
-    font-weight: 700;
+.logo-box img{
 
-    color: #172b4d;
-}
 
+width:95px;
 
-/* =========================================================
-    SUBJECT CODE
- ========================================================= */
+height:95px;
 
-.marks-table .subject-code {
-    font-size: 7.5px;
+object-fit:contain;
 
-    font-weight: 600;
 
-    color: #667085;
 }
 
 
-/* =========================================================
-    MAXIMUM MARKS
- ========================================================= */
 
-.marks-table .max-marks {
-    font-weight: 600;
 
-    color: #475467;
-}
+.institute-title{
 
 
-/* =========================================================
-    OBTAINED MARKS
- ========================================================= */
+text-align:center;
 
-.marks-table .obtained-marks {
-    font-weight: 800;
 
-    color: #173b63;
 }
-
 
-/* =========================================================
-    GRADE
- ========================================================= */
 
-.marks-table .grade {
-    font-weight: 800;
 
-    text-transform: uppercase;
-}
-
+.institute-title h1{
 
-/* =========================================================
-    PASS / FAIL
- ========================================================= */
 
-.marks-table .pass {
-    font-weight: 800;
+font-size:30px;
 
-    text-transform: uppercase;
-}
+letter-spacing:2px;
 
+color:#0b3d91;
 
-/* =========================================================
-    TABLE ROW HOVER
- ========================================================= */
 
-.marks-table tbody tr:hover td {
-    background: #fafbfd;
 }
-
 
-/* =========================================================
-    TOTAL ROW
- ========================================================= */
 
-.marks-table .total-row td {
-    background: #f0f3f7;
 
-    font-weight: 800;
+.institute-title h3{
 
-    color: #172b4d;
 
-    border-top: 1.5px solid #9da8b6;
-}
-
-
-/* =========================================================
-    TOTAL LABEL
- ========================================================= */
-
-.marks-table .total-label {
-    text-align: right;
+font-size:15px;
 
-    padding-right: 4mm;
+margin-top:5px;
 
-    text-transform: uppercase;
 
-    letter-spacing: 0.3px;
 }
-
-
-/* =========================================================
-    RESULT SUMMARY
- ========================================================= */
-
-.result-summary {
-    width: 100%;
-
-    margin-top: 4mm;
 
-    display: grid;
 
-    grid-template-columns: repeat(4, 1fr);
 
-    border: 1px solid #cbd2dc;
-}
+.institute-title p{
 
 
-/* =========================================================
-    RESULT SUMMARY ITEM
- ========================================================= */
+margin-top:12px;
 
-.result-summary-item {
-    min-height: 13mm;
+font-weight:bold;
 
-    padding: 2mm;
+font-size:18px;
 
-    border-right: 1px solid #d5dae1;
+border-bottom:2px solid #0b3d91;
 
-    text-align: center;
-
-    background: #ffffff;
-}
+display:inline-block;
 
+padding-bottom:5px;
 
-/* =========================================================
-    LAST SUMMARY ITEM
- ========================================================= */
 
-.result-summary-item:last-child {
-    border-right: none;
 }
-
-
-/* =========================================================
-    SUMMARY LABEL
- ========================================================= */
-
-.result-summary-label {
-    display: block;
-
-    margin-bottom: 1mm;
 
-    font-size: 7.5px;
 
-    font-weight: 700;
 
-    color: #667085;
 
-    text-transform: uppercase;
+.issue-box{
 
-    letter-spacing: 0.25px;
-}
-
 
-/* =========================================================
-    SUMMARY VALUE
- ========================================================= */
+font-size:13px;
 
-.result-summary-value {
-    display: block;
+text-align:right;
 
-    font-size: 11px;
 
-    font-weight: 800;
-
-    color: #173b63;
 }
-
 
-/* =========================================================
-    PERCENTAGE
- ========================================================= */
 
-.percentage-value {
-    font-size: 12px;
 
-    font-weight: 900;
-}
-
+.issue-box p{
 
-/* =========================================================
-    PASS / FAIL RESULT
- ========================================================= */
 
-.result-status {
-    font-size: 10px;
+margin-bottom:15px;
 
-    font-weight: 900;
 
-    text-transform: uppercase;
 }
-
-
-/* =========================================================
-    RESPONSIVE
- ========================================================= */
 
-@media screen and (max-width: 700px) {
 
-    .student-details-section,
-    .academic-details-section,
-    .marks-section {
-        width: calc(100% - 20mm);
 
-        margin-left: 10mm;
-        margin-right: 10mm;
-    }
 
+hr{
 
-    .student-details-grid {
-        grid-template-columns: 1fr;
-    }
 
+margin:15px 0;
 
-    .academic-details-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+border:1px solid #0b3d91;
 
 
-    .result-summary {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-
-    .result-summary-item:nth-child(2) {
-        border-right: none;
-    }
-
-
-    .result-summary-item:nth-child(-n + 2) {
-        border-bottom: 1px solid #d5dae1;
-    }
-
-}
- /* =========================================================
-   IKON MARKSHEET
-   PROFESSIONAL CSS
-   PART 4
-   SIGNATURE + AUTHORIZED SIGNATORY + FOOTER + BUTTONS
-========================================================= */
-
-
-/* =========================================================
-   SIGNATURE SECTION
-========================================================= */
-
-.signature-section {
-    width: calc(100% - 28mm);
-
-    margin: 7mm 14mm 0 14mm;
-
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 8mm;
-
-    align-items: end;
 }
-
-
-/* =========================================================
-   SIGNATURE BOX
-========================================================= */
 
-.signature-box {
-    min-height: 24mm;
 
-    display: flex;
 
-    flex-direction: column;
 
-    align-items: center;
+/*==============================
+ STUDENT DETAILS
+==============================*/
 
-    justify-content: flex-end;
 
-    text-align: center;
-}
-
-
-/* =========================================================
-   SIGNATURE SPACE
-========================================================= */
+.student-info table{
 
-.signature-space {
-    width: 100%;
 
-    height: 13mm;
+width:100%;
 
-    display: flex;
+border-collapse:collapse;
 
-    align-items: flex-end;
 
-    justify-content: center;
-
-    font-size: 8px;
-
-    color: #98a2b3;
 }
-
-
-/* =========================================================
-   SIGNATURE LINE
-========================================================= */
 
-.signature-line {
-    width: 80%;
 
-    height: 1px;
 
-    margin-top: 1mm;
+.student-info td{
 
-    background: #344054;
-}
-
-
-/* =========================================================
-   SIGNATURE LABEL
-========================================================= */
-
-.signature-label {
-    margin-top: 1.5mm;
 
-    font-size: 8px;
+border:1px solid #555;
 
-    font-weight: 700;
+padding:9px;
 
-    color: #344054;
+font-size:13px;
 
-    text-transform: uppercase;
 
-    letter-spacing: 0.3px;
 }
-
-
-/* =========================================================
-   MARKSHEET NOTE
-========================================================= */
-
-.marksheet-note {
-    width: calc(100% - 28mm);
-
-    margin: 5mm 14mm 0 14mm;
 
-    padding: 2.5mm 3mm;
 
-    border-top: 1px solid #d5dae1;
 
-    border-bottom: 1px solid #d5dae1;
+.student-info td:nth-child(odd){
 
-    text-align: center;
-}
-
-
-/* =========================================================
-   NOTE PARAGRAPH
-========================================================= */
 
-.marksheet-note p {
-    margin: 0.8mm 0;
+background:#f0f5ff;
 
-    font-size: 7.5px;
+width:18%;
 
-    line-height: 1.45;
-
-    color: #667085;
 }
-
-
-/* =========================================================
-   FOOTER INFORMATION
-========================================================= */
-
-.marksheet-footer-info {
-    width: calc(100% - 28mm);
 
-    margin: 4mm 14mm 0 14mm;
 
-    display: flex;
 
-    justify-content: space-between;
 
-    align-items: center;
-}
-
-
-/* =========================================================
-   FOOTER INFO ITEM
-========================================================= */
-
-.footer-info-item {
-    min-width: 45mm;
+/*==============================
+ PHOTO QR
+==============================*/
 
-    display: flex;
 
-    align-items: center;
+.photo-qr-section{
 
-    gap: 2mm;
 
-    font-size: 8px;
+display:flex;
 
-    color: #475467;
-}
+justify-content:space-between;
 
+align-items:center;
 
-/* =========================================================
-   FOOTER LABEL
-========================================================= */
+margin:25px 0;
 
-.footer-label {
-    font-weight: 800;
 
-    color: #344054;
 }
-
 
-/* =========================================================
-   FOOTER VALUE
-========================================================= */
 
-.footer-info-item span:last-child {
-    font-weight: 600;
-
-    color: #475467;
-}
 
+.photo-area,
+.qr-area{
 
-/* =========================================================
-   AUTHORIZED SIGNATORY AREA
-========================================================= */
 
-.authorized-signatory-area {
-    width: 48mm;
+text-align:center;
 
-    margin: 2mm 14mm 0 auto;
 
-    text-align: center;
 }
 
 
-/* =========================================================
-   AUTHORIZED SIGNATURE SPACE
-========================================================= */
 
-.authorized-signature-space {
-    width: 100%;
 
-    height: 10mm;
+.photo-area img{
 
-    display: flex;
 
-    align-items: flex-end;
+width:120px;
 
-    justify-content: center;
-}
+height:140px;
 
+object-fit:cover;
 
-/* =========================================================
-   AUTHORIZED SIGNATORY LINE
-========================================================= */
+border:2px solid #0b3d91;
 
-.authorized-signatory-line {
-    width: 100%;
+padding:4px;
 
-    height: 1px;
 
-    background: #344054;
 }
-
-
-/* =========================================================
-   AUTHORIZED SIGNATORY TITLE
-========================================================= */
 
-.authorized-signatory-title {
-    margin-top: 1.5mm;
 
-    font-size: 8px;
 
-    font-weight: 800;
+.qr-area img{
 
-    color: #172b4d;
 
-    text-transform: uppercase;
+width:130px;
 
-    letter-spacing: 0.3px;
-}
-
+height:130px;
 
-/* =========================================================
-   INSTITUTE NAME UNDER SIGNATORY
-========================================================= */
+border:2px solid #333;
 
-.authorized-signatory-institute {
-    margin-top: 0.8mm;
+padding:5px;
 
-    font-size: 7px;
 
-    font-weight: 600;
-
-    color: #667085;
 }
-
 
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
 
-.marksheet-actions {
-    width: 100%;
 
-    margin-top: 10mm;
 
-    padding: 5mm 14mm;
+.photo-area p,
+.qr-area p{
 
-    display: flex;
 
-    justify-content: center;
+font-size:12px;
 
-    align-items: center;
+margin-top:5px;
 
-    gap: 4mm;
+font-weight:bold;
 
-    background: #f5f7fa;
 
-    border-top: 1px solid #d5dae1;
 }
 
 
-/* =========================================================
-   ACTION BUTTON COMMON
-========================================================= */
 
-.marksheet-actions button {
-    min-width: 38mm;
 
-    padding: 2.8mm 6mm;
 
-    border: none;
+/*==============================
+ MARKS TABLE
+==============================*/
 
-    border-radius: 3px;
 
-    font-size: 9px;
+.marks-section h3{
 
-    font-weight: 700;
 
-    cursor: pointer;
+text-align:center;
 
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
+font-size:17px;
 
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   PRINT BUTTON
-========================================================= */
-
-#printMarksheetBtn {
-    background: #173b63;
+margin-bottom:10px;
 
-    box-shadow:
-        0 3px 8px rgba(23, 59, 99, 0.2);
-}
-
+color:#0b3d91;
 
-/* =========================================================
-   BACK BUTTON
-========================================================= */
 
-#backBtn {
-    background: #667085;
-
-    box-shadow:
-        0 3px 8px rgba(102, 112, 133, 0.18);
 }
-
 
-/* =========================================================
-   BUTTON HOVER
-========================================================= */
 
-.marksheet-actions button:hover {
-    transform: translateY(-1px);
 
-    box-shadow:
-        0 5px 12px rgba(0, 0, 0, 0.15);
-}
-
+.marks-table{
 
-/* =========================================================
-   BUTTON ACTIVE
-========================================================= */
 
-.marksheet-actions button:active {
-    transform: translateY(0);
-}
+width:100%;
 
+border-collapse:collapse;
 
-/* =========================================================
-   BUTTON FOCUS
-========================================================= */
+font-size:12px;
 
-.marksheet-actions button:focus-visible {
-    outline: 2px solid #173b63;
 
-    outline-offset: 2px;
 }
-
-
-/* =========================================================
-   SMALL SCREEN SIGNATURE
-========================================================= */
-
-@media screen and (max-width: 700px) {
-
-    .signature-section {
-        width: calc(100% - 20mm);
-
-        margin-left: 10mm;
-        margin-right: 10mm;
 
-        gap: 4mm;
-    }
 
 
-    .marksheet-note {
-        width: calc(100% - 20mm);
+.marks-table th{
 
-        margin-left: 10mm;
-        margin-right: 10mm;
-    }
 
+background:#0b3d91;
 
-    .marksheet-footer-info {
-        width: calc(100% - 20mm);
+color:white;
 
-        margin-left: 10mm;
-        margin-right: 10mm;
-    }
+padding:8px;
 
+border:1px solid #222;
 
-    .authorized-signatory-area {
-        margin-right: 10mm;
-    }
 
-
-    .marksheet-actions {
-        padding-left: 10mm;
-        padding-right: 10mm;
-    }
-
 }
-
-
-/* =========================================================
-   VERY SMALL SCREEN
-========================================================= */
-
-@media screen and (max-width: 480px) {
-
-    .signature-section {
-        grid-template-columns: 1fr;
-
-        gap: 6mm;
-    }
-
 
-    .signature-box {
-        min-height: 18mm;
-    }
 
 
-    .marksheet-footer-info {
-        flex-direction: column;
 
-        align-items: flex-start;
+.marks-table td{
 
-        gap: 2mm;
-    }
 
+padding:8px;
 
-    .authorized-signatory-area {
-        margin-left: auto;
+text-align:center;
 
-        margin-right: auto;
-    }
+border:1px solid #333;
 
 
-    .marksheet-actions {
-        flex-direction: column;
-    }
-
-
-    .marksheet-actions button {
-        width: 55mm;
-    }
-
-}
- /* =========================================================
-   IKON MARKSHEET
-   PROFESSIONAL CSS
-   PART 5
-   A4 PRINT + PRINT SETTINGS
-========================================================= */
-
-
-/* =========================================================
-   A4 SCREEN PRESENTATION
-========================================================= */
-
-@media screen {
-
-    .marksheet {
-        width: 210mm;
-        min-height: 297mm;
-    }
-
 }
-
-
-/* =========================================================
-   PRINT SETTINGS
-========================================================= */
-
-@media print {
-
-    /* -----------------------------------------------------
-       PAGE SIZE
-    ----------------------------------------------------- */
-
-    @page {
-        size: A4 portrait;
-        margin: 0;
-    }
-
-
-    /* -----------------------------------------------------
-       BODY
-    ----------------------------------------------------- */
-
-    html,
-    body {
-        width: 210mm;
-        min-height: 297mm;
-
-        margin: 0;
-        padding: 0;
-
-        background: #ffffff;
-
-        overflow: visible;
-    }
-
-
-    /* -----------------------------------------------------
-       REMOVE SCREEN SHADOW
-    ----------------------------------------------------- */
-
-    .marksheet {
-        width: 210mm;
-        min-height: 297mm;
-
-        margin: 0;
-
-        border: none;
-
-        box-shadow: none;
-
-        overflow: visible;
-    }
-
-
-    /* -----------------------------------------------------
-       KEEP INNER BORDER
-    ----------------------------------------------------- */
-
-    .marksheet::before {
-        display: block;
 
-        position: absolute;
 
-        top: 7mm;
-        left: 7mm;
-        right: 7mm;
-        bottom: 7mm;
 
-        border: 1px solid #c8ced8;
 
-        content: "";
-    }
 
 
-    /* -----------------------------------------------------
-       HIDE PRINT / BACK BUTTONS
-    ----------------------------------------------------- */
+/*==============================
+ RESULT SUMMARY
+==============================*/
 
-    .marksheet-actions {
-        display: none !important;
-    }
 
+.result-summary{
 
-    /* -----------------------------------------------------
-       PREVENT UNWANTED PAGE BREAKS
-    ----------------------------------------------------- */
-
-    .marksheet-header,
-    .marksheet-title-area,
-    .marksheet-top-info,
-    .student-details-section,
-    .academic-details-section,
-    .marks-section,
-    .signature-section,
-    .marksheet-note,
-    .marksheet-footer-info,
-    .authorized-signatory-area {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-
-    /* -----------------------------------------------------
-       TABLE PRINT CONTROL
-    ----------------------------------------------------- */
-
-    .marks-table {
-        page-break-inside: auto;
-    }
-
-
-    .marks-table tr {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-
-
-    .marks-table thead {
-        display: table-header-group;
-    }
-
-
-    .marks-table tfoot {
-        display: table-footer-group;
-    }
-
-
-    /* -----------------------------------------------------
-       PRINT TEXT / COLORS
-    ----------------------------------------------------- */
-
-    .marksheet,
-    .marksheet * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-
-    /* -----------------------------------------------------
-       REMOVE HOVER EFFECT
-    ----------------------------------------------------- */
-
-    .marks-table tbody tr:hover td {
-        background: inherit;
-    }
-
-
-    /* -----------------------------------------------------
-       IMAGE PRINT
-    ----------------------------------------------------- */
-
-    .marksheet img {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-
-
-    /* -----------------------------------------------------
-       LINKS
-    ----------------------------------------------------- */
-
-    .marksheet a {
-        color: inherit;
-        text-decoration: none;
-    }
-
-
-    /* -----------------------------------------------------
-       BODY CHILDREN
-    ----------------------------------------------------- */
-
-    body > * {
-        max-width: none;
-    }
-
-}
-
-
-/* =========================================================
-   PRINT-SPECIFIC HIDDEN ELEMENT
-========================================================= */
-
-.print-only {
-    display: none;
-}
 
+display:flex;
 
-@media print {
+justify-content:space-around;
 
-    .print-only {
-        display: block;
-    }
+margin-top:20px;
 
-}
+border:2px solid #0b3d91;
 
+padding:12px;
 
-/* =========================================================
-   SCREEN-ONLY ELEMENT
-========================================================= */
 
-.screen-only {
-    display: block;
 }
 
 
-@media print {
 
-    .screen-only {
-        display: none !important;
-    }
+.result-summary div{
 
-}
- /* =========================================================
-   IKON MARKSHEET
-   PROFESSIONAL CSS
-   PART 6
-   FINAL POLISH + ALIGNMENT + OVERFLOW CONTROL
-========================================================= */
 
+text-align:center;
 
-/* =========================================================
-   GENERAL CONTENT CONTROL
-========================================================= */
+font-size:14px;
 
-.marksheet {
-    isolation: isolate;
 
-    overflow: hidden;
 }
-
 
-/* =========================================================
-   HEADER ALIGNMENT
-========================================================= */
 
-.marksheet-header {
-    position: relative;
 
-    z-index: 2;
-}
-
+.result-summary span{
 
-/* =========================================================
-   LOGO FINAL ALIGNMENT
-========================================================= */
 
-.marksheet-logo {
-    flex-shrink: 0;
-
-    aspect-ratio: 1 / 1;
-}
+display:block;
 
-.marksheet-logo img {
-    object-position: center;
-}
+margin-top:5px;
 
+font-size:18px;
 
-/* =========================================================
-   INSTITUTE TEXT CONTROL
-========================================================= */
+font-weight:bold;
 
-.institute-name,
-.institute-subtitle,
-.institute-contact,
-.marksheet-title,
-.marksheet-title-subtext {
-    overflow-wrap: break-word;
 
-    word-break: normal;
 }
-
 
-/* =========================================================
-   TOP INFORMATION ALIGNMENT
-========================================================= */
 
-.marksheet-top-info {
-    align-items: stretch;
-}
 
 
-/* =========================================================
-   INFORMATION BOX FIX
-========================================================= */
+/*==============================
+ FOOTER SEAL
+==============================*/
 
-.info-box {
-    min-width: 0;
-}
 
-.info-label,
-.info-value {
-    min-width: 0;
-}
+.marksheet-footer{
 
-.info-value {
-    overflow-wrap: anywhere;
-}
 
+display:flex;
 
-/* =========================================================
-   PHOTO FINAL CONTROL
-========================================================= */
+justify-content:space-between;
 
-.student-photo-box {
-    flex-shrink: 0;
+margin-top:70px;
 
-    position: relative;
-}
 
-.student-photo-box img {
-    object-position: center center;
 }
-
 
-/* =========================================================
-   STUDENT DETAILS FINAL CONTROL
-========================================================= */
 
-.student-details-grid,
-.academic-details-grid {
-    min-width: 0;
-}
 
-.detail-row {
-    min-width: 0;
-}
 
-.detail-label,
-.detail-value {
-    min-width: 0;
-}
+.seal-box{
 
-.detail-value {
-    overflow-wrap: anywhere;
-}
 
+text-align:center;
 
-/* =========================================================
-   ACADEMIC VALUE CONTROL
-========================================================= */
+width:200px;
 
-.academic-item {
-    min-width: 0;
-}
 
-.academic-value {
-    overflow-wrap: anywhere;
 }
-
 
-/* =========================================================
-   MARKS TABLE FINAL CONTROL
-========================================================= */
 
-.marks-table-wrapper {
-    overflow-x: auto;
-
-    -webkit-overflow-scrolling: touch;
-}
 
-.marks-table {
-    min-width: 100%;
-}
+.seal-circle{
 
-.marks-table th,
-.marks-table td {
-    overflow-wrap: break-word;
 
-    word-break: normal;
-}
+width:85px;
 
+height:85px;
 
-/* =========================================================
-   SUBJECT COLUMN
-========================================================= */
+border:2px dashed #0b3d91;
 
-.marks-table th:first-child,
-.marks-table td:first-child {
-    width: 32%;
-}
+border-radius:50%;
 
+display:flex;
 
-/* =========================================================
-   NUMERICAL COLUMNS
-========================================================= */
+align-items:center;
 
-.marks-table th:not(:first-child),
-.marks-table td:not(:first-child) {
-    white-space: nowrap;
-}
+justify-content:center;
 
+margin:auto;
 
-/* =========================================================
-   RESULT SUMMARY CONTROL
-========================================================= */
+font-size:12px;
 
-.result-summary {
-    min-width: 0;
-}
+font-weight:bold;
 
-.result-summary-item {
-    min-width: 0;
-}
 
-.result-summary-value {
-    overflow-wrap: anywhere;
 }
 
 
-/* =========================================================
-   SIGNATURE AREA FINAL ALIGNMENT
-========================================================= */
 
-.signature-section {
-    align-items: end;
-}
+.seal-box p{
 
-.signature-box {
-    position: relative;
-}
 
-.signature-space {
-    overflow: hidden;
-}
+margin-top:10px;
 
+font-weight:bold;
 
-/* =========================================================
-   NOTE FINAL ALIGNMENT
-========================================================= */
+font-size:13px;
 
-.marksheet-note {
-    overflow: hidden;
-}
 
-.marksheet-note p {
-    overflow-wrap: break-word;
 }
-
 
-/* =========================================================
-   FOOTER FINAL ALIGNMENT
-========================================================= */
 
-.marksheet-footer-info {
-    min-height: 7mm;
-}
-
-.footer-info-item {
-    white-space: nowrap;
-}
 
 
-/* =========================================================
-   AUTHORIZED SIGNATORY FINAL ALIGNMENT
-========================================================= */
 
-.authorized-signatory-area {
-    position: relative;
+/*==============================
+ PRINT
+==============================*/
 
-    min-height: 17mm;
-}
 
-.authorized-signature-space {
-    overflow: hidden;
-}
+@media print{
 
 
-/* =========================================================
-   BUTTON AREA
-========================================================= */
+body{
 
-.marksheet-actions {
-    position: relative;
+background:white;
 
-    z-index: 5;
 }
 
 
-/* =========================================================
-   DISABLED BUTTON
-========================================================= */
 
-.marksheet-actions button:disabled {
-    opacity: 0.6;
+#marksheetPage{
 
-    cursor: not-allowed;
 
-    transform: none;
+padding:0;
 
-    box-shadow: none;
 }
 
 
-/* =========================================================
-   MOBILE TABLE SCROLL
-========================================================= */
 
-@media screen and (max-width: 700px) {
+.marksheet{
 
-    .marks-table-wrapper {
-        overflow-x: auto;
-    }
 
-    .marks-table {
-        min-width: 150mm;
-    }
+margin:0;
 
-    .marks-table th,
-    .marks-table td {
-        white-space: normal;
-    }
+border:3px solid #000;
 
-    .marks-table th:not(:first-child),
-    .marks-table td:not(:first-child) {
-        white-space: nowrap;
-    }
+width:210mm;
 
-    .footer-info-item {
-        white-space: normal;
-    }
+min-height:297mm;
 
 }
-
-
-/* =========================================================
-   PRINT FINAL POLISH
-========================================================= */
-
-@media print {
-
-    html,
-    body {
-        overflow: visible !important;
-    }
-
-    .marksheet {
-        overflow: visible !important;
-
-        width: 210mm;
-
-        min-height: 297mm;
 
-        height: 297mm;
-    }
 
-    .marks-table-wrapper {
-        overflow: visible !important;
-    }
 
-    .marks-table {
-        width: 100%;
+button{
 
-        min-width: 0;
-    }
+display:none;
 
-    .marks-table th,
-    .marks-table td {
-        overflow: visible;
-    }
-
-    .marksheet-logo {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    .student-photo-box {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    .signature-box {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    .authorized-signatory-area {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
 }
-
-
-/* =========================================================
-   PRINT PAGE SAFETY
-========================================================= */
-
-@media print {
-
-    .marksheet-header {
-        padding-top: 11mm;
-    }
-
-    .marksheet-title-area {
-        padding-top: 3mm;
-        padding-bottom: 2mm;
-    }
-
-    .student-details-section {
-        margin-top: 3mm;
-    }
-
-    .academic-details-section {
-        margin-top: 3mm;
-    }
-
-    .marks-section {
-        margin-top: 3mm;
-    }
-
-    .signature-section {
-        margin-top: 5mm;
-    }
-
-    .marksheet-note {
-        margin-top: 3mm;
-    }
-
-    .marksheet-footer-info {
-        margin-top: 3mm;
-    }
 
-    .authorized-signatory-area {
-        margin-top: 1mm;
-    }
 
 }
