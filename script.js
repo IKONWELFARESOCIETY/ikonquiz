@@ -2853,6 +2853,9 @@ function loadStudentResultList(){
         document
         .getElementById("studentResultPage")
         ?.classList.remove("hidden");
+        document
+        .getElementById("ResultPage")
+        ?.classList.remove("hidden");
 
         document.getElementById("resultStudentName").innerHTML=
         data.name || "";
