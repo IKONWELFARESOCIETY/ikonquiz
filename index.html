@@ -946,420 +946,340 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 
 </div>
-
-<!-- ============================================
- IKON INSTITUTE PROFESSIONAL MARKSHEET
- DMC HTML STRUCTURE
-============================================= -->
-
+<!-- ==================================================
+                MARKSHEET PAGE
+================================================== -->
 
 <div id="marksheetPage" class="hidden">
 
+    <div class="marksheet">
 
-<div class="marksheet">
+        <!--================ HEADER ================-->
 
+        <div class="ms-header">
 
-<!-- HEADER -->
+            <div class="ms-logo">
 
-<div class="marksheet-header">
+                <img src="ikon.jpg" alt="IKON Logo">
 
+            </div>
 
-<div class="ms-logo-box">
+            <div class="ms-title">
 
-<img id="instituteLogo"
-src="ikon.jpg">
+                <h1>IKON INSTITUTE</h1>
 
-</div>
+                <h2>RESULT CUM DETAILED MARKS CARD</h2>
 
+                <p>Recognised Computer Education Institute</p>
 
+            </div>
 
-<div class="ms-institute-title">
+            <div class="ms-top-right">
 
-<h1>IKON INSTITUTE</h1>
+                <div>
+                    <b>Marksheet No.</b> :
+                    <span id="msNo"></span>
+                </div>
 
-<h3>IKON WELFARE SOCIETY</h3>
+                <div>
+                    <b>Issue Date</b> :
+                    <span id="msIssueDate"></span>
+                </div>
 
-<p>
-DIPLOMA MARKS CERTIFICATE
-</p>
+            </div>
 
+        </div>
 
-</div>
 
+        <!--================ RESULT BAR ================-->
 
+        <div class="final-result-bar">
 
+            FINAL RESULT
 
-<div class="ms-issue-box">
+        </div>
 
-<p>
-<b>MARKSHEET NO</b>
-<br>
 
-<span id="marksheetNo">
----</span>
 
-</p>
+        <!--================ STUDENT INFO ================-->
 
+        <div class="student-info-card">
 
-<p>
-<b>ISSUE DATE</b>
-<br>
 
-<span id="issueDate">
----
-</span>
+            <!-- PHOTO -->
 
-</p>
+            <div class="student-photo-box">
 
+                <img
+                    id="msPhoto"
+                    src=""
+                    alt="Student Photo">
 
-</div>
+            </div>
 
 
 
-</div>
+            <!-- DETAILS -->
 
+            <div class="student-details-box">
 
+                <table>
 
-<hr>
+                    <tr>
 
+                        <td>Registration No.</td>
 
+                        <td>:</td>
 
-<!-- STUDENT INFORMATION -->
+                        <td id="msRegNo"></td>
 
+                    </tr>
 
-<div class="marksheet-student-info">
+                    <tr>
 
+                        <td>Student Name</td>
 
-<table>
+                        <td>:</td>
 
+                        <td id="msStudentName"></td>
 
-<tr>
+                    </tr>
 
-<td>
-<b>REGISTRATION NO</b>
-</td>
+                    <tr>
 
-<td id="msregNo">
----
-</td>
+                        <td>Course</td>
 
+                        <td>:</td>
 
-<td>
-<b>COURSE</b>
-</td>
+                        <td id="msCourse"></td>
 
-<td id="mscourseName">
----
-</td>
+                    </tr>
 
+                    <tr>
 
-</tr>
+                        <td>Paper</td>
 
+                        <td>:</td>
 
+                        <td id="msPaper"></td>
 
-<tr>
+                    </tr>
 
-<td>
-<b>STUDENT NAME</b>
-</td>
+                </table>
 
+            </div>
 
-<td id="msstudentName">
----
-</td>
 
 
-<td>
-<b>PAPER NAME</b>
-</td>
+            <!-- QR -->
 
+            <div class="qr-box">
 
-<td id="mspaperName">
----
-</td>
+                <img
+                    id="msQR"
+                    src=""
+                    alt="QR Code">
 
+            </div>
 
-</tr>
+        </div>
 
 
 
-</table>
+        <!--================ MARKS TABLE ================-->
 
+        <table class="marks-table">
 
-</div>
+            <thead>
 
+                <tr>
 
+                    <th>COURSE / SUBJECT</th>
 
+                    <th>FULL MARKS</th>
 
+                    <th>PASS MARKS</th>
 
-<!-- PHOTO + QR -->
+                    <th>MARKS OBTAINED</th>
 
+                    <th>STATUS</th>
 
-<div class="ms-photo-qr-section">
+                </tr>
 
+            </thead>
 
+            <tbody>
 
-<div class="ms-photo-area">
+                <tr>
 
+                    <td>Theory</td>
 
-<img id="marksheetPhoto"
-src=""
-alt="Student Photo">
+                    <td id="fullTheory"></td>
 
+                    <td id="passTheory"></td>
 
-<p>
-Student Photograph
-</p>
+                    <td id="theoryMarks"></td>
 
+                    <td id="theoryStatus"></td>
 
-</div>
+                </tr>
 
+                <tr>
 
+                    <td>Practical</td>
 
+                    <td id="fullPractical"></td>
 
+                    <td id="passPractical"></td>
 
-<div class="ms-qr-area">
+                    <td id="practicalMarks"></td>
 
+                    <td id="practicalStatus"></td>
 
-<img id="qrCode"
-src=""
->
+                </tr>
 
+                <tr>
 
-<p>
-Verify Result
-</p>
+                    <td>Viva</td>
 
+                    <td id="fullViva"></td>
 
-</div>
+                    <td id="passViva"></td>
 
+                    <td id="vivaMarks"></td>
 
+                    <td id="vivaStatus"></td>
 
-</div>
+                </tr>
 
+                <tr>
 
+                    <td>Behaviour</td>
 
+                    <td id="fullBehaviour"></td>
 
+                    <td id="passBehaviour"></td>
 
+                    <td id="behaviourMarks"></td>
 
+                    <td id="behaviourStatus"></td>
 
-<!-- MARKS TABLE -->
+                </tr>
 
+                <tr>
 
-<div class="ms-marks-section">
+                    <td>Project</td>
 
+                    <td id="fullProject"></td>
 
-<h3>ACADEMIC PERFORMANCE</h3>
+                    <td id="passProject"></td>
 
+                    <td id="projectMarks"></td>
 
-<table class="ms-marks-table">
+                    <td id="projectStatus"></td>
 
+                </tr>
 
-<thead>
+                <tr class="total-row">
 
-<tr>
+                    <td><b>TOTAL</b></td>
 
-<th>Paper Name</th>
+                    <td id="fullTotal"></td>
 
-<th>Theory</th>
+                    <td id="passTotal"></td>
 
-<th>Practical</th>
+                    <td id="obtainedTotal"></td>
 
-<th>Viva</th>
+                    <td id="overallStatus"></td>
 
-<th>Notes</th>
+                </tr>
 
-<th>Behaviour</th>
+            </tbody>
 
-<th>Project</th>
+        </table>
 
-<th>Total Marks</th>
 
 
-</tr>
+        <!--================ SUMMARY ================-->
 
+        <div class="summary-box">
 
-</thead>
 
+            <div class="summary-card">
 
+                <span>PERCENTAGE</span>
 
-<tbody id="marksBody">
+                <h2 id="msPercentage"></h2>
 
+            </div>
 
-<tr>
 
+            <div class="summary-card">
 
-<td id="subjectName">
----</td>
+                <span>GRADE</span>
 
+                <h2 id="msGrade"></h2>
 
-<td id="theory">
---
-</td>
+            </div>
 
 
-<td id="practical">
---
-</td>
+            <div class="summary-card result-card">
 
+                <span>FINAL RESULT</span>
 
-<td id="viva">
---
-</td>
+                <h2 id="msResult"></h2>
 
+            </div>
 
-<td id="notes">
---
-</td>
+        </div>
 
 
-<td id="behaviour">
---
-</td>
 
+        <!--================ FOOTER ================-->
 
-<td id="project">
---
-</td>
+        <div class="marksheet-footer">
 
 
-<td id="totalMarks">
---
-</td>
+            <div class="footer-left">
 
+                Course Coordinator
 
+            </div>
 
-</tr>
 
+            <div class="footer-right">
 
-</tbody>
+                Authorised Signatory
 
+            </div>
 
+        </div>
 
-</table>
 
 
+        <!--================ BUTTONS ================-->
 
+        <div class="marksheet-buttons">
 
-</div>
+            <button
+                class="secondary"
+                onclick="backToResultList()">
 
+                ← Back
 
+            </button>
 
+            <button
+                class="primary"
+                onclick="window.print()">
 
+                Print Marksheet
 
+            </button>
 
+        </div>
 
-<!-- RESULT SUMMARY -->
-
-
-<div class="ms-result-summary">
-
-
-<div>
-
-<b>PERCENTAGE</b>
-
-<span id="percentage">
---
-</span>
-
-</div>
-
-
-
-<div>
-
-<b>GRADE</b>
-
-<span id="grade">
---
-</span>
-
-</div>
-
-
-
-<div>
-
-<b>RESULT</b>
-
-<span id="result">
---
-</span>
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- FOOTER -->
-
-
-<div class="ms-marksheet-footer">
-
-
-
-<div class="ms-seal-box">
-
-
-<div class="ms-seal-circle">
-
-OFFICIAL<br>
-SEAL
-
-</div>
-
-
-<p>
-Authorized Signature
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="ms-seal-box">
-
-
-<div class="ms-seal-circle">
-
-COURSE<br>
-COORDINATOR
-
-</div>
-
-
-<p>
-Course Coordinator
-</p>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
+    </div>
 
 </div>
 
