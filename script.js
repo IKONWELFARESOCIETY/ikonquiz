@@ -2783,7 +2783,7 @@ function verifyResultStudent(){
     fetch(
         SCRIPT_URL +
         "?action=verifyResultStudent" +
-        "&studentId=" + encodeURIComponent(studentId)
+        "&id=" + encodeURIComponent(studentId)
     )
 
     .then(res => res.json())
@@ -2825,7 +2825,7 @@ function loadStudentResultList(){
    fetch(
     SCRIPT_URL +
     "?action=studentResultList" +
-    "&studentId=" + encodeURIComponent(window.resultStudentID)
+    "&id=" + encodeURIComponent(window.resultStudentID)
 )
 
     .then(function(res){
@@ -2873,7 +2873,7 @@ function loadStudentResultList(){
 
             tr.innerHTML=`
 
-<td>${r.paper}</td>
+<td>${r.paperName}</td>
 
 <td>${r.totalMarks}</td>
 
@@ -2889,7 +2889,7 @@ function loadStudentResultList(){
 
 <button
 class="viewBtn"
-onclick="openMarksheet('${r.paper}')">
+onclick="openMarksheet('${r.paperName}')">
 
 View Result
 
