@@ -325,7 +325,261 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 
 </div>
+<!--==================================================
+IKON PREMIUM DMC MARKSHEET
+PART 1 : HTML STRUCTURE
+===================================================-->
 
+<div id="dmcPage" class="ikon-dmc-page" style="display:none;">
+
+    <div class="ikon-sheet">
+
+        <!--==============================
+        WATERMARK
+        ==============================-->
+        <div class="ikon-watermark">
+            IKON
+        </div>
+
+        <!--==============================
+        HEADER
+        ==============================-->
+
+        <div class="ikon-header">
+
+            <div class="ikon-logo-box">
+
+                <img
+                    src="ikon.jpg"
+                    class="ikon-logo"
+                    alt="IKON">
+
+            </div>
+
+            <div class="ikon-header-center">
+
+                <h1>
+                    IKON WELFARE SOCIETY
+                </h1>
+
+                <h2>
+                    Diploma Cum Marksheet
+                </h2>
+
+                <p>
+                    Registered Under Government of India
+                </p>
+
+            </div>
+
+            <div class="ikon-photo-box">
+
+                <img
+                    id="dmcStudentPhoto"
+                    src=""
+                    class="ikon-photo">
+
+            </div>
+
+        </div>
+
+        <!--==============================
+        MARKSHEET INFO
+        ==============================-->
+
+        <div class="ikon-top-info">
+
+            <div>
+
+                <b>Marksheet No :</b>
+
+                <span id="dmcMarksheetNo"></span>
+
+            </div>
+
+            <div>
+
+                <b>Issue Date :</b>
+
+                <span id="dmcIssueDate"></span>
+
+            </div>
+
+        </div>
+
+        <!--==============================
+        STUDENT DETAILS
+        ==============================-->
+
+        <table class="ikon-student-table">
+
+            <tr>
+
+                <td>Student Name</td>
+
+                <td id="dmcStudentName"></td>
+
+                <td>Registration No</td>
+
+                <td id="dmcRegNo"></td>
+
+            </tr>
+
+            <tr>
+
+                <td>Course</td>
+
+                <td id="dmcCourse"></td>
+
+                <td>Paper</td>
+
+                <td id="dmcPaper"></td>
+
+            </tr>
+
+        </table>
+
+        <!--==============================
+        MARKS TABLE
+        ==============================-->
+
+        <table class="ikon-marks-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject</th>
+
+                    <th>Marks</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Theory</td>
+
+                    <td id="dmcTheory"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Practical</td>
+
+                    <td id="dmcPractical"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Viva</td>
+
+                    <td id="dmcViva"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Notes</td>
+
+                    <td id="dmcNotes"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Behaviour</td>
+
+                    <td id="dmcBehaviour"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Project</td>
+
+                    <td id="dmcProject"></td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <!--==============================
+        RESULT TABLE
+        ==============================-->
+
+        <table class="ikon-result-table">
+
+            <tr>
+
+                <td>Total Marks</td>
+
+                <td id="dmcTotal"></td>
+
+                <td>Percentage</td>
+
+                <td id="dmcPercentage"></td>
+
+            </tr>
+
+            <tr>
+
+                <td>Grade</td>
+
+                <td id="dmcGrade"></td>
+
+                <td>Result</td>
+
+                <td id="dmcResult"></td>
+
+            </tr>
+
+        </table>
+
+        <!--==============================
+        SIGNATURE AREA
+        ==============================-->
+
+        <div class="ikon-signatures">
+
+            <div>
+
+                ______________________
+
+                <br>
+
+                Course Coordinator
+
+            </div>
+
+            <div class="ikon-qr-box">
+
+                <!-- QR IMAGE LATER -->
+
+            </div>
+
+            <div>
+
+                ______________________
+
+                <br>
+
+                Authorized Signatory
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- ==================================================
@@ -944,372 +1198,6 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     </div>
 
-
-</div>
-<!-- ==================================================
-                MARKSHEET PAGE
-================================================== -->
-
-<div id="marksheetPage" class="hidden">
-
-    <div class="marksheet">
-
-        <!--================ HEADER ================-->
-
-        <div class="ms-header">
-
-            <div class="ms-logo">
-
-                <img src="ikon.jpg" alt="IKON Logo">
-
-            </div>
-
-            <div class="ms-title">
-
-                <h1>IKON INSTITUTE</h1>
-
-                <h2>RESULT CUM DETAILED MARKS CARD</h2>
-
-                <p>Recognised Computer Education Institute</p>
-
-            </div>
-
-            <div class="ms-top-right">
-
-                <div>
-                    <b>Marksheet No.</b> :
-                    <span id="msNo"></span>
-                </div>
-
-                <div>
-                    <b>Issue Date</b> :
-                    <span id="msIssueDate"></span>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!--================ RESULT BAR ================-->
-
-        <div class="final-result-bar">
-
-            FINAL RESULT
-
-        </div>
-
-
-
-        <!--================ STUDENT INFO ================-->
-
-        <div class="student-info-card">
-
-
-            <!-- PHOTO -->
-
-            <div class="student-photo-box">
-
-                <img
-                    id="msPhoto"
-                    src=""
-                    alt="Student Photo">
-
-            </div>
-
-
-
-            <!-- DETAILS -->
-
-            <div class="student-details-box">
-
-                <table>
-
-                    <tr>
-
-                        <td>Registration No.</td>
-
-                        <td>:</td>
-
-                        <td id="msRegNo"></td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Student Name</td>
-
-                        <td>:</td>
-
-                        <td id="msStudentName"></td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Course</td>
-
-                        <td>:</td>
-
-                        <td id="msCourse"></td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Paper</td>
-
-                        <td>:</td>
-
-                        <td id="msPaper"></td>
-
-                    </tr>
-
-                </table>
-
-            </div>
-
-
-
-            <!-- QR -->
-
-            <div class="qr-box">
-
-                <img
-                    id="msQR"
-                    src=""
-                    alt="QR Code">
-
-            </div>
-
-        </div>
-
-
-
-        <!--================ MARKS TABLE ================-->
-
-        <table class="marks-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>COURSE / SUBJECT</th>
-
-                    <th>FULL MARKS</th>
-
-                    <th>PASS MARKS</th>
-
-                    <th>MARKS OBTAINED</th>
-
-                    <th>STATUS</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-
-                    <td>Theory</td>
-
-                    <td id="fullTheory"></td>
-
-                    <td id="passTheory"></td>
-
-                    <td id="theoryMarks"></td>
-
-                    <td id="theoryStatus"></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>Practical</td>
-
-                    <td id="fullPractical"></td>
-
-                    <td id="passPractical"></td>
-
-                    <td id="practicalMarks"></td>
-
-                    <td id="practicalStatus"></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>Viva</td>
-
-                    <td id="fullViva"></td>
-
-                    <td id="passViva"></td>
-
-                    <td id="vivaMarks"></td>
-
-                    <td id="vivaStatus"></td>
-
-                </tr>
-                   <tr>
-
-                    <td>Notes</td>
-
-                    <td id="fullNotes"></td>
-
-                    <td id="passNotes"></td>
-
-                    <td id="NotesMarks"></td>
-
-                    <td id="notesStatus"></td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>Behaviour</td>
-
-                    <td id="fullBehaviour"></td>
-
-                    <td id="passBehaviour"></td>
-
-                    <td id="behaviourMarks"></td>
-
-                    <td id="behaviourStatus"></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>Project</td>
-
-                    <td id="fullProject"></td>
-
-                    <td id="passProject"></td>
-
-                    <td id="projectMarks"></td>
-
-                    <td id="projectStatus"></td>
-
-                </tr>
-
-                <tr class="total-row">
-
-                    <td><b>TOTAL</b></td>
-
-                    <td id="fullTotal"></td>
-
-                    <td id="passTotal"></td>
-
-                    <td id="obtainedTotal"></td>
-
-                    <td id="overallStatus"></td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-
-
-        <!--================ SUMMARY ================-->
-
-        <div class="summary-box">
-
-
-            <div class="summary-card">
-
-                <span>PERCENTAGE</span>
-
-                <h2 id="msPercentage"></h2>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <span>GRADE</span>
-
-                <h2 id="msGrade"></h2>
-
-            </div>
-
-
-            <div class="summary-card result-card">
-
-                <span>FINAL RESULT</span>
-
-                <h2 id="msResult"></h2>
-
-            </div>
-
-        </div>
-
-
-
-        <!--================ FOOTER ================-->
-
-        <div class="marksheet-footer">
-
-
-            <div class="footer-left">
-
-                Course Coordinator
-
-            </div>
- <div class="ms-qr-section">
-
-        <div class="ms-qr-box">
-
-            <img
-                id="qrCode"
-                src=""
-                alt="QR Code">
-
-        </div>
-
-        <div class="ms-qr-text">
-            Scan For Verification
-        </div>
-
-    </div>
-
-
-            <div class="footer-right">
-
-                Authorised Signatory
-
-            </div>
-
-        </div>
-
-
-
-        <!--================ BUTTONS ================-->
-
-        <div class="marksheet-buttons">
-
-            <button
-                class="secondary"
-                onclick="backToResultList()">
-
-                ← Back
-
-            </button>
-
-            <button
-                class="primary"
-                onclick="window.print()">
-
-                Print Marksheet
-
-            </button>
-
-        </div>
-
-    </div>
 
 </div>
 
