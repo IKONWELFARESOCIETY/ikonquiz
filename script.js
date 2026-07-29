@@ -3201,7 +3201,7 @@ function loadAllResults(){
 
                         <button
                             class="primary"
-                            onclick="openDMCMarksheet(
+                            onclick="loadDMCMarksheet(
                                 '${String(row.regNo || "").replace(/'/g,"\\'")}',
                                 '${String(row.paper || "").replace(/'/g,"\\'")}'
                             )">
