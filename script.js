@@ -3449,217 +3449,158 @@ row.style.display=text.includes(input)?"":"none";
 //====================================================
 
 
-function openMarksheet(regNo,paperName){
+/*==========================================
+LOAD DMC MARKSHEET
+==========================================*/
 
-let studentId = prompt("Enter Student ID");
+async function loadDMCMarksheet(regNo, paper, studentId){
 
-if(studentId === null){
-    return;
-}
+    try{
 
-studentId = studentId.trim();
+        const url =
+        SCRIPT_URL +
+        "?action=dmcMarksheet" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&paper=" + encodeURIComponent(paper) +
+        "&studentId=" + encodeURIComponent(studentId);
 
+        const res = await fetch(url);
 
-if(studentId===""){
+        const data = await res.json();
 
-alert("Please Enter Student ID");
-return;
+        if(data.status !== "SUCCESS"){
 
-}
+            alert("Marksheet Not Found");
+            return;
 
+        }
 
-fetch(
-SCRIPT_URL+
-"?action=dmcMarksheet"+
-"&regNo="+encodeURIComponent(regNo)+
-"&paper="+encodeURIComponent(paperName)+
-"&studentId="+encodeURIComponent(studentId)
-)
+        const s = data.student;
+        const m = data.marksheet;
 
 
-.then(function(res){
+        /*==============================
+        STUDENT DETAILS
+        ==============================*/
 
-return res.json();
+        document.getElementById("mkStudentName").textContent =
+        s.name || "";
 
-})
+        document.getElementById("mkRegNo").textContent =
+        s.regNo || "";
 
+        document.getElementById("mkCourse").textContent =
+        s.course || "";
 
-.then(function(data){
 
 
-console.log("DMC DATA:",data);
+        /*==============================
+        DMC DETAILS
+        ==============================*/
 
+        document.getElementById("mkPaperName").textContent =
+        m["Paper Name"] || "";
 
+        document.getElementById("mkTheory").textContent =
+        m["Theory"] || "";
 
-if(data.status==="INVALID_ID"){
+        document.getElementById("mkPractical").textContent =
+        m["Practical"] || "";
 
-alert("Invalid Student ID");
-return;
+        document.getElementById("mkViva").textContent =
+        m["Viva"] || "";
 
-}
+        document.getElementById("mkNotes").textContent =
+        m["Notes"] || "";
 
+        document.getElementById("mkBehaviour").textContent =
+        m["Behaviour"] || "";
 
+        document.getElementById("mkProject").textContent =
+        m["Project"] || "";
 
-if(data.status!=="SUCCESS"){
+        document.getElementById("mkTotalMarks").textContent =
+        m["Total Marks"] || "";
 
-alert("Marksheet Not Found");
-return;
+        document.getElementById("mkPercentage").textContent =
+        m["Percentage"] || "";
 
-}
+        document.getElementById("mkGrade").textContent =
+        m["Grade"] || "";
 
+        document.getElementById("mkResult").textContent =
+        m["Result"] || "";
 
+        document.getElementById("mkResultBig").textContent =
+        m["Result"] || "";
 
-let s=data.student || {};
+        document.getElementById("mkIssueDate").textContent =
+        m["Issue date"] || "";
 
-let m=data.marksheet || {};
+        document.getElementById("mkMarksheetNo").textContent =
+        m["MARKSHEET NO"] || "";
 
 
 
-// hide result list
+        /*==============================
+        STUDENT IMAGE
+        ==============================*/
 
-document
-.getElementById("studentResultPage")
-?.classList.add("hidden");
+       const img =
+"https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/"
++ s.regNo +
+".jpeg";
 
+document.getElementById("studentPhoto").src = img;
 
+document.getElementById("studentPhoto").onerror = function(){
+    this.src =
+    "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/default.jpeg";
+};
 
-// show marksheet
 
-document
-.getElementById("marksheetPage")
-?.classList.remove("hidden");
+        /*==============================
+        RESULT COLOR
+        ==============================*/
 
+        const result =
+        String(m["Result"]).toUpperCase();
 
+        if(result==="PASS"){
 
+            document
+            .getElementById("mkResultBig")
+            .style.color="#0a9c3f";
 
-// student details
+        }else{
 
+            document
+            .getElementById("mkResultBig")
+            .style.color="#d40000";
 
-document.getElementById("msRegNo").innerHTML =
-s.regNo || regNo;
+        }
 
 
-document.getElementById("msStudentName").innerHTML =
-s.name || "";
 
+        /*==============================
+        GRADE COLOR
+        ==============================*/
 
-document.getElementById("msCourse").innerHTML =
-s.course || "";
+        const grade =
+        document.getElementById("mkGrade");
 
+        grade.style.fontWeight="700";
+        grade.style.color="#003a8c";
 
-document.getElementById("msPaper").innerHTML =
-m["Paper Name"] || paperName;
 
+    }
+    catch(err){
 
+        console.log(err);
 
-// marks
+        alert("Unable to load marksheet.");
 
-
-document.getElementById("theoryMarks").innerHTML =
-m["Theory"] || 0;
-
-
-document.getElementById("practicalMarks").innerHTML =
-m["Practical"] || 0;
-
-
-document.getElementById("vivaMarks").innerHTML =
-m["Viva"] || 0;
-
-
-document.getElementById("Notesmarks").innerHTML =
-m["Notes"] || 0;
-
-
-document.getElementById("behaviourMarks").innerHTML =
-m["Behaviour"] || 0;
-
-
-document.getElementById("projectMarks").innerHTML =
-m["Project"] || 0;
-
-
-document.getElementById("obtainedTotal").innerHTML =
-m["Total Marks"] || 0;
-
-
-
-// result
-
-
-document.getElementById("msPercentage").innerHTML =
-(m["Percentage"] || 0)+"%";
-
-
-document.getElementById("msGrade").innerHTML =
-m["Grade"] || "";
-
-
-document.getElementById("msResult").innerHTML =
-m["Result"] || "";
-
-
-
-// photo
-
-
-let photo =
-"images/student/"+regNo+".jpeg";
-
-
-let img=document.getElementById("msPhoto");
-
-
-if(img){
-
-img.src=photo;
-
-
-img.onerror=function(){
-
-this.src="no-photo.jpeg";
-
-}
-
-}
-
-
-
-
-// QR
-
-
-let verifyLink =
-window.location.origin+
-"/verify.html?reg="+regNo;
-
-
-
-let qr=document.getElementById("qrCode");
-
-
-if(qr){
-
-qr.src =
-"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+
-encodeURIComponent(verifyLink);
-
-}
-
-
-
-})
-
-
-
-.catch(function(err){
-
-console.log("MARKSHEET ERROR",err);
-
-alert("Unable to load marksheet");
-
-});
-
+    }
 
 }
 //====================================================
