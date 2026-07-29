@@ -3479,9 +3479,149 @@ function openMarksheet(regNo, paper){
     );
 
 }
-/*==========================================
-LOAD DMC MARKSHEET
-==========================================*/
+//====================================================
+// LOAD DMC MARKSHEET
+//====================================================
+
+function loadMarksheet(){
+
+  const regNo = localStorage.getItem("regNo") || "";
+  const paper = localStorage.getItem("paperName") || "";
+  const studentId = localStorage.getItem("studentId") || "";
+
+
+  if(!regNo || !paper || !studentId){
+    alert("Invalid Student Details");
+    return;
+  }
+
+
+  fetch(
+    SCRIPT_URL +
+    "?action=dmcMarksheet" +
+    "&regNo=" + encodeURIComponent(regNo) +
+    "&paper=" + encodeURIComponent(paper) +
+    "&studentId=" + encodeURIComponent(studentId)
+  )
+  .then(res => res.json())
+  .then(data => {
+
+
+    if(data.status !== "SUCCESS"){
+
+      alert("Marksheet Not Found");
+      return;
+
+    }
+
+
+    const s = data.student;
+    const m = data.marksheet;
+
+
+
+    //==============================
+    // STUDENT DETAILS
+    //==============================
+
+
+    document.getElementById("mkRegNo").textContent =
+    s.regNo || "";
+
+
+    document.getElementById("mkStudentName").textContent =
+    s.name || "";
+
+
+    document.getElementById("mkCourse").textContent =
+    s.course || "";
+
+
+
+    //==============================
+    // DMC DETAILS
+    //==============================
+
+
+    document.getElementById("mkPaperName").textContent =
+    m["Paper Name"] || "";
+
+
+    document.getElementById("mkTheory").textContent =
+    m["Theory"] || "";
+
+
+    document.getElementById("mkPractical").textContent =
+    m["Practical"] || "";
+
+
+
+    // HARD CODED VALUES
+    document.getElementById("mkTotalMarks").textContent =
+    "100";
+
+
+    document.getElementById("mkPassMarks").textContent =
+    "33";
+
+
+
+    // OBTAIN MARKS FROM SHEET
+
+    document.getElementById("mkObtainMarks").textContent =
+    m["Obtain Marks"] || "";
+
+
+
+    // PERCENTAGE
+
+    document.getElementById("mkPercentage").textContent =
+    m["Percentage"] || "";
+
+
+
+    // GRADE
+
+    document.getElementById("mkGrade").textContent =
+    m["Grade"] || "";
+
+
+
+    // RESULT
+
+    document.getElementById("mkResult").textContent =
+    m["Result"] || "";
+
+
+
+    //==============================
+    // LOGO
+    //==============================
+
+    document.getElementById("mkLogo").src =
+    "ikon.jpg";
+
+
+
+    //==============================
+    // QR CODE
+    //==============================
+
+    document.getElementById("mkQR").src =
+    "qr.png";
+
+
+
+  })
+  .catch(err=>{
+
+    console.log(err);
+    alert("Server Error");
+
+  });
+
+
+}
 
 
 //====================================================
