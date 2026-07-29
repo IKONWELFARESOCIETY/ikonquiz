@@ -3295,7 +3295,7 @@ function loadMarksheet(){
 
         }
 
-        fillMarksheet(data);
+        fillMarksheet(data.marksheet);
 
     })
 
