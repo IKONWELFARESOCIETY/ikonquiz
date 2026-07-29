@@ -3535,19 +3535,19 @@ document
 // student details
 
 
-document.getElementById("msregNo").innerHTML =
+document.getElementById("msRegNo").innerHTML =
 s.regNo || regNo;
 
 
-document.getElementById("msstudentName").innerHTML =
+document.getElementById("msStudentName").innerHTML =
 s.name || "";
 
 
-document.getElementById("mscourseName").innerHTML =
+document.getElementById("msCourse").innerHTML =
 s.course || "";
 
 
-document.getElementById("mspaperName").innerHTML =
+document.getElementById("msPaper").innerHTML =
 m["Paper Name"] || paperName;
 
 
@@ -3555,31 +3555,31 @@ m["Paper Name"] || paperName;
 // marks
 
 
-document.getElementById("theory").innerHTML =
+document.getElementById("theoryMarks").innerHTML =
 m["Theory"] || 0;
 
 
-document.getElementById("practical").innerHTML =
+document.getElementById("practicalMarks").innerHTML =
 m["Practical"] || 0;
 
 
-document.getElementById("viva").innerHTML =
+document.getElementById("vivaMarks").innerHTML =
 m["Viva"] || 0;
 
 
-document.getElementById("notes").innerHTML =
+document.getElementById("Notesmarks").innerHTML =
 m["Notes"] || 0;
 
 
-document.getElementById("behaviour").innerHTML =
+document.getElementById("behaviourMarks").innerHTML =
 m["Behaviour"] || 0;
 
 
-document.getElementById("project").innerHTML =
+document.getElementById("projectMarks").innerHTML =
 m["Project"] || 0;
 
 
-document.getElementById("totalmarks").innerHTML =
+document.getElementById("obtainedTotal").innerHTML =
 m["Total Marks"] || 0;
 
 
@@ -3587,15 +3587,15 @@ m["Total Marks"] || 0;
 // result
 
 
-document.getElementById("mspercentage").innerHTML =
+document.getElementById("msPercentage").innerHTML =
 (m["Percentage"] || 0)+"%";
 
 
-document.getElementById("grade").innerHTML =
+document.getElementById("msGrade").innerHTML =
 m["Grade"] || "";
 
 
-document.getElementById("msresult").innerHTML =
+document.getElementById("msResult").innerHTML =
 m["Result"] || "";
 
 
@@ -3607,7 +3607,7 @@ let photo =
 "images/student/"+regNo+".jpeg";
 
 
-let img=document.getElementById("marksheetPhoto");
+let img=document.getElementById("msPhoto");
 
 
 if(img){
