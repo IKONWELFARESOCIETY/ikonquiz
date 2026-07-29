@@ -250,7 +250,98 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     <!-- ================= RESULT TABLE ================= -->
 
- 
+ <!-- ==================================================
+                STUDENT RESULT PAGE
+================================================== -->
+
+<div id="marksheetPage" class="hidden">
+
+    <div class="result-page">
+
+        <div class="result-header">
+
+            <img src="ikon.jpg"
+                 class="result-logo"
+                 alt="IKON Logo">
+
+            <div>
+
+                <h2>IKON INSTITUTE</h2>
+
+                <p>Student Examination Result</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+         <table class="result-table">
+
+    <thead>
+
+        <tr>
+
+            <th>Reg No</th>
+            <th>Student Name</th>
+            <th>Course</th>
+            <th>Paper Name</th>
+
+            <th>Theory<br><small>(100/40)</small></th>
+
+            <th>Practical<br><small>(40/20)</small></th>
+
+            <th>Viva<br><small>(20/10)</small></th>
+
+            <th>Notes<br><small>(20/10)</small></th>
+
+            <th>Behaviour<br><small>(20/10)</small></th>
+
+            <th>Project<br><small>(100/40)</small></th>
+
+            <th>Total<br><small>(300/130)</small></th>
+
+            <th>Percentage</th>
+
+            <th>Grade</th>
+
+            <th>Result</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody id="resultTableBody">
+
+        <!--
+        JavaScript Google Sheet se rows yahan automatically add karega.
+        Koi row yahan hardcode mat karna.
+        -->
+
+    </tbody>
+
+</table>
+        </div>
+
+
+        <div class="result-footer">
+
+            <button
+                class="secondary"
+                onclick="backToResultVerify()">
+
+                ← Back
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
     <button
         class="secondary"
@@ -769,7 +860,422 @@ IKON Institute Online Test Portal | Student Login & Class Test
     <!-- ==================================================
                     SUCCESS PAGE
 ================================================== -->
+<!--====================================================
+MARKSHEET PAGE - PART 1
+=====================================================-->
 
+<div id="marksheetPage" class="hidden">
+
+<div class="marksheet-a4">
+
+    <!--================ HEADER ================-->
+
+    <div class="mk-header">
+
+        <div class="mk-logo-box">
+            <img src="ikon.jpg" id="mkLogo">
+        </div>
+
+        <div class="mk-title">
+
+            <h1>IKON INSTITUTE</h1>
+
+            <h3>RESULT CUM DETAILED MARKS CARD</h3>
+
+            <p>Recognised Computer Education Institute</p>
+
+        </div>
+
+        <div class="mk-top-right">
+
+            <table>
+
+                <tr>
+                    <td>Marksheet No.</td>
+                    <td>:</td>
+                    <td id="mkMarksheetNo"></td>
+                </tr>
+
+                <tr>
+                    <td>Issue Date</td>
+                    <td>:</td>
+                    <td id="mkIssueDate"></td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!--============== RESULT BAR ==============-->
+
+    <div class="mk-result-bar">
+
+        FINAL RESULT
+
+    </div>
+
+
+
+    <!--=========== STUDENT DETAILS ============-->
+
+    <div class="mk-student-box">
+
+
+        <!-- Student Photo -->
+
+        <div class="mk-photo-box">
+
+            <img id="mkPhoto" src="no-photo.jpeg">
+
+            <span>PHOTO</span>
+
+        </div>
+
+
+
+        <!-- Student Details -->
+
+        <div class="mk-details">
+
+
+            <table>
+
+                <tr>
+
+                    <td>Registration No.</td>
+
+                    <td>:</td>
+
+                    <td id="mkRegNo"></td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>Student Name</td>
+
+                    <td>:</td>
+
+                    <td id="mkStudentName"></td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>Course</td>
+
+                    <td>:</td>
+
+                    <td id="mkCourse"></td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>Paper</td>
+
+                    <td>:</td>
+
+                    <td id="mkPaperName"></td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- QR Code -->
+
+        <div class="mk-qr-box">
+
+            <img id="mkQR" src="qr.png">
+
+            <span>QR</span>
+
+        </div>
+
+    </div>
+
+
+
+    <!--============== MARKS TABLE ==============-->
+
+    <table class="mk-table">
+
+        <thead>
+
+        <tr>
+
+            <th style="width:38%">
+                COURSE / SUBJECT
+            </th>
+
+            <th>
+                FULL<br>MARKS
+            </th>
+
+            <th>
+                PASS<br>MARKS
+            </th>
+
+            <th>
+                MARKS<br>OBTAINED
+            </th>
+
+            <th>
+                STATUS
+            </th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+
+        <tr>
+
+            <td>Theory</td>
+
+            <td>100</td>
+
+            <td>40</td>
+
+            <td id="mkTheory"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+
+
+
+        <tr>
+
+            <td>Notes</td>
+
+            <td>20</td>
+
+            <td>10</td>
+
+            <td id="mkNotes"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+
+
+
+        <tr>
+
+            <td>Practical</td>
+
+            <td>40</td>
+
+            <td>20</td>
+
+            <td id="mkPractical"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+
+
+
+        <tr>
+
+            <td>Viva</td>
+
+            <td>20</td>
+
+            <td>10</td>
+
+            <td id="mkViva"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+
+
+
+        <tr>
+
+            <td>Project</td>
+
+            <td>100</td>
+
+            <td>40</td>
+
+            <td id="mkProject"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+
+
+
+        <tr>
+
+            <td>Behaviour</td>
+
+            <td>20</td>
+
+            <td>10</td>
+
+            <td id="mkBehaviour"></td>
+
+            <td class="status-pass">PASS</td>
+
+        </tr>
+              <!--================ TOTAL ROW =================-->
+
+        <tr class="mk-total-row">
+
+            <td><b>TOTAL</b></td>
+
+            <td id="mkTotalMarks">300</td>
+
+            <td id="mkPassMarks">130</td>
+
+            <td id="mkObtainedMarks"></td>
+
+            <td id="mkResultTable"></td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+
+    <!--================ RESULT SUMMARY =================-->
+
+    <div class="mk-summary">
+
+        <div class="mk-summary-box">
+
+            <div class="mk-summary-title">
+                Percentage
+            </div>
+
+            <div
+                class="mk-summary-value"
+                id="mkPercentage">
+            </div>
+
+        </div>
+
+
+
+        <div class="mk-summary-box">
+
+            <div class="mk-summary-title">
+                Grade
+            </div>
+
+            <div
+                class="mk-summary-value"
+                id="mkGrade">
+            </div>
+
+        </div>
+
+
+
+        <div class="mk-summary-box">
+
+            <div class="mk-summary-title">
+                Final Result
+            </div>
+
+            <div
+                class="mk-summary-value"
+                id="mkResult">
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--================ NOTE =================-->
+
+    <div class="mk-note">
+
+        <b>Important :</b>
+
+        This marksheet has been generated digitally by
+        <b>IKON INSTITUTE</b>.
+        No manual signature is required for online verification.
+
+    </div>
+
+
+
+    <!--================ SIGNATURE AREA =================-->
+
+    <div class="mk-signatures">
+
+        <div class="mk-sign">
+
+            <div class="mk-sign-line"></div>
+
+            <span>
+                Student Signature
+            </span>
+
+        </div>
+
+
+
+        <div class="mk-sign">
+
+            <div class="mk-sign-line"></div>
+
+            <span>
+                Checked By
+            </span>
+
+        </div>
+
+
+
+        <div class="mk-sign">
+
+            <div class="mk-sign-line"></div>
+
+            <span>
+                Centre Head
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!--================ FOOTER =================-->
+
+    <div class="mk-footer">
+
+        © IKON INSTITUTE |
+        Computer Education & Skill Development
+
+    </div>
+
+</div>
+
+</div>
 <div
     id="successPage"
     class="hidden">
