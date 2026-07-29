@@ -3485,9 +3485,9 @@ function openMarksheet(regNo, paper){
 
 function loadDMCMarksheet(){
 
-  const regNo = localStorage.getItem("regNo") || "";
-  const paper = localStorage.getItem("paperName") || "";
-  const studentId = localStorage.getItem("studentId") || "";
+  const regNo = localStorage.getItem("regNo,data.student.regNo") || "";
+  const paper = localStorage.getItem("paperName,data.student.id") || "";
+  const studentId = localStorage.getItem("studentId,paper") || "";
 
 
   if(!regNo || !paper || !studentId){
