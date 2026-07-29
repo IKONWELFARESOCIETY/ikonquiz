@@ -2872,7 +2872,9 @@ function loadStudentResultList(){
             const tr=document.createElement("tr");
 
             tr.innerHTML=`
-
+<td>${r.regNo}</td>
+<td>${r.studentName}</td>
+<td>${r.course}</td>
 <td>${r.paperName}</td>
 
 <td>${r.totalMarks}</td>
@@ -2979,43 +2981,7 @@ row.style.display=text.includes(input)?"":"none";
 
         // Create Question Details
 
-        let html = "";
-
-
-        data.details.forEach(function(item){
-
-            html += `
-
-                <div class="answer-detail-card">
-
-                    <p>
-                        <b>Question:</b>
-                        ${item.question || ""}
-                    </p>
-
-                    <p>
-                        <b>Correct Answer:</b>
-                        ${item.correctAnswer || ""}
-                    </p>
-
-                    <p>
-                        <b>Student Answer:</b>
-                        ${
-                            item.studentAnswer
-                            ? item.studentAnswer
-                            : "Not Attempted"
-                        }
-                    </p>
-
-                </div>
-
-            `;
-
-        });
-
-
-      
-
+     
 //====================================================
 // BACK TO RESULT LIST FROM ANSWER DETAILS
 //====================================================
