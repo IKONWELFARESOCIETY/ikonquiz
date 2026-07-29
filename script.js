@@ -2977,19 +2977,6 @@ row.style.display=text.includes(input)?"":"none";
 
 }
 
-        // Paper Name
-
-        const paperBox =
-            document.getElementById("answerPaperName");
-
-        if(paperBox){
-
-            paperBox.innerHTML =
-                data.paper || paperName;
-
-        }
-
-
         // Create Question Details
 
         let html = "";
