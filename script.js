@@ -3013,21 +3013,6 @@ row.style.display=text.includes(input)?"":"none";
 
 }
 
-
-
-
-      
-        const nameBox =
-            document.getElementById("answerStudentName");
-
-        if(nameBox){
-
-            nameBox.innerHTML =
-                data.name || "";
-
-        }
-
-
         // Paper Name
 
         const paperBox =
@@ -3078,27 +3063,8 @@ row.style.display=text.includes(input)?"":"none";
         });
 
 
-        const detailsBox =
-            document.getElementById("adminAnswerDetailsData");
+      
 
-
-        if(detailsBox){
-
-            detailsBox.innerHTML = html;
-
-        }
-
-    })
-
-    .catch(function(err){
-
-        console.log(err);
-
-        alert("Unable to load answer details.");
-
-    });
-
-}
 //====================================================
 // BACK TO RESULT LIST FROM ANSWER DETAILS
 //====================================================
@@ -3598,6 +3564,7 @@ function closeMarksheet(){
 //====================================================
 
 function searchResult(){
+    
 
     const txt = document
     .getElementById("searchResult")
