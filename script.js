@@ -3201,7 +3201,7 @@ function loadAllResults(){
 
                         <button
                             class="primary"
-                            onclick="openMarksheet(
+                            onclick="openDMCMarksheet(
                                 '${String(row.regNo || "").replace(/'/g,"\\'")}',
                                 '${String(row.paper || "").replace(/'/g,"\\'")}'
                             )">
@@ -3483,7 +3483,7 @@ function openMarksheet(regNo, paper){
 // LOAD DMC MARKSHEET
 //====================================================
 
-function loadMarksheet(){
+function loadDMCMarksheet(){
 
   const regNo = localStorage.getItem("regNo") || "";
   const paper = localStorage.getItem("paperName") || "";
