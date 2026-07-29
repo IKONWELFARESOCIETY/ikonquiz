@@ -2735,7 +2735,221 @@ console.log(
 //==================================================
 // SHOW STUDENT RESULT
 //==================================================
+//====================================================
+// RESULT MODULE PART 1
+// OPEN RESULT VERIFY PAGE
+//====================================================
 
+function openResultVerifyPage(){
+
+    document.getElementById("loginPage")?.classList.add("hidden");
+    document.getElementById("waitingPage")?.classList.add("hidden");
+    document.getElementById("testPage")?.classList.add("hidden");
+    document.getElementById("successPage")?.classList.add("hidden");
+
+    document.getElementById("studentResultPage")?.classList.add("hidden");
+    document.getElementById("marksheetPage")?.classList.add("hidden");
+
+    document.getElementById("resultVerifyPage")?.classList.remove("hidden");
+
+    const reg=document.getElementById("resultRegNo");
+    const id=document.getElementById("resultStudentID");
+
+    if(reg) reg.value="";
+    if(id) id.value="";
+}
+
+
+
+//====================================================
+// VERIFY RESULT STUDENT
+//====================================================
+
+function verifyResultStudent(){
+
+    const regNo=document
+    .getElementById("resultRegNo")
+    .value
+    .trim();
+
+    const studentId=document
+    .getElementById("resultStudentID")
+    .value
+    .trim();
+
+    if(regNo===""){
+
+        alert("Enter Registration Number");
+
+        return;
+
+    }
+
+    if(studentId===""){
+
+        alert("Enter Student ID");
+
+        return;
+
+    }
+
+    fetch(
+
+        SCRIPT_URL+
+
+        "?action=verifyResultStudent"+
+
+        "&regNo="+encodeURIComponent(regNo)+
+
+        "&studentId="+encodeURIComponent(studentId)
+
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(data);
+
+        if(data.status!=="SUCCESS"){
+
+            alert(data.message || "Invalid Student Details");
+
+            return;
+
+        }
+
+        studentName=data.name || "";
+
+        paperName="";
+
+        window.resultRegNo=regNo;
+        window.resultStudentID=studentId;
+
+        loadStudentResultList();
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to verify student.");
+
+    });
+
+}
+
+
+
+//====================================================
+// LOAD RESULT LIST
+//====================================================
+
+function loadStudentResultList(){
+
+    fetch(
+
+        SCRIPT_URL+
+
+        "?action=studentResultList"+
+
+        "&regNo="+encodeURIComponent(window.resultRegNo)+
+
+        "&studentId="+encodeURIComponent(window.resultStudentID)
+
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(data);
+
+        if(data.status!=="SUCCESS"){
+
+            alert(data.message || "No Result Found");
+
+            return;
+
+        }
+
+        document
+        .getElementById("resultVerifyPage")
+        ?.classList.add("hidden");
+
+        document
+        .getElementById("studentResultPage")
+        ?.classList.remove("hidden");
+
+        document.getElementById("resultStudentName").innerHTML=
+        data.name || "";
+
+        document.getElementById("resultRegNumber").innerHTML=
+        data.regNo || "";
+
+        document.getElementById("resultCourse").innerHTML=
+        data.course || "";
+
+        const body=document.getElementById("resultTableBody");
+
+        body.innerHTML="";
+
+        data.results.forEach(function(r){
+
+            const tr=document.createElement("tr");
+
+            tr.innerHTML=`
+
+<td>${r.paper}</td>
+
+<td>${r.totalMarks}</td>
+
+<td>${r.obtainedMarks}</td>
+
+<td>${r.percentage}%</td>
+
+<td>${r.grade}</td>
+
+<td>${r.result}</td>
+
+<td>
+
+<button
+class="viewBtn"
+onclick="openMarksheet('${r.paper}')">
+
+View Result
+
+</button>
+
+</td>
+
+`;
+
+            body.appendChild(tr);
+
+        });
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to load Result List.");
+
+    });
+
+}
 
 //====================================
 // BACK LOGIN
@@ -2800,50 +3014,9 @@ row.style.display=text.includes(input)?"":"none";
 }
 
 
-function openMarksheet(regNo, paper){
-
-    if(!regNo || !paper){
-
-        alert("Student details missing.");
-        return;
-
-    }
 
 
-    document
-    .getElementById("studentResultPage")
-    ?.classList.add("hidden");
-
-
-    document
-    .getElementById("marksheetPage")
-    ?.classList.remove("hidden");
-
-
-    loadDMCMarksheet(
-        regNo,
-        paper,
-        studentId
-    );
-
-}
-
-       // Hide Result List
-
-        document
-        .getElementById("studentResultPage")
-        ?.classList.add("hidden");
-
-
-        // Show Answer Details Page
-
-        document
-        .getElementById("adminAnswerDetailsPage")
-        ?.classList.remove("hidden");
-
-
-        // Student Name
-
+      
         const nameBox =
             document.getElementById("answerStudentName");
 
@@ -2946,39 +3119,7 @@ function backToResultListFromAnswers(){
         ?.classList.remove("hidden");
 
 }
-function showMarksheet(data){
 
-document
-.getElementById("studentResultPage")
-.classList.add("hidden");
-
-document
-.getElementById("marksheetPage")
-.classList.remove("hidden");
-
-
-document.getElementById("msregNo").innerHTML=data.regNo;
-
-document.getElementById("msName").innerHTML=data.name;
-
-document.getElementById("msCourse").innerHTML=data.course;
-
-document.getElementById("msPaper").innerHTML=data.paper;
-
-document.getElementById("msCorrect").innerHTML=data.correct;
-
-document.getElementById("msGrade").innerHTML=data.grade;
-
-document.getElementById("msResult").innerHTML=data.result;
-
-
-// Student Photo
-
-document.getElementById("msPhoto").src=
-
-data.regNo+".jpeg";
-
-}
 function backToResultList(){
 
 document
@@ -3159,3 +3300,379 @@ function closeAdminVerify(){
     }
 
 }
+//====================================================
+// RESULT MODULE PART 2A
+// OPEN MARKSHEET
+//====================================================
+
+function openMarksheet(paper){
+
+    paperName = paper;
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.remove("hidden");
+
+    loadMarksheet();
+
+}
+
+
+
+//====================================================
+// LOAD MARKSHEET
+//====================================================
+
+function loadMarksheet(){
+
+    fetch(
+
+        SCRIPT_URL +
+
+        "?action=marksheet" +
+
+        "&id=" +
+
+        encodeURIComponent(window.resultStudentID) +
+
+        "&paper=" +
+
+        encodeURIComponent(paperName)
+
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log("Marksheet :",data);
+
+        if(data.status !== "SUCCESS"){
+
+            alert(data.message || "Marksheet Not Found");
+
+            backToResultList();
+
+            return;
+
+        }
+
+        fillMarksheet(data);
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to Load Marksheet.");
+
+        backToResultList();
+
+    });
+
+}
+//====================================================
+// RESULT MODULE PART 2B
+// FILL MARKSHEET
+//====================================================
+
+function fillMarksheet(m){
+
+    //==============================
+    // HEADER
+    //==============================
+
+    document.getElementById("mkMarksheetNo").textContent =
+    m.marksheetNo || "";
+
+    document.getElementById("mkIssueDate").textContent =
+    m.issueDate || "";
+
+
+    //==============================
+    // STUDENT DETAILS
+    //==============================
+
+    document.getElementById("mkRegNo").textContent =
+    m.regNo || "";
+
+    document.getElementById("mkStudentName").textContent =
+    m.name || "";
+
+    document.getElementById("mkCourse").textContent =
+    m.course || "";
+
+    document.getElementById("mkPaperName").textContent =
+    m.paperName || "";
+
+
+    //==============================
+    // SUBJECT MARKS
+    //==============================
+
+    document.getElementById("mkTheory").textContent =
+    m.theory || "0";
+
+    document.getElementById("mkPractical").textContent =
+    m.practical || "0";
+
+    document.getElementById("mkViva").textContent =
+    m.viva || "0";
+
+    document.getElementById("mkNotes").textContent =
+    m.notes || "0";
+
+    document.getElementById("mkBehaviour").textContent =
+    m.behaviour || "0";
+
+    document.getElementById("mkProject").textContent =
+    m.project || "0";
+
+
+    //==============================
+    // RESULT SUMMARY
+    //==============================
+
+    document.getElementById("mkTotalMarks").textContent =
+    m.totalMarks || "";
+
+    document.getElementById("mkPassMarks").textContent =
+    m.passMarks || "";
+
+    document.getElementById("mkObtainedMarks").textContent =
+    m.obtainedMarks || "";
+
+    document.getElementById("mkPercentage").textContent =
+    (m.percentage || "0") + "%";
+
+    document.getElementById("mkGrade").textContent =
+    m.grade || "";
+
+    document.getElementById("mkResult").textContent =
+    m.result || "";
+
+
+    //==============================
+    // PHOTO
+    //==============================
+
+    const photo =
+    document.getElementById("mkPhoto");
+
+    if(photo){
+
+        photo.src =
+        regNo + ".jpeg";
+
+        photo.onerror=function(){
+
+            this.src="no-photo.jpeg";
+
+        };
+
+    }
+
+
+    //==============================
+    // QR CODE
+    //==============================
+
+    const qr =
+    document.getElementById("mkQR");
+
+    if(qr){
+
+        if(m.qr){
+
+            qr.src = m.qr;
+
+        }
+        else{
+
+            qr.src="qr.png";
+
+        }
+
+    }
+
+}
+//====================================================
+// RESULT MODULE PART 3
+// BACK + PRINT + DOWNLOAD
+//====================================================
+
+
+//====================================================
+// BACK TO RESULT LIST
+//====================================================
+
+function backToResultList(){
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.remove("hidden");
+
+}
+
+
+
+//====================================================
+// BACK TO RESULT VERIFY
+//====================================================
+
+function backToResultVerify(){
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("resultVerifyPage")
+    ?.classList.remove("hidden");
+
+}
+
+
+
+//====================================================
+// PRINT MARKSHEET
+//====================================================
+
+function printMarksheet(){
+
+    window.print();
+
+}
+
+
+
+//====================================================
+// DOWNLOAD MARKSHEET
+//====================================================
+
+function downloadMarksheet(){
+
+    window.print();
+
+}
+
+
+
+//====================================================
+// CLOSE MARKSHEET
+//====================================================
+
+function closeMarksheet(){
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.remove("hidden");
+
+}
+
+
+
+//====================================================
+// SEARCH RESULT
+//====================================================
+
+function searchResult(){
+
+    const txt = document
+    .getElementById("searchResult")
+    .value
+    .toUpperCase();
+
+    const rows =
+    document.querySelectorAll(
+        "#resultTableBody tr"
+    );
+
+    rows.forEach(function(row){
+
+        row.style.display =
+        row.innerText
+        .toUpperCase()
+        .includes(txt)
+        ? ""
+        : "none";
+
+    });
+
+}
+
+
+
+//====================================================
+// REFRESH RESULT LIST
+//====================================================
+
+function refreshResultList(){
+
+    loadStudentResultList();
+
+}
+
+
+
+//====================================================
+// PRINT SHORTCUT
+//====================================================
+
+document.addEventListener("keydown",function(e){
+
+    if(
+
+        e.ctrlKey &&
+
+        e.key.toLowerCase()=="p"
+
+    ){
+
+        const page =
+        document.getElementById("marksheetPage");
+
+        if(
+
+            page &&
+
+            !page.classList.contains("hidden")
+
+        ){
+
+            e.preventDefault();
+
+            printMarksheet();
+
+        }
+
+    }
+
+});
+
+
+
+//====================================================
+// END RESULT MODULE
+//====================================================
