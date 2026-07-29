@@ -2767,25 +2767,12 @@ function openResultVerifyPage(){
 
 function verifyResultStudent(){
 
-    const regNo=document
-    .getElementById("resultRegNo")
-    .value
-    .trim();
+    const studentId = document
+        .getElementById("resultStudentID")
+        .value
+        .trim();
 
-    const studentId=document
-    .getElementById("resultStudentID")
-    .value
-    .trim();
-
-    if(regNo===""){
-
-        alert("Enter Registration Number");
-
-        return;
-
-    }
-
-    if(studentId===""){
+    if(studentId === ""){
 
         alert("Enter Student ID");
 
@@ -2794,41 +2781,25 @@ function verifyResultStudent(){
     }
 
     fetch(
-
-        SCRIPT_URL+
-
-        "?action=verifyResultStudent"+
-
-        "&regNo="+encodeURIComponent(regNo)+
-
-        "&studentId="+encodeURIComponent(studentId)
-
+        SCRIPT_URL +
+        "?action=verifyResultStudent" +
+        "&studentId=" + encodeURIComponent(studentId)
     )
 
-    .then(function(res){
-
-        return res.json();
-
-    })
+    .then(res => res.json())
 
     .then(function(data){
 
-        console.log(data);
+        if(data.status !== "SUCCESS"){
 
-        if(data.status!=="SUCCESS"){
-
-            alert(data.message || "Invalid Student Details");
+            alert(data.message || "Invalid Student ID");
 
             return;
 
         }
 
-        studentName=data.name || "";
-
-        paperName="";
-
-        window.resultRegNo=regNo;
-        window.resultStudentID=studentId;
+        studentName = data.name || "";
+        window.resultStudentID = studentId;
 
         loadStudentResultList();
 
@@ -2845,24 +2816,17 @@ function verifyResultStudent(){
 }
 
 
-
 //====================================================
 // LOAD RESULT LIST
 //====================================================
 
 function loadStudentResultList(){
 
-    fetch(
-
-        SCRIPT_URL+
-
-        "?action=studentResultList"+
-
-        "&regNo="+encodeURIComponent(window.resultRegNo)+
-
-        "&studentId="+encodeURIComponent(window.resultStudentID)
-
-    )
+   fetch(
+    SCRIPT_URL +
+    "?action=studentResultList" +
+    "&studentId=" + encodeURIComponent(window.resultStudentID)
+)
 
     .then(function(res){
 
