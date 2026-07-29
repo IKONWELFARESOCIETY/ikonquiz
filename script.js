@@ -3448,7 +3448,37 @@ row.style.display=text.includes(input)?"":"none";
 // LOAD FROM DMC SHEET
 //====================================================
 
+//====================================================
+// OPEN DMC MARKSHEET
+//====================================================
 
+function openMarksheet(regNo, paper){
+
+    if(!regNo || !paper){
+
+        alert("Student details missing.");
+        return;
+
+    }
+
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.add("hidden");
+
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.remove("hidden");
+
+
+    loadDMCMarksheet(
+        regNo,
+        paper,
+        studentId
+    );
+
+}
 /*==========================================
 LOAD DMC MARKSHEET
 ==========================================*/
