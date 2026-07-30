@@ -2901,8 +2901,27 @@ button:focus{
     will-change:transform;
 }
 
-body{
+.result-list-box{
+    background:yellow !important;
+}
 
-background:red !important;
+.result-list-box h2{
+    color:red !important;
+    font-size:40px !important;
+}
 
+#searchResult{
+    width:100% !important;
+    height:50px !important;
+    background:#e8f5ff !important;
+    border:3px solid blue !important;
+}
+
+.resultTable th{
+    background:#005bea !important;
+    color:#fff !important;
+}
+
+.resultTable td{
+    border:1px solid red !important;
 }
