@@ -3149,6 +3149,7 @@ MOBILE
 ====================================================*/
 
 #marksheetPage{
+   display:none;
     width:210mm;
     min-height:297mm;
     margin:10px auto;
