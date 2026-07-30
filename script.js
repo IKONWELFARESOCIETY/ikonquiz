@@ -2809,8 +2809,6 @@ function verifyResultStudent(){
                 </button>
             </td>
 
-            `;
-
             body.appendChild(tr);
 
         });
@@ -2826,19 +2824,6 @@ function verifyResultStudent(){
     });
 
 }
-
-
-
-<button
-class="viewBtn"
-onclick="openMarksheet('${r.paperName}')">
-
-View Result
-
-</button>
-
-</td>
-
 `;
 
             body.appendChild(tr);
