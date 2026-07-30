@@ -3143,52 +3143,13 @@ MOBILE
 }
 
 }
-/*==================================================
-        PREMIUM A4 MARKSHEET
-        PART 1 : PAGE + BORDER + HEADER
-==================================================*/
-
-#marksheetPage{
-
-    width:210mm;
-    min-height:297mm;
-    margin:15px auto;
-    padding:0;
-    background:#ffffff;
-    font-family:"Segoe UI",Arial,sans-serif;
-    color:#222;
-
-}
-
 .marksheet{
 
     position:relative;
 
-    width:200mm;
-    min-height:287mm;
-
-    margin:auto;
-
-    padding:7mm;
-
-    background:#fff;
-
-    border:3px solid #0b4fa3;
-
-    outline:2px solid #d7b24c;
-
-    outline-offset:-8px;
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.12);
-
     overflow:hidden;
 
 }
-
-/*==========================
-WATERMARK
-==========================*/
 
 .mkWatermark{
 
@@ -3196,13 +3157,13 @@ WATERMARK
 
     left:50%;
 
-    top:52%;
+    top:50%;
 
     transform:translate(-50%,-50%);
 
-    opacity:.045;
+    z-index:1;
 
-    z-index:0;
+    opacity:.16;
 
     pointer-events:none;
 
@@ -3210,13 +3171,11 @@ WATERMARK
 
 .mkWatermark img{
 
-    width:340px;
+    width:480px;
+
+    filter:grayscale(100%) contrast(130%);
 
 }
-
-/*==========================
-CONTENT ABOVE WATERMARK
-==========================*/
 
 .mkHeader,
 .mkStudentSection,
@@ -3227,57 +3186,128 @@ CONTENT ABOVE WATERMARK
 .mkFooter{
 
     position:relative;
+
+    z-index:5;
+
+}
+/*====================================================
+            PREMIUM A4 MARKSHEET
+====================================================*/
+
+.marksheet{
+
+    width:210mm;
+    min-height:297mm;
+
+    margin:30px auto;
+
+    background:#fff;
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:28px;
+
+    box-sizing:border-box;
+
+    border:10px solid #0b4f9c;
+
+    outline:3px solid #d8b44c;
+
+    outline-offset:-18px;
+
+    box-shadow:0 0 20px rgba(0,0,0,.25);
+
+    font-family:"Times New Roman",serif;
+
+}
+
+
+/* Decorative Border */
+
+.marksheet::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:10px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+
+    border:2px solid #d8b44c;
+
+    pointer-events:none;
+
+    z-index:2;
+
+}
+
+.marksheet::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:20px;
+    left:20px;
+    right:20px;
+    bottom:20px;
+
+    border:1px solid #e6c96a;
+
+    pointer-events:none;
+
+    z-index:2;
+
+}
+
+
+/*=========================
+        HEADER
+=========================*/
+
+.mkHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:28px;
+
+    position:relative;
+
     z-index:5;
 
 }
 
-/*==========================
-HEADER
-==========================*/
 
-.mkHeader{
-
-    display:grid;
-
-    grid-template-columns:90px 1fr 190px;
-
-    align-items:center;
-
-    column-gap:15px;
-
-    padding-bottom:10px;
-
-    border-bottom:2px solid #d8b24d;
-
-}
-
-/*==========================
-LOGO
-==========================*/
+/* Logo */
 
 .mkLogo{
 
-    display:flex;
+    width:120px;
 
-    justify-content:center;
-
-    align-items:center;
+    text-align:center;
 
 }
 
 .mkLogo img{
 
-    width:75px;
-
-    height:auto;
+    width:95px;
 
 }
 
-/*==========================
-HEADING
-==========================*/
+
+/* Heading */
 
 .mkHeading{
+
+    flex:1;
 
     text-align:center;
 
@@ -3287,27 +3317,35 @@ HEADING
 
     margin:0;
 
-    color:#0b4fa3;
+    color:#0b4f9c;
 
-    font-size:34px;
+    font-size:36px;
 
-    font-weight:800;
+    font-weight:bold;
 
-    letter-spacing:1px;
+    letter-spacing:2px;
+
+    text-transform:uppercase;
 
 }
 
 .mkHeading h2{
 
-    margin:5px 0;
+    display:inline-block;
 
-    font-size:18px;
+    margin:12px 0 8px;
 
-    font-weight:700;
+    padding:8px 45px;
 
-    color:#111;
+    background:#0b4f9c;
 
-    letter-spacing:.5px;
+    color:#fff;
+
+    border-radius:40px;
+
+    font-size:20px;
+
+    letter-spacing:1px;
 
 }
 
@@ -3315,21 +3353,20 @@ HEADING
 
     margin:0;
 
-    color:#666;
+    color:#555;
 
-    font-size:12px;
+    font-size:15px;
 
 }
 
-/*==========================
-TOP RIGHT BOX
-==========================*/
+
+/*=========================
+     MARKSHEET INFO
+=========================*/
 
 .mkTopRight{
 
-    display:flex;
-
-    justify-content:flex-end;
+    width:220px;
 
 }
 
@@ -3339,116 +3376,63 @@ TOP RIGHT BOX
 
     border-collapse:collapse;
 
-    font-size:12px;
+    font-size:14px;
 
 }
 
 .mkTopTable td{
 
-    padding:5px 7px;
+    border:1px solid #999;
 
-    border:1px solid #cfd6e4;
+    padding:8px;
 
 }
 
 .mkTopTable td:first-child{
 
-    width:48%;
-
-    background:#eef4ff;
-
-    font-weight:700;
-
-}
-
-/*==========================
-FINAL RESULT RIBBON
-==========================*/
-
-.mkRibbon{
-
-    width:230px;
-
-    height:42px;
-
-    margin:18px auto;
-
-    border-radius:30px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
+    background:#0b4f9c;
 
     color:#fff;
 
-    font-size:17px;
+    font-weight:bold;
 
-    font-weight:700;
-
-    letter-spacing:1px;
-
-    background:linear-gradient(
-        135deg,
-        #0b4fa3,
-        #1d6bd8
-    );
-
-    box-shadow:
-        0 8px 18px rgba(0,80,180,.25);
+    width:45%;
 
 }
-.mkHeading h2{
 
-    display:inline-block;
+.mkTopTable td:last-child{
 
-    margin:12px auto 6px;
+    background:#fafafa;
 
-    padding:10px 40px;
-
-    border-radius:30px;
-
-    background:linear-gradient(135deg,#0b4fa3,#1d6bd8);
-
-    color:#fff;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    letter-spacing:1px;
-
-    box-shadow:0 6px 15px rgba(0,91,234,.25);
+    font-weight:bold;
 
 }
-/*==================================================
-        PART 2 : STUDENT INFORMATION
-==================================================*/
+/*====================================================
+            STUDENT INFORMATION
+====================================================*/
 
 .mkStudentSection{
 
     display:grid;
 
-    grid-template-columns:110px 1fr 85px;
+    grid-template-columns:120px 1fr 120px;
 
-    gap:15px;
+    gap:20px;
 
-    margin:18px 0 15px;
+    align-items:center;
 
-    padding:12px;
+    margin:30px 0;
 
-    border:1px solid #d8e2f2;
+    position:relative;
 
-    background:#f8fbff;
-
-    border-radius:8px;
+    z-index:5;
 
 }
 
-/*==========================
-PHOTO
-==========================*/
+
+/*=========================
+        PHOTO
+=========================*/
 
 .mkPhotoSection{
 
@@ -3456,27 +3440,27 @@ PHOTO
 
     justify-content:center;
 
-    align-items:flex-start;
-
 }
 
 .mkPhotoBox{
 
-    width:95px;
+    width:110px;
 
-    height:115px;
+    height:130px;
+
+    border:3px solid #0b4f9c;
 
     background:#fff;
 
-    border:2px solid #0b4fa3;
+    padding:4px;
 
-    padding:3px;
+    box-sizing:border-box;
 
-    box-shadow:0 3px 8px rgba(0,0,0,.12);
+    box-shadow:0 2px 8px rgba(0,0,0,.18);
 
 }
 
-#mkStudentPhoto{
+.mkPhotoBox img{
 
     width:100%;
 
@@ -3486,13 +3470,24 @@ PHOTO
 
 }
 
-/*==========================
-DETAILS
-==========================*/
+
+/*=========================
+        DETAILS BOX
+=========================*/
 
 .mkStudentLeft{
 
-    width:100%;
+    background:#f4f4f4;
+
+    border:2px solid #cfcfcf;
+
+    border-left:8px solid #0b4f9c;
+
+    border-radius:6px;
+
+    padding:16px;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
 
 }
 
@@ -3504,25 +3499,39 @@ DETAILS
 
 }
 
+.mkInfoTable tr{
+
+    border-bottom:1px dashed #bfbfbf;
+
+}
+
+.mkInfoTable tr:last-child{
+
+    border-bottom:none;
+
+}
+
 .mkInfoTable td{
 
-    padding:8px 10px;
+    padding:10px 8px;
 
-    font-size:14px;
-
-    border:1px solid #d8e2f2;
+    font-size:15px;
 
 }
 
 .mkInfoTable .title{
 
-    width:185px;
+    width:180px;
 
-    background:#eef5ff;
+    font-weight:bold;
 
-    color:#0b4fa3;
+    color:#0b4f9c;
 
-    font-weight:700;
+}
+
+.mkInfoTable .title::after{
+
+    content:" :";
 
 }
 
@@ -3534,35 +3543,38 @@ DETAILS
 
 }
 
-/*==========================
-QR
-==========================*/
+
+/*=========================
+          QR
+=========================*/
 
 .mkQRSection{
 
     display:flex;
 
-    justify-content:flex-end;
-
-    align-items:flex-start;
+    justify-content:center;
 
 }
 
 .mkQRBox{
 
-    width:70px;
+    width:110px;
 
-    height:70px;
+    height:110px;
+
+    border:3px solid #0b4f9c;
 
     background:#fff;
 
-    border:1px solid #999;
+    padding:5px;
 
-    padding:3px;
+    box-sizing:border-box;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.18);
 
 }
 
-#mkQRCode{
+.mkQRBox img{
 
     width:100%;
 
@@ -3571,491 +3583,13 @@ QR
     object-fit:contain;
 
 }
-/*==================================================
-        PART 3 : PREMIUM MARKS TABLE
-==================================================*/
 
-.mkMarksSection{
 
-    margin-top:16px;
+/*=========================
+     RESPONSIVE
+=========================*/
 
-}
-
-/*==========================
-TABLE
-==========================*/
-
-.mkMarksTable{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    table-layout:fixed;
-
-    border:2px solid #0b4fa3;
-
-}
-
-/*==========================
-HEADER
-==========================*/
-
-.mkMarksTable thead th{
-
-    background:linear-gradient(135deg,#0b4fa3,#1b66cc);
-
-    color:#fff;
-
-    padding:10px 8px;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    border:1px solid #fff;
-
-    text-align:center;
-
-}
-
-/*==========================
-BODY
-==========================*/
-
-.mkMarksTable td{
-
-    border:1px solid #bfcde0;
-
-    padding:9px 8px;
-
-    font-size:14px;
-
-    text-align:center;
-
-}
-
-.mkMarksTable td:nth-child(2){
-
-    text-align:left;
-
-    padding-left:15px;
-
-    font-weight:600;
-
-}
-
-.mkMarksTable tbody tr:nth-child(even){
-
-    background:#f7faff;
-
-}
-
-.mkMarksTable tbody tr:hover{
-
-    background:#eef5ff;
-
-}
-
-/*==========================
-TOTAL ROW
-==========================*/
-
-.mkGrandTotal{
-
-    background:#e7efff !important;
-
-    font-weight:700;
-
-}
-
-.mkGrandTotal td{
-
-    font-size:15px;
-
-    color:#0b4fa3;
-
-}
-
-/*==========================
-COLUMN WIDTH
-==========================*/
-
-.mkMarksTable th:nth-child(1),
-.mkMarksTable td:nth-child(1){
-
-    width:12%;
-
-}
-
-.mkMarksTable th:nth-child(2),
-.mkMarksTable td:nth-child(2){
-
-    width:40%;
-
-}
-
-.mkMarksTable th:nth-child(3),
-.mkMarksTable td:nth-child(3){
-
-    width:16%;
-
-}
-
-.mkMarksTable th:nth-child(4),
-.mkMarksTable td:nth-child(4){
-
-    width:16%;
-
-}
-
-.mkMarksTable th:nth-child(5),
-.mkMarksTable td:nth-child(5){
-
-    width:16%;
-
-}
-
-/*==================================================
-SUMMARY BOXES
-==================================================*/
-
-.mkSummary{
-
-    margin-top:18px;
-
-}
-
-.mkSummaryTable{
-
-    width:100%;
-
-    border-collapse:separate;
-
-    border-spacing:12px 0;
-
-}
-
-.mkSummaryTable th{
-
-    background:#0b4fa3;
-
-    color:#fff;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    padding:10px;
-
-    border-radius:8px 8px 0 0;
-
-}
-
-.mkSummaryTable td{
-
-    background:#f7faff;
-
-    border:2px solid #d9e5f5;
-
-    border-top:none;
-
-    text-align:center;
-
-    padding:14px;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    color:#0b4fa3;
-
-    border-radius:0 0 8px 8px;
-
-}
-
-/*==========================
-RESULT COLOR
-==========================*/
-
-#mkResult{
-
-    color:#0b8a35;
-
-    font-size:19px;
-
-    font-weight:800;
-
-    letter-spacing:.5px;
-
-}
-
-#mkGrade{
-
-    color:#d97706;
-
-    font-size:18px;
-
-    font-weight:700;
-
-}
-
-#mkPercentage{
-
-    color:#0b4fa3;
-
-    font-size:18px;
-
-    font-weight:700;
-
-}
-/*==================================================
-        PART 4 : DECLARATION + SIGNATURE + PRINT
-==================================================*/
-
-/*==========================
-DECLARATION
-==========================*/
-
-.mkDeclaration{
-
-    margin:18px 0;
-
-    padding:12px 15px;
-
-    border:1px solid #d7e2f2;
-
-    background:#fafcff;
-
-    border-left:5px solid #0b4fa3;
-
-    font-size:13px;
-
-    color:#444;
-
-    line-height:1.8;
-
-    text-align:justify;
-
-}
-
-/*==========================
-SIGNATURE SECTION
-==========================*/
-
-.mkSignatureSection{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr 1fr;
-
-    gap:35px;
-
-    margin-top:35px;
-
-    align-items:end;
-
-}
-
-.mkSignBox{
-
-    text-align:center;
-
-}
-
-.mkSignLine{
-
-    border-top:1.8px solid #000;
-
-    margin-top:45px;
-
-    padding-top:8px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    color:#222;
-
-}
-
-/*==========================
-SEAL
-==========================*/
-
-.mkSealArea{
-
-    width:90px;
-
-    height:90px;
-
-    margin:0 auto 18px;
-
-    border:2px dashed #777;
-
-    border-radius:50%;
-
-}
-
-/*==========================
-FOOTER
-==========================*/
-
-.mkFooter{
-
-    margin-top:25px;
-
-    padding-top:12px;
-
-    border-top:2px solid #0b4fa3;
-
-    text-align:center;
-
-}
-
-.mkFooter p{
-
-    margin:4px 0;
-
-    font-size:12px;
-
-    color:#555;
-
-    line-height:1.6;
-
-}
-
-/*==========================
-PRINT
-==========================*/
-
-@page{
-
-    size:A4 portrait;
-
-    margin:5mm;
-
-}
-
-@media print{
-
-html,
-body{
-
-    width:210mm;
-
-    height:297mm;
-
-    margin:0;
-
-    padding:0;
-
-    background:#fff !important;
-
-}
-
-/* Hide Everything */
-
-body>*{
-
-    display:none !important;
-
-}
-
-/* Show Only Marksheet */
-
-#marksheetPage{
-
-    display:block !important;
-
-    width:210mm;
-
-    margin:0 auto;
-
-}
-
-.marksheet{
-
-    width:200mm;
-
-    min-height:287mm;
-
-    margin:auto;
-
-    box-shadow:none;
-
-    border:3px solid #0b4fa3;
-
-    outline:2px solid #d7b24c;
-
-    outline-offset:-8px;
-
-}
-
-/* Page Break Protection */
-
-table,
-tr,
-td,
-th,
-img,
-.mkHeader,
-.mkStudentSection,
-.mkMarksSection,
-.mkSummary,
-.mkDeclaration,
-.mkSignatureSection,
-.mkFooter{
-
-    page-break-inside:avoid;
-
-}
-
-/* Exact Colors */
-
-*{
-
-    -webkit-print-color-adjust:exact;
-
-    print-color-adjust:exact;
-
-}
-
-}
-
-/*==========================
-RESPONSIVE
-==========================*/
-
-@media(max-width:900px){
-
-#marksheetPage{
-
-    width:100%;
-
-    padding:10px;
-
-}
-
-.marksheet{
-
-    width:100%;
-
-    min-height:auto;
-
-    padding:18px;
-
-}
-
-.mkHeader{
-
-    grid-template-columns:1fr;
-
-    text-align:center;
-
-    row-gap:15px;
-
-}
+@media(max-width:768px){
 
 .mkStudentSection{
 
@@ -4070,27 +3604,553 @@ RESPONSIVE
 
 }
 
-.mkSignatureSection{
+.mkStudentLeft{
 
-    grid-template-columns:1fr;
+    margin:10px 0;
 
-    gap:30px;
+}
+
+}
+/*====================================================
+                PREMIUM MARKS TABLE
+====================================================*/
+
+.mkMarksSection{
+
+    margin-top:25px;
+    position:relative;
+    z-index:5;
+
+}
+
+.mkMarksTable{
+
+    width:100%;
+    border-collapse:collapse;
+    font-size:15px;
+
+}
+
+.mkMarksTable th{
+
+    background:#0b4f9c;
+    color:#fff;
+    padding:12px;
+    border:2px solid #0b4f9c;
+    text-align:center;
+    font-size:15px;
+    letter-spacing:.5px;
+
+}
+
+.mkMarksTable td{
+
+    border:1px solid #8f8f8f;
+    padding:10px;
+    text-align:center;
+
+}
+
+.mkMarksTable td:nth-child(2){
+
+    text-align:left;
+    padding-left:18px;
+    font-weight:600;
+
+}
+
+.mkMarksTable tbody tr:nth-child(even){
+
+    background:#f8f8f8;
+
+}
+
+.mkMarksTable tbody tr:hover{
+
+    background:#eef6ff;
+
+}
+
+.mkGrandTotal{
+
+    background:#0b4f9c !important;
+    color:#fff;
+    font-weight:bold;
+    font-size:17px;
+
+}
+
+.mkGrandTotal td{
+
+    border:2px solid #0b4f9c;
+
+}
+
+
+/*====================================================
+                SUMMARY TABLE
+====================================================*/
+
+.mkSummary{
+
+    margin-top:28px;
 
 }
 
 .mkSummaryTable{
 
-    border-spacing:0;
+    width:100%;
+    border-collapse:collapse;
 
 }
 
-.mkSummaryTable th,
+.mkSummaryTable th{
+
+    background:#0b4f9c;
+    color:#fff;
+    padding:12px;
+    font-size:16px;
+    border:2px solid #0b4f9c;
+
+}
+
 .mkSummaryTable td{
 
+    text-align:center;
+    padding:18px 10px;
+    border:2px solid #cfcfcf;
+    font-size:20px;
+    font-weight:bold;
+    background:#fafafa;
+
+}
+
+
+/*====================================================
+                RESULT COLORS
+====================================================*/
+
+#mkPercentage{
+
+    color:#0b4f9c;
+    font-size:24px;
+
+}
+
+#mkGrade{
+
+    color:#c08b00;
+    font-size:24px;
+
+}
+
+#mkResult{
+
+    color:#138000;
+    font-size:24px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+
+}
+
+
+/* FAIL */
+
+#mkResult.fail{
+
+    color:#c30000;
+
+}
+
+
+/*====================================================
+                TABLE PRINT LOOK
+====================================================*/
+
+.mkMarksTable,
+.mkSummaryTable{
+
+    page-break-inside:avoid;
+
+}
+/*====================================================
+            DECLARATION
+====================================================*/
+
+.mkDeclaration{
+
+    margin:30px 0 25px;
+
+    padding:15px 20px;
+
+    border-left:6px solid #0b4f9c;
+
+    background:#f7f9fc;
+
+    font-size:15px;
+
+    line-height:28px;
+
+    color:#333;
+
+    text-align:justify;
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+
+/*====================================================
+            SIGNATURE SECTION
+====================================================*/
+
+.mkSignatureSection{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    margin-top:45px;
+
+    gap:25px;
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+.mkSignBox{
+
+    flex:1;
+
+    text-align:center;
+
+}
+
+.mkSignLine{
+
+    width:180px;
+
+    margin:0 auto 10px;
+
+    border-top:2px solid #000;
+
+}
+
+.mkSignBox strong{
+
     display:block;
+
+    font-size:15px;
+
+    color:#0b4f9c;
+
+    letter-spacing:.5px;
+
+}
+
+/*=========================
+        SEAL
+=========================*/
+
+.mkSealArea{
+
+    width:95px;
+
+    height:95px;
+
+    margin:0 auto 10px;
+
+    border:3px dashed #c9a227;
+
+    border-radius:50%;
+
+    background:rgba(11,79,156,.05);
+
+}
+
+
+/*====================================================
+                FOOTER
+====================================================*/
+
+.mkFooter{
+
+    margin-top:35px;
+
+    border-top:2px solid #0b4f9c;
+
+    padding-top:12px;
+
+    text-align:center;
+
+    color:#444;
+
+    font-size:14px;
+
+    line-height:24px;
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+.mkFooter p{
+
+    margin:4px 0;
+
+}
+
+
+/*====================================================
+            PRINT
+====================================================*/
+
+@media print{
+
+body{
+
+    margin:0;
+
+    background:#fff;
+
+}
+
+.marksheet{
+
+    width:210mm;
+
+    min-height:297mm;
+
+    margin:0;
+
+    box-shadow:none;
+
+    page-break-after:avoid;
+
+}
+
+}
+
+
+/*====================================================
+            MOBILE
+====================================================*/
+
+@media(max-width:768px){
+
+.marksheet{
+
+    width:100%;
+
+    min-height:auto;
+
+    padding:18px;
+
+    border-width:6px;
+
+}
+
+.mkHeader{
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.mkHeading h1{
+
+    font-size:28px;
+
+}
+
+.mkHeading h2{
+
+    font-size:18px;
+
+    padding:8px 28px;
+
+}
+
+.mkTopRight{
 
     width:100%;
 
 }
+
+.mkSignatureSection{
+
+    flex-direction:column;
+
+    gap:35px;
+
+}
+
+.mkSignLine{
+
+    width:140px;
+
+}
+
+.mkSealArea{
+
+    width:80px;
+
+    height:80px;
+
+}
+
+}
+
+
+/*====================================================
+            FINISHING TOUCHES
+====================================================*/
+
+#mkStudentName,
+#mkCourse,
+#mkPaperName,
+#mkRegNo{
+
+    text-transform:uppercase;
+
+}
+
+#mkResult{
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+}
+
+#mkGrade{
+
+    font-weight:800;
+
+}
+
+#mkTotal{
+
+    font-weight:bold;
+
+    font-size:18px;
+
+}
+
+.mkMarksTable th{
+
+    text-transform:uppercase;
+
+}
+
+.mkSummaryTable th{
+
+    text-transform:uppercase;
+
+}
+.mkGoldenLine{
+
+    width:100%;
+
+    height:4px;
+
+    background:linear-gradient(
+        90deg,
+        #c89b2d,
+        #f7df8a,
+        #c89b2d
+    );
+
+    margin:12px 0 25px;
+
+    border-radius:5px;
+
+}
+.mkHeading h2{
+
+    display:inline-block;
+
+    padding:9px 50px;
+
+    background:#0b4f9c;
+
+    color:#fff;
+
+    border-radius:40px;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+
+}
+#mkStudentName{
+
+    color:#0b4f9c;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+}
+.mkMarksTable th{
+
+    border:2px solid #d2ab3d;
+
+    background:#0b4f9c;
+
+}
+.mkGrandTotal{
+
+    background:#fff7df !important;
+
+    color:#000 !important;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.mkGrandTotal td{
+
+    border:2px solid #d2ab3d;
+
+}
+#mkResult{
+
+    display:inline-block;
+
+    padding:8px 25px;
+
+    border-radius:30px;
+
+    background:#138000;
+
+    color:#fff;
+
+}
+
+#mkResult.fail{
+
+    background:#d60000;
+
+    color:#fff;
+
+}
+.mkSealArea img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
 
 }
