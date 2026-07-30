@@ -2762,8 +2762,9 @@ function verifyResultStudent(){
             return;
         }
 
-        document.getElementById("resultVerifyPage").classList.add("hidden");
-        document.getElementById("studentResultPage").classList.remove("hidden");
+       document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("resultVerifyPage").classList.add("hidden");
+document.getElementById("studentResultPage").classList.remove("hidden");
 
         const body = document.getElementById("resultTableBody");
 
