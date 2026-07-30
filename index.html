@@ -783,6 +783,11 @@ IKON Institute Online Test Portal | Student Login & Class Test
 <div id="marksheetPage" class="hidden">
 
 <div class="marksheet">
+      <div class="mkWatermark">
+
+<img src="ikon.jpg">
+
+</div>
 
     <!--================ HEADER ================-->
 
@@ -841,78 +846,85 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     <hr>
 
-    <!--================ STUDENT INFO START ================-->
+   <!--================ STUDENT INFO ================-->
 
-    <div class="mkStudentSection">
-          <!--================ STUDENT DETAILS ================-->
+<div class="mkStudentSection">
 
-<div class="mkStudentLeft">
+    <!-- PHOTO -->
 
-    <table class="mkInfoTable">
+    <div class="mkPhotoSection">
 
-        <tr>
+        <div class="mkPhotoBox">
 
-            <td class="title">Registration No</td>
+            <img
+                id="mkStudentPhoto"
+                src=""
+                alt="Student Photo"
+                width="120"
+                height="140">
 
-            <td id="mkRegNo" class="value"></td>
-
-        </tr>
-
-        <tr>
-
-            <td class="title">Student Name</td>
-
-            <td class="value" id="mkStudentName"></td>
-
-        </tr>
-
-        <tr>
-
-            <td class="title">Course</td>
-
-            <td class="value" id="mkCourse"></td>
-
-        </tr>
-
-        <tr>
-
-            <td class="title">Paper Name</td>
-
-            <td class="value" id="mkPaperName"></td>
-
-        </tr>
-
-    </table>
-
-</div>
-
-<!--================ PHOTO & QR ================-->
-
-<div class="mkStudentRight">
-
-    <div class="mkPhotoBox">
-
-                  <img
-            id="mkStudentPhoto"
-            src=""
-            alt="Student Photo"
-            width="120"
-            height="140">
+        </div>
 
     </div>
 
-    <div class="mkQRBox">
+    <!-- STUDENT DETAILS -->
 
-                   <img
-            id="mkQRCode"
-            src=""
-            alt="QR"
-            width="90"
-            height="90">
+    <div class="mkStudentLeft">
+
+        <table class="mkInfoTable">
+
+            <tr>
+
+                <td class="title">Registration No.</td>
+
+                <td class="value" id="mkRegNo"></td>
+
+            </tr>
+
+            <tr>
+
+                <td class="title">Student Name</td>
+
+                <td class="value" id="mkStudentName"></td>
+
+            </tr>
+
+            <tr>
+
+                <td class="title">Course</td>
+
+                <td class="value" id="mkCourse"></td>
+
+            </tr>
+
+            <tr>
+
+                <td class="title">Paper Name</td>
+
+                <td class="value" id="mkPaperName"></td>
+
+            </tr>
+
+        </table>
 
     </div>
 
-</div>
+    <!-- QR -->
+
+    <div class="mkQRSection">
+
+        <div class="mkQRBox">
+
+            <img
+                id="mkQRCode"
+                src=""
+                alt="QR Code"
+                width="80"
+                height="80">
+
+        </div>
+
+    </div>
 
 </div>
 
