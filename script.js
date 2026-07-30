@@ -2792,6 +2792,12 @@ document.getElementById("studentResultPage").classList.remove("hidden");
                 <td>${r.grade}</td>
                 <td>${r.result}</td>
                 <td>${r.issueDate}</td>
+                <td>
+                <button class="viewMarksheetBtn"
+                onclick="verifyMarksheet('${r.paperName}')">
+                View Marksheet
+                </button>
+                </td>
             `;
 
             body.appendChild(tr);
@@ -3075,15 +3081,211 @@ function closeAdminVerify(){
     }
 
 }
-//====================================================
-// RESULT MODULE PART 2A
-// OPEN MARKSHEET
-//====================================================
+
 
 //====================================================
 // RESULT MODULE
 //====================================================
 
+//=========================================
+// OPEN MARKSHEET
+//=========================================
+
+function openMarksheet(studentID,paper){
+
+    fetch(
+
+        SCRIPT_URL +
+
+        "?action=marksheet" +
+
+        "&id=" +
+
+        encodeURIComponent(studentID) +
+
+        "&paper=" +
+
+        encodeURIComponent(paper)
+
+    )
+
+    .then(res=>res.json())
+
+    .then(function(data){
+
+        console.log(data);
+
+        if(data.status!="SUCCESS"){
+
+            alert("Invalid Student ID");
+
+            return;
+
+        }
+
+        fillMarksheet(data);
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Unable to load Marksheet.");
+
+    });
+
+}
+//=========================================
+// VERIFY MARKSHEET
+//=========================================
+
+//=========================================
+// VERIFY MARKSHEET
+//=========================================
+
+function verifyMarksheet(paper){
+
+    const id = prompt("Enter Student ID");
+
+    if(id == null){
+        return;
+    }
+
+    if(id.trim() == ""){
+        alert("Please Enter Student ID");
+        return;
+    }
+
+    openMarksheet(
+        id.trim(),
+        paper
+    );
+
+}
+//====================================================
+// FILL MARKSHEET
+//====================================================
+
+function fillMarksheet(m){
+
+    //---------------------------------------
+    // Hide Result List
+    //---------------------------------------
+
+    document
+    .getElementById("studentResultPage")
+    ?.classList.add("hidden");
+
+    //---------------------------------------
+    // Show Marksheet
+    //---------------------------------------
+
+    document
+    .getElementById("marksheetPage")
+    ?.classList.remove("hidden");
+
+    //---------------------------------------
+    // Student Details
+    //---------------------------------------
+
+    document.getElementById("mkMarksheetNo").textContent =
+    m.marksheetNo || "";
+
+    document.getElementById("mkRegNo").textContent =
+    m.regNo || "";
+
+    document.getElementById("mkStudentName").textContent =
+    m.studentName || "";
+
+    document.getElementById("mkCourse").textContent =
+    m.course || "";
+
+    document.getElementById("mkPaperName").textContent =
+    m.paperName || "";
+
+    document.getElementById("mkIssueDate").textContent =
+    m.issueDate || "";
+
+    //---------------------------------------
+    // Marks
+    //---------------------------------------
+
+    document.getElementById("mkTheory").textContent =
+    m.theory || "";
+
+    document.getElementById("mkPractical").textContent =
+    m.practical || "";
+
+    document.getElementById("mkViva").textContent =
+    m.viva || "";
+
+    document.getElementById("mkNotes").textContent =
+    m.notes || "";
+
+    document.getElementById("mkBehaviour").textContent =
+    m.behaviour || "";
+
+    document.getElementById("mkProject").textContent =
+    m.project || "";
+
+    document.getElementById("mkTotal").textContent =
+    m.totalMarks || "";
+
+    document.getElementById("mkPercentage").textContent =
+    m.percentage || "";
+
+    document.getElementById("mkGrade").textContent =
+    m.grade || "";
+
+    document.getElementById("mkResult").textContent =
+    m.result || "";
+
+    //---------------------------------------
+    // Student Image (Repo)
+    //---------------------------------------
+
+    const photo =
+    document.getElementById("mkStudentPhoto");
+
+    if(photo){
+
+        photo.src = m.regNo + ".jpeg";
+
+        photo.onerror = function(){
+
+            this.src = "no-photo.jpeg";
+
+        };
+
+    }
+
+    //---------------------------------------
+    // QR Code (Blank)
+    //---------------------------------------
+
+    const qr =
+    document.getElementById("mkQRCode");
+
+    if(qr){
+
+        qr.src = "";
+
+    }
+
+    //---------------------------------------
+    // Scroll Top
+    //---------------------------------------
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
 function openResultVerifyPage(){
 
     document.getElementById("loginPage").classList.add("hidden");
@@ -3154,7 +3356,26 @@ function searchResult(){
     });
 
 }
+//====================================================
+// PRINT MARKSHEET
+//====================================================
 
+function printMarksheet(){
+
+    const marksheet =
+    document.getElementById("marksheetPage");
+
+    if(!marksheet){
+
+        alert("Marksheet not found.");
+
+        return;
+
+    }
+
+    window.print();
+
+}
 
 
 
