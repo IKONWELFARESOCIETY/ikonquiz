@@ -790,62 +790,57 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
     <!--================ HEADER ================-->
 
-    <div class="mkHeader">
+   <!--==================================================
+        PREMIUM HEADER
+===================================================-->
 
-        <!-- Left Logo -->
+<div class="mkHeader">
 
-        <div class="mkLogo">
+    <div class="mkLogo">
+        <img src="ikon.jpg">
+    </div>
 
-            <img src="ikon.jpg"
-                 alt="IKON Logo">
+    <div class="mkHeading">
 
-        </div>
+        <h1>IKON INSTITUTE</h1>
 
-        <!-- Center Heading -->
+        <h2>FINAL RESULT</h2>
 
-        <div class="mkHeading">
-
-            <h1>IKON INSTITUTE</h1>
-
-            <h2>FINAL RESULT</h2>
-
-            <p>
-                Computer Education & Skill Development
-            </p>
-
-        </div>
-
-        <!-- Right Box -->
-
-        <div class="mkTopRight">
-
-            <table>
-
-                <tr>
-
-                    <td><b>Marksheet No</b></td>
-
-                    <td id="mkMarksheetNo"></td>
-
-                </tr>
-
-                <tr>
-
-                    <td><b>Issue Date</b></td>
-
-                    <td id="mkIssueDate"></td>
-
-                </tr>
-
-            </table>
-
-        </div>
+        <p>
+            A Unit of IKON Welfare Society
+        </p>
 
     </div>
 
-    <hr>
+    <div class="mkTopRight">
 
-   <!--================ STUDENT INFO ================-->
+        <table class="mkTopTable">
+
+            <tr>
+
+                <td>Marksheet No.</td>
+
+                <td id="mkMarksheetNo"></td>
+
+            </tr>
+
+            <tr>
+
+                <td>Issue Date</td>
+
+                <td id="mkIssueDate"></td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!--==================================================
+STUDENT DETAILS
+===================================================-->
 
 <div class="mkStudentSection">
 
@@ -855,18 +850,13 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
         <div class="mkPhotoBox">
 
-            <img
-                id="mkStudentPhoto"
-                src=""
-                alt="Student Photo"
-                width="120"
-                height="140">
+            <img id="mkStudentPhoto">
 
         </div>
 
     </div>
 
-    <!-- STUDENT DETAILS -->
+    <!-- DETAILS -->
 
     <div class="mkStudentLeft">
 
@@ -914,12 +904,7 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
         <div class="mkQRBox">
 
-            <img
-                id="mkQRCode"
-                src=""
-                alt="QR Code"
-                width="80"
-                height="80">
+            <img id="mkQRCode">
 
         </div>
 
@@ -931,231 +916,211 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 <!--================ MARKS TABLE START ================-->
 
+<!--==================================================
+            PREMIUM MARKS TABLE
+===================================================-->
+
 <div class="mkMarksSection">
 
-<table class="mkMarksTable">
+    <table class="mkMarksTable">
 
-    <thead>
+        <thead>
 
-        <tr>
+            <tr>
 
-            <th rowspan="2">S.No.</th>
+                <th>S.No</th>
 
-            <th rowspan="2">Subject</th>
+                <th>Subject</th>
 
-            <th colspan="2">Marks</th>
+                <th>Full Marks</th>
 
-            <th rowspan="2">Obtained Marks</th>
+                <th>Pass Marks</th>
 
-        </tr>
+                <th>Obtained Marks</th>
 
-        <tr>
+            </tr>
 
-            <th>Full Marks</th>
+        </thead>
 
-            <th>Pass Marks</th>
+        <tbody>
 
-        </tr>
+            <tr>
 
-    </thead>
+                <td>1</td>
 
-    <tbody>
-          <tr>
+                <td>Theory</td>
 
-    <td>1</td>
+                <td>100</td>
 
-    <td>Theory</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkTheory"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkTheory"></td>
+            <tr>
 
-</tr>
+                <td>2</td>
 
-<tr>
+                <td>Practical</td>
 
-    <td>2</td>
+                <td>100</td>
 
-    <td>Practical</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkPractical"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkPractical"></td>
+            <tr>
 
-</tr>
+                <td>3</td>
 
-<tr>
+                <td>Viva</td>
 
-    <td>3</td>
+                <td>100</td>
 
-    <td>Viva</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkViva"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkViva"></td>
+            <tr>
 
-</tr>
+                <td>4</td>
 
-<tr>
+                <td>Project</td>
 
-    <td>4</td>
+                <td>100</td>
 
-    <td>Notes</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkProject"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkNotes"></td>
+            <tr>
 
-</tr>
+                <td>5</td>
 
-<tr>
+                <td>Notebook</td>
 
-    <td>5</td>
+                <td>100</td>
 
-    <td>Behaviour</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkNotes"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkBehaviour"></td>
+            <tr>
 
-</tr>
+                <td>6</td>
 
-<tr>
+                <td>Behaviour</td>
 
-    <td>6</td>
+                <td>100</td>
 
-    <td>Project</td>
+                <td>40</td>
 
-    <td>100</td>
+                <td id="mkBehaviour"></td>
 
-    <td>40</td>
+            </tr>
 
-    <td id="mkProject"></td>
+            <tr class="mkGrandTotal">
 
-</tr>
+                <td colspan="4">
 
-</tbody>
+                    <strong>TOTAL OBTAINED MARKS</strong>
 
-</table>
+                </td>
+
+                <td id="mkTotal"></td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>
 
-<!--================ RESULT SUMMARY START ================-->
+<!--==================================================
+SUMMARY
+===================================================-->
 
 <div class="mkSummary">
-      <!--================ RESULT SUMMARY ================-->
 
-<table class="mkSummaryTable">
+    <table class="mkSummaryTable">
 
-    <tr>
+        <tr>
 
-        <th>Total Marks</th>
+            <th>Percentage</th>
 
-        <td id="mkTotal"></td>
+            <th>Grade</th>
 
-        <th>Percentage</th>
+            <th>Result</th>
 
-        <td id="mkPercentage"></td>
+        </tr>
 
-    </tr>
+        <tr>
 
-    <tr>
+            <td id="mkPercentage"></td>
 
-        <th>Grade</th>
+            <td id="mkGrade"></td>
 
-        <td id="mkGrade"></td>
+            <td id="mkResult"></td>
 
-        <th>Result</th>
+        </tr>
 
-        <td id="mkResult"></td>
-
-    </tr>
-
-</table>
+    </table>
 
 </div>
 
-<hr>
-
-<!--================ DECLARATION ================-->
+<!--==================================================
+DECLARATION
+===================================================-->
 
 <div class="mkDeclaration">
 
-    <p>
-        This is to certify that the above candidate has appeared in the examination conducted by
-        <strong>IKON INSTITUTE</strong>.
-        The marks shown above are based on the institute examination record.
-    </p>
+    Certified that the above named student has successfully completed the prescribed examination conducted by IKON Institute. This Statement of Result is issued on the basis of records maintained by the Institute.
 
 </div>
 
-<hr>
-
-<!--================ SIGNATURE AREA START ================-->
+<!--==================================================
+SIGNATURE
+===================================================-->
 
 <div class="mkSignatureSection">
-      <!--================ LEFT SIGNATURE ================-->
 
-<div class="mkSignBox">
+    <div class="mkSignBox">
 
-    <div class="mkSealArea">
+        <div class="mkSignLine"></div>
 
-        <!-- Institute Seal -->
-
-    </div>
-
-    <div class="mkSignLine"></div>
-
-    <h4>Issued By</h4>
-
-</div>
-
-
-<!--================ RIGHT SIGNATURE ================-->
-
-<div class="mkSignBox">
-
-    <div class="mkSealArea">
-
-        <!-- Course Coordinator Seal -->
+        <strong>Course Cordinator</strong>
 
     </div>
 
-    <div class="mkSignLine"></div>
+    <div class="mkSignBox">
 
-    <h4>Course Coordinator</h4>
+        <div class="mkSealArea"></div>
 
+        <strong>Issued By</strong>
+
+    </div>
 </div>
 
-</div>
-
-<hr>
-
-<!--================ FOOTER ================-->
+<!--==================================================
+FOOTER
+===================================================-->
 
 <div class="mkFooter">
 
     <p>
-        <strong>IKON INSTITUTE</strong><br>
-
-        This marksheet is computer generated and does not require any manual signature.
-          Infront of Anugrah College Gate No.1
-            Gaya, Bihar
+        Digitally Signed and Verified<br>
+      Address: Infront of Anughrah College Gate no 1 Gaya ji Bihar 823001
     </p>
-
-</div>
-
-</div>
 
 </div>
     <!-- ==================================================
