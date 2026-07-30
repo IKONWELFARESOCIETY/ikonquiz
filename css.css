@@ -3143,53 +3143,6 @@ MOBILE
 }
 
 }
-.marksheet{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.mkWatermark{
-
-    position:absolute;
-
-    left:50%;
-
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    z-index:1;
-
-    opacity:.16;
-
-    pointer-events:none;
-
-}
-
-.mkWatermark img{
-
-    width:480px;
-
-    filter:grayscale(100%) contrast(130%);
-
-}
-
-.mkHeader,
-.mkStudentSection,
-.mkMarksSection,
-.mkSummary,
-.mkDeclaration,
-.mkSignatureSection,
-.mkFooter{
-
-    position:relative;
-
-    z-index:5;
-
-}
 /*====================================================
             PREMIUM A4 MARKSHEET
 ====================================================*/
@@ -3199,30 +3152,27 @@ MOBILE
     width:210mm;
     min-height:297mm;
 
-    margin:30px auto;
+    margin:15px auto;
 
     background:#fff;
 
     position:relative;
-
     overflow:hidden;
 
-    padding:28px;
-
     box-sizing:border-box;
+
+    padding:18px 20px;
 
     border:10px solid #0b4f9c;
 
     outline:3px solid #d8b44c;
-
     outline-offset:-18px;
 
-    box-shadow:0 0 20px rgba(0,0,0,.25);
+    box-shadow:0 0 18px rgba(0,0,0,.22);
 
     font-family:"Times New Roman",serif;
 
 }
-
 
 /* Decorative Border */
 
@@ -3239,8 +3189,6 @@ MOBILE
 
     border:2px solid #d8b44c;
 
-    pointer-events:none;
-
     z-index:2;
 
 }
@@ -3251,23 +3199,21 @@ MOBILE
 
     position:absolute;
 
-    top:20px;
-    left:20px;
-    right:20px;
-    bottom:20px;
+    top:18px;
+    left:18px;
+    right:18px;
+    bottom:18px;
 
     border:1px solid #e6c96a;
-
-    pointer-events:none;
 
     z-index:2;
 
 }
 
 
-/*=========================
-        HEADER
-=========================*/
+/*====================================================
+                    HEADER
+====================================================*/
 
 .mkHeader{
 
@@ -3277,7 +3223,7 @@ MOBILE
 
     align-items:center;
 
-    margin-bottom:28px;
+    margin-bottom:15px;
 
     position:relative;
 
@@ -3286,11 +3232,13 @@ MOBILE
 }
 
 
-/* Logo */
+/*====================================================
+                    LOGO
+====================================================*/
 
 .mkLogo{
 
-    width:120px;
+    width:125px;
 
     text-align:center;
 
@@ -3298,12 +3246,16 @@ MOBILE
 
 .mkLogo img{
 
-    width:95px;
+    width:108px;
+
+    height:auto;
 
 }
 
 
-/* Heading */
+/*====================================================
+                    HEADING
+====================================================*/
 
 .mkHeading{
 
@@ -3319,11 +3271,11 @@ MOBILE
 
     color:#0b4f9c;
 
-    font-size:36px;
+    font-size:33px;
 
     font-weight:bold;
 
-    letter-spacing:2px;
+    letter-spacing:1px;
 
     text-transform:uppercase;
 
@@ -3333,9 +3285,9 @@ MOBILE
 
     display:inline-block;
 
-    margin:12px 0 8px;
+    margin:8px 0 6px;
 
-    padding:8px 45px;
+    padding:8px 48px;
 
     background:#0b4f9c;
 
@@ -3343,9 +3295,11 @@ MOBILE
 
     border-radius:40px;
 
-    font-size:20px;
+    font-size:18px;
 
     letter-spacing:1px;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.20);
 
 }
 
@@ -3353,20 +3307,20 @@ MOBILE
 
     margin:0;
 
-    color:#555;
+    font-size:13px;
 
-    font-size:15px;
+    color:#555;
 
 }
 
 
-/*=========================
-     MARKSHEET INFO
-=========================*/
+/*====================================================
+            TOP RIGHT RESULT BOX
+====================================================*/
 
 .mkTopRight{
 
-    width:220px;
+    width:205px;
 
 }
 
@@ -3376,7 +3330,9 @@ MOBILE
 
     border-collapse:collapse;
 
-    font-size:14px;
+    table-layout:fixed;
+
+    font-size:13px;
 
 }
 
@@ -3384,11 +3340,15 @@ MOBILE
 
     border:1px solid #999;
 
-    padding:8px;
+    padding:8px 10px;
+
+    vertical-align:middle;
 
 }
 
 .mkTopTable td:first-child{
+
+    width:42%;
 
     background:#0b4f9c;
 
@@ -3396,15 +3356,19 @@ MOBILE
 
     font-weight:bold;
 
-    width:45%;
-
 }
 
 .mkTopTable td:last-child{
 
+    width:58%;
+
     background:#fafafa;
 
     font-weight:bold;
+
+    text-align:center;
+
+    letter-spacing:.5px;
 
 }
 /*====================================================
@@ -3415,13 +3379,13 @@ MOBILE
 
     display:grid;
 
-    grid-template-columns:120px 1fr 120px;
+    grid-template-columns:125px 1fr 110px;
 
-    gap:20px;
+    gap:14px;
 
     align-items:center;
 
-    margin:30px 0;
+    margin:16px 0;
 
     position:relative;
 
@@ -3440,23 +3404,25 @@ MOBILE
 
     justify-content:center;
 
+    align-items:center;
+
 }
 
 .mkPhotoBox{
 
-    width:110px;
+    width:112px;
 
-    height:130px;
+    height:128px;
 
     border:3px solid #0b4f9c;
 
     background:#fff;
 
-    padding:4px;
+    padding:3px;
 
     box-sizing:border-box;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.18);
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
 
 }
 
@@ -3472,22 +3438,22 @@ MOBILE
 
 
 /*=========================
-        DETAILS BOX
+      STUDENT DETAILS
 =========================*/
 
 .mkStudentLeft{
 
-    background:#f4f4f4;
+    background:#f6f6f6;
 
-    border:2px solid #cfcfcf;
+    border:2px solid #d2d2d2;
 
-    border-left:8px solid #0b4f9c;
+    border-left:7px solid #0b4f9c;
 
     border-radius:6px;
 
-    padding:16px;
+    padding:10px 14px;
 
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    box-shadow:0 2px 5px rgba(0,0,0,.06);
 
 }
 
@@ -3497,11 +3463,13 @@ MOBILE
 
     border-collapse:collapse;
 
+    table-layout:fixed;
+
 }
 
 .mkInfoTable tr{
 
-    border-bottom:1px dashed #bfbfbf;
+    border-bottom:1px dashed #c9c9c9;
 
 }
 
@@ -3513,9 +3481,11 @@ MOBILE
 
 .mkInfoTable td{
 
-    padding:10px 8px;
+    padding:7px 4px;
 
-    font-size:15px;
+    font-size:14px;
+
+    vertical-align:middle;
 
 }
 
@@ -3523,9 +3493,11 @@ MOBILE
 
     width:180px;
 
-    font-weight:bold;
-
     color:#0b4f9c;
+
+    font-weight:700;
+
+    white-space:nowrap;
 
 }
 
@@ -3541,6 +3513,10 @@ MOBILE
 
     color:#222;
 
+    padding-left:14px;
+
+    word-break:break-word;
+
 }
 
 
@@ -3554,23 +3530,25 @@ MOBILE
 
     justify-content:center;
 
+    align-items:center;
+
 }
 
 .mkQRBox{
 
-    width:110px;
+    width:100px;
 
-    height:110px;
+    height:100px;
 
     border:3px solid #0b4f9c;
 
     background:#fff;
 
-    padding:5px;
+    padding:4px;
 
     box-sizing:border-box;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.18);
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
 
 }
 
@@ -3586,7 +3564,7 @@ MOBILE
 
 
 /*=========================
-     RESPONSIVE
+      MOBILE
 =========================*/
 
 @media(max-width:768px){
@@ -3594,6 +3572,8 @@ MOBILE
 .mkStudentSection{
 
     grid-template-columns:1fr;
+
+    gap:12px;
 
 }
 
@@ -3606,7 +3586,7 @@ MOBILE
 
 .mkStudentLeft{
 
-    margin:10px 0;
+    margin:0;
 
 }
 
@@ -3617,8 +3597,10 @@ MOBILE
 
 .mkMarksSection{
 
-    margin-top:25px;
+    margin-top:14px;
+
     position:relative;
+
     z-index:5;
 
 }
@@ -3626,35 +3608,53 @@ MOBILE
 .mkMarksTable{
 
     width:100%;
+
     border-collapse:collapse;
-    font-size:15px;
+
+    table-layout:fixed;
+
+    font-size:14px;
 
 }
 
 .mkMarksTable th{
 
     background:#0b4f9c;
+
     color:#fff;
-    padding:12px;
-    border:2px solid #0b4f9c;
+
+    border:2px solid #d2ab3d;
+
+    padding:8px 6px;
+
     text-align:center;
-    font-size:15px;
-    letter-spacing:.5px;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.3px;
 
 }
 
 .mkMarksTable td{
 
     border:1px solid #8f8f8f;
-    padding:10px;
+
+    padding:7px 6px;
+
     text-align:center;
+
+    font-size:14px;
 
 }
 
 .mkMarksTable td:nth-child(2){
 
     text-align:left;
-    padding-left:18px;
+
+    padding-left:12px;
+
     font-weight:600;
 
 }
@@ -3673,16 +3673,21 @@ MOBILE
 
 .mkGrandTotal{
 
-    background:#0b4f9c !important;
-    color:#fff;
+    background:#fff7df !important;
+
+    color:#000 !important;
+
+    font-size:16px;
+
     font-weight:bold;
-    font-size:17px;
 
 }
 
 .mkGrandTotal td{
 
-    border:2px solid #0b4f9c;
+    border:2px solid #d2ab3d;
+
+    padding:8px 6px;
 
 }
 
@@ -3693,35 +3698,49 @@ MOBILE
 
 .mkSummary{
 
-    margin-top:28px;
+    margin-top:18px;
 
 }
 
 .mkSummaryTable{
 
     width:100%;
+
     border-collapse:collapse;
+
+    table-layout:fixed;
 
 }
 
 .mkSummaryTable th{
 
     background:#0b4f9c;
+
     color:#fff;
-    padding:12px;
-    font-size:16px;
+
     border:2px solid #0b4f9c;
+
+    padding:9px;
+
+    font-size:14px;
+
+    text-transform:uppercase;
 
 }
 
 .mkSummaryTable td{
 
-    text-align:center;
-    padding:18px 10px;
     border:2px solid #cfcfcf;
-    font-size:20px;
-    font-weight:bold;
+
     background:#fafafa;
+
+    text-align:center;
+
+    padding:12px 8px;
+
+    font-size:18px;
+
+    font-weight:bold;
 
 }
 
@@ -3733,41 +3752,62 @@ MOBILE
 #mkPercentage{
 
     color:#0b4f9c;
-    font-size:24px;
+
+    font-size:20px;
+
+    font-weight:700;
 
 }
 
 #mkGrade{
 
     color:#c08b00;
-    font-size:24px;
+
+    font-size:20px;
+
+    font-weight:700;
 
 }
 
 #mkResult{
 
-    color:#138000;
-    font-size:24px;
+    display:inline-block;
+
+    min-width:105px;
+
+    padding:7px 22px;
+
+    border-radius:28px;
+
+    background:#138000;
+
+    color:#fff;
+
+    font-size:19px;
+
+    font-weight:800;
+
     text-transform:uppercase;
+
     letter-spacing:1px;
 
 }
 
-
-/* FAIL */
-
 #mkResult.fail{
 
-    color:#c30000;
+    background:#d60000;
+
+    color:#fff;
 
 }
 
 
 /*====================================================
-                TABLE PRINT LOOK
+                TABLE PRINT
 ====================================================*/
 
 .mkMarksTable,
+
 .mkSummaryTable{
 
     page-break-inside:avoid;
@@ -3779,17 +3819,17 @@ MOBILE
 
 .mkDeclaration{
 
-    margin:30px 0 25px;
+    margin:18px 0 15px;
 
-    padding:15px 20px;
+    padding:10px 16px;
 
-    border-left:6px solid #0b4f9c;
+    border-left:5px solid #0b4f9c;
 
     background:#f7f9fc;
 
-    font-size:15px;
+    font-size:14px;
 
-    line-height:28px;
+    line-height:22px;
 
     color:#333;
 
@@ -3814,9 +3854,9 @@ MOBILE
 
     align-items:flex-end;
 
-    margin-top:45px;
+    gap:18px;
 
-    gap:25px;
+    margin-top:25px;
 
     position:relative;
 
@@ -3834,9 +3874,9 @@ MOBILE
 
 .mkSignLine{
 
-    width:180px;
+    width:170px;
 
-    margin:0 auto 10px;
+    margin:0 auto 8px;
 
     border-top:2px solid #000;
 
@@ -3846,31 +3886,40 @@ MOBILE
 
     display:block;
 
-    font-size:15px;
+    font-size:14px;
 
     color:#0b4f9c;
 
-    letter-spacing:.5px;
+    letter-spacing:.4px;
 
 }
 
-/*=========================
-        SEAL
-=========================*/
+
+/*====================================================
+            ISSUED BY (STRAIGHT LINE)
+====================================================*/
 
 .mkSealArea{
 
-    width:95px;
+    width:170px;
 
-    height:95px;
+    height:0;
 
-    margin:0 auto 10px;
+    margin:0 auto 8px;
 
-    border:3px dashed #c9a227;
+    border:none;
 
-    border-radius:50%;
+    border-top:2px solid #000;
 
-    background:rgba(11,79,156,.05);
+    border-radius:0;
+
+    background:none;
+
+}
+
+.mkSealArea img{
+
+    display:none;
 
 }
 
@@ -3881,19 +3930,19 @@ MOBILE
 
 .mkFooter{
 
-    margin-top:35px;
+    margin-top:18px;
+
+    padding-top:8px;
 
     border-top:2px solid #0b4f9c;
-
-    padding-top:12px;
 
     text-align:center;
 
     color:#444;
 
-    font-size:14px;
+    font-size:13px;
 
-    line-height:24px;
+    line-height:20px;
 
     position:relative;
 
@@ -3903,13 +3952,13 @@ MOBILE
 
 .mkFooter p{
 
-    margin:4px 0;
+    margin:2px 0;
 
 }
 
 
 /*====================================================
-            PRINT
+                PRINT
 ====================================================*/
 
 @media print{
@@ -3918,7 +3967,15 @@ body{
 
     margin:0;
 
+    padding:0;
+
     background:#fff;
+
+}
+
+.mkActionButtons{
+
+    display:none !important;
 
 }
 
@@ -3930,9 +3987,13 @@ body{
 
     margin:0;
 
+    padding:16px 18px;
+
     box-shadow:none;
 
     page-break-after:avoid;
+
+    page-break-inside:avoid;
 
 }
 
@@ -3940,7 +4001,7 @@ body{
 
 
 /*====================================================
-            MOBILE
+                MOBILE
 ====================================================*/
 
 @media(max-width:768px){
@@ -3951,7 +4012,7 @@ body{
 
     min-height:auto;
 
-    padding:18px;
+    padding:15px;
 
     border-width:6px;
 
@@ -3961,7 +4022,7 @@ body{
 
     flex-direction:column;
 
-    gap:15px;
+    gap:12px;
 
 }
 
@@ -3973,9 +4034,9 @@ body{
 
 .mkHeading h2{
 
-    font-size:18px;
+    font-size:17px;
 
-    padding:8px 28px;
+    padding:8px 24px;
 
 }
 
@@ -3989,21 +4050,15 @@ body{
 
     flex-direction:column;
 
-    gap:35px;
+    gap:25px;
 
 }
 
-.mkSignLine{
-
-    width:140px;
-
-}
+.mkSignLine,
 
 .mkSealArea{
 
-    width:80px;
-
-    height:80px;
+    width:150px;
 
 }
 
@@ -4011,152 +4066,8 @@ body{
 
 
 /*====================================================
-            FINISHING TOUCHES
+            ACTION BUTTONS
 ====================================================*/
-
-#mkStudentName,
-#mkCourse,
-#mkPaperName,
-#mkRegNo{
-
-    text-transform:uppercase;
-
-}
-
-#mkResult{
-
-    font-weight:800;
-
-    letter-spacing:1px;
-
-}
-
-#mkGrade{
-
-    font-weight:800;
-
-}
-
-#mkTotal{
-
-    font-weight:bold;
-
-    font-size:18px;
-
-}
-
-.mkMarksTable th{
-
-    text-transform:uppercase;
-
-}
-
-.mkSummaryTable th{
-
-    text-transform:uppercase;
-
-}
-.mkGoldenLine{
-
-    width:100%;
-
-    height:4px;
-
-    background:linear-gradient(
-        90deg,
-        #c89b2d,
-        #f7df8a,
-        #c89b2d
-    );
-
-    margin:12px 0 25px;
-
-    border-radius:5px;
-
-}
-.mkHeading h2{
-
-    display:inline-block;
-
-    padding:9px 50px;
-
-    background:#0b4f9c;
-
-    color:#fff;
-
-    border-radius:40px;
-
-    box-shadow:0 4px 10px rgba(0,0,0,.25);
-
-}
-#mkStudentName{
-
-    color:#0b4f9c;
-
-    font-size:22px;
-
-    font-weight:700;
-
-    letter-spacing:1px;
-
-}
-.mkMarksTable th{
-
-    border:2px solid #d2ab3d;
-
-    background:#0b4f9c;
-
-}
-.mkGrandTotal{
-
-    background:#fff7df !important;
-
-    color:#000 !important;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-}
-
-.mkGrandTotal td{
-
-    border:2px solid #d2ab3d;
-
-}
-#mkResult{
-
-    display:inline-block;
-
-    padding:8px 25px;
-
-    border-radius:30px;
-
-    background:#138000;
-
-    color:#fff;
-
-}
-
-#mkResult.fail{
-
-    background:#d60000;
-
-    color:#fff;
-
-}
-.mkSealArea img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-}
-/*========================================
-        ACTION BUTTONS
-=========================================*/
 
 .mkActionButtons{
 
@@ -4164,9 +4075,9 @@ body{
 
     justify-content:center;
 
-    gap:20px;
+    gap:18px;
 
-    margin:30px 0;
+    margin:18px 0;
 
 }
 
@@ -4174,9 +4085,9 @@ body{
 
     border:none;
 
-    padding:14px 35px;
+    padding:12px 28px;
 
-    font-size:16px;
+    font-size:15px;
 
     font-weight:bold;
 
@@ -4188,7 +4099,7 @@ body{
 
     color:#fff;
 
-    box-shadow:0 4px 10px rgba(0,0,0,.20);
+    box-shadow:0 4px 8px rgba(0,0,0,.18);
 
 }
 
@@ -4219,9 +4130,6 @@ body{
     transform:translateY(-2px);
 
 }
-
-
-/* Print ke time buttons hide */
 
 @media print{
 
