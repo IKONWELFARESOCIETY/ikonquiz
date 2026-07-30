@@ -51,7 +51,7 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
         <h1 id="testTitle">
 
-            IKON INSTITUTE CLASS TEST
+            IKON INSTITUTE EXAM PORTAL
 
         </h1>
 
@@ -773,6 +773,379 @@ IKON Institute Online Test Portal | Student Login & Class Test
 
 </div>
 <!-- TEST PAGE END -->
+
+
+      <!-- ==================================================
+                PROFESSIONAL MARKSHEET
+================================================== -->
+
+<div id="marksheetPage" class="hidden">
+
+<div class="marksheet">
+
+    <!--================ HEADER ================-->
+
+    <div class="mkHeader">
+
+        <!-- Left Logo -->
+
+        <div class="mkLogo">
+
+            <img src="ikon.jpg"
+                 alt="IKON Logo">
+
+        </div>
+
+        <!-- Center Heading -->
+
+        <div class="mkHeading">
+
+            <h1>IKON INSTITUTE</h1>
+
+            <h2>STATEMENT OF MARKS</h2>
+
+            <p>
+                Computer Education & Skill Development
+            </p>
+
+        </div>
+
+        <!-- Right Box -->
+
+        <div class="mkTopRight">
+
+            <table>
+
+                <tr>
+
+                    <td><b>Marksheet No</b></td>
+
+                    <td id="mkMarksheetNo"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td><b>Issue Date</b></td>
+
+                    <td id="mkIssueDate"></td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!--================ STUDENT INFO START ================-->
+
+    <div class="mkStudentSection">
+          <!--================ STUDENT DETAILS ================-->
+
+<div class="mkStudentLeft">
+
+    <table class="mkInfoTable">
+
+        <tr>
+
+            <td class="title">Registration No</td>
+
+            <td id="mkRegNo" class="value"></td>
+
+        </tr>
+
+        <tr>
+
+            <td class="title">Student Name</td>
+
+            <td class="value" id="mkStudentName"></td>
+
+        </tr>
+
+        <tr>
+
+            <td class="title">Course</td>
+
+            <td class="value" id="mkCourse"></td>
+
+        </tr>
+
+        <tr>
+
+            <td class="title">Paper Name</td>
+
+            <td class="value" id="mkPaperName"></td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+<!--================ PHOTO & QR ================-->
+
+<div class="mkStudentRight">
+
+    <div class="mkPhotoBox">
+
+                  <img
+            id="mkStudentPhoto"
+            src=""
+            alt="Student Photo"
+            width="120"
+            height="140">
+
+    </div>
+
+    <div class="mkQRBox">
+
+                   <img
+            id="mkQRCode"
+            src=""
+            alt="QR"
+            width="90"
+            height="90">
+
+    </div>
+
+</div>
+
+</div>
+
+<hr>
+
+<!--================ MARKS TABLE START ================-->
+
+<div class="mkMarksSection">
+
+<table class="mkMarksTable">
+
+    <thead>
+
+        <tr>
+
+            <th rowspan="2">S.No.</th>
+
+            <th rowspan="2">Subject</th>
+
+            <th colspan="2">Marks</th>
+
+            <th rowspan="2">Obtained Marks</th>
+
+        </tr>
+
+        <tr>
+
+            <th>Full Marks</th>
+
+            <th>Pass Marks</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+          <tr>
+
+    <td>1</td>
+
+    <td>Theory</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkTheory"></td>
+
+</tr>
+
+<tr>
+
+    <td>2</td>
+
+    <td>Practical</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkPractical"></td>
+
+</tr>
+
+<tr>
+
+    <td>3</td>
+
+    <td>Viva</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkViva"></td>
+
+</tr>
+
+<tr>
+
+    <td>4</td>
+
+    <td>Notes</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkNotes"></td>
+
+</tr>
+
+<tr>
+
+    <td>5</td>
+
+    <td>Behaviour</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkBehaviour"></td>
+
+</tr>
+
+<tr>
+
+    <td>6</td>
+
+    <td>Project</td>
+
+    <td>100</td>
+
+    <td>40</td>
+
+    <td id="mkProject"></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!--================ RESULT SUMMARY START ================-->
+
+<div class="mkSummary">
+      <!--================ RESULT SUMMARY ================-->
+
+<table class="mkSummaryTable">
+
+    <tr>
+
+        <th>Total Marks</th>
+
+        <td id="mkTotal"></td>
+
+        <th>Percentage</th>
+
+        <td id="mkPercentage"></td>
+
+    </tr>
+
+    <tr>
+
+        <th>Grade</th>
+
+        <td id="mkGrade"></td>
+
+        <th>Result</th>
+
+        <td id="mkResult"></td>
+
+    </tr>
+
+</table>
+
+</div>
+
+<hr>
+
+<!--================ DECLARATION ================-->
+
+<div class="mkDeclaration">
+
+    <p>
+        This is to certify that the above candidate has appeared in the examination conducted by
+        <strong>IKON INSTITUTE</strong>.
+        The marks shown above are based on the institute examination record.
+    </p>
+
+</div>
+
+<hr>
+
+<!--================ SIGNATURE AREA START ================-->
+
+<div class="mkSignatureSection">
+      <!--================ LEFT SIGNATURE ================-->
+
+<div class="mkSignBox">
+
+    <div class="mkSealArea">
+
+        <!-- Institute Seal -->
+
+    </div>
+
+    <div class="mkSignLine"></div>
+
+    <h4>Issued By</h4>
+
+</div>
+
+
+<!--================ RIGHT SIGNATURE ================-->
+
+<div class="mkSignBox">
+
+    <div class="mkSealArea">
+
+        <!-- Course Coordinator Seal -->
+
+    </div>
+
+    <div class="mkSignLine"></div>
+
+    <h4>Course Coordinator</h4>
+
+</div>
+
+</div>
+
+<hr>
+
+<!--================ FOOTER ================-->
+
+<div class="mkFooter">
+
+    <p>
+        <strong>IKON INSTITUTE</strong><br>
+
+        This marksheet is computer generated and does not require any manual signature.
+          Infront of Anugrah College Gate No.1
+            Gaya, Bihar
+    </p>
+
+</div>
+
+</div>
+
+</div>
     <!-- ==================================================
                     SUCCESS PAGE
 ================================================== -->
