@@ -2721,112 +2721,45 @@ window.addEventListener(
 //====================================================
 // END OF SECURITY
 //====================================================
-
-console.log(
-    "Security System Loaded Successfully"
-);
-//====================================
-
-
-
-
-
-
-//==================================================
-// SHOW STUDENT RESULT
-//==================================================
 //====================================================
-// RESULT MODULE PART 1
-// OPEN RESULT VERIFY PAGE
+// RESULT MODULE
 //====================================================
 
 function openResultVerifyPage(){
 
-    document.getElementById("loginPage")?.classList.add("hidden");
-    document.getElementById("waitingPage")?.classList.add("hidden");
-    document.getElementById("testPage")?.classList.add("hidden");
-    document.getElementById("successPage")?.classList.add("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
 
-    document.getElementById("studentResultPage")?.classList.add("hidden");
-    document.getElementById("marksheetPage")?.classList.add("hidden");
+    document.getElementById("resultVerifyPage").classList.remove("hidden");
 
-    document.getElementById("resultVerifyPage")?.classList.remove("hidden");
-
-    const reg=document.getElementById("resultRegNo");
-    const id=document.getElementById("resultStudentID");
-
-    if(reg) reg.value="";
-    if(id) id.value="";
 }
 
 
-
-//====================================================
-// VERIFY RESULT STUDENT
-//====================================================
+console.log(
+    "Security System Loaded Successfully"
+);
 
 function verifyResultStudent(){
 
-    const studentId = document
+    const id = document
         .getElementById("resultStudentID")
         .value
         .trim();
 
-    if(studentId === ""){
+    if(id==""){
 
-        alert("Enter Student ID");
+        alert("Please Enter Student ID");
 
         return;
 
     }
 
+    window.resultStudentID = id;
+
     fetch(
         SCRIPT_URL +
-        "?action=verifyResultStudent" +
-        "&id=" + encodeURIComponent(studentId)
+        "?action=studentResultList&id=" +
+        encodeURIComponent(id)
     )
-
-    .then(res => res.json())
-
-    .then(function(data){
-
-        if(data.status !== "SUCCESS"){
-
-            alert(data.message || "Invalid Student ID");
-
-            return;
-
-        }
-
-        studentName = data.name || "";
-        window.resultStudentID = studentId;
-
-        loadStudentResultList();
-
-    })
-
-    .catch(function(err){
-
-        console.log(err);
-
-        alert("Unable to verify student.");
-
-    });
-
-}
-
-
-//====================================================
-// LOAD RESULT LIST
-//====================================================
-
-function loadStudentResultList(){
-
-   fetch(
-    SCRIPT_URL +
-    "?action=studentResultList" +
-    "&id=" + encodeURIComponent(window.resultStudentID)
-)
 
     .then(function(res){
 
@@ -2838,9 +2771,9 @@ function loadStudentResultList(){
 
         console.log(data);
 
-        if(data.status!=="SUCCESS"){
+        if(data.status!="SUCCESS"){
 
-            alert(data.message || "No Result Found");
+            alert("Invalid Student ID");
 
             return;
 
@@ -2853,44 +2786,48 @@ function loadStudentResultList(){
         document
         .getElementById("studentResultPage")
         ?.classList.remove("hidden");
-        document
-        .getElementById("ResultPage")
-        ?.classList.remove("hidden");
 
-        document.getElementById("resultStudentName").innerHTML=
-        data.name || "";
-
-        document.getElementById("resultRegNumber").innerHTML=
-        data.regNo || "";
-
-        document.getElementById("resultCourse").innerHTML=
-        data.course || "";
-
-        const body=document.getElementById("resultTableBody");
+        const body =
+        document.getElementById("resultTableBody");
 
         body.innerHTML="";
 
-        data.results.forEach(function(r){
+        data.results.forEach(function(r,index){
 
             const tr=document.createElement("tr");
 
             tr.innerHTML=`
-<td>${r.regNo}</td>
-<td>${r.studentName}</td>
-<td>${r.course}</td>
-<td>${r.paperName}</td>
 
-<td>${r.totalMarks}</td>
+            <td>${index+1}</td>
+            <td>${r.regNo}</td>
+            <td>${r.studentName}</td>
+            <td>${r.course}</td>
+            <td>${r.paperName}</td>
+            <td>
+                <button class="viewBtn">
+                    View Result
+                </button>
+            </td>
 
-<td>${r.obtainedMarks}</td>
+            `;
 
-<td>${r.percentage}%</td>
+            body.appendChild(tr);
 
-<td>${r.grade}</td>
+        });
 
-<td>${r.result}</td>
+    })
 
-<td>
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Server Error");
+
+    });
+
+}
+
+
 
 <button
 class="viewBtn"
@@ -3191,227 +3128,28 @@ function closeAdminVerify(){
 // OPEN MARKSHEET
 //====================================================
 
-function openMarksheet(paper){
+//====================================================
+// RESULT MODULE
+//====================================================
 
-    paperName = paper;
+function openResultVerifyPage(){
 
-    document
-    .getElementById("studentResultPage")
-    ?.classList.add("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
 
-    document
-    .getElementById("marksheetPage")
-    ?.classList.remove("hidden");
-
-    loadMarksheet();
+    document.getElementById("resultVerifyPage").classList.remove("hidden");
 
 }
-
-
 
 //====================================================
 // LOAD MARKSHEET
 //====================================================
 
-function loadMarksheet(){
 
-    fetch(
-
-        SCRIPT_URL +
-
-        "?action=marksheet" +
-
-        "&id=" +
-
-        encodeURIComponent(window.resultStudentID) +
-
-        "&paper=" +
-
-        encodeURIComponent(paperName)
-
-    )
-
-    .then(function(res){
-
-        return res.json();
-
-    })
-
-    .then(function(data){
-
-        console.log("Marksheet :",data);
-
-        if(data.status !== "SUCCESS"){
-
-            alert(data.message || "Marksheet Not Found");
-
-            backToResultList();
-
-            return;
-
-        }
-
-        fillMarksheet(data.marksheet);
-
-    })
-
-    .catch(function(err){
-
-        console.log(err);
-
-        alert("Unable to Load Marksheet.");
-
-        backToResultList();
-
-    });
-
-}
 //====================================================
 // RESULT MODULE PART 2B
 // FILL MARKSHEET
 //====================================================
 
-function fillMarksheet(m){
-
-    //==============================
-    // HEADER
-    //==============================
-
-    document.getElementById("mkMarksheetNo").textContent =
-    m.marksheetNo || "";
-
-    document.getElementById("mkIssueDate").textContent =
-    m.issueDate || "";
-
-
-    //==============================
-    // STUDENT DETAILS
-    //==============================
-
-    document.getElementById("mkRegNo").textContent =
-    m.regNo || "";
-
-    document.getElementById("mkStudentName").textContent =
-    m.name || "";
-
-    document.getElementById("mkCourse").textContent =
-    m.course || "";
-
-    document.getElementById("mkPaperName").textContent =
-    m.paperName || "";
-
-
-    //==============================
-    // SUBJECT MARKS
-    //==============================
-
-    document.getElementById("mkTheory").textContent =
-    m.theory || "0";
-
-    document.getElementById("mkPractical").textContent =
-    m.practical || "0";
-
-    document.getElementById("mkViva").textContent =
-    m.viva || "0";
-
-    document.getElementById("mkNotes").textContent =
-    m.notes || "0";
-
-    document.getElementById("mkBehaviour").textContent =
-    m.behaviour || "0";
-
-    document.getElementById("mkProject").textContent =
-    m.project || "0";
-
-
-    //==============================
-    // RESULT SUMMARY
-    //==============================
-
-    document.getElementById("mkTotalMarks").textContent =
-    m.totalMarks || "";
-
-    document.getElementById("mkPassMarks").textContent =
-    m.passMarks || "";
-
-    document.getElementById("mkObtainedMarks").textContent =
-    m.obtainedMarks || "";
-
-    document.getElementById("mkPercentage").textContent =
-    (m.percentage || "0") + "%";
-
-    document.getElementById("mkGrade").textContent =
-    m.grade || "";
-
-    document.getElementById("mkResult").textContent =
-    m.result || "";
-
-
-    //==============================
-    // PHOTO
-    //==============================
-
-    const photo =
-    document.getElementById("mkPhoto");
-
-    if(photo){
-
-        photo.src =
-        regNo + ".jpeg";
-
-        photo.onerror=function(){
-
-            this.src="no-photo.jpeg";
-
-        };
-
-    }
-
-
-    //==============================
-    // QR CODE
-    //==============================
-
-    const qr =
-    document.getElementById("mkQR");
-
-    if(qr){
-
-        if(m.qr){
-
-            qr.src = m.qr;
-
-        }
-        else{
-
-            qr.src="qr.png";
-
-        }
-
-    }
-
-}
-//====================================================
-// RESULT MODULE PART 3
-// BACK + PRINT + DOWNLOAD
-//====================================================
-
-
-//====================================================
-// BACK TO RESULT LIST
-//====================================================
-
-function backToResultList(){
-
-    document
-    .getElementById("marksheetPage")
-    ?.classList.add("hidden");
-
-    document
-    .getElementById("studentResultPage")
-    ?.classList.remove("hidden");
-
-}
 
 
 
@@ -3434,50 +3172,6 @@ function backToResultVerify(){
     ?.classList.remove("hidden");
 
 }
-
-
-
-//====================================================
-// PRINT MARKSHEET
-//====================================================
-
-function printMarksheet(){
-
-    window.print();
-
-}
-
-
-
-//====================================================
-// DOWNLOAD MARKSHEET
-//====================================================
-
-function downloadMarksheet(){
-
-    window.print();
-
-}
-
-
-
-//====================================================
-// CLOSE MARKSHEET
-//====================================================
-
-function closeMarksheet(){
-
-    document
-    .getElementById("marksheetPage")
-    ?.classList.add("hidden");
-
-    document
-    .getElementById("studentResultPage")
-    ?.classList.remove("hidden");
-
-}
-
-
 
 //====================================================
 // SEARCH RESULT
@@ -3511,15 +3205,7 @@ function searchResult(){
 
 
 
-//====================================================
-// REFRESH RESULT LIST
-//====================================================
 
-function refreshResultList(){
-
-    loadStudentResultList();
-
-}
 
 
 
@@ -3558,8 +3244,64 @@ document.addEventListener("keydown",function(e){
 
 });
 
+function backToResultVerify(){
 
+    // Student Result List Hide
+    const resultPage =
+        document.getElementById("studentResultPage");
 
+    if(resultPage){
+
+        resultPage.classList.add("hidden");
+
+    }
+
+    // Result Verify Page Show
+    const verifyPage =
+        document.getElementById("resultVerifyPage");
+
+    if(verifyPage){
+
+        verifyPage.classList.remove("hidden");
+
+    }
+
+    // Search Box Clear
+    const search =
+        document.getElementById("searchResult");
+
+    if(search){
+
+        search.value="";
+
+    }
+
+    // Table Clear
+    const table =
+        document.getElementById("resultTableBody");
+
+    if(table){
+
+        table.innerHTML="";
+
+    }
+
+}
+function backToLogin(){
+
+    document
+        .getElementById("resultVerifyPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("resultStudentID")
+        .value="";
+
+}
 //====================================================
 // END RESULT MODULE
 //====================================================
