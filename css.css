@@ -3182,10 +3182,10 @@ MOBILE
 
     position:absolute;
 
-    top:10px;
-    left:10px;
-    right:10px;
-    bottom:10px;
+    top:8px;
+    left:8px;
+    right:8px;
+    bottom:8px;
 
     border:2px solid #d8b44c;
 
@@ -3199,10 +3199,10 @@ MOBILE
 
     position:absolute;
 
-    top:18px;
-    left:18px;
-    right:18px;
-    bottom:18px;
+    top:12px;
+    left:12px;
+    right:12px;
+    bottom:12px;
 
     border:1px solid #e6c96a;
 
@@ -3379,17 +3379,9 @@ MOBILE
 
     display:grid;
 
-    grid-template-columns:125px 1fr 110px;
+    grid-template-columns:115px 1fr 100px;
 
-    gap:14px;
-
-    align-items:center;
-
-    margin:16px 0;
-
-    position:relative;
-
-    z-index:5;
+    gap:10px;
 
 }
 
@@ -3819,17 +3811,17 @@ MOBILE
 
 .mkDeclaration{
 
-    margin:18px 0 15px;
+    margin:10px 0 8px;
 
-    padding:10px 16px;
+    padding:8px 14px;
 
     border-left:5px solid #0b4f9c;
 
     background:#f7f9fc;
 
-    font-size:14px;
+    font-size:13px;
 
-    line-height:22px;
+    line-height:18px;
 
     color:#333;
 
@@ -3854,13 +3846,9 @@ MOBILE
 
     align-items:flex-end;
 
-    gap:18px;
+    margin-top:12px;
 
-    margin-top:25px;
-
-    position:relative;
-
-    z-index:5;
+    gap:10px;
 
 }
 
@@ -3930,29 +3918,21 @@ MOBILE
 
 .mkFooter{
 
-    margin-top:18px;
+    margin-top:8px;
 
-    padding-top:8px;
+    padding-top:5px;
 
     border-top:2px solid #0b4f9c;
 
-    text-align:center;
+    font-size:12px;
 
-    color:#444;
-
-    font-size:13px;
-
-    line-height:20px;
-
-    position:relative;
-
-    z-index:5;
+    line-height:16px;
 
 }
 
 .mkFooter p{
 
-    margin:2px 0;
+    margin:1px 0;
 
 }
 
@@ -3962,16 +3942,6 @@ MOBILE
 ====================================================*/
 
 @media print{
-
-body{
-
-    margin:0;
-
-    padding:0;
-
-    background:#fff;
-
-}
 
 .mkActionButtons{
 
@@ -3985,19 +3955,23 @@ body{
 
     min-height:297mm;
 
-    margin:0;
+    margin:10px auto;
 
-    padding:16px 18px;
+    padding:12mm;
 
-    box-shadow:none;
+    box-sizing:border-box;
 
-    page-break-after:avoid;
+    border:10px solid #0b4f9c;
 
-    page-break-inside:avoid;
+    outline:3px solid #d8b44c;
+
+    outline-offset:-14px;
+
+    background:#fff;
 
 }
 
-}
+
 
 
 /*====================================================
@@ -4138,5 +4112,36 @@ body{
     display:none !important;
 
 }
+
+}
+.mkWatermark{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:0;
+
+    pointer-events:none;
+
+    overflow:hidden;
+
+}
+
+.mkWatermark img{
+
+    width:420px;
+
+    opacity:.08;
+
+    filter:grayscale(100%);
+
+    user-select:none;
 
 }
