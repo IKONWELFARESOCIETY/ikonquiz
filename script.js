@@ -2740,20 +2740,12 @@ console.log(
 
 function verifyResultStudent(){
 
-    const id = document
-        .getElementById("resultStudentID")
-        .value
-        .trim();
+    const id = document.getElementById("resultStudentID").value.trim();
 
     if(id==""){
-
         alert("Please Enter Student ID");
-
         return;
-
     }
-
-    window.resultStudentID = id;
 
     fetch(
         SCRIPT_URL +
@@ -2761,34 +2753,19 @@ function verifyResultStudent(){
         encodeURIComponent(id)
     )
 
-    .then(function(res){
+    .then(res => res.json())
 
-        return res.json();
-
-    })
-
-    .then(function(data){
-
-        console.log(data);
+    .then(data => {
 
         if(data.status!="SUCCESS"){
-
             alert("Invalid Student ID");
-
             return;
-
         }
 
-        document
-        .getElementById("resultVerifyPage")
-        ?.classList.add("hidden");
+        document.getElementById("resultVerifyPage").classList.add("hidden");
+        document.getElementById("studentResultPage").classList.remove("hidden");
 
-        document
-        .getElementById("studentResultPage")
-        ?.classList.remove("hidden");
-
-        const body =
-        document.getElementById("resultTableBody");
+        const body = document.getElementById("resultTableBody");
 
         body.innerHTML="";
 
@@ -2797,34 +2774,22 @@ function verifyResultStudent(){
             const tr=document.createElement("tr");
 
             tr.innerHTML=`
-
-            <td>${index+1}</td>
-            <td>${r.regNo}</td>
-            <td>${r.studentName}</td>
-            <td>${r.course}</td>
-            <td>${r.paperName}</td>
-            <td>
-                <button class="viewBtn">
-                    View Result
-                </button>
-            </td>
-
-            body.appendChild(tr);
-
-        });
-
-    })
-
-    .catch(function(err){
-
-        console.log(err);
-
-        alert("Server Error");
-
-    });
-
-}
- `;
+                <td>${index+1}</td>
+                <td>${r.regNo}</td>
+                <td>${r.studentName}</td>
+                <td>${r.course}</td>
+                <td>${r.paperName}</td>
+                <td>${r.theory}</td>
+                <td>${r.practical}</td>
+                <td>${r.viva}</td>
+                <td>${r.notes}</td>
+                <td>${r.behaviour}</td>
+                <td>${r.project}</td>
+                <td>${r.totalMarks}</td>
+                <td>${r.percentage}</td>
+                <td>${r.grade}</td>
+                <td>${r.result}</td>
+            `;
 
             body.appendChild(tr);
 
@@ -2841,7 +2806,6 @@ function verifyResultStudent(){
     });
 
 }
-
 //====================================
 // BACK LOGIN
 //====================================
