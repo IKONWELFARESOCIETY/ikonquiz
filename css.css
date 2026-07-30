@@ -2900,75 +2900,82 @@ button:focus{
     will-change:transform;
 }
 
+/*==================================================
+RESULT LIST PAGE
+==================================================*/
 
-    font-weight:bold;
+#studentResultPage{
+
+    width:100%;
+
+    animation:fadeResult .3s ease;
 
 }
 
-/*==================================================
-            RESULT LIST PAGE
-==================================================*/
+@keyframes fadeResult{
+
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
 
 .result-list-box{
 
-    width:95%;
-    max-width:1200px;
-
-    margin:30px auto;
+    width:100%;
+    max-width:100%;
 
     background:#fff;
 
-    border-radius:12px;
+    border-radius:18px;
 
     padding:25px;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.15);
+    box-shadow:0 10px 35px rgba(0,0,0,.12);
 
 }
-
 
 .result-list-box h2{
 
     text-align:center;
 
-    color:#0d47a1;
+    color:#005bea;
+
+    font-size:30px;
 
     margin-bottom:20px;
 
-    font-size:28px;
-
 }
-
 
 #searchResult{
 
     width:100%;
 
-    padding:12px 15px;
+    padding:14px;
 
-    font-size:16px;
+    border:2px solid #dbe4f3;
 
-    border:1px solid #ccc;
-
-    border-radius:8px;
-
-    margin-bottom:20px;
+    border-radius:10px;
 
     outline:none;
 
-    transition:.3s;
+    margin-bottom:20px;
+
+    font-size:16px;
 
 }
-
 
 #searchResult:focus{
 
-    border-color:#0d47a1;
-
-    box-shadow:0 0 8px rgba(13,71,161,.25);
+    border-color:#005bea;
 
 }
-
 
 .table-responsive{
 
@@ -2976,100 +2983,67 @@ button:focus{
 
     overflow-x:auto;
 
-}
+    border:1px solid #ddd;
 
+    border-radius:12px;
+
+}
 
 .resultTable{
 
-    width:100%;
+    width:max-content;
+
+    min-width:2200px;
 
     border-collapse:collapse;
 
-    min-width:900px;
-
 }
 
+.resultTable thead th{
 
-.resultTable thead{
+    position:sticky;
 
-    background:#0d47a1;
+    top:0;
+
+    background:#005bea;
 
     color:#fff;
-
-}
-
-
-.resultTable th{
-
-    padding:14px;
-
-    text-align:center;
-
-    font-size:15px;
-
-    border:1px solid #ddd;
-
-}
-
-
-.resultTable td{
 
     padding:12px;
 
-    text-align:center;
+    border:1px solid #d7d7d7;
+
+    white-space:nowrap;
+
+    z-index:5;
+
+}
+
+.resultTable td{
+
+    padding:10px;
 
     border:1px solid #ddd;
 
-    font-size:15px;
+    text-align:center;
 
-}
-
-
-.resultTable tbody tr:nth-child(even){
-
-    background:#f7f9fc;
-
-}
-
-
-.resultTable tbody tr:hover{
-
-    background:#e8f0fe;
-
-    transition:.3s;
-
-}
-
-
-.viewBtn{
-
-    background:#0d47a1;
-
-    color:#fff;
-
-    border:none;
-
-    padding:8px 18px;
-
-    border-radius:6px;
-
-    cursor:pointer;
+    white-space:nowrap;
 
     font-size:14px;
 
-    transition:.3s;
+}
+
+.resultTable tbody tr:nth-child(even){
+
+    background:#f7fbff;
 
 }
 
+.resultTable tbody tr:hover{
 
-.viewBtn:hover{
-
-    background:#1565c0;
-
-    transform:scale(1.05);
+    background:#e9f2ff;
 
 }
-
 
 .result-footer{
 
@@ -3079,25 +3053,15 @@ button:focus{
 
 }
 
+.result-footer .secondary{
 
-.result-footer button{
-
-    padding:10px 25px;
-
-    font-size:16px;
+    width:220px;
 
 }
-
-
-/*==========================
-      MOBILE
-==========================*/
 
 @media(max-width:768px){
 
 .result-list-box{
-
-    width:98%;
 
     padding:15px;
 
@@ -3105,7 +3069,7 @@ button:focus{
 
 .result-list-box h2{
 
-    font-size:22px;
+    font-size:24px;
 
 }
 
@@ -3117,24 +3081,7 @@ button:focus{
 
 .resultTable{
 
-    min-width:750px;
-
-}
-
-.resultTable th,
-.resultTable td{
-
-    font-size:13px;
-
-    padding:10px;
-
-}
-
-.viewBtn{
-
-    padding:6px 12px;
-
-    font-size:13px;
+    min-width:2200px;
 
 }
 
