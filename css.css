@@ -4006,7 +4006,7 @@ MOBILE
 
 }
 
-
+}
 
 
 /*====================================================
@@ -4138,15 +4138,7 @@ MOBILE
 
 }
 
-@media print{
 
-.mkActionButtons{
-
-    display:none !important;
-
-}
-
-}
 /*====================================================
         PRINT ONLY MARKSHEET
 ====================================================*/
@@ -4188,10 +4180,20 @@ MOBILE
 
     }
 
-    .mkActionButtons{
+   .mkActionButtons{
 
-        display:none !important;
+    width:100%;
 
-    }
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:12px;
+
+}
 
 }
