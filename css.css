@@ -3175,7 +3175,7 @@ MOBILE
 
     height:auto;
 
-    opacity:.07;
+    opacity:.12;
 
     filter:grayscale(100%);
 
@@ -4074,19 +4074,23 @@ MOBILE
 }
 
 
-/*====================================================
-            ACTION BUTTONS
-====================================================*/
+/*========================================
+        ACTION BUTTONS
+========================================*/
 
 .mkActionButtons{
 
     display:flex;
 
-    justify-content:center;
+    justify-content:flex-end;   /* Right side */
 
-    gap:18px;
+    align-items:center;
 
-    margin:18px 0;
+    gap:10px;
+
+    margin-top:12px;
+
+    padding-right:5px;
 
 }
 
@@ -4094,13 +4098,13 @@ MOBILE
 
     border:none;
 
-    padding:12px 28px;
+    padding:8px 18px;
 
-    font-size:15px;
+    font-size:13px;
 
-    font-weight:bold;
+    font-weight:600;
 
-    border-radius:8px;
+    border-radius:5px;
 
     cursor:pointer;
 
@@ -4108,7 +4112,17 @@ MOBILE
 
     color:#fff;
 
-    box-shadow:0 4px 8px rgba(0,0,0,.18);
+}
+
+.mkBackBtn{
+
+    background:#6c757d;
+
+}
+
+.mkBackBtn:hover{
+
+    background:#545b62;
 
 }
 
@@ -4122,22 +4136,6 @@ MOBILE
 
     background:#083b73;
 
-    transform:translateY(-2px);
-
-}
-
-.mkBackBtn{
-
-    background:#666;
-
-}
-
-.mkBackBtn:hover{
-
-    background:#444;
-
-    transform:translateY(-2px);
-
 }
 
 @media print{
@@ -4147,5 +4145,53 @@ MOBILE
     display:none !important;
 
 }
+
+}
+/*====================================================
+        PRINT ONLY MARKSHEET
+====================================================*/
+
+@media print{
+
+    body *{
+        visibility:hidden;
+    }
+
+    #marksheetPage,
+    #marksheetPage *{
+        visibility:visible;
+    }
+
+    #marksheetPage{
+
+        position:absolute;
+
+        left:0;
+        top:0;
+
+        width:100%;
+
+        margin:0;
+        padding:0;
+
+        background:#fff;
+
+    }
+
+    .marksheet{
+
+        margin:0 auto !important;
+
+        box-shadow:none !important;
+
+        page-break-after:avoid;
+
+    }
+
+    .mkActionButtons{
+
+        display:none !important;
+
+    }
 
 }
