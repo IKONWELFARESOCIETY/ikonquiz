@@ -2372,6 +2372,7 @@ button:disabled{
 }
 
 .navigation button,
+ }
 #submitBtn{
 
     width:100%;
@@ -3149,7 +3150,6 @@ MOBILE
 ====================================================*/
 
 #marksheetPage{
-   display:none;
     width:210mm;
     min-height:297mm;
     margin:10px auto;
@@ -3157,6 +3157,19 @@ MOBILE
     color:#000;
     font-family:"Times New Roman",serif;
     box-sizing:border-box;
+}
+#marksheetPage{
+
+    display:block;
+
+    overflow:visible !important;
+
+}
+
+#marksheetPage.hidden{
+
+    display:none !important;
+
 }
 
 .marksheet{
@@ -3167,6 +3180,8 @@ MOBILE
     border:2px solid #003366;
     box-sizing:border-box;
     background:#fff;
+    overflow:visible !important;
+    max-width:190mm;
 }
 
 /*================ HEADER ================*/
@@ -3493,17 +3508,6 @@ MOBILE
     margin:8mm;
 }
 
-/*================ SCREEN =================*/
-
-@media screen{
-
-#marksheetPage{
-
-    display:none;
-
-}
-
-}
 
 /*================ PRINT =================*/
 
@@ -3523,7 +3527,7 @@ body{
 
 /* Hide Everything */
 
-body *{
+body>*{
 
     visibility:hidden !important;
 
@@ -3541,14 +3545,10 @@ body *{
 #marksheetPage{
 
     display:block !important;
-    position:absolute;
-    left:0;
-    top:0;
-    width:210mm;
-    min-height:297mm;
-    margin:0;
-    padding:0;
-
+    position:relative;
+    left:auto;
+    top:auto;
+    margin:auto;
 }
 
 .marksheet{
@@ -3690,5 +3690,16 @@ img,
     font-size:13px;
 
 }
+
+}
+#marksheetPage{
+
+    page-break-after:avoid;
+
+}
+
+.marksheet{
+
+    page-break-inside:avoid;
 
 }
