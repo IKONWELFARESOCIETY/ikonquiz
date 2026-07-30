@@ -2775,6 +2775,7 @@ function verifyResultStudent(){
 
             tr.innerHTML=`
                 <td>${index+1}</td>
+                <td>${r.marksheetNo}</td>
                 <td>${r.regNo}</td>
                 <td>${r.studentName}</td>
                 <td>${r.course}</td>
@@ -2789,6 +2790,7 @@ function verifyResultStudent(){
                 <td>${r.percentage}</td>
                 <td>${r.grade}</td>
                 <td>${r.result}</td>
+                <td>${r.issueDate}</td>
             `;
 
             body.appendChild(tr);
