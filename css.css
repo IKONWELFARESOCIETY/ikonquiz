@@ -3416,12 +3416,15 @@ HEADER IKON LOGO
 
     justify-content:flex-end;
 
-    width:180px;   /* Pehle 155 ke around tha */
+    width:160px;
+
+    margin-right:8px;
+
 }
 
 .mkTopTable{
 
-    width:180px;
+    width:160px;
 
     border-collapse:collapse;
 
@@ -3435,7 +3438,7 @@ HEADER IKON LOGO
 
     border:1px solid #999;
 
-    padding:6px 8px;
+    padding:5px 6px;
 
     vertical-align:middle;
 
@@ -3443,27 +3446,29 @@ HEADER IKON LOGO
 
 .mkTopTable td:first-child{
 
-    width:95px;              /* Left column bada */
+    width:82px;
 
-    white-space:nowrap;
+    background:#1d57a6;
 
-    font-size:11px;
+    color:#ffffff !important;
 
-    font-weight:600;
+    font-weight:700;
 
-    color:#fff;
+    white-space:normal;
+
+    line-height:1.2;
 
 }
 
 .mkTopTable td:last-child{
 
-    width:85px;              /* Right column */
+    width:78px;
 
     text-align:center;
 
     font-weight:600;
 
-    word-break:break-word;
+    color:#222;
 
 }
 
@@ -3746,7 +3751,7 @@ HEADER IKON LOGO
 
     border-left:5px solid #0b4f9c;
 
-    font-size:12px;
+    font-size:16px;
 
     line-height:1.6;
 
@@ -3754,6 +3759,10 @@ HEADER IKON LOGO
 
 }
 
+
+/*=====================================
+        SIGNATURE SECTION
+======================================*/
 
 /*=====================================
         SIGNATURE SECTION
@@ -3767,8 +3776,9 @@ HEADER IKON LOGO
 
     gap:70px;
 
-    margin-top:55px;
-  padding-bottom:12px;
+    margin-top:85px;          /* 70 → 85 */
+
+    padding-bottom:18px;      /* 12 → 18 */
 
     align-items:end;
 
@@ -3788,9 +3798,6 @@ HEADER IKON LOGO
 
 }
 
-
-/* Signature Line */
-
 .mkSignLine{
 
     width:170px;
@@ -3800,9 +3807,6 @@ HEADER IKON LOGO
     margin-bottom:8px;
 
 }
-
-
-/* Issued By ke upar bhi same line */
 
 .mkSealArea{
 
@@ -3815,7 +3819,6 @@ HEADER IKON LOGO
     height:0;
 
 }
-
 
 .mkSignBox strong{
 
@@ -3830,36 +3833,23 @@ HEADER IKON LOGO
 }
 
 
-.mkSignTitle{
-
-    font-size:13px;
-
-    font-weight:700;
-
-    color:#222;
-
-}
-
-
 /*=====================================
         FOOTER
 ======================================*/
 
 .mkFooter{
 
-    margin-top:35px;
+    margin-top:45px;          /* 35 → 45 */
 
-    padding-top:12px;
+    padding-top:15px;
 
     border-top:2px solid #d8b44c;
 
     text-align:center;
 
-    font-size:11px;
+    line-height:1.7;
 
     color:#555;
-
-    line-height:1.6;
 
 }
 
@@ -3867,11 +3857,17 @@ HEADER IKON LOGO
 
     margin:0;
 
+    font-size:12px;           /* 11 → 12 */
+
+    font-weight:500;
+
 }
 
 .mkFooter strong{
 
     color:#0b4f9c;
+
+    font-size:12px;
 
 }
 
