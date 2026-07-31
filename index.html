@@ -778,279 +778,199 @@ IKON Institute Online Test Portal | Student Login & Class Test
       <!-- ==================================================
                 PROFESSIONAL MARKSHEET
 ================================================== -->
-
 <div id="marksheetPage" class="hidden">
 
 <div class="marksheet">
-       <div class="mkCorner tl"></div>
-<div class="mkCorner tr"></div>
-<div class="mkCorner bl"></div>
-<div class="mkCorner br"></div>
-      <div class="mkWatermark">
-<img src="ikon.jpg">
 
-</div>
+    <div class="mkCorner tl"></div>
+    <div class="mkCorner tr"></div>
+    <div class="mkCorner bl"></div>
+    <div class="mkCorner br"></div>
 
-    <!--================ HEADER ================-->
-
-   <!--==================================================
-        PREMIUM HEADER
-===================================================-->
-
-<div class="mkHeader">
-
-    <div class="mkLogo">
+    <div class="mkWatermark">
         <img src="ikon.jpg">
     </div>
 
-    <div class="mkHeading">
+    <!--================ HEADER ================-->
 
-        <h1>IKON INSTITUTE</h1>
+    <div class="mkHeader">
 
-        <h2>FINAL RESULT</h2>
+        <div class="mkLogo">
+            <img src="ikon.jpg">
+        </div>
 
-        <p>
-            A Unit of IKON Welfare Society
-        </p>
+        <div class="mkHeading">
 
-    </div>
+            <h1>IKON INSTITUTE</h1>
 
-    <div class="mkTopRight">
+            <h2>FINAL RESULT</h2>
 
-        <table class="mkTopTable">
+            <p>
+                A Unit of IKON Welfare Society
+            </p>
 
-            <tr>
+        </div>
 
-                <td>Marksheet No.</td>
+        <div class="mkTopRight">
 
-                <td id="mkMarksheetNo"></td>
+            <table class="mkTopTable">
 
-            </tr>
+                <tr>
+                    <td>Marksheet No.</td>
+                    <td id="mkMarksheetNo"></td>
+                </tr>
 
-            <tr>
+                <tr>
+                    <td>Issue Date</td>
+                    <td id="mkIssueDate"></td>
+                </tr>
 
-                <td>Issue Date</td>
-
-                <td id="mkIssueDate"></td>
-
-            </tr>
-
-        </table>
-
-    </div>
-
-</div>
-      <div class="mkGoldenLine"></div>
-
-<!--==================================================
-STUDENT DETAILS
-===================================================-->
-
-<div class="mkStudentSection">
-
-    <!-- PHOTO -->
-
-    <div class="mkPhotoSection">
-
-        <div class="mkPhotoBox">
-
-            <img id="mkStudentPhoto">
+            </table>
 
         </div>
 
     </div>
 
-    <!-- DETAILS -->
+    <div class="mkGoldenLine"></div>
 
-    <div class="mkStudentLeft">
+    <!--==================================================
+    STUDENT DETAILS
+    ===================================================-->
 
-        <table class="mkInfoTable">
+    <div class="mkStudentSection">
 
-            <tr>
+        <div class="mkPhotoSection">
 
-                <td class="title">Registration No.</td>
+            <div class="mkPhotoBox">
+                <img id="mkStudentPhoto">
+            </div>
 
-                <td class="value" id="mkRegNo"></td>
+        </div>
 
-            </tr>
+        <div class="mkStudentLeft">
 
-            <tr>
+            <table class="mkInfoTable">
 
-                <td class="title">Student Name</td>
+                <tr>
+                    <td class="title">Registration No.</td>
+                    <td class="value" id="mkRegNo"></td>
+                </tr>
 
-                <td class="value" id="mkStudentName"></td>
+                <tr>
+                    <td class="title">Student Name</td>
+                    <td class="value" id="mkStudentName"></td>
+                </tr>
 
-            </tr>
+                <tr>
+                    <td class="title">Course</td>
+                    <td class="value" id="mkCourse"></td>
+                </tr>
 
-            <tr>
+                <tr>
+                    <td class="title">Paper Name</td>
+                    <td class="value" id="mkPaperName"></td>
+                </tr>
 
-                <td class="title">Course</td>
+            </table>
 
-                <td class="value" id="mkCourse"></td>
+        </div>
 
-            </tr>
+        <div class="mkQRSection">
 
-            <tr>
-
-                <td class="title">Paper Name</td>
-
-                <td class="value" id="mkPaperName"></td>
-
-            </tr>
-
-        </table>
-
-    </div>
-
-    <!-- QR -->
-
-    <div class="mkQRSection">
-
-        <div class="mkQRBox">
-
-            <img id="mkQRCode">
+            <div class="mkQRBox">
+                <img id="mkQRCode">
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
-<hr>
-
-<!--================ MARKS TABLE START ================-->
-
-<!--==================================================
-            PREMIUM MARKS TABLE
-===================================================-->
-
-<div class="mkMarksSection">
-
-    <table class="mkMarksTable">
-
-        <thead>
-
-            <tr>
-
-                <th>S.No</th>
-
-                <th>Subject</th>
-
-                <th>Full Marks</th>
-
-                <th>Pass Marks</th>
-
-                <th>Obtained Marks</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <tr>
-
-                <td>1</td>
-
-                <td>Theory</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkTheory"></td>
-
-            </tr>
-
-            <tr>
-
-                <td>2</td>
-
-                <td>Practical</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkPractical"></td>
-
-            </tr>
-
-            <tr>
-
-                <td>3</td>
-
-                <td>Viva</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkViva"></td>
-
-            </tr>
-
-            <tr>
-
-                <td>4</td>
-
-                <td>Project</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkProject"></td>
-
-            </tr>
-
-            <tr>
-
-                <td>5</td>
-
-                <td>Notebook</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkNotes"></td>
-
-            </tr>
-
-            <tr>
-
-                <td>6</td>
-
-                <td>Behaviour</td>
-
-                <td>100</td>
-
-                <td>40</td>
-
-                <td id="mkBehaviour"></td>
-
-            </tr>
-
-            <tr class="mkGrandTotal">
-
-                <td colspan="4">
-
-                    <strong>TOTAL OBTAINED MARKS</strong>
-
-                </td>
-
-                <td id="mkTotal"></td>
-
-            </tr>
-
-        </tbody>
-
-    </table>
-
-</div>
-
-<!--==================================================
+    <hr>
+
+    <!--================ MARKS TABLE ================-->
+
+    <div class="mkMarksSection">
+
+        <table class="mkMarksTable">
+
+            <thead>
+
+                <tr>
+                    <th>S.No</th>
+                    <th>Subject</th>
+                    <th>Full Marks</th>
+                    <th>Pass Marks</th>
+                    <th>Obtained Marks</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>Theory</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkTheory"></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Practical</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkPractical"></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Viva</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkViva"></td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Project</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkProject"></td>
+                </tr>
+
+                <tr>
+                    <td>5</td>
+                    <td>Notebook</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkNotes"></td>
+                </tr>
+
+                <tr>
+                    <td>6</td>
+                    <td>Behaviour</td>
+                    <td>100</td>
+                    <td>40</td>
+                    <td id="mkBehaviour"></td>
+                </tr>
+
+                <tr class="mkGrandTotal">
+
+                    <td colspan="4">
+                        <strong>TOTAL OBTAINED MARKS</strong>
+                    </td>
+
+                    <td id="mkTotal"></td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+      <!--==================================================
 SUMMARY
 ===================================================-->
 
@@ -1113,6 +1033,7 @@ SIGNATURE
         <strong>Issued By</strong>
 
     </div>
+
 </div>
 
 <!--==================================================
@@ -1123,26 +1044,42 @@ FOOTER
 
     <p>
         Digitally Signed and Verified<br>
-      Address: Infront of Anughrah College Gate no 1 Gaya ji Bihar 823001
+        Address: Infront of Anughrah College Gate no 1 Gaya ji Bihar 823001
     </p>
 
 </div>
-      <!--========================================
-        ACTION BUTTONS
+
+</div> <!-- .marksheet END -->
+
+<!--========================================
+ACTION BUTTONS
 =========================================-->
 
 <div class="mkPage">
 
-    <div class="marksheet">
-        .....
-    </div>
-
     <div class="mkActionButtons">
-        <button class="mkBtn mkBackBtn" onclick="backToResultList()">← Back</button>
-        <button class="mkBtn mkPrintBtn" onclick="printMarksheet()">🖨 Print</button>
+
+        <button
+            class="mkBtn mkBackBtn"
+            onclick="backToResultList()">
+
+            ← Back
+
+        </button>
+
+        <button
+            class="mkBtn mkPrintBtn"
+            onclick="printMarksheet()">
+
+            🖨 Print
+
+        </button>
+
     </div>
 
 </div>
+
+</div> <!-- #marksheetPage END -->
       
       
     <!-- ==================================================
