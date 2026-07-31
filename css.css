@@ -3841,12 +3841,13 @@ MOBILE
         FINAL PRINT (A4)
 ==================================================*/
 
+/*==================================================
+        PREMIUM MARKSHEET - PRINT
+==================================================*/
+
 @page{
-
     size:A4 portrait;
-
     margin:0;
-
 }
 
 @media print{
@@ -3854,131 +3855,77 @@ MOBILE
     html,
     body{
 
-        width:210mm;
-
-        height:297mm;
-        display:block !important;
+        width:210mm !important;
+        height:297mm !important;
 
         margin:0 !important;
-
         padding:0 !important;
 
         background:#fff !important;
 
-        overflow:visible !important;
+        overflow:hidden !important;
 
         -webkit-print-color-adjust:exact;
-
         print-color-adjust:exact;
 
     }
 
     /* Hide everything */
 
-    body *{
-
-        visibility:hidden !important;
-
+    body > *{
+        display:none !important;
     }
 
-    /* Show only marksheet */
+    /* Show only marksheet page */
 
-    .marksheet,
+    #marksheetPage{
+        display:block !important;
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    .marksheet{
+
+        display:block !important;
+
+        width:198mm !important;
+        height:287mm !important;
+
+        margin:5mm auto !important;
+
+        padding:5mm !important;
+
+        box-sizing:border-box !important;
+
+        background:#fff !important;
+
+        border:6px solid #0b4f9c !important;
+
+        outline:2px solid #d8b44c !important;
+        outline-offset:-7px;
+
+        box-shadow:none !important;
+
+        overflow:hidden !important;
+
+        page-break-inside:avoid !important;
+        break-inside:avoid !important;
+    }
+
     .marksheet *{
-
         visibility:visible !important;
-
     }
 
-   .marksheet{
-
-    position:relative !important;
-
-    width:100% !important;
-
-    max-width:none !important;
-
-    min-height:287mm !important;
-
-    margin:0 !important;
-
-    padding:5mm !important;
-
-    border:6px solid #0b4f9c !important;
-
-    outline:2px solid #d8b44c !important;
-
-    outline-offset:-7px;
-
-    box-shadow:none !important;
-
-    overflow:hidden !important;
-
-}
-    /* Hide buttons */
-
+    .mkPage,
+    .mkActionButtons,
     .marksheetActions,
     button,
     .noPrint{
-
         display:none !important;
-
-    }
-
-    /* Compact spacing */
-
-    .mkHeader{
-
-        margin-bottom:8px !important;
-
-    }
-
-    .mkStudentSection{
-
-        margin-bottom:8px !important;
-
-    }
-
-    .mkMarksSection{
-
-        margin-top:6px !important;
-
-    }
-
-    .mkSummary{
-
-        margin-top:8px !important;
-
-    }
-
-    .mkDeclaration{
-
-        margin-top:10px !important;
-
-        padding:8px 10px !important;
-
-        font-size:11px !important;
-
-    }
-
-    .mkSignatureSection{
-
-        margin-top:20px !important;
-
-    }
-
-    .mkFooter{
-
-        margin-top:12px !important;
-
-        font-size:10px !important;
-
     }
 
     img{
-
         max-width:100%;
-
     }
 
 }
