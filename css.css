@@ -3418,8 +3418,8 @@ HEADER IKON LOGO
 
     width:160px;
 
-    margin-right:16px;
-
+    margin-right:12px;
+    transform:translateX(-10px);
 }
 
 .mkTopTable{
