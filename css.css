@@ -3776,9 +3776,9 @@ HEADER IKON LOGO
 
     gap:70px;
 
-    margin-top:85px;          /* 70 → 85 */
+    margin-top:90px;          /* 70 → 85 */
 
-    padding-bottom:18px;      /* 12 → 18 */
+    padding-bottom:20px;      /* 12 → 18 */
 
     align-items:end;
 
@@ -4035,5 +4035,30 @@ HEADER IKON LOGO
 .mkPdfBtn:hover{
 
     background:#157347;
+
+}
+#mkPercentage{
+
+    font-size:16px;
+
+    font-weight:700;
+
+}
+
+#mkGrade{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#d48b00;
+
+}
+
+#mkResult{
+
+    font-size:18px;
+
+    font-weight:700;
 
 }
