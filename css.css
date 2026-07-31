@@ -3767,7 +3767,8 @@ HEADER IKON LOGO
 
     gap:70px;
 
-    margin-top:42px;
+    margin-top:55px;
+  padding-bottom:12px;
 
     align-items:end;
 
@@ -3846,7 +3847,7 @@ HEADER IKON LOGO
 
 .mkFooter{
 
-    margin-top:28px;
+    margin-top:35px;
 
     padding-top:12px;
 
