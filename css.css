@@ -3896,35 +3896,32 @@ MOBILE
 
     }
 
-    .marksheet{
-    display:block !important;
-    position:relative !important;
-    left:auto;
-    top:auto;
+   .marksheet{
 
-    width:194mm !important;
-    min-height:279mm !important;
+    position:relative !important;
+
+    width:100% !important;
+
+    max-width:none !important;
+
+    min-height:auto !important;
+
     height:auto !important;
 
-    box-sizing:border-box !important;
-
-    margin:auto !important;
+    margin:0 !important;
 
     padding:8mm !important;
 
     border:6px solid #0b4f9c !important;
 
     outline:2px solid #d8b44c !important;
+
     outline-offset:-7px;
 
     box-shadow:none !important;
 
     overflow:hidden !important;
 
-    page-break-after:avoid !important;
-    page-break-inside:avoid !important;
-    break-inside:avoid-page !important;
-        
 }
     /* Hide buttons */
 
