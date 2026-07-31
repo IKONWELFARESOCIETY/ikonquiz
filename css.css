@@ -3416,13 +3416,16 @@ HEADER IKON LOGO
 
     justify-content:flex-end;
 
+    width:180px;   /* Pehle 155 ke around tha */
 }
 
 .mkTopTable{
 
-    width:155px;
+    width:180px;
 
     border-collapse:collapse;
+
+    table-layout:fixed;
 
     font-size:11px;
 
@@ -3434,29 +3437,35 @@ HEADER IKON LOGO
 
     padding:6px 8px;
 
+    vertical-align:middle;
+
 }
 
 .mkTopTable td:first-child{
 
-   width:72px;
+    width:95px;              /* Left column bada */
 
     white-space:nowrap;
 
     font-size:11px;
 
     font-weight:600;
-   color:#fff;
+
+    color:#fff;
+
 }
 
 .mkTopTable td:last-child{
 
-    width:73px;
+    width:85px;              /* Right column */
+
     text-align:center;
 
     font-weight:600;
 
-}
+    word-break:break-word;
 
+}
 
 /*=====================================
         GOLDEN LINE
