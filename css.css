@@ -3159,11 +3159,11 @@ MOBILE
 
     width:210mm;
 
-    min-height:297mm;
+    min-height:287mm;
 
     margin:15px auto;
 
-    padding:8mm;
+    padding:6mm;
 
     box-sizing:border-box;
 
@@ -3904,7 +3904,7 @@ MOBILE
 
     max-width:none !important;
 
-    min-height:auto !important;
+    min-height:287mm !important;
 
     height:auto !important;
 
