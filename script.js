@@ -3376,7 +3376,61 @@ function printMarksheet(){
     window.print();
 
 }
+function downloadPDF() {
 
+    const element = document.querySelector(".marksheet");
+
+    const opt = {
+
+        margin: 0,
+
+        filename: "IKON_Marksheet.pdf",
+
+        image: {
+            type: "jpeg",
+            quality: 1
+        },
+
+        html2canvas: {
+
+            scale: 3,
+
+            useCORS: true,
+
+            allowTaint: true,
+
+            backgroundColor: "#ffffff",
+
+            scrollX: 0,
+
+            scrollY: 0
+
+        },
+
+        jsPDF: {
+
+            unit: "mm",
+
+            format: "a4",
+
+            orientation: "portrait"
+
+        },
+
+        pagebreak: {
+
+            mode: ["avoid-all", "css", "legacy"]
+
+        }
+
+    };
+
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .save();
+
+}
 
 
 
