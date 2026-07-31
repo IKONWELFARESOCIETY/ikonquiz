@@ -3860,6 +3860,10 @@ MOBILE
 
         margin:0 !important;
         padding:0 !important;
+     .header,
+.container > .header{
+    display:none !important;
+}
 
         background:#fff !important;
 
@@ -3885,7 +3889,7 @@ MOBILE
 
         display:block !important;
 
-        width:198mm !important;
+        width:190mm !important;
         height:287mm !important;
 
         margin:5mm auto !important;
