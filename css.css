@@ -2412,7 +2412,7 @@ button:disabled{
     grid-template-columns:1fr;
 
 }
-
+}
 
 /*==================================================
  IKON ONLINE TEST SYSTEM
@@ -3896,19 +3896,19 @@ MOBILE
 
     }
 
-    ..marksheet{
-
+    .marksheet{
+    display:block !important;
     position:relative !important;
     left:auto;
     top:auto;
 
-    width:210mm !important;
-    min-height:297mm !important;
-    height:297mm !important;
+    width:194mm !important;
+    min-height:279mm !important;
+    height:auto !important;
 
     box-sizing:border-box !important;
 
-    margin:0 !important;
+    margin:auto !important;
 
     padding:8mm !important;
 
@@ -3924,6 +3924,7 @@ MOBILE
     page-break-after:avoid !important;
     page-break-inside:avoid !important;
     break-inside:avoid-page !important;
+        
 }
     /* Hide buttons */
 
