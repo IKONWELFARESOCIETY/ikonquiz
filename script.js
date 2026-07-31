@@ -3413,45 +3413,59 @@ async function downloadPDF() {
 
         });
 
+        if (buttons) buttons.style.display = "flex";
+
         const pdf = new jsPDF({
-
             orientation: "portrait",
-
             unit: "mm",
-
             format: "a4"
-
         });
+
+        // ===== A4 SETTINGS =====
 
         const pageWidth = 210;
         const pageHeight = 297;
 
-        const imgWidth = pageWidth;
+        const margin = 6;          // 6mm gap on all sides
+
+        const printableWidth = pageWidth - (margin * 2);
+        const printableHeight = pageHeight - (margin * 2);
+
+        const imgWidth = printableWidth;
         const imgHeight = canvas.height * imgWidth / canvas.width;
 
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
         pdf.addImage(
+
             imgData,
+
             "JPEG",
-            0,
-            0,
+
+            margin,
+
+            margin,
+
             imgWidth,
-            Math.min(imgHeight, pageHeight),
+
+            Math.min(imgHeight, printableHeight),
+
             "",
+
             "FAST"
+
         );
 
-        // Mobile + Desktop Download
+        // Download
         const blob = pdf.output("blob");
 
         saveAs(blob, "IKON_Marksheet.pdf");
 
-    } catch (err) {
+    } catch (e) {
 
-        console.error(err);
+        console.error(e);
 
-        alert("PDF generation failed.");
+        alert("Unable to generate PDF.");
 
     } finally {
 
@@ -3460,7 +3474,6 @@ async function downloadPDF() {
     }
 
 }
-
 
 
 
