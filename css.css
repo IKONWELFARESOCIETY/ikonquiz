@@ -3872,10 +3872,7 @@ MOBILE
 
     /* Hide everything */
 
-    body > *{
-        display:none !important;
-    }
-
+   body > *
     /* Show only marksheet page */
 
     #marksheetPage{
