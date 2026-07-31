@@ -3391,16 +3391,22 @@ async function downloadPDF() {
 
     try {
 
-        // Temporary wrapper
+        // ===== Temporary Wrapper =====
+
         const wrapper = document.createElement("div");
-        wrapper.style.background = "#fff";
+
+        wrapper.style.position = "fixed";
+        wrapper.style.left = "-10000px";
+        wrapper.style.top = "0";
+        wrapper.style.background = "#ffffff";
         wrapper.style.padding = "25px";
         wrapper.style.display = "inline-block";
 
         const clone = original.cloneNode(true);
 
-        // PDF me HTML watermark hide
+        // Hide HTML watermark
         const cloneWatermark = clone.querySelector(".mkWatermark");
+
         if (cloneWatermark) {
             cloneWatermark.style.display = "none";
         }
@@ -3409,28 +3415,42 @@ async function downloadPDF() {
         clone.style.boxShadow = "none";
 
         wrapper.appendChild(clone);
+
         document.body.appendChild(wrapper);
 
         const canvas = await html2canvas(wrapper, {
+
             scale: 3,
+
             useCORS: true,
+
             allowTaint: true,
-            backgroundColor: "#ffffff"
+
+            backgroundColor: "#ffffff",
+
+            scrollX: 0,
+
+            scrollY: 0
+
         });
 
         document.body.removeChild(wrapper);
 
-        // ===== Draw Watermark on Canvas =====
+        // ===== Canvas =====
 
         const ctx = canvas.getContext("2d");
 
         const logo = new Image();
+
         logo.crossOrigin = "anonymous";
+
         logo.src = "ikon.jpg";
 
-        await new Promise((resolve) => {
+        await new Promise(resolve => {
+
             logo.onload = resolve;
             logo.onerror = resolve;
+
         });
 
         if (logo.complete && logo.naturalWidth > 0) {
@@ -3438,16 +3458,36 @@ async function downloadPDF() {
             ctx.save();
 
             ctx.globalAlpha = 0.12;
+                        // ===== Exact Watermark Position =====
 
-            const wmWidth = canvas.width * 0.45;
+            const padding = 25;
+
+            const sheetX = padding;
+            const sheetY = padding;
+
+            const sheetWidth = canvas.width - (padding * 2);
+            const sheetHeight = canvas.height - (padding * 2);
+
+            // Watermark Size
+            const wmWidth = sheetWidth * 0.46;
             const wmHeight = wmWidth * logo.height / logo.width;
 
-            const x = (canvas.width - wmWidth) / 2;
-            const y = canvas.height * 0.32 - (wmHeight / 2);
+            // Exact Center of Marksheet
+            const x = sheetX + ((sheetWidth - wmWidth) / 2);
+            const y = sheetY + ((sheetHeight - wmHeight) / 2);
+
+            // Rotate like HTML watermark
+            ctx.translate(
+                x + (wmWidth / 2),
+                y + (wmHeight / 2)
+            );
+
+            ctx.rotate(-12 * Math.PI / 180);
+
             ctx.drawImage(
                 logo,
-                x,
-                y,
+                -wmWidth / 2,
+                -wmHeight / 2,
                 wmWidth,
                 wmHeight
             );
@@ -3456,12 +3496,16 @@ async function downloadPDF() {
 
         }
 
-        // =========================
+        // ===== PDF =====
 
         const pdf = new jsPDF({
+
             orientation: "portrait",
+
             unit: "mm",
+
             format: "a4"
+
         });
 
         const margin = 8;
@@ -3472,34 +3516,56 @@ async function downloadPDF() {
         const printableWidth = pageWidth - (margin * 2);
 
         const imgWidth = printableWidth;
+
         const imgHeight = canvas.height * imgWidth / canvas.width;
 
-        const imgData = canvas.toDataURL("image/png");
-
-        pdf.addImage(
-            imgData,
-            "PNG",
-            margin,
-            margin,
-            imgWidth,
-            imgHeight,
-            "",
-            "FAST"
+        const imgData = canvas.toDataURL(
+            "image/png",
+            1.0
         );
 
-        const blob = pdf.output("blob");
+        pdf.addImage(
 
-        saveAs(blob, "IKON_Marksheet.pdf");
+            imgData,
 
-    } catch (e) {
+            "PNG",
+
+            margin,
+
+            margin,
+
+            imgWidth,
+
+            imgHeight,
+
+            "",
+
+            "FAST"
+
+        );
+
+        saveAs(
+
+            pdf.output("blob"),
+
+            "IKON_Marksheet.pdf"
+
+        );
+
+    }
+
+    catch (e) {
 
         console.error(e);
 
         alert("PDF generation failed.");
 
-    } finally {
+    }
 
-        if (buttons) buttons.style.display = "flex";
+    finally {
+
+        if (buttons)
+            buttons.style.display = "flex";
 
     }
 
