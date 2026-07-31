@@ -3376,22 +3376,24 @@ function printMarksheet(){
     window.print();
 
 }
-function downloadPDF() {
+async function downloadPDF() {
+
+    const { jsPDF } = window.jspdf;
 
     const element = document.querySelector(".marksheet");
 
-    const opt = {
+    if (!element) {
+        alert("Marksheet not found.");
+        return;
+    }
 
-        margin: 0,
+    // Hide buttons
+    const buttons = document.querySelector(".mkActionButtons");
+    if (buttons) buttons.style.display = "none";
 
-        filename: "IKON_Marksheet.pdf",
+    try {
 
-        image: {
-            type: "jpeg",
-            quality: 1
-        },
-
-        html2canvas: {
+        const canvas = await html2canvas(element, {
 
             scale: 3,
 
@@ -3403,35 +3405,61 @@ function downloadPDF() {
 
             scrollX: 0,
 
-            scrollY: 0
+            scrollY: 0,
 
-        },
+            windowWidth: element.scrollWidth,
 
-        jsPDF: {
+            windowHeight: element.scrollHeight
+
+        });
+
+        const pdf = new jsPDF({
+
+            orientation: "portrait",
 
             unit: "mm",
 
-            format: "a4",
+            format: "a4"
 
-            orientation: "portrait"
+        });
 
-        },
+        const pageWidth = 210;
+        const pageHeight = 297;
 
-        pagebreak: {
+        const imgWidth = pageWidth;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
 
-            mode: ["avoid-all", "css", "legacy"]
+        const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
-        }
+        pdf.addImage(
+            imgData,
+            "JPEG",
+            0,
+            0,
+            imgWidth,
+            Math.min(imgHeight, pageHeight),
+            "",
+            "FAST"
+        );
 
-    };
+        // Mobile + Desktop Download
+        const blob = pdf.output("blob");
 
-    html2pdf()
-        .set(opt)
-        .from(element)
-        .save();
+        saveAs(blob, "IKON_Marksheet.pdf");
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("PDF generation failed.");
+
+    } finally {
+
+        if (buttons) buttons.style.display = "flex";
+
+    }
 
 }
-
 
 
 
