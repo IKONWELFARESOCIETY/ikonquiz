@@ -3392,77 +3392,101 @@ async function downloadPDF() {
 
     try {
 
-        // Temporary wrapper (only for PDF)
+        // Temporary wrapper
         const wrapper = document.createElement("div");
-
-        wrapper.style.background = "#ffffff";
-        wrapper.style.padding = "25px";      // PDF margin
+        wrapper.style.background = "#fff";
+        wrapper.style.padding = "25px";
         wrapper.style.display = "inline-block";
 
         const clone = original.cloneNode(true);
+
+        // PDF me HTML watermark hide
+        const cloneWatermark = clone.querySelector(".mkWatermark");
+        if (cloneWatermark) {
+            cloneWatermark.style.display = "none";
+        }
 
         clone.style.margin = "0";
         clone.style.boxShadow = "none";
 
         wrapper.appendChild(clone);
-
         document.body.appendChild(wrapper);
 
         const canvas = await html2canvas(wrapper, {
-
             scale: 3,
-
             useCORS: true,
-
             allowTaint: true,
-
             backgroundColor: "#ffffff"
-
         });
 
         document.body.removeChild(wrapper);
 
-        const pdf = new jsPDF({
+        // ===== Draw Watermark on Canvas =====
 
-            orientation: "portrait",
+        const ctx = canvas.getContext("2d");
 
-            unit: "mm",
+        const logo = new Image();
+        logo.crossOrigin = "anonymous";
+        logo.src = "ikon.jpg";
 
-            format: "a4"
-
+        await new Promise((resolve) => {
+            logo.onload = resolve;
+            logo.onerror = resolve;
         });
+
+        if (logo.complete && logo.naturalWidth > 0) {
+
+            ctx.save();
+
+            ctx.globalAlpha = 0.16;
+
+            const wmWidth = canvas.width * 0.50;
+            const wmHeight = wmWidth * logo.height / logo.width;
+
+            const x = (canvas.width - wmWidth) / 2;
+            const y = (canvas.height - wmHeight) / 2;
+
+            ctx.drawImage(
+                logo,
+                x,
+                y,
+                wmWidth,
+                wmHeight
+            );
+
+            ctx.restore();
+
+        }
+
+        // =========================
+
+        const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4"
+        });
+
+        const margin = 8;
 
         const pageWidth = 210;
         const pageHeight = 297;
 
-        const margin = 8;
-
         const printableWidth = pageWidth - (margin * 2);
 
         const imgWidth = printableWidth;
-
         const imgHeight = canvas.height * imgWidth / canvas.width;
 
         const imgData = canvas.toDataURL("image/png");
 
         pdf.addImage(
-
             imgData,
-
             "PNG",
-
             margin,
-
             margin,
-
             imgWidth,
-
             imgHeight,
-
             "",
-
             "FAST"
-
         );
 
         const blob = pdf.output("blob");
