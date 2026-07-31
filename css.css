@@ -3215,36 +3215,35 @@ MOBILE
 
 
 /*=====================================
-        WATERMARK
+        mklogo
 ======================================*/
 
-.mkWatermark{
+/*==========================
+HEADER IKON LOGO
+==========================*/
 
-    position:absolute;
+.mkLogo{
 
-    inset:0;
+    width:120px;
 
     display:flex;
 
-    justify-content:center;
+    align-items:flex-start;
 
-    align-items:center;
-
-    pointer-events:none;
-
-    z-index:1;
+    justify-content:flex-start;
 
 }
 
-.mkWatermark img{
+.mkLogo img{
 
-    width:58%;
+    width:105px;
 
-    max-width:380px;
+    height:auto;
 
-    opacity:.12;
+    display:block;
 
-    filter:grayscale(100%) contrast(110%);
+    margin-top:-12px;   /* Logo aur upar */
+    margin-left:0;
 
     object-fit:contain;
 
@@ -3252,7 +3251,7 @@ MOBILE
 
 
 /*=====================================
-        CONTENT ABOVE WATERMARK
+        CONTENT ABOVE mklogo
 ======================================*/
 
 .mkHeader,
@@ -3679,7 +3678,6 @@ MOBILE
         DECLARATION + SIGNATURE + FOOTER
 ==================================================*/
 
-
 /*=====================================
         DECLARATION
 ======================================*/
@@ -3715,9 +3713,11 @@ MOBILE
 
     grid-template-columns:1fr 1fr;
 
-    gap:60px;
+    gap:70px;
 
-    margin-top:30px;
+    margin-top:42px;
+
+    align-items:end;
 
 }
 
@@ -3725,17 +3725,57 @@ MOBILE
 
     text-align:center;
 
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:flex-end;
+
 }
+
+
+/* Signature Line */
 
 .mkSignLine{
 
     width:170px;
 
-    margin:0 auto 6px;
+    border-top:2px solid #000;
 
-    border-top:1.8px solid #000;
+    margin-bottom:8px;
 
 }
+
+
+/* Issued By ke upar bhi same line */
+
+.mkSealArea{
+
+    width:170px;
+
+    border-top:2px solid #000;
+
+    margin-bottom:8px;
+
+    height:0;
+
+}
+
+
+.mkSignBox strong{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#222;
+
+    letter-spacing:.3px;
+
+}
+
 
 .mkSignTitle{
 
@@ -3754,9 +3794,9 @@ MOBILE
 
 .mkFooter{
 
-    margin-top:20px;
+    margin-top:28px;
 
-    padding-top:10px;
+    padding-top:12px;
 
     border-top:2px solid #d8b44c;
 
@@ -3770,12 +3810,17 @@ MOBILE
 
 }
 
+.mkFooter p{
+
+    margin:0;
+
+}
+
 .mkFooter strong{
 
     color:#0b4f9c;
 
 }
-
 
 /*=====================================
         ACTION BUTTONS
