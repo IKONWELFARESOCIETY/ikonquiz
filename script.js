@@ -3438,14 +3438,13 @@ async function downloadPDF() {
 
             ctx.save();
 
-            ctx.globalAlpha = 0.16;
+            ctx.globalAlpha = 0.12;
 
-            const wmWidth = canvas.width * 0.50;
+            const wmWidth = canvas.width * 0.45;
             const wmHeight = wmWidth * logo.height / logo.width;
 
             const x = (canvas.width - wmWidth) / 2;
-            const y = (canvas.height - wmHeight) / 2;
-
+            const y = canvas.height * 0.32 - (wmHeight / 2);
             ctx.drawImage(
                 logo,
                 x,
