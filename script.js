@@ -3380,20 +3380,35 @@ async function downloadPDF() {
 
     const { jsPDF } = window.jspdf;
 
-    const element = document.querySelector(".marksheet");
+    const original = document.querySelector(".marksheet");
 
-    if (!element) {
+    if (!original) {
         alert("Marksheet not found.");
         return;
     }
 
-    // Hide buttons
     const buttons = document.querySelector(".mkActionButtons");
     if (buttons) buttons.style.display = "none";
 
     try {
 
-        const canvas = await html2canvas(element, {
+        // Temporary wrapper (only for PDF)
+        const wrapper = document.createElement("div");
+
+        wrapper.style.background = "#ffffff";
+        wrapper.style.padding = "25px";      // PDF margin
+        wrapper.style.display = "inline-block";
+
+        const clone = original.cloneNode(true);
+
+        clone.style.margin = "0";
+        clone.style.boxShadow = "none";
+
+        wrapper.appendChild(clone);
+
+        document.body.appendChild(wrapper);
+
+        const canvas = await html2canvas(wrapper, {
 
             scale: 3,
 
@@ -3401,46 +3416,40 @@ async function downloadPDF() {
 
             allowTaint: true,
 
-            backgroundColor: "#ffffff",
-
-            scrollX: 0,
-
-            scrollY: 0,
-
-            windowWidth: element.scrollWidth,
-
-            windowHeight: element.scrollHeight
+            backgroundColor: "#ffffff"
 
         });
 
-        if (buttons) buttons.style.display = "flex";
+        document.body.removeChild(wrapper);
 
         const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4"
-        });
 
-        // ===== A4 SETTINGS =====
+            orientation: "portrait",
+
+            unit: "mm",
+
+            format: "a4"
+
+        });
 
         const pageWidth = 210;
         const pageHeight = 297;
 
-        const margin = 6;          // 6mm gap on all sides
+        const margin = 8;
 
         const printableWidth = pageWidth - (margin * 2);
-        const printableHeight = pageHeight - (margin * 2);
 
         const imgWidth = printableWidth;
+
         const imgHeight = canvas.height * imgWidth / canvas.width;
 
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+        const imgData = canvas.toDataURL("image/png");
 
         pdf.addImage(
 
             imgData,
 
-            "JPEG",
+            "PNG",
 
             margin,
 
@@ -3448,7 +3457,7 @@ async function downloadPDF() {
 
             imgWidth,
 
-            Math.min(imgHeight, printableHeight),
+            imgHeight,
 
             "",
 
@@ -3456,7 +3465,6 @@ async function downloadPDF() {
 
         );
 
-        // Download
         const blob = pdf.output("blob");
 
         saveAs(blob, "IKON_Marksheet.pdf");
@@ -3465,7 +3473,7 @@ async function downloadPDF() {
 
         console.error(e);
 
-        alert("Unable to generate PDF.");
+        alert("PDF generation failed.");
 
     } finally {
 
@@ -3474,7 +3482,6 @@ async function downloadPDF() {
     }
 
 }
-
 
 
 //====================================================
