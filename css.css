@@ -3764,9 +3764,6 @@ HEADER IKON LOGO
         SIGNATURE SECTION
 ======================================*/
 
-/*=====================================
-        SIGNATURE SECTION
-======================================*/
 
 .mkSignatureSection{
 
@@ -3831,7 +3828,37 @@ HEADER IKON LOGO
     letter-spacing:.3px;
 
 }
+/*=====================================
+        SIGNATURE IMAGES
+======================================*/
 
+.mkSignImage{
+
+    width:150px;
+
+    height:75px;
+
+    object-fit:contain;
+
+    display:block;
+
+    margin:0 auto 10px auto;
+
+}
+
+.mkIssuedImage{
+
+    width:135px;
+
+    height:100px;
+
+    object-fit:contain;
+
+    display:block;
+
+    margin:0 auto 10px auto;
+
+}
 
 /*=====================================
         FOOTER
