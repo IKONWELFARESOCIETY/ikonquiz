@@ -4087,13 +4087,7 @@ HEADER IKON LOGO
     img{
         max-width:100%;
     }
- .mkSlogan{
-        display:block !important;
-        visibility:visible !important;
-        -webkit-print-color-adjust:exact;
-        print-color-adjust:exact;
 
-}
 .mkPdfBtn{
 
     background:#198754;
