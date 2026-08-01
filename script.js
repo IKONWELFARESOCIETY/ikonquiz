@@ -2800,32 +2800,66 @@ function verifyResultStudent(){
             const tr =
                 document.createElement("tr");
 
-            tr.innerHTML=`
-                <td>${index+1}</td>
-                <td>${r.marksheetNo}</td>
-                <td>${r.regNo}</td>
-                <td>${r.studentName}</td>
-                <td>${r.course}</td>
-                <td>${r.paperName}</td>
-                <td>${r.theory}</td>
-                <td>${r.practical}</td>
-                <td>${r.viva}</td>
-                <td>${r.notes}</td>
-                <td>${r.behaviour}</td>
-                <td>${r.project}</td>
-                <td>${r.totalMarks}</td>
-                <td>${r.percentage}</td>
-                <td>${r.grade}</td>
-                <td>${r.result}</td>
-                <td>${r.issueDate}</td>
-                <td>
-                    <button
-                        class="viewMarksheetBtn"
-                        onclick="verifyMarksheet('${r.paperName}')">
-                        View Marksheet
-                    </button>
-                </td>
-            `;
+            //=========================================
+            // RESULT NOT PUBLISHED
+            //=========================================
+
+            if(r.publishStatus !== "YES"){
+
+                tr.innerHTML=`
+                    <td>${index+1}</td>
+                    <td>${r.marksheetNo}</td>
+                    <td>${r.regNo}</td>
+                    <td>${r.studentName}</td>
+                    <td>${r.course}</td>
+                    <td>${r.paperName}</td>
+
+                    <td colspan="12"
+                        style="
+                        color:#d32f2f;
+                        text-align:center;
+                        font-weight:bold;
+                        font-size:15px;">
+                        Results will be published soon.
+                    </td>
+                `;
+
+            }
+
+            //=========================================
+            // RESULT PUBLISHED
+            //=========================================
+
+            else{
+
+                tr.innerHTML=`
+                    <td>${index+1}</td>
+                    <td>${r.marksheetNo}</td>
+                    <td>${r.regNo}</td>
+                    <td>${r.studentName}</td>
+                    <td>${r.course}</td>
+                    <td>${r.paperName}</td>
+                    <td>${r.theory}</td>
+                    <td>${r.practical}</td>
+                    <td>${r.viva}</td>
+                    <td>${r.notes}</td>
+                    <td>${r.behaviour}</td>
+                    <td>${r.project}</td>
+                    <td>${r.totalMarks}</td>
+                    <td>${r.percentage}</td>
+                    <td>${r.grade}</td>
+                    <td>${r.result}</td>
+                    <td>${r.issueDate}</td>
+                    <td>
+                        <button
+                            class="viewMarksheetBtn"
+                            onclick="verifyMarksheet('${r.paperName}')">
+                            View Marksheet
+                        </button>
+                    </td>
+                `;
+
+            }
 
             body.appendChild(tr);
 
