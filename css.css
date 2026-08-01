@@ -3901,9 +3901,9 @@ HEADER IKON LOGO
 
 .mkFooter{
 
-    margin-top:-12px;          /* 35 → 45 */
+    margin-top:12px;          /* 35 → 45 */
 
-    padding-top:5px;
+    padding-top:8px;
 
     border-top:2px solid #d8b44c;
 
@@ -4393,8 +4393,8 @@ HEADER IKON LOGO
     background:#000;
     color:#fff;
     text-align:center;
-    font-size:13px;
+    font-size:16px;
     font-weight:700;
     letter-spacing:.5px;
-    border-radius:4px;
+    border-radius:0px;
 }
