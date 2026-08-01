@@ -3712,7 +3712,7 @@ HEADER IKON LOGO
 
 .mkSummary{
 
-    margin-top:10px;
+    margin-top:22px;
 
 }
 
@@ -3746,9 +3746,11 @@ HEADER IKON LOGO
 
     text-align:center;
 
-    font-size:14px;
-
+    font-size:15px;
+    
     font-weight:700;
+    background:#eef5ff;      /* Light Blue */
+     color:#0b4f9c;           /* Dark Blue Text */
 
 }
 
@@ -3773,7 +3775,7 @@ HEADER IKON LOGO
 
 .mkDeclaration{
 
-    margin-top:12px;
+    margin-top:16px;
 
     padding:10px 12px;
 
