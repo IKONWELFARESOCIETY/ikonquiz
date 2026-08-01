@@ -4408,3 +4408,35 @@ HEADER IKON LOGO
 
     box-sizing:border-box;
 }
+.mkGradeLegend{
+    margin-top:10px;
+    background:#000;
+    color:#fff;
+
+    padding:8px 12px;
+
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+
+    font-size:13px;
+    font-weight:600;
+
+    border:1px solid #333;
+    box-sizing:border-box;
+}
+
+.mkGradeLegend strong{
+    color:#fff;
+    margin-right:8px;
+}
+
+.mkGradeLegend span{
+    white-space:nowrap;
+}
+
+.mkGradeLegend b{
+    color:#ffd700;
+}
