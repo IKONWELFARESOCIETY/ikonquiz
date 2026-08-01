@@ -95,22 +95,17 @@ textarea{
     align-items:center;
     text-align:center;
     padding:34px 30px 30px;
-    color:#fff;
+     color:#333;
+
     overflow:hidden;
-    background:
-        radial-gradient(circle at 15% 20%, rgba(255,255,255,.18), transparent 22%),
-        radial-gradient(circle at 85% 10%, rgba(255,255,255,.12), transparent 18%),
-        linear-gradient(135deg, #003b8e 0%, #005bea 42%, #0b7cff 100%);
+
+    background:#ffffff;
 }
 
 .header::before{
-    content:"";
-    position:absolute;
-    inset:0;
-   background:#ffffff;
-    background-size:120px 120px;
-    opacity:.35;
-    pointer-events:none;
+
+    display:none;
+
 }
 
 .header > *{
