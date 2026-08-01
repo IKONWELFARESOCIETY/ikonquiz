@@ -3437,6 +3437,30 @@ HEADER IKON LOGO
 /*=====================================
         TOP RIGHT TABLE
 ======================================*/
+.mkExamInfoTable{
+    width:180px;
+    margin-top:8px;
+    border-collapse:collapse;
+    font-size:11px;
+    table-layout:fixed;
+}
+
+.mkExamInfoTable th{
+    width:70px;
+    background:#0b4f9c;
+    color:#fff;
+    border:1px solid #777;
+    padding:5px;
+    text-align:left;
+}
+
+.mkExamInfoTable td{
+    border:1px solid #777;
+    padding:5px;
+    text-align:center;
+    font-weight:600;
+    background:#fff;
+}
 
 .mkTopRight{
     display:flex;
