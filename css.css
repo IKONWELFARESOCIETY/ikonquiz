@@ -225,10 +225,17 @@ textarea{
 ==================================================*/
 
 #loginPage{
-    min-height:500px;
+
+    width:100%;
+
+    min-height:calc(100vh - 220px);
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
 }
 
 
@@ -258,6 +265,7 @@ textarea{
     position:relative;
 
     overflow:hidden;
+  margin:auto;
 
 }
 
@@ -2210,28 +2218,38 @@ button:disabled{
 
 #submitBtn{
 
-    width:150px;
+    width:240px;
 
-    height:50px;
+    height:58px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:0;
 
     border:none;
 
-    border-radius:14px;
+    border-radius:15px;
+
+    background:linear-gradient(135deg,#16a34a,#22c55e);
 
     color:#fff;
 
-    font-size:16px;
+    font-size:18px;
 
     font-weight:700;
 
-    background:linear-gradient(
-        135deg,
-        #16a34a,
-        #22c55e
-    );
+    letter-spacing:.3px;
+
+    cursor:pointer;
 
     box-shadow:
-        0 12px 25px rgba(22,163,74,.28);
+        0 14px 35px rgba(22,163,74,.30);
 
     transition:.30s;
 
@@ -2242,7 +2260,7 @@ button:disabled{
     transform:translateY(-3px);
 
     box-shadow:
-        0 18px 35px rgba(22,163,74,.40);
+        0 20px 40px rgba(22,163,74,.40);
 
 }
 
@@ -4332,5 +4350,22 @@ HEADER IKON LOGO
     width:145px;
 
 }
+
+}
+/*=====================================
+        SUBMIT AREA
+======================================*/
+
+.submit-area{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:45px 0 10px;
 
 }
