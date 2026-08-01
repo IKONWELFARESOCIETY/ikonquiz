@@ -3444,7 +3444,7 @@ HEADER IKON LOGO
     justify-content:flex-end;
     position:relative;
     top:-20px;     /* -15 se -30 ke beech adjust kar sakte ho */
-    right:5px;
+    right:-10px;
 }
 
 .mkTopTable{
