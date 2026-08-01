@@ -715,7 +715,23 @@ button:disabled{
 /*==================================================
  SUCCESS BUTTONS
 ==================================================*/
+/*=====================================
+        SUCCESS PAGE
+======================================*/
 
+#successPage{
+
+    width:100%;
+
+    min-height:calc(100vh - 220px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
 .success-box{
 
     display:flex;
