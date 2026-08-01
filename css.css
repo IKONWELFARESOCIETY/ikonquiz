@@ -4089,3 +4089,248 @@ HEADER IKON LOGO
     font-weight:700;
 
 }
+/*=========================================
+        QR VERIFICATION PAGE
+=========================================*/
+
+.qrVerifyCard{
+
+    width:100%;
+    max-width:700px;
+
+    margin:35px auto;
+
+    background:#fff;
+
+    border:3px solid #0b4f9c;
+
+    border-radius:10px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+
+    overflow:hidden;
+
+}
+
+
+/*=========================================
+            HEADER
+=========================================*/
+
+.qrVerifyHeader{
+
+    background:#0b4f9c;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:20px;
+
+}
+
+.qrVerifyLogo{
+
+    width:75px;
+
+    height:75px;
+
+    object-fit:contain;
+
+    margin-bottom:8px;
+
+}
+
+.qrVerifyHeader h2{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+.qrVerifyHeader p{
+
+    margin-top:6px;
+
+    font-size:15px;
+
+    opacity:.95;
+
+}
+
+
+/*=========================================
+        VERIFIED BADGE
+=========================================*/
+
+.qrVerified{
+
+    background:#28a745;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:12px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+}
+
+
+/*=========================================
+            TABLE
+=========================================*/
+
+.qrTable{
+
+    width:92%;
+
+    margin:25px auto;
+
+    border-collapse:collapse;
+
+    font-size:15px;
+
+}
+
+.qrTable td{
+
+    border:1px solid #d8d8d8;
+
+    padding:12px 14px;
+
+}
+
+.qrTable td:first-child{
+
+    width:220px;
+
+    font-weight:700;
+
+    background:#f7f9fc;
+
+    color:#0b4f9c;
+
+}
+
+.qrTable td:last-child{
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+
+/*=========================================
+            FOOTER
+=========================================*/
+
+.qrFooter{
+
+    text-align:center;
+
+    border-top:2px solid #e6e6e6;
+
+    padding:20px;
+
+}
+
+.verifyTick{
+
+    color:#28a745;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+}
+
+.qrFooter strong{
+
+    display:block;
+
+    color:#0b4f9c;
+
+    font-size:18px;
+
+    margin-bottom:6px;
+
+}
+
+.qrFooter p{
+
+    margin:0;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+/*=========================================
+        MOBILE
+=========================================*/
+
+@media(max-width:768px){
+
+.qrVerifyCard{
+
+    margin:15px;
+
+}
+
+.qrVerifyHeader h2{
+
+    font-size:22px;
+
+}
+
+.qrVerifyLogo{
+
+    width:60px;
+
+    height:60px;
+
+}
+
+.qrVerified{
+
+    font-size:16px;
+
+}
+
+.qrTable{
+
+    width:95%;
+
+    font-size:14px;
+
+}
+
+.qrTable td{
+
+    padding:10px;
+
+}
+
+.qrTable td:first-child{
+
+    width:145px;
+
+}
+
+}
