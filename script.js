@@ -509,14 +509,15 @@ function startTest() {
 
             paperList = data.papers || [];
 
-            if (paperList.length === 0) {
+            if(paperList.length===0){
 
-                alert("No Paper Assigned.");
+    alert(
+        "All assigned examinations have already been completed."
+    );
 
-                return;
+    return;
 
-            }
-
+}
             //----------------------------------
             // Single Paper
             //----------------------------------
@@ -635,23 +636,20 @@ function showPaperSelection() {
 // SELECT PAPER
 //====================================================
 
-function selectPaper() {
+function selectPaper(){
 
-    const select = document.getElementById("paperSelect");
+    const select =
+        document.getElementById("paperSelect");
 
-    if (!select) return;
+    if(!select) return;
 
     paperName = select.value;
 
-    if (paperName === "") {
-
-        alert("Please select a paper.");
-
+    if(paperName==""){
         return;
-
     }
 
- 
+    checkTestStatus();
 
 }
 //====================================================
