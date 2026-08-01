@@ -99,12 +99,31 @@ textarea{
 
     overflow:hidden;
 
-    background:#ffffff;
+    background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.18), transparent 22%),
+    radial-gradient(circle at 85% 10%, rgba(255,255,255,.12), transparent 18%),
+    linear-gradient(135deg, #003b8e 0%, #005bea 42%, #0b7cff 100%);
 }
 
-.header::before{
+header::before{
 
-    display:none;
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(90deg, transparent 0 48%, rgba(255,255,255,.08) 50%, transparent 52%),
+        linear-gradient(0deg, transparent 0 48%, rgba(255,255,255,.05) 50%, transparent 52%);
+
+    background-size:120px 120px;
+
+    opacity:.35;
+
+    pointer-events:none;
+
+}
 
 }
 
@@ -147,8 +166,9 @@ textarea{
 #testTitle{
     width:100%;
     margin:12px 0 8px;
-    color:#3B0764;
-text-shadow:none;
+    color:#ffffff;
+  text-shadow:
+        0 2px 8px rgba(0,0,0,.25);
     text-align:center;
     font-size:clamp(1.8rem, 3vw, 2.4rem);
     font-weight:800;
