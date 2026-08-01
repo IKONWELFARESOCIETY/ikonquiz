@@ -3806,7 +3806,7 @@ HEADER IKON LOGO
 
     gap:70px;
 
-    margin-top:45px;          /* 70 → 85 */
+    margin-top:30px;          /* 70 → 85 */
 
     padding-bottom:5px;      /* 12 → 18 */
 
@@ -3844,7 +3844,7 @@ HEADER IKON LOGO
 
     border-top:2px solid #000;
 
-    margin-bottom:8px;
+    margin-bottom:5px;
 
     height:0;
 
@@ -3859,7 +3859,7 @@ HEADER IKON LOGO
     color:#222;
 
     letter-spacing:.3px;
-     margin-top:-5px;
+     margin-top:-8px;
 
 }
 /*=====================================
