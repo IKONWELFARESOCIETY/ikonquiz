@@ -3271,30 +3271,21 @@ HEADER IKON LOGO
 ==========================*/
 
 .mkLogo{
-
-    width:120px;
-
+    width:150px;
     display:flex;
-
-    align-items:flex-start;
-
     justify-content:flex-start;
-
+    align-items:flex-start;
+    position:relative;
+    top:-8px;
+    left:8px;
 }
 
 .mkLogo img{
-
-    width:105px;
-
+    width:135px;
     height:auto;
-
     display:block;
-
-    margin-top:-12px;   /* Logo aur upar */
-    margin-left:0;
-
+    margin:0;
     object-fit:contain;
-
 }
 
 
@@ -3421,7 +3412,7 @@ HEADER IKON LOGO
 
     padding:7px 34px;
 
-    font-size:16px;
+    font-size:14px;
 
     color:#fff;
 
