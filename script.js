@@ -3259,18 +3259,26 @@ function fillMarksheet(m){
 
     }
 
-    //---------------------------------------
-    // QR Code (Blank)
-    //---------------------------------------
+   //---------------------------------------
+// QR Code
+//---------------------------------------
 
-    const qr =
-    document.getElementById("mkQRCode");
+const qr =
+document.getElementById("mkQRCode");
 
-    if(qr){
+if(qr){
 
-        qr.src = "";
+    const verifyURL =
+        window.location.origin +
+        window.location.pathname +
+        "?verifyQR=" +
+        encodeURIComponent(m.regNo) +
+        "&paper=" +
+        encodeURIComponent(m.paperName);
 
-    }
+    generateMarksheetQR(verifyURL);
+
+}
 
     //---------------------------------------
     // Scroll Top
@@ -3373,6 +3381,31 @@ function printMarksheet(){
     }
 
     window.print();
+
+}
+function generateMarksheetQR(data){
+
+    const temp = document.createElement("div");
+
+    new QRCode(temp,{
+
+        text:data,
+
+        width:150,
+
+        height:150,
+
+        correctLevel:QRCode.CorrectLevel.H
+
+    });
+
+    const qrImg = temp.querySelector("img");
+
+    if(qrImg){
+
+        document.getElementById("mkQRCode").src = qrImg.src;
+
+    }
 
 }
 async function downloadPDF() {
