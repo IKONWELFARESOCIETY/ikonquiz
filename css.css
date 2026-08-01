@@ -3405,25 +3405,24 @@ HEADER IKON LOGO
 }
 
 .mkHeading h2{
-    display:inline-block;
-    margin:8px 0 5px;
-    padding:8px 30px;
 
-    min-width:430px;      /* Width fix */
-    white-space:nowrap;   /* Kabhi 2 line me nahi jayega */
+    display:inline-block;
+
+    margin:6px 0 5px;
+
+    padding:7px 34px;
 
     font-size:13px;
-    font-weight:700;
-    text-align:center;
 
     color:#fff;
+
     background:#0b4f9c;
+
     border-radius:30px;
+
     box-shadow:0 2px 8px rgba(0,0,0,.18);
 
-    box-sizing:border-box;
 }
-
 .mkHeading p{
 
     margin:0;
