@@ -4121,7 +4121,7 @@ MARKSHEET NO TABLE
 }
 #mkPercentage{
 
-    font-size:30px;
+    font-size:25px;
 
     font-weight:700;
     color:#0b4f9c; 
@@ -4131,7 +4131,7 @@ MARKSHEET NO TABLE
 
 #mkGrade{
 
-    font-size:30px;
+    font-size:25px;
 
     font-weight:700;
 
@@ -4141,7 +4141,7 @@ MARKSHEET NO TABLE
 
 #mkResult{
 
-    font-size:30px;
+    font-size:25px;
 
     font-weight:700;
     color:#006400;
