@@ -4388,13 +4388,12 @@ HEADER IKON LOGO
 }
 
 .mkSlogan{
-    margin-top:8px;
-    padding:8px 12px;
+    width:210mm;          /* A4 width */
+    margin:0 auto;
     background:#000;
     color:#fff;
     text-align:center;
-    font-size:16px;
+    padding:8px 0;
+    font-size:13px;
     font-weight:700;
-    letter-spacing:.5px;
-    border-radius:0px;
 }
