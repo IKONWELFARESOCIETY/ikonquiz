@@ -3365,23 +3365,27 @@ HEADER IKON LOGO
 }
 .mkHeader{
     display:grid;
-    grid-template-columns:165px 1fr 150px;
-    align-items:start;      /* center ki jagah start */
+    grid-template-columns:165px 1fr 165px;
+    align-items:start;
     gap:15px;
+    padding:12px 12px 0;   /* Border se gap */
     margin-bottom:10px;
 }
 
 /*=====================================
         LOGO
 ======================================*/
-
 .mkLogo{
-    margin-top:-18px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding-top:10px;      /* Border se gap */
 }
 
 .mkLogo img{
     width:150px;
-    margin-top:0;
+    height:auto;
+    margin:0;
 }
 
 
@@ -3392,14 +3396,14 @@ HEADER IKON LOGO
 .mkHeading{
 
     text-align:center;
-
+    padding-top:10px;
 }
 
 .mkHeading h1{
 
     margin:0;
 
-    font-size:23px;
+    font-size:26px;
 
     font-weight:700;
 
@@ -3433,7 +3437,7 @@ HEADER IKON LOGO
 
     margin:0;
 
-    font-size:11px;
+    font-size:13px;
 
     color:#555;
 
@@ -3447,10 +3451,10 @@ HEADER IKON LOGO
 .mkTopRight{
     display:flex;
     justify-content:flex-end;
-    width:160px;
-    margin-top:-18px;
-    margin-right:12px;
-    transform:translateX(-10px);
+    align-items:flex-start;
+    padding-top:10px;      /* Border se gap */
+    margin:0;
+    transform:none;
 }
 
 .mkTopTable{
@@ -3551,7 +3555,7 @@ HEADER IKON LOGO
 }
 .mkQRText{
     margin-top:5px;
-    font-size:11px;
+    font-size:8px;
     font-weight:700;
     color:#0b4f9c;
     text-transform:uppercase;
