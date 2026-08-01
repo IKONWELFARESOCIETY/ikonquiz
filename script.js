@@ -3401,24 +3401,31 @@ function generateMarksheetQR(data){
     const temp = document.createElement("div");
 
     new QRCode(temp,{
-
         text:data,
-
         width:150,
-
         height:150,
-
         correctLevel:QRCode.CorrectLevel.H
-
     });
 
-    const qrImg = temp.querySelector("img");
+    setTimeout(function(){
 
-    if(qrImg){
+        const img = temp.querySelector("img");
+        const canvas = temp.querySelector("canvas");
 
-        document.getElementById("mkQRCode").src = qrImg.src;
+        const qr = document.getElementById("mkQRCode");
 
-    }
+        if(img){
+
+            qr.src = img.src;
+
+        }
+        else if(canvas){
+
+            qr.src = canvas.toDataURL("image/png");
+
+        }
+
+    },100);
 
 }
 async function downloadPDF() {
