@@ -3712,7 +3712,7 @@ HEADER IKON LOGO
 
 .mkSummary{
 
-    margin-top:22px;
+    margin-top:24px;
 
 }
 
@@ -3775,7 +3775,7 @@ HEADER IKON LOGO
 
 .mkDeclaration{
 
-    margin-top:16px;
+    margin-top:14px;
 
     padding:10px 12px;
 
@@ -4392,7 +4392,7 @@ HEADER IKON LOGO
     display:block;
 
     /* Sirf andar wali blue border tak */
-    margin:8px -2px -2px -2px;
+    margin:8px -6px -2px -2px;
 
     width:calc(100% + 2px);
 
