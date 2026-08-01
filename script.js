@@ -100,6 +100,7 @@ function initializeSystem() {
     loadTestDate();
     loadTestTime();
     showTimer();
+    checkQRVerification();
 
 }
 
@@ -2860,21 +2861,6 @@ function backToLogin(){
 
 
 
-function searchResult(){
-
-let input=document.getElementById("searchResult").value.toUpperCase();
-
-let tr=document.querySelectorAll("#resultTableBody tr");
-
-tr.forEach(function(row){
-
-let text=row.innerText.toUpperCase();
-
-row.style.display=text.includes(input)?"":"none";
-
-});
-
-}
 
         // Create Question Details
 
@@ -3732,6 +3718,71 @@ function backToLogin(){
     document
         .getElementById("resultStudentID")
         .value="";
+
+}
+function checkQRVerification(){
+
+    const params = new URLSearchParams(window.location.search);
+
+    const regNo = params.get("verifyQR");
+    const paper = params.get("paper");
+
+    if(!regNo || !paper){
+        return;
+    }
+
+    fetch(
+        SCRIPT_URL +
+        "?action=verifyQR" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&paper=" + encodeURIComponent(paper)
+    )
+
+    .then(res=>res.json())
+
+    .then(function(data){
+
+        if(data.status!="SUCCESS"){
+
+            alert("Invalid QR Code");
+
+            return;
+
+        }
+
+        // Hide All Pages
+
+        document.getElementById("loginPage")?.classList.add("hidden");
+        document.getElementById("resultVerifyPage")?.classList.add("hidden");
+        document.getElementById("studentResultPage")?.classList.add("hidden");
+        document.getElementById("marksheetPage")?.classList.add("hidden");
+
+        // Show QR Page
+
+        document.getElementById("qrVerifyPage")
+        ?.classList.remove("hidden");
+
+        // Fill Details
+
+        document.getElementById("qrRegNo").textContent=data.regNo;
+        document.getElementById("qrStudentName").textContent=data.studentName;
+        document.getElementById("qrCourse").textContent=data.course;
+        document.getElementById("qrPaper").textContent=data.paperName;
+        document.getElementById("qrTotal").textContent=data.totalMarks;
+        document.getElementById("qrPercentage").textContent=data.percentage;
+        document.getElementById("qrGrade").textContent=data.grade;
+        document.getElementById("qrResult").textContent=data.result;
+        document.getElementById("qrIssueDate").textContent=data.issueDate;
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Verification Failed.");
+
+    });
 
 }
 //====================================================
