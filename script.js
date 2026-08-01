@@ -2740,25 +2740,16 @@ console.log(
 
 function verifyResultStudent(){
 
-    const code =
-        document.getElementById("resultStudentID")
-        .value
-        .trim();
+    const code = document.getElementById("resultStudentID").value.trim();
 
     if(code==""){
-
         alert("Please Enter Verification Code");
-
         return;
-
     }
 
     if(code !== "16112001"){
-
         alert("Invalid Verification Code");
-
         return;
-
     }
 
     fetch(
@@ -2771,99 +2762,85 @@ function verifyResultStudent(){
     .then(data => {
 
         if(data.status!="SUCCESS"){
-
             alert("Unable to load Result List");
-
             return;
-
         }
 
-        document
-        .getElementById("loginPage")
+        document.getElementById("loginPage")
         ?.classList.add("hidden");
 
-        document
-        .getElementById("resultVerifyPage")
+        document.getElementById("resultVerifyPage")
         ?.classList.add("hidden");
 
-        document
-        .getElementById("studentResultPage")
+        document.getElementById("studentResultPage")
         ?.classList.remove("hidden");
 
-        const body =
-            document.getElementById("resultTableBody");
+        const body = document.getElementById("resultTableBody");
 
-        body.innerHTML="";
+        body.innerHTML = "";
 
-        data.results.forEach(function(r,index){
+        let visibleCount = 0;
 
-            const tr =
-                document.createElement("tr");
+        data.results.forEach(function(r){
 
-            //=========================================
-            // RESULT NOT PUBLISHED
-            //=========================================
-
+            // Sirf Published Results Show Honge
             if(r.publishStatus !== "YES"){
-
-                tr.innerHTML=`
-                    <td>${index+1}</td>
-                    <td>${r.marksheetNo}</td>
-                    <td>${r.regNo}</td>
-                    <td>${r.studentName}</td>
-                    <td>${r.course}</td>
-                    <td>${r.paperName}</td>
-
-                    <td colspan="12"
-                        style="
-                        color:#d32f2f;
-                        text-align:center;
-                        font-weight:bold;
-                        font-size:15px;">
-                        Results will be published soon.
-                    </td>
-                `;
-
+                return;
             }
 
-            //=========================================
-            // RESULT PUBLISHED
-            //=========================================
+            visibleCount++;
 
-            else{
+            const tr = document.createElement("tr");
 
-                tr.innerHTML=`
-                    <td>${index+1}</td>
-                    <td>${r.marksheetNo}</td>
-                    <td>${r.regNo}</td>
-                    <td>${r.studentName}</td>
-                    <td>${r.course}</td>
-                    <td>${r.paperName}</td>
-                    <td>${r.theory}</td>
-                    <td>${r.practical}</td>
-                    <td>${r.viva}</td>
-                    <td>${r.notes}</td>
-                    <td>${r.behaviour}</td>
-                    <td>${r.project}</td>
-                    <td>${r.totalMarks}</td>
-                    <td>${r.percentage}</td>
-                    <td>${r.grade}</td>
-                    <td>${r.result}</td>
-                    <td>${r.issueDate}</td>
-                    <td>
-                        <button
-                            class="viewMarksheetBtn"
-                            onclick="verifyMarksheet('${r.paperName}')">
-                            View Marksheet
-                        </button>
-                    </td>
-                `;
-
-            }
+            tr.innerHTML = `
+                <td>${visibleCount}</td>
+                <td>${r.marksheetNo}</td>
+                <td>${r.regNo}</td>
+                <td>${r.studentName}</td>
+                <td>${r.course}</td>
+                <td>${r.paperName}</td>
+                <td>${r.theory}</td>
+                <td>${r.practical}</td>
+                <td>${r.viva}</td>
+                <td>${r.notes}</td>
+                <td>${r.behaviour}</td>
+                <td>${r.project}</td>
+                <td>${r.totalMarks}</td>
+                <td>${r.percentage}</td>
+                <td>${r.grade}</td>
+                <td>${r.result}</td>
+                <td>${r.issueDate}</td>
+                <td>
+                    <button class="viewMarksheetBtn"
+                        onclick="verifyMarksheet('${r.paperName}')">
+                        View Marksheet
+                    </button>
+                </td>
+            `;
 
             body.appendChild(tr);
 
         });
+
+        // Agar koi bhi Result Publish nahi hua
+        if(visibleCount === 0){
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="18"
+                        style="
+                            text-align:center;
+                            padding:45px;
+                            color:#d32f2f;
+                            font-size:22px;
+                            font-weight:bold;
+                            background:#fff8f8;">
+                        Results will be published soon.
+                    </td>
+                </tr>
+            `;
+
+        }
 
     })
 
