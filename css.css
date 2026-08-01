@@ -3394,9 +3394,9 @@ HEADER IKON LOGO
 
     margin:0;
 
-    font-size:26px;
+    font-size:32px;
 
-    font-weight:700;
+    font-weight:800;
 
     color:#0b4f9c;
 
@@ -3442,10 +3442,9 @@ HEADER IKON LOGO
 .mkTopRight{
     display:flex;
     justify-content:flex-end;
-    align-items:flex-start;
-    padding-top:10px;      /* Border se gap */
-    margin:0;
-    transform:none;
+    position:relative;
+    top:-20px;     /* -15 se -30 ke beech adjust kar sakte ho */
+    right:5px;
 }
 
 .mkTopTable{
