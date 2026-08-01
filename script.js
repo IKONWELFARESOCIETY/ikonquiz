@@ -3404,6 +3404,40 @@ async function downloadPDF() {
 
         const clone = original.cloneNode(true);
 
+        // ===== PDF Signature Images Fix =====
+
+        const signImg = clone.querySelector(".mkSignImage");
+
+        if (signImg) {
+
+            signImg.removeAttribute("width");
+            signImg.removeAttribute("height");
+
+            signImg.style.width = "170px";
+            signImg.style.height = "auto";
+            signImg.style.maxHeight = "90px";
+            signImg.style.objectFit = "contain";
+            signImg.style.display = "block";
+            signImg.style.margin = "0 auto 8px auto";
+
+        }
+
+        const issuedImg = clone.querySelector(".mkIssuedImage");
+
+        if (issuedImg) {
+
+            issuedImg.removeAttribute("width");
+            issuedImg.removeAttribute("height");
+
+            issuedImg.style.width = "165px";
+            issuedImg.style.height = "auto";
+            issuedImg.style.maxHeight = "120px";
+            issuedImg.style.objectFit = "contain";
+            issuedImg.style.display = "block";
+            issuedImg.style.margin = "0 auto 8px auto";
+
+        }
+
         // Hide HTML watermark
         const cloneWatermark = clone.querySelector(".mkWatermark");
 
@@ -3430,7 +3464,11 @@ async function downloadPDF() {
 
             scrollX: 0,
 
-            scrollY: 0
+            scrollY: 0,
+
+            imageTimeout: 0,
+
+            logging: false
 
         });
 
@@ -3458,25 +3496,19 @@ async function downloadPDF() {
             ctx.save();
 
             ctx.globalAlpha = 0.12;
-                        // ===== Exact Watermark Position =====
+                        // ===== Watermark Position =====
 
             const padding = 25;
-
-            const sheetX = padding;
-            const sheetY = padding;
 
             const sheetWidth = canvas.width - (padding * 2);
             const sheetHeight = canvas.height - (padding * 2);
 
-            // Watermark Size
             const wmWidth = sheetWidth * 0.46;
             const wmHeight = wmWidth * logo.height / logo.width;
 
-            // Exact Center of Marksheet
-            const x = sheetX + ((sheetWidth - wmWidth) / 2);
-            const y = sheetY + ((sheetHeight - wmHeight) / 2);
+            const x = padding + ((sheetWidth - wmWidth) / 2);
+            const y = padding + ((sheetHeight - wmHeight) / 2);
 
-            // Rotate like HTML watermark
             ctx.translate(
                 x + (wmWidth / 2),
                 y + (wmHeight / 2)
@@ -3504,23 +3536,24 @@ async function downloadPDF() {
 
             unit: "mm",
 
-            format: "a4"
+            format: "a4",
+
+            compress: true
 
         });
 
         const margin = 8;
 
         const pageWidth = 210;
-        const pageHeight = 297;
 
         const printableWidth = pageWidth - (margin * 2);
 
         const imgWidth = printableWidth;
 
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
         const imgData = canvas.toDataURL(
-            "image/png",
+            "image/jpeg",
             1.0
         );
 
@@ -3528,7 +3561,7 @@ async function downloadPDF() {
 
             imgData,
 
-            "PNG",
+            "JPEG",
 
             margin,
 
@@ -3564,8 +3597,11 @@ async function downloadPDF() {
 
     finally {
 
-        if (buttons)
+        if (buttons) {
+
             buttons.style.display = "flex";
+
+        }
 
     }
 
