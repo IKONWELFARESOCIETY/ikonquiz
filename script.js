@@ -2740,17 +2740,30 @@ console.log(
 
 function verifyResultStudent(){
 
-    const id = document.getElementById("resultStudentID").value.trim();
+    const code =
+        document.getElementById("resultStudentID")
+        .value
+        .trim();
 
-    if(id==""){
-        alert("Please Enter Student ID");
+    if(code==""){
+
+        alert("Please Enter Verification Code");
+
         return;
+
+    }
+
+    if(code !== "16112001"){
+
+        alert("Invalid Verification Code");
+
+        return;
+
     }
 
     fetch(
         SCRIPT_URL +
-        "?action=studentResultList&id=" +
-        encodeURIComponent(id)
+        "?action=studentResultList"
     )
 
     .then(res => res.json())
@@ -2758,21 +2771,34 @@ function verifyResultStudent(){
     .then(data => {
 
         if(data.status!="SUCCESS"){
-            alert("Invalid Student ID");
+
+            alert("Unable to load Result List");
+
             return;
+
         }
 
-       document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("resultVerifyPage").classList.add("hidden");
-document.getElementById("studentResultPage").classList.remove("hidden");
+        document
+        .getElementById("loginPage")
+        ?.classList.add("hidden");
 
-        const body = document.getElementById("resultTableBody");
+        document
+        .getElementById("resultVerifyPage")
+        ?.classList.add("hidden");
+
+        document
+        .getElementById("studentResultPage")
+        ?.classList.remove("hidden");
+
+        const body =
+            document.getElementById("resultTableBody");
 
         body.innerHTML="";
 
         data.results.forEach(function(r,index){
 
-            const tr=document.createElement("tr");
+            const tr =
+                document.createElement("tr");
 
             tr.innerHTML=`
                 <td>${index+1}</td>
@@ -2793,10 +2819,11 @@ document.getElementById("studentResultPage").classList.remove("hidden");
                 <td>${r.result}</td>
                 <td>${r.issueDate}</td>
                 <td>
-                <button class="viewMarksheetBtn"
-                onclick="verifyMarksheet('${r.paperName}')">
-                View Marksheet
-                </button>
+                    <button
+                        class="viewMarksheetBtn"
+                        onclick="verifyMarksheet('${r.paperName}')">
+                        View Marksheet
+                    </button>
                 </td>
             `;
 
