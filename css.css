@@ -3424,7 +3424,7 @@ HEADER IKON LOGO
 
 .mkTopTable{
 
-    width:160px;
+    width:180px;
 
     border-collapse:collapse;
 
@@ -3446,7 +3446,7 @@ HEADER IKON LOGO
 
 .mkTopTable td:first-child{
 
-    width:82px;
+    width:70px;
 
     background:#1d57a6;
 
@@ -3462,7 +3462,7 @@ HEADER IKON LOGO
 
 .mkTopTable td:last-child{
 
-    width:78px;
+    width:110px;
 
     text-align:center;
 
