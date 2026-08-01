@@ -3437,89 +3437,88 @@ HEADER IKON LOGO
 /*=====================================
         TOP RIGHT TABLE
 ======================================*/
-.mkExamInfoTable{
-    width:180px;
-    margin-top:8px;
-    border-collapse:collapse;
-    font-size:11px;
-    table-layout:fixed;
-}
 
-.mkExamInfoTable th{
-    width:70px;
-    background:#0b4f9c;
-    color:#fff;
-    border:1px solid #777;
-    padding:5px;
-    text-align:left;
-}
-
-.mkExamInfoTable td{
-    border:1px solid #777;
-    padding:5px;
-    text-align:center;
-    font-weight:600;
-    background:#fff;
-}
+/*==========================
+TOP RIGHT SECTION
+==========================*/
 
 .mkTopRight{
+    width:180px;
     display:flex;
-    justify-content:flex-end;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:flex-start;
+
     position:relative;
-    top:-20px;     /* -15 se -30 ke beech adjust kar sakte ho */
-    right:-10px;
+    top:-18px;
+    right:0;
 }
 
+/*==========================
+MARKSHEET NO TABLE
+==========================*/
+
 .mkTopTable{
-
     width:180px;
-
     border-collapse:collapse;
-
     table-layout:fixed;
-
-    font-size:11px;
-
+    margin:0 0 4px 0;
 }
 
 .mkTopTable td{
-
-    border:1px solid #999;
-
-    padding:5px 6px;
-
-    vertical-align:middle;
-
+    border:1px solid #777;
+    padding:4px 6px;
+    font-size:10px;
+    height:22px;
 }
 
 .mkTopTable td:first-child{
-
-    width:70px;
-
-    background:#1d57a6;
-
-    color:#ffffff !important;
-
+    width:65px;
+    background:#0b4f9c;
+    color:#fff;
     font-weight:700;
-
-    white-space:normal;
-
-    line-height:1.2;
-
 }
 
 .mkTopTable td:last-child{
-
-    width:110px;
-
+    width:115px;
+    background:#fff;
     text-align:center;
-
     font-weight:600;
-
-    color:#222;
-
 }
 
+/*==========================
+EXAM INFO TABLE
+==========================*/
+
+.mkExamInfoTable{
+    width:180px;
+    border-collapse:collapse;
+    table-layout:fixed;
+    margin:0;
+}
+
+.mkExamInfoTable th,
+.mkExamInfoTable td{
+    border:1px solid #777;
+    padding:4px 6px;
+    font-size:10px;
+    height:22px;
+}
+
+.mkExamInfoTable th{
+    width:65px;
+    background:#0b4f9c;
+    color:#fff;
+    text-align:left;
+    font-weight:700;
+}
+
+.mkExamInfoTable td{
+    width:115px;
+    background:#fff;
+    text-align:center;
+    font-weight:600;
+}
 /*=====================================
         GOLDEN LINE
 ======================================*/
