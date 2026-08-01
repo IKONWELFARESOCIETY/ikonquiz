@@ -790,28 +790,36 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
     <div class="mkHeader">
 
-        <div class="mkLogo">
-            <img src="ikon.jpg">
+        <!-- LEFT -->
+
+        <div class="mkHeaderLeft">
+
+            <div class="mkLogo">
+                <img src="ikon.jpg">
+            </div>
+
+            <table class="mkExamInfoTable">
+
+                <tr>
+                    <td>Centre Code</td>
+                    <td>101</td>
+                </tr>
+
+                <tr>
+                    <td>Exam Code</td>
+                    <td id="mkExamCode"></td>
+                </tr>
+
+                <tr>
+                    <td>Exam Date</td>
+                    <td id="mkExamDate"></td>
+                </tr>
+
+            </table>
+
         </div>
 
-<table class="mkExamInfoTable">
-
-    <tr>
-        <td>Centre Code</td>
-        <td>101</td>
-    </tr>
-
-    <tr>
-        <td>Exam Code</td>
-        <td id="mkExamCode"></td>
-    </tr>
-
-    <tr>
-        <td>Exam Date</td>
-        <td id="mkExamDate"></td>
-    </tr>
-
-</table>
+        <!-- CENTER -->
 
         <div class="mkHeading">
 
@@ -820,12 +828,16 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             <h2>RESULT CUM DETAILED MARKS CARD</h2>
 
             <p>
-               <b>(Regd. Under Society Registration Act 21, 1860 Reg. No. 224/2006-07)<br>
-                  Regd. Under NITI Aayog, Govt. of India, Reg. No. BR/2017/0180880<br>
-                  A constituent Unit of IKON Welfare Society</b> 
+                <b>
+                    (Regd. Under Society Registration Act 21, 1860 Reg. No. 224/2006-07)<br>
+                    Regd. Under NITI Aayog, Govt. of India, Reg. No. BR/2017/0180880<br>
+                    A constituent Unit of IKON Welfare Society
+                </b>
             </p>
 
         </div>
+
+        <!-- RIGHT -->
 
         <div class="mkTopRight">
 
@@ -840,17 +852,16 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
                     <td>Result Date</td>
                     <td id="mkIssueDate"></td>
                 </tr>
-                   <tr>
-            </table      
-</div>
+
+            </table>
 
         </div>
 
+    </div>
+
     <div class="mkGoldenLine"></div>
 
-    <!--==================================================
-    STUDENT DETAILS
-    ===================================================-->
+    <!--================ STUDENT DETAILS ================-->
 
     <div class="mkStudentSection">
 
@@ -894,7 +905,11 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
             <div class="mkQRBox">
                 <img id="mkQRCode">
-            <div class="mkQRText">Scan to Verify</div>
+
+                <div class="mkQRText">
+                    Scan to Verify
+                </div>
+
             </div>
 
         </div>
@@ -902,96 +917,95 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
     <hr>
+   <!--================ MARKS TABLE ================-->
 
-    <!--================ MARKS TABLE ================-->
+<div class="mkMarksSection">
 
-    <div class="mkMarksSection">
+    <table class="mkMarksTable">
 
-        <table class="mkMarksTable">
+        <thead>
 
-            <thead>
+            <tr>
+                <th>Paper Code</th>
+                <th>Subject</th>
+                <th>Full Marks</th>
+                <th>Pass Marks</th>
+                <th>Obtained Marks</th>
+            </tr>
 
-                <tr>
-                    <th>Paper Code</th>
-                    <th>Subject</th>
-                    <th>Full Marks</th>
-                    <th>Pass Marks</th>
-                    <th>Obtained Marks</th>
-                </tr>
+        </thead>
 
-            </thead>
+        <tbody>
 
-            <tbody>
+            <tr>
+                <td>1A01(1)</td>
+                <td>Theory</td>
+                <td>100</td>
+                <td>40</td>
+                <td id="mkTheory"></td>
+            </tr>
 
-                <tr>
-                    <td>1A01(1)</td>
-                    <td>Theory</td>
-                    <td>100</td>
-                    <td>40</td>
-                    <td id="mkTheory"></td>
-                </tr>
-                    <tr>
-                    <td>1A01(2)</td>
-                    <td>Notebook</td>
-                    <td>20</td>
-                    <td>10</td>
-                    <td id="mkNotes"></td>
-                </tr>
-                  
-                <tr>
-                    <td>1A01(3)</td>
-                    <td>Practical</td>
-                    <td>40</td>
-                    <td>20</td>
-                    <td id="mkPractical"></td>
-                </tr>
+            <tr>
+                <td>1A01(2)</td>
+                <td>Notebook</td>
+                <td>20</td>
+                <td>10</td>
+                <td id="mkNotes"></td>
+            </tr>
 
-                <tr>
-                    <td>1A01(4)</td>
-                    <td>Viva</td>
-                    <td>20</td>
-                    <td>10</td>
-                    <td id="mkViva"></td>
-                </tr>
+            <tr>
+                <td>1A01(3)</td>
+                <td>Practical</td>
+                <td>40</td>
+                <td>20</td>
+                <td id="mkPractical"></td>
+            </tr>
 
-                <tr>
-                    <td>1A01(5)</td>
-                    <td>Project</td>
-                    <td>100</td>
-                    <td>40</td>
-                    <td id="mkProject"></td>
-                </tr>
+            <tr>
+                <td>1A01(4)</td>
+                <td>Viva</td>
+                <td>20</td>
+                <td>10</td>
+                <td id="mkViva"></td>
+            </tr>
 
-                <tr>
-                    <td>1A01(6)</td>
-                    <td>Behaviour</td>
-                    <td>20</td>
-                    <td>10</td>
-                    <td id="mkBehaviour"></td>
-                </tr>
+            <tr>
+                <td>1A01(5)</td>
+                <td>Project</td>
+                <td>100</td>
+                <td>40</td>
+                <td id="mkProject"></td>
+            </tr>
 
-              <tr class="mkGrandTotal">
+            <tr>
+                <td>1A01(6)</td>
+                <td>Behaviour</td>
+                <td>20</td>
+                <td>10</td>
+                <td id="mkBehaviour"></td>
+            </tr>
 
-                      <td><strong>TOTAL</strong></td>
-                  
-                      <td></td>
-                  
-                      <td><strong>300</strong></td>
-                  
-                      <td><strong>130</strong></td>
-                  
-                      <td id="mkTotal"></td>
-                  
-                  </tr>
+            <tr class="mkGrandTotal">
 
-            </tbody>
+                <td><strong>TOTAL</strong></td>
 
-        </table>
+                <td></td>
 
-    </div>
-      <!--==================================================
-SUMMARY
-===================================================-->
+                <td><strong>300</strong></td>
+
+                <td><strong>130</strong></td>
+
+                <td id="mkTotal"></td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!--================ SUMMARY ================-->
 
 <div class="mkSummary">
 
@@ -1020,73 +1034,101 @@ SUMMARY
     </table>
 
 </div>
+
+<!--================ GRADE LEGEND ================-->
+
 <div class="mkGradeLegend">
-    <strong>Grade Legends:-</strong>
+
+    <strong>Grade Legends :</strong>
 
     <span><b>S</b> = 85% and over</span>
-    <span><b>A</b> = 75-84%</span>
-    <span><b>B</b> = 65-74%</span>
-    <span><b>C</b> = 55-64%</span>
-    <span><b>D</b> = 45-54%</span>
+
+    <span><b>A</b> = 75–84%</span>
+
+    <span><b>B</b> = 65–74%</span>
+
+    <span><b>C</b> = 55–64%</span>
+
+    <span><b>D</b> = 45–54%</span>
+
     <span><b>F</b> = FAIL</span>
-    <span><b>ABSENT</b> = ABS</span>
-    <span><b>RESULT PENDING</b> = #</span>
+
+    <span><b>ABS</b> = Absent</span>
+
+    <span><b>#</b> = Result Pending</span>
+
 </div>
-<!--==================================================
-DECLARATION
-===================================================-->
+
+
+<!--================ DECLARATION ================-->
 
 <div class="mkDeclaration">
 
-   <strong> Certified that the above named student has successfully completed the prescribed examination conducted by IKON Institute. This Result cum Detailed Marks Card is issued on the basis of records maintained by the Institute.</strong>
+    <strong>
+        Certified that the above named student has successfully completed the prescribed examination conducted by IKON Institute. This Result cum Detailed Marks Card is issued on the basis of records maintained by the Institute.
+    </strong>
 
 </div>
 
-<!--==================================================
-SIGNATURE
-===================================================-->
+<!--================ SIGNATURE =================-->
 
 <div class="mkSignatureSection">
 
     <div class="mkSignBox">
-          <img src="coursecoordinator.jpg" class="mkSignImage">
+
+        <img src="coursecoordinator.jpg" class="mkSignImage">
+
         <div class="mkSignLine"></div>
+
         <strong>COURSE CO-ORDINATOR</strong>
 
     </div>
 
     <div class="mkSignBox">
-          <img src="issued by.jpg" class="mkIssuedImage">
+
+        <img src="issued by.jpg" class="mkIssuedImage">
+
         <div class="mkSealArea"></div>
+
         <strong>CENTRE MANAGER</strong>
 
     </div>
 
 </div>
 
-<!--==================================================
-FOOTER
-===================================================-->
+<!--================ FOOTER =================-->
 
 <div class="mkFooter">
 
     <p>
-       <strong>Digitally Signed and Verified by IKON Institute Contact No : 9304669913<br>
-       Regd.  Off.: Road no. 2, Near Post Office, Karimganj, Gaya - 823001 IBihar)<br>
-       Head Off.: Infront of Anughrah College, Katari Hill Road, Gaya - 823001 (Bihar)<br>
-       </strong> 
+
+        <strong>
+
+            Digitally Signed and Verified by IKON Institute Contact No : 9304669913<br>
+
+            Regd. Off.: Road No. 2, Near Post Office, Karimganj, Gaya - 823001 (Bihar)<br>
+
+            Head Off.: Infront of Anugrah College, Katari Hill Road, Gaya - 823001 (Bihar)
+
+        </strong>
+
     </p>
 
 </div>
-    <div class="mkSlogan">
+
+<!--================ SLOGAN =================-->
+
+<div class="mkSlogan">
+
     आईकॉन का सपना – शिक्षित समाज, रोजगार अपना-अपना...
+
 </div>
 
-</div> <!-- .marksheet END -->
-  
-<!--========================================
-ACTION BUTTONS
-=========================================-->
+</div>
+<!-- .marksheet END -->
+
+
+<!--================ ACTION BUTTONS =================-->
 
 <div class="mkPage">
 
@@ -1107,16 +1149,21 @@ ACTION BUTTONS
             🖨 Print
 
         </button>
-             <button class="mkBtn mkPdfBtn" onclick="downloadPDF()">
+
+        <button
+            class="mkBtn mkPdfBtn"
+            onclick="downloadPDF()">
+
             📄 Download PDF
+
         </button>
+
     </div>
 
 </div>
 
-</div> 
 </div>
-      <!-- #marksheetPage END -->
+<!-- #marksheetPage END -->
       
       <!--==================================================
         QR VERIFICATION PAGE
