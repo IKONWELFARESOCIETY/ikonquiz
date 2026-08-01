@@ -4042,6 +4042,7 @@ HEADER IKON LOGO
         margin:0 !important;
         padding:0 !important;
     }
+ 
 
     .marksheet{
 
@@ -4086,6 +4087,11 @@ HEADER IKON LOGO
     img{
         max-width:100%;
     }
+ .mkSlogan{
+        display:block !important;
+        visibility:visible !important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
 
 }
 .mkPdfBtn{
