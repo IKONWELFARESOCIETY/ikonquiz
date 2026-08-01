@@ -3378,6 +3378,34 @@ HEADER IKON LOGO
     height:auto;
     margin:0;
 }
+.mkExamInfoTable{
+    grid-column:1;
+    grid-row:2;
+
+    width:170px;
+    margin-top:-20px;      /* Logo ke paas lane ke liye */
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.mkExamInfoTable td{
+    border:1px solid #666;
+    padding:4px 6px;
+    font-size:10px;
+    font-weight:600;
+}
+
+.mkExamInfoTable td:first-child{
+    width:70px;
+    background:#0b4f9c;
+    color:#fff;
+    font-weight:700;
+}
+
+.mkExamInfoTable td:last-child{
+    background:#fff;
+    text-align:center;
+}
 
 
 /*=====================================
