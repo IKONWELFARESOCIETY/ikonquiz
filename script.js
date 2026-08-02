@@ -622,7 +622,6 @@ function openExamTypePage(){
     .getElementById("examTypePage")
     ?.classList.remove("hidden");
 
-
     document.getElementById("examTypeStudentName").textContent =
     studentName;
 
@@ -632,106 +631,52 @@ function openExamTypePage(){
     document.getElementById("examTypeCourse").textContent =
     courseName;
 
-
-    const select =
-    document.getElementById("examPaperSelect");
-
-    select.innerHTML =
-    "<option value=''>-- Select Paper --</option>";
-
-    paperList.forEach(function(p){
-
-        const option =
-        document.createElement("option");
-
-        option.value = p;
-
-        option.textContent = p;
-
-        select.appendChild(option);
-
-    });
-
 }
 //====================================================
 // THEORY EXAM
 //====================================================
 
-function startTheoryExam(){
-
-    const select = document.getElementById("examPaperSelect");
-
-    if(select.value==""){
-        alert("Please Select Paper");
-        return;
-    }
-
-    paperName = select.value;
-    examMode = "THEORY";
-
-    fetch(SCRIPT_URL + "?action=theoryStatus")
-    .then(res=>res.json())
-    .then(function(data){
-
-        if(data.status.toUpperCase()=="ON"){
-
-            document.getElementById("examTypePage").classList.add("hidden");
-            checkTestStatus();
-
-        }else{
-
-            alert(data.message);
-
-        }
-
-    });
-
-}
-//====================================================
-// PRACTICAL EXAM
-//====================================================
-
-//====================================================
-// PRACTICAL EXAM
-//====================================================
-
-function startPracticalExam(){
+function continueTheoryExam(){
 
     const select =
-        document.getElementById("examPaperSelect");
+    document.getElementById("theoryPaperSelect");
 
     if(select.value==""){
 
-        alert("Please Select Paper");
+        alert("Please Select Theory Paper");
+
         return;
 
     }
 
     paperName = select.value;
 
-    examMode = "PRACTICAL";
+    examMode = "THEORY";
 
-    // Practical Status Check
     fetch(
-        SCRIPT_URL + "?action=practicalStatus"
+        SCRIPT_URL + "?action=theoryStatus"
     )
 
-    .then(res => res.json())
+    .then(res=>res.json())
 
     .then(function(data){
 
         if(
             data.status &&
-            data.status.toUpperCase() == "ON"
+            data.status.toUpperCase()=="ON"
         ){
 
-            openPracticalPage();
+            document
+            .getElementById("theoryPaperPage")
+            ?.classList.add("hidden");
+
+            checkTestStatus();
 
         }else{
 
             alert(
                 data.message ||
-                "Practical Examination is not available."
+                "Theory Examination is not available."
             );
 
         }
@@ -740,19 +685,43 @@ function startPracticalExam(){
 
     .catch(function(){
 
-        alert("Unable to check Practical Status.");
+        alert("Unable to check Theory Status.");
 
     });
 
 }
 //====================================================
+// PRACTICAL EXAM
+//====================================================
+
+//====================================================
+// PRACTICAL EXAM
+//====================================================
+
+
+//====================================================
 // OPEN PRACTICAL PAGE
 //====================================================
 
-function openPracticalPage(){
+function continuePracticalExam(){
+
+    const select =
+    document.getElementById("practicalPaperSelect");
+
+    if(select.value==""){
+
+        alert("Please Select Practical Paper");
+
+        return;
+
+    }
+
+    paperName = select.value;
+
+    examMode = "PRACTICAL";
 
     document
-        .getElementById("examTypePage")
+        .getElementById("practicalPaperPage")
         ?.classList.add("hidden");
 
     document
@@ -994,80 +963,7 @@ encodeURIComponent(paperName)
     });
 
 }
-//====================================================
-// PAPER SELECTION
-//====================================================
 
-function showPaperSelection() {
-
-    const label = document.getElementById("paperLabel");
-
-    const select = document.getElementById("paperSelect");
-
-    if (!label || !select) return;
-
-    //----------------------------------
-    // Reset List
-    //----------------------------------
-
-    select.innerHTML = "";
-
-    //----------------------------------
-    // Default Option
-    //----------------------------------
-
-    let defaultOption = document.createElement("option");
-
-    defaultOption.value = "";
-
-    defaultOption.text = "-- Select Paper --";
-
-    select.appendChild(defaultOption);
-
-    //----------------------------------
-    // Paper List
-    //----------------------------------
-
-    paperList.forEach(function (paper) {
-
-        let option = document.createElement("option");
-
-        option.value = paper;
-
-        option.text = paper;
-
-        select.appendChild(option);
-
-    });
-
-    label.style.display = "block";
-
-    select.style.display = "block";
-
-}
-
-
-
-//====================================================
-// SELECT PAPER
-//====================================================
-
-function selectPaper(){
-
-    const select =
-        document.getElementById("paperSelect");
-
-    if(!select) return;
-
-    paperName = select.value;
-
-    if(paperName==""){
-        return;
-    }
-
-    checkTestStatus();
-
-}
 //====================================================
 // PART 1B-2
 // TEST STATUS + WAITING PAGE
@@ -2479,6 +2375,13 @@ function resetExam() {
 //====================================================
 
 function goLogin() {
+    document
+.getElementById("theoryPaperPage")
+?.classList.add("hidden");
+
+document
+.getElementById("practicalPaperPage")
+?.classList.add("hidden");
      document.getElementById("successPage")
     ?.classList.add("hidden");
    document.getElementById("examTypePage")
@@ -2543,23 +2446,10 @@ document.getElementById("practicalPage")
         select.innerHTML = "";
 
     }
+}
 //------------------------------------------
 // Reset Exam Type Page
 //------------------------------------------
-
-const examPaper =
-    document.getElementById("examPaperSelect");
-
-if (examPaper) {
-
-    examPaper.selectedIndex = 0;
-
-}
-    document.getElementById("examTypeStudentName").textContent = "";
-document.getElementById("examTypeRegNo").textContent = "";
-document.getElementById("examTypeCourse").textContent = "";
-}
-
 
 
 //====================================================
@@ -4271,15 +4161,23 @@ function checkQRVerification(){
 
 function backToExamType(){
 
-    // Practical Timer Stop
+    // Stop Timers
     stopPracticalTimer();
+    stopStatusChecker();
 
-    // Practical Page Hide
+    // Hide All Exam Pages
     document
         .getElementById("practicalPage")
         ?.classList.add("hidden");
 
-    // Theory/Test Pages Hide
+    document
+        .getElementById("theoryPaperPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("practicalPaperPage")
+        ?.classList.add("hidden");
+
     document
         .getElementById("verificationPage")
         ?.classList.add("hidden");
@@ -4300,12 +4198,12 @@ function backToExamType(){
         .getElementById("successPage")
         ?.classList.add("hidden");
 
-    // Exam Type Page Show
+    // Show Exam Type Page
     document
         .getElementById("examTypePage")
         ?.classList.remove("hidden");
 
-    // Student ID Clear
+    // Clear Student ID
     const idBox =
         document.getElementById("studentIdInput");
 
@@ -4313,7 +4211,7 @@ function backToExamType(){
         idBox.value = "";
     }
 
-    // Practical Questions Clear
+    // Clear Practical Questions
     const area =
         document.getElementById("practicalQuestionArea");
 
@@ -4323,10 +4221,25 @@ function backToExamType(){
 
     // Reset Practical Timer
     practicalTotalTime = practicalDuration * 60;
-
     showPracticalTimer();
 
-    // Enable Submit Button Again
+    // Reset Theory Paper Dropdown
+    const theorySelect =
+        document.getElementById("theoryPaperSelect");
+
+    if(theorySelect){
+        theorySelect.selectedIndex = 0;
+    }
+
+    // Reset Practical Paper Dropdown
+    const practicalSelect =
+        document.getElementById("practicalPaperSelect");
+
+    if(practicalSelect){
+        practicalSelect.selectedIndex = 0;
+    }
+
+    // Enable Practical Submit Button
     const btn =
         document.querySelector(".submitPracticalBtn");
 
@@ -4334,8 +4247,6 @@ function backToExamType(){
         btn.disabled = false;
         btn.innerHTML = "Submit Practical";
     }
-
-    stopStatusChecker();
 
 }
 //====================================================
@@ -4530,6 +4441,94 @@ function fileToBase64(file){
         reader.onerror=reject;
 
         reader.readAsDataURL(file);
+
+    });
+
+}
+function openTheoryPaperPage(){
+
+    document
+    .getElementById("examTypePage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("theoryPaperPage")
+    ?.classList.remove("hidden");
+
+    const select =
+    document.getElementById("theoryPaperSelect");
+
+    select.innerHTML =
+    "<option value=''>-- Select Theory Paper --</option>";
+
+    paperList.forEach(function(p){
+
+        const option =
+        document.createElement("option");
+
+        option.value = p;
+
+        option.textContent = p;
+
+        select.appendChild(option);
+
+    });
+
+}
+function openPracticalPaperPage(){
+
+    fetch(
+        SCRIPT_URL +
+        "?action=practicalStatus"
+    )
+
+    .then(res=>res.json())
+
+    .then(function(data){
+
+        if(
+            data.status &&
+            data.status.toUpperCase()=="OFF"
+        ){
+
+            alert(data.message);
+
+            return;
+
+        }
+
+        document
+        .getElementById("examTypePage")
+        ?.classList.add("hidden");
+
+        document
+        .getElementById("practicalPaperPage")
+        ?.classList.remove("hidden");
+
+        const select =
+        document.getElementById("practicalPaperSelect");
+
+        select.innerHTML =
+        "<option value=''>-- Select Practical Paper --</option>";
+
+        paperList.forEach(function(p){
+
+            const option =
+            document.createElement("option");
+
+            option.value = p;
+
+            option.textContent = p;
+
+            select.appendChild(option);
+
+        });
+
+    })
+
+    .catch(function(){
+
+        alert("Unable to check Practical Status.");
 
     });
 
