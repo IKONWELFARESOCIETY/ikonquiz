@@ -21,6 +21,7 @@ let studentName = "";
 let regNo = "";
 let paperName = "";
 let paperList = [];
+let examMode = "";
 let studentId = "";
 let courseName = "";
 let totalMarks = "";
@@ -518,28 +519,9 @@ function startTest() {
     return;
 
 }
-            //----------------------------------
-            // Single Paper
-            //----------------------------------
+           openExamTypePage();
 
-            if (paperList.length === 1) {
-
-                paperName = paperList[0];
-
-                checkTestStatus();
-
-                return;
-
-            }
-
-            //----------------------------------
-            // Multiple Papers
-            //----------------------------------
-
-            showPaperSelection();
-
-            return;
-
+return;
         }
 
         //----------------------------------
@@ -576,8 +558,109 @@ function startTest() {
 
 }
 
+//====================================================
+// OPEN EXAM TYPE PAGE
+//====================================================
+
+function openExamTypePage(){
+
+    document
+    .getElementById("loginPage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("examTypePage")
+    ?.classList.remove("hidden");
 
 
+    document.getElementById("examTypeStudentName").textContent =
+    studentName;
+
+    document.getElementById("examTypeRegNo").textContent =
+    regNo;
+
+    document.getElementById("examTypeCourse").textContent =
+    courseName;
+
+
+    const select =
+    document.getElementById("examPaperSelect");
+
+    select.innerHTML =
+    "<option value=''>-- Select Paper --</option>";
+
+    paperList.forEach(function(p){
+
+        const option =
+        document.createElement("option");
+
+        option.value = p;
+
+        option.textContent = p;
+
+        select.appendChild(option);
+
+    });
+
+}
+//====================================================
+// THEORY EXAM
+//====================================================
+
+function startTheoryExam(){
+
+    const select =
+    document.getElementById("examPaperSelect");
+
+    if(select.value==""){
+
+        alert("Please Select Paper");
+
+        return;
+
+    }
+
+    paperName = select.value;
+
+    examMode = "THEORY";
+
+    document
+    .getElementById("examTypePage")
+    ?.classList.add("hidden");
+
+    checkTestStatus();
+
+}
+//====================================================
+// PRACTICAL EXAM
+//====================================================
+
+function startPracticalExam(){
+
+    const select =
+    document.getElementById("examPaperSelect");
+
+    if(select.value==""){
+
+        alert("Please Select Paper");
+
+        return;
+
+    }
+
+    paperName = select.value;
+
+    examMode = "PRACTICAL";
+
+    document
+    .getElementById("examTypePage")
+    ?.classList.add("hidden");
+
+    document
+    .getElementById("practicalPage")
+    ?.classList.remove("hidden");
+
+}
 //====================================================
 // PAPER SELECTION
 //====================================================
@@ -1985,12 +2068,6 @@ function showSuccess() {
 
 }
 
-function goLogin(){
-
-    window.location.href = "index.html";
-
-}
-
 //====================================================
 // RESET COMPLETE EXAM
 //====================================================
@@ -2067,7 +2144,11 @@ function resetExam() {
 //====================================================
 
 function goLogin() {
+   document.getElementById("examTypePage")
+    ?.classList.add("hidden");
 
+document.getElementById("practicalPage")
+    ?.classList.add("hidden");
     resetExam();
 
     //------------------------------------------
@@ -2125,7 +2206,21 @@ function goLogin() {
         select.innerHTML = "";
 
     }
+//------------------------------------------
+// Reset Exam Type Page
+//------------------------------------------
 
+const examPaper =
+    document.getElementById("examPaperSelect");
+
+if (examPaper) {
+
+    examPaper.selectedIndex = 0;
+
+}
+    document.getElementById("examTypeStudentName").textContent = "";
+document.getElementById("examTypeRegNo").textContent = "";
+document.getElementById("examTypeCourse").textContent = "";
 }
 
 
