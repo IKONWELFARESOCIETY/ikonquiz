@@ -3226,6 +3226,7 @@ function fillMarksheet(m){
     m.paperName || "";
 
        document.getElementById("mkIssueDate").textContent = m.resultDate;
+        document.getElementById("mkIssueDate").textContent = m.issueDate || "";
         document.getElementById("mkExamDate").textContent = m.examDate;
         document.getElementById("mkExamCode").textContent = m.examCode;
 
