@@ -4825,3 +4825,334 @@ font-size:45px;
     background:#545b62;
 
 }
+/*==================================================
+            PRACTICAL EXAM PAGE
+==================================================*/
+
+.practicalContainer{
+
+    max-width:1050px;
+
+    margin:25px auto;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.15);
+
+    padding:25px;
+
+    border-top:6px solid #0b4f9c;
+
+}
+
+/*================ HEADER =================*/
+
+.practicalHeader{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.practicalLogo{
+
+    width:85px;
+
+    margin-bottom:10px;
+
+}
+
+.practicalHeader h2{
+
+    margin:0;
+
+    color:#0b4f9c;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.practicalHeader h3{
+
+    margin:8px 0;
+
+    color:#222;
+
+    font-size:22px;
+
+}
+
+.practicalHeader p{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+/*================ STUDENT DETAILS =================*/
+
+.practicalStudentInfo{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin-bottom:25px;
+
+}
+
+.prInfoCard{
+
+    background:#f8f9fa;
+
+    border-left:5px solid #0b4f9c;
+
+    border-radius:8px;
+
+    padding:12px 15px;
+
+}
+
+.prInfoCard label{
+
+    display:block;
+
+    font-size:13px;
+
+    color:#666;
+
+    margin-bottom:5px;
+
+}
+
+.prInfoCard span{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#111;
+
+}
+
+/*================ QUESTION BOX =================*/
+
+.prQuestionSection{
+
+    margin-top:15px;
+
+}
+
+.prQuestionSection h3{
+
+    margin-bottom:15px;
+
+    color:#0b4f9c;
+
+}
+
+#practicalQuestionArea{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+/*================ QUESTION CARD =================*/
+
+.prQuestionCard{
+
+    background:#fff;
+
+    border:1px solid #ddd;
+
+    border-left:6px solid #0b4f9c;
+
+    border-radius:8px;
+
+    padding:15px;
+
+}
+
+.prQuestionNo{
+
+    font-weight:700;
+
+    color:#0b4f9c;
+
+    margin-bottom:8px;
+
+    font-size:17px;
+
+}
+
+.prQuestionText{
+
+    font-size:16px;
+
+    line-height:1.6;
+
+    color:#222;
+
+}
+
+/*================ UPLOAD =================*/
+
+.prUploadSection{
+
+    margin-top:30px;
+
+    padding:20px;
+
+    background:#f5f9ff;
+
+    border:2px dashed #0b4f9c;
+
+    border-radius:10px;
+
+    text-align:center;
+
+}
+
+.prUploadSection h3{
+
+    margin-bottom:10px;
+
+    color:#0b4f9c;
+
+}
+
+.prUploadSection p{
+
+    color:#555;
+
+    margin-bottom:15px;
+
+}
+
+#practicalScreenshot{
+
+    width:100%;
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    background:#fff;
+
+}
+
+.prUploadSection small{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#777;
+
+}
+
+/*================ BUTTONS =================*/
+
+.practicalButtons{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:30px;
+
+}
+
+.backDashboardBtn{
+
+    background:#6c757d;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+.backDashboardBtn:hover{
+
+    background:#555;
+
+}
+
+.submitPracticalBtn{
+
+    background:#28a745;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 35px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+}
+
+.submitPracticalBtn:hover{
+
+    background:#218838;
+
+}
+
+/*================ MOBILE =================*/
+
+@media(max-width:768px){
+
+.practicalStudentInfo{
+
+grid-template-columns:1fr;
+
+}
+
+.practicalButtons{
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.backDashboardBtn,
+
+.submitPracticalBtn{
+
+width:100%;
+
+}
+
+}
