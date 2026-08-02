@@ -4533,14 +4533,14 @@ MARKSHEET NO TABLE
 
 }
 /*==================================================
-            STUDENT DASHBOARD
+            EXAM TYPE PAGE
 ==================================================*/
 
-.dashboard-box{
+.examTypeContainer{
 
-    max-width:1000px;
+    max-width:900px;
 
-    margin:20px auto;
+    margin:35px auto;
 
     background:#fff;
 
@@ -4548,263 +4548,223 @@ MARKSHEET NO TABLE
 
     box-shadow:0 5px 20px rgba(0,0,0,.15);
 
-    padding:25px;
-
-}
-
-/*================ HEADER =================*/
-
-.dashboard-header{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:20px;
-
-    border-bottom:2px solid #e5e5e5;
-
-    padding-bottom:15px;
-
-    margin-bottom:20px;
-
-}
-
-.dashboard-logo{
-
-    width:85px;
-
-    height:85px;
-
-    object-fit:contain;
-
-}
-
-.dashboard-title{
-
-    flex:1;
-
-}
-
-.dashboard-title h2{
-
-    margin:0;
-
-    color:#0b4f9c;
-
-    font-size:30px;
-
-}
-
-.dashboard-title h3{
-
-    margin:6px 0;
-
-    color:#222;
-
-    font-size:22px;
-
-}
-
-.dashboard-title p{
-
-    margin:0;
-
-    color:#666;
-
-    font-size:14px;
-
-}
-
-/*================ STUDENT DETAILS =================*/
-
-.dashboardStudent{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:15px;
-
-    margin-bottom:25px;
-
-}
-
-.dashInfo{
-
-    border:1px solid #d7d7d7;
-
-    border-left:5px solid #0b4f9c;
-
-    background:#fafafa;
-
-    border-radius:8px;
-
-    padding:12px;
-
-}
-
-.dashInfo label{
-
-    display:block;
-
-    font-size:12px;
-
-    color:#777;
-
-    margin-bottom:5px;
-
-}
-
-.dashInfo span{
-
-    font-size:18px;
-
-    font-weight:700;
-
-    color:#111;
-
-}
-
-/*================ PAPER =================*/
-
-.dashboardPaperCard{
-
-    text-align:center;
-
-    background:#f7fbff;
-
-    border:2px solid #0b4f9c;
-
-    border-radius:10px;
-
-    padding:18px;
-
-    margin-bottom:30px;
-
-}
-
-.dashboardPaperCard h3{
-
-    margin:0 0 8px;
-
-    color:#0b4f9c;
-
-}
-
-.dashboardPaperCard p{
-
-    margin:0 0 15px;
-
-    color:#666;
-
-}
-
-#dashboardPaperSelect{
-
-    width:350px;
-
-    max-width:100%;
-
-    padding:10px;
-
-    border:2px solid #0b4f9c;
-
-    border-radius:6px;
-
-    font-size:16px;
-
-    font-weight:600;
-
-}
-
-/*================ MENU =================*/
-
-.dashboardMenu{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:20px;
-
-}
-
-/*================ CARD =================*/
-
-.dashboardCard{
-
-    background:#fff;
-
-    border:2px solid #dcdcdc;
-
-    border-radius:12px;
-
-    padding:25px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-    text-align:center;
-
-}
-
-.dashboardCard:hover{
-
-    transform:translateY(-5px);
-
-    box-shadow:0 8px 20px rgba(0,0,0,.15);
-
-}
-
-.dashIcon{
-
-    font-size:42px;
-
-    margin-bottom:10px;
-
-}
-
-.dashboardCard h3{
-
-    margin:0 0 8px;
-
-    color:#0b4f9c;
-
-}
-
-.dashboardCard p{
-
-    margin:0;
-
-    color:#555;
-
-}
-
-/*================ COLORS =================*/
-
-.theoryCard{
+    padding:30px;
 
     border-top:6px solid #0b4f9c;
 
 }
 
-.practicalCard{
+/*================ HEADER =================*/
 
-    border-top:6px solid #28a745;
+.examTypeHeader{
 
-}
+    text-align:center;
 
-.resultCard{
-
-    border-top:6px solid #ff9800;
+    margin-bottom:30px;
 
 }
 
-.logoutCard{
+.examTypeLogo{
 
-    border-top:6px solid #dc3545;
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+    margin-bottom:10px;
+
+}
+
+.examTypeHeader h2{
+
+    margin:0;
+
+    color:#0b4f9c;
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+.examTypeHeader h3{
+
+    margin:8px 0;
+
+    color:#222;
+
+    font-size:24px;
+
+}
+
+.examTypeHeader p{
+
+    margin:5px 0;
+
+    font-size:16px;
+
+    color:#444;
+
+}
+
+.examTypeHeader b{
+
+    color:#000;
+
+}
+
+/*================ PAPER BOX =================*/
+
+.examPaperBox{
+
+    width:420px;
+
+    max-width:100%;
+
+    margin:0 auto 35px;
+
+    text-align:center;
+
+}
+
+.examPaperBox label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:18px;
+
+    color:#0b4f9c;
+
+}
+
+#examPaperSelect{
+
+    width:100%;
+
+    padding:12px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    border:2px solid #0b4f9c;
+
+    border-radius:6px;
+
+    outline:none;
+
+}
+
+/*================ BUTTONS =================*/
+
+.examTypeButtons{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:25px;
+
+}
+
+/*================ CARD BUTTON =================*/
+
+.examTypeButtons button{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:28px 20px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    transition:.3s;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+
+}
+
+.examTypeButtons button:hover{
+
+    transform:translateY(-6px);
+
+}
+
+/*================ ICON =================*/
+
+.examIcon{
+
+    font-size:55px;
+
+    margin-bottom:15px;
+
+}
+
+/*================ THEORY =================*/
+
+.theoryExamBtn{
+
+    background:#0b4f9c;
+
+}
+
+/*================ PRACTICAL =================*/
+
+.practicalExamBtn{
+
+    background:#28a745;
+
+}
+
+.examTypeButtons h3{
+
+    margin:0 0 10px;
+
+    font-size:23px;
+
+    color:#fff;
+
+}
+
+.examTypeButtons span{
+
+    font-size:15px;
+
+    color:#fff;
+
+}
+
+/*================ BACK =================*/
+
+.backLoginBtn{
+
+    background:#dc3545;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:6px;
+
+    padding:12px 25px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.backLoginBtn:hover{
+
+    background:#b52b37;
 
 }
 
@@ -4812,29 +4772,35 @@ MARKSHEET NO TABLE
 
 @media(max-width:768px){
 
-.dashboardStudent{
+.examTypeButtons{
 
 grid-template-columns:1fr;
 
 }
 
-.dashboardMenu{
+.examTypeContainer{
 
-grid-template-columns:1fr;
+margin:15px;
 
-}
-
-.dashboard-header{
-
-flex-direction:column;
-
-text-align:center;
+padding:20px;
 
 }
 
-#dashboardPaperSelect{
+.examTypeHeader h2{
 
-width:100%;
+font-size:26px;
+
+}
+
+.examTypeHeader h3{
+
+font-size:20px;
+
+}
+
+.examIcon{
+
+font-size:45px;
 
 }
 
