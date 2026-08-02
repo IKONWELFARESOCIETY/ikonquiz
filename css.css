@@ -4857,41 +4857,25 @@ font-size:45px;
 
 }
 
-.practicalLogo{
 
-    width:85px;
-
-    margin-bottom:10px;
-
-}
-
-.practicalHeader h2{
+.practicalHeader h1{
 
     margin:0;
 
     color:#0b4f9c;
 
-    font-size:30px;
+    font-size:35px;
 
     font-weight:700;
 
 }
 
-.practicalHeader h3{
-
-    margin:8px 0;
-
-    color:#222;
-
-    font-size:22px;
-
-}
 
 .practicalHeader p{
 
     color:#666;
 
-    font-size:15px;
+    font-size:18px;
 
 }
 
