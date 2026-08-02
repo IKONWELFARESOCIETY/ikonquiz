@@ -2313,7 +2313,9 @@ function showSuccess() {
     //------------------------------------------
     // Hide All Pages
     //------------------------------------------
-
+    document
+    .getElementById("practicalPage")
+    ?.classList.add("hidden");
     document.getElementById("loginPage")
         ?.classList.add("hidden");
 
@@ -4226,6 +4228,15 @@ function checkQRVerification(){
 
 function backToExamType(){
 
+    // Practical Timer Stop
+    stopPracticalTimer();
+
+    // Practical Page Hide
+    document
+        .getElementById("practicalPage")
+        ?.classList.add("hidden");
+
+    // Theory/Test Pages Hide
     document
         .getElementById("verificationPage")
         ?.classList.add("hidden");
@@ -4243,20 +4254,44 @@ function backToExamType(){
         ?.classList.add("hidden");
 
     document
+        .getElementById("successPage")
+        ?.classList.add("hidden");
+
+    // Exam Type Page Show
+    document
         .getElementById("examTypePage")
         ?.classList.remove("hidden");
 
-    // Student ID box clear
+    // Student ID Clear
     const idBox =
         document.getElementById("studentIdInput");
 
     if(idBox){
-
         idBox.value = "";
-
     }
 
-    // Waiting page polling stop
+    // Practical Questions Clear
+    const area =
+        document.getElementById("practicalQuestionArea");
+
+    if(area){
+        area.innerHTML = "";
+    }
+
+    // Reset Practical Timer
+    practicalTotalTime = practicalDuration * 60;
+
+    showPracticalTimer();
+
+    // Enable Submit Button Again
+    const btn =
+        document.querySelector(".submitPracticalBtn");
+
+    if(btn){
+        btn.disabled = false;
+        btn.innerHTML = "Submit Practical";
+    }
+
     stopStatusChecker();
 
 }
@@ -4387,12 +4422,17 @@ async function submitPractical(autoSubmit = false){
 
         if(result=="SUCCESS"){
 
-            alert(
-                "Practical Submitted Successfully."
-            );
+    stopPracticalTimer();
 
-              goLogin();
-            return;
+    document
+        .getElementById("practicalPage")
+        ?.classList.add("hidden");
+
+    showSuccess();
+
+    return;
+
+}
 
         }else{
 
