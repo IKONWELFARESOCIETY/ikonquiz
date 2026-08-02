@@ -5163,3 +5163,42 @@ width:50%;
     font-weight:700;
 
 }
+.practicalTimerBox{
+
+    width:220px;
+
+    margin:18px auto;
+
+    background:#fff8e1;
+
+    border:2px solid #f4b400;
+
+    border-radius:8px;
+
+    padding:10px;
+
+    text-align:center;
+
+}
+
+.practicalTimerBox span{
+
+    display:block;
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+#practicalTimer{
+
+    margin-top:5px;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#d32f2f;
+
+}
