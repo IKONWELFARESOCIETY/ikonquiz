@@ -4993,39 +4993,37 @@ font-size:45px;
 
 /*================ UPLOAD =================*/
 
-.prUploadSection{
+/*================ QUESTION UPLOAD =================*/
 
-    margin-top:30px;
+.prUploadBox{
 
-    padding:20px;
+    margin-top:18px;
+
+    padding:15px;
 
     background:#f5f9ff;
 
     border:2px dashed #0b4f9c;
 
-    border-radius:10px;
-
-    text-align:center;
+    border-radius:8px;
 
 }
 
-.prUploadSection h3{
+.prUploadBox label{
 
-    margin-bottom:10px;
+    display:block;
+
+    margin-bottom:8px;
 
     color:#0b4f9c;
 
-}
+    font-size:15px;
 
-.prUploadSection p{
-
-    color:#555;
-
-    margin-bottom:15px;
+    font-weight:700;
 
 }
 
-#practicalScreenshot{
+.prUploadBox input[type=file]{
 
     width:100%;
 
@@ -5037,18 +5035,27 @@ font-size:45px;
 
     background:#fff;
 
+    cursor:pointer;
+
 }
 
-.prUploadSection small{
+.prUploadBox input[type=file]:hover{
+
+    border-color:#0b4f9c;
+
+}
+
+.prUploadBox small{
 
     display:block;
 
-    margin-top:10px;
+    margin-top:8px;
 
-    color:#777;
+    font-size:12px;
+
+    color:#666;
 
 }
-
 /*================ BUTTONS =================*/
 
 .practicalButtons{
