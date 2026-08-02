@@ -858,9 +858,8 @@ function loadPracticalQuestions(){
 
         "?action=practicalQuestions" +
 
-        "&paper=" +
-
-       encodeURIComponent(practicalPaper)
+       "&paper=" +
+encodeURIComponent(paperName)
 
     )
 
