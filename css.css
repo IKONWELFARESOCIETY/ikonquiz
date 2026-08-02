@@ -3484,9 +3484,8 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:6px;
+    margin-top:50px;
     position:relative;
-    top:-25px;
 }
 
 /*==========================
@@ -4464,30 +4463,65 @@ MARKSHEET NO TABLE
     color:#ffd700;
 }
 
-/* Issue Date */
+/* Signature Section */
 
-.mkIssueDateBox{
+.mkSignatureSection{
 
-    margin-top:-30px;
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    margin-top:18px;
+
+}
+
+/* Left & Right Signature */
+
+.mkSignBox{
+
+    width:220px;
 
     text-align:center;
 
 }
-.mkIssueLabel{
 
-    font-size:10px;
+/* Center Issue Date */
 
-    color:#0b4f9c;
+.mkIssueSeal{
 
-    font-weight:700;
+    width:160px;
 
-    text-transform:uppercase;
+    text-align:center;
+
+    align-self:center;
+
+    margin:0 25px;
+
+    padding-bottom:10px;   /* niche se thoda upar rahe */
 
 }
 
-.mkIssueValue{
+/* ISSUE DATE */
 
-    margin-top:2px;
+.mkIssueSealLabel{
+
+    font-size:11px;
+
+    font-weight:700;
+
+    color:#0b4f9c;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    margin-bottom:3px;
+
+}
+
+.mkIssueSealValue{
 
     font-size:18px;
 
@@ -4495,6 +4529,6 @@ MARKSHEET NO TABLE
 
     color:#222;
 
-    line-height:1;
+    line-height:1.2;
 
 }
