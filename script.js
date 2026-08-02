@@ -3928,3 +3928,43 @@ function checkQRVerification(){
 //====================================================
 // END RESULT MODULE
 //====================================================
+//====================================================
+// BACK TO EXAM TYPE PAGE
+//====================================================
+
+function backToExamType(){
+
+    document
+        .getElementById("verificationPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("instructionPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("waitingPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("testPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("examTypePage")
+        ?.classList.remove("hidden");
+
+    // Student ID box clear
+    const idBox =
+        document.getElementById("studentIdInput");
+
+    if(idBox){
+
+        idBox.value = "";
+
+    }
+
+    // Waiting page polling stop
+    stopStatusChecker();
+
+}
