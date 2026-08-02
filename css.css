@@ -3484,9 +3484,9 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:0px;
+    margin-top:50px;
     position:relative;
-    top:12px;
+    top:-12px;
 }
 
 /*==========================
