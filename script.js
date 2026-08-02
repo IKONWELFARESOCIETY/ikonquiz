@@ -558,7 +558,6 @@ function startTest() {
          courseName = data.course;
         totalMarks = data.totalMarks;
         passingMarks = data.passingMarks;
-        practicalPaper = data.practicalPaper;
             theoryPapers = data.theoryPapers || [];
 practicalPapers = data.practicalPapers || [];
 
@@ -583,14 +582,13 @@ return;
         // Already Submitted
         //----------------------------------
 
-        if (data.status === "ALREADY_SUBMITTED") {
+        if(data.status==="ALL_SUBMITTED"){
 
-            alert("All papers already submitted.");
+    alert("All examinations have already been completed.");
 
-            return;
+    return;
 
-        }
-
+}
         //----------------------------------
         // Invalid Login
         //----------------------------------
