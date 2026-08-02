@@ -26,9 +26,6 @@ let studentId = "";
 let courseName = "";
 let totalMarks = "";
 let passingMarks = "";
-//================================
-// MOTIVATIONAL LINES
-//================================
 
 
 //====================================================
@@ -38,7 +35,15 @@ let passingMarks = "";
 let questions = [];
 let answers = [];
 let currentQuestion = 0;
+//====================================================
+// PRACTICAL TIMER
+//====================================================
 
+let practicalDuration = 15;
+
+let practicalTotalTime = 15 * 60;
+
+let practicalTimer = null;
 
 
 //====================================================
@@ -102,10 +107,55 @@ function initializeSystem() {
     loadTestTime();
     showTimer();
     checkQRVerification();
+    loadPracticalTime();
 
 }
 
+//====================================================
+// LOAD PRACTICAL TIME
+//====================================================
 
+function loadPracticalTime(){
+
+    fetch(
+        SCRIPT_URL + "?action=practicalTime"
+    )
+
+    .then(res => res.text())
+
+    .then(function(data){
+
+        practicalDuration = parseInt(data);
+
+        if(
+            isNaN(practicalDuration) ||
+            practicalDuration <= 0
+        ){
+
+            practicalDuration = 15;
+
+        }
+
+        practicalTotalTime =
+            practicalDuration * 60;
+
+        console.log(
+            "Practical Duration :",
+            practicalDuration
+        );
+
+    })
+
+    .catch(function(){
+
+        practicalDuration = 15;
+
+        practicalTotalTime =
+            practicalDuration * 60;
+
+    });
+
+}
 
 //====================================================
 // LOAD EXAM SETTINGS
@@ -638,7 +688,7 @@ function startTheoryExam(){
 function startPracticalExam(){
 
     const select =
-    document.getElementById("examPaperSelect");
+        document.getElementById("examPaperSelect");
 
     if(select.value==""){
 
@@ -653,12 +703,252 @@ function startPracticalExam(){
     examMode = "PRACTICAL";
 
     document
-    .getElementById("examTypePage")
-    ?.classList.add("hidden");
+        .getElementById("examTypePage")
+        ?.classList.add("hidden");
 
     document
-    .getElementById("practicalPage")
-    ?.classList.remove("hidden");
+        .getElementById("practicalPage")
+        ?.classList.remove("hidden");
+
+    //=========================
+    // Student Details
+    //=========================
+
+    document.getElementById("prStudentName").textContent =
+        studentName;
+
+    document.getElementById("prRegNo").textContent =
+        regNo;
+
+    document.getElementById("prCourse").textContent =
+        courseName;
+
+    document.getElementById("prPaper").textContent =
+        paperName;
+
+    // Exam Date
+
+    const examDate =
+        document.getElementById("testDate");
+
+    if(examDate){
+
+        document.getElementById("prExamDate").textContent =
+            examDate.textContent.replace("📅 Exam Date : ","");
+
+    }
+
+
+    //=========================
+    // Load Questions
+    //=========================
+
+    loadPracticalQuestions();
+
+}
+    //====================================================
+// SHOW PRACTICAL TIMER
+//====================================================
+
+function showPracticalTimer(){
+
+    const minute =
+        Math.floor(practicalTotalTime / 60);
+
+    const second =
+        practicalTotalTime % 60;
+
+    const timerBox =
+        document.getElementById("practicalTimer");
+
+    if(!timerBox){
+        return;
+    }
+
+    timerBox.innerHTML =
+
+        String(minute).padStart(2,"0")
+
+        + ":"
+
+        + String(second).padStart(2,"0");
+
+}
+    //====================================================
+// START PRACTICAL TIMER
+//====================================================
+
+function startPracticalTimer(){
+
+    // Stop old timer if running
+    if(practicalTimer){
+
+        clearInterval(practicalTimer);
+
+    }
+
+    practicalTimer = setInterval(function(){
+
+        practicalTotalTime--;
+
+        showPracticalTimer();
+
+        // Last 5 Minutes
+
+        const timerBox =
+            document.getElementById("practicalTimer");
+
+        if(timerBox){
+
+            if(practicalTotalTime <= 300){
+
+                timerBox.style.color = "#d32f2f";
+
+            }
+
+        }
+
+        // Time Over
+
+        if(practicalTotalTime <= 0){
+
+            clearInterval(practicalTimer);
+
+            practicalTimer = null;
+
+            alert(
+                "Practical Exam Time Over.\nYour practical will be submitted automatically."
+            );
+
+            submitPractical();
+
+        }
+
+    },1000);
+
+}
+function stopPracticalTimer(){
+
+    if(practicalTimer){
+
+        clearInterval(practicalTimer);
+
+        practicalTimer = null;
+
+    }
+
+}
+//====================================================
+// LOAD PRACTICAL QUESTIONS
+//====================================================
+
+function loadPracticalQuestions(){
+
+    const area =
+        document.getElementById(
+            "practicalQuestionArea"
+        );
+
+    area.innerHTML =
+        "<h3>Loading Questions...</h3>";
+
+    fetch(
+
+        SCRIPT_URL +
+
+        "?action=practicalQuestions" +
+
+        "&paper=" +
+
+        encodeURIComponent(paperName)
+
+    )
+
+    .then(res=>res.json())
+
+    .then(function(data){
+
+        if(data.status!="SUCCESS"){
+
+            area.innerHTML =
+                "<h3>"+data.message+"</h3>";
+
+            return;
+
+        }
+
+        let html="";
+
+        data.questions.forEach(function(q,index){
+
+           html +=
+
+'<div class="prQuestionCard">' +
+
+    '<div class="prQuestionNo">' +
+
+        'Question ' + (index+1) +
+
+    '</div>' +
+
+    '<div class="prTopic">' +
+
+        '<b>Topic :</b> ' +
+
+        q.topic +
+
+    '</div>' +
+
+    '<div class="prQuestionText">' +
+
+        q.question +
+
+    '</div>' +
+
+    '<div class="prUploadBox">' +
+
+        '<label>' +
+
+            'Upload Screenshot' +
+
+        '</label>' +
+
+        '<input ' +
+
+            'type="file" ' +
+
+            'class="prScreenshot" ' +
+
+            'data-topic="' + q.topic + '" ' +
+
+            'accept=".png,.jpg,.jpeg">' +
+
+    '</div>' +
+
+'</div>';
+        });
+
+        area.innerHTML = html;
+
+        //------------------------------------
+        // Timer Start
+        //------------------------------------
+
+        practicalTotalTime =
+            practicalDuration * 60;
+
+        showPracticalTimer();
+
+        startPracticalTimer();
+
+    })
+
+    .catch(function(){
+
+        area.innerHTML =
+        "<h3>Unable to Load Questions</h3>";
+
+    });
 
 }
 //====================================================
@@ -3966,5 +4256,195 @@ function backToExamType(){
 
     // Waiting page polling stop
     stopStatusChecker();
+
+}
+//====================================================
+// SUBMIT PRACTICAL
+//====================================================
+
+async function submitPractical(autoSubmit = false){
+
+    if(!autoSubmit){
+
+        const ok = confirm(
+            "Are you sure you want to submit Practical Examination?"
+        );
+
+        if(!ok) return;
+
+    }
+
+    stopPracticalTimer();
+
+    const btn =
+        document.querySelector(".submitPracticalBtn");
+
+    if(btn){
+
+        btn.disabled = true;
+        btn.innerHTML = "Uploading...";
+
+    }
+
+    //---------------------------------------
+    // Read All Screenshot Inputs
+    //---------------------------------------
+
+    const inputs =
+        document.querySelectorAll(".prScreenshot");
+
+    let files = [];
+
+    for(const input of inputs){
+
+        if(input.files.length==0){
+
+            alert("Please upload screenshot for every question.");
+
+            if(btn){
+
+                btn.disabled=false;
+                btn.innerHTML="Submit Practical";
+
+            }
+
+            return;
+
+        }
+
+        const file =
+            input.files[0];
+
+        const base64 =
+            await fileToBase64(file);
+
+        files.push({
+
+            topic:
+                input.dataset.topic,
+
+            fileName:
+
+                regNo+"_"+
+
+                studentName.replace(/\s+/g,"_")+"_"+
+
+                paperName+"_"+
+
+                input.dataset.topic.replace(/\s+/g,"_")+
+
+                "."+
+
+                file.name.split(".").pop(),
+
+            mimeType:
+                file.type,
+
+            base64:
+                base64.split(",")[1]
+
+        });
+
+    }
+
+    //---------------------------------------
+    // Send to Apps Script
+    //---------------------------------------
+
+    const payload={
+
+        action:"submitPractical",
+
+        regNo:regNo,
+
+        studentName:studentName,
+
+        studentId:studentId,
+
+        course:courseName,
+
+        paper:paperName,
+
+        files:files
+
+    };
+
+    fetch(SCRIPT_URL,{
+
+        method:"POST",
+
+        body:JSON.stringify(payload)
+
+    })
+
+    .then(res=>res.text())
+
+    .then(function(result){
+
+        console.log(result);
+
+        if(result=="SUCCESS"){
+
+            alert(
+                "Practical Submitted Successfully."
+            );
+
+            showSuccess();
+
+        }else{
+
+            alert(result);
+
+            if(btn){
+
+                btn.disabled=false;
+
+                btn.innerHTML="Submit Practical";
+
+            }
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        alert("Upload Failed");
+
+        if(btn){
+
+            btn.disabled=false;
+
+            btn.innerHTML="Submit Practical";
+
+        }
+
+    });
+
+}
+//====================================================
+// FILE TO BASE64
+//====================================================
+
+function fileToBase64(file){
+
+    return new Promise(function(resolve,reject){
+
+        const reader =
+            new FileReader();
+
+        reader.onload=function(){
+
+            resolve(reader.result);
+
+        };
+
+        reader.onerror=reject;
+
+        reader.readAsDataURL(file);
+
+    });
 
 }
