@@ -155,7 +155,197 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 </div>
 
+<!-- ==================================================
+                STUDENT DASHBOARD
+================================================== -->
 
+<div id="dashboardPage" class="hidden">
+
+    <div class="dashboard-box">
+
+        <div class="dashboard-header">
+
+            <img src="ikon.jpg" class="dashboard-logo">
+
+            <div class="dashboard-title">
+
+                <h2>IKON INSTITUTE</h2>
+
+                <h3>Student Dashboard</h3>
+
+                <p>
+                    Welcome to IKON Institute Online Examination Portal
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ================= STUDENT DETAILS ================= -->
+
+        <div class="dashboardStudent">
+
+            <div class="dashInfo">
+
+                <label>Registration No.</label>
+
+                <span id="dashRegNo"></span>
+
+            </div>
+
+            <div class="dashInfo">
+
+                <label>Student Name</label>
+
+                <span id="dashStudentName"></span>
+
+            </div>
+
+            <div class="dashInfo">
+
+                <label>Course</label>
+
+                <span id="dashCourse"></span>
+
+            </div>
+
+        </div>
+
+        <!-- ================= PAPER SELECTION ================= -->
+
+        <div class="dashboardPaperCard">
+
+            <h3>Select Examination Paper</h3>
+
+            <p>
+                Please select the paper before starting the examination.
+            </p>
+
+            <select
+                id="dashboardPaperSelect"
+                onchange="selectDashboardPaper()">
+
+                <option value="">
+                    -- Select Paper --
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- ================= MENU ================= -->
+
+        <div class="dashboardMenu">
+
+            <!-- THEORY -->
+
+            <div
+                class="dashboardCard theoryCard"
+                onclick="openTheoryExam()">
+
+                <div class="dashIcon">
+
+                    📝
+
+                </div>
+
+                <h3>
+
+                    Theory Examination
+
+                </h3>
+
+                <p>
+
+                    Start Online Theory Examination
+
+                </p>
+
+            </div>
+
+            <!-- PRACTICAL -->
+
+            <div
+                class="dashboardCard practicalCard"
+                onclick="openPracticalExam()">
+
+                <div class="dashIcon">
+
+                    💻
+
+                </div>
+
+                <h3>
+
+                    Practical Examination
+
+                </h3>
+
+                <p>
+
+                    Attempt Practical Questions
+
+                </p>
+
+            </div>
+
+            <!-- RESULT -->
+
+            <div
+                class="dashboardCard resultCard"
+                onclick="openResultVerifyPage()">
+
+                <div class="dashIcon">
+
+                    📊
+
+                </div>
+
+                <h3>
+
+                    View Result
+
+                </h3>
+
+                <p>
+
+                    Check Result & Marksheet
+
+                </p>
+
+            </div>
+
+            <!-- LOGOUT -->
+
+            <div
+                class="dashboardCard logoutCard"
+                onclick="goLogin()">
+
+                <div class="dashIcon">
+
+                    🚪
+
+                </div>
+
+                <h3>
+
+                    Logout
+
+                </h3>
+
+                <p>
+
+                    Return To Login Page
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- ==================================================
                 RESULT VERIFY PAGE
