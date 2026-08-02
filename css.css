@@ -3484,7 +3484,7 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:10px;
+    margin-top:20px;
     position:relative;
     top:-2px;
 }
@@ -4463,103 +4463,12 @@ MARKSHEET NO TABLE
 .mkGradeLegend b{
     color:#ffd700;
 }
-/*==========================
-  ISO BADGE (CIRCLE)
-==========================*/
-
-.mkIsoBadge{
-
-    width:110px;
-    height:110px;
-
-    border:4px solid #0b4f9c;
-    border-radius:50%;
-
-    background:#fff;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    text-align:center;
-
-    box-sizing:border-box;
-
-    margin:0 auto;
-}
-
-.isoTick{
-
-    width:22px;
-    height:22px;
-
-    border-radius:50%;
-
-    background:#0b8b2d;
-    color:#fff;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:15px;
-    font-weight:700;
-
-    margin-bottom:3px;
-}
-
-.isoTitle{
-
-    font-size:18px;
-    font-weight:800;
-
-    color:#0b4f9c;
-
-    line-height:1;
-}
-
-.isoCode{
-
-    font-size:11px;
-    font-weight:700;
-
-    color:#222;
-
-    margin-top:2px;
-}
-
-.isoSub{
-
-    font-size:8px;
-    font-weight:600;
-
-    line-height:1.2;
-
-    color:#555;
-
-    margin-top:3px;
-}
-/*=========================
-ISO + ISSUE DATE
-=========================*/
-
-.mkIsoSection{
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
-    margin-bottom:10px;
-
-}
-
 
 /* Issue Date */
 
 .mkIssueDateBox{
 
-    margin-top:-2px;
+    margin-top:-6px;
 
     text-align:center;
 
