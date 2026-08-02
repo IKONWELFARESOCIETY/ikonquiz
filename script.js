@@ -20,7 +20,8 @@ const SCRIPT_URL =
 let studentName = "";
 let regNo = "";
 let paperName = "";
-let paperList = [];
+let theoryPapers = [];
+let practicalPapers = [];
 let examMode = "";
 let studentId = "";
 let courseName = "";
@@ -558,9 +559,13 @@ function startTest() {
         totalMarks = data.totalMarks;
         passingMarks = data.passingMarks;
         practicalPaper = data.practicalPaper;
-            paperList = data.papers || [];
+            theoryPapers = data.theoryPapers || [];
+practicalPapers = data.practicalPapers || [];
 
-            if(paperList.length===0){
+            if(
+    theoryPapers.length===0 &&
+    practicalPapers.length===0
+){
 
     alert(
         "All assigned examinations have already been completed."
@@ -2319,7 +2324,8 @@ function resetExam() {
     studentName = "";
     regNo = "";
     paperName = "";
-    paperList = [];
+  theoryPapers = [];
+practicalPapers = [];
 
     //------------------------------------------
     // Questions
@@ -4461,7 +4467,7 @@ function openTheoryPaperPage(){
     select.innerHTML =
     "<option value=''>-- Select Theory Paper --</option>";
 
-    paperList.forEach(function(p){
+    theoryPapers.forEach(function(p){
 
         const option =
         document.createElement("option");
@@ -4511,7 +4517,7 @@ function openPracticalPaperPage(){
         select.innerHTML =
         "<option value=''>-- Select Practical Paper --</option>";
 
-        paperList.forEach(function(p){
+        practicalPapers.forEach(function(p){
 
             const option =
             document.createElement("option");
