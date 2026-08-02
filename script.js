@@ -557,7 +557,7 @@ function startTest() {
          courseName = data.course;
         totalMarks = data.totalMarks;
         passingMarks = data.passingMarks;
-
+        practicalPaper = data.practicalPaper;
             paperList = data.papers || [];
 
             if(paperList.length===0){
@@ -860,7 +860,7 @@ function loadPracticalQuestions(){
 
         "&paper=" +
 
-        encodeURIComponent(paperName)
+       encodeURIComponent(practicalPaper)
 
     )
 
