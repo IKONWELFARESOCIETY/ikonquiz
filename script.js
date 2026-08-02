@@ -659,28 +659,38 @@ function openExamTypePage(){
 
 function startTheoryExam(){
 
-    const select =
-    document.getElementById("examPaperSelect");
+    const select = document.getElementById("examPaperSelect");
 
     if(select.value==""){
-
         alert("Please Select Paper");
-
         return;
-
     }
 
     paperName = select.value;
-
     examMode = "THEORY";
 
-    document
-    .getElementById("examTypePage")
-    ?.classList.add("hidden");
+    fetch(SCRIPT_URL + "?action=theoryStatus")
+    .then(res=>res.json())
+    .then(function(data){
 
-    checkTestStatus();
+        if(data.status.toUpperCase()=="ON"){
+
+            document.getElementById("examTypePage").classList.add("hidden");
+            checkTestStatus();
+
+        }else{
+
+            alert(data.message);
+
+        }
+
+    });
 
 }
+//====================================================
+// PRACTICAL EXAM
+//====================================================
+
 //====================================================
 // PRACTICAL EXAM
 //====================================================
@@ -693,7 +703,6 @@ function startPracticalExam(){
     if(select.value==""){
 
         alert("Please Select Paper");
-
         return;
 
     }
@@ -701,6 +710,46 @@ function startPracticalExam(){
     paperName = select.value;
 
     examMode = "PRACTICAL";
+
+    // Practical Status Check
+    fetch(
+        SCRIPT_URL + "?action=practicalStatus"
+    )
+
+    .then(res => res.json())
+
+    .then(function(data){
+
+        if(
+            data.status &&
+            data.status.toUpperCase() == "ON"
+        ){
+
+            openPracticalPage();
+
+        }else{
+
+            alert(
+                data.message ||
+                "Practical Examination is not available."
+            );
+
+        }
+
+    })
+
+    .catch(function(){
+
+        alert("Unable to check Practical Status.");
+
+    });
+
+}
+//====================================================
+// OPEN PRACTICAL PAGE
+//====================================================
+
+function openPracticalPage(){
 
     document
         .getElementById("examTypePage")
@@ -710,9 +759,7 @@ function startPracticalExam(){
         .getElementById("practicalPage")
         ?.classList.remove("hidden");
 
-    //=========================
     // Student Details
-    //=========================
 
     document.getElementById("prStudentName").textContent =
         studentName;
@@ -738,10 +785,7 @@ function startPracticalExam(){
 
     }
 
-
-    //=========================
     // Load Questions
-    //=========================
 
     loadPracticalQuestions();
 
