@@ -2807,7 +2807,7 @@ function verifyResultStudent(){
                 <td>${r.percentage}</td>
                 <td>${r.grade}</td>
                 <td>${r.result}</td>
-                <td>${r.issueDate}</td>
+                <td>${r.resultDate}</td>
                 <td>
                     <button class="viewMarksheetBtn"
                         onclick="verifyMarksheet('${r.paperName}')">
@@ -3225,9 +3225,9 @@ function fillMarksheet(m){
     document.getElementById("mkPaperName").textContent =
     m.paperName || "";
 
-       document.getElementById("mkIssueDate").textContent = data.resultDate;
-        document.getElementById("mkExamDate").textContent = data.examDate;
-        document.getElementById("mkExamCode").textContent = data.examCode;
+       document.getElementById("mkIssueDate").textContent = m.resultDate;
+        document.getElementById("mkExamDate").textContent = m.examDate;
+        document.getElementById("mkExamCode").textContent = m.examCode;
 
     //---------------------------------------
     // Marks
