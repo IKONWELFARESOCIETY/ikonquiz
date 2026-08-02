@@ -5144,3 +5144,22 @@ width:50%;
 }
 
 }
+.practicalExamDate{
+
+    margin:8px 0;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    color:#0b4f9c;
+
+}
+
+.practicalExamDate span{
+
+    color:#222;
+
+    font-weight:700;
+
+}
