@@ -2434,6 +2434,8 @@ function resetExam() {
 //====================================================
 
 function goLogin() {
+     document.getElementById("successPage")
+    ?.classList.add("hidden");
    document.getElementById("examTypePage")
     ?.classList.add("hidden");
 
@@ -4389,7 +4391,8 @@ async function submitPractical(autoSubmit = false){
                 "Practical Submitted Successfully."
             );
 
-            showSuccess();
+              goLogin();
+            return;
 
         }else{
 
