@@ -3484,7 +3484,7 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:67px;
+    margin-top:68px;
     position:relative;
 }
 
@@ -4443,7 +4443,7 @@ MARKSHEET NO TABLE
     align-items:center;
     gap:18px;
 
-    font-size:12px;
+    font-size:10px;
     font-weight:600;
 
     border:1px solid #333;
