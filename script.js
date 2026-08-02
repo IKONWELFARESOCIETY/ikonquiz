@@ -4434,7 +4434,7 @@ async function submitPractical(autoSubmit = false){
 
 }
 
-        }else{
+        else{
 
             alert(result);
 
