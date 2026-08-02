@@ -393,7 +393,142 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
 </div>
+<!--==================================================
+            PRACTICAL EXAM PAGE
+===================================================-->
 
+<div id="practicalPage" class="hidden">
+
+    <div class="practicalContainer">
+
+        <!-- HEADER -->
+
+        <div class="practicalHeader">
+
+            <img src="ikon.jpg" class="practicalLogo">
+
+            <h2>IKON INSTITUTE</h2>
+
+            <h3>Practical Examination</h3>
+
+            <p>
+                Complete the following practical tasks carefully.
+            </p>
+
+        </div>
+
+        <!-- STUDENT DETAILS -->
+
+        <div class="practicalStudentInfo">
+
+            <div class="prInfoCard">
+
+                <label>Student Name</label>
+
+                <span id="prStudentName"></span>
+
+            </div>
+
+            <div class="prInfoCard">
+
+                <label>Registration No.</label>
+
+                <span id="prRegNo"></span>
+
+            </div>
+
+            <div class="prInfoCard">
+
+                <label>Course</label>
+
+                <span id="prCourse"></span>
+
+            </div>
+
+            <div class="prInfoCard">
+
+                <label>Paper Name</label>
+
+                <span id="prPaper"></span>
+
+            </div>
+
+        </div>
+
+        <!-- QUESTIONS -->
+
+        <div class="prQuestionSection">
+
+            <h3>
+                Practical Questions
+            </h3>
+
+            <div id="practicalQuestionArea">
+
+                <!-- Random 5 Questions JS se load honge -->
+
+            </div>
+
+        </div>
+
+        <!-- SCREENSHOT -->
+
+        <div class="prUploadSection">
+
+            <h3>
+
+                Upload Screenshot
+
+            </h3>
+
+            <p>
+
+                Complete the practical work on your computer.
+
+                After completion take screenshots and upload them below.
+
+            </p>
+
+            <input
+                type="file"
+                id="practicalScreenshot"
+                accept=".png,.jpg,.jpeg"
+                multiple>
+
+            <small>
+
+                Allowed File :
+                JPG, JPEG, PNG
+
+            </small>
+
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="practicalButtons">
+
+            <button
+                class="backDashboardBtn"
+                onclick="backToExamType()">
+
+                ← Back to Dashboard
+
+            </button>
+
+            <button
+                class="submitPracticalBtn"
+                onclick="submitPractical()">
+
+                Submit Practical
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- ==================================================
                 WAITING PAGE START
 ================================================== -->
