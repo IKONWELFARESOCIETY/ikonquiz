@@ -3405,6 +3405,8 @@ HEADER IKON LOGO
 .mkExamInfoTable td:last-child{
     background:#fff;
     text-align:center;
+    font-weight:700;   /* Bold */
+
 }
 
 
@@ -3476,7 +3478,7 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:50px;
+    margin-top:70px;
     position:relative;
     top:20px;
     right:0;
@@ -3511,7 +3513,7 @@ MARKSHEET NO TABLE
     width:115px;
     background:#fff;
     text-align:center;
-    font-weight:600;
+    font-weight:800;
 }
 /*=====================================
         GOLDEN LINE
