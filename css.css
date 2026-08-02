@@ -3487,9 +3487,7 @@ TOP RIGHT SECTION
     margin-top:57px;
     position:relative;
     top:10px;
-    right:0;
- font-size:14px;
-    
+    right:0; 
 }
 
 /*==========================
@@ -3522,6 +3520,7 @@ MARKSHEET NO TABLE
     background:#fff;
     text-align:center;
     font-weight:800;
+ font-size:14px;
 }
 /*=====================================
         GOLDEN LINE
