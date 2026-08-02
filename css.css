@@ -3407,7 +3407,7 @@ HEADER IKON LOGO
 
     color:#222;
 
-    font-size:18px;
+    font-size:14px;
 
     text-align:center;
 
@@ -3484,9 +3484,9 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:55px;
+    margin-top:45px;
     position:relative;
-    top:20px;
+    top:10px;
     right:0;
 }
 
