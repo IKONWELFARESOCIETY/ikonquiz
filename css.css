@@ -5147,11 +5147,15 @@ gap:12px;
 
 }
 
-.backDashboardBtn,
+.backDashboardBtn{
+ width:50%;
+ align:left;
+}
 
 .submitPracticalBtn{
-
-width:100%;
+align:right;
+width:50%;
+ 
 
 }
 
