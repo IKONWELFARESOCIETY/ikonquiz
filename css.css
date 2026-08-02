@@ -4532,3 +4532,310 @@ MARKSHEET NO TABLE
     line-height:1.2;
 
 }
+/*==================================================
+            STUDENT DASHBOARD
+==================================================*/
+
+.dashboard-box{
+
+    max-width:1000px;
+
+    margin:20px auto;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    padding:25px;
+
+}
+
+/*================ HEADER =================*/
+
+.dashboard-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    border-bottom:2px solid #e5e5e5;
+
+    padding-bottom:15px;
+
+    margin-bottom:20px;
+
+}
+
+.dashboard-logo{
+
+    width:85px;
+
+    height:85px;
+
+    object-fit:contain;
+
+}
+
+.dashboard-title{
+
+    flex:1;
+
+}
+
+.dashboard-title h2{
+
+    margin:0;
+
+    color:#0b4f9c;
+
+    font-size:30px;
+
+}
+
+.dashboard-title h3{
+
+    margin:6px 0;
+
+    color:#222;
+
+    font-size:22px;
+
+}
+
+.dashboard-title p{
+
+    margin:0;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+/*================ STUDENT DETAILS =================*/
+
+.dashboardStudent{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.dashInfo{
+
+    border:1px solid #d7d7d7;
+
+    border-left:5px solid #0b4f9c;
+
+    background:#fafafa;
+
+    border-radius:8px;
+
+    padding:12px;
+
+}
+
+.dashInfo label{
+
+    display:block;
+
+    font-size:12px;
+
+    color:#777;
+
+    margin-bottom:5px;
+
+}
+
+.dashInfo span{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#111;
+
+}
+
+/*================ PAPER =================*/
+
+.dashboardPaperCard{
+
+    text-align:center;
+
+    background:#f7fbff;
+
+    border:2px solid #0b4f9c;
+
+    border-radius:10px;
+
+    padding:18px;
+
+    margin-bottom:30px;
+
+}
+
+.dashboardPaperCard h3{
+
+    margin:0 0 8px;
+
+    color:#0b4f9c;
+
+}
+
+.dashboardPaperCard p{
+
+    margin:0 0 15px;
+
+    color:#666;
+
+}
+
+#dashboardPaperSelect{
+
+    width:350px;
+
+    max-width:100%;
+
+    padding:10px;
+
+    border:2px solid #0b4f9c;
+
+    border-radius:6px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+/*================ MENU =================*/
+
+.dashboardMenu{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+/*================ CARD =================*/
+
+.dashboardCard{
+
+    background:#fff;
+
+    border:2px solid #dcdcdc;
+
+    border-radius:12px;
+
+    padding:25px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    text-align:center;
+
+}
+
+.dashboardCard:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.dashIcon{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.dashboardCard h3{
+
+    margin:0 0 8px;
+
+    color:#0b4f9c;
+
+}
+
+.dashboardCard p{
+
+    margin:0;
+
+    color:#555;
+
+}
+
+/*================ COLORS =================*/
+
+.theoryCard{
+
+    border-top:6px solid #0b4f9c;
+
+}
+
+.practicalCard{
+
+    border-top:6px solid #28a745;
+
+}
+
+.resultCard{
+
+    border-top:6px solid #ff9800;
+
+}
+
+.logoutCard{
+
+    border-top:6px solid #dc3545;
+
+}
+
+/*================ MOBILE =================*/
+
+@media(max-width:768px){
+
+.dashboardStudent{
+
+grid-template-columns:1fr;
+
+}
+
+.dashboardMenu{
+
+grid-template-columns:1fr;
+
+}
+
+.dashboard-header{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+#dashboardPaperSelect{
+
+width:100%;
+
+}
+
+}
