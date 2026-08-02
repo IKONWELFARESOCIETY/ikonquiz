@@ -4564,17 +4564,6 @@ MARKSHEET NO TABLE
 
 }
 
-.examTypeLogo{
-
-    width:90px;
-
-    height:90px;
-
-    object-fit:contain;
-
-    margin-bottom:10px;
-
-}
 
 .examTypeHeader h2{
 
@@ -4803,5 +4792,36 @@ font-size:20px;
 font-size:45px;
 
 }
+
+}
+.backDashboardBtn{
+
+    margin-top:12px;
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#6c757d;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.backDashboardBtn:hover{
+
+    background:#545b62;
 
 }
