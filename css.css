@@ -5057,37 +5057,53 @@ font-size:45px;
 
     justify-content:space-between;
 
+    align-items:center;
+
     margin-top:30px;
+
+    gap:20px;
 
 }
 
+/*================ BACK BUTTON =================*/
+
 .backDashboardBtn{
 
-    background:#6c757d;
+    width:220px;
+
+    height:48px;
+
+    background:#5a5a5a;
 
     color:#fff;
 
     border:none;
 
-    padding:12px 30px;
-
     border-radius:6px;
-
-    cursor:pointer;
 
     font-size:16px;
 
     font-weight:600;
 
+    cursor:pointer;
+
+    transition:.3s;
+
 }
 
 .backDashboardBtn:hover{
 
-    background:#555;
+    background:#444;
 
 }
 
+/*================ SUBMIT BUTTON =================*/
+
 .submitPracticalBtn{
+
+    width:180px;
+
+    height:48px;
 
     background:#28a745;
 
@@ -5095,21 +5111,21 @@ font-size:45px;
 
     border:none;
 
-    padding:12px 35px;
-
     border-radius:6px;
-
-    cursor:pointer;
 
     font-size:16px;
 
     font-weight:700;
 
+    cursor:pointer;
+
+    transition:.3s;
+
 }
 
 .submitPracticalBtn:hover{
 
-    background:#218838;
+    background:#1f8a37;
 
 }
 
@@ -5119,27 +5135,37 @@ font-size:45px;
 
 .practicalStudentInfo{
 
-grid-template-columns:1fr;
+    grid-template-columns:1fr;
 
 }
 
 .practicalButtons{
 
-flex-direction:column;
+    display:flex;
 
-gap:12px;
+    flex-direction:row;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
 
 }
 
 .backDashboardBtn{
- width:50%;
- align:left;
+
+    width:48%;
+
+    font-size:14px;
+
 }
 
 .submitPracticalBtn{
-align:right;
-width:50%;
- 
+
+    width:48%;
+
+    font-size:14px;
 
 }
 
