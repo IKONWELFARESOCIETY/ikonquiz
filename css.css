@@ -3328,11 +3328,11 @@ HEADER IKON LOGO
 
 .mkWatermark img{
 
-    width:58%;
+    width:100%;
 
     max-width:430px;
 
-    opacity:.16;
+    opacity:16;
 
     filter:grayscale(100%) contrast(120%);
 
