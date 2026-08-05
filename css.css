@@ -4515,7 +4515,7 @@ MARKSHEET NO TABLE
     color:#222;
 
     line-height:1.2;
-   margin-bottom:-5px;
+   margin-bottom:-15px;
 
 }
 /*==================================================
@@ -5240,7 +5240,7 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    top:30px;      /* 30-45px adjust kar sakte ho */
+    margin-bottom:-10px;
     text-align:center;
     font-size:14px;
     font-weight:700;
