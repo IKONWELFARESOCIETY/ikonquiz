@@ -4481,7 +4481,7 @@ MARKSHEET NO TABLE
     margin:0 25px;
     padding-bottom:0;
     position:relative;
-    top:12px;      /* Date ko niche lao */
+    top:8px;      /* Date ko niche lao */
 }
 
 /* ISSUE DATE */
@@ -5227,7 +5227,7 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    top:50px;      /* Digital Sign ko niche lao */
+    top:5px;      /* Digital Sign ko niche lao */
     text-align:center;
     width:220px;
     font-size:14px;
