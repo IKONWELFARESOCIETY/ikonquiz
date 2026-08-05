@@ -4113,32 +4113,32 @@ MARKSHEET NO TABLE
 
 }
 #mkPercentage{
-
-    font-size:25px;
-
-    font-weight:700;
-    color:#0b4f9c; 
-
+    font-size:34px;
+    font-weight:800;
+    color:#0b4f9c;
+    letter-spacing:.5px;
+    text-shadow:0 1px 2px rgba(0,0,0,.15);
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
 
 #mkGrade{
-
-    font-size:25px;
-
-    font-weight:700;
-
-    color:#d48b00;
-
+    font-size:34px;
+    font-weight:900;
+    color:#d4a017;
+    letter-spacing:2px;
+    text-shadow:0 1px 2px rgba(0,0,0,.15);
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
 #mkResult{
-
-    font-size:25px;
-
-    font-weight:700;
-    color:#006400;
-
+    font-size:34px;
+    font-weight:800;
+    color:#198754;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    text-shadow:0 1px 2px rgba(0,0,0,.15);
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 }
 /*=========================================
@@ -4481,7 +4481,7 @@ MARKSHEET NO TABLE
     margin:0 25px;
     padding-bottom:0;
     position:relative;
-    top:8px;      /* Date ko niche lao */
+    top:6px;      /* Date ko niche lao */
 }
 
 /* ISSUE DATE */
@@ -4500,9 +4500,9 @@ MARKSHEET NO TABLE
 
 }
 mkIssueSealValue{
-    font-size:18px;
+    font-size:20px;
     font-weight:900;
-    color:#222;
+    color:#000;
     margin-bottom:0;
 }
 /*==================================================
@@ -5227,9 +5227,9 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    top:5px;      /* Digital Sign ko niche lao */
+    top:2px;      /* Digital Sign ko niche lao */
     text-align:center;
-    width:220px;
+    width:320px;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
