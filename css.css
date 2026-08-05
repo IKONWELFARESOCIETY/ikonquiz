@@ -5227,9 +5227,9 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    top:2px;      /* Digital Sign ko niche lao */
+    top:0px;      /* Digital Sign ko niche lao */
     text-align:center;
-    width:220px;
+    width:210px;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
