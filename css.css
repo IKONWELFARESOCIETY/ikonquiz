@@ -4502,7 +4502,7 @@ MARKSHEET NO TABLE
 
     letter-spacing:.5px;
 
-    margin-bottom:5px;
+    margin-bottom:-5px;
 
 }
 
@@ -5239,7 +5239,7 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    top:35px;      /* 30-45px adjust kar sakte ho */
+    top:30px;      /* 30-45px adjust kar sakte ho */
     text-align:center;
     font-size:14px;
     font-weight:700;
