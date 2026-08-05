@@ -4475,17 +4475,13 @@ MARKSHEET NO TABLE
 /* Center Issue Date */
 
 .mkIssueSeal{
-
     width:160px;
-
     text-align:center;
-
-    align-self:center;
-
+    align-self:flex-end;
     margin:0 25px;
-
-    padding-bottom:10px;   /* niche se thoda upar rahe */
-
+    padding-bottom:0;
+    position:relative;
+    top:12px;      /* Date ko niche lao */
 }
 
 /* ISSUE DATE */
@@ -4505,18 +4501,11 @@ MARKSHEET NO TABLE
     margin-bottom:5px;
 
 }
-
-.mkIssueSealValue{
-
+mkIssueSealValue{
     font-size:18px;
-
     font-weight:800;
-
     color:#222;
-
-    line-height:1.2;
-   margin-bottom:-35px;
-
+    margin-bottom:0;
 }
 /*==================================================
             EXAM TYPE PAGE
@@ -5240,10 +5229,11 @@ font-size:45px;
 }
 .mkDigitalSign{
     position:relative;
-    margin-top:60px;
+    top:28px;      /* Digital Sign ko niche lao */
     text-align:center;
+    width:220px;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
-    width:220px; 
+    line-height:1.4;
 }
