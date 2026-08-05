@@ -5237,3 +5237,12 @@ font-size:45px;
     color:#d32f2f;
 
 }
+.mkDigitalSign{
+    margin-top:18px;
+    width:260px;
+    text-align:center;
+    font-size:14px;
+    font-weight:700;
+    color:#0b4ea2;
+    line-height:1.5;
+}
