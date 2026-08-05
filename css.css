@@ -4502,7 +4502,7 @@ MARKSHEET NO TABLE
 
     letter-spacing:.5px;
 
-    margin-bottom:-5px;
+    margin-bottom:5px;
 
 }
 
@@ -4515,6 +4515,7 @@ MARKSHEET NO TABLE
     color:#222;
 
     line-height:1.2;
+   margin-bottom:-5px;
 
 }
 /*==================================================
@@ -5244,4 +5245,5 @@ font-size:45px;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
+    width:220px; 
 }
