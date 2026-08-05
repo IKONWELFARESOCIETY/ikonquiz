@@ -3316,29 +3316,14 @@ HEADER IKON LOGO
 ==========================*/
 
 .mkWatermark{
-
     position:absolute;
-
-    top:50%;
+    top:45%;              /* 40% - 50% adjust kar sakte ho */
     left:50%;
-
-    transform:translate(-50%,-50%) rotate(-15deg);
-
-    width:100%;
-    height:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
+    transform:translate(-50%,-50%);
+    width:340px;          /* size adjust */
+    opacity:.08;
+    z-index:999;          /* watermark ko upar layega */
     pointer-events:none;
-
-    z-index:0;
-
-    overflow:hidden;
-
 }
 
 .mkWatermark img{
