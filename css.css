@@ -3321,7 +3321,7 @@ HEADER IKON LOGO
     left:50%;
     transform:translate(-50%,-50%);
     width:340px;          /* size adjust */
-    opacity:.08;
+    opacity:0.20;
     z-index:999;          /* watermark ko upar layega */
     pointer-events:none;
 }
