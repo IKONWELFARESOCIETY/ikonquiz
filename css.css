@@ -4112,6 +4112,8 @@ MARKSHEET NO TABLE
     background:#157347;
 
 }
+
+}
 #mkPercentage{
     font-size:34px;
     font-weight:800;
@@ -4127,7 +4129,6 @@ MARKSHEET NO TABLE
     font-weight:900;
     color:#d4a017;
     letter-spacing:2px;
-    text-shadow:0 1px 2px rgba(0,0,0,.15);
     font-family:"Segoe UI", Arial, sans-serif;
 }
 
@@ -4139,7 +4140,6 @@ MARKSHEET NO TABLE
     text-transform:uppercase;
     text-shadow:0 1px 2px rgba(0,0,0,.15);
     font-family:"Segoe UI", Arial, sans-serif;
-}
 }
 /*=========================================
         QR VERIFICATION PAGE
@@ -4499,7 +4499,7 @@ MARKSHEET NO TABLE
     margin-bottom:8px;
 
 }
-mkIssueSealValue{
+.mkIssueSealValue{
     font-size:20px;
     font-weight:900;
     color:#000;
@@ -5229,7 +5229,7 @@ font-size:45px;
     position:relative;
     top:2px;      /* Digital Sign ko niche lao */
     text-align:center;
-    width:320px;
+    width:220px;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
