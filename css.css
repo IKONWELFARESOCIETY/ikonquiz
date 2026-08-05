@@ -5238,10 +5238,10 @@ font-size:45px;
 
 }
 .mkDigitalSign{
-    margin-top:55px;      /* jitna niche chahiye utna badhao (50-70px) */
+    position:relative;
+    top:35px;      /* 30-45px adjust kar sakte ho */
     text-align:center;
     font-size:14px;
     font-weight:700;
     color:#0b4ea2;
-    line-height:1.5;
 }
