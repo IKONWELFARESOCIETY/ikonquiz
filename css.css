@@ -5235,3 +5235,28 @@ font-size:45px;
     color:#0b4ea2;
     line-height:1.4;
 }
+/*========================
+  HINDI QUESTION
+========================*/
+
+#questionHindi{
+
+    margin-top:10px;
+
+    font-size:17px;
+
+    line-height:1.6;
+
+    font-weight:500;
+
+    color:#475569;
+
+    text-align:left;
+
+    font-family:
+        "Noto Sans Devanagari",
+        "Nirmala UI",
+        Arial,
+        sans-serif;
+
+}
