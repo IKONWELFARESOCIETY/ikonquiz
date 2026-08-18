@@ -5245,15 +5245,30 @@ font-size:45px;
    HINDI QUESTION
 ============================== */
 
+/*========================================
+        HINDI QUESTION
+========================================*/
+
+#questionHindi,
 .questionHindi {
+
     display: block !important;
 
     margin-top: 10px !important;
-    margin-bottom: 25px !important;
+    margin-bottom: 30px !important;
 
-    padding: 0 24px !important;
+    padding: 16px 20px !important;
+
+    background: #f8fbff !important;
+
+    border: 1px solid #d8e6f7 !important;
+
+    border-left: 4px solid #0b7cff !important;
+
+    border-radius: 10px !important;
 
     font-size: 18px !important;
+
     line-height: 1.7 !important;
 
     font-weight: 500 !important;
@@ -5265,6 +5280,10 @@ font-size:45px;
     font-family:
         "Noto Sans Devanagari",
         "Nirmala UI",
+        "Segoe UI",
         Arial,
         sans-serif !important;
+
+    box-sizing: border-box !important;
+
 }
