@@ -5235,28 +5235,36 @@ font-size:45px;
     color:#0b4ea2;
     line-height:1.4;
 }
+
+
+/*========================================
+        HINDI QUESTION
+========================================*/
+
 /* ==============================
    HINDI QUESTION
-================================ */
+============================== */
 
-#questionHindi {
+.questionHindi {
+    display: block !important;
 
-    margin-top: 8px;
+    margin-top: 10px !important;
+    margin-bottom: 25px !important;
 
-    font-size: 17px;
+    padding: 0 24px !important;
 
-    line-height: 1.6;
+    font-size: 18px !important;
+    line-height: 1.7 !important;
 
-    font-weight: 500;
+    font-weight: 500 !important;
 
-    color: #475569;
+    color: #475569 !important;
 
-    text-align: left;
+    text-align: left !important;
 
     font-family:
         "Noto Sans Devanagari",
         "Nirmala UI",
         Arial,
-        sans-serif;
-
+        sans-serif !important;
 }
