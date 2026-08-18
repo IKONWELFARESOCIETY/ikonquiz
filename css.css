@@ -5239,19 +5239,23 @@ font-size:45px;
   HINDI QUESTION
 ========================*/
 
-#questionHindi{
+/* ==============================
+   HINDI QUESTION
+================================ */
 
-    margin-top:10px;
+#questionHindi {
 
-    font-size:17px;
+    margin-top: 8px;
 
-    line-height:1.6;
+    font-size: 17px;
 
-    font-weight:500;
+    line-height: 1.6;
 
-    color:#475569;
+    font-weight: 500;
 
-    text-align:left;
+    color: #475569;
+
+    text-align: left;
 
     font-family:
         "Noto Sans Devanagari",
