@@ -1623,7 +1623,16 @@ function loadQuestion() {
         text.innerHTML = q.question;
 
     }
+const hindiText =
+    document.getElementById(
+        "questionHindi"
+    );
 
+if (hindiText) {
+
+    hindiText.innerHTML = q.hindiQuestion || "";
+
+}
     //------------------------------------------
     // Options
     //------------------------------------------
