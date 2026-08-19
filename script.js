@@ -919,6 +919,9 @@ encodeURIComponent(paperName)
         q.question +
 
     '</div>' +
+               '<div class="prQuestionMarks">' +
+    'Marks: ' + q.marks +
+'</div>' +
 
     '<div class="prUploadBox">' +
 
@@ -935,7 +938,7 @@ encodeURIComponent(paperName)
             'class="prScreenshot" ' +
 
             'data-topic="' + q.topic + '" ' +
-
+               'data-question="' + encodeURIComponent(q.question) + '" ' +
             'accept=".png,.jpg,.jpeg">' +
 
     '</div>' +
@@ -4322,6 +4325,29 @@ async function submitPractical(autoSubmit = false){
         const base64 =
             await fileToBase64(file);
 
+
+        //---------------------------------------
+        // Get Question Short Name
+        //---------------------------------------
+
+        const fullQuestion =
+            decodeURIComponent(
+                input.dataset.question || ""
+            );
+
+        const shortQuestion =
+            fullQuestion
+                .replace(/[^a-zA-Z0-9\s]/g,"")
+                .trim()
+                .split(/\s+/)
+                .slice(0,7)
+                .join("_");
+
+
+        //---------------------------------------
+        // Prepare File
+        //---------------------------------------
+
         files.push({
 
             topic:
@@ -4331,11 +4357,13 @@ async function submitPractical(autoSubmit = false){
 
                 regNo+"_"+
 
-                studentName.replace(/\s+/g,"_")+"_"+
+                studentName.replace(/\s+/g,"")+"_"+
 
-                paperName+"_"+
+                paperName.replace(
+                    /[^a-zA-Z0-9\s]/g,"_"
+                )+"_"+
 
-                input.dataset.topic.replace(/\s+/g,"_")+
+                shortQuestion+
 
                 "."+
 
@@ -4350,6 +4378,7 @@ async function submitPractical(autoSubmit = false){
         });
 
     }
+
 
     //---------------------------------------
     // Send to Apps Script
@@ -4373,6 +4402,7 @@ async function submitPractical(autoSubmit = false){
 
     };
 
+
     fetch(SCRIPT_URL,{
 
         method:"POST",
@@ -4389,17 +4419,17 @@ async function submitPractical(autoSubmit = false){
 
         if(result=="SUCCESS"){
 
-    stopPracticalTimer();
+            stopPracticalTimer();
 
-    document
-        .getElementById("practicalPage")
-        ?.classList.add("hidden");
+            document
+                .getElementById("practicalPage")
+                ?.classList.add("hidden");
 
-    showSuccess();
+            showSuccess();
 
-    return;
+            return;
 
-}
+        }
 
         else{
 
@@ -4408,7 +4438,6 @@ async function submitPractical(autoSubmit = false){
             if(btn){
 
                 btn.disabled=false;
-
                 btn.innerHTML="Submit Practical";
 
             }
@@ -4426,7 +4455,6 @@ async function submitPractical(autoSubmit = false){
         if(btn){
 
             btn.disabled=false;
-
             btn.innerHTML="Submit Practical";
 
         }
