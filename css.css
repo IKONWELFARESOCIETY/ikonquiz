@@ -5285,3 +5285,16 @@ font-size:45px;
     box-sizing: border-box !important;
 
 }
+.prQuestionHindi {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 600;
+    color: #334155;
+    text-align: left;
+    font-family:
+        "Noto Sans Devanagari",
+        "Nirmala UI",
+        Arial,
+        sans-serif;
+}
