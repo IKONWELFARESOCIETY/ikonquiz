@@ -905,35 +905,39 @@ encodeURIComponent(paperName)
         'Question ' + (index+1) +
 
     '</div>' +
+'<div class="prTopic">' +
 
-    '<div class="prTopic">' +
+    '<b>Topic :</b> ' +
 
-        '<b>Topic :</b> ' +
+    q.topic +
 
-        q.topic +
+'</div>' +
 
-    '</div>' +
+'<div class="prQuestionText">' +
 
-    '<div class="prQuestionText">' +
+    q.question +
 
-        q.question +
+'</div>' +
 
-    '</div>' +
-               '<div class="prQuestionHindi">' +
+'<div class="prQuestionHindi">' +
+
     (q.hindiQuestion || '') +
+
 '</div>' +
-               '<div class="prQuestionMarks">' +
+
+'<div class="prQuestionMarks">' +
+
     'Marks: ' + q.marks +
+
 '</div>' +
 
-    '<div class="prUploadBox">' +
+'<div class="prUploadBox">' +
 
-        '<label>' +
+    '<label>' +
 
-            'Upload Screenshot' +
+        'Upload Screenshot' +
 
-        '</label>' +
-
+    '</label>' +
         '<input ' +
 
             'type="file" ' +
