@@ -919,7 +919,7 @@ encodeURIComponent(paperName)
         q.question +
 
     '</div>' +
-               <div class="prQuestionHindi">' +
+               '<div class="prQuestionHindi">' +
     (q.hindiQuestion || '') +
 '</div>' +
                '<div class="prQuestionMarks">' +
