@@ -919,6 +919,9 @@ encodeURIComponent(paperName)
         q.question +
 
     '</div>' +
+               <div class="prQuestionHindi">' +
+    (q.hindiQuestion || '') +
+'</div>' +
                '<div class="prQuestionMarks">' +
     'Marks: ' + q.marks +
 '</div>' +
