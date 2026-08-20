@@ -528,7 +528,119 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     <span>20</span>
 </div>
         </div>
+          <!-- ==========================================
+     PRACTICAL INSTRUCTION PAGE
+========================================== -->
 
+<div id="practicalInstructionPage"
+     class="practicalInstructionPage">
+
+    <h2>प्रैक्टिकल एग्ज़ामिनेशन इंस्ट्रक्शन्स</h2>
+
+    <div class="practicalInstructionBox">
+
+        <ul>
+
+            <li>
+                प्रैक्टिकल एग्ज़ामिनेशन के प्रत्येक क्वेश्चन को ध्यानपूर्वक पढ़ें और दिए गए टास्क को पूरा करें।
+            </li>
+
+            <li>
+                Perform each practical task exactly as mentioned in the question.
+            </li>
+
+            <li>
+                प्रत्येक क्वेश्चन के सॉल्यूशन का स्पष्ट स्क्रीनशॉट अपलोड करना अनिवार्य है।
+            </li>
+
+            <li>
+                A clear screenshot of the solution must be uploaded for every question.
+            </li>
+
+            <li>
+                गलत या अधूरा स्क्रीनशॉट अपलोड करने पर उस क्वेश्चन के मार्क्स प्रभावित हो सकते हैं।
+            </li>
+
+            <li>
+                Uploading an incorrect or incomplete screenshot may affect the marks awarded for that question.
+            </li>
+
+            <li>
+                स्क्रीनशॉट में पूरा किया गया वर्क स्पष्ट रूप से दिखाई देना चाहिए।
+            </li>
+
+            <li>
+                The screenshot must clearly show the complete work performed by you.
+            </li>
+
+            <li>
+                केवल अपना स्वयं का प्रैक्टिकल वर्क ही सबमिट करें।
+            </li>
+
+            <li>
+                Only your own practical work should be submitted.
+            </li>
+
+            <li>
+                सभी क्वेश्चन पूरे करने के बाद ही प्रैक्टिकल एग्ज़ामिनेशन सबमिट करें।
+            </li>
+
+            <li>
+                Once the Practical Examination is started, the timer will continue until the examination is submitted.
+            </li>
+
+            <li>
+                टाइमर समाप्त होने पर प्रैक्टिकल एग्ज़ामिनेशन ऑटोमैटिकली सबमिट हो जाएगा।
+            </li>
+
+            <li>
+                The Practical Examination will be automatically submitted when the timer ends.
+            </li>
+
+            <li>
+                परीक्षा होने के बाद इसे दोबारा स्टार्ट नहीं किया जा सकता।
+            </li>
+
+            <li>
+                Once the examination is completed, it cannot be restarted.
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Confirmation -->
+
+    <div class="practicalInstructionConfirm">
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="practicalInstructionCheck"
+                onchange="togglePracticalStart()"
+            >
+
+          I have all the Instrucions and accept it
+
+        </label>
+
+    </div>
+
+    <!-- Start Button -->
+
+    <button
+        type="button"
+        id="startPracticalBtn"
+        class="startPracticalBtn"
+        onclick="startPracticalExam()"
+        disabled
+    >
+       Start Practical Exam
+    </button>
+
+</div>
+         
         <!-- QUESTIONS -->
 
         <div class="prQuestionSection">
@@ -900,8 +1012,11 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 </li>
 
 <li>
-    परीक्षा में असफल होने पर दोबारा परीक्षा देने के लिए ₹500 शुल्क देना होगा.<br>
-    Candidates who fail the Examination will have to pay a Re-Appear Fee of ₹500.
+    एक पेपर में असफल होने पर दोबारा परीक्षा देने के लिए ₹200 शुल्क देना होगा।<br>
+Candidates who fail in one paper will have to pay a Re-Appear Fee of ₹200.<br><br>
+
+सभी पेपर में असफल होने पर दोबारा परीक्षा देने के लिए ₹500 शुल्क देना होगा।<br>
+Candidates who fail in all papers will have to pay a Re-Appear Fee of ₹500.
 </li>
 
 <li>
