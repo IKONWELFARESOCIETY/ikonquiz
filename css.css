@@ -5299,26 +5299,31 @@ font-size:45px;
         sans-serif;
 }
 /* ==========================================
-   PRACTICAL INSTRUCTION PAGE - FINAL
+   PRACTICAL INSTRUCTION PAGE
 ========================================== */
 
 #practicalInstructionPage.practicalInstructionPage {
     display: block;
     width: 100%;
     max-width: 900px;
+
     margin: 25px auto;
     padding: 25px 30px;
+
     box-sizing: border-box;
 
     background: #ffffff;
+
     border: 1px solid #dbe3ee;
     border-radius: 14px;
 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 
-/* Heading */
+/* ==========================================
+   HEADING
+========================================== */
 
 #practicalInstructionPage.practicalInstructionPage h2 {
     margin: 0 0 22px 0;
@@ -5333,69 +5338,108 @@ font-size:45px;
 }
 
 
-/* Instruction Box */
+/* ==========================================
+   INSTRUCTION BOX
+========================================== */
 
 #practicalInstructionPage .practicalInstructionBox {
     display: block;
 
+    width: 100%;
+
     padding: 20px 25px;
+
+    box-sizing: border-box;
 
     background: #f7faff;
 
     border-left: 5px solid #0878f9;
     border-radius: 8px;
-
-    box-sizing: border-box;
 }
 
 
-/* List */
+/* ==========================================
+   INSTRUCTION LIST
+========================================== */
 
 #practicalInstructionPage .practicalInstructionBox ul {
+
     margin: 0;
-    padding-left: 25px;
+
+    /* LEFT SPACE FOR BULLET POINTS */
+    padding-left: 35px;
+
 }
 
 
-/* Each Instruction */
+/* ==========================================
+   EACH INSTRUCTION
+========================================== */
 
 #practicalInstructionPage .practicalInstructionBox li {
-    margin: 0 0 11px 0;
-    padding: 0;
+
+    margin-top: 0;
+
+    /* SPACE BETWEEN EACH POINT */
+    margin-bottom: 12px;
+
+    /* SPACE BETWEEN BULLET AND TEXT */
+    padding-left: 7px;
 
     font-size: 15px;
-    line-height: 1.6;
+
+    line-height: 1.65;
 
     color: #26384d;
+
     font-weight: 500;
+
 }
 
-#practicalInstructionPage .practicalInstructionBox li:last-child {
+
+/* LAST POINT */
+
+#practicalInstructionPage
+.practicalInstructionBox
+li:last-child {
+
     margin-bottom: 0;
+
 }
 
 
-/* Confirmation */
+/* ==========================================
+   CONFIRMATION AREA
+========================================== */
 
 #practicalInstructionPage .practicalInstructionConfirm {
-    margin-top: 20px;
-    padding: 14px 18px;
+
+    margin-top: 22px;
+
+    padding: 15px 18px;
+
+    box-sizing: border-box;
 
     background: #f1f5f9;
 
     border: 1px solid #d9e2ec;
+
     border-radius: 8px;
 
     font-size: 15px;
+
     font-weight: 600;
+
+    line-height: 1.5;
 
     color: #1e293b;
 
-    box-sizing: border-box;
 }
 
 
-/* Checkbox */
+/* ==========================================
+   CHECKBOX
+========================================== */
 
 #practicalInstructionPage
 .practicalInstructionConfirm
@@ -5409,10 +5453,13 @@ input[type="checkbox"] {
     vertical-align: middle;
 
     cursor: pointer;
+
 }
 
 
-/* Start Button */
+/* ==========================================
+   START PRACTICAL BUTTON
+========================================== */
 
 #practicalInstructionPage .startPracticalBtn {
 
@@ -5425,6 +5472,7 @@ input[type="checkbox"] {
     padding: 13px 20px;
 
     border: none;
+
     border-radius: 8px;
 
     background: #0878f9;
@@ -5432,15 +5480,19 @@ input[type="checkbox"] {
     color: #ffffff;
 
     font-size: 16px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
+
 }
 
 
-/* Hover */
+/* ==========================================
+   BUTTON HOVER
+========================================== */
 
 #practicalInstructionPage
 .startPracticalBtn:hover:not(:disabled) {
@@ -5448,11 +5500,14 @@ input[type="checkbox"] {
     transform: translateY(-1px);
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.15);
+        0 5px 15px rgba(0, 0, 0, 0.15);
+
 }
 
 
-/* Disabled */
+/* ==========================================
+   DISABLED BUTTON
+========================================== */
 
 #practicalInstructionPage
 .startPracticalBtn:disabled {
@@ -5466,45 +5521,86 @@ input[type="checkbox"] {
     box-shadow: none;
 
     opacity: 0.75;
+
 }
 
 
-/* Mobile */
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
 
 @media (max-width: 600px) {
 
     #practicalInstructionPage.practicalInstructionPage {
 
         margin: 15px auto;
+
         padding: 18px 15px;
 
+        border-radius: 10px;
+
     }
+
 
     #practicalInstructionPage.practicalInstructionPage h2 {
 
         font-size: 21px;
 
+        margin-bottom: 18px;
+
     }
+
 
     #practicalInstructionPage
     .practicalInstructionBox {
 
-        padding: 16px 17px;
+        padding: 17px 16px;
 
     }
+
+
+    #practicalInstructionPage
+    .practicalInstructionBox ul {
+
+        padding-left: 28px;
+
+    }
+
 
     #practicalInstructionPage
     .practicalInstructionBox li {
 
+        margin-bottom: 10px;
+
+        padding-left: 5px;
+
         font-size: 14px;
-        line-height: 1.55;
+
+        line-height: 1.6;
 
     }
+
+
+    #practicalInstructionPage
+    .practicalInstructionConfirm {
+
+        margin-top: 18px;
+
+        padding: 13px;
+
+        font-size: 14px;
+
+    }
+
 
     #practicalInstructionPage
     .startPracticalBtn {
 
         width: 100%;
+
+        margin-top: 18px;
+
+        font-size: 15px;
 
     }
 
