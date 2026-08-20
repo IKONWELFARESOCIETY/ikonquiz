@@ -706,10 +706,14 @@ function continueTheoryExam(){
 // OPEN PRACTICAL PAGE
 //====================================================
 
+//====================================================
+// OPEN PRACTICAL PAGE
+//====================================================
+
 function continuePracticalExam(){
 
     const select =
-    document.getElementById("practicalPaperSelect");
+        document.getElementById("practicalPaperSelect");
 
     if(select.value==""){
 
@@ -723,15 +727,28 @@ function continuePracticalExam(){
 
     examMode = "PRACTICAL";
 
+
+    //---------------------------------------
+    // Hide Practical Paper Selection
+    //---------------------------------------
+
     document
         .getElementById("practicalPaperPage")
         ?.classList.add("hidden");
+
+
+    //---------------------------------------
+    // Show Practical Page
+    //---------------------------------------
 
     document
         .getElementById("practicalPage")
         ?.classList.remove("hidden");
 
+
+    //---------------------------------------
     // Student Details
+    //---------------------------------------
 
     document.getElementById("prStudentName").textContent =
         studentName;
@@ -745,7 +762,10 @@ function continuePracticalExam(){
     document.getElementById("prPaper").textContent =
         paperName;
 
+
+    //---------------------------------------
     // Exam Date
+    //---------------------------------------
 
     const examDate =
         document.getElementById("testDate");
@@ -753,11 +773,140 @@ function continuePracticalExam(){
     if(examDate){
 
         document.getElementById("prExamDate").textContent =
-            examDate.textContent.replace("📅 Exam Date : ","");
+            examDate.textContent.replace(
+                "📅 Exam Date : ",
+                ""
+            );
 
     }
 
+
+    //---------------------------------------
+    // Show Practical Instructions
+    //---------------------------------------
+
+    document
+        .getElementById("practicalInstructionPage")
+        ?.classList.remove("hidden");
+
+
+    //---------------------------------------
+    // Hide Practical Questions
+    //---------------------------------------
+
+    document
+        .getElementById("practicalQuestionArea")
+        ?.classList.add("hidden");
+
+
+    //---------------------------------------
+    // Reset Instruction Checkbox
+    //---------------------------------------
+
+    const check =
+        document.getElementById(
+            "practicalInstructionCheck"
+        );
+
+    if(check){
+
+        check.checked = false;
+
+    }
+
+
+    //---------------------------------------
+    // Disable Start Button
+    //---------------------------------------
+
+    const startBtn =
+        document.getElementById(
+            "startPracticalBtn"
+        );
+
+    if(startBtn){
+
+        startBtn.disabled = true;
+
+    }
+
+
+    //---------------------------------------
+    // Timer Stop
+    //---------------------------------------
+
+    stopPracticalTimer();
+
+}
+//====================================================
+// PRACTICAL INSTRUCTION CHECKBOX
+//====================================================
+
+function togglePracticalStart(){
+
+    const check =
+        document.getElementById(
+            "practicalInstructionCheck"
+        );
+
+    const startBtn =
+        document.getElementById(
+            "startPracticalBtn"
+        );
+
+    if(!check || !startBtn){
+
+        return;
+
+    }
+
+    startBtn.disabled =
+        !check.checked;
+
+}
+//====================================================
+// START PRACTICAL EXAM
+//====================================================
+
+function startPracticalExam(){
+
+    const check =
+        document.getElementById(
+            "practicalInstructionCheck"
+        );
+
+    if(!check || !check.checked){
+
+        alert(
+            "Please read and accept the Practical Examination Instructions."
+        );
+
+        return;
+
+    }
+
+
+    //---------------------------------------
+    // Hide Instructions
+    //---------------------------------------
+
+    document
+        .getElementById("practicalInstructionPage")
+        ?.classList.add("hidden");
+
+
+    //---------------------------------------
+    // Show Questions
+    //---------------------------------------
+
+    document
+        .getElementById("practicalQuestionArea")
+        ?.classList.remove("hidden");
+
+
+    //---------------------------------------
     // Load Questions
+    //---------------------------------------
 
     loadPracticalQuestions();
 
