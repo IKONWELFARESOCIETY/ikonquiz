@@ -5298,3 +5298,171 @@ font-size:45px;
         Arial,
         sans-serif;
 }
+/* ==========================================
+   PRACTICAL INSTRUCTION PAGE
+========================================== */
+
+.practicalInstructionPage {
+    width: 100%;
+    max-width: 950px;
+    margin: 20px auto;
+    padding: 25px 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+
+/* ==========================================
+   HEADING
+========================================== */
+
+.practicalInstructionPage h2 {
+    margin: 0 0 22px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: #0759c9;
+}
+
+
+/* ==========================================
+   INSTRUCTION BOX
+========================================== */
+
+.practicalInstructionBox {
+    background: #f8fafc;
+    border-left: 5px solid #0878f9;
+    border-radius: 8px;
+    padding: 20px 24px;
+}
+
+
+/* ==========================================
+   INSTRUCTION LIST
+========================================== */
+
+.practicalInstructionBox ul {
+    margin: 0;
+    padding-left: 25px;
+}
+
+.practicalInstructionBox li {
+    margin-bottom: 12px;
+    padding-left: 5px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #334155;
+    font-weight: 500;
+}
+
+.practicalInstructionBox li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================
+   CONFIRMATION AREA
+========================================== */
+
+.practicalInstructionConfirm {
+    margin-top: 22px;
+    padding: 15px 18px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    color: #1e293b;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   CHECKBOX
+========================================== */
+
+.practicalInstructionConfirm input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    margin-right: 9px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   START BUTTON
+========================================== */
+
+.startPracticalBtn {
+    display: block;
+    width: 280px;
+    margin: 22px auto 0;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #0878f9;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.startPracticalBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+.startPracticalBtn:disabled {
+    background: #94a3b8;
+    color: #e2e8f0;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .practicalInstructionPage {
+        margin: 15px auto;
+        padding: 18px 15px;
+        border-radius: 10px;
+    }
+
+    .practicalInstructionPage h2 {
+        font-size: 21px;
+        margin-bottom: 17px;
+    }
+
+    .practicalInstructionBox {
+        padding: 16px 17px;
+    }
+
+    .practicalInstructionBox ul {
+        padding-left: 20px;
+    }
+
+    .practicalInstructionBox li {
+        font-size: 14px;
+        line-height: 1.55;
+        margin-bottom: 10px;
+    }
+
+    .practicalInstructionConfirm {
+        font-size: 14px;
+        padding: 13px;
+    }
+
+    .startPracticalBtn {
+        width: 100%;
+        font-size: 15px;
+    }
+}
