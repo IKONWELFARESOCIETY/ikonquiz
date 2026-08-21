@@ -4078,6 +4078,14 @@ function openAdminVerify(){
 // VERIFY ADMIN
 //====================================================
 
+//====================================================
+// VERIFY ADMIN
+//====================================================
+
+//====================================================
+// VERIFY ADMIN
+//====================================================
+
 function verifyAdmin(){
 
     const codeBox =
@@ -4086,11 +4094,9 @@ function verifyAdmin(){
     if(!codeBox){
 
         alert("Verification box not found.");
-
         return;
 
     }
-
 
     const code =
         codeBox.value.trim();
@@ -4099,7 +4105,6 @@ function verifyAdmin(){
     if(code === ""){
 
         alert("Please Enter Verification Code");
-
         return;
 
     }
@@ -4120,22 +4125,55 @@ function verifyAdmin(){
 
     .then(function(data){
 
+        console.log(
+            "ADMIN VERIFICATION:",
+            data
+        );
+
+
         if(data.status === "SUCCESS"){
 
+            // ========================================
+            // ADMIN MODE ON
+            // ========================================
+
+            isAdminMode = true;
+
+
+            // Hide verification popup/page
             document
                 .getElementById("adminVerifyPage")
                 ?.classList.add("hidden");
-            // Admin Mode ON
-    isAdminMode = true;
-            // Admin ke liye result list open
-            loadAllResults();
+
+
+            // ========================================
+            // OPEN RESULT PAGE
+            // ========================================
+
+            document
+                .getElementById("studentResultPage")
+                ?.classList.remove("hidden");
+
+
+            // ========================================
+            // LOAD ADMIN RESULT LIST
+            // ========================================
+
+            loadAdminResults();
+
 
             return;
 
         }
 
 
-        alert("Invalid Admin Verification Code");
+        // ========================================
+        // INVALID CODE
+        // ========================================
+
+        alert(
+            "Invalid Admin Verification Code"
+        );
 
         codeBox.value = "";
 
@@ -4145,9 +4183,1125 @@ function verifyAdmin(){
 
     .catch(function(err){
 
-        console.log(err);
+        console.error(
+            "Admin Verification Error:",
+            err
+        );
 
-        alert("Unable to verify Admin.");
+        alert(
+            "Unable to verify Admin."
+        );
+
+    });
+
+}
+//====================================================
+// ADMIN RESULT LIST
+// ONLY AVAILABLE AFTER ADMIN VERIFICATION
+//====================================================
+
+function loadAdminResults(){
+
+    // -----------------------------------------------
+    // SECURITY CHECK
+    // -----------------------------------------------
+
+    if(isAdminMode !== true){
+
+        console.warn(
+            "Unauthorized attempt to open Admin Results."
+        );
+
+        return;
+
+    }
+
+
+    const body =
+        document.getElementById(
+            "resultTableBody"
+        );
+
+
+    if(!body){
+
+        alert(
+            "Result table not found."
+        );
+
+        return;
+
+    }
+
+
+    // -----------------------------------------------
+    // LOADING
+    // -----------------------------------------------
+
+    body.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="19"
+                style="
+                    text-align:center;
+                    padding:45px;
+                    font-size:18px;
+                    font-weight:bold;
+                    color:#1e3a8a;
+                "
+            >
+
+                Loading Admin Results...
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    // -----------------------------------------------
+    // CHANGE TABLE HEADER TO ACTIONS
+    // -----------------------------------------------
+
+    try{
+
+        const table =
+            body.closest("table");
+
+        if(table){
+
+            const headerRow =
+                table.querySelector(
+                    "thead tr"
+                );
+
+            if(headerRow){
+
+                const headers =
+                    headerRow.querySelectorAll("th");
+
+                if(headers.length > 0){
+
+                    headers[
+                        headers.length - 1
+                    ].textContent =
+                        "Actions";
+
+                }
+
+            }
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Header update error:",
+            error
+        );
+
+    }
+
+
+    // -----------------------------------------------
+    // FETCH ALL RESULTS
+    // -----------------------------------------------
+
+    fetch(
+        SCRIPT_URL +
+        "?action=allResults"
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "ADMIN RESULTS:",
+            data
+        );
+
+
+        if(
+            data.status !== "SUCCESS"
+        ){
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="19"
+                        style="
+                            text-align:center;
+                            padding:40px;
+                            color:#d32f2f;
+                            font-weight:bold;
+                        "
+                    >
+
+                        Unable to load Admin Results.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        // -------------------------------------------
+        // RESULT ARRAY
+        // -------------------------------------------
+
+        const results =
+            Array.isArray(data.results)
+            ? data.results
+            : [];
+
+
+        body.innerHTML = "";
+
+
+        if(results.length === 0){
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="19"
+                        style="
+                            text-align:center;
+                            padding:45px;
+                            color:#64748b;
+                            font-size:17px;
+                            font-weight:bold;
+                        "
+                    >
+
+                        No Results Found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        // -------------------------------------------
+        // CREATE ADMIN RESULT ROWS
+        // -------------------------------------------
+
+        results.forEach(
+            function(r,index){
+
+                const tr =
+                    document.createElement("tr");
+
+
+                const regNo =
+                    r.regNo ||
+                    r.registrationNo ||
+                    "";
+
+
+                const studentName =
+                    r.studentName ||
+                    r.name ||
+                    "";
+
+
+                const paperName =
+                    r.paperName ||
+                    r.paper ||
+                    "";
+
+
+                const marksheetNo =
+                    r.marksheetNo ||
+                    "";
+
+
+                const course =
+                    r.course ||
+                    r.courseName ||
+                    "";
+
+
+                const theory =
+                    r.theory ||
+                    "";
+
+
+                const practical =
+                    r.practical ||
+                    "";
+
+
+                const viva =
+                    r.viva ||
+                    "";
+
+
+                const notes =
+                    r.notes ||
+                    "";
+
+
+                const behaviour =
+                    r.behaviour ||
+                    "";
+
+
+                const project =
+                    r.project ||
+                    "";
+
+
+                const totalMarks =
+                    r.totalMarks ||
+                    r.total ||
+                    "";
+
+
+                const percentage =
+                    r.percentage ||
+                    "";
+
+
+                const grade =
+                    r.grade ||
+                    "";
+
+
+                const result =
+                    r.result ||
+                    "";
+
+
+                const resultDate =
+                    r.resultDate ||
+                    r.date ||
+                    "";
+
+
+                // -----------------------------------
+                // ADMIN ROW
+                // -----------------------------------
+
+                tr.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            marksheetNo
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            regNo
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            studentName
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            course
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            paperName
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            theory
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            practical
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            viva
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            notes
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            behaviour
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            project
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            totalMarks
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            percentage
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            grade
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            result
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeAdminHTML(
+                            resultDate
+                        )}
+                    </td>
+
+
+                    <!-- =================================
+                         ADMIN ACTIONS
+                    ================================== -->
+
+                    <td>
+
+                        <div
+                            class="adminResultActions"
+                        >
+
+            
+
+                            <!-- ANSWERS -->
+
+                            <button
+                                class="viewAnswersBtn"
+                                onclick="
+                                    openAdminAnswerDetails(
+                                        '${escapeJS(
+                                            regNo
+                                        )}',
+                                        '${escapeJS(
+                                            paperName
+                                        )}'
+                                    )
+                                "
+                            >
+                                View Answers
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                body.appendChild(tr);
+
+            }
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Admin Result Error:",
+            error
+        );
+
+
+        body.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="19"
+                    style="
+                        text-align:center;
+                        padding:45px;
+                        color:#d32f2f;
+                        font-weight:bold;
+                    "
+                >
+
+                    Unable to connect with server.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+//====================================================
+// SAFE HTML
+//====================================================
+
+function escapeAdminHTML(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+//====================================================
+// SAFE JAVASCRIPT STRING
+//====================================================
+
+function escapeJS(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/\\/g,"\\\\")
+
+        .replace(/'/g,"\\'")
+
+        .replace(/"/g,'\\"')
+
+        .replace(/\r/g,"")
+
+        .replace(/\n/g,"\\n");
+
+}
+//====================================================
+// OPEN ADMIN ANSWER DETAILS
+// ADMIN ONLY
+//====================================================
+
+function openAdminAnswerDetails(
+    regNo,
+    paperName
+){
+
+    // -----------------------------------------------
+    // SECURITY CHECK
+    // -----------------------------------------------
+
+    if(isAdminMode !== true){
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !regNo ||
+        !paperName
+    ){
+
+        alert(
+            "Student details not available."
+        );
+
+        return;
+
+    }
+
+
+    // -----------------------------------------------
+    // HIDE RESULT LIST
+    // -----------------------------------------------
+
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+
+    // -----------------------------------------------
+    // SHOW ANSWER PAGE
+    // -----------------------------------------------
+
+    const answerPage =
+        document.getElementById(
+            "adminAnswerDetailsPage"
+        );
+
+
+    if(!answerPage){
+
+        alert(
+            "Answer Review page not found in HTML."
+        );
+
+        return;
+
+    }
+
+
+    answerPage.classList.remove(
+        "hidden"
+    );
+
+
+    // -----------------------------------------------
+    // LOADING
+    // -----------------------------------------------
+
+    const container =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+
+    if(container){
+
+        container.innerHTML = `
+
+            <div class="answerLoading">
+
+                <div class="loadingSpinner"></div>
+
+                <p>
+                    Loading Answer Details...
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // -----------------------------------------------
+    // LOAD DETAILS
+    // -----------------------------------------------
+
+    fetch(
+        SCRIPT_URL +
+        "?action=adminAnswerDetails" +
+        "&regNo=" +
+        encodeURIComponent(regNo) +
+        "&paper=" +
+        encodeURIComponent(paperName)
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "ANSWER DETAILS:",
+            data
+        );
+
+
+        if(
+            data.status !== "SUCCESS"
+        ){
+
+            showAnswerDetailsError(
+                data.status
+            );
+
+            return;
+
+        }
+
+
+        renderAdminAnswerDetails(
+            data
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Answer Details Error:",
+            error
+        );
+
+
+        showAnswerDetailsError(
+            "CONNECTION_ERROR"
+        );
+
+    });
+
+}
+//====================================================
+// RENDER ADMIN ANSWER DETAILS
+//====================================================
+
+function renderAdminAnswerDetails(data){
+
+    // -----------------------------------------------
+    // STUDENT INFO
+    // -----------------------------------------------
+
+    setAnswerText(
+        "answerStudentName",
+        data.name ||
+        data.studentName ||
+        "--"
+    );
+
+
+    setAnswerText(
+        "answerRegNo",
+        data.regNo ||
+        "--"
+    );
+
+
+    setAnswerText(
+        "answerPaperName",
+        data.paper ||
+        data.paperName ||
+        "--"
+    );
+
+
+    setAnswerText(
+        "answerSubmitDate",
+        data.date ||
+        data.submitDate ||
+        data.resultDate ||
+        "--"
+    );
+
+
+    // -----------------------------------------------
+    // DETAILS
+    // -----------------------------------------------
+
+    const details =
+        Array.isArray(data.details)
+        ? data.details
+        : [];
+
+
+    let correct = 0;
+    let wrong = 0;
+    let unattempted = 0;
+
+
+    details.forEach(
+        function(item){
+
+            const status =
+                String(
+                    item.status ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if(status === "CORRECT"){
+
+                correct++;
+
+            }
+
+            else if(status === "WRONG"){
+
+                wrong++;
+
+            }
+
+            else{
+
+                unattempted++;
+
+            }
+
+        }
+    );
+
+
+    // -----------------------------------------------
+    // SUMMARY
+    // -----------------------------------------------
+
+    setAnswerText(
+        "answerTotal",
+        details.length
+    );
+
+
+    setAnswerText(
+        "answerCorrect",
+        correct
+    );
+
+
+    setAnswerText(
+        "answerWrong",
+        wrong
+    );
+
+
+    setAnswerText(
+        "answerUnattempted",
+        unattempted
+    );
+
+
+    // -----------------------------------------------
+    // QUESTION CONTAINER
+    // -----------------------------------------------
+
+    const container =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    if(details.length === 0){
+
+        container.innerHTML = `
+
+            <div class="answerEmpty">
+
+                <div class="answerEmptyIcon">
+                    📭
+                </div>
+
+                <h3>
+                    No Answer Details Found
+                </h3>
+
+                <p>
+                    Question-wise answer data
+                    is not available.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    details.forEach(
+        function(item,index){
+
+            const qNo =
+                item.qNo ||
+                item.questionNo ||
+                index + 1;
+
+
+            const question =
+                item.question ||
+                "Question not available";
+
+
+            const studentAnswer =
+                item.studentAnswer ||
+                item.answer ||
+                "";
+
+
+            const correctAnswer =
+                item.correctAnswer ||
+                "";
+
+
+            const status =
+                String(
+                    item.status ||
+                    "UNATTEMPTED"
+                )
+                .trim()
+                .toUpperCase();
+
+
+            let statusClass =
+                "statusUnattempted";
+
+
+            let statusText =
+                "⚪ UNATTEMPTED";
+
+
+            if(status === "CORRECT"){
+
+                statusClass =
+                    "statusCorrect";
+
+                statusText =
+                    "✓ CORRECT";
+
+            }
+
+            else if(status === "WRONG"){
+
+                statusClass =
+                    "statusWrong";
+
+                statusText =
+                    "✕ WRONG";
+
+            }
+
+
+            const studentDisplay =
+                String(
+                    studentAnswer
+                ).trim() === ""
+                ? "Not Attempted"
+                : studentAnswer;
+
+
+            html += `
+
+                <div
+                    class="adminAnswerCard"
+                >
+
+
+                    <!-- HEADER -->
+
+                    <div
+                        class="answerQuestionHeader"
+                    >
+
+                        <div
+                            class="questionNumber"
+                        >
+
+                            <div
+                                class="
+                                    questionNumberBadge
+                                "
+                            >
+                                ${escapeAdminHTML(
+                                    qNo
+                                )}
+                            </div>
+
+                            <span>
+                                Question
+                                ${escapeAdminHTML(
+                                    qNo
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                answerStatusBadge
+                                ${statusClass}
+                            "
+                        >
+
+                            ${statusText}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BODY -->
+
+                    <div
+                        class="answerQuestionBody"
+                    >
+
+                        <div
+                            class="answerQuestionText"
+                        >
+
+                            ${escapeAdminHTML(
+                                question
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                answerCompareGrid
+                            "
+                        >
+
+
+                            <!-- STUDENT ANSWER -->
+
+                            <div
+                                class="
+                                    answerBox
+                                    studentAnswerBox
+                                "
+                            >
+
+                                <div
+                                    class="answerBoxTitle"
+                                >
+                                    Student Answer
+                                </div>
+
+                                <div
+                                    class="answerValue"
+                                >
+
+                                    ${escapeAdminHTML(
+                                        studentDisplay
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CORRECT ANSWER -->
+
+                            <div
+                                class="
+                                    answerBox
+                                    correctAnswerBox
+                                "
+                            >
+
+                                <div
+                                    class="answerBoxTitle"
+                                >
+                                    Correct Answer
+                                </div>
+
+                                <div
+                                    class="answerValue"
+                                >
+
+                                    ${escapeAdminHTML(
+                                        correctAnswer ||
+                                        "Not Available"
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML = html;
+
+
+    // Scroll to top
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
 
     });
 
