@@ -6793,7 +6793,7 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
 
     color:#172554 !important;
 
-    font-size:12px !important;
+    font-size:16px !important;
 
     font-weight:800 !important;
 }
@@ -6824,7 +6824,7 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
 
     color:#ffffff !important;
 
-    font-size:11px !important;
+    font-size:14px !important;
 
     font-weight:900 !important;
 }
@@ -6922,7 +6922,7 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
 
     color:#172554 !important;
 
-    font-size:14px !important;
+    font-size:18px !important;
 
     font-weight:700 !important;
 
@@ -7034,7 +7034,7 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
 
     color:#1e293b !important;
 
-    font-size:12px !important;
+    font-size:16px !important;
 
     font-weight:700 !important;
 
