@@ -6411,11 +6411,9 @@ input[type="checkbox"] {
         flex-wrap:wrap;
     }
 
-
     .answerCompareGrid{
         grid-template-columns:1fr;
     }
-
 
     .answerQuestionText{
         font-size:14px;
