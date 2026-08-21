@@ -3346,45 +3346,121 @@ function verifyResultStudent(){
 // BACK LOGIN
 //====================================
 
+//====================================================
+// BACK TO MAIN LOGIN PAGE
+//====================================================
+
 function backToLogin(){
 
-    // Hide all Result Pages
-    document.getElementById("resultVerifyPage")
+    // -----------------------------------------------
+    // ADMIN MODE RESET
+    // -----------------------------------------------
+    isAdminMode = false;
+    adminToken = "";
+
+    // -----------------------------------------------
+    // HIDE RESULT VERIFY PAGE
+    // -----------------------------------------------
+    document
+        .getElementById("resultVerifyPage")
         ?.classList.add("hidden");
 
-    document.getElementById("studentResultPage")
+    // -----------------------------------------------
+    // HIDE STUDENT RESULT LIST
+    // -----------------------------------------------
+    document
+        .getElementById("studentResultPage")
         ?.classList.add("hidden");
 
-    document.getElementById("marksheetPage")
+    // -----------------------------------------------
+    // HIDE ADMIN ANSWER DETAILS
+    // -----------------------------------------------
+    document
+        .getElementById("adminAnswerDetailsPage")
         ?.classList.add("hidden");
 
-    document.getElementById("studentResultPage")
+    // -----------------------------------------------
+    // HIDE MARKSHEET PAGE
+    // -----------------------------------------------
+    document
+        .getElementById("marksheetPage")
         ?.classList.add("hidden");
 
-    // Show Login Page
-    document.getElementById("loginPage")
+    // -----------------------------------------------
+    // HIDE ADMIN VERIFICATION PAGE
+    // -----------------------------------------------
+    document
+        .getElementById("adminVerifyPage")
+        ?.classList.add("hidden");
+
+    // -----------------------------------------------
+    // SHOW MAIN LOGIN PAGE
+    // -----------------------------------------------
+    document
+        .getElementById("loginPage")
         ?.classList.remove("hidden");
 
-    // Clear Search Box
-    const search = document.getElementById("searchResult");
+    // -----------------------------------------------
+    // CLEAR RESULT SEARCH
+    // -----------------------------------------------
+    const search =
+        document.getElementById("searchResult");
+
     if(search){
         search.value = "";
     }
 
-    // Clear Student ID
-    const id = document.getElementById("resultStudentID");
-    if(id){
-        id.value = "";
+    // -----------------------------------------------
+    // CLEAR RESULT VERIFICATION CODE
+    // -----------------------------------------------
+    const resultID =
+        document.getElementById("resultStudentID");
+
+    if(resultID){
+        resultID.value = "";
     }
 
-    // Clear Table
-    const body = document.getElementById("resultTableBody");
-    if(body){
-        body.innerHTML = "";
+    // -----------------------------------------------
+    // CLEAR ADMIN CODE
+    // -----------------------------------------------
+    const adminCode =
+        document.getElementById("adminVerifyCode");
+
+    if(adminCode){
+        adminCode.value = "";
     }
+
+    // -----------------------------------------------
+    // CLEAR RESULT TABLE
+    // -----------------------------------------------
+    const resultBody =
+        document.getElementById("resultTableBody");
+
+    if(resultBody){
+        resultBody.innerHTML = "";
+    }
+
+    // -----------------------------------------------
+    // CLEAR ANSWER DETAILS
+    // -----------------------------------------------
+    const answerContainer =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+    if(answerContainer){
+        answerContainer.innerHTML = "";
+    }
+
+    // -----------------------------------------------
+    // SCROLL TO TOP
+    // -----------------------------------------------
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
-
 
 
 
