@@ -4205,11 +4205,15 @@ function verifyAdmin(){
 // ONLY AVAILABLE AFTER ADMIN VERIFICATION
 //====================================================
 
+//====================================================
+// ADMIN THEORY RESULT LIST
+//====================================================
+
 function loadAdminResults(){
 
-    // -----------------------------------------------
-    // SECURITY CHECK
-    // -----------------------------------------------
+    //================================================
+    // ADMIN SECURITY CHECK
+    //================================================
 
     if(isAdminMode !== true){
 
@@ -4222,6 +4226,21 @@ function loadAdminResults(){
     }
 
 
+    if(!adminToken){
+
+        console.warn(
+            "Admin token missing."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // RESULT TABLE BODY
+    //================================================
+
     const body =
         document.getElementById(
             "resultTableBody"
@@ -4230,8 +4249,8 @@ function loadAdminResults(){
 
     if(!body){
 
-        alert(
-            "Result table not found."
+        console.error(
+            "resultTableBody not found."
         );
 
         return;
@@ -4239,26 +4258,26 @@ function loadAdminResults(){
     }
 
 
-    // -----------------------------------------------
+    //================================================
     // LOADING
-    // -----------------------------------------------
+    //================================================
 
     body.innerHTML = `
 
         <tr>
 
             <td
-                colspan="19"
+                colspan="9"
                 style="
                     text-align:center;
                     padding:45px;
                     font-size:18px;
-                    font-weight:bold;
+                    font-weight:700;
                     color:#1e3a8a;
                 "
             >
 
-                Loading Admin Results...
+                Loading Theory Results...
 
             </td>
 
@@ -4267,14 +4286,15 @@ function loadAdminResults(){
     `;
 
 
-    // -----------------------------------------------
-    // CHANGE TABLE HEADER TO ACTIONS
-    // -----------------------------------------------
+    //================================================
+    // CHANGE TABLE HEADER
+    //================================================
 
     try{
 
         const table =
             body.closest("table");
+
 
         if(table){
 
@@ -4283,19 +4303,30 @@ function loadAdminResults(){
                     "thead tr"
                 );
 
+
             if(headerRow){
 
-                const headers =
-                    headerRow.querySelectorAll("th");
+                headerRow.innerHTML = `
 
-                if(headers.length > 0){
+                    <th>S.No.</th>
 
-                    headers[
-                        headers.length - 1
-                    ].textContent =
-                        "Actions";
+                    <th>Reg No</th>
 
-                }
+                    <th>Student Name</th>
+
+                    <th>Paper</th>
+
+                    <th>Correct</th>
+
+                    <th>Wrong</th>
+
+                    <th>Unattempted</th>
+
+                    <th>Result</th>
+
+                    <th>Action</th>
+
+                `;
 
             }
 
@@ -4305,392 +4336,480 @@ function loadAdminResults(){
 
     catch(error){
 
-        console.log(
-            "Header update error:",
+        console.error(
+            "Admin Header Error:",
             error
         );
 
     }
 
 
-    // -----------------------------------------------
-    // FETCH ALL RESULTS
-    // -----------------------------------------------
+    //================================================
+    // FETCH ADMIN RESULTS
+    //================================================
 
     fetch(
+
         SCRIPT_URL +
+
         "?action=allResults" +
-         "&adminToken=" +
-    encodeURIComponent(adminToken)
+
+        "&adminToken=" +
+
+        encodeURIComponent(
+            adminToken
+        )
+
     )
 
-    .then(function(res){
+    .then(
+        function(response){
 
-        return res.json();
+            if(!response.ok){
 
-    })
+                throw new Error(
+                    "Server Error: " +
+                    response.status
+                );
 
-    .then(function(data){
+            }
 
-        console.log(
-            "ADMIN RESULTS:",
-            data
-        );
-
-
-        if(
-            data.status !== "SUCCESS"
-        ){
-
-            body.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="19"
-                        style="
-                            text-align:center;
-                            padding:40px;
-                            color:#d32f2f;
-                            font-weight:bold;
-                        "
-                    >
-
-                        Unable to load Admin Results.
-
-                    </td>
-
-                </tr>
-
-            `;
-
-            return;
+            return response.json();
 
         }
+    )
 
+    .then(
+        function(data){
 
-        // -------------------------------------------
-        // RESULT ARRAY
-        // -------------------------------------------
+            console.log(
+                "ADMIN THEORY RESULTS:",
+                data
+            );
 
-        const results =
-            Array.isArray(data.results)
-            ? data.results
-            : [];
 
+            //================================================
+            // ADMIN AUTHORIZATION CHECK
+            //================================================
 
-        body.innerHTML = "";
+            if(
+                data.status === "UNAUTHORIZED"
+            ){
 
+                alert(
+                    "Admin verification required."
+                );
 
-        if(results.length === 0){
+                isAdminMode = false;
 
-            body.innerHTML = `
+                adminToken = "";
 
-                <tr>
+                return;
 
-                    <td
-                        colspan="19"
-                        style="
-                            text-align:center;
-                            padding:45px;
-                            color:#64748b;
-                            font-size:17px;
-                            font-weight:bold;
-                        "
-                    >
+            }
 
-                        No Results Found.
 
-                    </td>
+            //================================================
+            // API ERROR
+            //================================================
 
-                </tr>
+            if(
+                data.status !== "SUCCESS"
+            ){
 
-            `;
+                body.innerHTML = `
 
-            return;
+                    <tr>
 
-        }
-
-
-        // -------------------------------------------
-        // CREATE ADMIN RESULT ROWS
-        // -------------------------------------------
-
-        results.forEach(
-            function(r,index){
-
-                const tr =
-                    document.createElement("tr");
-
-
-                const regNo =
-                    r.regNo ||
-                    r.registrationNo ||
-                    "";
-
-
-                const studentName =
-                    r.studentName ||
-                    r.name ||
-                    "";
-
-
-                const paperName =
-                    r.paperName ||
-                    r.paper ||
-                    "";
-
-
-                const marksheetNo =
-                    r.marksheetNo ||
-                    "";
-
-
-                const course =
-                    r.course ||
-                    r.courseName ||
-                    "";
-
-
-                const theory =
-                    r.theory ||
-                    "";
-
-
-                const practical =
-                    r.practical ||
-                    "";
-
-
-                const viva =
-                    r.viva ||
-                    "";
-
-
-                const notes =
-                    r.notes ||
-                    "";
-
-
-                const behaviour =
-                    r.behaviour ||
-                    "";
-
-
-                const project =
-                    r.project ||
-                    "";
-
-
-                const totalMarks =
-                    r.totalMarks ||
-                    r.total ||
-                    "";
-
-
-                const percentage =
-                    r.percentage ||
-                    "";
-
-
-                const grade =
-                    r.grade ||
-                    "";
-
-
-                const result =
-                    r.result ||
-                    "";
-
-
-                const resultDate =
-                    r.resultDate ||
-                    r.date ||
-                    "";
-
-
-                // -----------------------------------
-                // ADMIN ROW
-                // -----------------------------------
-
-                tr.innerHTML = `
-
-                    <td>
-                        ${index + 1}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            marksheetNo
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            regNo
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            studentName
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            course
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            paperName
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            theory
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            practical
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            viva
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            notes
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            behaviour
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            project
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            totalMarks
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            percentage
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            grade
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            result
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeAdminHTML(
-                            resultDate
-                        )}
-                    </td>
-
-
-                    <!-- =================================
-                         ADMIN ACTIONS
-                    ================================== -->
-
-                    <td>
-
-                        <div
-                            class="adminResultActions"
+                        <td
+                            colspan="9"
+                            style="
+                                text-align:center;
+                                padding:45px;
+                                color:#dc2626;
+                                font-weight:700;
+                            "
                         >
 
-            
+                            Unable to load Admin Results.
 
-                            <!-- ANSWERS -->
+                        </td>
 
-                            <button
-                                class="viewAnswersBtn"
-                                onclick="
-                                    openAdminAnswerDetails(
-                                        '${escapeJS(
-                                            regNo
-                                        )}',
-                                        '${escapeJS(
-                                            paperName
-                                        )}'
-                                    )
-                                "
-                            >
-                                View Answers
-                            </button>
-
-                        </div>
-
-                    </td>
+                    </tr>
 
                 `;
 
-
-                body.appendChild(tr);
+                return;
 
             }
-        );
-
-    })
-
-    .catch(function(error){
-
-        console.error(
-            "Admin Result Error:",
-            error
-        );
 
 
-        body.innerHTML = `
+            //================================================
+            // GET RESULTS
+            //================================================
 
-            <tr>
+            let results =
+                Array.isArray(
+                    data.results
+                )
+                ? data.results
+                : [];
 
-                <td
-                    colspan="19"
-                    style="
-                        text-align:center;
-                        padding:45px;
-                        color:#d32f2f;
-                        font-weight:bold;
-                    "
-                >
 
-                    Unable to connect with server.
+            //================================================
+            // THEORY ONLY
+            //
+            // Practical / Viva / Notes /
+            // Behaviour / Project are ignored.
+            //================================================
 
-                </td>
+            results =
+                results.filter(
+                    function(r){
 
-            </tr>
+                        const paper =
+                            String(
+                                r.paperName ||
+                                r.paper ||
+                                ""
+                            )
+                            .trim()
+                            .toLowerCase();
 
-        `;
 
-    });
+                        // अगर paper में practical/viva
+                        // आदि है तो उसे Admin Theory
+                        // list में मत दिखाओ.
+
+                        if(
+                            paper.includes(
+                                "practical"
+                            ) ||
+                            paper.includes(
+                                "viva"
+                            ) ||
+                            paper.includes(
+                                "notes"
+                            ) ||
+                            paper.includes(
+                                "behaviour"
+                            ) ||
+                            paper.includes(
+                                "project"
+                            )
+                        ){
+
+                            return false;
+
+                        }
+
+
+                        return true;
+
+                    }
+                );
+
+
+            //================================================
+            // CLEAR TABLE
+            //================================================
+
+            body.innerHTML = "";
+
+
+            //================================================
+            // NO THEORY RESULTS
+            //================================================
+
+            if(
+                results.length === 0
+            ){
+
+                body.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            style="
+                                text-align:center;
+                                padding:45px;
+                                color:#64748b;
+                                font-size:17px;
+                                font-weight:700;
+                            "
+                        >
+
+                            No Theory Results Found.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+            //================================================
+            // CREATE THEORY RESULT ROWS
+            //================================================
+
+            results.forEach(
+                function(
+                    r,
+                    index
+                ){
+
+                    const tr =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    //========================================
+                    // STUDENT INFORMATION
+                    //========================================
+
+                    const regNo =
+                        r.regNo ||
+                        r.registrationNo ||
+                        "";
+
+
+                    const studentName =
+                        r.studentName ||
+                        r.name ||
+                        "";
+
+
+                    const paperName =
+                        r.paperName ||
+                        r.paper ||
+                        "";
+
+
+                    //========================================
+                    // THEORY RESULT
+                    //========================================
+
+                    const correct =
+                        r.correct ??
+                        r.correctAnswer ??
+                        0;
+
+
+                    const wrong =
+                        r.wrong ??
+                        r.incorrect ??
+                        0;
+
+
+                    const unattempted =
+                        r.unattempted ??
+                        r.notAttempted ??
+                        0;
+
+
+                    const result =
+                        r.result ||
+                        r.grade ||
+                        "";
+
+
+                    //========================================
+                    // ROW
+                    //========================================
+
+                    tr.innerHTML = `
+
+                        <td>
+
+                            ${index + 1}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeAdminHTML(
+                                regNo
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ${escapeAdminHTML(
+                                    studentName
+                                )}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeAdminHTML(
+                                paperName
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    min-width:35px;
+                                    padding:5px 9px;
+                                    border-radius:7px;
+                                    background:#dcfce7;
+                                    color:#15803d;
+                                    font-weight:700;
+                                "
+                            >
+
+                                ${escapeAdminHTML(
+                                    correct
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    min-width:35px;
+                                    padding:5px 9px;
+                                    border-radius:7px;
+                                    background:#fee2e2;
+                                    color:#dc2626;
+                                    font-weight:700;
+                                "
+                            >
+
+                                ${escapeAdminHTML(
+                                    wrong
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    min-width:35px;
+                                    padding:5px 9px;
+                                    border-radius:7px;
+                                    background:#f1f5f9;
+                                    color:#475569;
+                                    font-weight:700;
+                                "
+                            >
+
+                                ${escapeAdminHTML(
+                                    unattempted
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ${escapeAdminHTML(
+                                    result
+                                )}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="viewAnswersBtn"
+                                onclick="
+                                    openAdminAnswerDetails(
+                                        '${escapeJS(regNo)}',
+                                        '${escapeJS(paperName)}'
+                                    )
+                                "
+                            >
+
+                                View Answers
+
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    body.appendChild(
+                        tr
+                    );
+
+                }
+            );
+
+        }
+    )
+
+    .catch(
+        function(error){
+
+            console.error(
+                "Admin Theory Result Error:",
+                error
+            );
+
+
+            body.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="9"
+                        style="
+                            text-align:center;
+                            padding:45px;
+                            color:#dc2626;
+                            font-weight:700;
+                        "
+                    >
+
+                        Unable to connect with server.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
 
 }
 //====================================================
