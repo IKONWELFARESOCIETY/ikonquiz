@@ -7657,3 +7657,23 @@ body {
 .admin-result-wrapper {
     background: transparent !important;
 }
+html,
+body {
+    background: #f4f8ff !important;
+}
+
+body::before,
+body::after {
+    display: none !important;
+    content: none !important;
+}
+
+#adminResultPage,
+#adminResultsPage,
+.admin-result-page,
+.result-page,
+.result-wrapper,
+.admin-result-wrapper {
+    background: transparent !important;
+    background-image: none !important;
+}
