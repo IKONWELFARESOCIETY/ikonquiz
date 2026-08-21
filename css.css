@@ -7622,3 +7622,38 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
         font-size: 14px !important;
     }
 }
+/* ===== RESULT PAGE BACKGROUND FIX ===== */
+
+body {
+    background: #f4f8ff !important;
+}
+
+/* Result/Admin page ke outer background ko remove */
+#adminResultPage,
+#adminResultsPage,
+.admin-result-page,
+.result-page {
+    background: transparent !important;
+}
+
+/* Agar kisi parent/container me blue background laga hai */
+#adminResultPage::before,
+#adminResultsPage::before,
+.admin-result-page::before,
+.result-page::before {
+    display: none !important;
+}
+
+/* Result list ka main area */
+#adminResultPage .result-container,
+#adminResultsPage .result-container,
+.admin-result-page .result-container,
+.result-page .result-container {
+    background: #ffffff !important;
+}
+
+/* Blue horizontal strip/background ko remove */
+.result-wrapper,
+.admin-result-wrapper {
+    background: transparent !important;
+}
