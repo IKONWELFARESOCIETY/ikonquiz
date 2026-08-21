@@ -6801,7 +6801,6 @@ function openPracticalPaperPage(){
             option.textContent = p;
 
             select.appendChild(option);
-
         });
 
     })
