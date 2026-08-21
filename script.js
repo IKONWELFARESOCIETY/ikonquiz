@@ -3415,7 +3415,587 @@ function backToResultListFromAnswers(){
         ?.classList.remove("hidden");
 
 }
+// =====================================================
+// PROFESSIONAL ADMIN ANSWER DETAILS
+// =====================================================
 
+function openAdminAnswerDetails(regNo, paperName){
+
+    if(!regNo || !paperName){
+        alert("Student details missing.");
+        return;
+    }
+
+    // Hide Result List
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+    // Show Answer Details
+    document
+        .getElementById("adminAnswerDetailsPage")
+        ?.classList.remove("hidden");
+
+
+    // Loading
+    const container =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+    if(container){
+
+        container.innerHTML = `
+            <div class="answerLoading">
+
+                <div class="loadingSpinner"></div>
+
+                <p>
+                    Loading Answer Details...
+                </p>
+
+            </div>
+        `;
+    }
+
+
+    // Clear old data
+
+    setText(
+        "answerStudentName",
+        "Loading..."
+    );
+
+    setText(
+        "answerRegNo",
+        regNo
+    );
+
+    setText(
+        "answerPaperName",
+        paperName
+    );
+
+    setText(
+        "answerSubmitDate",
+        "--"
+    );
+
+
+    // =================================================
+    // FETCH ANSWER DETAILS
+    // =================================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=adminAnswerDetails" +
+        "&regNo=" +
+        encodeURIComponent(regNo) +
+        "&paper=" +
+        encodeURIComponent(paperName)
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "ADMIN ANSWER DETAILS:",
+            data
+        );
+
+
+        if(
+            data.status !== "SUCCESS"
+        ){
+
+            showAnswerDetailsError(
+                data.status ||
+                "Unable to load answer details."
+            );
+
+            return;
+        }
+
+
+        renderAdminAnswerDetails(
+            data
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.log(
+            "Answer Details Error:",
+            error
+        );
+
+        showAnswerDetailsError(
+            "Unable to connect with server."
+        );
+
+    });
+
+}
+
+
+// =====================================================
+// SAFE TEXT
+// =====================================================
+
+function setText(id,value){
+
+    const element =
+        document.getElementById(id);
+
+    if(element){
+
+        element.textContent =
+            value == null
+            ? ""
+            : String(value);
+
+    }
+
+}
+
+
+// =====================================================
+// HTML ESCAPE
+// =====================================================
+
+function escapeAnswerHTML(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+    }
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+// =====================================================
+// RENDER ANSWER DETAILS
+// =====================================================
+
+function renderAdminAnswerDetails(data){
+
+    // -------------------------------------------------
+    // STUDENT DETAILS
+    // -------------------------------------------------
+
+    setText(
+        "answerStudentName",
+        data.name || "--"
+    );
+
+    setText(
+        "answerRegNo",
+        data.regNo || "--"
+    );
+
+    setText(
+        "answerPaperName",
+        data.paper || "--"
+    );
+
+
+    // -------------------------------------------------
+    // DATE
+    // -------------------------------------------------
+
+    setText(
+        "answerSubmitDate",
+        data.date ||
+        data.submitDate ||
+        "--"
+    );
+
+
+    const details =
+        Array.isArray(data.details)
+        ? data.details
+        : [];
+
+
+    // -------------------------------------------------
+    // COUNTS
+    // -------------------------------------------------
+
+    let total = details.length;
+
+    let correct = 0;
+
+    let wrong = 0;
+
+    let unattempted = 0;
+
+
+    details.forEach(function(item){
+
+        const status =
+            String(
+                item.status || ""
+            )
+            .trim()
+            .toUpperCase();
+
+
+        if(status === "CORRECT"){
+
+            correct++;
+
+        }
+
+        else if(status === "WRONG"){
+
+            wrong++;
+
+        }
+
+        else{
+
+            unattempted++;
+
+        }
+
+    });
+
+
+    setText(
+        "answerTotal",
+        total
+    );
+
+    setText(
+        "answerCorrect",
+        correct
+    );
+
+    setText(
+        "answerWrong",
+        wrong
+    );
+
+    setText(
+        "answerUnattempted",
+        unattempted
+    );
+
+
+    // -------------------------------------------------
+    // QUESTION CONTAINER
+    // -------------------------------------------------
+
+    const container =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+
+    if(!container){
+
+        return;
+    }
+
+
+    if(details.length === 0){
+
+        container.innerHTML = `
+
+            <div class="answerEmpty">
+
+                <div class="answerEmptyIcon">
+                    📭
+                </div>
+
+                <h3>
+                    No Answer Details Found
+                </h3>
+
+                <p>
+                    Question-wise response data
+                    is not available for this submission.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    // -------------------------------------------------
+    // BUILD QUESTIONS
+    // -------------------------------------------------
+
+    let html = "";
+
+
+    details.forEach(function(item,index){
+
+        const questionNo =
+            item.qNo ||
+            item.questionNo ||
+            (index + 1);
+
+
+        const question =
+            item.question ||
+            "Question not available";
+
+
+        const studentAnswer =
+            item.studentAnswer ||
+            item.answer ||
+            "";
+
+
+        const correctAnswer =
+            item.correctAnswer ||
+            "";
+
+
+        const status =
+            String(
+                item.status ||
+                "UNATTEMPTED"
+            )
+            .trim()
+            .toUpperCase();
+
+
+        let statusClass =
+            "statusUnattempted";
+
+        let statusText =
+            "UNATTEMPTED";
+
+
+        if(status === "CORRECT"){
+
+            statusClass =
+                "statusCorrect";
+
+            statusText =
+                "✓ CORRECT";
+
+        }
+
+        else if(status === "WRONG"){
+
+            statusClass =
+                "statusWrong";
+
+            statusText =
+                "✕ WRONG";
+
+        }
+
+
+        const displayStudentAnswer =
+            studentAnswer.trim() === ""
+            ? "Not Attempted"
+            : studentAnswer;
+
+
+        html += `
+
+            <div class="adminAnswerCard">
+
+
+                <!-- QUESTION HEADER -->
+
+                <div class="answerQuestionHeader">
+
+                    <div class="questionNumber">
+
+                        <div class="questionNumberBadge">
+                            ${escapeAnswerHTML(questionNo)}
+                        </div>
+
+                        <span>
+                            Question
+                            ${escapeAnswerHTML(questionNo)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="
+                        answerStatusBadge
+                        ${statusClass}
+                    ">
+
+                        ${statusText}
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION BODY -->
+
+                <div class="answerQuestionBody">
+
+
+                    <div class="answerQuestionText">
+
+                        ${escapeAnswerHTML(question)}
+
+                    </div>
+
+
+                    <!-- ANSWER COMPARISON -->
+
+                    <div class="answerCompareGrid">
+
+
+                        <!-- STUDENT -->
+
+                        <div class="
+                            answerBox
+                            studentAnswerBox
+                        ">
+
+                            <div class="answerBoxTitle">
+
+                                Student Answer
+
+                            </div>
+
+
+                            <div class="answerValue">
+
+                                ${escapeAnswerHTML(
+                                    displayStudentAnswer
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CORRECT -->
+
+                        <div class="
+                            answerBox
+                            correctAnswerBox
+                        ">
+
+                            <div class="answerBoxTitle">
+
+                                Correct Answer
+
+                            </div>
+
+
+                            <div class="answerValue">
+
+                                ${escapeAnswerHTML(
+                                    correctAnswer ||
+                                    "Not Available"
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+// =====================================================
+// ANSWER DETAILS ERROR
+// =====================================================
+
+function showAnswerDetailsError(message){
+
+    const container =
+        document.getElementById(
+            "adminAnswerDetailsContainer"
+        );
+
+
+    if(!container){
+
+        return;
+    }
+
+
+    let text =
+        "Unable to load answer details.";
+
+
+    if(message === "RESULT_NOT_FOUND"){
+
+        text =
+            "Submitted result was not found.";
+
+    }
+
+    else if(
+        message ===
+        "OLD_DATA_NO_QUESTION_ORDER"
+    ){
+
+        text =
+            "Question-wise details are not available for this old submission.";
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="answerEmpty">
+
+            <div class="answerEmptyIcon">
+                ⚠️
+            </div>
+
+            <h3>
+                Answer Details Unavailable
+            </h3>
+
+            <p>
+                ${escapeAnswerHTML(text)}
+            </p>
+
+        </div>
+
+    `;
+
+}
 function backToResultList(){
 
 document
