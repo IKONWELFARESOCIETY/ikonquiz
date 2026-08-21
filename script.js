@@ -6327,21 +6327,7 @@ function backToResultVerify(){
     }
 
 }
-function backToLogin(){
 
-    document
-        .getElementById("resultVerifyPage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loginPage")
-        .classList.remove("hidden");
-
-    document
-        .getElementById("resultStudentID")
-        .value="";
-
-}
 function checkQRVerification(){
 
     const params = new URLSearchParams(window.location.search);
