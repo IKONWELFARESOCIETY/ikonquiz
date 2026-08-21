@@ -1892,6 +1892,181 @@ Candidates who fail in all papers will have to pay a Re-Appear Fee of ₹500.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+      <!-- =====================================================
+     PROFESSIONAL ADMIN ANSWER REVIEW PAGE
+===================================================== -->
+
+<div id="adminAnswerDetailsPage" class="hidden">
+
+    <div class="answerReviewWrapper">
+
+        <!-- TOP HEADER -->
+        <div class="answerReviewHeader">
+
+            <div class="answerBrand">
+                <div class="answerBrandIcon">I</div>
+
+                <div>
+                    <h1>IKON Institute</h1>
+                    <p>Theory Examination • Answer Review</p>
+                </div>
+            </div>
+
+            <button
+                class="answerBackBtn"
+                onclick="backToResultListFromAnswers()">
+                ← Back to Results
+            </button>
+
+        </div>
+
+
+        <!-- STUDENT INFORMATION -->
+        <div class="studentInfoCard">
+
+            <div class="studentInfoTitle">
+                <span>👤</span>
+                <div>
+                    <h2>Student Information</h2>
+                    <p>Submitted Examination Details</p>
+                </div>
+            </div>
+
+
+            <div class="studentInfoGrid">
+
+                <div class="infoBox">
+                    <span>Student Name</span>
+                    <strong id="answerStudentName">--</strong>
+                </div>
+
+                <div class="infoBox">
+                    <span>Registration No.</span>
+                    <strong id="answerRegNo">--</strong>
+                </div>
+
+                <div class="infoBox">
+                    <span>Paper</span>
+                    <strong id="answerPaperName">--</strong>
+                </div>
+
+                <div class="infoBox">
+                    <span>Submission Date</span>
+                    <strong id="answerSubmitDate">--</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PERFORMANCE -->
+        <div class="performanceSection">
+
+            <div class="sectionHeading">
+                <div>
+                    <h2>Performance Summary</h2>
+                    <p>Question-wise examination performance</p>
+                </div>
+            </div>
+
+
+            <div class="performanceGrid">
+
+                <div class="performanceCard totalCard">
+                    <div class="performanceIcon">📋</div>
+
+                    <div>
+                        <span>Total Questions</span>
+                        <strong id="answerTotal">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="performanceCard correctCard">
+                    <div class="performanceIcon">✓</div>
+
+                    <div>
+                        <span>Correct</span>
+                        <strong id="answerCorrect">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="performanceCard wrongCard">
+                    <div class="performanceIcon">✕</div>
+
+                    <div>
+                        <span>Wrong</span>
+                        <strong id="answerWrong">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="performanceCard unansweredCard">
+                    <div class="performanceIcon">−</div>
+
+                    <div>
+                        <span>Unattempted</span>
+                        <strong id="answerUnattempted">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ANSWER REVIEW -->
+        <div class="questionReviewSection">
+
+            <div class="sectionHeading reviewHeading">
+
+                <div>
+                    <h2>Question-wise Answer Review</h2>
+                    <p>Student response compared with the correct answer</p>
+                </div>
+
+                <div class="reviewLegend">
+                    <span class="legendCorrect">
+                        ● Correct
+                    </span>
+
+                    <span class="legendWrong">
+                        ● Wrong
+                    </span>
+
+                    <span class="legendUnattempted">
+                        ● Unattempted
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- QUESTIONS WILL LOAD HERE -->
+            <div id="adminAnswerDetailsContainer">
+
+                <div class="answerLoading">
+                    <div class="loadingSpinner"></div>
+                    <p>Loading Answer Details...</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="answerReviewFooter">
+            <span>IKON Institute</span>
+            <span>•</span>
+            <span>Theory Examination Answer Review</span>
+        </div>
+
+    </div>
+
+</div>
 </body>
 
 
