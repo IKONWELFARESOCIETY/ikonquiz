@@ -70,7 +70,7 @@ let focusLock = false;
 //====================================================
 
 let isAdminMode = false;
-
+let adminToken = "";
 //====================================================
 // TIMER
 //====================================================
@@ -4138,7 +4138,13 @@ function verifyAdmin(){
 
             isAdminMode = true;
 
+                 // SAVE ADMIN TOKEN
+    adminToken = data.token || "";
 
+    console.log(
+        "ADMIN TOKEN SAVED:",
+        adminToken
+    );
             // Hide verification popup/page
             document
                 .getElementById("adminVerifyPage")
@@ -4314,6 +4320,8 @@ function loadAdminResults(){
     fetch(
         SCRIPT_URL +
         "?action=allResults"
+         "&adminToken=" +
+    encodeURIComponent(adminToken)
     )
 
     .then(function(res){
@@ -4855,6 +4863,8 @@ function openAdminAnswerDetails(
     fetch(
         SCRIPT_URL +
         "?action=adminAnswerDetails" +
+        "&adminToken=" +
+    encodeURIComponent(adminToken) +
         "&regNo=" +
         encodeURIComponent(regNo) +
         "&paper=" +
@@ -5325,6 +5335,8 @@ function closeAdminVerify(){
         codeBox.value = "";
 
     }
+isAdminMode = false;
+    adminToken = "";
 
 }
 
