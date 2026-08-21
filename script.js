@@ -3397,6 +3397,7 @@ function backToLogin(){
 //====================================================
 
 function backToResultListFromAnswers(){
+        hideStudentLoginForAdmin();
 
     // Hide Answer Details Page
 
@@ -3592,7 +3593,68 @@ function escapeAnswerHTML(value){
 // =====================================================
 // RENDER ANSWER DETAILS
 // =====================================================
+//====================================================
+// SET ANSWER PAGE TEXT
+//====================================================
 
+function setAnswerText(id, value){
+
+    const element =
+        document.getElementById(id);
+
+    if(!element){
+        console.warn(
+            "Element not found:",
+            id
+        );
+        return;
+    }
+
+    element.textContent =
+        value === null ||
+        value === undefined ||
+        value === ""
+            ? "--"
+            : String(value);
+
+}
+//====================================================
+// HIDE STUDENT LOGIN FOR ADMIN MODE
+//====================================================
+
+function hideStudentLoginForAdmin(){
+
+    // Candidate Login
+    document
+        .getElementById("loginPage")
+        ?.classList
+        .add("hidden");
+
+    // Result verification
+    document
+        .getElementById("resultVerifyPage")
+        ?.classList
+        .add("hidden");
+
+    // Marksheet
+    document
+        .getElementById("marksheetPage")
+        ?.classList
+        .add("hidden");
+
+    // Normal result page
+    document
+        .getElementById("resultPage")
+        ?.classList
+        .add("hidden");
+
+    // Admin verification
+    document
+        .getElementById("adminVerifyPage")
+        ?.classList
+        .add("hidden");
+
+}
 function renderAdminAnswerDetails(data){
 
     // -------------------------------------------------
@@ -4086,7 +4148,11 @@ function openAdminVerify(){
 //====================================================
 
 function verifyAdmin(){
+isAdminMode = true;
 
+adminToken = data.token || "";
+
+hideStudentLoginForAdmin();
     const codeBox =
         document.getElementById("adminVerifyCode");
 
@@ -4210,6 +4276,7 @@ function verifyAdmin(){
 //====================================================
 
 function loadAdminResults(){
+    hideStudentLoginForAdmin();
 
     //================================================
     // ADMIN SECURITY CHECK
@@ -4881,6 +4948,7 @@ function openAdminAnswerDetails(
     regNo,
     paperName
 ){
+     hideStudentLoginForAdmin();
 
     // -----------------------------------------------
     // SECURITY CHECK
