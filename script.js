@@ -4147,21 +4147,28 @@ function openAdminVerify(){
 // VERIFY ADMIN
 //====================================================
 
+//====================================================
+// VERIFY ADMIN
+//====================================================
+
 function verifyAdmin(){
-isAdminMode = true;
 
-adminToken = data.token || "";
-
-hideStudentLoginForAdmin();
     const codeBox =
-        document.getElementById("adminVerifyCode");
+        document.getElementById(
+            "adminVerifyCode"
+        );
+
 
     if(!codeBox){
 
-        alert("Verification box not found.");
+        alert(
+            "Verification box not found."
+        );
+
         return;
 
     }
+
 
     const code =
         codeBox.value.trim();
@@ -4169,11 +4176,18 @@ hideStudentLoginForAdmin();
 
     if(code === ""){
 
-        alert("Please Enter Verification Code");
+        alert(
+            "Please Enter Verification Code"
+        );
+
         return;
 
     }
 
+
+    //================================================
+    // VERIFY WITH APPS SCRIPT
+    //================================================
 
     fetch(
         SCRIPT_URL +
@@ -4196,39 +4210,69 @@ hideStudentLoginForAdmin();
         );
 
 
-        if(data.status === "SUCCESS"){
+        //================================================
+        // SUCCESS
+        //================================================
 
-            // ========================================
+        if(
+            data.status === "SUCCESS"
+        ){
+
+            //============================================
             // ADMIN MODE ON
-            // ========================================
+            //============================================
 
             isAdminMode = true;
 
-                 // SAVE ADMIN TOKEN
-    adminToken = data.token || "";
 
-    console.log(
-        "ADMIN TOKEN SAVED:",
-        adminToken
-    );
-            // Hide verification popup/page
+            //============================================
+            // SAVE ADMIN TOKEN
+            //============================================
+
+            adminToken =
+                data.token || "";
+
+
+            console.log(
+                "ADMIN TOKEN SAVED:",
+                adminToken
+            );
+
+
+            //============================================
+            // HIDE STUDENT LOGIN
+            //============================================
+
+            hideStudentLoginForAdmin();
+
+
+            //============================================
+            // HIDE ADMIN VERIFICATION PAGE
+            //============================================
+
             document
-                .getElementById("adminVerifyPage")
-                ?.classList.add("hidden");
+                .getElementById(
+                    "adminVerifyPage"
+                )
+                ?.classList
+                .add("hidden");
 
 
-            // ========================================
-            // OPEN RESULT PAGE
-            // ========================================
+            //============================================
+            // SHOW ADMIN RESULT PAGE
+            //============================================
 
             document
-                .getElementById("studentResultPage")
-                ?.classList.remove("hidden");
+                .getElementById(
+                    "studentResultPage"
+                )
+                ?.classList
+                .remove("hidden");
 
 
-            // ========================================
-            // LOAD ADMIN RESULT LIST
-            // ========================================
+            //============================================
+            // LOAD THEORY RESULTS
+            //============================================
 
             loadAdminResults();
 
@@ -4238,13 +4282,14 @@ hideStudentLoginForAdmin();
         }
 
 
-        // ========================================
+        //================================================
         // INVALID CODE
-        // ========================================
+        //================================================
 
         alert(
             "Invalid Admin Verification Code"
         );
+
 
         codeBox.value = "";
 
@@ -4259,12 +4304,44 @@ hideStudentLoginForAdmin();
             err
         );
 
+
         alert(
             "Unable to verify Admin."
         );
 
     });
 
+}
+//====================================================
+// HIDE STUDENT LOGIN WHEN ADMIN MODE IS ACTIVE
+//====================================================
+
+function hideStudentLoginForAdmin(){
+
+    // Candidate Login / Main Login Page
+    document
+        .getElementById("loginPage")
+        ?.classList
+        .add("hidden");
+
+
+    // Result verification page
+    document
+        .getElementById("resultVerifyPage")
+        ?.classList
+        .add("hidden");
+
+
+    // Marksheet page
+    document
+        .getElementById("marksheetPage")
+        ?.classList
+        .add("hidden");
+
+
+    // Normal student result page
+    // Admin result page को बाद में loadAdminResults()
+    // खुद show करेगा.
 }
 //====================================================
 // ADMIN RESULT LIST
