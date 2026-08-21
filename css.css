@@ -7495,3 +7495,130 @@ body:has(#adminAnswerDetailsPage:not(.hidden)) .content{
     }
 
 }
+/* ===== ADMIN RESULT LIST FINAL FIX ===== */
+
+#studentResultPage {
+    width: 92% !important;
+    max-width: 1200px !important;
+    margin: 30px auto !important;
+    box-sizing: border-box !important;
+}
+
+#studentResultPage table {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 15px !important;
+}
+
+#studentResultPage table th {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    padding: 15px 10px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+#studentResultPage table td {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    padding: 16px 10px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+/* Column sizes */
+
+#studentResultPage table th:nth-child(1),
+#studentResultPage table td:nth-child(1) {
+    width: 7% !important;
+}
+
+#studentResultPage table th:nth-child(2),
+#studentResultPage table td:nth-child(2) {
+    width: 12% !important;
+}
+
+#studentResultPage table th:nth-child(3),
+#studentResultPage table td:nth-child(3) {
+    width: 19% !important;
+}
+
+#studentResultPage table th:nth-child(4),
+#studentResultPage table td:nth-child(4) {
+    width: 17% !important;
+}
+
+#studentResultPage table th:nth-child(5),
+#studentResultPage table td:nth-child(5) {
+    width: 9% !important;
+}
+
+#studentResultPage table th:nth-child(6),
+#studentResultPage table td:nth-child(6) {
+    width: 9% !important;
+}
+
+#studentResultPage table th:nth-child(7),
+#studentResultPage table td:nth-child(7) {
+    width: 11% !important;
+}
+
+#studentResultPage table th:nth-child(8),
+#studentResultPage table td:nth-child(8) {
+    width: 8% !important;
+}
+
+#studentResultPage table th:nth-child(9),
+#studentResultPage table td:nth-child(9) {
+    width: 15% !important;
+}
+
+/* Student name */
+#studentResultPage table td:nth-child(3) {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+}
+
+/* Paper */
+#studentResultPage table td:nth-child(4) {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+/* View Answers button */
+#studentResultPage .adminResultActions button {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    padding: 11px 18px !important;
+    white-space: nowrap !important;
+}
+
+/* Search box */
+#studentResultPage input {
+    font-size: 15px !important;
+    height: 46px !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    #studentResultPage {
+        width: 96% !important;
+    }
+
+    #studentResultPage table {
+        min-width: 900px !important;
+        font-size: 14px !important;
+    }
+
+    #studentResultPage table th {
+        font-size: 13px !important;
+    }
+
+    #studentResultPage table td {
+        font-size: 14px !important;
+    }
+}
