@@ -5605,447 +5605,1130 @@ input[type="checkbox"] {
     }
 
 }
-/* =====================================================
-   PROFESSIONAL ADMIN ANSWER REVIEW
-===================================================== */
+/* =========================================================
+   IKON INSTITUTE
+   ADMIN THEORY RESULT + ANSWER REVIEW
+   PROFESSIONAL FULL WIDTH DESIGN
+   ========================================================= */
 
-#adminAnswerDetailsPage{
-    min-height:100vh;
-    background:#f4f7fb;
-    padding:25px;
+
+/* =========================================================
+   ADMIN RESULT PAGE
+   ========================================================= */
+
+#studentResultPage{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    max-width:none !important;
+
+    margin:0 !important;
+
+    padding:30px;
+
     box-sizing:border-box;
-}
 
-.answerReviewWrapper{
-    max-width:1250px;
-    margin:auto;
-}
+    background:#f4f7fb;
 
+    overflow-y:auto;
+    overflow-x:hidden;
 
-/* =====================================================
-   HEADER
-===================================================== */
+    z-index:9998;
 
-.answerReviewHeader{
-    background:linear-gradient(
-        135deg,
-        #0f172a,
-        #1e3a8a
-    );
-
-    color:white;
-
-    padding:22px 26px;
-
-    border-radius:18px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    box-shadow:0 12px 30px rgba(15,23,42,.16);
-
-    margin-bottom:22px;
 }
 
 
-.answerBrand{
-    display:flex;
-    align-items:center;
-    gap:15px;
+/* Main Result Box */
+
+#studentResultPage .result-list-box{
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:0 auto;
+
+    padding:30px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    border:1px solid #e5eaf2;
+
+    box-shadow:
+        0 15px 40px rgba(15,23,42,.08);
+
 }
 
 
-.answerBrandIcon{
-    width:52px;
+/* =========================================================
+   RESULT PAGE HEADING
+   ========================================================= */
+
+#studentResultPage .result-list-box h2{
+
+    margin:0 0 25px;
+
+    text-align:center;
+
+    color:#005bea;
+
+    font-size:30px;
+
+    font-weight:800;
+
+    letter-spacing:.3px;
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+#studentResultPage #searchResult{
+
+    width:100%;
+
     height:52px;
+
+    box-sizing:border-box;
+
+    padding:0 18px;
+
+    margin:0 0 22px;
+
+    border:2px solid #dbe5f2;
+
+    border-radius:12px;
+
+    outline:none;
+
+    background:#ffffff;
+
+    color:#1e293b;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+
+#studentResultPage #searchResult::placeholder{
+
+    color:#94a3b8;
+
+}
+
+
+#studentResultPage #searchResult:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.10);
+
+}
+
+
+/* =========================================================
+   RESULT TABLE CONTAINER
+   ========================================================= */
+
+#studentResultPage .table-responsive{
+
+    width:100%;
+
+    max-width:100%;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    border:1px solid #dbe4f0;
 
     border-radius:14px;
 
+    background:#ffffff;
+
+    box-sizing:border-box;
+
+}
+
+
+/* Scrollbar */
+
+#studentResultPage .table-responsive::-webkit-scrollbar{
+
+    height:9px;
+
+}
+
+
+#studentResultPage .table-responsive::-webkit-scrollbar-track{
+
+    background:#edf3fa;
+
+    border-radius:20px;
+
+}
+
+
+#studentResultPage .table-responsive::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+
+
+#studentResultPage .table-responsive::-webkit-scrollbar-thumb:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+/* =========================================================
+   RESULT TABLE
+   ========================================================= */
+
+#studentResultPage .resultTable{
+
+    width:100%;
+
+    min-width:1050px;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    background:#ffffff;
+
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+#studentResultPage .resultTable thead tr{
+
+    background:
+        linear-gradient(
+            135deg,
+            #005bea,
+            #008cff
+        );
+
+}
+
+
+#studentResultPage .resultTable th{
+
+    padding:14px 12px;
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    border-right:1px solid
+        rgba(255,255,255,.18);
+
+    border-bottom:1px solid
+        rgba(255,255,255,.18);
+
+}
+
+
+#studentResultPage .resultTable th:first-child{
+
+    border-top-left-radius:12px;
+
+}
+
+
+#studentResultPage .resultTable th:last-child{
+
+    border-right:none;
+
+    border-top-right-radius:12px;
+
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+#studentResultPage .resultTable td{
+
+    padding:13px 12px;
+
+    color:#334155;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    border-right:1px solid #e5edf6;
+
+    border-bottom:1px solid #e5edf6;
+
+}
+
+
+/* Alternate Rows */
+
+#studentResultPage .resultTable tbody tr:nth-child(even){
+
+    background:#f8fbff;
+
+}
+
+
+#studentResultPage .resultTable tbody tr:nth-child(odd){
+
+    background:#ffffff;
+
+}
+
+
+/* Hover */
+
+#studentResultPage .resultTable tbody tr:hover{
+
+    background:#eef6ff;
+
+    transition:.2s;
+
+}
+
+
+/* =========================================================
+   CORRECT / WRONG / UNATTEMPTED
+   ========================================================= */
+
+#studentResultPage .resultTable td:nth-child(5){
+
+    color:#15803d;
+
+    font-weight:800;
+
+}
+
+
+#studentResultPage .resultTable td:nth-child(6){
+
+    color:#dc2626;
+
+    font-weight:800;
+
+}
+
+
+#studentResultPage .resultTable td:nth-child(7){
+
+    color:#64748b;
+
+    font-weight:800;
+
+}
+
+
+/* =========================================================
+   VIEW ANSWERS BUTTON
+   ========================================================= */
+
+#studentResultPage .adminResultActions{
+
     display:flex;
-    align-items:center;
+
     justify-content:center;
 
-    background:white;
+    align-items:center;
+
+    min-width:125px;
+
+}
+
+
+#studentResultPage .viewAnswersBtn{
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    padding:9px 16px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1e3a8a,
+            #2563eb
+        );
+
+    color:#ffffff;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+    box-shadow:
+        0 5px 12px
+        rgba(37,99,235,.20);
+
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        background .2s;
+
+}
+
+
+#studentResultPage .viewAnswersBtn:hover{
+
+    transform:translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #172554,
+            #1d4ed8
+        );
+
+    box-shadow:
+        0 8px 18px
+        rgba(37,99,235,.28);
+
+}
+
+
+#studentResultPage .viewAnswersBtn:active{
+
+    transform:translateY(0);
+
+}
+
+
+/* =========================================================
+   RESULT FOOTER
+   ========================================================= */
+
+#studentResultPage .result-footer{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-top:25px;
+
+}
+
+
+#studentResultPage .result-footer .secondary{
+
+    width:180px !important;
+
+    min-height:44px;
+
+    border:none;
+
+    border-radius:10px;
+
+}
+
+
+/* =========================================================
+   ADMIN ANSWER REVIEW PAGE
+   FULL SCREEN / CENTERED / WIDE
+   ========================================================= */
+
+#adminAnswerDetailsPage{
+
+    position:fixed !important;
+
+    inset:0 !important;
+
+    width:100vw !important;
+
+    height:100vh !important;
+
+    max-width:none !important;
+
+    margin:0 !important;
+
+    padding:30px !important;
+
+    box-sizing:border-box !important;
+
+    background:#f4f7fb !important;
+
+    overflow-y:auto !important;
+
+    overflow-x:hidden !important;
+
+    z-index:9999 !important;
+
+}
+
+
+/* =========================================================
+   ANSWER REVIEW MAIN WRAPPER
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerReviewWrapper{
+
+    width:100% !important;
+
+    max-width:1300px !important;
+
+    margin:0 auto !important;
+
+    box-sizing:border-box;
+
+}
+
+
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerReviewHeader{
+
+    width:100%;
+
+    min-height:82px;
+
+    padding:18px 24px;
+
+    box-sizing:border-box;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+        );
+
+    color:#ffffff;
+
+    border-radius:18px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(15,23,42,.15);
+
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerBrand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+#adminAnswerDetailsPage .answerBrandIcon{
+
+    width:52px;
+
+    height:52px;
+
+    min-width:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#ffffff;
+
     color:#1e3a8a;
 
-    font-size:25px;
-    font-weight:900;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
-}
-
-
-.answerBrand h1{
-    margin:0;
+    border-radius:13px;
 
     font-size:24px;
-    font-weight:800;
+
+    font-weight:900;
+
+    box-shadow:
+        0 5px 15px
+        rgba(0,0,0,.15);
+
 }
 
 
-.answerBrand p{
+#adminAnswerDetailsPage .answerBrand h1{
+
+    margin:0;
+
+    color:#ffffff;
+
+    font-size:23px;
+
+    font-weight:800;
+
+}
+
+
+#adminAnswerDetailsPage .answerBrand p{
+
     margin:4px 0 0;
 
     color:#cbd5e1;
 
-    font-size:13px;
+    font-size:12px;
+
 }
 
 
-.answerBackBtn{
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerBackBtn{
+
     border:none;
 
-    background:rgba(255,255,255,.12);
+    outline:none;
 
-    color:white;
+    cursor:pointer;
 
     padding:11px 18px;
 
     border-radius:10px;
 
-    cursor:pointer;
+    background:
+        rgba(255,255,255,.12);
 
-    font-weight:700;
+    color:#ffffff;
+
+    font-size:12px;
+
+    font-weight:800;
 
     transition:.2s;
+
 }
 
 
-.answerBackBtn:hover{
-    background:white;
+#adminAnswerDetailsPage .answerBackBtn:hover{
+
+    background:#ffffff;
+
     color:#1e3a8a;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    STUDENT INFORMATION
-===================================================== */
+   ========================================================= */
 
-.studentInfoCard{
-    background:white;
+#adminAnswerDetailsPage .studentInfoCard{
+
+    width:100%;
+
+    padding:22px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border:1px solid #e5eaf2;
 
     border-radius:18px;
 
-    padding:24px;
+    margin-bottom:20px;
 
-    box-shadow:0 7px 25px rgba(15,23,42,.07);
+    box-shadow:
+        0 7px 25px
+        rgba(15,23,42,.06);
 
-    border:1px solid #e7ebf2;
-
-    margin-bottom:22px;
 }
 
 
-.studentInfoTitle{
+#adminAnswerDetailsPage .studentInfoTitle{
+
     display:flex;
+
     align-items:center;
 
     gap:12px;
 
-    margin-bottom:22px;
+    margin-bottom:18px;
+
 }
 
 
-.studentInfoTitle > span{
-    width:43px;
-    height:43px;
+#adminAnswerDetailsPage .studentInfoTitle > span{
+
+    width:42px;
+
+    height:42px;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     background:#eef2ff;
 
-    border-radius:12px;
+    border-radius:11px;
 
-    font-size:21px;
+    font-size:20px;
+
 }
 
 
-.studentInfoTitle h2{
+#adminAnswerDetailsPage .studentInfoTitle h2{
+
     margin:0;
 
     color:#172033;
 
-    font-size:19px;
+    font-size:18px;
+
+    font-weight:800;
+
 }
 
 
-.studentInfoTitle p{
+#adminAnswerDetailsPage .studentInfoTitle p{
+
     margin:3px 0 0;
 
     color:#7b8495;
 
-    font-size:12px;
+    font-size:11px;
+
 }
 
 
-.studentInfoGrid{
+/* =========================================================
+   STUDENT INFORMATION GRID
+   ========================================================= */
+
+#adminAnswerDetailsPage .studentInfoGrid{
+
     display:grid;
 
     grid-template-columns:
-        repeat(4,1fr);
+        repeat(4,minmax(0,1fr));
 
-    gap:14px;
+    gap:13px;
+
 }
 
 
-.infoBox{
+#adminAnswerDetailsPage .infoBox{
+
+    min-width:0;
+
+    padding:14px;
+
+    box-sizing:border-box;
+
     background:#f8fafc;
 
-    border:1px solid #e8edf4;
+    border:1px solid #e5eaf1;
 
-    border-radius:12px;
+    border-radius:11px;
 
-    padding:15px;
 }
 
 
-.infoBox span{
+#adminAnswerDetailsPage .infoBox span{
+
     display:block;
+
+    margin-bottom:6px;
 
     color:#7b8495;
 
-    font-size:11px;
+    font-size:10px;
+
+    font-weight:700;
 
     text-transform:uppercase;
 
     letter-spacing:.5px;
 
-    margin-bottom:7px;
 }
 
 
-.infoBox strong{
+#adminAnswerDetailsPage .infoBox strong{
+
     display:block;
 
     color:#172033;
 
-    font-size:14px;
+    font-size:13px;
+
+    font-weight:800;
 
     word-break:break-word;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    SECTION HEADING
-===================================================== */
+   ========================================================= */
 
-.sectionHeading{
+#adminAnswerDetailsPage .sectionHeading{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 
+    gap:15px;
+
     margin-bottom:14px;
+
 }
 
 
-.sectionHeading h2{
+#adminAnswerDetailsPage .sectionHeading h2{
+
     margin:0;
 
-    font-size:19px;
-
     color:#172033;
+
+    font-size:18px;
+
+    font-weight:800;
+
 }
 
 
-.sectionHeading p{
+#adminAnswerDetailsPage .sectionHeading p{
+
     margin:4px 0 0;
 
     color:#7b8495;
 
-    font-size:12px;
+    font-size:11px;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    PERFORMANCE
-===================================================== */
+   ========================================================= */
 
-.performanceSection{
-    margin-bottom:24px;
+#adminAnswerDetailsPage .performanceSection{
+
+    width:100%;
+
+    margin-bottom:20px;
+
 }
 
 
-.performanceGrid{
+#adminAnswerDetailsPage .performanceGrid{
+
     display:grid;
 
     grid-template-columns:
-        repeat(4,1fr);
-
-    gap:15px;
-}
-
-
-.performanceCard{
-    background:white;
-
-    border-radius:16px;
-
-    padding:19px;
-
-    display:flex;
-    align-items:center;
+        repeat(4,minmax(0,1fr));
 
     gap:14px;
 
-    border:1px solid #e7ebf2;
-
-    box-shadow:0 6px 20px rgba(15,23,42,.055);
 }
 
 
-.performanceIcon{
-    width:48px;
-    height:48px;
+#adminAnswerDetailsPage .performanceCard{
 
-    border-radius:13px;
+    min-width:0;
 
     display:flex;
+
     align-items:center;
-    justify-content:center;
 
-    font-size:22px;
+    gap:13px;
 
-    font-weight:900;
+    padding:17px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border:1px solid #e5eaf2;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 6px 20px
+        rgba(15,23,42,.05);
+
 }
 
 
-.performanceCard span{
+#adminAnswerDetailsPage .performanceIcon{
+
+    width:46px;
+
+    height:46px;
+
+    min-width:46px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    font-size:21px;
+
+    font-weight:900;
+
+}
+
+
+#adminAnswerDetailsPage .performanceCard span{
+
     display:block;
 
-    font-size:11px;
+    margin-bottom:4px;
 
     color:#7b8495;
 
-    margin-bottom:5px;
+    font-size:10px;
+
 }
 
 
-.performanceCard strong{
-    font-size:24px;
+#adminAnswerDetailsPage .performanceCard strong{
 
     color:#172033;
+
+    font-size:23px;
+
+    font-weight:800;
+
 }
 
 
 /* TOTAL */
 
-.totalCard .performanceIcon{
+#adminAnswerDetailsPage .totalCard
+.performanceIcon{
+
     background:#eef2ff;
+
     color:#4f46e5;
+
 }
 
 
 /* CORRECT */
 
-.correctCard .performanceIcon{
+#adminAnswerDetailsPage .correctCard
+.performanceIcon{
+
     background:#dcfce7;
+
     color:#15803d;
+
 }
 
 
 /* WRONG */
 
-.wrongCard .performanceIcon{
+#adminAnswerDetailsPage .wrongCard
+.performanceIcon{
+
     background:#fee2e2;
+
     color:#dc2626;
+
 }
 
 
 /* UNATTEMPTED */
 
-.unansweredCard .performanceIcon{
+#adminAnswerDetailsPage .unansweredCard
+.performanceIcon{
+
     background:#f1f5f9;
+
     color:#64748b;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    QUESTION REVIEW
-===================================================== */
+   ========================================================= */
 
-.questionReviewSection{
-    background:white;
+#adminAnswerDetailsPage .questionReviewSection{
+
+    width:100%;
+
+    padding:22px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border:1px solid #e5eaf2;
 
     border-radius:18px;
 
-    padding:24px;
+    box-shadow:
+        0 7px 25px
+        rgba(15,23,42,.06);
 
-    border:1px solid #e7ebf2;
-
-    box-shadow:0 7px 25px rgba(15,23,42,.07);
 }
 
 
-.reviewHeading{
+#adminAnswerDetailsPage .reviewHeading{
+
+    padding-bottom:17px;
+
+    margin-bottom:18px;
+
     border-bottom:1px solid #edf0f5;
 
-    padding-bottom:18px;
-
-    margin-bottom:20px;
 }
 
 
-.reviewLegend{
+#adminAnswerDetailsPage .reviewLegend{
+
     display:flex;
 
-    gap:14px;
+    align-items:center;
 
-    font-size:11px;
+    gap:13px;
 
-    font-weight:700;
+    flex-wrap:wrap;
+
+    font-size:10px;
+
+    font-weight:800;
+
 }
 
 
-.legendCorrect{
+#adminAnswerDetailsPage .legendCorrect{
+
     color:#15803d;
+
 }
 
 
-.legendWrong{
+#adminAnswerDetailsPage .legendWrong{
+
     color:#dc2626;
+
 }
 
 
-.legendUnattempted{
+#adminAnswerDetailsPage .legendUnattempted{
+
     color:#64748b;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    QUESTION CARD
-===================================================== */
+   ========================================================= */
 
-.adminAnswerCard{
-    border:1px solid #e4e8ef;
+#adminAnswerDetailsPage .adminAnswerCard{
 
-    border-radius:15px;
+    width:100%;
 
-    margin-bottom:15px;
+    margin-bottom:14px;
 
     overflow:hidden;
 
-    background:#fff;
+    background:#ffffff;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:14px;
 
     transition:.2s;
+
 }
 
 
-.adminAnswerCard:hover{
-    box-shadow:0 7px 20px rgba(15,23,42,.07);
+#adminAnswerDetailsPage .adminAnswerCard:hover{
 
     transform:translateY(-1px);
+
+    box-shadow:
+        0 7px 20px
+        rgba(15,23,42,.07);
+
 }
 
 
-/* QUESTION HEADER */
+/* =========================================================
+   QUESTION HEADER
+   ========================================================= */
 
-.answerQuestionHeader{
-    padding:14px 17px;
+#adminAnswerDetailsPage .answerQuestionHeader{
 
-    background:#f8fafc;
+    min-height:58px;
+
+    padding:12px 16px;
+
+    box-sizing:border-box;
 
     display:flex;
 
@@ -6053,175 +6736,240 @@ input[type="checkbox"] {
 
     justify-content:space-between;
 
+    gap:15px;
+
+    background:#f8fafc;
+
     border-bottom:1px solid #e7ebf1;
+
 }
 
 
-.questionNumber{
+#adminAnswerDetailsPage .questionNumber{
+
     display:flex;
 
     align-items:center;
 
     gap:9px;
 
-    font-weight:800;
-
     color:#172033;
 
     font-size:13px;
+
+    font-weight:800;
+
 }
 
 
-.questionNumberBadge{
+#adminAnswerDetailsPage .questionNumberBadge{
+
     width:32px;
+
     height:32px;
 
+    min-width:32px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     background:#1e3a8a;
 
-    color:white;
+    color:#ffffff;
 
     border-radius:9px;
 
-    font-size:12px;
+    font-size:11px;
+
+    font-weight:800;
+
 }
 
 
-.answerStatusBadge{
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerStatusBadge{
+
     padding:6px 11px;
 
     border-radius:20px;
 
-    font-size:10px;
+    font-size:9px;
 
     font-weight:800;
 
     letter-spacing:.3px;
+
+    white-space:nowrap;
+
 }
 
 
-.statusCorrect{
+#adminAnswerDetailsPage .statusCorrect{
+
     background:#dcfce7;
 
     color:#15803d;
+
 }
 
 
-.statusWrong{
+#adminAnswerDetailsPage .statusWrong{
+
     background:#fee2e2;
 
     color:#dc2626;
+
 }
 
 
-.statusUnattempted{
+#adminAnswerDetailsPage .statusUnattempted{
+
     background:#f1f5f9;
 
     color:#64748b;
+
 }
 
 
-/* QUESTION TEXT */
+/* =========================================================
+   QUESTION BODY
+   ========================================================= */
 
-.answerQuestionBody{
+#adminAnswerDetailsPage .answerQuestionBody{
+
     padding:18px;
+
 }
 
 
-.answerQuestionText{
-    font-size:15px;
+#adminAnswerDetailsPage .answerQuestionText{
 
-    line-height:1.65;
+    margin:0 0 17px;
 
     color:#202938;
 
+    font-size:15px;
+
     font-weight:600;
 
-    margin-bottom:17px;
+    line-height:1.65;
+
 }
 
 
-/* ANSWERS */
+/* =========================================================
+   STUDENT / CORRECT ANSWER GRID
+   ========================================================= */
 
-.answerCompareGrid{
+#adminAnswerDetailsPage .answerCompareGrid{
+
     display:grid;
 
     grid-template-columns:
-        1fr 1fr;
+        repeat(2,minmax(0,1fr));
 
     gap:13px;
+
 }
 
 
-.answerBox{
-    border-radius:12px;
+#adminAnswerDetailsPage .answerBox{
+
+    min-width:0;
 
     padding:14px;
+
+    box-sizing:border-box;
+
+    border-radius:12px;
 
     border:1px solid #e6eaf0;
 
     background:#fafbfc;
+
 }
 
 
-.answerBoxTitle{
+#adminAnswerDetailsPage .answerBoxTitle{
+
+    margin-bottom:7px;
+
+    color:#475569;
+
     font-size:10px;
+
+    font-weight:800;
 
     text-transform:uppercase;
 
     letter-spacing:.5px;
 
-    font-weight:800;
-
-    margin-bottom:7px;
 }
 
 
-.studentAnswerBox{
-    border-color:#dbe4f2;
+#adminAnswerDetailsPage .studentAnswerBox{
 
     background:#f8fbff;
+
+    border-color:#dbe4f2;
+
 }
 
 
-.studentAnswerBox .answerBoxTitle{
+#adminAnswerDetailsPage
+.studentAnswerBox
+.answerBoxTitle{
+
     color:#2563eb;
+
 }
 
 
-.correctAnswerBox{
-    border-color:#ccebd7;
+#adminAnswerDetailsPage .correctAnswerBox{
 
     background:#f5fff8;
+
+    border-color:#ccebd7;
+
 }
 
 
-.correctAnswerBox .answerBoxTitle{
+#adminAnswerDetailsPage
+.correctAnswerBox
+.answerBoxTitle{
+
     color:#15803d;
+
 }
 
 
-.answerValue{
-    font-size:13px;
+#adminAnswerDetailsPage .answerValue{
 
     color:#1f2937;
 
-    line-height:1.5;
+    font-size:13px;
 
     font-weight:600;
 
+    line-height:1.5;
+
     word-break:break-word;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    LOADING
-===================================================== */
+   ========================================================= */
 
-.answerLoading{
+#adminAnswerDetailsPage .answerLoading{
+
     min-height:180px;
 
     display:flex;
@@ -6233,12 +6981,17 @@ input[type="checkbox"] {
     justify-content:center;
 
     color:#7b8495;
+
 }
 
 
-.loadingSpinner{
+#adminAnswerDetailsPage .loadingSpinner{
+
     width:35px;
+
     height:35px;
+
+    margin-bottom:12px;
 
     border:4px solid #e5e7eb;
 
@@ -6246,60 +6999,71 @@ input[type="checkbox"] {
 
     border-radius:50%;
 
-    animation:answerSpin .8s linear infinite;
+    animation:
+        adminAnswerSpin .8s linear infinite;
 
-    margin-bottom:12px;
 }
 
 
-@keyframes answerSpin{
+@keyframes adminAnswerSpin{
 
     to{
+
         transform:rotate(360deg);
+
     }
 
 }
 
 
-/* =====================================================
-   EMPTY / ERROR
-===================================================== */
+/* =========================================================
+   EMPTY
+   ========================================================= */
 
-.answerEmpty{
-    text-align:center;
+#adminAnswerDetailsPage .answerEmpty{
 
     padding:60px 20px;
 
+    text-align:center;
+
     color:#64748b;
+
 }
 
 
-.answerEmptyIcon{
-    font-size:42px;
+#adminAnswerDetailsPage .answerEmptyIcon{
 
     margin-bottom:10px;
+
+    font-size:42px;
+
 }
 
 
-.answerEmpty h3{
+#adminAnswerDetailsPage .answerEmpty h3{
+
     margin:0 0 5px;
 
     color:#334155;
+
 }
 
 
-.answerEmpty p{
+#adminAnswerDetailsPage .answerEmpty p{
+
     margin:0;
 
     font-size:13px;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    FOOTER
-===================================================== */
+   ========================================================= */
 
-.answerReviewFooter{
+#adminAnswerDetailsPage .answerReviewFooter{
+
     padding:20px;
 
     text-align:center;
@@ -6307,171 +7071,337 @@ input[type="checkbox"] {
     color:#94a3b8;
 
     font-size:11px;
+
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* =========================================================
+   ADMIN PAGE SCROLLBAR
+   ========================================================= */
 
-@media(max-width:900px){
+#studentResultPage::-webkit-scrollbar,
+#adminAnswerDetailsPage::-webkit-scrollbar{
 
+    width:9px;
+
+}
+
+
+#studentResultPage::-webkit-scrollbar-track,
+#adminAnswerDetailsPage::-webkit-scrollbar-track{
+
+    background:#eaf0f7;
+
+}
+
+
+#studentResultPage::-webkit-scrollbar-thumb,
+#adminAnswerDetailsPage::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+
+
+#studentResultPage::-webkit-scrollbar-thumb:hover,
+#adminAnswerDetailsPage::-webkit-scrollbar-thumb:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(max-width:1000px){
+
+    #studentResultPage,
     #adminAnswerDetailsPage{
-        padding:12px;
+
+        padding:20px !important;
+
     }
 
 
-    .answerReviewHeader{
+    #studentResultPage .result-list-box{
+
+        padding:22px;
+
+    }
+
+
+    #adminAnswerDetailsPage .answerReviewWrapper{
+
+        max-width:100% !important;
+
+    }
+
+
+    #adminAnswerDetailsPage .studentInfoGrid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+
+    #adminAnswerDetailsPage .performanceGrid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:700px){
+
+    #studentResultPage,
+    #adminAnswerDetailsPage{
+
+        padding:12px !important;
+
+    }
+
+
+    #studentResultPage .result-list-box{
+
         padding:17px;
+
+        border-radius:15px;
+
+    }
+
+
+    #studentResultPage
+    .result-list-box h2{
+
+        font-size:24px;
+
+        margin-bottom:20px;
+
+    }
+
+
+    #studentResultPage #searchResult{
+
+        height:48px;
+
+        font-size:14px;
+
+    }
+
+
+    #studentResultPage .resultTable{
+
+        min-width:950px;
+
+    }
+
+
+    #studentResultPage .resultTable th,
+    #studentResultPage .resultTable td{
+
+        padding:10px;
+
+        font-size:12px;
+
+    }
+
+
+    /* ANSWER HEADER */
+
+    #adminAnswerDetailsPage
+    .answerReviewHeader{
 
         flex-direction:column;
 
         align-items:stretch;
 
-        gap:15px;
+        padding:17px;
+
+        border-radius:15px;
+
     }
 
 
-    .answerBackBtn{
-        width:100%;
-    }
-
-
-    .studentInfoGrid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-
-    .performanceGrid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-}
-
-
-@media(max-width:600px){
-
+    #adminAnswerDetailsPage
     .answerBrand h1{
+
         font-size:20px;
+
     }
 
 
+    #adminAnswerDetailsPage
     .answerBrand p{
-        font-size:11px;
+
+        font-size:10px;
+
     }
 
 
+    #adminAnswerDetailsPage
+    .answerBackBtn{
+
+        width:100%;
+
+    }
+
+
+    /* STUDENT INFO */
+
+    #adminAnswerDetailsPage
+    .studentInfoCard{
+
+        padding:17px;
+
+    }
+
+
+    #adminAnswerDetailsPage
     .studentInfoGrid{
+
         grid-template-columns:1fr;
+
     }
 
 
+    /* PERFORMANCE */
+
+    #adminAnswerDetailsPage
     .performanceGrid{
-        grid-template-columns:1fr 1fr;
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
 
         gap:10px;
+
     }
 
 
+    #adminAnswerDetailsPage
     .performanceCard{
+
         padding:13px;
 
         gap:9px;
+
     }
 
 
+    #adminAnswerDetailsPage
     .performanceIcon{
+
         width:40px;
+
         height:40px;
 
+        min-width:40px;
+
         font-size:18px;
+
     }
 
 
+    #adminAnswerDetailsPage
     .performanceCard strong{
+
         font-size:20px;
+
     }
 
 
+    /* QUESTIONS */
+
+    #adminAnswerDetailsPage
     .questionReviewSection{
+
         padding:14px;
+
     }
 
 
+    #adminAnswerDetailsPage
     .reviewHeading{
+
         display:block;
+
     }
 
 
+    #adminAnswerDetailsPage
     .reviewLegend{
+
         margin-top:12px;
 
-        flex-wrap:wrap;
     }
 
+
+    #adminAnswerDetailsPage
     .answerCompareGrid{
+
         grid-template-columns:1fr;
+
     }
 
+
+    #adminAnswerDetailsPage
     .answerQuestionText{
+
         font-size:14px;
+
     }
 
 }
-/* =========================================
-   ADMIN RESULT ACTIONS
-========================================= */
-
-.adminResultActions{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:7px;
-
-    min-width:125px;
-
-}
 
 
-.viewAnswersBtn{
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
 
-    border:none;
+@media(max-width:420px){
 
-    background:linear-gradient(
-        135deg,
-        #1e3a8a,
-        #2563eb
-    );
+    #studentResultPage,
+    #adminAnswerDetailsPage{
 
-    color:#fff;
+        padding:8px !important;
 
-    padding:8px 12px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    font-size:11px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-    transition:.2s;
-
-}
+    }
 
 
-.viewAnswersBtn:hover{
+    #adminAnswerDetailsPage
+    .performanceGrid{
 
-    transform:translateY(-1px);
+        grid-template-columns:1fr;
 
-    box-shadow:
-        0 5px 12px
-        rgba(37,99,235,.25);
+    }
+
+
+    #adminAnswerDetailsPage
+    .answerQuestionHeader{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+
+    #adminAnswerDetailsPage
+    .answerStatusBadge{
+
+        align-self:flex-start;
+
+    }
 
 }
