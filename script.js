@@ -14,7 +14,6 @@ const SCRIPT_URL =
 //====================================================
 // STUDENT DETAILS
 //====================================================
-
 let studentName = "";
 let regNo = "";
 let paperName = "";
