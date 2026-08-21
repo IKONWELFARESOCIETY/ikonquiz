@@ -4319,7 +4319,7 @@ function loadAdminResults(){
 
     fetch(
         SCRIPT_URL +
-        "?action=allResults"
+        "?action=allResults" +
          "&adminToken=" +
     encodeURIComponent(adminToken)
     )
