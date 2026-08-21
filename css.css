@@ -7361,3 +7361,1023 @@ input[type="checkbox"] {
         min-width:1350px;
     }
 }
+/* =========================================================
+   IKON ADMIN RESULT + ANSWER REVIEW
+   FINAL LAYOUT FIX
+   ========================================================= */
+
+/* ---------- COMMON ADMIN PAGES ---------- */
+
+#studentResultPage,
+#adminAnswerDetailsPage{
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+
+    margin:0 !important;
+    padding:30px !important;
+
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #eaf3ff 0%,
+            #f7faff 45%,
+            #eef5ff 100%
+        ) !important;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif !important;
+}
+
+#studentResultPage *,
+#adminAnswerDetailsPage *{
+    box-sizing:border-box !important;
+}
+
+
+/* =========================================================
+   ADMIN RESULT LIST
+   ========================================================= */
+
+#studentResultPage{
+    z-index:9998 !important;
+}
+
+
+/* MAIN RESULT CARD */
+
+#studentResultPage .result-list-box{
+    width:100% !important;
+    max-width:1500px !important;
+
+    min-height:0 !important;
+
+    margin:0 auto !important;
+    padding:32px !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #dbe5f1 !important;
+    border-radius:22px !important;
+
+    box-shadow:
+        0 20px 60px rgba(30,64,175,.13) !important;
+
+    overflow:visible !important;
+}
+
+
+/* TITLE */
+
+#studentResultPage .result-list-box h2{
+    margin:0 0 24px !important;
+
+    text-align:center !important;
+
+    color:#075ee8 !important;
+
+    font-size:30px !important;
+    font-weight:800 !important;
+
+    line-height:1.2 !important;
+}
+
+
+/* SEARCH */
+
+#studentResultPage #searchResult{
+    display:block !important;
+
+    width:100% !important;
+    height:52px !important;
+
+    margin:0 0 22px !important;
+    padding:0 18px !important;
+
+    border:1px solid #cfdced !important;
+    border-radius:12px !important;
+
+    background:#ffffff !important;
+
+    color:#172033 !important;
+
+    font-size:14px !important;
+
+    outline:none !important;
+}
+
+#studentResultPage #searchResult:focus{
+    border-color:#0878ff !important;
+
+    box-shadow:
+        0 0 0 4px rgba(8,120,255,.10) !important;
+}
+
+
+/* =========================================================
+   TABLE SCROLL AREA
+   ========================================================= */
+
+#studentResultPage .table-responsive{
+
+    display:block !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+
+    -webkit-overflow-scrolling:touch !important;
+
+    border:1px solid #d7e2ef !important;
+    border-radius:14px !important;
+
+    background:#ffffff !important;
+
+    padding:0 0 10px !important;
+
+    scrollbar-width:auto !important;
+    scrollbar-color:#1769e8 #e8eef6 !important;
+}
+
+
+/* CHROME / EDGE SCROLLBAR */
+
+#studentResultPage .table-responsive::-webkit-scrollbar{
+    height:14px !important;
+    display:block !important;
+}
+
+#studentResultPage .table-responsive::-webkit-scrollbar-track{
+    background:#e8eef6 !important;
+    border-radius:20px !important;
+}
+
+#studentResultPage .table-responsive::-webkit-scrollbar-thumb{
+    background:#1769e8 !important;
+    border-radius:20px !important;
+
+    border:3px solid #e8eef6 !important;
+}
+
+#studentResultPage .table-responsive::-webkit-scrollbar-thumb:hover{
+    background:#0754c7 !important;
+}
+
+
+/* =========================================================
+   RESULT TABLE
+   ========================================================= */
+
+#studentResultPage .resultTable{
+
+    width:max-content !important;
+
+    min-width:100% !important;
+
+    border-collapse:separate !important;
+    border-spacing:0 !important;
+
+    background:#ffffff !important;
+}
+
+
+/* TABLE HEADER */
+
+#studentResultPage .resultTable th{
+
+    height:52px !important;
+
+    padding:0 20px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #075ee8,
+            #087cff
+        ) !important;
+
+    color:#ffffff !important;
+
+    border-right:1px solid rgba(255,255,255,.25) !important;
+    border-bottom:1px solid #0754c7 !important;
+
+    font-size:12px !important;
+    font-weight:800 !important;
+
+    text-align:center !important;
+
+    white-space:nowrap !important;
+}
+
+
+/* TABLE BODY */
+
+#studentResultPage .resultTable td{
+
+    min-height:55px !important;
+
+    padding:14px 20px !important;
+
+    background:#ffffff !important;
+
+    color:#334155 !important;
+
+    border-right:1px solid #e3eaf3 !important;
+    border-bottom:1px solid #e3eaf3 !important;
+
+    font-size:12px !important;
+    font-weight:600 !important;
+
+    text-align:center !important;
+    vertical-align:middle !important;
+
+    white-space:nowrap !important;
+}
+
+
+/* ALTERNATE ROW */
+
+#studentResultPage .resultTable tbody tr:nth-child(even) td{
+    background:#f8fbff !important;
+}
+
+
+/* HOVER */
+
+#studentResultPage .resultTable tbody tr:hover td{
+    background:#eef6ff !important;
+}
+
+
+/* STUDENT NAME */
+
+#studentResultPage .resultTable td:nth-child(3){
+    color:#172554 !important;
+    font-weight:800 !important;
+}
+
+
+/* =========================================================
+   RESULT NUMBER BADGES
+   ========================================================= */
+
+#studentResultPage .resultTable .correct,
+#studentResultPage .correct{
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    min-width:34px !important;
+    height:28px !important;
+
+    padding:0 9px !important;
+
+    border-radius:8px !important;
+
+    background:#dcfce7 !important;
+    color:#15803d !important;
+
+    font-weight:800 !important;
+}
+
+
+#studentResultPage .resultTable .wrong,
+#studentResultPage .wrong{
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    min-width:34px !important;
+    height:28px !important;
+
+    padding:0 9px !important;
+
+    border-radius:8px !important;
+
+    background:#fee2e2 !important;
+    color:#dc2626 !important;
+
+    font-weight:800 !important;
+}
+
+
+#studentResultPage .resultTable .unattempted,
+#studentResultPage .unattempted{
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    min-width:34px !important;
+    height:28px !important;
+
+    padding:0 9px !important;
+
+    border-radius:8px !important;
+
+    background:#f1f5f9 !important;
+    color:#475569 !important;
+
+    font-weight:800 !important;
+}
+
+
+/* =========================================================
+   VIEW ANSWER BUTTON
+   ========================================================= */
+
+#studentResultPage .viewAnswersBtn{
+
+    min-width:125px !important;
+    height:38px !important;
+
+    padding:0 16px !important;
+
+    border:0 !important;
+    border-radius:9px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #075ee8,
+            #087cff
+        ) !important;
+
+    color:#ffffff !important;
+
+    font-size:12px !important;
+    font-weight:800 !important;
+
+    cursor:pointer !important;
+
+    box-shadow:
+        0 5px 14px rgba(7,94,232,.20) !important;
+
+    transition:.2s ease !important;
+}
+
+#studentResultPage .viewAnswersBtn:hover{
+
+    transform:translateY(-2px) !important;
+
+    box-shadow:
+        0 8px 20px rgba(7,94,232,.30) !important;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+#studentResultPage .result-footer{
+
+    display:flex !important;
+
+    justify-content:center !important;
+    align-items:center !important;
+
+    margin-top:24px !important;
+    padding-bottom:5px !important;
+}
+
+#studentResultPage .result-footer .secondary{
+
+    min-width:160px !important;
+    height:44px !important;
+
+    border:0 !important;
+    border-radius:10px !important;
+
+    background:#52657e !important;
+
+    color:#ffffff !important;
+
+    font-size:13px !important;
+    font-weight:800 !important;
+
+    cursor:pointer !important;
+}
+
+
+/* =========================================================
+   ADMIN ANSWER REVIEW PAGE
+   ========================================================= */
+
+#adminAnswerDetailsPage{
+    z-index:9999 !important;
+}
+
+
+/* MAIN ANSWER CONTAINER */
+
+#adminAnswerDetailsPage .adminAnswerContainer{
+
+    width:100% !important;
+
+    max-width:1400px !important;
+
+    margin:0 auto !important;
+
+    padding:0 0 40px !important;
+}
+
+
+/* =========================================================
+   ANSWER HEADER
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerReviewHeader{
+
+    width:100% !important;
+
+    min-height:82px !important;
+
+    margin-bottom:20px !important;
+    padding:18px 24px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:space-between !important;
+
+    gap:20px !important;
+
+    border-radius:18px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d1b3f,
+            #203b87
+        ) !important;
+
+    color:#ffffff !important;
+
+    box-shadow:
+        0 12px 30px rgba(15,23,42,.18) !important;
+}
+
+
+#adminAnswerDetailsPage .answerReviewHeader h1{
+
+    margin:0 !important;
+
+    color:#ffffff !important;
+
+    font-size:23px !important;
+    font-weight:800 !important;
+}
+
+
+#adminAnswerDetailsPage .answerReviewHeader p{
+
+    margin:4px 0 0 !important;
+
+    color:#cbd8f7 !important;
+
+    font-size:12px !important;
+}
+
+
+/* BACK BUTTON */
+
+#adminAnswerDetailsPage .answerBackBtn{
+
+    min-width:145px !important;
+    height:42px !important;
+
+    padding:0 18px !important;
+
+    border:0 !important;
+    border-radius:9px !important;
+
+    background:rgba(255,255,255,.13) !important;
+
+    color:#ffffff !important;
+
+    font-size:12px !important;
+    font-weight:800 !important;
+
+    cursor:pointer !important;
+}
+
+
+/* =========================================================
+   STUDENT INFORMATION
+   ========================================================= */
+
+#adminAnswerDetailsPage .studentInfoSection{
+
+    width:100% !important;
+
+    margin-bottom:22px !important;
+    padding:22px !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #dce6f2 !important;
+    border-radius:18px !important;
+
+    box-shadow:
+        0 10px 30px rgba(30,64,175,.08) !important;
+}
+
+
+#adminAnswerDetailsPage .infoGrid{
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:14px !important;
+}
+
+
+#adminAnswerDetailsPage .infoBox{
+
+    min-height:78px !important;
+
+    padding:14px 16px !important;
+
+    background:#f8fbff !important;
+
+    border:1px solid #e0e9f5 !important;
+    border-radius:12px !important;
+}
+
+
+/* =========================================================
+   PERFORMANCE
+   ========================================================= */
+
+#adminAnswerDetailsPage .performanceGrid{
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:14px !important;
+}
+
+
+#adminAnswerDetailsPage .performanceCard{
+
+    min-height:92px !important;
+
+    padding:17px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:14px !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #dce6f2 !important;
+
+    border-radius:15px !important;
+
+    box-shadow:
+        0 8px 24px rgba(30,64,175,.07) !important;
+}
+
+
+/* =========================================================
+   ANSWER REVIEW SECTION
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerReviewSection{
+
+    width:100% !important;
+
+    padding:22px !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #dce6f2 !important;
+
+    border-radius:18px !important;
+
+    box-shadow:
+        0 10px 30px rgba(30,64,175,.08) !important;
+}
+
+
+/* QUESTION LIST */
+
+#adminAnswerDetailsPage #adminAnswerDetailsContainer{
+
+    width:100% !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    gap:16px !important;
+
+    margin-top:18px !important;
+}
+
+
+/* =========================================================
+   QUESTION CARD
+   ========================================================= */
+
+#adminAnswerDetailsPage .adminAnswerCard{
+
+    width:100% !important;
+
+    margin:0 !important;
+
+    background:#ffffff !important;
+
+    border:1px solid #dce5f0 !important;
+
+    border-radius:15px !important;
+
+    overflow:hidden !important;
+
+    box-shadow:
+        0 5px 18px rgba(15,23,42,.05) !important;
+}
+
+
+/* QUESTION HEADER */
+
+#adminAnswerDetailsPage .answerQuestionHeader{
+
+    min-height:58px !important;
+
+    padding:11px 16px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:space-between !important;
+
+    gap:15px !important;
+
+    background:#f8fbff !important;
+
+    border-bottom:1px solid #e2eaf4 !important;
+}
+
+
+/* QUESTION NUMBER */
+
+#adminAnswerDetailsPage .questionNumber{
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:10px !important;
+
+    color:#172554 !important;
+
+    font-size:13px !important;
+    font-weight:800 !important;
+}
+
+
+#adminAnswerDetailsPage .questionNumberBadge{
+
+    width:34px !important;
+    height:34px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    border-radius:9px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #183b92,
+            #1769e8
+        ) !important;
+
+    color:#ffffff !important;
+
+    font-size:12px !important;
+    font-weight:900 !important;
+}
+
+
+/* STATUS */
+
+#adminAnswerDetailsPage .answerStatusBadge{
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    min-width:92px !important;
+    height:30px !important;
+
+    padding:0 12px !important;
+
+    border-radius:20px !important;
+
+    font-size:10px !important;
+    font-weight:900 !important;
+}
+
+
+#adminAnswerDetailsPage .statusCorrect{
+
+    background:#dcfce7 !important;
+    color:#15803d !important;
+
+    border:1px solid #bbf7d0 !important;
+}
+
+
+#adminAnswerDetailsPage .statusWrong{
+
+    background:#fee2e2 !important;
+    color:#dc2626 !important;
+
+    border:1px solid #fecaca !important;
+}
+
+
+#adminAnswerDetailsPage .statusUnattempted{
+
+    background:#f1f5f9 !important;
+    color:#64748b !important;
+
+    border:1px solid #e2e8f0 !important;
+}
+
+
+/* =========================================================
+   QUESTION BODY
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerQuestionBody{
+
+    padding:20px !important;
+}
+
+
+#adminAnswerDetailsPage .answerQuestionText{
+
+    width:100% !important;
+
+    margin-bottom:18px !important;
+    padding:17px 18px !important;
+
+    border-radius:12px !important;
+
+    background:#f8fbff !important;
+
+    border:1px solid #e1eaf5 !important;
+
+    color:#172554 !important;
+
+    font-size:15px !important;
+    font-weight:700 !important;
+
+    line-height:1.65 !important;
+
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+}
+
+
+/* =========================================================
+   STUDENT ANSWER / CORRECT ANSWER
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerCompareGrid{
+
+    width:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr)) !important;
+
+    gap:14px !important;
+}
+
+
+#adminAnswerDetailsPage .answerBox{
+
+    min-height:105px !important;
+
+    padding:15px !important;
+
+    border-radius:12px !important;
+
+    border:1px solid #dfe7f1 !important;
+
+    background:#ffffff !important;
+}
+
+
+#adminAnswerDetailsPage .studentAnswerBox{
+
+    background:#fffaf9 !important;
+
+    border-color:#fed7d7 !important;
+}
+
+
+#adminAnswerDetailsPage .correctAnswerBox{
+
+    background:#f5fff8 !important;
+
+    border-color:#bbf7d0 !important;
+}
+
+
+#adminAnswerDetailsPage .answerBoxTitle{
+
+    margin-bottom:10px !important;
+
+    font-size:10px !important;
+
+    font-weight:900 !important;
+
+    text-transform:uppercase !important;
+
+    letter-spacing:.5px !important;
+}
+
+
+#adminAnswerDetailsPage .studentAnswerBox .answerBoxTitle{
+
+    color:#b45309 !important;
+}
+
+
+#adminAnswerDetailsPage .correctAnswerBox .answerBoxTitle{
+
+    color:#15803d !important;
+}
+
+
+/* IMPORTANT:
+   JS currently creates .answerValue,
+   so style .answerValue directly.
+*/
+
+#adminAnswerDetailsPage .answerValue{
+
+    min-height:45px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    padding:11px 12px !important;
+
+    border-radius:8px !important;
+
+    background:#ffffff !important;
+
+    color:#1e293b !important;
+
+    font-size:13px !important;
+
+    font-weight:700 !important;
+
+    line-height:1.5 !important;
+
+    word-break:break-word !important;
+
+    overflow-wrap:anywhere !important;
+}
+
+
+#adminAnswerDetailsPage .studentAnswerBox .answerValue{
+
+    color:#b91c1c !important;
+
+    background:#fff5f5 !important;
+}
+
+
+#adminAnswerDetailsPage .correctAnswerBox .answerValue{
+
+    color:#15803d !important;
+
+    background:#f0fff4 !important;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+   ========================================================= */
+
+#adminAnswerDetailsPage .answerEmpty,
+#adminAnswerDetailsPage .answerLoading{
+
+    width:100% !important;
+
+    padding:60px 25px !important;
+
+    text-align:center !important;
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+
+@media(max-width:900px){
+
+    #studentResultPage,
+    #adminAnswerDetailsPage{
+        padding:18px 12px !important;
+    }
+
+    #studentResultPage .result-list-box{
+        padding:20px !important;
+    }
+
+    #adminAnswerDetailsPage .infoGrid,
+    #adminAnswerDetailsPage .performanceGrid{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr)) !important;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    #studentResultPage,
+    #adminAnswerDetailsPage{
+        padding:10px !important;
+    }
+
+    #studentResultPage .result-list-box{
+        padding:15px !important;
+        border-radius:15px !important;
+    }
+
+    #studentResultPage .result-list-box h2{
+        font-size:23px !important;
+    }
+
+    /*
+       IMPORTANT:
+       Table remains wide and scrollable.
+    */
+
+    #studentResultPage .table-responsive{
+        width:100% !important;
+        overflow-x:auto !important;
+    }
+
+    #studentResultPage .resultTable{
+        min-width:950px !important;
+    }
+
+    #adminAnswerDetailsPage .adminAnswerContainer{
+        max-width:100% !important;
+    }
+
+    #adminAnswerDetailsPage .infoGrid,
+    #adminAnswerDetailsPage .performanceGrid{
+        grid-template-columns:1fr !important;
+    }
+
+    #adminAnswerDetailsPage .answerReviewHeader{
+        flex-direction:column !important;
+        align-items:flex-start !important;
+    }
+
+    #adminAnswerDetailsPage .answerBackBtn{
+        width:100% !important;
+    }
+
+    #adminAnswerDetailsPage .answerCompareGrid{
+        grid-template-columns:1fr !important;
+    }
+
+}
