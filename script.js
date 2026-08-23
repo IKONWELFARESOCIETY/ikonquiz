@@ -8215,9 +8215,9 @@ function loadAnalytics(){
             );
 
 
-        renderServerAttention(
-            attentionData
-        );
+       renderWeakStudents(
+    attentionData
+);
 
 
         //================================================
