@@ -3142,6 +3142,13 @@ BACK BUTTON
     margin-top:25px;
 
 }
+.result-footer{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin-top:25px;
+}
 
 .result-footer .secondary{
 
