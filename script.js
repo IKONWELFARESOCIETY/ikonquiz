@@ -1521,7 +1521,16 @@ document
 // REG NO + NAME + STUDENT ID + VERIFICATION CODE
 //====================================================
 
+//====================================================
+// THEORY STUDENT VERIFICATION
+// REG NO + NAME + STUDENT ID + VERIFICATION CODE
+//====================================================
+
 function verifyStudentID(){
+
+    //================================================
+    // GET ELEMENTS
+    //================================================
 
     const idBox =
         document.getElementById(
@@ -1533,20 +1542,56 @@ function verifyStudentID(){
             "examVerificationCode"
         );
 
+    const verifyPage =
+        document.getElementById(
+            "verificationPage"
+        );
+
+    const instructionPage =
+        document.getElementById(
+            "instructionPage"
+        );
+
+    const examArea =
+        document.getElementById(
+            "examArea"
+        );
+
+    const verifyBtn =
+        verifyPage
+        ? verifyPage.querySelector(
+            ".primary"
+        )
+        : null;
+
+
+    //================================================
+    // ELEMENT CHECK
+    //================================================
 
     if(
         !idBox ||
-        !codeBox
+        !codeBox ||
+        !verifyPage ||
+        !instructionPage
     ){
 
+        console.error(
+            "Theory verification elements not found."
+        );
+
         alert(
-            "Verification fields not found."
+            "Verification page error. Please refresh the page."
         );
 
         return;
 
     }
 
+
+    //================================================
+    // GET VALUES
+    //================================================
 
     const enteredId =
         idBox.value
@@ -1573,18 +1618,45 @@ function verifyStudentID(){
             "Please enter Student ID and Verification Code."
         );
 
+        if(
+            enteredId === ""
+        ){
+
+            idBox.focus();
+
+        }else{
+
+            codeBox.focus();
+
+        }
+
         return;
 
     }
 
 
     //================================================
-    // VERIFY FROM APPS SCRIPT
+    // DISABLE VERIFY BUTTON
     //================================================
 
-    fetch(
+    if(verifyBtn){
 
+        verifyBtn.disabled =
+            true;
+
+        verifyBtn.innerHTML =
+            "Verifying...";
+
+    }
+
+
+    //================================================
+    // SERVER URL
+    //================================================
+
+    const verifyURL =
         SCRIPT_URL +
+
         "?action=verifyExamStudent" +
 
         "&regNo=" +
@@ -1605,8 +1677,20 @@ function verifyStudentID(){
         "&verificationCode=" +
         encodeURIComponent(
             enteredCode
-        )
+        );
 
+
+    console.log(
+        "THEORY VERIFICATION REQUEST"
+    );
+
+
+    //================================================
+    // SERVER VERIFICATION
+    //================================================
+
+    fetch(
+        verifyURL
     )
 
     .then(function(response){
@@ -1614,7 +1698,8 @@ function verifyStudentID(){
         if(!response.ok){
 
             throw new Error(
-                "Server Error"
+                "Server Error: " +
+                response.status
             );
 
         }
@@ -1626,7 +1711,7 @@ function verifyStudentID(){
     .then(function(data){
 
         console.log(
-            "THEORY VERIFICATION:",
+            "THEORY VERIFICATION RESPONSE:",
             data
         );
 
@@ -1640,6 +1725,10 @@ function verifyStudentID(){
             "VALID"
         ){
 
+            //============================================
+            // SAVE VERIFIED DETAILS
+            //============================================
+
             studentId =
                 data.studentId ||
                 enteredId;
@@ -1649,24 +1738,95 @@ function verifyStudentID(){
                 enteredCode;
 
 
-            // Hide verification
-            document
-                .getElementById(
-                    "verificationPage"
-                )
-                ?.classList.add(
+            //============================================
+            // HIDE VERIFICATION PAGE
+            //============================================
+
+            verifyPage.classList.add(
+                "hidden"
+            );
+
+
+            //============================================
+            // KEEP QUESTION AREA HIDDEN
+            //============================================
+
+            if(examArea){
+
+                examArea.classList.add(
                     "hidden"
                 );
 
+            }
 
-            // Show instructions
-            document
-                .getElementById(
-                    "instructionPage"
-                )
-                ?.classList.remove(
-                    "hidden"
+
+            //============================================
+            // SHOW INSTRUCTION PAGE
+            //============================================
+
+            instructionPage.classList.remove(
+                "hidden"
+            );
+
+
+            //============================================
+            // RESET INSTRUCTION CHECKBOX
+            //============================================
+
+            const acceptRules =
+                document.getElementById(
+                    "acceptRules"
                 );
+
+
+            if(acceptRules){
+
+                acceptRules.checked =
+                    false;
+
+            }
+
+
+            //============================================
+            // DISABLE START EXAM BUTTON
+            //============================================
+
+            const startExamBtn =
+                document.getElementById(
+                    "startExamBtn"
+                );
+
+
+            if(startExamBtn){
+
+                startExamBtn.disabled =
+                    true;
+
+            }
+
+
+            //============================================
+            // RESET QUESTION POSITION
+            //============================================
+
+            if(
+                typeof currentQuestionIndex !==
+                "undefined"
+            ){
+
+                currentQuestionIndex =
+                    0;
+
+            }
+
+
+            //============================================
+            // SUCCESS MESSAGE IN CONSOLE
+            //============================================
+
+            console.log(
+                "Theory student verification successful."
+            );
 
 
             return;
@@ -1683,10 +1843,15 @@ function verifyStudentID(){
         );
 
 
-        idBox.value = "";
+        // Clear both fields
+        idBox.value =
+            "";
 
-        codeBox.value = "";
+        codeBox.value =
+            "";
 
+
+        // Focus Student ID
         idBox.focus();
 
     })
@@ -1698,9 +1863,28 @@ function verifyStudentID(){
             error
         );
 
+
         alert(
-            "Unable to verify Student details."
+            "Unable to verify student details. Please try again."
         );
+
+    })
+
+    .finally(function(){
+
+        //==============================================
+        // RESTORE BUTTON
+        //==============================================
+
+        if(verifyBtn){
+
+            verifyBtn.disabled =
+                false;
+
+            verifyBtn.innerHTML =
+                "Verify";
+
+        }
 
     });
 
