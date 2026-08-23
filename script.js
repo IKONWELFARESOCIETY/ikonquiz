@@ -495,25 +495,6 @@ function startTest(){
         .value
         .trim();
 
-
-    studentId =
-        document
-        .getElementById(
-            "studentId"
-        )
-        .value
-        .trim();
-
-
-    const verificationCode =
-        document
-        .getElementById(
-            "verificationCode"
-        )
-        .value
-        .trim();
-
-
     //================================================
     // VALIDATION
     //================================================
@@ -521,8 +502,6 @@ function startTest(){
     if(
         studentName === "" ||
         regNo === "" ||
-        studentId === "" ||
-        verificationCode === ""
     ){
 
         alert(
