@@ -8161,3 +8161,560 @@ body::after {
 
     box-sizing:border-box !important;
 }
+/* ============================================================
+   ADMIN ANALYTICS ACCESS
+   ============================================================ */
+
+/* Student Result List heading */
+#studentResultPage .result-list-box h2[onclick] {
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s ease;
+}
+
+#studentResultPage .result-list-box h2[onclick]:hover {
+    opacity: 0.8;
+}
+
+
+/* Hidden Analytics Access Button */
+#analyticsAccess {
+    display: none;
+    text-align: center;
+    margin: 15px 0 20px;
+}
+
+#analyticsAccess .primary {
+    min-width: 190px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+#analyticsAccess .primary:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   ANALYTICS PASSWORD PAGE
+   ============================================================ */
+
+#analyticsPasswordPage {
+    min-height: 60vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 15px;
+}
+
+
+/* Password Card */
+
+#analyticsPasswordPage .result-box {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 35px 30px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+}
+
+
+/* Password Heading */
+
+#analyticsPasswordPage .result-box h2 {
+    margin-bottom: 10px;
+}
+
+
+/* Password Description */
+
+#analyticsPasswordPage .result-box p {
+    margin-bottom: 25px;
+
+    color: #666;
+
+    line-height: 1.5;
+}
+
+
+/* Password Input */
+
+#analyticsPassword {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 15px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+#analyticsPassword:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* Password Buttons */
+
+#analyticsPasswordPage .result-box button {
+    min-width: 130px;
+
+    margin: 5px;
+
+    border-radius: 9px;
+}
+
+
+/* ============================================================
+   EXAM ANALYTICS PAGE
+   ============================================================ */
+
+#analyticsPage {
+    width: 100%;
+}
+
+.analytics-container {
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+
+/* Analytics Header */
+
+.analytics-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+
+    padding: 22px 25px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.analytics-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 26px;
+}
+
+.analytics-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   ANALYTICS FILTER
+   ============================================================ */
+
+.analytics-filter {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+
+    padding: 18px 20px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+.analytics-filter label {
+    font-weight: 700;
+}
+
+.analytics-filter select {
+    min-width: 220px;
+
+    padding: 11px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.analytics-filter select:focus {
+    border-color: #2563eb;
+}
+
+
+/* ============================================================
+   KPI CARDS
+   ============================================================ */
+
+.analytics-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 25px;
+}
+
+.analytics-card {
+    min-height: 125px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.analytics-card span {
+    font-size: 25px;
+
+    margin-bottom: 8px;
+}
+
+.analytics-card strong {
+    font-size: 28px;
+
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+.analytics-card p {
+    margin: 7px 0 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   ANALYTICS SECTIONS
+   ============================================================ */
+
+.analytics-section {
+    margin-bottom: 25px;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.analytics-section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.analytics-section-header h3 {
+    margin: 0 0 5px;
+
+    font-size: 19px;
+}
+
+.analytics-section-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   ANALYTICS TABLE
+   ============================================================ */
+
+.analytics-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+.analytics-table th {
+    padding: 12px 10px;
+
+    background: #f3f4f6;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.analytics-table td {
+    padding: 11px 10px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+.analytics-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+
+/* ============================================================
+   PERFORMANCE DISTRIBUTION
+   ============================================================ */
+
+.analytics-distribution {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.analytics-distribution-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.analytics-distribution-label {
+    width: 70px;
+
+    flex-shrink: 0;
+
+    font-weight: 700;
+
+    font-size: 13px;
+}
+
+.analytics-distribution-bar {
+    flex: 1;
+
+    height: 24px;
+
+    background: #eef0f3;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.analytics-distribution-fill {
+    height: 100%;
+
+    width: 0;
+
+    border-radius: 20px;
+
+    transition: width 0.5s ease;
+}
+
+.analytics-distribution-count {
+    width: 35px;
+
+    text-align: right;
+
+    font-weight: 700;
+
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   ANALYTICS FOOTER
+   ============================================================ */
+
+.analytics-footer {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-top: 10px;
+
+    padding: 10px 0 25px;
+}
+
+.analytics-footer .secondary {
+    min-width: 190px;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .analytics-cards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .analytics-container {
+        padding: 18px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .analytics-container {
+        padding: 12px;
+    }
+
+
+    .analytics-header {
+        padding: 18px;
+
+        text-align: center;
+
+        justify-content: center;
+    }
+
+    .analytics-header h2 {
+        font-size: 21px;
+    }
+
+
+    .analytics-filter {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .analytics-filter select {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    .analytics-cards {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .analytics-card {
+        min-height: 110px;
+
+        padding: 14px;
+    }
+
+    .analytics-card strong {
+        font-size: 23px;
+    }
+
+
+    .analytics-section {
+        padding: 15px;
+
+        overflow: hidden;
+    }
+
+
+    .analytics-table {
+        min-width: 700px;
+    }
+
+
+    #analyticsPasswordPage .result-box {
+        padding: 28px 20px;
+    }
+
+    #analyticsPasswordPage .result-box button {
+        width: 100%;
+
+        margin: 5px 0;
+    }
+
+}
