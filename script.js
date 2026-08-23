@@ -2545,6 +2545,10 @@ practicalPapers = [];
 
 function goLogin() {
     document
+        .getElementById("leaderboardPage")
+        ?.classList.add("hidden");
+
+    document
 .getElementById("theoryPaperPage")
 ?.classList.add("hidden");
 
@@ -3351,6 +3355,10 @@ function verifyResultStudent(){
 //====================================================
 
 function backToLogin(){
+    // HIDE LEADERBOARD
+document
+    .getElementById("leaderboardPage")
+    ?.classList.add("hidden");
 
     // -----------------------------------------------
     // ADMIN MODE RESET
