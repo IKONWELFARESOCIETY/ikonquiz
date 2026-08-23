@@ -4511,297 +4511,699 @@ MARKSHEET NO TABLE
     color:#000;
     margin-bottom:0;
 }
-/*==================================================
-            EXAM TYPE PAGE
-==================================================*/
+/* =========================================================
+   THEORY + PRACTICAL PAPER SELECTION
+   PREMIUM PAPER SELECT DESIGN
+   Replace old examTypeContainer / examPaperBox CSS
+========================================================= */
 
-.examTypeContainer{
 
-    max-width:900px;
+/* =========================================================
+   PAGE WRAPPER
+========================================================= */
 
-    margin:35px auto;
+#theoryPaperPage,
+#practicalPaperPage {
 
-    background:#fff;
+    width: 100%;
 
-    border-radius:12px;
+    min-height: 65vh;
 
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    display: flex;
 
-    padding:30px;
+    align-items: center;
 
-    border-top:6px solid #0b4f9c;
+    justify-content: center;
 
-}
+    padding: 35px 20px;
 
-/*================ HEADER =================*/
-
-.examTypeHeader{
-
-    text-align:center;
-
-    margin-bottom:30px;
+    box-sizing: border-box;
 
 }
 
 
-.examTypeHeader h2{
+/* =========================================================
+   MAIN CARD
+========================================================= */
 
-    margin:0;
+#theoryPaperPage .examTypeContainer,
+#practicalPaperPage .examTypeContainer {
 
-    color:#0b4f9c;
+    width: 100%;
 
-    font-size:32px;
+    max-width: 560px;
 
-    font-weight:700;
+    margin: 0 auto;
 
-}
+    padding: 40px 38px 32px;
 
-.examTypeHeader h3{
+    box-sizing: border-box;
 
-    margin:8px 0;
+    position: relative;
 
-    color:#222;
+    overflow: hidden;
 
-    font-size:24px;
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #fbfdff 100%
+        );
 
-}
+    border: 1px solid #dce8fb;
 
-.examTypeHeader p{
+    border-radius: 24px;
 
-    margin:5px 0;
+    box-shadow:
+        0 25px 55px rgba(0,72,180,.10),
+        0 8px 20px rgba(0,0,0,.05);
 
-    font-size:16px;
-
-    color:#444;
-
-}
-
-.examTypeHeader b{
-
-    color:#000;
-
-}
-
-/*================ PAPER BOX =================*/
-
-.examPaperBox{
-
-    width:420px;
-
-    max-width:100%;
-
-    margin:0 auto 35px;
-
-    text-align:center;
+    text-align: center;
 
 }
 
-.examPaperBox label{
 
-    display:block;
+/* Top premium strip */
 
-    margin-bottom:10px;
+#theoryPaperPage .examTypeContainer::after,
+#practicalPaperPage .examTypeContainer::after {
 
-    font-size:18px;
+    content: "";
 
-    color:#0b4f9c;
+    position: absolute;
 
-}
+    left: 0;
 
-#examPaperSelect{
+    top: 0;
 
-    width:100%;
+    width: 100%;
 
-    padding:12px;
-
-    font-size:16px;
-
-    font-weight:600;
-
-    border:2px solid #0b4f9c;
-
-    border-radius:6px;
-
-    outline:none;
+    height: 6px;
 
 }
 
-/*================ BUTTONS =================*/
 
-.examTypeButtons{
+#theoryPaperPage .examTypeContainer::after {
 
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:25px;
-
-}
-
-/*================ CARD BUTTON =================*/
-
-.examTypeButtons button{
-
-    border:none;
-
-    border-radius:12px;
-
-    padding:28px 20px;
-
-    cursor:pointer;
-
-    color:#fff;
-
-    transition:.3s;
-
-    box-shadow:0 4px 15px rgba(0,0,0,.15);
+    background:
+        linear-gradient(
+            90deg,
+            #005bea,
+            #008cff,
+            #42a5ff
+        );
 
 }
 
-.examTypeButtons button:hover{
 
-    transform:translateY(-6px);
+#practicalPaperPage .examTypeContainer::after {
 
-}
-
-/*================ ICON =================*/
-
-.examIcon{
-
-    font-size:55px;
-
-    margin-bottom:15px;
+    background:
+        linear-gradient(
+            90deg,
+            #15803d,
+            #16a34a,
+            #4ade80
+        );
 
 }
 
-/*================ THEORY =================*/
 
-.theoryExamBtn{
+/* =========================================================
+   HEADER
+========================================================= */
 
-    background:#0b4f9c;
+#theoryPaperPage .examTypeHeader,
+#practicalPaperPage .examTypeHeader {
 
-}
+    text-align: center;
 
-/*================ PRACTICAL =================*/
-
-.practicalExamBtn{
-
-    background:#28a745;
+    margin-bottom: 30px;
 
 }
 
-.examTypeButtons h3{
 
-    margin:0 0 10px;
+/* Icon circle */
 
-    font-size:23px;
+#theoryPaperPage .examTypeHeader::before,
+#practicalPaperPage .examTypeHeader::before {
 
-    color:#fff;
+    display: flex;
 
-}
+    align-items: center;
 
-.examTypeButtons span{
+    justify-content: center;
 
-    font-size:15px;
+    width: 68px;
 
-    color:#fff;
+    height: 68px;
 
-}
+    margin: 0 auto 17px;
 
-/*================ BACK =================*/
+    border-radius: 50%;
 
-.backLoginBtn{
+    font-size: 31px;
 
-    background:#dc3545;
-
-    color:#fff;
-
-    border:none;
-
-    border-radius:6px;
-
-    padding:12px 25px;
-
-    font-size:16px;
-
-    cursor:pointer;
-
-    transition:.3s;
+    box-shadow:
+        0 10px 25px rgba(0,91,234,.12);
 
 }
 
-.backLoginBtn:hover{
 
-    background:#b52b37;
+#theoryPaperPage .examTypeHeader::before {
 
-}
+    content: "📝";
 
-/*================ MOBILE =================*/
-
-@media(max-width:768px){
-
-.examTypeButtons{
-
-grid-template-columns:1fr;
+    background:
+        linear-gradient(
+            135deg,
+            #eef5ff,
+            #dcecff
+        );
 
 }
 
-.examTypeContainer{
 
-margin:15px;
+#practicalPaperPage .examTypeHeader::before {
 
-padding:20px;
+    content: "💻";
 
-}
-
-.examTypeHeader h2{
-
-font-size:26px;
-
-}
-
-.examTypeHeader h3{
-
-font-size:20px;
+    background:
+        linear-gradient(
+            135deg,
+            #ecfdf3,
+            #dcfce7
+        );
 
 }
 
-.examIcon{
 
-font-size:45px;
+/* =========================================================
+   MAIN TITLE
+========================================================= */
 
-}
+#theoryPaperPage .examTypeHeader h2,
+#practicalPaperPage .examTypeHeader h2 {
 
-}
-.backDashboardBtn{
+    margin: 0;
 
-    margin-top:12px;
+    color: #1e3a8a;
 
-    width:100%;
+    font-size: 29px;
 
-    padding:12px;
+    font-weight: 800;
 
-    border:none;
+    line-height: 1.3;
 
-    border-radius:6px;
-
-    background:#6c757d;
-
-    color:#fff;
-
-    font-size:16px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.3s;
+    letter-spacing: .2px;
 
 }
 
-.backDashboardBtn:hover{
 
-    background:#545b62;
+/* Practical title */
+
+#practicalPaperPage .examTypeHeader h2 {
+
+    color: #166534;
+
+}
+
+
+/* =========================================================
+   SUB TITLE
+========================================================= */
+
+#theoryPaperPage .examTypeHeader h3,
+#practicalPaperPage .examTypeHeader h3 {
+
+    margin: 9px 0 0;
+
+    color: #475569;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   HEADER EXTRA TEXT
+========================================================= */
+
+#theoryPaperPage .examTypeHeader p,
+#practicalPaperPage .examTypeHeader p {
+
+    margin: 8px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   PAPER BOX
+========================================================= */
+
+#theoryPaperPage .examPaperBox,
+#practicalPaperPage .examPaperBox {
+
+    width: 100%;
+
+    max-width: 460px;
+
+    margin: 0 auto;
+
+    text-align: left;
+
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+#theoryPaperPage .examPaperBox label,
+#practicalPaperPage .examPaperBox label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #334155;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   PAPER SELECT
+========================================================= */
+
+#theoryPaperPage #theoryPaperSelect,
+#practicalPaperPage #practicalPaperSelect {
+
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: #f8fbff;
+
+    color: #1f2937;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    appearance: auto;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease,
+        transform .25s ease;
+
+}
+
+
+/* Theory select */
+
+#theoryPaperPage #theoryPaperSelect:hover {
+
+    border-color: #3b82f6;
+
+    background: #ffffff;
+
+}
+
+
+#theoryPaperPage #theoryPaperSelect:focus {
+
+    border-color: #2563eb;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.10);
+
+}
+
+
+/* Practical select */
+
+#practicalPaperPage #practicalPaperSelect:hover {
+
+    border-color: #16a34a;
+
+    background: #ffffff;
+
+}
+
+
+#practicalPaperPage #practicalPaperSelect:focus {
+
+    border-color: #16a34a;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(22,163,74,.10);
+
+}
+
+
+/* =========================================================
+   BUTTON AREA
+========================================================= */
+
+#theoryPaperPage .examTypeButtons,
+#practicalPaperPage .examTypeButtons {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin-top: 22px;
+
+}
+
+
+/* =========================================================
+   THEORY CONTINUE
+========================================================= */
+
+#theoryPaperPage .theoryExamBtn {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #005bea,
+            #008cff
+        );
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 22px rgba(0,91,234,.22);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+#theoryPaperPage .theoryExamBtn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 28px rgba(0,91,234,.30);
+
+}
+
+
+#theoryPaperPage .theoryExamBtn:active {
+
+    transform: scale(.98);
+
+}
+
+
+/* =========================================================
+   PRACTICAL CONTINUE
+========================================================= */
+
+#practicalPaperPage .practicalExamBtn {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #22c55e
+        );
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 22px rgba(22,163,74,.22);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+#practicalPaperPage .practicalExamBtn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 28px rgba(22,163,74,.30);
+
+}
+
+
+#practicalPaperPage .practicalExamBtn:active {
+
+    transform: scale(.98);
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+#theoryPaperPage .backLoginBtn,
+#practicalPaperPage .backLoginBtn {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+}
+
+
+#theoryPaperPage .backLoginBtn:hover,
+#practicalPaperPage .backLoginBtn:hover {
+
+    background: #f8fafc;
+
+    border-color: #94a3b8;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   HELPER TEXT
+========================================================= */
+
+#theoryPaperPage .examTypeContainer > small,
+#practicalPaperPage .examTypeContainer > small {
+
+    display: block;
+
+    margin-top: 17px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   DISABLED STATE
+========================================================= */
+
+#theoryPaperPage button:disabled,
+#practicalPaperPage button:disabled {
+
+    opacity: .55;
+
+    cursor: not-allowed;
+
+    transform: none !important;
+
+    box-shadow: none !important;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #theoryPaperPage,
+    #practicalPaperPage {
+
+        min-height: 60vh;
+
+        padding: 25px 12px;
+
+    }
+
+
+    #theoryPaperPage .examTypeContainer,
+    #practicalPaperPage .examTypeContainer {
+
+        max-width: 100%;
+
+        padding: 32px 20px 25px;
+
+        border-radius: 18px;
+
+    }
+
+
+    #theoryPaperPage .examTypeHeader,
+    #practicalPaperPage .examTypeHeader {
+
+        margin-bottom: 24px;
+
+    }
+
+
+    #theoryPaperPage .examTypeHeader::before,
+    #practicalPaperPage .examTypeHeader::before {
+
+        width: 56px;
+
+        height: 56px;
+
+        font-size: 26px;
+
+        margin-bottom: 13px;
+
+    }
+
+
+    #theoryPaperPage .examTypeHeader h2,
+    #practicalPaperPage .examTypeHeader h2 {
+
+        font-size: 22px;
+
+    }
+
+
+    #theoryPaperPage .examTypeHeader h3,
+    #practicalPaperPage .examTypeHeader h3 {
+
+        font-size: 13px;
+
+    }
+
+
+    #theoryPaperPage #theoryPaperSelect,
+    #practicalPaperPage #practicalPaperSelect {
+
+        height: 48px;
+
+        font-size: 13px;
+
+    }
+
+
+    #theoryPaperPage .theoryExamBtn,
+    #practicalPaperPage .practicalExamBtn {
+
+        min-height: 47px;
+
+        font-size: 14px;
+
+    }
+
+
+    #theoryPaperPage .backLoginBtn,
+    #practicalPaperPage .backLoginBtn {
+
+        min-height: 43px;
+
+    }
 
 }
 /*==================================================
@@ -9984,6 +10386,29 @@ body::after {
 ========================================================= */
 
 #practicalVerificationPage.hidden {
+
+    display: none !important;
+
+}
+/* =========================================================
+   PRACTICAL INSTRUCTION PAGE
+   HIDE QUESTIONS + SUBMIT/BACK UNTIL EXAM STARTS
+========================================================= */
+
+#practicalPage:has(
+    #practicalInstructionPage:not(.hidden)
+)
+.prQuestionSection,
+
+#practicalPage:has(
+    #practicalInstructionPage:not(.hidden)
+)
+.prUploadSection,
+
+#practicalPage:has(
+    #practicalInstructionPage:not(.hidden)
+)
+.practicalButtons {
 
     display: none !important;
 
