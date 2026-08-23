@@ -7630,6 +7630,10 @@ function openAnalyticsPassword(){
 // VERIFY ANALYTICS PASSWORD
 //====================================================
 
+//====================================================
+// VERIFY ANALYTICS PASSWORD
+//====================================================
+
 function verifyAnalyticsPassword(){
 
     const passwordBox =
@@ -7642,13 +7646,30 @@ function verifyAnalyticsPassword(){
     }
 
 
+    //================================================
+    // ADMIN TOKEN CHECK
+    //================================================
+
+    if(!adminToken){
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // GET PASSWORD
+    //================================================
+
     const password =
         passwordBox.value.trim();
 
 
     //================================================
-    // TEMPORARY PASSWORD
-    // Later Google Sheet se fetch hoga
+    // ANALYTICS PASSWORD
     //================================================
 
     const ANALYTICS_PASSWORD =
@@ -7656,10 +7677,13 @@ function verifyAnalyticsPassword(){
 
 
     //================================================
-    // PASSWORD CHECK
+    // PASSWORD VALIDATION
     //================================================
 
-    if(password !== ANALYTICS_PASSWORD){
+    if(
+        password !==
+        ANALYTICS_PASSWORD
+    ){
 
         alert(
             "Invalid Admin Password."
@@ -7670,7 +7694,6 @@ function verifyAnalyticsPassword(){
         passwordBox.focus();
 
         return;
-
     }
 
 
@@ -7720,17 +7743,21 @@ function verifyAnalyticsPassword(){
 // LOAD ANALYTICS
 //====================================================
 
+//====================================================
+// LOAD ANALYTICS
+//====================================================
+
+//====================================================
+// LOAD EXAM ANALYTICS
+//====================================================
+// SOURCE : GOOGLE APPS SCRIPT
+// ACTION : examAnalytics
+//====================================================
+
 function loadAnalytics(){
 
     //================================================
-    // ADMIN SECURITY CHECK
-    //================================================
-    // Analytics access ke liye temporary adminToken
-    // required hai.
-    //
-    // isAdminMode par depend nahi karenge,
-    // kyunki actual security Apps Script token se
-    // verify hoti hai.
+    // ADMIN TOKEN CHECK
     //================================================
 
     if(!adminToken){
@@ -7771,17 +7798,44 @@ function loadAnalytics(){
 
 
     //================================================
-    // FETCH ALL RESULTS
+    // BUILD API URL
     //================================================
 
-    fetch(
+    let url =
         SCRIPT_URL +
-        "?action=allResults" +
+        "?action=examAnalytics" +
         "&adminToken=" +
         encodeURIComponent(
             adminToken
-        )
-    )
+        );
+
+
+    //================================================
+    // PAPER FILTER
+    //================================================
+
+    if(selectedPaper !== ""){
+
+        url +=
+            "&paper=" +
+            encodeURIComponent(
+                selectedPaper
+            );
+
+    }
+
+
+    console.log(
+        "Analytics API:",
+        url
+    );
+
+
+    //================================================
+    // FETCH
+    //================================================
+
+    fetch(url)
 
     .then(function(response){
 
@@ -7801,13 +7855,13 @@ function loadAnalytics(){
     .then(function(data){
 
         console.log(
-            "ANALYTICS DATA:",
+            "EXAM ANALYTICS RESPONSE:",
             data
         );
 
 
         //================================================
-        // AUTHORIZATION
+        // UNAUTHORIZED
         //================================================
 
         if(
@@ -7819,8 +7873,8 @@ function loadAnalytics(){
                 "Admin verification required."
             );
 
-            // Token invalid/expired
             isAdminMode = false;
+
             adminToken = "";
 
             return;
@@ -7837,6 +7891,7 @@ function loadAnalytics(){
         ){
 
             showAnalyticsError(
+                data.message ||
                 "Unable to load examination analytics."
             );
 
@@ -7845,133 +7900,220 @@ function loadAnalytics(){
 
 
         //================================================
-        // RESULTS
+        // PAPER DROPDOWN
         //================================================
-
-        let results =
-            Array.isArray(
-                data.results
-            )
-            ? data.results
-            : [];
-
-
-        //================================================
-        // THEORY RESULTS ONLY
-        //
-        // Practical / Viva / Notes /
-        // Behaviour / Project ignored
-        //================================================
-
-        results =
-            results.filter(
-                function(r){
-
-                    const paper =
-                        String(
-                            r.paperName ||
-                            r.paper ||
-                            ""
-                        )
-                        .trim();
-
-
-                    const lowerPaper =
-                        paper.toLowerCase();
-
-
-                    if(
-                        lowerPaper.includes(
-                            "practical"
-                        ) ||
-
-                        lowerPaper.includes(
-                            "viva"
-                        ) ||
-
-                        lowerPaper.includes(
-                            "notes"
-                        ) ||
-
-                        lowerPaper.includes(
-                            "behaviour"
-                        ) ||
-
-                        lowerPaper.includes(
-                            "project"
-                        )
-                    ){
-
-                        return false;
-                    }
-
-
-                    return true;
-
-                }
-            );
-
-
-        //================================================
-        // CREATE PAPER LIST
-        //================================================
-
-        populateAnalyticsPapers(
-            results
-        );
-
-
-        //================================================
-        // FILTER PAPER
-        //================================================
-
-        let filteredResults =
-            results;
-
 
         if(
-            selectedPaper !== ""
+            Array.isArray(
+                data.papers
+            )
         ){
 
-            filteredResults =
-                results.filter(
-                    function(r){
+            const paperData =
+                data.papers.map(
+                    function(paper){
 
-                        const paper =
-                            String(
-                                r.paperName ||
-                                r.paper ||
-                                ""
-                            )
-                            .trim();
-
-
-                        return (
-                            paper.toLowerCase() ===
-                            selectedPaper.toLowerCase()
-                        );
+                        return {
+                            paper: paper
+                        };
 
                     }
                 );
+
+
+            populateAnalyticsPapers(
+                paperData
+            );
 
         }
 
 
         //================================================
-        // UPDATE ANALYTICS
+        // SUMMARY
         //================================================
 
-        calculateAnalytics(
-            filteredResults,
-            results
+        const summary =
+            data.summary || {};
+
+
+        updateAnalyticsCards(
+
+            Number(
+                summary.totalStudents
+            ) || 0,
+
+            Number(
+                summary.pass
+            ) || 0,
+
+            Number(
+                summary.fail
+            ) || 0,
+
+            parseFloat(
+                summary.passPercentage
+            ) || 0,
+
+            parseFloat(
+                summary.averageMarks
+            ) || 0,
+
+            Number(
+                summary.highestMarks
+            ) || 0,
+
+            Number(
+                summary.lowestMarks
+            ) || 0
+
+        );
+
+
+        //================================================
+        // TOP PERFORMERS
+        //================================================
+
+        const topPerformers =
+            Array.isArray(
+                data.topPerformers
+            )
+            ?
+            data.topPerformers
+            :
+            [];
+
+
+        const topData =
+            topPerformers.map(
+                function(r){
+
+                    return {
+
+                        regNo:
+                            r.regNo || "",
+
+                        studentName:
+                            r.studentName || "",
+
+                        paper:
+                            r.paper || "",
+
+                        marks:
+                            Number(
+                                r.marks
+                            ) || 0,
+
+                        percentage:
+                            parseFloat(
+                                r.percentage
+                            ) || 0,
+
+                        result:
+                            r.result || ""
+
+                    };
+
+                }
+            );
+
+
+        renderTopPerformers(
+            topData
+        );
+
+
+        //================================================
+        // STUDENTS REQUIRING ATTENTION
+        //================================================
+
+        const attention =
+            Array.isArray(
+                data.attention
+            )
+            ?
+            data.attention
+            :
+            [];
+
+
+        const attentionData =
+            attention.map(
+                function(r){
+
+                    return {
+
+                        regNo:
+                            r.regNo || "",
+
+                        studentName:
+                            r.studentName || "",
+
+                        paper:
+                            r.paper || "",
+
+                        marks:
+                            Number(
+                                r.marks
+                            ) || 0,
+
+                        percentage:
+                            parseFloat(
+                                r.percentage
+                            ) || 0,
+
+                        result:
+                            r.result || ""
+
+                    };
+
+                }
+            );
+
+
+        renderServerAttention(
+            attentionData
+        );
+
+
+        //================================================
+        // PAPER COMPARISON
+        //================================================
+
+        renderServerPaperComparison(
+            Array.isArray(
+                data.paperComparison
+            )
+            ?
+            data.paperComparison
+            :
+            []
+        );
+
+
+        //================================================
+        // PERFORMANCE DISTRIBUTION
+        //================================================
+
+        renderServerPerformanceDistribution(
+            data.distribution || {}
+        );
+
+
+        //================================================
+        // SELECTED PAPER INFO
+        //================================================
+
+        console.log(
+            "Selected Paper:",
+            data.selectedPaper || "ALL"
+        );
+
+
+        console.log(
+            "Analytics Loaded Successfully"
         );
 
     })
-
-
-    //================================================
-    // ERROR HANDLING
-    //================================================
 
     .catch(function(error){
 
@@ -7979,7 +8121,6 @@ function loadAnalytics(){
             "Analytics Error:",
             error
         );
-
 
         showAnalyticsError(
             "Unable to connect with server."
@@ -9674,5 +9815,461 @@ function escapeAnalyticsHTML(
             /'/g,
             "&#039;"
         );
+
+}
+//====================================================
+// SERVER PAPER COMPARISON
+//====================================================
+
+function renderServerPaperComparison(
+    results
+){
+
+    const body =
+        document.getElementById(
+            "analyticsPaperComparison"
+        );
+
+    if(!body){
+        return;
+    }
+
+
+    body.innerHTML = "";
+
+
+    //================================================
+    // EMPTY
+    //================================================
+
+    if(
+        !Array.isArray(results) ||
+        results.length === 0
+    ){
+
+        body.innerHTML = `
+            <tr>
+                <td
+                    colspan="5"
+                    style="
+                        text-align:center;
+                        padding:25px;
+                    "
+                >
+                    No paper data available
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    //================================================
+    // SORT
+    //================================================
+
+    results
+        .slice()
+        .sort(
+            function(a,b){
+
+                return (
+                    parseFloat(
+                        b.averagePercentage
+                    ) || 0
+                )
+                -
+                (
+                    parseFloat(
+                        a.averagePercentage
+                    ) || 0
+                );
+
+            }
+        )
+        .forEach(
+            function(r){
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${
+                                escapeAnalyticsHTML(
+                                    r.paper || ""
+                                )
+                            }
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${
+                            Number(
+                                r.students
+                            ) || 0
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            (
+                                parseFloat(
+                                    r.averagePercentage
+                                ) || 0
+                            ).toFixed(1)
+                        }%
+                    </td>
+
+                    <td>
+                        ${
+                            (
+                                parseFloat(
+                                    r.passPercentage
+                                ) || 0
+                            ).toFixed(1)
+                        }%
+                    </td>
+
+                    <td>
+                        ${
+                            Number(
+                                r.highest
+                            ) || 0
+                        }
+                    </td>
+
+                `;
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+}
+//====================================================
+// SERVER PAPER COMPARISON
+//====================================================
+
+function renderServerPaperComparison(
+    results
+){
+
+    const body =
+        document.getElementById(
+            "analyticsPaperComparison"
+        );
+
+    if(!body){
+        return;
+    }
+
+
+    body.innerHTML = "";
+
+
+    //================================================
+    // EMPTY
+    //================================================
+
+    if(
+        !Array.isArray(results) ||
+        results.length === 0
+    ){
+
+        body.innerHTML = `
+            <tr>
+                <td
+                    colspan="5"
+                    style="
+                        text-align:center;
+                        padding:25px;
+                    "
+                >
+                    No paper data available
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    //================================================
+    // SORT
+    //================================================
+
+    results
+        .slice()
+        .sort(
+            function(a,b){
+
+                return (
+                    parseFloat(
+                        b.averagePercentage
+                    ) || 0
+                )
+                -
+                (
+                    parseFloat(
+                        a.averagePercentage
+                    ) || 0
+                );
+
+            }
+        )
+        .forEach(
+            function(r){
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${
+                                escapeAnalyticsHTML(
+                                    r.paper || ""
+                                )
+                            }
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${
+                            Number(
+                                r.students
+                            ) || 0
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            (
+                                parseFloat(
+                                    r.averagePercentage
+                                ) || 0
+                            ).toFixed(1)
+                        }%
+                    </td>
+
+                    <td>
+                        ${
+                            (
+                                parseFloat(
+                                    r.passPercentage
+                                ) || 0
+                            ).toFixed(1)
+                        }%
+                    </td>
+
+                    <td>
+                        ${
+                            Number(
+                                r.highest
+                            ) || 0
+                        }
+                    </td>
+
+                `;
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+}
+//====================================================
+// SERVER PERFORMANCE DISTRIBUTION
+//====================================================
+
+function renderServerPerformanceDistribution(
+    distribution
+){
+
+    const box =
+        document.getElementById(
+            "analyticsDistribution"
+        );
+
+    if(!box){
+        return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    const ranges = [
+
+        {
+            label:"0–39%",
+            key:"below40"
+        },
+
+        {
+            label:"40–49%",
+            key:"range40to49"
+        },
+
+        {
+            label:"50–59%",
+            key:"range50to59"
+        },
+
+        {
+            label:"60–69%",
+            key:"range60to69"
+        },
+
+        {
+            label:"70–79%",
+            key:"range70to79"
+        },
+
+        {
+            label:"80–89%",
+            key:"range80to89"
+        },
+
+        {
+            label:"90–100%",
+            key:"range90to100"
+        }
+
+    ];
+
+
+    //================================================
+    // TOTAL
+    //================================================
+
+    let total = 0;
+
+
+    ranges.forEach(
+        function(range){
+
+            total +=
+                Number(
+                    distribution[
+                        range.key
+                    ]
+                ) || 0;
+
+        }
+    );
+
+
+    //================================================
+    // DISPLAY
+    //================================================
+
+    ranges.forEach(
+        function(range){
+
+            const count =
+                Number(
+                    distribution[
+                        range.key
+                    ]
+                ) || 0;
+
+
+            const percent =
+                total > 0
+                ?
+                (
+                    count /
+                    total *
+                    100
+                )
+                :
+                0;
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "analytics-distribution-item";
+
+
+            item.innerHTML = `
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:6px;
+                    "
+                >
+
+                    <strong>
+                        ${range.label}
+                    </strong>
+
+                    <span>
+                        ${count} Students
+                    </span>
+
+                </div>
+
+
+                <div
+                    style="
+                        width:100%;
+                        height:10px;
+                        background:#e2e8f0;
+                        border-radius:20px;
+                        overflow:hidden;
+                    "
+                >
+
+                    <div
+                        style="
+                            width:${percent}%;
+                            height:100%;
+                            background:linear-gradient(
+                                90deg,
+                                #2563eb,
+                                #0ea5e9
+                            );
+                            border-radius:20px;
+                            transition:width .4s ease;
+                        "
+                    ></div>
+
+                </div>
+
+            `;
+
+
+            box.appendChild(
+                item
+            );
+
+        }
+    );
 
 }
