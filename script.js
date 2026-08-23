@@ -3,7 +3,6 @@
 // script.js
 // PART 1A : CONFIGURATION + GLOBAL VARIABLES
 //====================================================
-
 //====================================================
 // GOOGLE APPS SCRIPT URL
 //====================================================
@@ -42,12 +41,11 @@ let currentQuestion = 0;
 // PRACTICAL TIMER
 //====================================================
 
-let practicalDuration = 15;
+let practicalDuration = 30;
 
-let practicalTotalTime = 15 * 60;
+let practicalTotalTime = practicalDuration * 60;
 
 let practicalTimer = null;
-
 
 //====================================================
 // EXAM STATE
