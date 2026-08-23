@@ -21,6 +21,7 @@ let theoryPapers = [];
 let practicalPapers = [];
 let examMode = "";
 let studentId = "";
+let verificationCode = "";
 let courseName = "";
 let totalMarks = "";
 let passingMarks = "";
@@ -471,47 +472,89 @@ function shuffleQuestions(array) {
 // LOGIN SYSTEM
 //====================================================
 
-function startTest() {
+function startTest(){
 
-    //----------------------------------
-    // Read Input
-    //----------------------------------
+    //================================================
+    // READ INPUT
+    //================================================
 
-    studentName = document
-        .getElementById("studentName")
+    studentName =
+        document
+        .getElementById(
+            "studentName"
+        )
         .value
         .trim();
 
-    regNo = document
-        .getElementById("regNo")
+
+    regNo =
+        document
+        .getElementById(
+            "regNo"
+        )
         .value
         .trim();
 
-    //----------------------------------
-    // Validation
-    //----------------------------------
 
-    if (studentName === "" || regNo === "") {
+    studentId =
+        document
+        .getElementById(
+            "studentId"
+        )
+        .value
+        .trim();
 
-        alert("Please enter Name and Registration Number.");
+
+    const verificationCode =
+        document
+        .getElementById(
+            "verificationCode"
+        )
+        .value
+        .trim();
+
+
+    //================================================
+    // VALIDATION
+    //================================================
+
+    if(
+        studentName === "" ||
+        regNo === "" ||
+        studentId === "" ||
+        verificationCode === ""
+    ){
+
+        alert(
+            "Please enter all verification details."
+        );
 
         return;
 
     }
 
-    //----------------------------------
-    // Login Button
-    //----------------------------------
 
-    const loginBtn = document.getElementById("loginBtn");
+    //================================================
+    // LOGIN BUTTON
+    //================================================
 
-    loginBtn.disabled = true;
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
 
-    loginBtn.innerHTML = "Please Wait...";
 
-    //----------------------------------
-    // Login API
-    //----------------------------------
+    loginBtn.disabled =
+        true;
+
+
+    loginBtn.innerHTML =
+        "Verifying...";
+
+
+    //================================================
+    // LOGIN API
+    //================================================
 
     fetch(
 
@@ -519,17 +562,35 @@ function startTest() {
 
         "?action=login" +
 
-        "&regNo=" + encodeURIComponent(regNo) +
+        "&regNo=" +
+        encodeURIComponent(
+            regNo
+        ) +
 
-        "&name=" + encodeURIComponent(studentName)
+        "&name=" +
+        encodeURIComponent(
+            studentName
+        ) +
+
+        "&studentId=" +
+        encodeURIComponent(
+            studentId
+        ) +
+
+        "&verificationCode=" +
+        encodeURIComponent(
+            verificationCode
+        )
 
     )
 
-    .then(function (res) {
+    .then(function(res){
 
-        if (!res.ok) {
+        if(!res.ok){
 
-            throw new Error("Server Error");
+            throw new Error(
+                "Server Error"
+            );
 
         }
 
@@ -537,75 +598,142 @@ function startTest() {
 
     })
 
-    .then(function (data) {
+    .then(function(data){
 
-        console.log("Login Response :", data);
+        console.log(
+            "Login Response:",
+            data
+        );
 
-        loginBtn.disabled = false;
 
-        loginBtn.innerHTML = "Start Test";
+        loginBtn.disabled =
+            false;
 
-        //----------------------------------
-        // Valid Student
-        //----------------------------------
 
-        if (data.status === "VALID") {
+        loginBtn.innerHTML =
+            "Start Test";
 
-            studentName = data.name;
 
-            regNo = data.regNo;
-            studentId = data.idNo;
-         courseName = data.course;
-        totalMarks = data.totalMarks;
-        passingMarks = data.passingMarks;
-            theoryPapers = data.theoryPapers || [];
-practicalPapers = data.practicalPapers || [];
+        //============================================
+        // VALID
+        //============================================
+
+        if(
+            data.status ===
+            "VALID"
+        ){
+
+            studentName =
+                data.name;
+
+
+            regNo =
+                data.regNo;
+
+
+            studentId =
+                data.idNo;
+
+
+            courseName =
+                data.course;
+
+
+            totalMarks =
+                data.totalMarks;
+
+
+            passingMarks =
+                data.passingMarks;
+
+
+            theoryPapers =
+                data.theoryPapers ||
+                [];
+
+
+            practicalPapers =
+                data.practicalPapers ||
+                [];
+
+
+            //========================================
+            // NO AVAILABLE EXAMS
+            //========================================
 
             if(
-    theoryPapers.length===0 &&
-    practicalPapers.length===0
-){
 
-    alert(
-        "All assigned examinations have already been completed."
-    );
+                theoryPapers.length === 0 &&
 
-    return;
+                practicalPapers.length === 0
 
-}
-           openExamTypePage();
+            ){
 
-return;
+                alert(
+                    "All assigned examinations have already been completed."
+                );
+
+                return;
+
+            }
+
+
+            //========================================
+            // OPEN EXAM TYPE
+            //========================================
+
+            openExamTypePage();
+
+            return;
+
         }
 
-        //----------------------------------
-        // Already Submitted
-        //----------------------------------
 
-        if(data.status==="ALL_SUBMITTED"){
+        //============================================
+        // ALL SUBMITTED
+        //============================================
 
-    alert("All examinations have already been completed.");
+        if(
+            data.status ===
+            "ALL_SUBMITTED"
+        ){
 
-    return;
+            alert(
+                "All examinations have already been completed."
+            );
 
-}
-        //----------------------------------
-        // Invalid Login
-        //----------------------------------
+            return;
 
-        alert("Invalid Registration Number or Student Name.");
+        }
+
+
+        //============================================
+        // INVALID
+        //============================================
+
+        alert(
+            "Invalid Registration Number, Student ID or Verification Code."
+        );
 
     })
 
-    .catch(function (err) {
+    .catch(function(err){
 
-        console.log(err);
+        console.error(
+            err
+        );
 
-        loginBtn.disabled = false;
+        loginBtn.disabled =
+            false;
 
-        loginBtn.innerHTML = "Start Test";
 
-        alert("Unable to connect with server.");
+        loginBtn.innerHTML =
+            "Start Test";
+
+
+        alert(
+            "Unable to connect with server."
+        );
 
     });
 
@@ -710,132 +838,129 @@ function continueTheoryExam(){
 // OPEN PRACTICAL PAGE
 //====================================================
 
+//====================================================
+// OPEN PRACTICAL VERIFICATION
+//====================================================
+
 function continuePracticalExam(){
 
     const select =
-        document.getElementById("practicalPaperSelect");
+        document.getElementById(
+            "practicalPaperSelect"
+        );
 
-    if(select.value==""){
 
-        alert("Please Select Practical Paper");
+    if(
+        !select ||
+        select.value === ""
+    ){
+
+        alert(
+            "Please Select Practical Paper"
+        );
 
         return;
 
     }
 
-    paperName = select.value;
 
-    examMode = "PRACTICAL";
+    //================================================
+    // SAVE PAPER
+    //================================================
 
-
-    //---------------------------------------
-    // Hide Practical Paper Selection
-    //---------------------------------------
-
-    document
-        .getElementById("practicalPaperPage")
-        ?.classList.add("hidden");
+    paperName =
+        select.value;
 
 
-    //---------------------------------------
-    // Show Practical Page
-    //---------------------------------------
-
-    document
-        .getElementById("practicalPage")
-        ?.classList.remove("hidden");
+    examMode =
+        "PRACTICAL";
 
 
-    //---------------------------------------
-    // Student Details
-    //---------------------------------------
-
-    document.getElementById("prStudentName").textContent =
-        studentName;
-
-    document.getElementById("prRegNo").textContent =
-        regNo;
-
-    document.getElementById("prCourse").textContent =
-        courseName;
-
-    document.getElementById("prPaper").textContent =
-        paperName;
-
-
-    //---------------------------------------
-    // Exam Date
-    //---------------------------------------
-
-    const examDate =
-        document.getElementById("testDate");
-
-    if(examDate){
-
-        document.getElementById("prExamDate").textContent =
-            examDate.textContent.replace(
-                "📅 Exam Date : ",
-                ""
-            );
-
-    }
-
-
-    //---------------------------------------
-    // Show Practical Instructions
-    //---------------------------------------
+    //================================================
+    // HIDE PRACTICAL PAPER PAGE
+    //================================================
 
     document
-        .getElementById("practicalInstructionPage")
-        ?.classList.remove("hidden");
-
-
-    //---------------------------------------
-    // Hide Practical Questions
-    //---------------------------------------
-
-    document
-        .getElementById("practicalQuestionArea")
-        ?.classList.add("hidden");
-
-
-    //---------------------------------------
-    // Reset Instruction Checkbox
-    //---------------------------------------
-
-    const check =
-        document.getElementById(
-            "practicalInstructionCheck"
+        .getElementById(
+            "practicalPaperPage"
+        )
+        ?.classList.add(
+            "hidden"
         );
 
-    if(check){
 
-        check.checked = false;
+    //================================================
+    // HIDE PRACTICAL PAGE
+    //================================================
 
-    }
-
-
-    //---------------------------------------
-    // Disable Start Button
-    //---------------------------------------
-
-    const startBtn =
-        document.getElementById(
-            "startPracticalBtn"
+    document
+        .getElementById(
+            "practicalPage"
+        )
+        ?.classList.add(
+            "hidden"
         );
 
-    if(startBtn){
 
-        startBtn.disabled = true;
+    //================================================
+    // SHOW VERIFICATION PAGE
+    //================================================
+
+    document
+        .getElementById(
+            "practicalVerificationPage"
+        )
+        ?.classList.remove(
+            "hidden"
+        );
+
+
+    //================================================
+    // CLEAR OLD VALUES
+    //================================================
+
+    const idBox =
+        document.getElementById(
+            "practicalStudentIdInput"
+        );
+
+
+    const codeBox =
+        document.getElementById(
+            "practicalVerificationCodeInput"
+        );
+
+
+    if(idBox){
+
+        idBox.value = "";
 
     }
 
 
-    //---------------------------------------
-    // Timer Stop
-    //---------------------------------------
+    if(codeBox){
 
-    stopPracticalTimer();
+        codeBox.value = "";
+
+    }
+
+
+    //================================================
+    // FOCUS ID
+    //================================================
+
+    setTimeout(
+        function(){
+
+            if(idBox){
+
+                idBox.focus();
+
+            }
+
+        },
+        100
+    );
 
 }
 //====================================================
@@ -2490,6 +2615,8 @@ function resetExam() {
     studentName = "";
     regNo = "";
     paperName = "";
+    studentId = "";
+verificationCode = "";
   theoryPapers = [];
 practicalPapers = [];
 
@@ -6786,6 +6913,11 @@ function backToExamType(){
     document
         .getElementById("verificationPage")
         ?.classList.add("hidden");
+        document
+    .getElementById(
+        "practicalVerificationPage"
+    )
+    ?.classList.add("hidden");
 
     document
         .getElementById("instructionPage")
@@ -6815,6 +6947,30 @@ function backToExamType(){
     if(idBox){
         idBox.value = "";
     }
+    // Clear Practical Verification Student ID
+const practicalIdBox =
+    document.getElementById(
+        "practicalStudentIdInput"
+    );
+
+if(practicalIdBox){
+
+    practicalIdBox.value = "";
+
+}
+
+
+// Clear Practical Verification Code
+const practicalCodeBox =
+    document.getElementById(
+        "practicalVerificationCodeInput"
+    );
+
+if(practicalCodeBox){
+
+    practicalCodeBox.value = "";
+
+}
 
     // Clear Practical Questions
     const area =
@@ -11136,6 +11292,394 @@ function exportResultListExcelWithPassword(){
         alert(
             "Unable to verify Admin Password."
         );
+
+    });
+
+}
+//====================================================
+// VERIFY PRACTICAL STUDENT
+//====================================================
+
+function verifyPracticalStudent(){
+
+    const idBox =
+        document.getElementById(
+            "practicalStudentIdInput"
+        );
+
+
+    const codeBox =
+        document.getElementById(
+            "practicalVerificationCodeInput"
+        );
+
+
+    const verifyBtn =
+        document.getElementById(
+            "verifyPracticalBtn"
+        );
+
+
+    if(
+        !idBox ||
+        !codeBox
+    ){
+
+        return;
+
+    }
+
+
+    const enteredStudentId =
+        idBox.value
+            .trim()
+            .toUpperCase();
+
+
+    const enteredCode =
+        codeBox.value
+            .trim()
+            .toUpperCase();
+
+
+    //================================================
+    // VALIDATION
+    //================================================
+
+    if(
+        enteredStudentId === "" ||
+        enteredCode === ""
+    ){
+
+        alert(
+            "Please enter Student ID and Verification Code."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // BUTTON
+    //================================================
+
+    if(verifyBtn){
+
+        verifyBtn.disabled =
+            true;
+
+        verifyBtn.innerHTML =
+            "Verifying...";
+
+    }
+
+
+    //================================================
+    // VERIFY WITH APPS SCRIPT
+    //================================================
+
+    fetch(
+
+        SCRIPT_URL +
+
+        "?action=login" +
+
+        "&regNo=" +
+        encodeURIComponent(
+            regNo
+        ) +
+
+        "&name=" +
+        encodeURIComponent(
+            studentName
+        ) +
+
+        "&studentId=" +
+        encodeURIComponent(
+            enteredStudentId
+        ) +
+
+        "&verificationCode=" +
+        encodeURIComponent(
+            enteredCode
+        )
+
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "PRACTICAL VERIFICATION:",
+            data
+        );
+
+
+        //================================================
+        // VALID
+        //================================================
+
+        if(
+            data.status ===
+            "VALID"
+        ){
+
+            //============================================
+            // SAVE VERIFIED ID / CODE
+            //============================================
+
+            studentId =
+                data.idNo;
+
+
+            verificationCode =
+                enteredCode;
+
+
+            //============================================
+            // SHOW PRACTICAL PAGE
+            //============================================
+
+            document
+                .getElementById(
+                    "practicalVerificationPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            document
+                .getElementById(
+                    "practicalPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            //============================================
+            // STUDENT DETAILS
+            //============================================
+
+            const nameBox =
+                document.getElementById(
+                    "prStudentName"
+                );
+
+
+            const regBox =
+                document.getElementById(
+                    "prRegNo"
+                );
+
+
+            const courseBox =
+                document.getElementById(
+                    "prCourse"
+                );
+
+
+            const paperBox =
+                document.getElementById(
+                    "prPaper"
+                );
+
+
+            if(nameBox){
+
+                nameBox.textContent =
+                    studentName;
+
+            }
+
+
+            if(regBox){
+
+                regBox.textContent =
+                    regNo;
+
+            }
+
+
+            if(courseBox){
+
+                courseBox.textContent =
+                    courseName;
+
+            }
+
+
+            if(paperBox){
+
+                paperBox.textContent =
+                    paperName;
+
+            }
+
+
+            //============================================
+            // EXAM DATE
+            //============================================
+
+            const examDate =
+                document.getElementById(
+                    "testDate"
+                );
+
+
+            if(
+                examDate &&
+                document.getElementById(
+                    "prExamDate"
+                )
+            ){
+
+                document
+                    .getElementById(
+                        "prExamDate"
+                    )
+                    .textContent =
+                    examDate.textContent.replace(
+                        "📅 Exam Date : ",
+                        ""
+                    );
+
+            }
+
+
+            //============================================
+            // SHOW INSTRUCTIONS
+            //============================================
+
+            document
+                .getElementById(
+                    "practicalInstructionPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            //============================================
+            // HIDE QUESTIONS
+            //============================================
+
+            document
+                .getElementById(
+                    "practicalQuestionArea"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            //============================================
+            // RESET CHECKBOX
+            //============================================
+
+            const check =
+                document.getElementById(
+                    "practicalInstructionCheck"
+                );
+
+
+            if(check){
+
+                check.checked =
+                    false;
+
+            }
+
+
+            //============================================
+            // DISABLE START BUTTON
+            //============================================
+
+            const startBtn =
+                document.getElementById(
+                    "startPracticalBtn"
+                );
+
+
+            if(startBtn){
+
+                startBtn.disabled =
+                    true;
+
+            }
+
+
+            //============================================
+            // TIMER STOP
+            //============================================
+
+            stopPracticalTimer();
+
+
+            return;
+
+        }
+
+
+        //================================================
+        // INVALID
+        //================================================
+
+        alert(
+            "Invalid Student ID or Verification Code."
+        );
+
+
+        if(idBox){
+
+            idBox.focus();
+
+        }
+
+    })
+
+
+    .catch(function(error){
+
+        console.error(
+            "Practical Verification Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to verify student."
+        );
+
+    })
+
+
+    .finally(function(){
+
+        if(verifyBtn){
+
+            verifyBtn.disabled =
+                false;
+
+            verifyBtn.innerHTML =
+                "Verify & Continue";
+
+        }
 
     });
 
