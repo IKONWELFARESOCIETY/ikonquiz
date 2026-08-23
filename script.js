@@ -5965,6 +5965,137 @@ function searchResult(){
 
 }
 //====================================================
+// LEADERBOARD
+//====================================================
+
+function openLeaderboard(){
+
+    //------------------------------------------------
+    // HIDE RESULT LIST
+    //------------------------------------------------
+
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+
+    //------------------------------------------------
+    // SHOW LEADERBOARD
+    //------------------------------------------------
+
+    document
+        .getElementById("leaderboardPage")
+        ?.classList.remove("hidden");
+
+
+    //------------------------------------------------
+    // RESET
+    //------------------------------------------------
+
+    const select =
+        document.getElementById(
+            "leaderboardPaperSelect"
+        );
+
+    if(select){
+
+        select.innerHTML = `
+
+            <option value="">
+                -- Select Paper --
+            </option>
+
+        `;
+
+    }
+
+
+    //------------------------------------------------
+    // LOAD PAPERS
+    //------------------------------------------------
+
+    fetch(
+        SCRIPT_URL +
+        "?action=leaderboard"
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "LEADERBOARD PAPERS:",
+            data
+        );
+
+
+        if(
+            data.status !==
+            "SUCCESS"
+        ){
+
+            alert(
+                "Unable to load Leaderboard."
+            );
+
+            return;
+
+        }
+
+
+        //------------------------------------------------
+        // ADD PAPERS
+        //------------------------------------------------
+
+        if(
+            select &&
+            data.papers
+        ){
+
+            data.papers.forEach(
+                function(paper){
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        paper;
+
+                    option.textContent =
+                        paper;
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+        }
+
+    })
+
+    .catch(function(error){
+
+        console.log(
+            "Leaderboard Error:",
+            error
+        );
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    });
+
+}
+//====================================================
 // PRINT MARKSHEET
 //====================================================
 
@@ -6796,5 +6927,399 @@ function openPracticalPaperPage(){
         alert("Unable to check Practical Status.");
 
     });
+
+}
+//====================================================
+// LOAD PAPER WISE LEADERBOARD
+//====================================================
+
+function loadLeaderboard(){
+
+    const select =
+        document.getElementById(
+            "leaderboardPaperSelect"
+        );
+
+    if(!select){
+        return;
+    }
+
+
+    const paper =
+        select.value.trim();
+
+
+    //------------------------------------------------
+    // RESET
+    //------------------------------------------------
+
+    const table =
+        document.getElementById(
+            "leaderboardTableContainer"
+        );
+
+    const empty =
+        document.getElementById(
+            "leaderboardEmpty"
+        );
+
+    const loading =
+        document.getElementById(
+            "leaderboardLoading"
+        );
+
+    const body =
+        document.getElementById(
+            "leaderboardTableBody"
+        );
+
+
+    if(table){
+        table.classList.add("hidden");
+    }
+
+    if(empty){
+        empty.classList.add("hidden");
+    }
+
+    if(body){
+        body.innerHTML = "";
+    }
+
+
+    //------------------------------------------------
+    // PAPER NOT SELECTED
+    //------------------------------------------------
+
+    if(paper === ""){
+
+        return;
+
+    }
+
+
+    //------------------------------------------------
+    // SHOW LOADING
+    //------------------------------------------------
+
+    if(loading){
+
+        loading.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    //------------------------------------------------
+    // FETCH
+    //------------------------------------------------
+
+    fetch(
+
+        SCRIPT_URL +
+        "?action=leaderboard" +
+        "&paper=" +
+        encodeURIComponent(
+            paper
+        )
+
+    )
+
+    .then(function(res){
+
+        return res.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "LEADERBOARD:",
+            data
+        );
+
+
+        //------------------------------------------------
+        // HIDE LOADING
+        //------------------------------------------------
+
+        if(loading){
+
+            loading.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        //------------------------------------------------
+        // ERROR
+        //------------------------------------------------
+
+        if(
+            data.status !==
+            "SUCCESS"
+        ){
+
+            alert(
+                "Unable to load Leaderboard."
+            );
+
+            return;
+
+        }
+
+
+        //------------------------------------------------
+        // NO RESULTS
+        //------------------------------------------------
+
+        if(
+            !data.results ||
+            data.results.length === 0
+        ){
+
+            if(empty){
+
+                empty.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        //------------------------------------------------
+        // CREATE ROWS
+        //------------------------------------------------
+
+        data.results.forEach(
+            function(r){
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                //------------------------------------------------
+                // RANK DESIGN
+                //------------------------------------------------
+
+                let rankHTML =
+                    r.rank;
+
+
+                if(r.rank === 1){
+
+                    rankHTML =
+                        "🥇 1";
+
+                }
+                else if(r.rank === 2){
+
+                    rankHTML =
+                        "🥈 2";
+
+                }
+                else if(r.rank === 3){
+
+                    rankHTML =
+                        "🥉 3";
+
+                }
+
+
+                //------------------------------------------------
+                // PERCENTAGE
+                //------------------------------------------------
+
+                let percentage =
+                    parseFloat(
+                        r.percentage
+                    );
+
+                if(
+                    !isNaN(percentage)
+                ){
+
+                    percentage =
+                        percentage.toFixed(2) +
+                        "%";
+
+                }
+                else{
+
+                    percentage =
+                        r.percentage ||
+                        "0%";
+
+                }
+
+
+                //------------------------------------------------
+                // ROW
+                //------------------------------------------------
+
+                tr.innerHTML = `
+
+                    <td class="rank-cell">
+                        ${rankHTML}
+                    </td>
+
+                    <td class="leader-name">
+                        ${escapeLeaderboardHTML(
+                            r.studentName
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeLeaderboardHTML(
+                            r.course
+                        )}
+                    </td>
+
+                    <td class="leader-marks">
+                        ${r.totalMarks}
+                    </td>
+
+                    <td class="leader-percentage">
+                        ${percentage}
+                    </td>
+
+                    <td>
+                        ${escapeLeaderboardHTML(
+                            r.grade
+                        )}
+                    </td>
+
+                `;
+
+
+                //------------------------------------------------
+                // TOP 3 CLASS
+                //------------------------------------------------
+
+                if(r.rank === 1){
+
+                    tr.classList.add(
+                        "leaderboard-first"
+                    );
+
+                }
+                else if(r.rank === 2){
+
+                    tr.classList.add(
+                        "leaderboard-second"
+                    );
+
+                }
+                else if(r.rank === 3){
+
+                    tr.classList.add(
+                        "leaderboard-third"
+                    );
+
+                }
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+
+        //------------------------------------------------
+        // SHOW TABLE
+        //------------------------------------------------
+
+        if(table){
+
+            table.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    })
+
+    .catch(function(error){
+
+        console.log(
+            "Leaderboard Error:",
+            error
+        );
+
+
+        if(loading){
+
+            loading.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        if(empty){
+
+            empty.classList.remove(
+                "hidden"
+            );
+
+            empty.innerHTML =
+                "Unable to connect with server.";
+
+        }
+
+    });
+
+}
+//====================================================
+// SAFE LEADERBOARD HTML
+//====================================================
+
+function escapeLeaderboardHTML(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
