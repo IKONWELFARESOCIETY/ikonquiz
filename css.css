@@ -8131,16 +8131,9 @@ body::after {
     transform:translateY(-2px);
 
 }
-/* Leaderboard ko left corner me fix karo */
-#studentResultPage{
-    position:relative !important;
-}
-
-#studentResultPage .leaderboardBtn{
-    position:absolute !important;
-    left:30px !important;
-    bottom:25px !important;
-
-    margin:0 !important;
-    z-index:10 !important;
+#studentResultPage .result-footer .leaderboardBtn{
+    position:static !important;
+    display:inline-flex !important;
+    vertical-align:middle !important;
+    margin:0 10px 0 0 !important;
 }
