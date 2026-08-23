@@ -7725,20 +7725,6 @@ function loadAnalytics(){
     //================================================
     // ADMIN SECURITY CHECK
     //================================================
-
-    if(isAdminMode !== true){
-
-        console.warn(
-            "Analytics access denied."
-        );//====================================================
-// LOAD ANALYTICS
-//====================================================
-
-function loadAnalytics(){
-
-    //================================================
-    // ADMIN SECURITY CHECK
-    //================================================
     // Analytics access ke liye temporary adminToken
     // required hai.
     //
