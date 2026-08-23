@@ -7677,3 +7677,409 @@ body::after {
     background: transparent !important;
     background-image: none !important;
 }
+/* ==================================================
+   LEADERBOARD BUTTON
+================================================== */
+
+.leaderboardBtn{
+
+    background:
+        linear-gradient(
+            135deg,
+            #f59e0b,
+            #d97706
+        );
+
+    color:#ffffff;
+
+    border:none;
+
+    padding:12px 24px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 5px 15px rgba(
+            217,
+            119,
+            6,
+            0.25
+        );
+
+    transition:0.25s;
+
+}
+
+.leaderboardBtn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(
+            217,
+            119,
+            6,
+            0.35
+        );
+
+}
+
+
+/* ==================================================
+   LEADERBOARD CONTAINER
+================================================== */
+
+.leaderboard-container{
+
+    width:100%;
+
+    max-width:1100px;
+
+    margin:30px auto;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            0,
+            0,
+            0,
+            0.10
+        );
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.leaderboard-header{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.leaderboard-icon{
+
+    font-size:55px;
+
+    margin-bottom:5px;
+
+}
+
+.leaderboard-header h2{
+
+    margin:5px 0;
+
+    color:#1e3a8a;
+
+    font-size:26px;
+
+}
+
+.leaderboard-header p{
+
+    margin:5px 0;
+
+    color:#64748b;
+
+    font-size:15px;
+
+}
+
+
+/* ==================================================
+   FILTER
+================================================== */
+
+.leaderboard-filter{
+
+    max-width:500px;
+
+    margin:0 auto 30px;
+
+}
+
+.leaderboard-filter label{
+
+    display:block;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+    color:#334155;
+
+}
+
+.leaderboard-filter select{
+
+    width:100%;
+
+    padding:13px 15px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:10px;
+
+    background:#ffffff;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.leaderboard-filter select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            37,
+            99,
+            235,
+            0.10
+        );
+
+}
+
+
+/* ==================================================
+   TABLE
+================================================== */
+
+.leaderboardTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:700px;
+
+}
+
+.leaderboardTable th{
+
+    background:#1e3a8a;
+
+    color:#ffffff;
+
+    padding:14px 12px;
+
+    text-align:center;
+
+    font-size:14px;
+
+}
+
+.leaderboardTable td{
+
+    padding:14px 12px;
+
+    border-bottom:1px solid #e2e8f0;
+
+    text-align:center;
+
+    font-size:14px;
+
+}
+
+.leaderboardTable tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+
+/* ==================================================
+   RANK
+================================================== */
+
+.rank-cell{
+
+    font-weight:800;
+
+    font-size:16px;
+
+}
+
+.leader-name{
+
+    font-weight:700;
+
+    text-align:left !important;
+
+}
+
+.leader-marks{
+
+    font-weight:700;
+
+}
+
+.leader-percentage{
+
+    font-weight:800;
+
+}
+
+
+/* ==================================================
+   TOP 3
+================================================== */
+
+.leaderboard-first{
+
+    background:#fff7d6 !important;
+
+}
+
+.leaderboard-second{
+
+    background:#f1f5f9 !important;
+
+}
+
+.leaderboard-third{
+
+    background:#fff1e6 !important;
+
+}
+
+
+/* ==================================================
+   LOADING
+================================================== */
+
+.leaderboard-loading{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#475569;
+
+}
+
+.leaderboard-spinner{
+
+    width:35px;
+
+    height:35px;
+
+    margin:0 auto 15px;
+
+    border:4px solid #e2e8f0;
+
+    border-top-color:#2563eb;
+
+    border-radius:50%;
+
+    animation:
+        leaderboardSpin
+        0.8s
+        linear
+        infinite;
+
+}
+
+@keyframes leaderboardSpin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* ==================================================
+   EMPTY
+================================================== */
+
+.leaderboard-empty{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#64748b;
+
+    font-size:17px;
+
+    font-weight:600;
+
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.leaderboard-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media(max-width:700px){
+
+    .leaderboard-container{
+
+        padding:18px;
+
+        margin:15px auto;
+
+        border-radius:12px;
+
+    }
+
+    .leaderboard-header h2{
+
+        font-size:21px;
+
+    }
+
+    .leaderboard-icon{
+
+        font-size:45px;
+
+    }
+
+    .leaderboardTable{
+
+        min-width:650px;
+
+    }
+
+    .leaderboardBtn{
+
+        width:100%;
+
+        margin-bottom:10px;
+
+    }
+
+}
