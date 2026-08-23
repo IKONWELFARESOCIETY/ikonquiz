@@ -9177,3 +9177,322 @@ body::after {
     }
 
 }
+/* =========================================================
+   PRACTICAL STUDENT VERIFICATION PAGE
+========================================================= */
+
+#practicalVerificationPage {
+
+    min-height: 70vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 15px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   VERIFICATION CARD
+========================================================= */
+
+#practicalVerificationPage .examTypeContainer {
+
+    width: 100%;
+
+    max-width: 460px;
+
+    background: #ffffff;
+
+    padding: 35px 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(
+            0,
+            0,
+            0,
+            0.10
+        );
+
+    text-align: center;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+#practicalVerificationPage h2 {
+
+    margin: 0 0 10px;
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    color: #1f2937;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+#practicalVerificationPage p {
+
+    margin: 0 0 25px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+#practicalVerificationPage input {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    background: #f9fafb;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+#practicalVerificationPage input::placeholder {
+
+    color: #9ca3af;
+
+}
+
+
+#practicalVerificationPage input:focus {
+
+    border-color: #2563eb;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            37,
+            99,
+            235,
+            0.10
+        );
+
+}
+
+
+/* =========================================================
+   VERIFY BUTTON
+========================================================= */
+
+#practicalVerificationPage #verifyPracticalBtn {
+
+    width: 100%;
+
+    min-height: 48px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+
+}
+
+
+#practicalVerificationPage #verifyPracticalBtn:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 15px rgba(
+            37,
+            99,
+            235,
+            0.22
+        );
+
+}
+
+
+#practicalVerificationPage #verifyPracticalBtn:disabled {
+
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+#practicalVerificationPage .backDashboardBtn {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #374151;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+#practicalVerificationPage .backDashboardBtn:hover {
+
+    background: #f3f4f6;
+
+    border-color: #9ca3af;
+
+}
+
+
+/* =========================================================
+   SMALL VERIFICATION ICON / HEADER EFFECT
+========================================================= */
+
+#practicalVerificationPage .examTypeContainer::before {
+
+    content: "🔐";
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    font-size: 26px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #practicalVerificationPage {
+
+        padding: 20px 12px;
+
+    }
+
+
+    #practicalVerificationPage
+    .examTypeContainer {
+
+        padding: 28px 20px;
+
+        border-radius: 15px;
+
+    }
+
+
+    #practicalVerificationPage h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    #practicalVerificationPage p {
+
+        font-size: 13px;
+
+    }
+
+
+    #practicalVerificationPage input,
+    #practicalVerificationPage
+    #verifyPracticalBtn {
+
+        height: 46px;
+
+    }
+
+}
