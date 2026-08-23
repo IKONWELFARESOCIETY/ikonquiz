@@ -7578,27 +7578,35 @@ function showAnalyticsButton(){
 // OPEN ANALYTICS PASSWORD PAGE
 //====================================================
 
+//====================================================
+// OPEN ANALYTICS PASSWORD PAGE
+//====================================================
+
 function openAnalyticsPassword(){
 
-    document
-        .getElementById("studentResultPage")
-        ?.classList.add("hidden");
+    // Password page show karo
+    const passwordPage =
+        document.getElementById("analyticsPasswordPage");
 
-    document
-        .getElementById("analyticsPasswordPage")
-        ?.classList.remove("hidden");
+    if(passwordPage){
+        passwordPage.classList.remove("hidden");
+    }
 
+    // Analytics button temporarily hide
+    const analyticsBtn =
+        document.getElementById("analyticsAccess");
+
+    if(analyticsBtn){
+        analyticsBtn.style.display = "none";
+    }
+
+    // Password field clear + focus
     const password =
-        document.getElementById(
-            "analyticsPassword"
-        );
+        document.getElementById("analyticsPassword");
 
     if(password){
-
         password.value = "";
-
         password.focus();
-
     }
 
 }
