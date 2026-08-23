@@ -4132,14 +4132,24 @@ function showAnswerDetailsError(message){
 
 }
 function backToResultList(){
+function backToResultList(){
 
-document
-.getElementById("marksheetPage")
-.classList.add("hidden");
+    // Hide Marksheet
+    document
+        .getElementById("marksheetPage")
+        ?.classList.add("hidden");
 
-document
-.getElementById("studentResultPage")
-.classList.remove("hidden");
+
+    // Hide Leaderboard
+    document
+        .getElementById("leaderboardPage")
+        ?.classList.add("hidden");
+
+
+    // Show Result List
+    document
+        .getElementById("studentResultPage")
+        ?.classList.remove("hidden");
 
 }
 //====================================================
