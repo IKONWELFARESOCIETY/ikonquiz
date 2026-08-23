@@ -7634,6 +7634,11 @@ function openAnalyticsPassword(){
 // VERIFY ANALYTICS PASSWORD
 //====================================================
 
+//====================================================
+// VERIFY ANALYTICS PASSWORD
+// FINAL VERSION
+//====================================================
+
 function verifyAnalyticsPassword(){
 
     const passwordBox =
@@ -7641,22 +7646,15 @@ function verifyAnalyticsPassword(){
             "analyticsPassword"
         );
 
+
     if(!passwordBox){
-        return;
-    }
 
-
-    //================================================
-    // ADMIN TOKEN CHECK
-    //================================================
-
-    if(!adminToken){
-
-        alert(
-            "Admin verification required."
+        console.error(
+            "Analytics password box not found."
         );
 
         return;
+
     }
 
 
@@ -7669,75 +7667,222 @@ function verifyAnalyticsPassword(){
 
 
     //================================================
-    // ANALYTICS PASSWORD
+    // VALIDATION
     //================================================
 
-    const ANALYTICS_PASSWORD =
-        "ikon@asia";
+    if(password === ""){
+
+        alert(
+            "Please Enter Admin Password."
+        );
+
+        passwordBox.focus();
+
+        return;
+
+    }
 
 
     //================================================
-    // PASSWORD VALIDATION
+    // VERIFY BUTTON
     //================================================
 
-    if(
-        password !==
-        ANALYTICS_PASSWORD
-    ){
+    const verifyBtn =
+        document.querySelector(
+            "#analyticsPasswordPage button"
+        );
+
+
+    if(verifyBtn){
+
+        verifyBtn.disabled = true;
+
+        verifyBtn.innerHTML =
+            "Verifying...";
+
+    }
+
+
+    //================================================
+    // VERIFY PASSWORD WITH GOOGLE APPS SCRIPT
+    //================================================
+
+    fetch(
+
+        SCRIPT_URL +
+        "?action=verifyAdmin" +
+        "&code=" +
+        encodeURIComponent(
+            password
+        )
+
+    )
+
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(function(data){
+
+        console.log(
+            "ANALYTICS ADMIN VERIFICATION:",
+            data
+        );
+
+
+        //================================================
+        // SUCCESS
+        //================================================
+
+        if(
+            data.status ===
+            "SUCCESS"
+        ){
+
+            //============================================
+            // SAVE ADMIN MODE
+            //============================================
+
+            isAdminMode = true;
+
+
+            //============================================
+            // SAVE ADMIN TOKEN
+            //============================================
+
+            adminToken =
+                data.token || "";
+
+
+            console.log(
+                "ADMIN TOKEN CREATED:",
+                adminToken
+            );
+
+
+            //============================================
+            // TOKEN CHECK
+            //============================================
+
+            if(!adminToken){
+
+                throw new Error(
+                    "Admin token was not returned by server."
+                );
+
+            }
+
+
+            //============================================
+            // HIDE PASSWORD PAGE
+            //============================================
+
+            document
+                .getElementById(
+                    "analyticsPasswordPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            //============================================
+            // HIDE STUDENT RESULT PAGE
+            //============================================
+
+            document
+                .getElementById(
+                    "studentResultPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            //============================================
+            // SHOW ANALYTICS PAGE
+            //============================================
+
+            document
+                .getElementById(
+                    "analyticsPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            //============================================
+            // LOAD ANALYTICS
+            //============================================
+
+            loadAnalytics();
+
+
+            return;
+
+        }
+
+
+        //================================================
+        // INVALID PASSWORD
+        //================================================
 
         alert(
             "Invalid Admin Password."
         );
 
+
         passwordBox.value = "";
 
         passwordBox.focus();
 
-        return;
-    }
+
+    })
 
 
-    //================================================
-    // HIDE PASSWORD PAGE
-    //================================================
+    .catch(function(error){
 
-    document
-        .getElementById(
-            "analyticsPasswordPage"
-        )
-        ?.classList.add("hidden");
+        console.error(
+            "Analytics Verification Error:",
+            error
+        );
 
 
-    //================================================
-    // HIDE RESULT LIST
-    //================================================
+        alert(
+            "Unable to verify Admin."
+        );
 
-    document
-        .getElementById(
-            "studentResultPage"
-        )
-        ?.classList.add("hidden");
+    })
 
 
-    //================================================
-    // SHOW ANALYTICS PAGE
-    //================================================
+    .finally(function(){
 
-    document
-        .getElementById(
-            "analyticsPage"
-        )
-        ?.classList.remove("hidden");
+        if(verifyBtn){
 
+            verifyBtn.disabled = false;
 
-    //================================================
-    // LOAD ANALYTICS
-    //================================================
+            verifyBtn.innerHTML =
+                "Verify";
 
-    loadAnalytics();
+        }
+
+    });
 
 }
-
 
 //====================================================
 // LOAD ANALYTICS
