@@ -8131,9 +8131,33 @@ body::after {
     transform:translateY(-2px);
 
 }
+/* ============================================================
+   RESULT PAGE - PERFECT BUTTON ALIGNMENT
+   Only affects Student Result Page
+   ============================================================ */
+
 #studentResultPage .result-footer .leaderboardBtn{
-    position:static !important;
-    display:inline-flex !important;
-    vertical-align:middle !important;
+    height:44px !important;
+    padding:0 24px !important;
+
     margin:0 10px 0 0 !important;
+
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+}
+
+
+#studentResultPage .result-footer .secondary{
+    height:44px !important;
+
+    margin:0 !important;
+
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
 }
