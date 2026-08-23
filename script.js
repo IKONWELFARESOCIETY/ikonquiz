@@ -472,28 +472,44 @@ function shuffleQuestions(array) {
 // LOGIN SYSTEM
 //====================================================
 
+//====================================================
+// STUDENT LOGIN
+// REG NO + NAME ONLY
+//====================================================
+
 function startTest(){
 
     //================================================
-    // READ INPUT
+    // READ REGISTRATION NUMBER
     //================================================
 
-    studentName =
-        document
-        .getElementById(
-            "studentName"
-        )
-        .value
-        .trim();
+    const regInput =
+        document.getElementById("regNo");
+
+    const nameInput =
+        document.getElementById("studentName");
+
+
+    if(!regInput || !nameInput){
+
+        alert(
+            "Login fields not found."
+        );
+
+        return;
+
+    }
 
 
     regNo =
-        document
-        .getElementById(
-            "regNo"
-        )
-        .value
-        .trim();
+        regInput.value
+            .trim();
+
+
+    studentName =
+        nameInput.value
+            .trim();
+
 
     //================================================
     // VALIDATION
@@ -501,11 +517,11 @@ function startTest(){
 
     if(
         studentName === "" ||
-        regNo === "" ||
+        regNo === ""
     ){
 
         alert(
-            "Please enter all verification details."
+            "Please enter Registration Number and Student Name."
         );
 
         return;
@@ -523,42 +539,33 @@ function startTest(){
         );
 
 
-    loginBtn.disabled =
-        true;
+    if(loginBtn){
 
+        loginBtn.disabled =
+            true;
 
-    loginBtn.innerHTML =
-        "Verifying...";
+        loginBtn.innerHTML =
+            "Verifying...";
+
+    }
 
 
     //================================================
     // LOGIN API
+    // ONLY REG NO + NAME
     //================================================
 
     fetch(
 
         SCRIPT_URL +
-
         "?action=login" +
-
         "&regNo=" +
         encodeURIComponent(
             regNo
         ) +
-
         "&name=" +
         encodeURIComponent(
             studentName
-        ) +
-
-        "&studentId=" +
-        encodeURIComponent(
-            studentId
-        ) +
-
-        "&verificationCode=" +
-        encodeURIComponent(
-            verificationCode
         )
 
     )
@@ -568,7 +575,8 @@ function startTest(){
         if(!res.ok){
 
             throw new Error(
-                "Server Error"
+                "Server Error: " +
+                res.status
             );
 
         }
@@ -585,17 +593,24 @@ function startTest(){
         );
 
 
-        loginBtn.disabled =
-            false;
+        //================================================
+        // RESET BUTTON
+        //================================================
+
+        if(loginBtn){
+
+            loginBtn.disabled =
+                false;
+
+            loginBtn.innerHTML =
+                "LOGIN";
+
+        }
 
 
-        loginBtn.innerHTML =
-            "Start Test";
-
-
-        //============================================
+        //================================================
         // VALID
-        //============================================
+        //================================================
 
         if(
             data.status ===
@@ -610,42 +625,40 @@ function startTest(){
                 data.regNo;
 
 
-            studentId =
-                data.idNo;
-
-
             courseName =
-                data.course;
+                data.course || "";
 
 
             totalMarks =
-                data.totalMarks;
+                data.totalMarks || "";
 
 
             passingMarks =
-                data.passingMarks;
+                data.passingMarks || "";
 
 
             theoryPapers =
-                data.theoryPapers ||
-                [];
+                data.theoryPapers || [];
 
 
             practicalPapers =
-                data.practicalPapers ||
-                [];
+                data.practicalPapers || [];
 
 
-            //========================================
+            // Student ID server se mil sakta hai,
+            // lekin yahan verification nahi ho rahi.
+
+            studentId =
+                data.idNo || "";
+
+
+            //================================================
             // NO AVAILABLE EXAMS
-            //========================================
+            //================================================
 
             if(
-
                 theoryPapers.length === 0 &&
-
                 practicalPapers.length === 0
-
             ){
 
                 alert(
@@ -657,9 +670,9 @@ function startTest(){
             }
 
 
-            //========================================
-            // OPEN EXAM TYPE
-            //========================================
+            //================================================
+            // OPEN EXAM TYPE PAGE
+            //================================================
 
             openExamTypePage();
 
@@ -668,9 +681,9 @@ function startTest(){
         }
 
 
-        //============================================
+        //================================================
         // ALL SUBMITTED
-        //============================================
+        //================================================
 
         if(
             data.status ===
@@ -686,28 +699,34 @@ function startTest(){
         }
 
 
-        //============================================
+        //================================================
         // INVALID
-        //============================================
+        //================================================
 
         alert(
-            "Invalid Registration Number, Student ID or Verification Code."
+            data.message ||
+            "Invalid Registration Number or Student Name."
         );
 
     })
 
-    .catch(function(err){
+    .catch(function(error){
 
         console.error(
-            err
+            "Login Error:",
+            error
         );
 
-        loginBtn.disabled =
-            false;
 
+        if(loginBtn){
 
-        loginBtn.innerHTML =
-            "Start Test";
+            loginBtn.disabled =
+                false;
+
+            loginBtn.innerHTML =
+                "LOGIN";
+
+        }
 
 
         alert(
