@@ -4140,6 +4140,10 @@ function showAnswerDetailsError(message){
 
 }
 
+//====================================================
+// BACK TO RESULT LIST + REFRESH
+//====================================================
+
 function backToResultList(){
 
     // Hide Marksheet
@@ -4147,17 +4151,24 @@ function backToResultList(){
         .getElementById("marksheetPage")
         ?.classList.add("hidden");
 
-
     // Hide Leaderboard
     document
         .getElementById("leaderboardPage")
         ?.classList.add("hidden");
 
-
     // Show Result List
     document
         .getElementById("studentResultPage")
         ?.classList.remove("hidden");
+
+    // Refresh Result List from Server
+    verifyResultStudent();
+
+    // Scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 //====================================================
