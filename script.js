@@ -7639,6 +7639,11 @@ function openAnalyticsPassword(){
 // FINAL VERSION
 //====================================================
 
+//====================================================
+// VERIFY ANALYTICS PASSWORD
+// PASSWORD SOURCE : GOOGLE SHEET SETTINGS!B15
+//====================================================
+
 function verifyAnalyticsPassword(){
 
     const passwordBox =
@@ -7649,7 +7654,7 @@ function verifyAnalyticsPassword(){
 
     if(!passwordBox){
 
-        console.error(
+        console.warn(
             "Analytics password box not found."
         );
 
@@ -7659,16 +7664,12 @@ function verifyAnalyticsPassword(){
 
 
     //================================================
-    // GET PASSWORD
+    // GET ENTERED PASSWORD
     //================================================
 
     const password =
         passwordBox.value.trim();
 
-
-    //================================================
-    // VALIDATION
-    //================================================
 
     if(password === ""){
 
@@ -7684,56 +7685,22 @@ function verifyAnalyticsPassword(){
 
 
     //================================================
-    // VERIFY BUTTON
-    //================================================
-
-    const verifyBtn =
-        document.querySelector(
-            "#analyticsPasswordPage button"
-        );
-
-
-    if(verifyBtn){
-
-        verifyBtn.disabled = true;
-
-        verifyBtn.innerHTML =
-            "Verifying...";
-
-    }
-
-
-    //================================================
-    // VERIFY PASSWORD WITH GOOGLE APPS SCRIPT
+    // VERIFY WITH APPS SCRIPT
+    // Settings!B15 is checked SERVER-SIDE
     //================================================
 
     fetch(
-
         SCRIPT_URL +
         "?action=verifyAdmin" +
         "&code=" +
-        encodeURIComponent(
-            password
-        )
-
+        encodeURIComponent(password)
     )
 
+    .then(function(res){
 
-    .then(function(response){
-
-        if(!response.ok){
-
-            throw new Error(
-                "Server Error: " +
-                response.status
-            );
-
-        }
-
-        return response.json();
+        return res.json();
 
     })
-
 
     .then(function(data){
 
@@ -7748,12 +7715,11 @@ function verifyAnalyticsPassword(){
         //================================================
 
         if(
-            data.status ===
-            "SUCCESS"
+            data.status === "SUCCESS"
         ){
 
             //============================================
-            // SAVE ADMIN MODE
+            // ADMIN MODE ON
             //============================================
 
             isAdminMode = true;
@@ -7767,23 +7733,28 @@ function verifyAnalyticsPassword(){
                 data.token || "";
 
 
+            if(!adminToken){
+
+                alert(
+                    "Admin token was not generated."
+                );
+
+                return;
+
+            }
+
+
             console.log(
-                "ADMIN TOKEN CREATED:",
+                "ANALYTICS ADMIN TOKEN CREATED:",
                 adminToken
             );
 
 
             //============================================
-            // TOKEN CHECK
+            // CLEAR PASSWORD
             //============================================
 
-            if(!adminToken){
-
-                throw new Error(
-                    "Admin token was not returned by server."
-                );
-
-            }
+            passwordBox.value = "";
 
 
             //============================================
@@ -7794,35 +7765,29 @@ function verifyAnalyticsPassword(){
                 .getElementById(
                     "analyticsPasswordPage"
                 )
-                ?.classList.add(
-                    "hidden"
-                );
+                ?.classList.add("hidden");
 
 
             //============================================
-            // HIDE STUDENT RESULT PAGE
+            // HIDE RESULT LIST
             //============================================
 
             document
                 .getElementById(
                     "studentResultPage"
                 )
-                ?.classList.add(
-                    "hidden"
-                );
+                ?.classList.add("hidden");
 
 
             //============================================
-            // SHOW ANALYTICS PAGE
+            // SHOW ANALYTICS
             //============================================
 
             document
                 .getElementById(
                     "analyticsPage"
                 )
-                ?.classList.remove(
-                    "hidden"
-                );
+                ?.classList.remove("hidden");
 
 
             //============================================
@@ -7830,7 +7795,6 @@ function verifyAnalyticsPassword(){
             //============================================
 
             loadAnalytics();
-
 
             return;
 
@@ -7841,44 +7805,63 @@ function verifyAnalyticsPassword(){
         // INVALID PASSWORD
         //================================================
 
+        if(
+            data.status === "INVALID"
+        ){
+
+            alert(
+                "Invalid Admin Password."
+            );
+
+            passwordBox.value = "";
+
+            passwordBox.focus();
+
+            return;
+
+        }
+
+
+        //================================================
+        // CONFIGURATION ERROR
+        //================================================
+
+        if(
+            data.status === "CONFIG_ERROR"
+        ){
+
+            alert(
+                "Admin password is not configured in Settings!B15."
+            );
+
+            passwordBox.value = "";
+
+            return;
+
+        }
+
+
+        //================================================
+        // OTHER ERROR
+        //================================================
+
         alert(
-            "Invalid Admin Password."
+            data.message ||
+            "Admin verification failed."
         );
 
-
-        passwordBox.value = "";
-
-        passwordBox.focus();
-
-
     })
-
 
     .catch(function(error){
 
         console.error(
-            "Analytics Verification Error:",
+            "Analytics Admin Verification Error:",
             error
         );
 
-
         alert(
-            "Unable to verify Admin."
+            "Unable to connect with server."
         );
-
-    })
-
-
-    .finally(function(){
-
-        if(verifyBtn){
-
-            verifyBtn.disabled = false;
-
-            verifyBtn.innerHTML =
-                "Verify";
-
-        }
 
     });
 
