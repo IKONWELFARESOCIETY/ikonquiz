@@ -10703,3 +10703,281 @@ function renderAnalyticsCharts(
     );
 
 }
+//====================================================
+// EXPORT STUDENT RESULT LIST TO EXCEL
+//====================================================
+
+function exportResultListExcel(){
+
+    //================================================
+    // CHECK XLSX LIBRARY
+    //================================================
+
+    if(
+        typeof XLSX ===
+        "undefined"
+    ){
+
+        alert(
+            "Excel export library is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // GET RESULT TABLE
+    //================================================
+
+    const table =
+        document.querySelector(
+            "#studentResultPage .resultTable"
+        );
+
+
+    if(!table){
+
+        alert(
+            "Result table not found."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // GET HEADER
+    //================================================
+
+    const headers = [];
+
+
+    table
+        .querySelectorAll(
+            "thead tr th"
+        )
+        .forEach(
+            function(th, index){
+
+                // Last column = Action
+                // Excel me nahi chahiye
+
+                if(
+                    index <
+                    table.querySelectorAll(
+                        "thead tr th"
+                    ).length - 1
+                ){
+
+                    headers.push(
+                        th.innerText
+                            .replace(
+                                /\s+/g,
+                                " "
+                            )
+                            .trim()
+                    );
+
+                }
+
+            }
+        );
+
+
+    //================================================
+    // GET VISIBLE ROWS
+    //================================================
+
+    const data = [];
+
+
+    table
+        .querySelectorAll(
+            "tbody tr"
+        )
+        .forEach(
+            function(tr){
+
+                // Search/filter ke baad hidden rows
+                // export nahi hongi
+
+                if(
+                    tr.style.display ===
+                    "none"
+                ){
+
+                    return;
+
+                }
+
+
+                const row = [];
+
+
+                const cells =
+                    tr.querySelectorAll(
+                        "td"
+                    );
+
+
+                cells.forEach(
+                    function(td, index){
+
+                        // Last column = Action
+                        if(
+                            index <
+                            cells.length - 1
+                        ){
+
+                            row.push(
+                                td.innerText
+                                    .replace(
+                                        /\s+/g,
+                                        " "
+                                    )
+                                    .trim()
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                if(
+                    row.length > 0
+                ){
+
+                    data.push(
+                        row
+                    );
+
+                }
+
+            }
+        );
+
+
+    //================================================
+    // NO DATA
+    //================================================
+
+    if(
+        data.length === 0
+    ){
+
+        alert(
+            "No result data available to export."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // CREATE WORKSHEET DATA
+    //================================================
+
+    const worksheetData = [
+
+        headers,
+
+        ...data
+
+    ];
+
+
+    //================================================
+    // CREATE WORKBOOK
+    //================================================
+
+    const worksheet =
+        XLSX.utils.aoa_to_sheet(
+            worksheetData
+        );
+
+
+    const workbook =
+        XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Result List"
+    );
+
+
+    //================================================
+    // COLUMN WIDTHS
+    //================================================
+
+    worksheet["!cols"] = [
+
+        { wch: 8 },
+
+        { wch: 18 },
+
+        { wch: 16 },
+
+        { wch: 25 },
+
+        { wch: 15 },
+
+        { wch: 12 },
+
+        { wch: 12 },
+
+        { wch: 12 },
+
+        { wch: 12 },
+
+        { wch: 12 },
+
+        { wch: 12 },
+
+        { wch: 15 }
+
+    ];
+
+
+    //================================================
+    // HEADER STYLE
+    //================================================
+    // SheetJS Community version limited styling,
+    // so data remains clean and Excel compatible.
+
+
+    //================================================
+    // FILE NAME
+    //================================================
+
+    const today =
+        new Date()
+            .toISOString()
+            .slice(
+                0,
+                10
+            );
+
+
+    const fileName =
+        "IKON_Student_Result_List_" +
+        today +
+        ".xlsx";
+
+
+    //================================================
+    // DOWNLOAD
+    //================================================
+
+    XLSX.writeFile(
+        workbook,
+        fileName
+    );
+
+}
