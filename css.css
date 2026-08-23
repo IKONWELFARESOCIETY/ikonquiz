@@ -9103,3 +9103,77 @@ body::after {
     }
 
 }
+/* =====================================================
+   RESULT LIST - EXPORT EXCEL BUTTON
+===================================================== */
+
+.resultExcelBtn {
+
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #198754;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-shadow:
+        0 4px 10px rgba(
+            25,
+            135,
+            84,
+            0.20
+        );
+
+}
+
+.resultExcelBtn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px rgba(
+            25,
+            135,
+            84,
+            0.28
+        );
+
+}
+
+.resultExcelBtn:active {
+
+    transform: translateY(0);
+
+}
+
+
+@media (max-width: 650px) {
+
+    .result-footer {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+    .resultExcelBtn,
+    .leaderboardBtn,
+    .result-footer .secondary {
+
+        min-width: 130px;
+
+    }
+
+}
