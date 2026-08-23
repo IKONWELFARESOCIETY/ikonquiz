@@ -9731,6 +9731,10 @@ function showAnalyticsError(
 // BACK TO ADMIN DASHBOARD
 //====================================================
 
+//====================================================
+// BACK TO ADMIN DASHBOARD
+//====================================================
+
 function backToAdminDashboard(){
 
     //================================================
@@ -9740,6 +9744,17 @@ function backToAdminDashboard(){
     document
         .getElementById(
             "analyticsPage"
+        )
+        ?.classList.add("hidden");
+
+
+    //================================================
+    // HIDE ANALYTICS PASSWORD PAGE
+    //================================================
+
+    document
+        .getElementById(
+            "analyticsPasswordPage"
         )
         ?.classList.add("hidden");
 
@@ -9764,7 +9779,6 @@ function backToAdminDashboard(){
             "#studentResultPage .result-list-box"
         );
 
-
     if(resultBox){
 
         resultBox.classList.remove(
@@ -9775,7 +9789,8 @@ function backToAdminDashboard(){
 
 
     //================================================
-    // SHOW ANALYTICS BUTTON
+    // HIDE ANALYTICS BUTTON
+    // IMPORTANT
     //================================================
 
     const analyticsBtn =
@@ -9783,11 +9798,10 @@ function backToAdminDashboard(){
             "analyticsAccess"
         );
 
-
     if(analyticsBtn){
 
         analyticsBtn.style.display =
-            "block";
+            "none";
 
     }
 
@@ -9800,7 +9814,7 @@ function backToAdminDashboard(){
 
 
     //================================================
-    // RESET FILTER
+    // RESET PAPER FILTER
     //================================================
 
     const paperSelect =
@@ -9808,24 +9822,9 @@ function backToAdminDashboard(){
             "analyticsPaper"
         );
 
-
     if(paperSelect){
 
         paperSelect.value = "";
-
-    }
-
-
-    //================================================
-    // RELOAD ADMIN RESULTS
-    //================================================
-
-    if(
-        typeof loadAdminResults ===
-        "function"
-    ){
-
-        loadAdminResults();
 
     }
 
