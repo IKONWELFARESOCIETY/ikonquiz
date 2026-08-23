@@ -7558,3 +7558,120 @@ function escapeLeaderboardHTML(value){
         );
 
 }
+//====================================================
+// SHOW ANALYTICS BUTTON
+//====================================================
+
+function showAnalyticsButton(){
+
+    const btn =
+        document.getElementById(
+            "analyticsAccess"
+        );
+
+    if(btn){
+
+        btn.style.display = "block";
+
+    }
+
+}
+//====================================================
+// OPEN ANALYTICS PASSWORD PAGE
+//====================================================
+
+function openAnalyticsPassword(){
+
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("analyticsPasswordPage")
+        ?.classList.remove("hidden");
+
+    const password =
+        document.getElementById(
+            "analyticsPassword"
+        );
+
+    if(password){
+
+        password.value = "";
+
+        password.focus();
+
+    }
+
+}
+//====================================================
+// VERIFY ANALYTICS PASSWORD
+//====================================================
+
+function verifyAnalyticsPassword(){
+
+    const password =
+        document
+        .getElementById(
+            "analyticsPassword"
+        )
+        .value
+        .trim();
+
+
+    if(password !== "ikon@asia"){
+
+        alert("Invalid Admin Password.");
+
+        return;
+
+    }
+
+
+    // Hide password page
+
+    document
+        .getElementById(
+            "analyticsPasswordPage"
+        )
+        ?.classList.add("hidden");
+
+
+    // Open Analytics
+
+    document
+        .getElementById(
+            "analyticsPage"
+        )
+        ?.classList.remove("hidden");
+
+
+    // Load Analytics
+
+    if(typeof loadAnalytics === "function"){
+
+        loadAnalytics();
+
+    }
+
+}
+//====================================================
+// CLOSE ANALYTICS PASSWORD
+//====================================================
+
+function closeAnalyticsPassword(){
+
+    document
+        .getElementById(
+            "analyticsPasswordPage"
+        )
+        ?.classList.add("hidden");
+
+
+    document
+        .getElementById(
+            "studentResultPage"
+        )
+        ?.classList.remove("hidden");
+
+}
