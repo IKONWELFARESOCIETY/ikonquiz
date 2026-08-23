@@ -8225,6 +8225,9 @@ function loadAnalytics(){
         renderServerPerformanceDistribution(
             data.distribution || {}
         );
+            renderAnalyticsCharts(
+                data
+            );
 
 
         //================================================
@@ -10397,6 +10400,306 @@ function renderServerPerformanceDistribution(
             );
 
         }
+    );
+
+}
+//====================================================
+// PASS / FAIL CHART
+//====================================================
+
+function renderAnalyticsPassFailChart(
+    pass,
+    fail,
+    total
+){
+
+    const chart =
+        document.getElementById(
+            "analyticsPassFailChart"
+        );
+
+
+    const passValue =
+        document.getElementById(
+            "chartPassValue"
+        );
+
+
+    const failValue =
+        document.getElementById(
+            "chartFailValue"
+        );
+
+
+    if(!chart){
+        return;
+    }
+
+
+    pass =
+        Number(pass) || 0;
+
+    fail =
+        Number(fail) || 0;
+
+    total =
+        Number(total) || 0;
+
+
+    const passPercent =
+        total > 0
+        ?
+        (pass / total) * 100
+        :
+        0;
+
+
+    const passDegrees =
+        passPercent * 3.6;
+
+
+    chart.style.background =
+        `
+        conic-gradient(
+            #16a34a 0deg,
+            #16a34a ${passDegrees}deg,
+            #dc2626 ${passDegrees}deg,
+            #dc2626 360deg
+        )
+        `;
+
+
+    chart.innerHTML = `
+
+        <div class="pass-fail-center">
+
+            <strong>
+                ${passPercent.toFixed(1)}%
+            </strong>
+
+            <span>
+                Pass Rate
+            </span>
+
+        </div>
+
+    `;
+
+
+    if(passValue){
+
+        passValue.textContent =
+            pass;
+
+    }
+
+
+    if(failValue){
+
+        failValue.textContent =
+            fail;
+
+    }
+
+}
+
+
+//====================================================
+// PAPER PERFORMANCE BAR CHART
+//====================================================
+
+function renderAnalyticsPaperChart(
+    paperComparison
+){
+
+    const chart =
+        document.getElementById(
+            "analyticsPaperChart"
+        );
+
+
+    if(!chart){
+        return;
+    }
+
+
+    chart.innerHTML = "";
+
+
+    if(
+        !Array.isArray(
+            paperComparison
+        ) ||
+        paperComparison.length === 0
+    ){
+
+        chart.innerHTML = `
+
+            <div class="chart-loading">
+
+                No paper data available
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    paperComparison
+        .slice()
+        .sort(
+            function(a,b){
+
+                return (
+
+                    (
+                        parseFloat(
+                            b.averagePercentage
+                        ) || 0
+                    )
+
+                    -
+
+                    (
+                        parseFloat(
+                            a.averagePercentage
+                        ) || 0
+                    )
+
+                );
+
+            }
+        )
+        .forEach(
+            function(paper){
+
+                const average =
+                    Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            parseFloat(
+                                paper.averagePercentage
+                            ) || 0
+                        )
+                    );
+
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "paper-chart-row";
+
+
+                row.innerHTML = `
+
+                    <div
+                        class="paper-chart-name"
+                        title="${escapeAnalyticsHTML(
+                            paper.paper || ""
+                        )}"
+                    >
+
+                        ${
+                            escapeAnalyticsHTML(
+                                paper.paper || ""
+                            )
+                        }
+
+                    </div>
+
+
+                    <div class="paper-chart-bar">
+
+                        <div
+                            class="paper-chart-fill"
+                            style="
+                                width:${average}%;
+                            "
+                        ></div>
+
+                    </div>
+
+
+                    <div
+                        class="paper-chart-value"
+                    >
+
+                        ${average.toFixed(1)}%
+
+                    </div>
+
+                `;
+
+
+                chart.appendChild(
+                    row
+                );
+
+            }
+        );
+
+}
+
+
+//====================================================
+// RENDER ANALYTICS CHARTS
+//====================================================
+
+function renderAnalyticsCharts(
+    data
+){
+
+    if(!data){
+        return;
+    }
+
+
+    const summary =
+        data.summary || {};
+
+
+    //================================================
+    // PASS / FAIL
+    //================================================
+
+    renderAnalyticsPassFailChart(
+
+        Number(
+            summary.pass
+        ) || 0,
+
+        Number(
+            summary.fail
+        ) || 0,
+
+        Number(
+            summary.totalStudents
+        ) || 0
+
+    );
+
+
+    //================================================
+    // PAPER PERFORMANCE
+    //================================================
+
+    renderAnalyticsPaperChart(
+
+        Array.isArray(
+            data.paperComparison
+        )
+        ?
+        data.paperComparison
+        :
+        []
+
     );
 
 }
