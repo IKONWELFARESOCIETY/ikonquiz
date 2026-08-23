@@ -9496,57 +9496,80 @@ body::after {
 
 }
 /* =========================================================
-   THEORY STUDENT VERIFICATION PAGE
-   SAME STYLE AS PRACTICAL VERIFICATION
-   HTML IDS MATCHED
+   THEORY STUDENT VERIFICATION
+   FINAL FIX
+   Exact HTML IDs:
+   #verificationPage
+   #studentIdInput
+   #examVerificationCode
+   .primary
+   .backDashboardBtn
 ========================================================= */
 
-#verificationPage {
 
-    width: 100%;
+/* =========================================================
+   HIDE OTHER THEORY-EXAM SECTIONS WHILE VERIFICATION
+   PAGE IS ACTIVE
+========================================================= */
 
-    min-height: 70vh;
+#testPage:has(#verificationPage:not(.hidden)) .exam-status-bar,
+#testPage:has(#verificationPage:not(.hidden)) .student-info,
+#testPage:has(#verificationPage:not(.hidden)) .exam-top {
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px 15px;
-
-    box-sizing: border-box;
-
-    background: transparent;
-
-    text-align: center;
+    display: none !important;
 
 }
 
 
 /* =========================================================
-   VERIFICATION CARD
-   No extra HTML wrapper required
+   THEORY VERIFICATION PAGE / CARD
 ========================================================= */
 
 #verificationPage {
 
-    position: relative;
+    /* Override old styles */
+
+    width: min(460px, 100%);
 
     max-width: 460px;
 
-    margin: 30px auto;
+    min-height: auto !important;
 
-    padding: 35px 24px;
+    height: auto;
+
+    margin: 35px auto;
+
+    padding: 34px 25px 28px;
+
+    box-sizing: border-box;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: stretch !important;
+
+    justify-content: flex-start !important;
+
+    gap: 0;
+
+    text-align: center;
+
+    position: relative;
+
+    overflow: hidden;
 
     background: #ffffff;
 
-    border-radius: 18px;
+    border: 1px solid #dce8fb;
 
     border-top: 4px solid #005bea;
 
+    border-radius: 18px;
+
     box-shadow:
-        0 10px 30px rgba(15,23,42,.10);
+        0 10px 30px rgba(15,23,42,.10),
+        0 4px 12px rgba(0,72,180,.06);
 
 }
 
@@ -9559,17 +9582,19 @@ body::after {
 
     content: "🔐";
 
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
     width: 58px;
 
     height: 58px;
 
     margin: 0 auto 15px;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
+    flex: 0 0 58px;
 
     border-radius: 50%;
 
@@ -9589,7 +9614,13 @@ body::after {
 
 #verificationPage h2 {
 
-    margin: 0 0 10px;
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 9px;
+
+    padding: 0;
 
     color: #1f2937;
 
@@ -9598,6 +9629,8 @@ body::after {
     font-weight: 700;
 
     line-height: 1.3;
+
+    text-align: center;
 
 }
 
@@ -9608,13 +9641,21 @@ body::after {
 
 #verificationPage p {
 
-    margin: 0 0 25px;
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 23px;
+
+    padding: 0;
 
     color: #6b7280;
 
-    font-size: 14px;
+    font-size: 13px;
 
     line-height: 1.6;
+
+    text-align: center;
 
 }
 
@@ -9630,7 +9671,11 @@ body::after {
 
     width: 100%;
 
+    max-width: 100%;
+
     height: 48px;
+
+    min-height: 48px;
 
     margin: 0 0 14px;
 
@@ -9638,9 +9683,13 @@ body::after {
 
     box-sizing: border-box;
 
+    flex: 0 0 auto;
+
     border: 1px solid #d1d5db;
 
     border-radius: 9px;
+
+    outline: none;
 
     background: #f9fafb;
 
@@ -9648,7 +9697,7 @@ body::after {
 
     font-size: 14px;
 
-    outline: none;
+    text-align: left;
 
     transition:
         border-color .2s ease,
@@ -9658,8 +9707,6 @@ body::after {
 }
 
 
-/* Placeholder */
-
 #verificationPage #studentIdInput::placeholder,
 #verificationPage #examVerificationCode::placeholder {
 
@@ -9667,8 +9714,6 @@ body::after {
 
 }
 
-
-/* Focus */
 
 #verificationPage #studentIdInput:focus,
 #verificationPage #examVerificationCode:focus {
@@ -9684,25 +9729,49 @@ body::after {
 
 
 /* =========================================================
+   REMOVE OLD BR TAG SPACING
+========================================================= */
+
+#verificationPage br {
+
+    display: none;
+
+}
+
+
+/* =========================================================
    VERIFY BUTTON
    Current HTML class = primary
 ========================================================= */
 
 #verificationPage .primary {
 
+    display: block;
+
     width: 100%;
+
+    height: 48px;
 
     min-height: 48px;
 
-    margin-top: 2px;
+    margin: 0;
 
     padding: 0 15px;
+
+    box-sizing: border-box;
+
+    flex: 0 0 auto;
 
     border: none;
 
     border-radius: 9px;
 
-    background: #2563eb;
+    background:
+        linear-gradient(
+            135deg,
+            #005bea,
+            #008cff
+        );
 
     color: #ffffff;
 
@@ -9710,10 +9779,12 @@ body::after {
 
     font-weight: 700;
 
+    text-align: center;
+
     cursor: pointer;
 
     box-shadow:
-        0 6px 15px rgba(37,99,235,.22);
+        0 8px 18px rgba(37,99,235,.22);
 
     transition:
         transform .2s ease,
@@ -9728,7 +9799,7 @@ body::after {
     transform: translateY(-1px);
 
     box-shadow:
-        0 9px 20px rgba(37,99,235,.28);
+        0 12px 24px rgba(37,99,235,.28);
 
 }
 
@@ -9747,13 +9818,21 @@ body::after {
 
 #verificationPage .backDashboardBtn {
 
+    display: block;
+
     width: 100%;
+
+    height: 44px;
 
     min-height: 44px;
 
-    margin-top: 12px;
+    margin: 12px 0 0;
 
     padding: 0 15px;
+
+    box-sizing: border-box;
+
+    flex: 0 0 auto;
 
     border: 1px solid #d1d5db;
 
@@ -9766,6 +9845,8 @@ body::after {
     font-size: 13px;
 
     font-weight: 600;
+
+    text-align: center;
 
     cursor: pointer;
 
@@ -9789,7 +9870,7 @@ body::after {
 
 
 /* =========================================================
-   DISABLED BUTTON
+   BUTTON DISABLED
 ========================================================= */
 
 #verificationPage button:disabled {
@@ -9798,9 +9879,9 @@ body::after {
 
     cursor: not-allowed;
 
-    transform: none;
+    transform: none !important;
 
-    box-shadow: none;
+    box-shadow: none !important;
 
 }
 
@@ -9813,13 +9894,30 @@ body::after {
 
     #verificationPage {
 
-        min-height: 65vh;
+        width: calc(100% - 24px);
 
-        margin: 20px auto;
+        max-width: 460px;
 
-        padding: 28px 20px;
+        margin: 24px auto;
+
+        padding: 28px 20px 22px;
 
         border-radius: 15px;
+
+    }
+
+
+    #verificationPage::before {
+
+        width: 54px;
+
+        height: 54px;
+
+        flex-basis: 54px;
+
+        margin-bottom: 13px;
+
+        font-size: 25px;
 
     }
 
@@ -9835,6 +9933,8 @@ body::after {
 
         font-size: 13px;
 
+        margin-bottom: 20px;
+
     }
 
 
@@ -9843,7 +9943,27 @@ body::after {
 
         height: 46px;
 
+        min-height: 46px;
+
         font-size: 14px;
+
+    }
+
+
+    #verificationPage .primary {
+
+        height: 46px;
+
+        min-height: 46px;
+
+    }
+
+
+    #verificationPage .backDashboardBtn {
+
+        height: 44px;
+
+        min-height: 44px;
 
     }
 
