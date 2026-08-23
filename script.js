@@ -10981,3 +10981,162 @@ function exportResultListExcel(){
     );
 
 }
+//====================================================
+// EXPORT EXCEL WITH ADMIN PASSWORD
+//====================================================
+
+function exportResultListExcelWithPassword(){
+
+    //================================================
+    // ASK PASSWORD
+    //================================================
+
+    const password =
+        prompt(
+            "Enter Admin Password to Export Excel:"
+        );
+
+
+    // Cancel
+    if(password === null){
+
+        return;
+
+    }
+
+
+    const cleanPassword =
+        password.trim();
+
+
+    // Empty password
+    if(cleanPassword === ""){
+
+        alert(
+            "Please enter Admin Password."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // VERIFY PASSWORD FROM SETTINGS!B15
+    //================================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=verifyAdmin" +
+        "&code=" +
+        encodeURIComponent(
+            cleanPassword
+        )
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "EXPORT ADMIN VERIFICATION:",
+            data
+        );
+
+
+        //================================================
+        // PASSWORD CORRECT
+        //================================================
+
+        if(
+            data.status === "SUCCESS"
+        ){
+
+            // Save token if returned
+            if(data.token){
+
+                adminToken =
+                    data.token;
+
+                isAdminMode = true;
+
+            }
+
+
+            // Download Excel
+            exportResultListExcel();
+
+            return;
+
+        }
+
+
+        //================================================
+        // WRONG PASSWORD
+        //================================================
+
+        if(
+            data.status === "INVALID"
+        ){
+
+            alert(
+                "Invalid Admin Password."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // SETTINGS ERROR
+        //================================================
+
+        if(
+            data.status ===
+            "CONFIG_ERROR"
+        ){
+
+            alert(
+                "Admin password is not configured in Settings!B15."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Admin verification failed."
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Excel Export Verification Error:",
+            error
+        );
+
+        alert(
+            "Unable to verify Admin Password."
+        );
+
+    });
+
+}
