@@ -265,6 +265,136 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
 </div>
+      <!-- ==================================================
+                 LEADERBOARD PAGE
+================================================== -->
+
+<div id="leaderboardPage" class="hidden">
+
+    <div class="leaderboard-container">
+
+        <!-- HEADER -->
+
+        <div class="leaderboard-header">
+
+            <div class="leaderboard-icon">
+                🏆
+            </div>
+
+            <h2>
+                IKON INSTITUTE LEADERBOARD
+            </h2>
+
+            <p>
+                Paper Wise Top Performers
+            </p>
+
+        </div>
+
+
+        <!-- PAPER SELECT -->
+
+        <div class="leaderboard-filter">
+
+            <label>
+                Select Paper
+            </label>
+
+            <select
+                id="leaderboardPaperSelect"
+                onchange="loadLeaderboard()">
+
+                <option value="">
+                    -- Select Paper --
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- LOADING -->
+
+        <div
+            id="leaderboardLoading"
+            class="leaderboard-loading hidden">
+
+            <div class="leaderboard-spinner"></div>
+
+            <p>
+                Loading Leaderboard...
+            </p>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div
+            id="leaderboardTableContainer"
+            class="table-responsive hidden">
+
+            <table class="leaderboardTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Rank</th>
+
+                        <th>Student Name</th>
+
+                        <th>Course</th>
+
+                        <th>Marks</th>
+
+                        <th>Percentage</th>
+
+                        <th>Grade</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="leaderboardTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- NO RESULT -->
+
+        <div
+            id="leaderboardEmpty"
+            class="leaderboard-empty hidden">
+
+            No published result available
+            for this paper.
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="leaderboard-footer">
+
+            <button
+                class="secondary"
+                onclick="backToResultList()">
+
+                ← Back to Result List
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
       <!--==================================================
                 EXAM TYPE PAGE
 ===================================================-->
@@ -627,6 +757,8 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 <li>
     The Practical Examination cannot be submitted without completing all 5 questions.
 </li>
+              <li> एक पेपर सफलतापूर्वक सबमिट करने के बाद, अगले पेपर की परीक्षा शुरू करने के लिए कृपया वेबसाइट को रीफ्रेश (F5) करें।<br>
+After successfully submitting one paper, please refresh the website (F5) before proceeding to the examination for the next paper.</li>
         </ul>
 
     </div>
@@ -1035,7 +1167,10 @@ Candidates who fail in one paper will have to pay a Re-Appear Fee of ₹200.<br>
 सभी पेपर में असफल होने पर दोबारा परीक्षा देने के लिए ₹500 शुल्क देना होगा।<br>
 Candidates who fail in all papers will have to pay a Re-Appear Fee of ₹500.
 </li>
-
+<li>
+      एक पेपर सफलतापूर्वक सबमिट करने के बाद, अगले पेपर की परीक्षा शुरू करने के लिए कृपया वेबसाइट को रीफ्रेश (F5) करें।<br>
+After successfully submitting one paper, please refresh the website (F5) before proceeding to the examination for the next paper.
+</li>          
 <li>
     परीक्षा के दौरान किसी भी प्रकार का अनुचित साधन या बाहरी सहायता लेना पूरी तरह प्रतिबंधित है.<br>
     Using Unfair Means or External Assistance during the Examination is strictly prohibited.
