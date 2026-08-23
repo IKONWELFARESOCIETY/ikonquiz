@@ -6037,7 +6037,61 @@ function openLeaderboard(){
         `;
 
     }
+//================================================
+// RESET LEADERBOARD TABLE
+//================================================
 
+const table =
+    document.getElementById(
+        "leaderboardTableContainer"
+    );
+
+const empty =
+    document.getElementById(
+        "leaderboardEmpty"
+    );
+
+const loading =
+    document.getElementById(
+        "leaderboardLoading"
+    );
+
+const body =
+    document.getElementById(
+        "leaderboardTableBody"
+    );
+
+
+// Hide old leaderboard table
+if(table){
+
+    table.classList.add("hidden");
+
+}
+
+
+// Hide old empty message
+if(empty){
+
+    empty.classList.add("hidden");
+
+}
+
+
+// Hide loading
+if(loading){
+
+    loading.classList.add("hidden");
+
+}
+
+
+// Clear old rows
+if(body){
+
+    body.innerHTML = "";
+
+}
 
     //------------------------------------------------
     // LOAD PAPERS
