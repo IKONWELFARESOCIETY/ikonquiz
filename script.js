@@ -4139,7 +4139,7 @@ function showAnswerDetailsError(message){
     `;
 
 }
-function backToResultList(){
+
 function backToResultList(){
 
     // Hide Marksheet
