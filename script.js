@@ -7557,8 +7557,9 @@ function escapeLeaderboardHTML(value){
 
 }
 //====================================================
-// SHOW ANALYTICS BUTTON
+//                    ANALYTICS MODULE
 //====================================================
+
 
 //====================================================
 // SHOW ANALYTICS BUTTON
@@ -7570,9 +7571,7 @@ function showAnalyticsButton(){
         document.getElementById("analyticsAccess");
 
     if(btn){
-
         btn.style.display = "block";
-
     }
 
 }
@@ -7584,16 +7583,14 @@ function showAnalyticsButton(){
 
 function openAnalyticsPassword(){
 
-    // Hide Student Result List
+    // Hide Result List Box
     const resultBox =
         document.querySelector(
             "#studentResultPage .result-list-box"
         );
 
     if(resultBox){
-
         resultBox.classList.add("hidden");
-
     }
 
 
@@ -7604,9 +7601,7 @@ function openAnalyticsPassword(){
         );
 
     if(passwordPage){
-
         passwordPage.classList.remove("hidden");
-
     }
 
 
@@ -7620,31 +7615,59 @@ function openAnalyticsPassword(){
 
         password.value = "";
 
-        password.focus();
+        setTimeout(function(){
+
+            password.focus();
+
+        },100);
 
     }
 
 }
+
+
 //====================================================
 // VERIFY ANALYTICS PASSWORD
 //====================================================
 
 function verifyAnalyticsPassword(){
 
+    const passwordBox =
+        document.getElementById(
+            "analyticsPassword"
+        );
+
+    if(!passwordBox){
+        return;
+    }
+
+
     const password =
-        document
-        .getElementById("analyticsPassword")
-        .value
-        .trim();
+        passwordBox.value.trim();
+
+
+    //================================================
+    // TEMPORARY PASSWORD
+    // Later Google Sheet se fetch hoga
+    //================================================
+
+    const ANALYTICS_PASSWORD =
+        "ikon@asia";
 
 
     //================================================
     // PASSWORD CHECK
     //================================================
 
-    if(password !== "ikon@asia"){
+    if(password !== ANALYTICS_PASSWORD){
 
-        alert("Invalid Admin Password.");
+        alert(
+            "Invalid Admin Password."
+        );
+
+        passwordBox.value = "";
+
+        passwordBox.focus();
 
         return;
 
@@ -7663,7 +7686,7 @@ function verifyAnalyticsPassword(){
 
 
     //================================================
-    // HIDE COMPLETE RESULT LIST PAGE
+    // HIDE RESULT LIST
     //================================================
 
     document
@@ -7688,32 +7711,1773 @@ function verifyAnalyticsPassword(){
     // LOAD ANALYTICS
     //================================================
 
-    if(typeof loadAnalytics === "function"){
+    loadAnalytics();
 
-        loadAnalytics();
+}
+
+
+//====================================================
+// LOAD ANALYTICS
+//====================================================
+
+function loadAnalytics(){
+
+    //================================================
+    // ADMIN SECURITY CHECK
+    //================================================
+
+    if(isAdminMode !== true){
+
+        console.warn(
+            "Analytics access denied."
+        );
+
+        return;
+
+    }
+
+
+    if(!adminToken){
+
+        console.warn(
+            "Admin token missing."
+        );
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // GET SELECTED PAPER
+    //================================================
+
+    const paperSelect =
+        document.getElementById(
+            "analyticsPaper"
+        );
+
+
+    const selectedPaper =
+        paperSelect
+            ? paperSelect.value.trim()
+            : "";
+
+
+    //================================================
+    // SHOW LOADING
+    //================================================
+
+    setAnalyticsLoading();
+
+
+    //================================================
+    // FETCH ALL RESULTS
+    //================================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=allResults" +
+        "&adminToken=" +
+        encodeURIComponent(
+            adminToken
+        )
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "ANALYTICS DATA:",
+            data
+        );
+
+
+        //================================================
+        // AUTHORIZATION
+        //================================================
+
+        if(
+            data.status ===
+            "UNAUTHORIZED"
+        ){
+
+            alert(
+                "Admin verification required."
+            );
+
+            isAdminMode = false;
+
+            adminToken = "";
+
+            return;
+
+        }
+
+
+        //================================================
+        // API ERROR
+        //================================================
+
+        if(
+            data.status !==
+            "SUCCESS"
+        ){
+
+            showAnalyticsError(
+                "Unable to load examination analytics."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // RESULTS
+        //================================================
+
+        let results =
+            Array.isArray(
+                data.results
+            )
+            ? data.results
+            : [];
+
+
+        //================================================
+        // THEORY RESULTS ONLY
+        //
+        // Practical / Viva / Notes /
+        // Behaviour / Project ignored
+        //================================================
+
+        results =
+            results.filter(
+                function(r){
+
+                    const paper =
+                        String(
+                            r.paperName ||
+                            r.paper ||
+                            ""
+                        )
+                        .trim();
+
+
+                    const lowerPaper =
+                        paper.toLowerCase();
+
+
+                    if(
+                        lowerPaper.includes(
+                            "practical"
+                        ) ||
+                        lowerPaper.includes(
+                            "viva"
+                        ) ||
+                        lowerPaper.includes(
+                            "notes"
+                        ) ||
+                        lowerPaper.includes(
+                            "behaviour"
+                        ) ||
+                        lowerPaper.includes(
+                            "project"
+                        )
+                    ){
+
+                        return false;
+
+                    }
+
+
+                    return true;
+
+                }
+            );
+
+
+        //================================================
+        // CREATE PAPER LIST
+        //================================================
+
+        populateAnalyticsPapers(
+            results
+        );
+
+
+        //================================================
+        // FILTER PAPER
+        //================================================
+
+        let filteredResults =
+            results;
+
+
+        if(
+            selectedPaper !== ""
+        ){
+
+            filteredResults =
+                results.filter(
+                    function(r){
+
+                        const paper =
+                            String(
+                                r.paperName ||
+                                r.paper ||
+                                ""
+                            )
+                            .trim();
+
+                        return (
+                            paper.toLowerCase() ===
+                            selectedPaper.toLowerCase()
+                        );
+
+                    }
+                );
+
+        }
+
+
+        //================================================
+        // UPDATE ANALYTICS
+        //================================================
+
+        calculateAnalytics(
+            filteredResults,
+            results
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Analytics Error:",
+            error
+        );
+
+
+        showAnalyticsError(
+            "Unable to connect with server."
+        );
+
+    });
+
+}
+
+
+//====================================================
+// POPULATE PAPER DROPDOWN
+//====================================================
+
+function populateAnalyticsPapers(
+    results
+){
+
+    const select =
+        document.getElementById(
+            "analyticsPaper"
+        );
+
+
+    if(!select){
+        return;
+    }
+
+
+    //================================================
+    // CURRENT SELECTED VALUE
+    //================================================
+
+    const currentValue =
+        select.value;
+
+
+    //================================================
+    // GET UNIQUE PAPERS
+    //================================================
+
+    const paperSet =
+        new Set();
+
+
+    results.forEach(
+        function(r){
+
+            const paper =
+                String(
+                    r.paperName ||
+                    r.paper ||
+                    ""
+                )
+                .trim();
+
+
+            if(paper !== ""){
+
+                paperSet.add(
+                    paper
+                );
+
+            }
+
+        }
+    );
+
+
+    //================================================
+    // SORT PAPERS
+    //================================================
+
+    const papers =
+        Array.from(
+            paperSet
+        ).sort(
+            function(a,b){
+
+                return a.localeCompare(
+                    b
+                );
+
+            }
+        );
+
+
+    //================================================
+    // CLEAR OPTIONS
+    //================================================
+
+    select.innerHTML =
+        `
+        <option value="">
+            All Papers
+        </option>
+        `;
+
+
+    //================================================
+    // ADD PAPERS
+    //================================================
+
+    papers.forEach(
+        function(paper){
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                paper;
+
+
+            option.textContent =
+                paper;
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    //================================================
+    // RESTORE SELECTION
+    //================================================
+
+    if(
+        currentValue &&
+        papers.includes(
+            currentValue
+        )
+    ){
+
+        select.value =
+            currentValue;
 
     }
 
 }
-//====================================================
-// CLOSE ANALYTICS PASSWORD
-//====================================================
+
 
 //====================================================
-// CLOSE ANALYTICS PASSWORD
+// CALCULATE ANALYTICS
 //====================================================
 
-function closeAnalyticsPassword(){
+function calculateAnalytics(
+    results,
+    allResults
+){
 
-    // Hide Password Page
+    //================================================
+    // EMPTY RESULT
+    //================================================
+
+    if(
+        !Array.isArray(results) ||
+        results.length === 0
+    ){
+
+        updateAnalyticsCards(
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        clearAnalyticsTables();
+
+
+        return;
+
+    }
+
+
+    //================================================
+    // PREPARE DATA
+    //================================================
+
+    const prepared =
+        results.map(
+            function(r){
+
+                return prepareAnalyticsRecord(
+                    r
+                );
+
+            }
+        );
+
+
+    //================================================
+    // TOTAL STUDENTS
+    //================================================
+
+    const total =
+        prepared.length;
+
+
+    //================================================
+    // PASS / FAIL
+    //================================================
+
+    let pass = 0;
+
+    let fail = 0;
+
+
+    prepared.forEach(
+        function(r){
+
+            if(
+                r.result
+                    .toLowerCase()
+                    .includes("pass")
+            ){
+
+                pass++;
+
+            }
+            else if(
+                r.result
+                    .toLowerCase()
+                    .includes("fail")
+            ){
+
+                fail++;
+
+            }
+
+        }
+    );
+
+
+    //================================================
+    // PASS PERCENTAGE
+    //================================================
+
+    const passPercent =
+        total > 0
+        ? (
+            pass /
+            total *
+            100
+        )
+        : 0;
+
+
+    //================================================
+    // MARKS
+    //================================================
+
+    const marks =
+        prepared.map(
+            function(r){
+
+                return r.marks;
+
+            }
+        );
+
+
+    const totalMarks =
+        marks.reduce(
+            function(sum,value){
+
+                return sum + value;
+
+            },
+            0
+        );
+
+
+    const average =
+        total > 0
+        ? totalMarks / total
+        : 0;
+
+
+    const highest =
+        marks.length > 0
+        ? Math.max(...marks)
+        : 0;
+
+
+    const lowest =
+        marks.length > 0
+        ? Math.min(...marks)
+        : 0;
+
+
+    //================================================
+    // UPDATE KPI CARDS
+    //================================================
+
+    updateAnalyticsCards(
+
+        total,
+
+        pass,
+
+        fail,
+
+        passPercent,
+
+        average,
+
+        highest,
+
+        lowest
+
+    );
+
+
+    //================================================
+    // TOP PERFORMERS
+    //================================================
+
+    renderTopPerformers(
+        prepared
+    );
+
+
+    //================================================
+    // WEAK STUDENTS
+    //================================================
+
+    renderWeakStudents(
+        prepared
+    );
+
+
+    //================================================
+    // PAPER COMPARISON
+    //
+    // Use ALL theory results so that
+    // comparison remains paper-wise
+    //================================================
+
+    renderPaperComparison(
+        allResults
+    );
+
+
+    //================================================
+    // PERFORMANCE DISTRIBUTION
+    //================================================
+
+    renderPerformanceDistribution(
+        prepared
+    );
+
+}
+
+
+//====================================================
+// PREPARE SINGLE RESULT
+//====================================================
+
+function prepareAnalyticsRecord(
+    r
+){
+
+    const regNo =
+        String(
+            r.regNo ||
+            r.registrationNo ||
+            r.reg ||
+            ""
+        ).trim();
+
+
+    const studentName =
+        String(
+            r.studentName ||
+            r.name ||
+            ""
+        ).trim();
+
+
+    const paper =
+        String(
+            r.paperName ||
+            r.paper ||
+            ""
+        ).trim();
+
+
+    //================================================
+    // MARKS
+    //================================================
+
+    let marks =
+        parseFloat(
+            r.totalMarks ??
+            r.total ??
+            r.obtainedMarks ??
+            r.correct ??
+            0
+        );
+
+
+    if(
+        isNaN(marks)
+    ){
+
+        marks = 0;
+
+    }
+
+
+    //================================================
+    // PERCENTAGE
+    //================================================
+
+    let percentage =
+        parseFloat(
+            r.percentage ??
+            r.percent ??
+            0
+        );
+
+
+    if(
+        isNaN(percentage)
+    ){
+
+        percentage = 0;
+
+    }
+
+
+    //================================================
+    // RESULT
+    //================================================
+
+    const result =
+        String(
+            r.result ||
+            r.grade ||
+            ""
+        ).trim();
+
+
+    return {
+
+        original: r,
+
+        regNo:
+            regNo,
+
+        studentName:
+            studentName,
+
+        paper:
+            paper,
+
+        marks:
+            marks,
+
+        percentage:
+            percentage,
+
+        result:
+            result
+
+    };
+
+}
+
+
+//====================================================
+// UPDATE KPI CARDS
+//====================================================
+
+function updateAnalyticsCards(
+
+    total,
+    pass,
+    fail,
+    passPercent,
+    average,
+    highest,
+    lowest
+
+){
+
+    const totalBox =
+        document.getElementById(
+            "analyticsTotalStudents"
+        );
+
+
+    const passBox =
+        document.getElementById(
+            "analyticsPass"
+        );
+
+
+    const failBox =
+        document.getElementById(
+            "analyticsFail"
+        );
+
+
+    const passPercentBox =
+        document.getElementById(
+            "analyticsPassPercent"
+        );
+
+
+    const averageBox =
+        document.getElementById(
+            "analyticsAverage"
+        );
+
+
+    const highestBox =
+        document.getElementById(
+            "analyticsHighest"
+        );
+
+
+    const lowestBox =
+        document.getElementById(
+            "analyticsLowest"
+        );
+
+
+    if(totalBox){
+
+        totalBox.textContent =
+            total;
+
+    }
+
+
+    if(passBox){
+
+        passBox.textContent =
+            pass;
+
+    }
+
+
+    if(failBox){
+
+        failBox.textContent =
+            fail;
+
+    }
+
+
+    if(passPercentBox){
+
+        passPercentBox.textContent =
+            passPercent.toFixed(1) +
+            "%";
+
+    }
+
+
+    if(averageBox){
+
+        averageBox.textContent =
+            average.toFixed(1);
+
+    }
+
+
+    if(highestBox){
+
+        highestBox.textContent =
+            highest;
+
+    }
+
+
+    if(lowestBox){
+
+        lowestBox.textContent =
+            lowest;
+
+    }
+
+}
+
+
+//====================================================
+// TOP PERFORMERS
+//====================================================
+
+function renderTopPerformers(
+    results
+){
+
+    const body =
+        document.getElementById(
+            "analyticsTopPerformers"
+        );
+
+
+    if(!body){
+        return;
+    }
+
+
+    body.innerHTML = "";
+
+
+    const sorted =
+        [...results]
+        .sort(
+            function(a,b){
+
+                return (
+                    b.percentage -
+                    a.percentage
+                );
+
+            }
+        )
+        .slice(0,10);
+
+
+    if(sorted.length === 0){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    style="text-align:center;padding:25px;"
+                >
+                    No data available
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    sorted.forEach(
+        function(r,index){
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${index + 1}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.regNo
+                    )}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeAnalyticsHTML(
+                            r.studentName
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.paper
+                    )}
+                </td>
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.marks
+                    )}
+                </td>
+
+                <td>
+                    ${r.percentage.toFixed(1)}%
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeAnalyticsHTML(
+                            r.result
+                        )}
+                    </strong>
+                </td>
+
+            `;
+
+
+            body.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+//====================================================
+// WEAK STUDENTS
+//====================================================
+
+function renderWeakStudents(
+    results
+){
+
+    const body =
+        document.getElementById(
+            "analyticsWeakStudents"
+        );
+
+
+    if(!body){
+        return;
+    }
+
+
+    body.innerHTML = "";
+
+
+    const sorted =
+        [...results]
+        .sort(
+            function(a,b){
+
+                return (
+                    a.percentage -
+                    b.percentage
+                );
+
+            }
+        )
+        .filter(
+            function(r){
+
+                return (
+                    r.result
+                        .toLowerCase()
+                        .includes("fail") ||
+                    r.percentage < 40
+                );
+
+            }
+        )
+        .slice(0,10);
+
+
+    if(sorted.length === 0){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="6"
+                    style="text-align:center;padding:25px;"
+                >
+                    No students requiring attention
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    sorted.forEach(
+        function(r){
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.regNo
+                    )}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeAnalyticsHTML(
+                            r.studentName
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.paper
+                    )}
+                </td>
+
+                <td>
+                    ${escapeAnalyticsHTML(
+                        r.marks
+                    )}
+                </td>
+
+                <td>
+                    ${r.percentage.toFixed(1)}%
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeAnalyticsHTML(
+                            r.result
+                        )}
+                    </strong>
+                </td>
+
+            `;
+
+
+            body.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+
+//====================================================
+// PAPER COMPARISON
+//====================================================
+
+function renderPaperComparison(
+    results
+){
+
+    const body =
+        document.getElementById(
+            "analyticsPaperComparison"
+        );
+
+
+    if(!body){
+        return;
+    }
+
+
+    body.innerHTML = "";
+
+
+    //================================================
+    // GROUP PAPERS
+    //================================================
+
+    const groups = {};
+
+
+    results.forEach(
+        function(r){
+
+            const record =
+                prepareAnalyticsRecord(
+                    r
+                );
+
+
+            if(
+                !record.paper
+            ){
+                return;
+            }
+
+
+            const key =
+                record.paper
+                    .toLowerCase();
+
+
+            if(
+                !groups[key]
+            ){
+
+                groups[key] = {
+
+                    paper:
+                        record.paper,
+
+                    students: 0,
+
+                    totalPercent: 0,
+
+                    pass: 0,
+
+                    highest: 0
+
+                };
+
+            }
+
+
+            groups[key].students++;
+
+            groups[key].totalPercent +=
+                record.percentage;
+
+
+            if(
+                record.result
+                    .toLowerCase()
+                    .includes("pass")
+            ){
+
+                groups[key].pass++;
+
+            }
+
+
+            if(
+                record.marks >
+                groups[key].highest
+            ){
+
+                groups[key].highest =
+                    record.marks;
+
+            }
+
+        }
+    );
+
+
+    const paperGroups =
+        Object.values(
+            groups
+        );
+
+
+    if(
+        paperGroups.length === 0
+    ){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="5"
+                    style="text-align:center;padding:25px;"
+                >
+                    No paper data available
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    paperGroups
+        .sort(
+            function(a,b){
+
+                return (
+                    b.totalPercent /
+                    b.students
+                ) -
+                (
+                    a.totalPercent /
+                    a.students
+                );
+
+            }
+        )
+        .forEach(
+            function(group){
+
+                const averagePercent =
+                    group.students > 0
+                    ? group.totalPercent /
+                      group.students
+                    : 0;
+
+
+                const passPercent =
+                    group.students > 0
+                    ? group.pass /
+                      group.students *
+                      100
+                    : 0;
+
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${escapeAnalyticsHTML(
+                                group.paper
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${group.students}
+                    </td>
+
+                    <td>
+                        ${averagePercent.toFixed(1)}%
+                    </td>
+
+                    <td>
+                        ${passPercent.toFixed(1)}%
+                    </td>
+
+                    <td>
+                        ${group.highest}
+                    </td>
+
+                `;
+
+
+                body.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+}
+
+
+//====================================================
+// PERFORMANCE DISTRIBUTION
+//====================================================
+
+function renderPerformanceDistribution(
+    results
+){
+
+    const box =
+        document.getElementById(
+            "analyticsDistribution"
+        );
+
+
+    if(!box){
+        return;
+    }
+
+
+    box.innerHTML = "";
+
+
+    const ranges = [
+
+        {
+            label:
+                "0–39%",
+            min:0,
+            max:39,
+            count:0
+        },
+
+        {
+            label:
+                "40–49%",
+            min:40,
+            max:49,
+            count:0
+        },
+
+        {
+            label:
+                "50–59%",
+            min:50,
+            max:59,
+            count:0
+        },
+
+        {
+            label:
+                "60–69%",
+            min:60,
+            max:69,
+            count:0
+        },
+
+        {
+            label:
+                "70–79%",
+            min:70,
+            max:79,
+            count:0
+        },
+
+        {
+            label:
+                "80–89%",
+            min:80,
+            max:89,
+            count:0
+        },
+
+        {
+            label:
+                "90–100%",
+            min:90,
+            max:100,
+            count:0
+        }
+
+    ];
+
+
+    results.forEach(
+        function(r){
+
+            const percentage =
+                Number(
+                    r.percentage
+                );
+
+
+            ranges.forEach(
+                function(range){
+
+                    if(
+                        percentage >=
+                        range.min &&
+                        percentage <=
+                        range.max
+                    ){
+
+                        range.count++;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    const total =
+        results.length;
+
+
+    ranges.forEach(
+        function(range){
+
+            const percent =
+                total > 0
+                ? (
+                    range.count /
+                    total *
+                    100
+                )
+                : 0;
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "analytics-distribution-item";
+
+
+            item.innerHTML = `
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:6px;
+                    "
+                >
+
+                    <strong>
+                        ${range.label}
+                    </strong>
+
+                    <span>
+                        ${range.count}
+                        Students
+                    </span>
+
+                </div>
+
+                <div
+                    style="
+                        width:100%;
+                        height:10px;
+                        background:#e2e8f0;
+                        border-radius:20px;
+                        overflow:hidden;
+                    "
+                >
+
+                    <div
+                        style="
+                            width:${percent}%;
+                            height:100%;
+                            background:linear-gradient(
+                                90deg,
+                                #2563eb,
+                                #0ea5e9
+                            );
+                            border-radius:20px;
+                            transition:width .4s ease;
+                        "
+                    ></div>
+
+                </div>
+
+            `;
+
+
+            box.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+//====================================================
+// CLEAR ANALYTICS TABLES
+//====================================================
+
+function clearAnalyticsTables(){
+
+    const top =
+        document.getElementById(
+            "analyticsTopPerformers"
+        );
+
+
+    const weak =
+        document.getElementById(
+            "analyticsWeakStudents"
+        );
+
+
+    const comparison =
+        document.getElementById(
+            "analyticsPaperComparison"
+        );
+
+
+    const distribution =
+        document.getElementById(
+            "analyticsDistribution"
+        );
+
+
+    if(top){
+
+        top.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    style="text-align:center;padding:25px;"
+                >
+                    No data available
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    if(weak){
+
+        weak.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="6"
+                    style="text-align:center;padding:25px;"
+                >
+                    No data available
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    if(comparison){
+
+        comparison.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="5"
+                    style="text-align:center;padding:25px;"
+                >
+                    No data available
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    if(distribution){
+
+        distribution.innerHTML = "";
+
+    }
+
+}
+
+
+//====================================================
+// ANALYTICS LOADING
+//====================================================
+
+function setAnalyticsLoading(){
+
+    const top =
+        document.getElementById(
+            "analyticsTopPerformers"
+        );
+
+
+    const weak =
+        document.getElementById(
+            "analyticsWeakStudents"
+        );
+
+
+    const comparison =
+        document.getElementById(
+            "analyticsPaperComparison"
+        );
+
+
+    if(top){
+
+        top.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+                    Loading...
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    if(weak){
+
+        weak.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+                    Loading...
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    if(comparison){
+
+        comparison.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="5"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+                    Loading...
+                </td>
+            </tr>
+            `;
+
+    }
+
+}
+
+
+//====================================================
+// ANALYTICS ERROR
+//====================================================
+
+function showAnalyticsError(
+    message
+){
+
+    const top =
+        document.getElementById(
+            "analyticsTopPerformers"
+        );
+
+
+    if(top){
+
+        top.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        color:#dc2626;
+                        font-weight:700;
+                    "
+                >
+                    ${escapeAnalyticsHTML(
+                        message
+                    )}
+                </td>
+            </tr>
+            `;
+
+    }
+
+
+    clearAnalyticsTables();
+
+}
+
+
+//====================================================
+// BACK TO ADMIN DASHBOARD
+//====================================================
+
+function backToAdminDashboard(){
+
+    //================================================
+    // HIDE ANALYTICS
+    //================================================
+
     document
         .getElementById(
-            "analyticsPasswordPage"
+            "analyticsPage"
         )
         ?.classList.add("hidden");
 
 
-    // Show Result List Page
+    //================================================
+    // SHOW STUDENT RESULT PAGE
+    //================================================
+
     document
         .getElementById(
             "studentResultPage"
@@ -7721,29 +9485,193 @@ function closeAnalyticsPassword(){
         ?.classList.remove("hidden");
 
 
-    // Show Result List Box
+    //================================================
+    // SHOW RESULT LIST BOX
+    //================================================
+
     const resultBox =
         document.querySelector(
             "#studentResultPage .result-list-box"
         );
 
+
     if(resultBox){
 
-        resultBox.classList.remove("hidden");
+        resultBox.classList.remove(
+            "hidden"
+        );
 
     }
 
 
-    // Show Analytics Button again
+    //================================================
+    // SHOW ANALYTICS BUTTON
+    //================================================
+
     const analyticsBtn =
         document.getElementById(
             "analyticsAccess"
         );
 
+
     if(analyticsBtn){
 
-        analyticsBtn.style.display = "block";
+        analyticsBtn.style.display =
+            "block";
 
     }
+
+
+    //================================================
+    // CLEAR ANALYTICS DATA
+    //================================================
+
+    clearAnalyticsTables();
+
+
+    //================================================
+    // RESET FILTER
+    //================================================
+
+    const paperSelect =
+        document.getElementById(
+            "analyticsPaper"
+        );
+
+
+    if(paperSelect){
+
+        paperSelect.value = "";
+
+    }
+
+
+    //================================================
+    // RELOAD ADMIN RESULTS
+    //================================================
+
+    if(
+        typeof loadAdminResults ===
+        "function"
+    ){
+
+        loadAdminResults();
+
+    }
+
+}
+
+
+//====================================================
+// CLOSE ANALYTICS PASSWORD
+//====================================================
+
+function closeAnalyticsPassword(){
+
+    //================================================
+    // HIDE PASSWORD PAGE
+    //================================================
+
+    document
+        .getElementById(
+            "analyticsPasswordPage"
+        )
+        ?.classList.add("hidden");
+
+
+    //================================================
+    // SHOW RESULT PAGE
+    //================================================
+
+    document
+        .getElementById(
+            "studentResultPage"
+        )
+        ?.classList.remove("hidden");
+
+
+    //================================================
+    // SHOW RESULT BOX
+    //================================================
+
+    const resultBox =
+        document.querySelector(
+            "#studentResultPage .result-list-box"
+        );
+
+
+    if(resultBox){
+
+        resultBox.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    //================================================
+    // SHOW ANALYTICS BUTTON
+    //================================================
+
+    const analyticsBtn =
+        document.getElementById(
+            "analyticsAccess"
+        );
+
+
+    if(analyticsBtn){
+
+        analyticsBtn.style.display =
+            "block";
+
+    }
+
+}
+
+
+//====================================================
+// SAFE HTML
+//====================================================
+
+function escapeAnalyticsHTML(
+    value
+){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
