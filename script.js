@@ -14,6 +14,7 @@ const SCRIPT_URL =
 //====================================================
 // STUDENT DETAILS
 //====================================================
+
 let studentName = "";
 let regNo = "";
 let paperName = "";
@@ -24,7 +25,11 @@ let studentId = "";
 let courseName = "";
 let totalMarks = "";
 let passingMarks = "";
+//====================================================
+// RESULT PAGE NAVIGATION CONTROL
+//====================================================
 
+let resultNavigationToken = 0;
 
 //====================================================
 // QUESTION DATA
@@ -3233,7 +3238,11 @@ console.log(
 
 function verifyResultStudent(){
 
-    const code = document.getElementById("resultStudentID").value.trim();
+    const code =
+        document
+        .getElementById("resultStudentID")
+        .value
+        .trim();
 
     if(code==""){
         alert("Please Enter Verification Code");
@@ -3245,6 +3254,13 @@ function verifyResultStudent(){
         return;
     }
 
+    // -----------------------------------------------
+    // CREATE UNIQUE REQUEST TOKEN
+    // -----------------------------------------------
+
+    const myToken = ++resultNavigationToken;
+
+
     fetch(
         SCRIPT_URL +
         "?action=studentResultList"
@@ -3254,83 +3270,157 @@ function verifyResultStudent(){
 
     .then(data => {
 
-        if(data.status!="SUCCESS"){
-            alert("Unable to load Result List");
+        // -------------------------------------------
+        // OLD REQUEST CHECK
+        // -------------------------------------------
+
+        if(myToken !== resultNavigationToken){
             return;
         }
 
-        document.getElementById("loginPage")
+
+        if(data.status!="SUCCESS"){
+
+            alert("Unable to load Result List");
+            return;
+
+        }
+
+
+        // -------------------------------------------
+        // SHOW RESULT PAGE
+        // -------------------------------------------
+
+        document
+        .getElementById("loginPage")
         ?.classList.add("hidden");
 
-        document.getElementById("resultVerifyPage")
+
+        document
+        .getElementById("resultVerifyPage")
         ?.classList.add("hidden");
 
-        document.getElementById("studentResultPage")
+
+        document
+        .getElementById("studentResultPage")
         ?.classList.remove("hidden");
 
-        const body = document.getElementById("resultTableBody");
+
+        const body =
+            document.getElementById(
+                "resultTableBody"
+            );
+
+        if(!body){
+            return;
+        }
 
         body.innerHTML = "";
 
+
         let visibleCount = 0;
+
 
         data.results.forEach(function(r){
 
             // Sirf Published Results Show Honge
+
             if(r.publishStatus !== "YES"){
                 return;
             }
 
+
             visibleCount++;
 
-            const tr = document.createElement("tr");
+
+            const tr =
+                document.createElement("tr");
+
 
             tr.innerHTML = `
+
                 <td>${visibleCount}</td>
+
                 <td>${r.marksheetNo}</td>
+
                 <td>${r.regNo}</td>
+
                 <td>${r.studentName}</td>
+
                 <td>${r.course}</td>
+
                 <td>${r.paperName}</td>
+
                 <td>${r.theory}</td>
+
                 <td>${r.practical}</td>
+
                 <td>${r.viva}</td>
+
                 <td>${r.notes}</td>
+
                 <td>${r.behaviour}</td>
+
                 <td>${r.project}</td>
+
                 <td>${r.totalMarks}</td>
+
                 <td>${r.percentage}</td>
+
                 <td>${r.grade}</td>
+
                 <td>${r.result}</td>
+
                 <td>${r.resultDate}</td>
+
                 <td>
-                    <button class="viewMarksheetBtn"
+
+                    <button
+                        class="viewMarksheetBtn"
                         onclick="verifyMarksheet('${r.paperName}')">
+
                         View Marksheet
+
                     </button>
+
                 </td>
+
             `;
+
 
             body.appendChild(tr);
 
         });
 
-        // Agar koi bhi Result Publish nahi hua
+
+        // -------------------------------------------
+        // NO RESULT
+        // -------------------------------------------
+
         if(visibleCount === 0){
 
             body.innerHTML = `
+
                 <tr>
-                    <td colspan="18"
+
+                    <td
+                        colspan="18"
                         style="
                             text-align:center;
                             padding:45px;
                             color:#d32f2f;
                             font-size:22px;
                             font-weight:bold;
-                            background:#fff8f8;">
+                            background:#fff8f8;
+                        "
+                    >
+
                         Results will be published soon.
+
                     </td>
+
                 </tr>
+
             `;
 
         }
@@ -3340,6 +3430,13 @@ function verifyResultStudent(){
     .catch(function(err){
 
         console.log(err);
+
+        // Agar user meanwhile Leaderboard par chala gaya
+        // to error popup bhi unnecessary nahi dikhayenge
+
+        if(myToken !== resultNavigationToken){
+            return;
+        }
 
         alert("Unable to load Result List.");
 
@@ -4145,6 +4242,7 @@ function showAnswerDetailsError(message){
 //====================================================
 
 function backToResultList(){
+    resultNavigationToken++;
 
     // Hide Marksheet
     document
@@ -5998,6 +6096,11 @@ function searchResult(){
 //====================================================
 
 function openLeaderboard(){
+      // -----------------------------------------------
+    // CANCEL ANY OLD RESULT PAGE REQUEST
+    // -----------------------------------------------
+
+    resultNavigationToken++;
 
     //------------------------------------------------
     // HIDE RESULT LIST
