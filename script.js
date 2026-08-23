@@ -7730,12 +7730,22 @@ function loadAnalytics(){
 
         console.warn(
             "Analytics access denied."
-        );
+        );//====================================================
+// LOAD ANALYTICS
+//====================================================
 
-        return;
+function loadAnalytics(){
 
-    }
-
+    //================================================
+    // ADMIN SECURITY CHECK
+    //================================================
+    // Analytics access ke liye temporary adminToken
+    // required hai.
+    //
+    // isAdminMode par depend nahi karenge,
+    // kyunki actual security Apps Script token se
+    // verify hoti hai.
+    //================================================
 
     if(!adminToken){
 
@@ -7748,7 +7758,6 @@ function loadAnalytics(){
         );
 
         return;
-
     }
 
 
@@ -7824,12 +7833,11 @@ function loadAnalytics(){
                 "Admin verification required."
             );
 
+            // Token invalid/expired
             isAdminMode = false;
-
             adminToken = "";
 
             return;
-
         }
 
 
@@ -7847,7 +7855,6 @@ function loadAnalytics(){
             );
 
             return;
-
         }
 
 
@@ -7891,22 +7898,25 @@ function loadAnalytics(){
                         lowerPaper.includes(
                             "practical"
                         ) ||
+
                         lowerPaper.includes(
                             "viva"
                         ) ||
+
                         lowerPaper.includes(
                             "notes"
                         ) ||
+
                         lowerPaper.includes(
                             "behaviour"
                         ) ||
+
                         lowerPaper.includes(
                             "project"
                         )
                     ){
 
                         return false;
-
                     }
 
 
@@ -7949,6 +7959,7 @@ function loadAnalytics(){
                             )
                             .trim();
 
+
                         return (
                             paper.toLowerCase() ===
                             selectedPaper.toLowerCase()
@@ -7971,6 +7982,11 @@ function loadAnalytics(){
 
     })
 
+
+    //================================================
+    // ERROR HANDLING
+    //================================================
+
     .catch(function(error){
 
         console.error(
@@ -7986,7 +8002,6 @@ function loadAnalytics(){
     });
 
 }
-
 
 //====================================================
 // POPULATE PAPER DROPDOWN
