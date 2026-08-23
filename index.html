@@ -1056,6 +1056,79 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
 </div>
+      <!--==================================================
+    PRACTICAL STUDENT VERIFICATION
+===================================================-->
+
+<div
+    id="practicalVerificationPage"
+    class="hidden">
+
+    <div class="examTypeContainer">
+
+        <h2>
+            Student Verification
+        </h2>
+
+        <p>
+            Please verify your Student ID and Verification Code to continue.
+        </p>
+
+
+        <!-- Student ID -->
+
+        <input
+            type="text"
+            id="practicalStudentIdInput"
+            placeholder="Enter Student ID"
+            autocomplete="off"
+        >
+
+
+        <br><br>
+
+
+        <!-- Verification Code -->
+
+        <input
+            type="text"
+            id="practicalVerificationCodeInput"
+            placeholder="Enter Verification Code"
+            autocomplete="off"
+        >
+
+
+        <br><br>
+
+
+        <button
+            type="button"
+            class="primary"
+            id="verifyPracticalBtn"
+            onclick="verifyPracticalStudent()"
+        >
+
+            Verify & Continue
+
+        </button>
+
+
+        <br><br>
+
+
+        <button
+            type="button"
+            class="backDashboardBtn"
+            onclick="backToExamType()"
+        >
+
+            ← Back
+
+        </button>
+
+    </div>
+
+</div>
 <!--==================================================
             PRACTICAL EXAM PAGE
 ===================================================-->
@@ -1563,7 +1636,11 @@ After successfully submitting one paper, please refresh the website (F5) before 
             id="studentIdInput"
             placeholder="Enter Student ID">
 
-
+                  <input
+                      type="text"
+                      id="verificationCode"
+                      placeholder="Enter Verification Code"
+                  >
 
         <br>
         <br>
