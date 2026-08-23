@@ -477,20 +477,32 @@ function shuffleQuestions(array) {
 // REG NO + NAME ONLY
 //====================================================
 
+//====================================================
+// STUDENT LOGIN
+// REG NO + NAME ONLY
+//====================================================
+
 function startTest(){
 
     //================================================
-    // READ REGISTRATION NUMBER
+    // GET INPUTS
     //================================================
 
-    const regInput =
-        document.getElementById("regNo");
-
     const nameInput =
-        document.getElementById("studentName");
+        document.getElementById(
+            "studentName"
+        );
+
+    const regInput =
+        document.getElementById(
+            "regNo"
+        );
 
 
-    if(!regInput || !nameInput){
+    if(
+        !nameInput ||
+        !regInput
+    ){
 
         alert(
             "Login fields not found."
@@ -501,14 +513,17 @@ function startTest(){
     }
 
 
-    regNo =
-        regInput.value
-            .trim();
-
+    //================================================
+    // READ VALUES
+    //================================================
 
     studentName =
         nameInput.value
-            .trim();
+        .trim();
+
+    regNo =
+        regInput.value
+        .trim();
 
 
     //================================================
@@ -555,8 +570,7 @@ function startTest(){
     // ONLY REG NO + NAME
     //================================================
 
-    fetch(
-
+    const loginURL =
         SCRIPT_URL +
         "?action=login" +
         "&regNo=" +
@@ -566,9 +580,16 @@ function startTest(){
         "&name=" +
         encodeURIComponent(
             studentName
-        )
+        );
 
-    )
+
+    console.log(
+        "Login URL:",
+        loginURL
+    );
+
+
+    fetch(loginURL)
 
     .then(function(res){
 
@@ -609,7 +630,7 @@ function startTest(){
 
 
         //================================================
-        // VALID
+        // VALID LOGIN
         //================================================
 
         if(
@@ -617,12 +638,16 @@ function startTest(){
             "VALID"
         ){
 
+            //============================================
+            // SAVE STUDENT DATA
+            //============================================
+
             studentName =
-                data.name;
+                data.name || studentName;
 
 
             regNo =
-                data.regNo;
+                data.regNo || regNo;
 
 
             courseName =
@@ -638,23 +663,35 @@ function startTest(){
 
 
             theoryPapers =
-                data.theoryPapers || [];
+                Array.isArray(
+                    data.theoryPapers
+                )
+                ?
+                data.theoryPapers
+                :
+                [];
 
 
             practicalPapers =
-                data.practicalPapers || [];
+                Array.isArray(
+                    data.practicalPapers
+                )
+                ?
+                data.practicalPapers
+                :
+                [];
 
 
-            // Student ID server se mil sakta hai,
-            // lekin yahan verification nahi ho rahi.
+            // Student ID server se mil raha hai,
+            // lekin login par verify nahi ho raha.
 
             studentId =
                 data.idNo || "";
 
 
-            //================================================
-            // NO AVAILABLE EXAMS
-            //================================================
+            //============================================
+            // CHECK AVAILABLE EXAMS
+            //============================================
 
             if(
                 theoryPapers.length === 0 &&
@@ -670,9 +707,9 @@ function startTest(){
             }
 
 
-            //================================================
+            //============================================
             // OPEN EXAM TYPE PAGE
-            //================================================
+            //============================================
 
             openExamTypePage();
 
@@ -682,7 +719,7 @@ function startTest(){
 
 
         //================================================
-        // ALL SUBMITTED
+        // ALL PAPERS SUBMITTED
         //================================================
 
         if(
@@ -691,7 +728,7 @@ function startTest(){
         ){
 
             alert(
-                "All examinations have already been completed."
+                "All assigned examinations have already been completed."
             );
 
             return;
@@ -700,7 +737,7 @@ function startTest(){
 
 
         //================================================
-        // INVALID
+        // INVALID LOGIN
         //================================================
 
         alert(
@@ -709,6 +746,7 @@ function startTest(){
         );
 
     })
+
 
     .catch(function(error){
 
@@ -736,7 +774,6 @@ function startTest(){
     });
 
 }
-
 //====================================================
 // OPEN EXAM TYPE PAGE
 //====================================================
