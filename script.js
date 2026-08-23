@@ -1516,32 +1516,194 @@ document
 // VERIFY STUDENT ID
 //====================================================
 
-function verifyStudentID() {
+//====================================================
+// VERIFY THEORY STUDENT
+// REG NO + NAME + STUDENT ID + VERIFICATION CODE
+//====================================================
 
-    const input = document.getElementById("studentIdInput");
+function verifyStudentID(){
 
-    if (!input) {
-        alert("Student ID input not found.");
+    const idBox =
+        document.getElementById(
+            "studentIdInput"
+        );
+
+    const codeBox =
+        document.getElementById(
+            "examVerificationCode"
+        );
+
+
+    if(
+        !idBox ||
+        !codeBox
+    ){
+
+        alert(
+            "Verification fields not found."
+        );
+
         return;
+
     }
 
-    const enteredId = String(input.value).trim();
-    const savedId = String(studentId || "").trim();
 
-    if (enteredId === "") {
-        alert("Please enter Student ID.");
-        input.focus();
+    const enteredId =
+        idBox.value
+            .trim()
+            .toUpperCase();
+
+
+    const enteredCode =
+        codeBox.value
+            .trim()
+            .toUpperCase();
+
+
+    //================================================
+    // VALIDATION
+    //================================================
+
+    if(
+        enteredId === "" ||
+        enteredCode === ""
+    ){
+
+        alert(
+            "Please enter Student ID and Verification Code."
+        );
+
         return;
+
     }
 
-    if (enteredId.toUpperCase() !== savedId.toUpperCase()) {
-        alert("Invalid Student ID.");
-        input.focus();
-        return;
-    }
 
-    document.getElementById("verificationPage")?.classList.add("hidden");
-    document.getElementById("instructionPage")?.classList.remove("hidden");
+    //================================================
+    // VERIFY FROM APPS SCRIPT
+    //================================================
+
+    fetch(
+
+        SCRIPT_URL +
+        "?action=verifyExamStudent" +
+
+        "&regNo=" +
+        encodeURIComponent(
+            regNo
+        ) +
+
+        "&name=" +
+        encodeURIComponent(
+            studentName
+        ) +
+
+        "&studentId=" +
+        encodeURIComponent(
+            enteredId
+        ) +
+
+        "&verificationCode=" +
+        encodeURIComponent(
+            enteredCode
+        )
+
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(function(data){
+
+        console.log(
+            "THEORY VERIFICATION:",
+            data
+        );
+
+
+        //================================================
+        // VALID
+        //================================================
+
+        if(
+            data.status ===
+            "VALID"
+        ){
+
+            studentId =
+                data.studentId ||
+                enteredId;
+
+
+            verificationCode =
+                enteredCode;
+
+
+            // Hide verification
+            document
+                .getElementById(
+                    "verificationPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            // Show instructions
+            document
+                .getElementById(
+                    "instructionPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            return;
+
+        }
+
+
+        //================================================
+        // INVALID
+        //================================================
+
+        alert(
+            "Invalid Student ID or Verification Code."
+        );
+
+
+        idBox.value = "";
+
+        codeBox.value = "";
+
+        idBox.focus();
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Theory Verification Error:",
+            error
+        );
+
+        alert(
+            "Unable to verify Student details."
+        );
+
+    });
+
 }
 //====================================================
 // ENABLE START BUTTON
@@ -11335,6 +11497,11 @@ function exportResultListExcelWithPassword(){
 // VERIFY PRACTICAL STUDENT
 //====================================================
 
+//====================================================
+// VERIFY PRACTICAL STUDENT
+// REG NO + NAME + STUDENT ID + VERIFICATION CODE
+//====================================================
+
 function verifyPracticalStudent(){
 
     const idBox =
@@ -11342,12 +11509,10 @@ function verifyPracticalStudent(){
             "practicalStudentIdInput"
         );
 
-
     const codeBox =
         document.getElementById(
             "practicalVerificationCodeInput"
         );
-
 
     const verifyBtn =
         document.getElementById(
@@ -11359,6 +11524,10 @@ function verifyPracticalStudent(){
         !idBox ||
         !codeBox
     ){
+
+        alert(
+            "Verification fields not found."
+        );
 
         return;
 
@@ -11395,10 +11564,6 @@ function verifyPracticalStudent(){
     }
 
 
-    //================================================
-    // BUTTON
-    //================================================
-
     if(verifyBtn){
 
         verifyBtn.disabled =
@@ -11411,14 +11576,13 @@ function verifyPracticalStudent(){
 
 
     //================================================
-    // VERIFY WITH APPS SCRIPT
+    // VERIFY FROM APPS SCRIPT
     //================================================
 
     fetch(
 
         SCRIPT_URL +
-
-        "?action=login" +
+        "?action=verifyExamStudent" +
 
         "&regNo=" +
         encodeURIComponent(
@@ -11473,22 +11637,16 @@ function verifyPracticalStudent(){
             "VALID"
         ){
 
-            //============================================
-            // SAVE VERIFIED ID / CODE
-            //============================================
-
             studentId =
-                data.idNo;
+                data.studentId ||
+                enteredStudentId;
 
 
             verificationCode =
                 enteredCode;
 
 
-            //============================================
-            // SHOW PRACTICAL PAGE
-            //============================================
-
+            // Hide verification
             document
                 .getElementById(
                     "practicalVerificationPage"
@@ -11498,6 +11656,7 @@ function verifyPracticalStudent(){
                 );
 
 
+            // Show practical page
             document
                 .getElementById(
                     "practicalPage"
@@ -11507,27 +11666,75 @@ function verifyPracticalStudent(){
                 );
 
 
-            //============================================
-            // STUDENT DETAILS
-            //============================================
+            // Show instructions
+            document
+                .getElementById(
+                    "practicalInstructionPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
 
+
+            // Hide questions
+            document
+                .getElementById(
+                    "practicalQuestionArea"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            // Reset instruction checkbox
+            const check =
+                document.getElementById(
+                    "practicalInstructionCheck"
+                );
+
+
+            if(check){
+
+                check.checked =
+                    false;
+
+            }
+
+
+            // Disable start button
+            const startBtn =
+                document.getElementById(
+                    "startPracticalBtn"
+                );
+
+
+            if(startBtn){
+
+                startBtn.disabled =
+                    true;
+
+            }
+
+
+            // Stop timer before actual exam start
+            stopPracticalTimer();
+
+
+            // Fill student details
             const nameBox =
                 document.getElementById(
                     "prStudentName"
                 );
-
 
             const regBox =
                 document.getElementById(
                     "prRegNo"
                 );
 
-
             const courseBox =
                 document.getElementById(
                     "prCourse"
                 );
-
 
             const paperBox =
                 document.getElementById(
@@ -11567,105 +11774,6 @@ function verifyPracticalStudent(){
             }
 
 
-            //============================================
-            // EXAM DATE
-            //============================================
-
-            const examDate =
-                document.getElementById(
-                    "testDate"
-                );
-
-
-            if(
-                examDate &&
-                document.getElementById(
-                    "prExamDate"
-                )
-            ){
-
-                document
-                    .getElementById(
-                        "prExamDate"
-                    )
-                    .textContent =
-                    examDate.textContent.replace(
-                        "📅 Exam Date : ",
-                        ""
-                    );
-
-            }
-
-
-            //============================================
-            // SHOW INSTRUCTIONS
-            //============================================
-
-            document
-                .getElementById(
-                    "practicalInstructionPage"
-                )
-                ?.classList.remove(
-                    "hidden"
-                );
-
-
-            //============================================
-            // HIDE QUESTIONS
-            //============================================
-
-            document
-                .getElementById(
-                    "practicalQuestionArea"
-                )
-                ?.classList.add(
-                    "hidden"
-                );
-
-
-            //============================================
-            // RESET CHECKBOX
-            //============================================
-
-            const check =
-                document.getElementById(
-                    "practicalInstructionCheck"
-                );
-
-
-            if(check){
-
-                check.checked =
-                    false;
-
-            }
-
-
-            //============================================
-            // DISABLE START BUTTON
-            //============================================
-
-            const startBtn =
-                document.getElementById(
-                    "startPracticalBtn"
-                );
-
-
-            if(startBtn){
-
-                startBtn.disabled =
-                    true;
-
-            }
-
-
-            //============================================
-            // TIMER STOP
-            //============================================
-
-            stopPracticalTimer();
-
-
             return;
 
         }
@@ -11680,14 +11788,13 @@ function verifyPracticalStudent(){
         );
 
 
-        if(idBox){
+        idBox.value = "";
 
-            idBox.focus();
+        codeBox.value = "";
 
-        }
+        idBox.focus();
 
     })
-
 
     .catch(function(error){
 
@@ -11698,11 +11805,10 @@ function verifyPracticalStudent(){
 
 
         alert(
-            "Unable to verify student."
+            "Unable to verify Student details."
         );
 
     })
-
 
     .finally(function(){
 
