@@ -9968,3 +9968,23 @@ body::after {
     }
 
 }
+/* =========================================================
+   FORCE HIDE THEORY VERIFICATION PAGE
+========================================================= */
+
+#verificationPage.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   FORCE HIDE PRACTICAL VERIFICATION PAGE
+========================================================= */
+
+#practicalVerificationPage.hidden {
+
+    display: none !important;
+
+}
