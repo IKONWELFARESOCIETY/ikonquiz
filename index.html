@@ -202,7 +202,85 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
     <div class="result-list-box">
 
-        <h2>Student Result List</h2>
+     <h2
+    onclick="showAnalyticsButton()"
+    style="cursor:pointer;"
+    title="Click to open Admin Analytics">
+    
+    Student Result List
+
+</h2>
+          <!-- ==========================================
+     ANALYTICS PASSWORD PAGE
+========================================== -->
+
+<div
+    id="analyticsPasswordPage"
+    class="hidden">
+
+    <div class="result-box">
+
+        <h2>
+            🔐 Admin Verification
+        </h2>
+
+        <p>
+            Enter Admin Password to access Exam Analytics
+        </p>
+
+        <input
+            type="password"
+            id="analyticsPassword"
+            placeholder="Enter Admin Password"
+            autocomplete="off">
+
+        <br>
+        <br>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="verifyAnalyticsPassword()">
+
+            Verify
+
+        </button>
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="closeAnalyticsPassword()">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+</div>
+          <!-- ==========================================
+     HIDDEN ADMIN ANALYTICS BUTTON
+========================================== -->
+
+<div
+    id="analyticsAccess"
+    style="
+        display:none;
+        text-align:center;
+        margin:15px 0;
+    ">
+
+    <button
+        type="button"
+        class="primary"
+        onclick="openAnalyticsPassword()">
+
+        📊 Exam Analytics
+
+    </button>
+
+</div>
+          
 
         <input
             type="text"
@@ -392,6 +470,297 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
                 onclick="backToResultList()">
 
                 ← Back to Result List
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+      <!-- ==================================================
+             EXAM ANALYTICS PAGE
+================================================== -->
+
+<div id="analyticsPage" class="hidden">
+
+    <div class="analytics-container">
+
+        <!-- HEADER -->
+
+        <div class="analytics-header">
+
+            <div>
+                <h2>📊 Exam Analytics</h2>
+
+                <p>
+                    IKON Institute Examination Performance Dashboard
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- PAPER FILTER -->
+
+        <div class="analytics-filter">
+
+            <label>
+                Select Paper
+            </label>
+
+            <select
+                id="analyticsPaper"
+                onchange="loadAnalytics()">
+
+                <option value="">
+                    All Papers
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- KPI CARDS -->
+
+        <div class="analytics-cards">
+
+            <div class="analytics-card">
+                <span>👥</span>
+                <strong id="analyticsTotalStudents">
+                    0
+                </strong>
+                <p>Total Students</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>✅</span>
+                <strong id="analyticsPass">
+                    0
+                </strong>
+                <p>Pass</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>❌</span>
+                <strong id="analyticsFail">
+                    0
+                </strong>
+                <p>Fail</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>📈</span>
+                <strong id="analyticsPassPercent">
+                    0%
+                </strong>
+                <p>Pass Percentage</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>📊</span>
+                <strong id="analyticsAverage">
+                    0
+                </strong>
+                <p>Average Marks</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>🏆</span>
+                <strong id="analyticsHighest">
+                    0
+                </strong>
+                <p>Highest Marks</p>
+            </div>
+
+
+            <div class="analytics-card">
+                <span>📉</span>
+                <strong id="analyticsLowest">
+                    0
+                </strong>
+                <p>Lowest Marks</p>
+            </div>
+
+        </div>
+
+
+        <!-- TOP PERFORMERS -->
+
+        <div class="analytics-section">
+
+            <div class="analytics-section-header">
+
+                <div>
+                    <h3>🏆 Top Performers</h3>
+
+                    <p>
+                        Highest performing students
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="analytics-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Rank</th>
+                            <th>Reg No</th>
+                            <th>Student Name</th>
+                            <th>Paper</th>
+                            <th>Marks</th>
+                            <th>Percentage</th>
+                            <th>Result</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="analyticsTopPerformers">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- WEAK STUDENTS -->
+
+        <div class="analytics-section">
+
+            <div class="analytics-section-header">
+
+                <div>
+                    <h3>⚠️ Students Requiring Attention</h3>
+
+                    <p>
+                        Students with low performance
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="analytics-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Reg No</th>
+                            <th>Student Name</th>
+                            <th>Paper</th>
+                            <th>Marks</th>
+                            <th>Percentage</th>
+                            <th>Result</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="analyticsWeakStudents">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAPER COMPARISON -->
+
+        <div class="analytics-section">
+
+            <div class="analytics-section-header">
+
+                <div>
+                    <h3>📚 Paper Comparison</h3>
+
+                    <p>
+                        Paper-wise performance comparison
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="analytics-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Paper</th>
+                            <th>Students</th>
+                            <th>Average %</th>
+                            <th>Pass %</th>
+                            <th>Highest</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="analyticsPaperComparison">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PERFORMANCE DISTRIBUTION -->
+
+        <div class="analytics-section">
+
+            <div class="analytics-section-header">
+
+                <div>
+                    <h3>📊 Performance Distribution</h3>
+
+                    <p>
+                        Student marks distribution
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div
+                id="analyticsDistribution"
+                class="analytics-distribution">
+
+            </div>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="analytics-footer">
+
+            <button
+                class="secondary"
+                onclick="backToAdminDashboard()">
+
+                ← Back to Admin Dashboard
 
             </button>
 
