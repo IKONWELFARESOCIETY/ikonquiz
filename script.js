@@ -7560,12 +7560,14 @@ function escapeLeaderboardHTML(value){
 // SHOW ANALYTICS BUTTON
 //====================================================
 
+//====================================================
+// SHOW ANALYTICS BUTTON
+//====================================================
+
 function showAnalyticsButton(){
 
     const btn =
-        document.getElementById(
-            "analyticsAccess"
-        );
+        document.getElementById("analyticsAccess");
 
     if(btn){
 
@@ -7574,9 +7576,7 @@ function showAnalyticsButton(){
     }
 
 }
-//====================================================
-// OPEN ANALYTICS PASSWORD PAGE
-//====================================================
+
 
 //====================================================
 // OPEN ANALYTICS PASSWORD PAGE
@@ -7584,29 +7584,44 @@ function showAnalyticsButton(){
 
 function openAnalyticsPassword(){
 
-    // Password page show karo
+    // Hide Student Result List
+    const resultBox =
+        document.querySelector(
+            "#studentResultPage .result-list-box"
+        );
+
+    if(resultBox){
+
+        resultBox.classList.add("hidden");
+
+    }
+
+
+    // Show Password Page
     const passwordPage =
-        document.getElementById("analyticsPasswordPage");
+        document.getElementById(
+            "analyticsPasswordPage"
+        );
 
     if(passwordPage){
+
         passwordPage.classList.remove("hidden");
+
     }
 
-    // Analytics button temporarily hide
-    const analyticsBtn =
-        document.getElementById("analyticsAccess");
 
-    if(analyticsBtn){
-        analyticsBtn.style.display = "none";
-    }
-
-    // Password field clear + focus
+    // Clear Password
     const password =
-        document.getElementById("analyticsPassword");
+        document.getElementById(
+            "analyticsPassword"
+        );
 
     if(password){
+
         password.value = "";
+
         password.focus();
+
     }
 
 }
@@ -7618,12 +7633,14 @@ function verifyAnalyticsPassword(){
 
     const password =
         document
-        .getElementById(
-            "analyticsPassword"
-        )
+        .getElementById("analyticsPassword")
         .value
         .trim();
 
+
+    //================================================
+    // PASSWORD CHECK
+    //================================================
 
     if(password !== "ikon@asia"){
 
@@ -7634,7 +7651,9 @@ function verifyAnalyticsPassword(){
     }
 
 
-    // Hide password page
+    //================================================
+    // HIDE PASSWORD PAGE
+    //================================================
 
     document
         .getElementById(
@@ -7643,7 +7662,20 @@ function verifyAnalyticsPassword(){
         ?.classList.add("hidden");
 
 
-    // Open Analytics
+    //================================================
+    // HIDE COMPLETE RESULT LIST PAGE
+    //================================================
+
+    document
+        .getElementById(
+            "studentResultPage"
+        )
+        ?.classList.add("hidden");
+
+
+    //================================================
+    // SHOW ANALYTICS PAGE
+    //================================================
 
     document
         .getElementById(
@@ -7652,7 +7684,9 @@ function verifyAnalyticsPassword(){
         ?.classList.remove("hidden");
 
 
-    // Load Analytics
+    //================================================
+    // LOAD ANALYTICS
+    //================================================
 
     if(typeof loadAnalytics === "function"){
 
@@ -7665,8 +7699,13 @@ function verifyAnalyticsPassword(){
 // CLOSE ANALYTICS PASSWORD
 //====================================================
 
+//====================================================
+// CLOSE ANALYTICS PASSWORD
+//====================================================
+
 function closeAnalyticsPassword(){
 
+    // Hide Password Page
     document
         .getElementById(
             "analyticsPasswordPage"
@@ -7674,10 +7713,37 @@ function closeAnalyticsPassword(){
         ?.classList.add("hidden");
 
 
+    // Show Result List Page
     document
         .getElementById(
             "studentResultPage"
         )
         ?.classList.remove("hidden");
+
+
+    // Show Result List Box
+    const resultBox =
+        document.querySelector(
+            "#studentResultPage .result-list-box"
+        );
+
+    if(resultBox){
+
+        resultBox.classList.remove("hidden");
+
+    }
+
+
+    // Show Analytics Button again
+    const analyticsBtn =
+        document.getElementById(
+            "analyticsAccess"
+        );
+
+    if(analyticsBtn){
+
+        analyticsBtn.style.display = "block";
+
+    }
 
 }
