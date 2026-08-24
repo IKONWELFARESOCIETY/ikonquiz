@@ -199,16 +199,59 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
     </div>
 </div>
-      <!-- ==================================================
-             HALL TICKET PAGE
+      
+    <!-- ==================================================
+             HALL TICKET VERIFY PAGE
 ================================================== -->
 
 <div
-    id="hallTicketPage"
+    id="hallTicketVerifyPage"
     class="hidden">
 
-    <div class="hallTicketA4">
+    <div class="result-box">
 
+        <h2>
+            🎫 Download Hall Ticket
+        </h2>
+
+        <p>
+            Enter your Registration Number to download your Hall Ticket.
+        </p>
+
+        <label>
+            Registration Number
+        </label>
+
+        <input
+            type="text"
+            id="hallTicketRegNo"
+            placeholder="Enter Registration Number"
+            autocomplete="off">
+
+        <br>
+        <br>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="verifyHallTicket()">
+
+            Verify & Continue
+
+        </button>
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="backToLoginFromHallTicket()">
+
+            ← Back to Login
+
+        </button>
+
+    </div>
+
+</div>
         <!-- ==================================================
                      PRACTICAL CARD
         ================================================== -->
