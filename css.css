@@ -12717,41 +12717,128 @@ body::after {
     }
 
 }
-/* =========================================
-   SIGNATURE + STAMP FINAL POSITION FIX
-   ========================================= */
+/* =========================================================
+   FINAL MARKSHEET A4 PRINT FIX
+   ========================================================= */
 
 @media print {
 
-    /* Course Coordinator + Centre Manager
-       ko golden line se upar rakho */
+    /* -----------------------------------------
+       SIGNATURE SECTION
+       ----------------------------------------- */
     .mkSignatureSection{
         position:relative !important;
+
+        /* signatures ko halka sa upar */
         top:-8px !important;
-        margin-bottom:-32px !important;
+
+        /* negative margin nahi - controlled spacing */
+        margin-bottom:-12px !important;
+
+        padding-bottom:0 !important;
     }
 
+
+    /* -----------------------------------------
+       SIGNATURE BOX
+       ----------------------------------------- */
     .mkSignBox{
         position:relative !important;
         top:-5px !important;
+        box-sizing:border-box !important;
     }
 
-    /* Centre Manager stamp - smaller */
+
+    /* -----------------------------------------
+       CENTRE MANAGER BLACK LINE
+       ----------------------------------------- */
+    .mkSealArea{
+        width:150px !important;
+        max-width:100% !important;
+
+        box-sizing:border-box !important;
+
+        margin-left:auto !important;
+        margin-right:auto !important;
+
+        margin-bottom:5px !important;
+    }
+
+
+    /* -----------------------------------------
+       CENTRE MANAGER STAMP
+       ----------------------------------------- */
     .mkIssuedImage{
         width:120px !important;
         height:82px !important;
+
         object-fit:contain !important;
+
         margin:0 auto 3px auto !important;
     }
 
-    /* Issue Date ko bhi thoda upar */
+
+    /* -----------------------------------------
+       ISSUE DATE
+       ----------------------------------------- */
     .mkIssueSeal{
+        position:relative !important;
         top:-2px !important;
     }
 
-    /* Golden line ko labels se thoda neeche rakho */
+
+    /* -----------------------------------------
+       GOLDEN FOOTER LINE
+       ----------------------------------------- */
     .mkFooter{
-        margin-top:6px !important;
+        position:relative !important;
+
+        width:100% !important;
+        max-width:100% !important;
+
+        box-sizing:border-box !important;
+
+        margin-top:2px !important;
+
+        padding-top:4px !important;
+
+        overflow:hidden !important;
+    }
+
+
+    /* -----------------------------------------
+       ADDRESS / FOOTER TEXT
+       ----------------------------------------- */
+    .mkFooterAddress{
+        width:100% !important;
+        max-width:100% !important;
+
+        box-sizing:border-box !important;
+
+        margin:0 auto !important;
+
+        line-height:1.15 !important;
+    }
+
+
+    /* -----------------------------------------
+       SLOGAN
+       ----------------------------------------- */
+    .mkSlogan{
+        width:100% !important;
+        max-width:100% !important;
+
+        box-sizing:border-box !important;
+
+        margin-top:4px !important;
+
+        padding:5px 0 !important;
+
+        font-size:17px !important;
+
+        line-height:1.15 !important;
+
+        overflow:hidden !important;
     }
 
 }
