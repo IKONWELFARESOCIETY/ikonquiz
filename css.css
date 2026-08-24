@@ -12755,3 +12755,237 @@ body::after {
     }
 
 }
+/* =========================================================
+   FINAL FIX - PRACTICAL & VIVA SIGNATURE / MARKS BOXES
+   ========================================================= */
+
+/* Make space for the rectangle */
+.practicalCard .hallSignBox,
+.vivaCard .hallSignBox {
+
+    position: relative !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: center !important;
+
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+
+    min-height: 58px !important;
+
+    padding-top: 0 !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* Hide empty HTML divs because we will draw
+   the boxes with ::before */
+.practicalCard .hallSignLine,
+.vivaCard .hallSignLine,
+.practicalCard .hallMarksBox,
+.vivaCard .hallMarksBox {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   DRAW VISIBLE RECTANGLE
+   ========================================================= */
+
+.practicalCard .hallSignBox::before,
+.vivaCard .hallSignBox::before {
+
+    content: "" !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    height: 44px !important;
+
+    min-height: 44px !important;
+
+    box-sizing: border-box !important;
+
+    background: #ffffff !important;
+
+    border: 1.8px solid #405a73 !important;
+
+    border-radius: 4px !important;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,.06),
+        0 1px 2px rgba(0,0,0,.04) !important;
+
+    flex-shrink: 0 !important;
+
+}
+
+
+/* =========================================================
+   LABEL BELOW RECTANGLE
+   ========================================================= */
+
+.practicalCard .hallSignBox span,
+.vivaCard .hallSignBox span {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    margin-top: 6px !important;
+
+    color: #233f5b !important;
+
+    font-size: 9px !important;
+
+    font-weight: 900 !important;
+
+    letter-spacing: .7px !important;
+
+    line-height: 1.2 !important;
+
+    text-align: center !important;
+
+    text-transform: uppercase !important;
+
+}
+
+
+/* =========================================================
+   BOTTOM SECTION
+   ========================================================= */
+
+.practicalCard .hallBottom,
+.vivaCard .hallBottom {
+
+    display: grid !important;
+
+    grid-template-columns: 1fr 1fr 1fr !important;
+
+    gap: 12px !important;
+
+    width: 100% !important;
+
+    margin-top: 10px !important;
+
+    padding-top: 10px !important;
+
+    border-top: 1px solid #cbd7e3 !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+
+}
+
+
+/* =========================================================
+   THEORY - NO BOXES
+   ========================================================= */
+
+.theoryCard .hallBottom {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:700px) {
+
+    .practicalCard .hallBottom,
+    .vivaCard .hallBottom {
+
+        grid-template-columns: 1fr !important;
+
+        gap: 10px !important;
+
+    }
+
+    .practicalCard .hallSignBox,
+    .vivaCard .hallSignBox {
+
+        min-height: 58px !important;
+
+    }
+
+    .practicalCard .hallSignBox::before,
+    .vivaCard .hallSignBox::before {
+
+        height: 44px !important;
+
+    }
+
+}
+
+
+/* =========================================================
+   PRINT / A4
+   ========================================================= */
+
+@media print {
+
+    .practicalCard .hallBottom,
+    .vivaCard .hallBottom {
+
+        display: grid !important;
+
+        grid-template-columns: 1fr 1fr 1fr !important;
+
+        gap: 3mm !important;
+
+        overflow: visible !important;
+
+    }
+
+
+    .practicalCard .hallSignBox,
+    .vivaCard .hallSignBox {
+
+        min-height: 10mm !important;
+
+        padding: 0 !important;
+
+    }
+
+
+    .practicalCard .hallSignBox::before,
+    .vivaCard .hallSignBox::before {
+
+        width: 100% !important;
+
+        height: 8mm !important;
+
+        min-height: 8mm !important;
+
+        border: 1.5px solid #405a73 !important;
+
+        border-radius: 1mm !important;
+
+        background: #ffffff !important;
+
+    }
+
+
+    .practicalCard .hallSignBox span,
+    .vivaCard .hallSignBox span {
+
+        margin-top: 1mm !important;
+
+        font-size: 5.5pt !important;
+
+    }
+
+}
