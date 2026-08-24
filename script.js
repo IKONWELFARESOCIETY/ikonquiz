@@ -12018,41 +12018,44 @@ function verifyPracticalStudent(){
 // OPEN HALL TICKET VERIFY PAGE
 //====================================================
 
+f//====================================================
+// OPEN HALL TICKET VERIFY PAGE
+// DIRECTLY FROM LOGIN PAGE
+//====================================================
+
 function openHallTicketVerifyPage(){
 
-    // Hide Login
+    //================================================
+    // HIDE LOGIN PAGE
+    //================================================
+
     document
         .getElementById("loginPage")
         ?.classList.add("hidden");
 
 
-    // Hide Result Pages
-    document
-        .getElementById("resultVerifyPage")
-        ?.classList.add("hidden");
+    //================================================
+    // HIDE HALL TICKET PAGE
+    //================================================
 
-    document
-        .getElementById("studentResultPage")
-        ?.classList.add("hidden");
-
-    document
-        .getElementById("marksheetPage")
-        ?.classList.add("hidden");
-
-
-    // Hide Hall Ticket Page
     document
         .getElementById("hallTicketPage")
         ?.classList.add("hidden");
 
 
-    // Show Hall Ticket Verify Page
+    //================================================
+    // SHOW HALL TICKET VERIFY PAGE
+    //================================================
+
     document
         .getElementById("hallTicketVerifyPage")
         ?.classList.remove("hidden");
 
 
-    // Clear Reg No
+    //================================================
+    // CLEAR REGISTRATION NUMBER
+    //================================================
+
     const regBox =
         document.getElementById(
             "hallTicketRegNo"
@@ -12067,9 +12070,22 @@ function openHallTicketVerifyPage(){
 
             regBox.focus();
 
-        },100);
+        }, 100);
 
     }
+
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
 
 }
 
