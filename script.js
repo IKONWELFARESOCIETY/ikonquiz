@@ -12020,7 +12020,7 @@ function verifyPracticalStudent(){
 
 function openHallTicketVerifyPage(){
 
-    // Hide Login Page
+    // Hide Login
     document
         .getElementById("loginPage")
         ?.classList.add("hidden");
@@ -12046,13 +12046,13 @@ function openHallTicketVerifyPage(){
         ?.classList.add("hidden");
 
 
-    // Show Hall Ticket Verification Page
+    // Show Hall Ticket Verify Page
     document
         .getElementById("hallTicketVerifyPage")
         ?.classList.remove("hidden");
 
 
-    // Clear previous Reg No
+    // Clear Reg No
     const regBox =
         document.getElementById(
             "hallTicketRegNo"
@@ -12098,7 +12098,7 @@ function verifyHallTicket(){
 
 
     //================================================
-    // GET REGISTRATION NUMBER
+    // REGISTRATION NUMBER
     //================================================
 
     const enteredRegNo =
@@ -12164,7 +12164,7 @@ function verifyHallTicket(){
 
 
     //================================================
-    // API CALL
+    // FETCH DATA
     //================================================
 
     fetch(url)
@@ -12188,7 +12188,7 @@ function verifyHallTicket(){
     .then(function(data){
 
         console.log(
-            "HALL TICKET RESPONSE:",
+            "Hall Ticket Response:",
             data
         );
 
@@ -12202,13 +12202,12 @@ function verifyHallTicket(){
             "SUCCESS"
         ){
 
-            // Fill all three cards
             populateHallTicket(
                 data
             );
 
 
-            // Hide verification page
+            // Hide Verification
             document
                 .getElementById(
                     "hallTicketVerifyPage"
@@ -12228,7 +12227,6 @@ function verifyHallTicket(){
                 );
 
 
-            // Scroll to top
             window.scrollTo({
 
                 top: 0,
@@ -12285,7 +12283,7 @@ function verifyHallTicket(){
 
 
         //================================================
-        // SERVER ERROR
+        // OTHER ERROR
         //================================================
 
         alert(
@@ -12334,40 +12332,38 @@ function verifyHallTicket(){
 function populateHallTicket(data){
 
     //================================================
-    // COMMON STUDENT DATA
+    // COMMON DATA
     //================================================
 
-    const regNo =
+    const hallRegNo =
         data.regNo || "";
 
-    const studentName =
+    const hallName =
         data.name || "";
 
-    const paperName =
+    const hallPaper =
         data.paperName || "";
 
-    const courseName =
+    const hallCourse =
         data.courseName || "";
 
-    const verifyCode =
+    const hallVerifyCode =
         data.verifyCode || "";
 
 
     //================================================
     // EXAM DATE
     //
-    // Apps Script:
-    // Sheet1 Column N = data[13]
-    //
-    // This same Exam Date will be shown
-    // on Practical, Viva and Theory cards.
+    // Sheet1 Column N
+    // Apps Script sends as data.examDate
     //================================================
 
     const examDate =
         data.examDate || "";
 
 
-    let examTitle = "";
+    let examTitle =
+        "EXAM";
 
 
     if(examDate !== ""){
@@ -12377,16 +12373,13 @@ function populateHallTicket(data){
             examDate;
 
     }
-    else{
-
-        examTitle =
-            "EXAM";
-
-    }
 
 
     //================================================
     // PRACTICAL CARD
+    //
+    // Date = J
+    // Time = K
     //================================================
 
     setHallText(
@@ -12397,25 +12390,25 @@ function populateHallTicket(data){
 
     setHallText(
         "practicalHallRegNo",
-        regNo
+        hallRegNo
     );
 
 
     setHallText(
         "practicalHallName",
-        studentName
-    );
-
-
-    setHallText(
-        "practicalHallCourse",
-        courseName
+        hallName
     );
 
 
     setHallText(
         "practicalHallPackage",
-        paperName
+        hallPaper
+    );
+
+
+    setHallText(
+        "practicalHallCourse",
+        hallCourse
     );
 
 
@@ -12433,14 +12426,17 @@ function populateHallTicket(data){
 
     setHallText(
         "practicalHallVerifyCode",
-        verifyCode
+        hallVerifyCode
     );
 
 
     //================================================
     // VIVA CARD
     //
-    // Viva uses Practical Date & Time
+    // Date = J
+    // Time = K
+    //
+    // Same Practical Date & Time
     //================================================
 
     setHallText(
@@ -12451,25 +12447,25 @@ function populateHallTicket(data){
 
     setHallText(
         "vivaHallRegNo",
-        regNo
+        hallRegNo
     );
 
 
     setHallText(
         "vivaHallName",
-        studentName
-    );
-
-
-    setHallText(
-        "vivaHallCourse",
-        courseName
+        hallName
     );
 
 
     setHallText(
         "vivaHallPackage",
-        paperName
+        hallPaper
+    );
+
+
+    setHallText(
+        "vivaHallCourse",
+        hallCourse
     );
 
 
@@ -12487,14 +12483,15 @@ function populateHallTicket(data){
 
     setHallText(
         "vivaHallVerifyCode",
-        verifyCode
+        hallVerifyCode
     );
 
 
     //================================================
     // THEORY CARD
     //
-    // Theory uses Theory Date & Time
+    // Date = L
+    // Time = M
     //================================================
 
     setHallText(
@@ -12505,25 +12502,25 @@ function populateHallTicket(data){
 
     setHallText(
         "theoryHallRegNo",
-        regNo
+        hallRegNo
     );
 
 
     setHallText(
         "theoryHallName",
-        studentName
-    );
-
-
-    setHallText(
-        "theoryHallCourse",
-        courseName
+        hallName
     );
 
 
     setHallText(
         "theoryHallPackage",
-        paperName
+        hallPaper
+    );
+
+
+    setHallText(
+        "theoryHallCourse",
+        hallCourse
     );
 
 
@@ -12541,21 +12538,21 @@ function populateHallTicket(data){
 
     setHallText(
         "theoryHallVerifyCode",
-        verifyCode
+        hallVerifyCode
     );
 
 
     //================================================
-    // LOAD STUDENT PHOTO
+    // LOAD PHOTO
     //
-    // Photo is in MAIN / ROOT folder
+    // Root/Main folder
     //
     // Example:
     // 0226I19097.jpeg
     //================================================
 
     loadHallTicketPhotos(
-        regNo
+        hallRegNo
     );
 
 }
@@ -12595,8 +12592,7 @@ function setHallText(
 
 
 //====================================================
-// LOAD STUDENT PHOTO
-// ROOT / MAIN FOLDER
+// LOAD HALL TICKET PHOTO
 //====================================================
 
 function loadHallTicketPhotos(
@@ -12611,7 +12607,7 @@ function loadHallTicketPhotos(
 
 
     //================================================
-    // PHOTO FILE NAME
+    // ROOT FOLDER PHOTO
     //================================================
 
     const photoFile =
@@ -12726,7 +12722,7 @@ function loadHallTicketPhotos(
 
 
 //====================================================
-// BACK TO LOGIN FROM HALL TICKET VERIFY PAGE
+// BACK TO LOGIN
 //====================================================
 
 function backToLoginFromHallTicket(){
@@ -12966,7 +12962,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CREATE PDF
+        // CREATE A4 PDF
         //================================================
 
         const {
@@ -13018,7 +13014,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // GET REG NO FOR FILE NAME
+        // FILE NAME
         //================================================
 
         const regBox =
@@ -13027,26 +13023,26 @@ async function downloadHallTicketPDF(){
             );
 
 
-        let regNo =
+        let downloadRegNo =
             regBox
                 ? regBox.value.trim()
                 : "Student";
 
 
-        regNo =
-            regNo.replace(
+        downloadRegNo =
+            downloadRegNo.replace(
                 /[^a-zA-Z0-9_-]/g,
                 "_"
             );
 
 
         //================================================
-        // SAVE PDF
+        // SAVE
         //================================================
 
         pdf.save(
             "Hall_Ticket_" +
-            regNo +
+            downloadRegNo +
             ".pdf"
         );
 
