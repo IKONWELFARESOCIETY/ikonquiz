@@ -12717,12 +12717,35 @@ body::after {
     }
 
 }
-    /*=========================================
-        BOTTOM GAP FIX
-        Regd. Office ke baad slogan ko same page
-        par lane ke liye
-    =========================================*/
+  /* =========================================
+   MARKSHEET FOOTER - MOVE EVERYTHING UP
+   ========================================= */
 
-    .marksheet > :last-child{
-        margin-top:-15px !important;
+@media print {
+
+    /* Course Coordinator + Issue Date + Centre Manager */
+    .mkSignatureSection{
+        position:relative !important;
+        top:-15px !important;
+        margin-bottom:-15px !important;
     }
+
+    /* Issue Date ko bhi same level par upar */
+    .mkIssueSeal{
+        top:-9px !important;
+    }
+
+    /* Footer / Regd. Office + Head Office */
+    .mkFooter{
+        position:relative !important;
+        top:-15px !important;
+        margin-bottom:-15px !important;
+    }
+
+    /* Slogan ko bilkul touch nahi karna */
+    .mkSlogan{
+        position:relative !important;
+        top:0 !important;
+    }
+
+}
