@@ -12009,3 +12009,1073 @@ function verifyPracticalStudent(){
     });
 
 }
+//====================================================
+// HALL TICKET MODULE
+//====================================================
+
+
+//====================================================
+// OPEN HALL TICKET VERIFY PAGE
+//====================================================
+
+function openHallTicketVerifyPage(){
+
+    // Hide Login Page
+    document
+        .getElementById("loginPage")
+        ?.classList.add("hidden");
+
+
+    // Hide Result Pages
+    document
+        .getElementById("resultVerifyPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("marksheetPage")
+        ?.classList.add("hidden");
+
+
+    // Hide Hall Ticket Page
+    document
+        .getElementById("hallTicketPage")
+        ?.classList.add("hidden");
+
+
+    // Show Hall Ticket Verification Page
+    document
+        .getElementById("hallTicketVerifyPage")
+        ?.classList.remove("hidden");
+
+
+    // Clear previous Reg No
+    const regBox =
+        document.getElementById(
+            "hallTicketRegNo"
+        );
+
+
+    if(regBox){
+
+        regBox.value = "";
+
+        setTimeout(function(){
+
+            regBox.focus();
+
+        },100);
+
+    }
+
+}
+
+
+//====================================================
+// VERIFY HALL TICKET
+//====================================================
+
+function verifyHallTicket(){
+
+    const regBox =
+        document.getElementById(
+            "hallTicketRegNo"
+        );
+
+
+    if(!regBox){
+
+        alert(
+            "Registration Number field not found."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // GET REGISTRATION NUMBER
+    //================================================
+
+    const enteredRegNo =
+        regBox.value
+            .trim()
+            .toUpperCase();
+
+
+    //================================================
+    // VALIDATION
+    //================================================
+
+    if(enteredRegNo === ""){
+
+        alert(
+            "Please Enter Registration Number."
+        );
+
+        regBox.focus();
+
+        return;
+
+    }
+
+
+    //================================================
+    // VERIFY BUTTON
+    //================================================
+
+    const verifyBtn =
+        document.querySelector(
+            "#hallTicketVerifyPage .primary"
+        );
+
+
+    if(verifyBtn){
+
+        verifyBtn.disabled = true;
+
+        verifyBtn.innerHTML =
+            "Verifying...";
+
+    }
+
+
+    //================================================
+    // API URL
+    //================================================
+
+    const url =
+        SCRIPT_URL +
+        "?action=hallTicket" +
+        "&regNo=" +
+        encodeURIComponent(
+            enteredRegNo
+        );
+
+
+    console.log(
+        "Hall Ticket Request:",
+        url
+    );
+
+
+    //================================================
+    // API CALL
+    //================================================
+
+    fetch(url)
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(function(data){
+
+        console.log(
+            "HALL TICKET RESPONSE:",
+            data
+        );
+
+
+        //================================================
+        // SUCCESS
+        //================================================
+
+        if(
+            data.status ===
+            "SUCCESS"
+        ){
+
+            // Fill all three cards
+            populateHallTicket(
+                data
+            );
+
+
+            // Hide verification page
+            document
+                .getElementById(
+                    "hallTicketVerifyPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            // Show Hall Ticket
+            document
+                .getElementById(
+                    "hallTicketPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            // Scroll to top
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+
+            return;
+
+        }
+
+
+        //================================================
+        // NOT FOUND
+        //================================================
+
+        if(
+            data.status ===
+            "NOT_FOUND"
+        ){
+
+            alert(
+                "Registration Number not found."
+            );
+
+            regBox.value = "";
+
+            regBox.focus();
+
+            return;
+
+        }
+
+
+        //================================================
+        // INVALID REQUEST
+        //================================================
+
+        if(
+            data.status ===
+            "INVALID_REQUEST"
+        ){
+
+            alert(
+                data.message ||
+                "Please enter Registration Number."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // SERVER ERROR
+        //================================================
+
+        alert(
+            data.message ||
+            "Unable to load Hall Ticket."
+        );
+
+    })
+
+
+    .catch(function(error){
+
+        console.error(
+            "Hall Ticket Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    })
+
+
+    .finally(function(){
+
+        if(verifyBtn){
+
+            verifyBtn.disabled = false;
+
+            verifyBtn.innerHTML =
+                "Verify & Continue";
+
+        }
+
+    });
+
+}
+
+
+//====================================================
+// POPULATE HALL TICKET
+//====================================================
+
+function populateHallTicket(data){
+
+    //================================================
+    // COMMON STUDENT DATA
+    //================================================
+
+    const regNo =
+        data.regNo || "";
+
+    const studentName =
+        data.name || "";
+
+    const paperName =
+        data.paperName || "";
+
+    const courseName =
+        data.courseName || "";
+
+    const verifyCode =
+        data.verifyCode || "";
+
+
+    //================================================
+    // EXAM DATE
+    //
+    // Apps Script:
+    // Sheet1 Column N = data[13]
+    //
+    // This same Exam Date will be shown
+    // on Practical, Viva and Theory cards.
+    //================================================
+
+    const examDate =
+        data.examDate || "";
+
+
+    let examTitle = "";
+
+
+    if(examDate !== ""){
+
+        examTitle =
+            "EXAM " +
+            examDate;
+
+    }
+    else{
+
+        examTitle =
+            "EXAM";
+
+    }
+
+
+    //================================================
+    // PRACTICAL CARD
+    //================================================
+
+    setHallText(
+        "practicalExamTitle",
+        examTitle
+    );
+
+
+    setHallText(
+        "practicalHallRegNo",
+        regNo
+    );
+
+
+    setHallText(
+        "practicalHallName",
+        studentName
+    );
+
+
+    setHallText(
+        "practicalHallCourse",
+        courseName
+    );
+
+
+    setHallText(
+        "practicalHallPackage",
+        paperName
+    );
+
+
+    setHallText(
+        "practicalHallDate",
+        data.practicalDate || ""
+    );
+
+
+    setHallText(
+        "practicalHallTime",
+        data.practicalTime || ""
+    );
+
+
+    setHallText(
+        "practicalHallVerifyCode",
+        verifyCode
+    );
+
+
+    //================================================
+    // VIVA CARD
+    //
+    // Viva uses Practical Date & Time
+    //================================================
+
+    setHallText(
+        "vivaExamTitle",
+        examTitle
+    );
+
+
+    setHallText(
+        "vivaHallRegNo",
+        regNo
+    );
+
+
+    setHallText(
+        "vivaHallName",
+        studentName
+    );
+
+
+    setHallText(
+        "vivaHallCourse",
+        courseName
+    );
+
+
+    setHallText(
+        "vivaHallPackage",
+        paperName
+    );
+
+
+    setHallText(
+        "vivaHallDate",
+        data.practicalDate || ""
+    );
+
+
+    setHallText(
+        "vivaHallTime",
+        data.practicalTime || ""
+    );
+
+
+    setHallText(
+        "vivaHallVerifyCode",
+        verifyCode
+    );
+
+
+    //================================================
+    // THEORY CARD
+    //
+    // Theory uses Theory Date & Time
+    //================================================
+
+    setHallText(
+        "theoryExamTitle",
+        examTitle
+    );
+
+
+    setHallText(
+        "theoryHallRegNo",
+        regNo
+    );
+
+
+    setHallText(
+        "theoryHallName",
+        studentName
+    );
+
+
+    setHallText(
+        "theoryHallCourse",
+        courseName
+    );
+
+
+    setHallText(
+        "theoryHallPackage",
+        paperName
+    );
+
+
+    setHallText(
+        "theoryHallDate",
+        data.theoryDate || ""
+    );
+
+
+    setHallText(
+        "theoryHallTime",
+        data.theoryTime || ""
+    );
+
+
+    setHallText(
+        "theoryHallVerifyCode",
+        verifyCode
+    );
+
+
+    //================================================
+    // LOAD STUDENT PHOTO
+    //
+    // Photo is in MAIN / ROOT folder
+    //
+    // Example:
+    // 0226I19097.jpeg
+    //================================================
+
+    loadHallTicketPhotos(
+        regNo
+    );
+
+}
+
+
+//====================================================
+// SAFE TEXT SETTER
+//====================================================
+
+function setHallText(
+    id,
+    value
+){
+
+    const element =
+        document.getElementById(id);
+
+
+    if(!element){
+
+        console.warn(
+            "Hall Ticket element not found:",
+            id
+        );
+
+        return;
+
+    }
+
+
+    element.textContent =
+        value == null
+            ? ""
+            : String(value);
+
+}
+
+
+//====================================================
+// LOAD STUDENT PHOTO
+// ROOT / MAIN FOLDER
+//====================================================
+
+function loadHallTicketPhotos(
+    registrationNumber
+){
+
+    if(!registrationNumber){
+
+        return;
+
+    }
+
+
+    //================================================
+    // PHOTO FILE NAME
+    //================================================
+
+    const photoFile =
+        String(
+            registrationNumber
+        ).trim() +
+        ".jpeg";
+
+
+    console.log(
+        "Hall Ticket Photo:",
+        photoFile
+    );
+
+
+    //================================================
+    // PRACTICAL PHOTO
+    //================================================
+
+    const practicalPhoto =
+        document.getElementById(
+            "practicalHallPhoto"
+        );
+
+
+    if(practicalPhoto){
+
+        practicalPhoto.src =
+            photoFile;
+
+
+        practicalPhoto.onerror =
+            function(){
+
+                console.warn(
+                    "Practical photo not found:",
+                    photoFile
+                );
+
+                this.src =
+                    "no-photo.jpeg";
+
+            };
+
+    }
+
+
+    //================================================
+    // VIVA PHOTO
+    //================================================
+
+    const vivaPhoto =
+        document.getElementById(
+            "vivaHallPhoto"
+        );
+
+
+    if(vivaPhoto){
+
+        vivaPhoto.src =
+            photoFile;
+
+
+        vivaPhoto.onerror =
+            function(){
+
+                console.warn(
+                    "Viva photo not found:",
+                    photoFile
+                );
+
+                this.src =
+                    "no-photo.jpeg";
+
+            };
+
+    }
+
+
+    //================================================
+    // THEORY PHOTO
+    //================================================
+
+    const theoryPhoto =
+        document.getElementById(
+            "theoryHallPhoto"
+        );
+
+
+    if(theoryPhoto){
+
+        theoryPhoto.src =
+            photoFile;
+
+
+        theoryPhoto.onerror =
+            function(){
+
+                console.warn(
+                    "Theory photo not found:",
+                    photoFile
+                );
+
+                this.src =
+                    "no-photo.jpeg";
+
+            };
+
+    }
+
+}
+
+
+//====================================================
+// BACK TO LOGIN FROM HALL TICKET VERIFY PAGE
+//====================================================
+
+function backToLoginFromHallTicket(){
+
+    document
+        .getElementById(
+            "hallTicketVerifyPage"
+        )
+        ?.classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "hallTicketPage"
+        )
+        ?.classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "loginPage"
+        )
+        ?.classList.remove(
+            "hidden"
+        );
+
+
+    const regBox =
+        document.getElementById(
+            "hallTicketRegNo"
+        );
+
+
+    if(regBox){
+
+        regBox.value = "";
+
+    }
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+//====================================================
+// BACK TO HALL TICKET VERIFY PAGE
+//====================================================
+
+function backToHallTicketVerify(){
+
+    document
+        .getElementById(
+            "hallTicketPage"
+        )
+        ?.classList.add(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            "hallTicketVerifyPage"
+        )
+        ?.classList.remove(
+            "hidden"
+        );
+
+
+    const regBox =
+        document.getElementById(
+            "hallTicketRegNo"
+        );
+
+
+    if(regBox){
+
+        regBox.value = "";
+
+        setTimeout(function(){
+
+            regBox.focus();
+
+        },100);
+
+    }
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+//====================================================
+// PRINT HALL TICKET
+//====================================================
+
+function printHallTicket(){
+
+    const hallTicket =
+        document.getElementById(
+            "hallTicketPage"
+        );
+
+
+    if(!hallTicket){
+
+        alert(
+            "Hall Ticket not found."
+        );
+
+        return;
+
+    }
+
+
+    window.print();
+
+}
+
+
+//====================================================
+// DOWNLOAD HALL TICKET PDF
+//====================================================
+
+async function downloadHallTicketPDF(){
+
+    const hallTicket =
+        document.querySelector(
+            "#hallTicketPage .hallTicketA4"
+        );
+
+
+    if(!hallTicket){
+
+        alert(
+            "Hall Ticket not found."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // CHECK HTML2CANVAS
+    //================================================
+
+    if(
+        typeof html2canvas ===
+        "undefined"
+    ){
+
+        alert(
+            "PDF library is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // CHECK JSPDF
+    //================================================
+
+    if(
+        !window.jspdf ||
+        !window.jspdf.jsPDF
+    ){
+
+        alert(
+            "PDF generator is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    const downloadBtn =
+        document.querySelector(
+            "#hallTicketPage .hallTicketActions button:last-child"
+        );
+
+
+    try{
+
+        if(downloadBtn){
+
+            downloadBtn.disabled = true;
+
+            downloadBtn.innerHTML =
+                "Generating PDF...";
+
+        }
+
+
+        //================================================
+        // CREATE CANVAS
+        //================================================
+
+        const canvas =
+            await html2canvas(
+                hallTicket,
+                {
+
+                    scale: 2,
+
+                    useCORS: true,
+
+                    allowTaint: false,
+
+                    backgroundColor:
+                        "#ffffff",
+
+                    logging: false
+
+                }
+            );
+
+
+        //================================================
+        // CREATE PDF
+        //================================================
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+
+        const pdf =
+            new jsPDF({
+
+                orientation:
+                    "portrait",
+
+                unit:
+                    "mm",
+
+                format:
+                    "a4"
+
+            });
+
+
+        const imageData =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.95
+            );
+
+
+        //================================================
+        // FULL A4
+        //================================================
+
+        pdf.addImage(
+
+            imageData,
+
+            "JPEG",
+
+            0,
+
+            0,
+
+            210,
+
+            297
+
+        );
+
+
+        //================================================
+        // GET REG NO FOR FILE NAME
+        //================================================
+
+        const regBox =
+            document.getElementById(
+                "hallTicketRegNo"
+            );
+
+
+        let regNo =
+            regBox
+                ? regBox.value.trim()
+                : "Student";
+
+
+        regNo =
+            regNo.replace(
+                /[^a-zA-Z0-9_-]/g,
+                "_"
+            );
+
+
+        //================================================
+        // SAVE PDF
+        //================================================
+
+        pdf.save(
+            "Hall_Ticket_" +
+            regNo +
+            ".pdf"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Hall Ticket PDF Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to generate Hall Ticket PDF."
+        );
+
+    }
+    finally{
+
+        if(downloadBtn){
+
+            downloadBtn.disabled =
+                false;
+
+            downloadBtn.innerHTML =
+                "📄 Download PDF";
+
+        }
+
+    }
+
+}
