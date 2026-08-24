@@ -12880,22 +12880,15 @@ function backToHallTicketVerify(){
 }
 
 
-//====================================================
-// PRINT HALL TICKET
-//====================================================
-
-
-//====================================================
+//================================================
 // DOWNLOAD HALL TICKET PDF
-//====================================================
+// A4 + SAFE MARGIN
+//================================================
 
 async function downloadHallTicketPDF(){
 
     const hallTicket =
-        document.querySelector(
-            "#hallTicketPage .hallTicketA4"
-        );
-
+        document.getElementById("hallTicketPage");
 
     if(!hallTicket){
 
@@ -12904,7 +12897,6 @@ async function downloadHallTicketPDF(){
         );
 
         return;
-
     }
 
 
@@ -12922,7 +12914,6 @@ async function downloadHallTicketPDF(){
         );
 
         return;
-
     }
 
 
@@ -12940,9 +12931,12 @@ async function downloadHallTicketPDF(){
         );
 
         return;
-
     }
 
+
+    //================================================
+    // DOWNLOAD BUTTON
+    //================================================
 
     const downloadBtn =
         document.querySelector(
@@ -12954,11 +12948,11 @@ async function downloadHallTicketPDF(){
 
         if(downloadBtn){
 
-            downloadBtn.disabled = true;
+            downloadBtn.disabled =
+                true;
 
             downloadBtn.innerHTML =
                 "Generating PDF...";
-
         }
 
 
@@ -13006,9 +13000,12 @@ async function downloadHallTicketPDF(){
 
                 format:
                     "a4"
-
             });
 
+
+        //================================================
+        // CONVERT CANVAS TO IMAGE
+        //================================================
 
         const imageData =
             canvas.toDataURL(
@@ -13018,7 +13015,99 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // FULL A4
+        // A4 SIZE
+        //================================================
+
+        const pageWidth =
+            210;
+
+        const pageHeight =
+            297;
+
+
+        //================================================
+        // SAFE MARGIN
+        //================================================
+
+        const margin =
+            6;
+
+
+        //================================================
+        // AVAILABLE AREA
+        //================================================
+
+        const availableWidth =
+            pageWidth -
+            (margin * 2);
+
+
+        const availableHeight =
+            pageHeight -
+            (margin * 2);
+
+
+        //================================================
+        // ORIGINAL IMAGE RATIO
+        //================================================
+
+        const imageWidth =
+            canvas.width;
+
+        const imageHeight =
+            canvas.height;
+
+
+        const imageRatio =
+            imageWidth /
+            imageHeight;
+
+
+        //================================================
+        // FIT IMAGE INSIDE SAFE A4 AREA
+        //================================================
+
+        let pdfWidth =
+            availableWidth;
+
+        let pdfHeight =
+            pdfWidth /
+            imageRatio;
+
+
+        // If height becomes too large,
+        // fit according to height instead.
+
+        if(
+            pdfHeight >
+            availableHeight
+        ){
+
+            pdfHeight =
+                availableHeight;
+
+            pdfWidth =
+                pdfHeight *
+                imageRatio;
+        }
+
+
+        //================================================
+        // CENTER IMAGE
+        //================================================
+
+        const x =
+            (pageWidth -
+             pdfWidth) / 2;
+
+
+        const y =
+            (pageHeight -
+             pdfHeight) / 2;
+
+
+        //================================================
+        // ADD HALL TICKET TO PDF
         //================================================
 
         pdf.addImage(
@@ -13027,14 +13116,13 @@ async function downloadHallTicketPDF(){
 
             "JPEG",
 
-            0,
+            x,
 
-            0,
+            y,
 
-            210,
+            pdfWidth,
 
-            297
-
+            pdfHeight
         );
 
 
@@ -13062,16 +13150,19 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // SAVE
+        // SAVE PDF
         //================================================
 
         pdf.save(
+
             "Hall_Ticket_" +
             downloadRegNo +
             ".pdf"
         );
 
     }
+
+
     catch(error){
 
         console.error(
@@ -13085,6 +13176,8 @@ async function downloadHallTicketPDF(){
         );
 
     }
+
+
     finally{
 
         if(downloadBtn){
@@ -13094,9 +13187,7 @@ async function downloadHallTicketPDF(){
 
             downloadBtn.innerHTML =
                 "📄 Download PDF";
-
         }
-
     }
 
 }
