@@ -6840,20 +6840,52 @@ if(body){
 // PRINT MARKSHEET
 //====================================================
 
+//====================================================
+// PRINT MARKSHEET
+//====================================================
+
 function printMarksheet(){
 
     const marksheet =
-    document.getElementById("marksheetPage");
+        document.getElementById("marksheetPage");
 
     if(!marksheet){
 
         alert("Marksheet not found.");
 
         return;
-
     }
 
-    window.print();
+
+    // Remove previous print modes
+    document.body.classList.remove(
+        "print-hall-ticket",
+        "print-marksheet"
+    );
+
+
+    // Activate Marksheet print mode
+    document.body.classList.add(
+        "print-marksheet"
+    );
+
+
+    // Print after CSS is applied
+    setTimeout(function(){
+
+        window.print();
+
+    }, 100);
+
+
+    // Remove print mode after printing
+    window.onafterprint = function(){
+
+        document.body.classList.remove(
+            "print-marksheet"
+        );
+
+    };
 
 }
 function generateMarksheetQR(data){
@@ -12852,68 +12884,55 @@ function backToHallTicketVerify(){
 // PRINT HALL TICKET
 //====================================================
 
-//====================================================
-// PRINT HALL TICKET ONLY
-//====================================================
-
 function printHallTicket(){
 
     const hallTicket =
-        document.getElementById("hallTicketPage");
+        document.getElementById(
+            "hallTicketPage"
+        );
+
 
     if(!hallTicket){
-        alert("Hall Ticket not found.");
+
+        alert(
+            "Hall Ticket not found."
+        );
+
         return;
     }
 
-    // Make sure Hall Ticket is visible
-    hallTicket.classList.remove("hidden");
 
-    // Hide Marksheet before printing
-    const marksheet =
-        document.getElementById("marksheetPage");
+    // Remove previous print modes
+    document.body.classList.remove(
+        "print-marksheet",
+        "print-hall-ticket"
+    );
 
-    if(marksheet){
-        marksheet.classList.add("hidden");
-    }
 
-    // Hide all other pages
-    const pagesToHide = [
-        "loginPage",
-        "resultVerifyPage",
-        "studentResultPage",
-        "leaderboardPage",
-        "analyticsPage",
-        "analyticsPasswordPage",
-        "hallTicketVerifyPage",
-        "examTypePage",
-        "theoryPaperPage",
-        "practicalPaperPage",
-        "practicalVerificationPage",
-        "practicalPage",
-        "waitingPage",
-        "testPage"
-    ];
+    // Activate Hall Ticket print mode
+    document.body.classList.add(
+        "print-hall-ticket"
+    );
 
-    pagesToHide.forEach(function(id){
 
-        const page =
-            document.getElementById(id);
-
-        if(page){
-            page.classList.add("hidden");
-        }
-
-    });
-
-    // Print after browser updates the page
+    // Print after CSS is applied
     setTimeout(function(){
 
         window.print();
 
-    }, 150);
-}
+    }, 100);
 
+
+    // Remove print mode after printing
+    window.onafterprint = function(){
+
+        document.body.classList.remove(
+            "print-hall-ticket"
+        );
+
+    };
+
+}
 //====================================================
 // DOWNLOAD HALL TICKET PDF
 //====================================================
