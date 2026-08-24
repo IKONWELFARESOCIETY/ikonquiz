@@ -12501,8 +12501,9 @@ body::after {
 
 
 /* =========================================================
-   FINAL CLEAN PRINT SYSTEM
+   FINAL PRINT SYSTEM
    MARKSHEET + HALL TICKET
+   FIXED A4 PRINT
 ========================================================= */
 
 @page {
@@ -12514,11 +12515,11 @@ body::after {
 
     html,
     body {
-        margin: 0 !important;
-        padding: 0 !important;
-
         width: 210mm !important;
         min-width: 210mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
 
         background: #fff !important;
 
@@ -12530,38 +12531,52 @@ body::after {
 
 
     /* =====================================================
-       MARKSHEET PRINT
+       COMMON: HIDE EVERYTHING VISUALLY
+       DO NOT USE display:none ON BODY CHILDREN
     ===================================================== */
 
-    body.print-marksheet > * {
-        display: none !important;
+    body.print-marksheet *,
+    body.print-hall-ticket * {
+        visibility: hidden !important;
     }
 
+
+    /* =====================================================
+       MARKSHEET
+    ===================================================== */
+
+    body.print-marksheet #marksheetPage,
+    body.print-marksheet #marksheetPage * {
+
+        visibility: visible !important;
+    }
+
+
     body.print-marksheet #marksheetPage {
+
         display: block !important;
 
-        position: static !important;
+        position: fixed !important;
+
+        top: 0 !important;
+        left: 0 !important;
 
         width: 210mm !important;
-        min-width: 210mm !important;
+        height: 297mm !important;
 
-        height: auto !important;
+        min-width: 210mm !important;
         min-height: 297mm !important;
 
         margin: 0 !important;
         padding: 0 !important;
 
+        background: #fff !important;
+
         overflow: visible !important;
 
-        background: #fff !important;
+        z-index: 999999 !important;
     }
 
-    body.print-marksheet #marksheetPage * {
-        visibility: visible !important;
-    }
-
-
-    /* Actual Marksheet */
 
     body.print-marksheet #marksheetPage .marksheet {
 
@@ -12570,10 +12585,10 @@ body::after {
         position: relative !important;
 
         width: 200mm !important;
-        min-width: 200mm !important;
-
-        min-height: 287mm !important;
         height: 287mm !important;
+
+        min-width: 200mm !important;
+        min-height: 287mm !important;
 
         margin: 5mm auto !important;
 
@@ -12581,18 +12596,19 @@ body::after {
 
         box-sizing: border-box !important;
 
-        overflow: visible !important;
-
         background: #fff !important;
+
+        overflow: visible !important;
 
         box-shadow: none !important;
 
         page-break-inside: avoid !important;
+
         break-inside: avoid !important;
     }
 
 
-    /* Marksheet buttons hide */
+    /* MARKSHEET BUTTONS */
 
     body.print-marksheet #marksheetPage button,
     body.print-marksheet #marksheetPage .marksheetActions,
@@ -12601,15 +12617,19 @@ body::after {
     body.print-marksheet #marksheetPage .mkPdfBtn {
 
         display: none !important;
+
+        visibility: hidden !important;
     }
 
 
     /* =====================================================
-       HALL TICKET PRINT
+       HALL TICKET
     ===================================================== */
 
-    body.print-hall-ticket > * {
-        display: none !important;
+    body.print-hall-ticket #hallTicketPage,
+    body.print-hall-ticket #hallTicketPage * {
+
+        visibility: visible !important;
     }
 
 
@@ -12617,20 +12637,25 @@ body::after {
 
         display: block !important;
 
-        position: static !important;
+        position: fixed !important;
+
+        top: 0 !important;
+        left: 0 !important;
 
         width: 210mm !important;
-        min-width: 210mm !important;
+        height: 297mm !important;
 
-        height: auto !important;
+        min-width: 210mm !important;
         min-height: 297mm !important;
 
         margin: 0 !important;
         padding: 0 !important;
 
+        background: #fff !important;
+
         overflow: visible !important;
 
-        background: #fff !important;
+        z-index: 999999 !important;
     }
 
 
@@ -12638,13 +12663,14 @@ body::after {
 
         display: block !important;
 
-        position: static !important;
+        position: relative !important;
 
         width: 202mm !important;
 
-        height: auto !important;
+        height: 289mm !important;
 
-        min-height: 273mm !important;
+        min-width: 202mm !important;
+        min-height: 289mm !important;
 
         margin: 4mm auto 0 auto !important;
 
@@ -12652,16 +12678,16 @@ body::after {
 
         box-sizing: border-box !important;
 
-        overflow: visible !important;
-
         background: #fff !important;
+
+        overflow: visible !important;
 
         box-shadow: none !important;
     }
 
 
     /* =====================================================
-       THREE CARDS
+       HALL TICKET - THREE CARDS
     ===================================================== */
 
     body.print-hall-ticket #hallTicketPage .hallCard {
@@ -12672,6 +12698,7 @@ body::after {
 
         height: 87mm !important;
 
+        min-width: 202mm !important;
         min-height: 87mm !important;
 
         max-height: 87mm !important;
@@ -12701,7 +12728,7 @@ body::after {
 
 
     /* =====================================================
-       CARD HEADER
+       HALL HEADER
     ===================================================== */
 
     body.print-hall-ticket .hallCardHeader {
@@ -12717,11 +12744,13 @@ body::after {
 
 
     body.print-hall-ticket .hallCardTitle {
+
         font-size: 9pt !important;
     }
 
 
     body.print-hall-ticket .hallCardLeft {
+
         font-size: 6pt !important;
     }
 
@@ -12812,7 +12841,6 @@ body::after {
     body.print-hall-ticket .hallPhotoBox {
 
         width: 24mm !important;
-
         height: 36mm !important;
 
         margin: 0 !important;
@@ -12824,7 +12852,6 @@ body::after {
     body.print-hall-ticket .hallPhotoBox img {
 
         width: 17mm !important;
-
         height: 23mm !important;
 
         object-fit: cover !important;
@@ -12832,7 +12859,7 @@ body::after {
 
 
     /* =====================================================
-       SIGNATURE / MARKS BOX
+       BOTTOM SIGNATURE
     ===================================================== */
 
     body.print-hall-ticket .hallBottom {
@@ -12888,12 +12915,14 @@ body::after {
 
 
     /* =====================================================
-       HALL TICKET BUTTONS HIDE
+       HALL TICKET BUTTONS
     ===================================================== */
 
     body.print-hall-ticket .hallTicketActions,
     body.print-hall-ticket #hallTicketBtn {
 
         display: none !important;
+
+        visibility: hidden !important;
     }
 }
