@@ -12728,7 +12728,7 @@ body::after {
     .mkSignatureSection{
         position:relative !important;
         top:-8px !important;
-        margin-bottom:0 !important;
+        margin-bottom:-32px !important;
     }
 
     .mkSignBox{
