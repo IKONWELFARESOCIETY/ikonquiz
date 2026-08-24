@@ -12852,29 +12852,67 @@ function backToHallTicketVerify(){
 // PRINT HALL TICKET
 //====================================================
 
+//====================================================
+// PRINT HALL TICKET ONLY
+//====================================================
+
 function printHallTicket(){
 
     const hallTicket =
-        document.getElementById(
-            "hallTicketPage"
-        );
-
+        document.getElementById("hallTicketPage");
 
     if(!hallTicket){
-
-        alert(
-            "Hall Ticket not found."
-        );
-
+        alert("Hall Ticket not found.");
         return;
-
     }
 
+    // Make sure Hall Ticket is visible
+    hallTicket.classList.remove("hidden");
 
-    window.print();
+    // Hide Marksheet before printing
+    const marksheet =
+        document.getElementById("marksheetPage");
 
+    if(marksheet){
+        marksheet.classList.add("hidden");
+    }
+
+    // Hide all other pages
+    const pagesToHide = [
+        "loginPage",
+        "resultVerifyPage",
+        "studentResultPage",
+        "leaderboardPage",
+        "analyticsPage",
+        "analyticsPasswordPage",
+        "hallTicketVerifyPage",
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalVerificationPage",
+        "practicalPage",
+        "waitingPage",
+        "testPage"
+    ];
+
+    pagesToHide.forEach(function(id){
+
+        const page =
+            document.getElementById(id);
+
+        if(page){
+            page.classList.add("hidden");
+        }
+
+    });
+
+    // Print after browser updates the page
+    setTimeout(function(){
+
+        window.print();
+
+    }, 150);
 }
-
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
