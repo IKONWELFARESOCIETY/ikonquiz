@@ -12544,33 +12544,33 @@ body::after {
         padding:0 !important;
     }
  
-    .marksheet{
+    .marksheet{ 
 
-        display:block !important;
+    display:block !important; 
 
-        width:190mm !important;
-        height:287mm !important;
+    width:190mm !important; 
+    height:287mm !important; 
 
-        margin:5mm auto !important;
+    margin:0 auto !important; 
 
-        padding:5mm !important;
+    padding:5mm !important; 
 
-        box-sizing:border-box !important;
+    box-sizing:border-box !important; 
 
-        background:#fff !important;
+    background:#fff !important; 
 
-        border:6px solid #0b4f9c !important;
+    border:6px solid #0b4f9c !important; 
 
-        outline:2px solid #d8b44c !important;
-        outline-offset:-7px;
+    outline:2px solid #d8b44c !important; 
+    outline-offset:-7px; 
 
-        box-shadow:none !important;
+    box-shadow:none !important; 
 
-        overflow:hidden !important;
+    overflow:hidden !important; 
 
-        page-break-inside:avoid !important;
-        break-inside:avoid !important;
-    }
+    page-break-inside:avoid !important; 
+    break-inside:avoid !important; 
+}
 
     .marksheet *{
         visibility:visible !important;
