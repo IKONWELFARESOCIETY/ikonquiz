@@ -12755,5 +12755,15 @@ body::after {
     }
 
 }
+@media print {
 
+    /* Centre Manager / Signature line border ke andar */
+    .mkSignLine{
+        width:145px !important;
+        max-width:100% !important;
+        box-sizing:border-box !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
 
+}
