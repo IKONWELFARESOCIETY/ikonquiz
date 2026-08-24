@@ -12717,35 +12717,41 @@ body::after {
     }
 
 }
-  /* =========================================
-   MARKSHEET FOOTER - MOVE EVERYTHING UP
+/* =========================================
+   SIGNATURE + STAMP FINAL POSITION FIX
    ========================================= */
 
 @media print {
 
-    /* Course Coordinator + Issue Date + Centre Manager */
+    /* Course Coordinator + Centre Manager
+       ko golden line se upar rakho */
     .mkSignatureSection{
         position:relative !important;
-        top:-15px !important;
-        margin-bottom:-15px !important;
+        top:-8px !important;
+        margin-bottom:0 !important;
     }
 
-    /* Issue Date ko bhi same level par upar */
+    .mkSignBox{
+        position:relative !important;
+        top:-5px !important;
+    }
+
+    /* Centre Manager stamp - smaller */
+    .mkIssuedImage{
+        width:105px !important;
+        height:72px !important;
+        object-fit:contain !important;
+        margin:0 auto 3px auto !important;
+    }
+
+    /* Issue Date ko bhi thoda upar */
     .mkIssueSeal{
-        top:-9px !important;
+        top:-2px !important;
     }
 
-    /* Footer / Regd. Office + Head Office */
+    /* Golden line ko labels se thoda neeche rakho */
     .mkFooter{
-        position:relative !important;
-        top:-15px !important;
-        margin-bottom:-15px !important;
-    }
-
-    /* Slogan ko bilkul touch nahi karna */
-    .mkSlogan{
-        position:relative !important;
-        top:0 !important;
+        margin-top:6px !important;
     }
 
 }
