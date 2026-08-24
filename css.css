@@ -3850,7 +3850,7 @@ MARKSHEET NO TABLE
 
 .mkSignLine{
 
-    width:170px;
+    width:155px;
 
     border-top:2px solid #000;
 
@@ -12752,18 +12752,6 @@ body::after {
     /* Golden line ko labels se thoda neeche rakho */
     .mkFooter{
         margin-top:6px !important;
-    }
-
-}
-@media print {
-
-    /* Centre Manager / Signature line border ke andar */
-    .mkSignLine{
-        width:145px !important;
-        max-width:100% !important;
-        box-sizing:border-box !important;
-        margin-left:auto !important;
-        margin-right:auto !important;
     }
 
 }
