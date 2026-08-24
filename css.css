@@ -3919,29 +3919,19 @@ MARKSHEET NO TABLE
 ======================================*/
 
 .mkFooter{
-
-    margin-top:12px;          /* 35 → 45 */
-
-    padding-top:8px;
-
+    margin-top:4px !important;
+    padding-top:4px !important;
     border-top:2px solid #d8b44c;
-
     text-align:center;
-
-    line-height:1.7;
-
+    line-height:1.35 !important;
     color:#555;
-
 }
 
 .mkFooter p{
-
-    margin:0;
-
-    font-size:10px;           /* 11 → 12 */
-
+    margin:0 !important;
+    font-size:9px !important;
+    line-height:1.2 !important;
     font-weight:500;
-
 }
 
 .mkFooter strong{
