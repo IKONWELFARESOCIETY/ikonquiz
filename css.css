@@ -12989,3 +12989,91 @@ body::after {
     }
 
 }
+/* =========================================================
+   FINAL FIX
+   HALL TICKET PRINT ONLY
+   MARKSHEET HIDDEN
+========================================================= */
+
+@media print {
+
+    /* HIDE EVERYTHING */
+    body * {
+        visibility: hidden !important;
+    }
+
+    /* HALL TICKET ONLY */
+    #hallTicketPage,
+    #hallTicketPage * {
+        visibility: visible !important;
+    }
+
+    /* MARKSHEET COMPLETELY HIDDEN */
+    #marksheetPage,
+    #marksheetPage * {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* OTHER PAGES HIDDEN */
+    #loginPage,
+    #resultVerifyPage,
+    #studentResultPage,
+    #leaderboardPage,
+    #dashboardPage,
+    #analyticsPage,
+    #analyticsPasswordPage,
+    #hallTicketVerifyPage,
+    #examTypePage,
+    #theoryPaperPage,
+    #practicalPaperPage,
+    #practicalVerificationPage,
+    #practicalPage,
+    #waitingPage,
+    #testPage,
+    #successPage {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* HALL TICKET A4 */
+    #hallTicketPage {
+        display: block !important;
+        visibility: visible !important;
+
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+
+        width: 210mm !important;
+        height: 297mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #ffffff !important;
+        overflow: hidden !important;
+    }
+
+    /* HALL TICKET CONTENT */
+    #hallTicketPage .hallTicketA4 {
+        display: block !important;
+        visibility: visible !important;
+
+        width: 202mm !important;
+        height: 289mm !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+        box-shadow: none !important;
+    }
+
+    /* HIDE HALL TICKET BUTTONS */
+    #hallTicketPage .hallTicketActions {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+}
