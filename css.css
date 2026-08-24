@@ -12717,3 +12717,12 @@ body::after {
     }
 
 }
+    /*=========================================
+        BOTTOM GAP FIX
+        Regd. Office ke baad slogan ko same page
+        par lane ke liye
+    =========================================*/
+
+    .marksheet > :last-child{
+        margin-top:-15px !important;
+    }
