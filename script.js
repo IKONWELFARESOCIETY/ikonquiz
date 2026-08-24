@@ -12884,55 +12884,7 @@ function backToHallTicketVerify(){
 // PRINT HALL TICKET
 //====================================================
 
-function printHallTicket(){
 
-    const hallTicket =
-        document.getElementById(
-            "hallTicketPage"
-        );
-
-
-    if(!hallTicket){
-
-        alert(
-            "Hall Ticket not found."
-        );
-
-        return;
-    }
-
-
-    // Remove previous print modes
-    document.body.classList.remove(
-        "print-marksheet",
-        "print-hall-ticket"
-    );
-
-
-    // Activate Hall Ticket print mode
-    document.body.classList.add(
-        "print-hall-ticket"
-    );
-
-
-    // Print after CSS is applied
-    setTimeout(function(){
-
-        window.print();
-
-    }, 100);
-
-
-    // Remove print mode after printing
-    window.onafterprint = function(){
-
-        document.body.classList.remove(
-            "print-hall-ticket"
-        );
-
-    };
-
-}
 //====================================================
 // DOWNLOAD HALL TICKET PDF
 //====================================================
