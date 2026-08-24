@@ -12499,10 +12499,8 @@ body::after {
 }
 
 
-
 /*==================================================
-        PREMIUM MARKSHEET - FINAL A4 PRINT
-        PRINT + SAVE AS PDF
+        PREMIUM MARKSHEET - PRINT
 ==================================================*/
 
 @page{
@@ -12514,56 +12512,48 @@ body::after {
 
     html,
     body{
+
         width:210mm !important;
-        min-width:210mm !important;
-        height:auto !important;
+        height:297mm !important;
+
         margin:0 !important;
         padding:0 !important;
 
+     .header,
+.container > .header{
+    display:none !important;
+}
+
         background:#fff !important;
 
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
+        overflow:hidden !important;
+
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+
     }
 
+    /* Hide everything */
 
-    /*==============================================
-        HIDE WEBSITE UI
-    ==============================================*/
-
-    body > *{
-        display:none !important;
-    }
+   body > *
+    /* Show only marksheet page */
 
     #marksheetPage{
         display:block !important;
-        width:210mm !important;
         margin:0 !important;
         padding:0 !important;
-        background:#fff !important;
     }
-
-
-    /*==============================================
-        MARKSHEET A4
-    ==============================================*/
-
+ 
     .marksheet{
 
         display:block !important;
 
-        width:200mm !important;
+        width:190mm !important;
+        height:287mm !important;
 
-        /*
-          Content ko fixed height me lock nahi kar rahe.
-          Isse bottom ka content cut nahi hoga.
-        */
-        height:auto !important;
-        min-height:287mm !important;
+        margin:5mm auto !important;
 
-        margin:5mm auto 5mm auto !important;
-
-        padding:4mm !important;
+        padding:5mm !important;
 
         box-sizing:border-box !important;
 
@@ -12572,162 +12562,44 @@ body::after {
         border:6px solid #0b4f9c !important;
 
         outline:2px solid #d8b44c !important;
-        outline-offset:-7px !important;
+        outline-offset:-7px;
 
         box-shadow:none !important;
 
-        /*
-          IMPORTANT:
-          Bottom content cut nahi hoga.
-        */
-        overflow:visible !important;
+        overflow:hidden !important;
 
-        page-break-before:auto !important;
-        page-break-after:auto !important;
         page-break-inside:avoid !important;
-
-        break-before:auto !important;
-        break-after:auto !important;
         break-inside:avoid !important;
     }
-
-
-    /*==============================================
-        INNER CONTENT
-    ==============================================*/
 
     .marksheet *{
         visibility:visible !important;
     }
 
-
-    /*==============================================
-        KEEP MARKSHEET SECTIONS TOGETHER
-    ==============================================*/
-
-    .mkHeader,
-    .mkStudentSection,
-    .mkMarksSection,
-    .mkSummary,
-    .mkDeclaration,
-    .mkSignatureSection,
-    .mkFooter,
-    .mkSlogan{
-
-        page-break-inside:avoid !important;
-        break-inside:avoid !important;
-    }
-
-
-    /*==============================================
-        TABLE
-    ==============================================*/
-
-    .mkMarksSection,
-    .mkMarksSection table{
-
-        width:100% !important;
-        max-width:100% !important;
-    }
-
-
-    .mkMarksSection table{
-        border-collapse:collapse !important;
-    }
-
-
-    /*==============================================
-        IMAGES
-    ==============================================*/
-
-    .marksheet img{
-
-        max-width:100% !important;
-
-        page-break-inside:avoid !important;
-        break-inside:avoid !important;
-    }
-
-
-    /*==============================================
-        FOOTER
-    ==============================================*/
-
-    .mkFooter{
-
-        margin-top:8px !important;
-        padding-top:6px !important;
-        line-height:1.4 !important;
-    }
-
-
-    .mkFooter p{
-        margin:0 !important;
-        font-size:9px !important;
-        line-height:1.4 !important;
-    }
-
-
-    .mkFooter strong{
-        font-size:11px !important;
-    }
-
-
-    /*==============================================
-        SLOGAN
-    ==============================================*/
-
-    .mkSlogan{
-
-        margin:4px 0 0 !important;
-
-        width:100% !important;
-
-        padding:5px 0 !important;
-
-        font-size:16px !important;
-
-        line-height:1.2 !important;
-
-        box-sizing:border-box !important;
-    }
-
-
-    /*==============================================
-        HIDE BUTTONS
-    ==============================================*/
-
     .mkPage,
     .mkActionButtons,
     .marksheetActions,
-    .marksheet-actions,
     button,
     .noPrint{
-
         display:none !important;
     }
 
-
-    /*==============================================
-        REMOVE SCREEN EFFECTS
-    ==============================================*/
-
-    .marksheet,
-    .marksheet *{
-
-        box-shadow:none !important;
-        text-shadow:none !important;
+    img{
+        max-width:100%;
     }
 
+.mkPdfBtn{
 
-    /*==============================================
-        FORCE A4 COLORS
-    ==============================================*/
+    background:#198754;
 
-    .marksheet{
+    color:#fff;
 
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
+}
+
+.mkPdfBtn:hover{
+
+    background:#157347;
+
+}
 
 }
