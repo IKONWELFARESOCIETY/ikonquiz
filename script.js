@@ -13007,36 +13007,19 @@ async function downloadHallTicketPDF(){
         //================================================
 
         const canvas =
-            await html2canvas(
-
-                hallTicketA4,
-
-                {
-
-                    scale:3,
-
-                    useCORS:true,
-
-                    allowTaint:false,
-
-                    backgroundColor:"#ffffff",
-
-                    logging:false,
-
-                    imageTimeout:15000,
-
-                    foreignObjectRendering:true,
-
-                    scrollX:0,
-
-                    scrollY:0,
-
-                    windowWidth:
-                        document.documentElement.clientWidth,
-
-                    windowHeight:
-                        document.documentElement.clientHeight,
-
+    await html2canvas(
+        hallTicketA4,
+        {
+            scale:3,
+            useCORS:true,
+            allowTaint:true,
+            backgroundColor:"#ffffff",
+            logging:false,
+            imageTimeout:0,
+            scrollX:0,
+            scrollY:0
+        }
+    );
 
                     //========================================
                     // IMPORTANT CLIPPING FIX
