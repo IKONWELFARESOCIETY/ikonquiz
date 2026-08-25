@@ -14318,5 +14318,456 @@ async function downloadHallTicketPDF(){
         }
 
     }
+//======================================================
+// FINAL PDF POSITION FIX
+// PHOTO RIGHT + EXAM TITLE EXACT BANNER CENTER
+//======================================================
 
+
+//======================================================
+// 1. BLUE BANNER
+//======================================================
+
+page.querySelectorAll(
+    ".hallCardHeader"
+).forEach(function(header){
+
+    header.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    header.style.setProperty(
+        "z-index",
+        "50",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 2. EXAM TITLE
+// EXACT CENTER INSIDE BLUE BANNER
+//======================================================
+
+page.querySelectorAll(
+    ".hallExamHeader"
+).forEach(function(examHeader){
+
+    examHeader.style.setProperty(
+        "position",
+        "absolute",
+        "important"
+    );
+
+    // IMPORTANT:
+    // hallCard has 3mm inner padding,
+    // so title must start from 3mm.
+
+    examHeader.style.setProperty(
+        "top",
+        "3mm",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "left",
+        "3mm",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "width",
+        "calc(100% - 6mm)",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "height",
+        "15mm",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "padding",
+        "0",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "align-items",
+        "center",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "justify-content",
+        "center",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "transform",
+        "none",
+        "important"
+    );
+
+    examHeader.style.setProperty(
+        "z-index",
+        "9999",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 3. EXAM TITLE INNER
+//======================================================
+
+page.querySelectorAll(
+    ".hallExamTitle"
+).forEach(function(title){
+
+    title.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+    title.style.setProperty(
+        "height",
+        "15mm",
+        "important"
+    );
+
+    title.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    title.style.setProperty(
+        "padding",
+        "0",
+        "important"
+    );
+
+    title.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    title.style.setProperty(
+        "align-items",
+        "center",
+        "important"
+    );
+
+    title.style.setProperty(
+        "justify-content",
+        "center",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 4. EXAM SEPT 2026 TEXT
+//======================================================
+
+page.querySelectorAll(
+    ".hallExamTitle h2"
+).forEach(function(h2){
+
+    h2.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "padding",
+        "0",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "text-align",
+        "center",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "font-size",
+        "16pt",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "font-weight",
+        "900",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "line-height",
+        "1",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "white-space",
+        "nowrap",
+        "important"
+    );
+
+    h2.style.setProperty(
+        "color",
+        "#ffffff",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 5. STUDENT SECTION
+// DETAILS LEFT + PHOTO RIGHT
+//======================================================
+
+page.querySelectorAll(
+    ".hallStudentSection"
+).forEach(function(section){
+
+    section.style.setProperty(
+        "display",
+        "grid",
+        "important"
+    );
+
+    section.style.setProperty(
+        "grid-template-columns",
+        "minmax(0,1fr) 35mm",
+        "important"
+    );
+
+    section.style.setProperty(
+        "gap",
+        "3mm",
+        "important"
+    );
+
+    section.style.setProperty(
+        "align-items",
+        "center",
+        "important"
+    );
+
+    section.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 6. DETAILS LEFT SIDE
+//======================================================
+
+page.querySelectorAll(
+    ".hallStudentDetails"
+).forEach(function(details){
+
+    details.style.setProperty(
+        "grid-column",
+        "1",
+        "important"
+    );
+
+    details.style.setProperty(
+        "width",
+        "100%",
+        "important"
+    );
+
+    details.style.setProperty(
+        "justify-self",
+        "stretch",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 7. PHOTO RIGHT SIDE
+//======================================================
+
+page.querySelectorAll(
+    ".hallPhotoBox"
+).forEach(function(photoBox){
+
+    photoBox.style.setProperty(
+        "grid-column",
+        "2",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "grid-row",
+        "1",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "justify-self",
+        "end",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "align-self",
+        "center",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "width",
+        "30mm",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "height",
+        "34mm",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "margin",
+        "0",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    photoBox.style.setProperty(
+        "overflow",
+        "visible",
+        "important"
+    );
+
+});
+
+
+//======================================================
+// 8. PHOTO IMAGE
+//======================================================
+
+page.querySelectorAll(
+    ".hallPhotoBox img"
+).forEach(function(img){
+
+    img.style.setProperty(
+        "width",
+        "20mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "height",
+        "24mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "max-width",
+        "20mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "max-height",
+        "24mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "margin",
+        "4mm auto 0",
+        "important"
+    );
+
+    img.style.setProperty(
+        "padding",
+        "1mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "box-sizing",
+        "border-box",
+        "important"
+    );
+
+    img.style.setProperty(
+        "object-fit",
+        "cover",
+        "important"
+    );
+
+    img.style.setProperty(
+        "border",
+        "1px solid #b5c3d1",
+        "important"
+    );
+
+    img.style.setProperty(
+        "border-radius",
+        "1.5mm",
+        "important"
+    );
+
+    img.style.setProperty(
+        "box-shadow",
+        "0 2px 5px rgba(20,45,70,.16), 0 0 0 1px rgba(198,164,75,.45)",
+        "important"
+    );
+
+});
 }
