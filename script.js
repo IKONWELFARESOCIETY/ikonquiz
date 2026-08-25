@@ -12881,22 +12881,22 @@ function backToHallTicketVerify(){
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
-// EXACT 3 CARDS ON ONE A4 PAGE
-// EACH CARD = 202mm x 87mm
+// EXACT SAME AS SCREEN PREVIEW
+// FULL A4 AREA CAPTURE
 //====================================================
 
 async function downloadHallTicketPDF(){
 
     //================================================
-    // FIND HALL TICKET
+    // FIND COMPLETE A4 AREA
     //================================================
 
-    const hallTicket =
+    const hallTicketA4 =
         document.querySelector(
             "#hallTicketPage .hallTicketA4"
         );
 
-    if(!hallTicket){
+    if(!hallTicketA4){
 
         alert("Hall Ticket not found.");
 
@@ -12965,63 +12965,111 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // GET ONLY 3 HALL TICKET CARDS
-        //================================================
-
-        const cards =
-            hallTicket.querySelectorAll(
-                ".hallCard"
-            );
-
-
-        if(!cards.length){
-
-            alert("Hall Ticket cards not found.");
-
-            return;
-        }
-
-
-        //================================================
         // WAIT FOR ALL IMAGES
         //================================================
 
-        const allImages =
-            hallTicket.querySelectorAll(
-                "img"
-            );
+        const images =
+            hallTicketA4.querySelectorAll("img");
 
 
         await Promise.all(
 
-            Array.from(allImages).map(
-                function(img){
+            Array.from(images).map(function(img){
 
-                    return new Promise(
-                        function(resolve){
+                return new Promise(function(resolve){
 
-                            if(img.complete){
+                    if(img.complete){
 
-                                resolve();
+                        resolve();
 
-                            }
-                            else{
+                    }
+                    else{
 
-                                img.onload =
-                                    resolve;
+                        img.onload = resolve;
 
-                                img.onerror =
-                                    resolve;
+                        img.onerror = resolve;
 
-                            }
+                    }
 
-                        }
-                    );
+                });
 
-                }
-            )
+            })
 
         );
+
+
+        //================================================
+        // SMALL DELAY
+        // ALLOW FINAL RENDER
+        //================================================
+
+        await new Promise(function(resolve){
+
+            setTimeout(resolve,300);
+
+        });
+
+
+        //================================================
+        // GET ACTUAL PREVIEW SIZE
+        //================================================
+
+        const rect =
+            hallTicketA4.getBoundingClientRect();
+
+
+        const captureWidth =
+            Math.ceil(rect.width);
+
+
+        const captureHeight =
+            Math.ceil(rect.height);
+
+
+        //================================================
+        // CAPTURE COMPLETE A4 AREA
+        // IMPORTANT:
+        // DO NOT CAPTURE INDIVIDUAL CARDS
+        //================================================
+
+        const canvas =
+            await html2canvas(
+                hallTicketA4,
+                {
+
+                    scale:3,
+
+                    width:captureWidth,
+
+                    height:captureHeight,
+
+                    useCORS:true,
+
+                    allowTaint:false,
+
+                    backgroundColor:"#ffffff",
+
+                    logging:false,
+
+                    imageTimeout:15000,
+
+                    scrollX:0,
+
+                    scrollY:0
+
+                }
+            );
+
+
+        //================================================
+        // CONVERT CANVAS TO IMAGE
+        //================================================
+
+        const imageData =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.98
+            );
 
 
         //================================================
@@ -13035,17 +13083,13 @@ async function downloadHallTicketPDF(){
         const pdf =
             new jsPDF({
 
-                orientation:
-                    "portrait",
+                orientation:"portrait",
 
-                unit:
-                    "mm",
+                unit:"mm",
 
-                format:
-                    "a4",
+                format:"a4",
 
-                compress:
-                    true
+                compress:true
 
             });
 
@@ -13054,149 +13098,57 @@ async function downloadHallTicketPDF(){
         // A4 DIMENSIONS
         //================================================
 
-        const A4_WIDTH =
-            210;
+        const A4_WIDTH = 210;
 
-        const A4_HEIGHT =
-            297;
+        const A4_HEIGHT = 297;
 
 
         //================================================
-        // CARD DIMENSIONS
-        // FROM YOUR CSS
+        // PREVIEW CONTENT SIZE
+        //
+        // CSS:
+        // hallTicketA4 = 202mm x 273mm
         //================================================
 
-        const CARD_WIDTH =
-            202;
+        const PDF_WIDTH = 202;
 
-        const CARD_HEIGHT =
-            87;
+        const PDF_HEIGHT = 273;
 
 
         //================================================
-        // POSITION
+        // CENTER ON A4
         //================================================
 
         const LEFT =
-            4;
+            (A4_WIDTH - PDF_WIDTH) / 2;
 
         const TOP =
-            10;
-
-        const GAP =
-            3;
+            (A4_HEIGHT - PDF_HEIGHT) / 2;
 
 
         //================================================
-        // MAX 3 CARDS
+        // ADD COMPLETE HALL TICKET
         //================================================
 
-        const cardCount =
-            Math.min(
-                cards.length,
-                3
-            );
+        pdf.addImage(
 
+            imageData,
 
-        //================================================
-        // CAPTURE EACH CARD SEPARATELY
-        //================================================
+            "JPEG",
 
-        for(
-            let i = 0;
-            i < cardCount;
-            i++
-        ){
+            LEFT,
 
-            const card =
-                cards[i];
+            TOP,
 
+            PDF_WIDTH,
 
-            //============================================
-            // CAPTURE EXACT CARD
-            //============================================
+            PDF_HEIGHT,
 
-            const canvas =
-                await html2canvas(
-                    card,
-                    {
+            undefined,
 
-                        scale: 3,
+            "FAST"
 
-                        useCORS: true,
-
-                        allowTaint: false,
-
-                        backgroundColor:
-                            "#ffffff",
-
-                        logging: false,
-
-                        imageTimeout: 15000,
-
-                        scrollX: 0,
-
-                        scrollY: 0,
-
-                        // VERY IMPORTANT
-                        // NO onclone
-                        // NO CSS modification
-
-                    }
-                );
-
-
-            //============================================
-            // CONVERT TO IMAGE
-            //============================================
-
-            const imageData =
-                canvas.toDataURL(
-                    "image/jpeg",
-                    0.98
-                );
-
-
-            //============================================
-            // CARD Y POSITION
-            //============================================
-
-            const y =
-                TOP +
-                (
-                    i *
-                    (
-                        CARD_HEIGHT +
-                        GAP
-                    )
-                );
-
-
-            //============================================
-            // ADD CARD TO A4
-            //============================================
-
-            pdf.addImage(
-
-                imageData,
-
-                "JPEG",
-
-                LEFT,
-
-                y,
-
-                CARD_WIDTH,
-
-                CARD_HEIGHT,
-
-                undefined,
-
-                "FAST"
-
-            );
-
-        }
+        );
 
 
         //================================================
@@ -13227,13 +13179,16 @@ async function downloadHallTicketPDF(){
         //================================================
 
         pdf.save(
+
             "Hall_Ticket_" +
             downloadRegNo +
             ".pdf"
+
         );
 
-
     }
+
+
     catch(error){
 
         console.error(
@@ -13247,6 +13202,8 @@ async function downloadHallTicketPDF(){
         );
 
     }
+
+
     finally{
 
         if(downloadBtn){
