@@ -13562,7 +13562,7 @@ async function downloadHallTicketPDF(){
 
                                         h2.style.setProperty(
                                             "font-size",
-                                            "16pt",
+                                            "19pt",
                                             "important"
                                         );
 
@@ -14289,7 +14289,7 @@ async function downloadHallTicketPDF(){
 
                                         img.style.setProperty(
                                             "left",
-                                            "50%",
+                                            "84%",
                                             "important"
                                         );
 
