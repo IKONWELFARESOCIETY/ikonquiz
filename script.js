@@ -12890,6 +12890,17 @@ function backToHallTicketVerify(){
 // PDF ONLY FIX
 //====================================================
 
+//====================================================
+// DOWNLOAD HALL TICKET PDF
+// FINAL FIXED VERSION
+//
+// PHOTO        = RIGHT SIDE
+// CENTRE CODE  = PHOTO KE JUST ABOVE
+// EXAM TITLE   = BLUE BANNER EXACT CENTER
+// DETAILS      = SAME POSITION / SAME DATA
+// PDF ONLY FIX
+//====================================================
+
 async function downloadHallTicketPDF(){
 
     //================================================
