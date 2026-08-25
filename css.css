@@ -12045,6 +12045,8 @@ body::after {
     box-shadow:none !important;
 
     overflow:visible !important;
+    transform: translateY(-3mm) !important;
+
 }
 
 
@@ -12533,6 +12535,7 @@ body::after {
     border:none !important;
     background:transparent !important;
     box-shadow:none !important;
+    transform: translateY(-3mm) !important;
 }
 
 
@@ -12629,4 +12632,101 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 #hallTicketPage .hallCard .hallLogo{
     display:none !important;
+}
+/* =========================================================
+   FINAL FIX - EXAM SEPT 2026 EXACT CENTER
+   ========================================================= */
+
+#hallTicketPage .hallCardHeader{
+    position:relative !important;
+    height:18mm !important;
+    min-height:18mm !important;
+    display:flex !important;
+    align-items:center !important;
+}
+
+/* EXAM SEPT 2026 - EXACT CENTER */
+#hallTicketPage .hallExamHeader{
+    position:absolute !important;
+
+    top:0 !important;
+    bottom:0 !important;
+
+    left:42mm !important;
+    right:42mm !important;
+
+    width:auto !important;
+    height:18mm !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    transform:none !important;
+}
+
+#hallTicketPage .hallExamTitle{
+    width:100% !important;
+    height:100% !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    text-align:center !important;
+}
+
+#hallTicketPage .hallExamTitle h2{
+    margin:0 !important;
+    padding:0 !important;
+
+    width:100% !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    color:#fff !important;
+
+    font-size:12.5pt !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+
+    text-align:center !important;
+    white-space:nowrap !important;
+
+    transform:none !important;
+}
+
+
+/* PRACTICAL / VIVA / THEORY RIGHT SIDE */
+#hallTicketPage .hallCardTitle{
+    position:absolute !important;
+
+    top:0 !important;
+    right:3mm !important;
+
+    width:38mm !important;
+    height:18mm !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    color:#fff !important;
+    font-size:11pt !important;
+    font-weight:900 !important;
+
+    line-height:1 !important;
+    text-align:right !important;
+    white-space:nowrap !important;
 }
