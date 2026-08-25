@@ -13052,19 +13052,16 @@ async function downloadHallTicketPDF(){
         //================================================
         // 6mm gap on all four sides
 
-        const margin =
-            6;
+      const horizontalMargin = 3;
+const verticalMargin = 6;
 
+const availableWidth =
+    pageWidth -
+    (horizontalMargin * 2);
 
-        const availableWidth =
-            pageWidth -
-            (margin * 2);
-
-
-        const availableHeight =
-            pageHeight -
-            (margin * 2);
-
+const availableHeight =
+    pageHeight -
+    (verticalMargin * 2);
 
         //================================================
         // ORIGINAL CARD RATIO
