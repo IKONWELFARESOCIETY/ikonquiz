@@ -12031,7 +12031,7 @@ body::after {
     position:relative !important;
 
     width:30mm !important;
-    height:36mm !important;
+    height:37mm !important;
 
     margin:0 auto !important;
     padding:0 !important;
@@ -12042,14 +12042,13 @@ body::after {
 
     background:transparent !important;
     border:none !important;
-    border-radius:0 !important;
     box-shadow:none !important;
 
     overflow:visible !important;
 }
 
 
-/* Centre Code */
+/* Centre Code - photo se gap */
 #hallTicketPage .hallPhotoBox::before{
     content:"CENTRE CODE 101";
 
@@ -12067,10 +12066,11 @@ body::after {
 
     color:#174a78;
 
-    font-size:7pt;
+    font-size:6.8pt;
     font-weight:900;
 
     line-height:1;
+
     text-align:center;
     white-space:nowrap;
 }
@@ -12080,30 +12080,33 @@ body::after {
 #hallTicketPage .hallPhotoBox img{
     display:block !important;
 
-    width:27mm !important;
-    height:31mm !important;
+    width:25mm !important;
+    height:29mm !important;
 
-    max-width:27mm !important;
-    max-height:31mm !important;
+    max-width:25mm !important;
+    max-height:29mm !important;
 
     min-width:0 !important;
     min-height:0 !important;
 
-    margin:0 !important;
-    padding:0 !important;
+    margin:0 0 1mm 0 !important;
+    padding:1mm !important;
+
+    box-sizing:border-box !important;
 
     object-fit:cover !important;
     object-position:center center !important;
 
-    background:#f8fafc !important;
+    background:#ffffff !important;
 
-    border:1px solid #9eb1c4 !important;
-    border-radius:2mm !important;
+    /* professional frame */
+    border:1px solid #b5c3d1 !important;
+    border-radius:1.5mm !important;
 
     box-shadow:
-        0 2px 6px rgba(20,45,70,.16) !important;
+        0 2px 5px rgba(20,45,70,.16),
+        0 0 0 1px rgba(198,164,75,.45) !important;
 }
-
 /* Centre code above photo */
 
 #hallTicketPage .hallPhotoBox::before{
@@ -12523,9 +12526,9 @@ body::after {
 
     /* photo */
 
-  body.print-hall-ticket #hallTicketPage .hallPhotoBox{
+ body.print-hall-ticket #hallTicketPage .hallPhotoBox{
     width:30mm !important;
-    height:36mm !important;
+    height:37mm !important;
 
     border:none !important;
     background:transparent !important;
@@ -12533,21 +12536,37 @@ body::after {
 }
 
 
-body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
-    width:27mm !important;
-    height:31mm !important;
+/* Print/PDF Centre Code */
+body.print-hall-ticket #hallTicketPage .hallPhotoBox::before{
+    top:0 !important;
 
-    max-width:27mm !important;
-    max-height:31mm !important;
+    height:4mm !important;
+
+    font-size:6.8pt !important;
+}
+
+
+/* Print/PDF PHOTO */
+body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
+    width:25mm !important;
+    height:29mm !important;
+
+    max-width:25mm !important;
+    max-height:29mm !important;
+
+    margin:0 0 1mm 0 !important;
+    padding:1mm !important;
+
+    box-sizing:border-box !important;
 
     object-fit:cover !important;
-    object-position:center center !important;
 
-    border:1px solid #9eb1c4 !important;
-    border-radius:2mm !important;
+    border:1px solid #b5c3d1 !important;
+    border-radius:1.5mm !important;
 
     box-shadow:
-        0 2px 6px rgba(20,45,70,.16) !important;
+        0 2px 5px rgba(20,45,70,.16),
+        0 0 0 1px rgba(198,164,75,.45) !important;
 }
 
     /* signature */
