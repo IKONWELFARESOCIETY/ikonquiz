@@ -12852,3 +12852,30 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         text-align:center !important;
     }
 }
+/* =========================================================
+   CARD CUTTING MARK
+   ========================================================= */
+
+#hallTicketPage .hallCard:not(:last-child)::after{
+    content:"✂";
+
+    position:absolute;
+    left:50%;
+    bottom:-5mm;
+
+    transform:translateX(-50%);
+
+    width:100%;
+    height:0;
+
+    border-top:1px dashed #777;
+
+    color:#555;
+    font-size:11pt;
+    line-height:1;
+
+    text-align:center;
+
+    z-index:100;
+    background:#fff;
+}
