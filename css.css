@@ -11799,7 +11799,7 @@ body::after {
 
     z-index:25 !important;
 
-    top:1.5 !important;
+    top:1.5mm !important;
     left:40mm !important;
     right:40mm !important;
 
@@ -12723,7 +12723,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 @media print{
 
     body.print-hall-ticket #hallTicketPage .hallExamHeader{
-        top:1.5 !important;
+        top:1.5mm !important;
         left:50% !important;
         right:auto !important;
 
