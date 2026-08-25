@@ -12634,29 +12634,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     display:none !important;
 }
 /* =========================================================
-   FINAL FIX - EXAM SEPT 2026 EXACT CENTER
+   FINAL - EXACT CENTER + SMALL PHOTO
    ========================================================= */
 
-#hallTicketPage .hallCardHeader{
-    position:relative !important;
-    height:18mm !important;
-    min-height:18mm !important;
-    display:flex !important;
-    align-items:center !important;
-}
-
-/* EXAM SEPT 2026 - EXACT CENTER */
+/* EXAM TITLE - EXACT PAGE CENTER */
 #hallTicketPage .hallExamHeader{
     position:absolute !important;
 
     top:0 !important;
-    bottom:0 !important;
+    left:50% !important;
+    right:auto !important;
 
-    left:42mm !important;
-    right:42mm !important;
-
-    width:auto !important;
-    height:18mm !important;
+    width:90mm !important;
+    height:15mm !important;
 
     margin:0 !important;
     padding:0 !important;
@@ -12665,7 +12655,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     align-items:center !important;
     justify-content:center !important;
 
-    transform:none !important;
+    transform:translateX(-50%) !important;
 }
 
 #hallTicketPage .hallExamTitle{
@@ -12678,55 +12668,95 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     margin:0 !important;
     padding:0 !important;
-
-    text-align:center !important;
 }
 
 #hallTicketPage .hallExamTitle h2{
+    width:100% !important;
+
     margin:0 !important;
     padding:0 !important;
-
-    width:100% !important;
 
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
 
-    color:#fff !important;
+    text-align:center !important;
 
     font-size:12.5pt !important;
     font-weight:900 !important;
     line-height:1 !important;
 
-    text-align:center !important;
     white-space:nowrap !important;
-
-    transform:none !important;
 }
 
 
-/* PRACTICAL / VIVA / THEORY RIGHT SIDE */
-#hallTicketPage .hallCardTitle{
-    position:absolute !important;
+/* =========================================================
+   PHOTO - SMALLER
+   ========================================================= */
 
-    top:0 !important;
-    right:3mm !important;
+#hallTicketPage .hallPhotoBox{
+    width:27mm !important;
+    height:32mm !important;
+}
 
-    width:38mm !important;
-    height:18mm !important;
+#hallTicketPage .hallPhotoBox img{
+    width:20mm !important;
+    height:24mm !important;
 
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
+    max-width:20mm !important;
+    max-height:24mm !important;
 
-    margin:0 !important;
-    padding:0 !important;
+    object-fit:cover !important;
 
-    color:#fff !important;
-    font-size:11pt !important;
-    font-weight:900 !important;
+    padding:1mm !important;
+    box-sizing:border-box !important;
 
-    line-height:1 !important;
-    text-align:right !important;
-    white-space:nowrap !important;
+    border:1px solid #b5c3d1 !important;
+    border-radius:1.5mm !important;
+}
+
+
+/* =========================================================
+   PRINT - SAME EXACT CENTER
+   ========================================================= */
+
+@media print{
+
+    body.print-hall-ticket #hallTicketPage .hallExamHeader{
+        top:0 !important;
+        left:50% !important;
+        right:auto !important;
+
+        width:90mm !important;
+        height:15mm !important;
+
+        transform:translateX(-50%) !important;
+
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle{
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle h2{
+        text-align:center !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallPhotoBox{
+        width:27mm !important;
+        height:32mm !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
+        width:20mm !important;
+        height:24mm !important;
+
+        max-width:20mm !important;
+        max-height:24mm !important;
+    }
 }
