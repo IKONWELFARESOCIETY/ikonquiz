@@ -14035,3 +14035,584 @@ body::after {
     }
 
 }
+/* =========================================================
+   FINAL HALL TICKET SMALL ADJUSTMENTS
+   ADD THIS AT THE VERY END OF css.css
+   ========================================================= */
+
+
+/* =========================================================
+   1. BLUE BANNER - THODA WIDE / TALL
+   ========================================================= */
+
+#hallTicketPage .hallCardHeader{
+    height:11mm !important;
+    min-height:11mm !important;
+
+    padding:1.5mm 3mm !important;
+
+    margin-bottom:1.5mm !important;
+
+    display:grid !important;
+
+    grid-template-columns:42mm 1fr 42mm !important;
+
+    align-items:center !important;
+
+    box-sizing:border-box !important;
+}
+
+
+/* =========================================================
+   2. PRACTICAL / VIVA / THEORY
+      CARD TITLE LEFT SIDE
+   ========================================================= */
+
+#hallTicketPage .hallCardTitle{
+
+    text-align:left !important;
+
+    justify-self:start !important;
+
+    width:auto !important;
+
+    margin-left:2mm !important;
+
+    font-size:13pt !important;
+
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+}
+
+
+/* =========================================================
+   3. EXAM 2026 - ALWAYS CENTER
+   ========================================================= */
+
+#hallTicketPage .hallExamHeader{
+
+    width:100% !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    text-align:center !important;
+
+    height:8mm !important;
+
+    min-height:8mm !important;
+
+    margin:0 0 1.5mm 0 !important;
+
+    padding:0 !important;
+}
+
+
+#hallTicketPage .hallExamTitle{
+
+    width:100% !important;
+
+    display:block !important;
+
+    text-align:center !important;
+
+    margin:0 auto !important;
+}
+
+
+#hallTicketPage .hallExamTitle h2{
+
+    width:100% !important;
+
+    margin:0 auto !important;
+
+    text-align:center !important;
+
+    font-size:13pt !important;
+
+    line-height:1 !important;
+
+    font-weight:900 !important;
+}
+
+
+/* =========================================================
+   4. IKON LOGO - NO STRETCH
+   ========================================================= */
+
+#hallTicketPage .hallHeaderLogo{
+
+    display:block !important;
+
+    width:29mm !important;
+
+    height:7mm !important;
+
+    max-width:29mm !important;
+
+    max-height:7mm !important;
+
+    min-width:0 !important;
+
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    object-fit:contain !important;
+
+    object-position:left center !important;
+
+    aspect-ratio:auto !important;
+
+    border:none !important;
+
+    background:transparent !important;
+
+    box-shadow:none !important;
+}
+
+
+/* =========================================================
+   5. LOGO AREA
+   ========================================================= */
+
+#hallTicketPage .hallCardLeft{
+
+    width:42mm !important;
+
+    height:100% !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:flex-start !important;
+
+    overflow:hidden !important;
+
+}
+
+
+/* =========================================================
+   6. STUDENT PHOTO AREA
+      CENTRE CODE 101 PHOTO KE UPAR
+   ========================================================= */
+
+#hallTicketPage .hallPhotoBox{
+
+    position:relative !important;
+
+    width:33mm !important;
+
+    height:34mm !important;
+
+    margin:0 auto !important;
+
+    padding:0 !important;
+
+    display:flex !important;
+
+    align-items:flex-end !important;
+
+    justify-content:center !important;
+
+    background:transparent !important;
+
+    border:none !important;
+
+    box-shadow:none !important;
+
+    overflow:visible !important;
+}
+
+
+/* =========================================================
+   CENTRE CODE
+   ========================================================= */
+
+#hallTicketPage .hallPhotoBox::before{
+
+    content:"CENTRE CODE 101";
+
+    position:absolute;
+
+    left:0;
+
+    top:-4.5mm;
+
+    width:100%;
+
+    height:4mm;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#174a78;
+
+    font-size:7.5pt;
+
+    font-weight:900;
+
+    line-height:1;
+
+    white-space:nowrap;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   7. PHOTO - NO DISTORTION
+   ========================================================= */
+
+#hallTicketPage .hallPhotoBox img{
+
+    display:block !important;
+
+    width:32mm !important;
+
+    height:33mm !important;
+
+    max-width:32mm !important;
+
+    max-height:33mm !important;
+
+    min-width:0 !important;
+
+    min-height:0 !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    object-fit:cover !important;
+
+    object-position:center center !important;
+
+    border:none !important;
+
+    border-radius:1px !important;
+
+    box-shadow:none !important;
+}
+
+
+/* =========================================================
+   8. EXAM VENUE - BIGGER & CLEARER
+   ========================================================= */
+
+#hallTicketPage .hallVenue{
+
+    width:100% !important;
+
+    margin:0 !important;
+
+    padding:0 1mm !important;
+
+    box-sizing:border-box !important;
+
+    color:#294963 !important;
+
+    font-size:8pt !important;
+
+    font-weight:800 !important;
+
+    line-height:1.25 !important;
+
+    text-align:center !important;
+
+    white-space:nowrap !important;
+}
+
+
+/* =========================================================
+   9. PDF / PRINT OVERRIDE
+      SAME CHANGES PDF ME BHI
+   ========================================================= */
+
+@media print{
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCardHeader{
+
+        height:11mm !important;
+
+        min-height:11mm !important;
+
+        padding:1.5mm 3mm !important;
+
+        margin-bottom:1.5mm !important;
+
+        grid-template-columns:42mm 1fr 42mm !important;
+
+    }
+
+
+    /* CARD TITLE LEFT */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCardTitle{
+
+        text-align:left !important;
+
+        justify-self:start !important;
+
+        width:auto !important;
+
+        margin-left:2mm !important;
+
+        font-size:13pt !important;
+
+        line-height:1 !important;
+
+        white-space:nowrap !important;
+    }
+
+
+    /* EXAM 2026 CENTER */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallExamHeader{
+
+        height:8mm !important;
+
+        min-height:8mm !important;
+
+        display:flex !important;
+
+        align-items:center !important;
+
+        justify-content:center !important;
+
+        text-align:center !important;
+
+        margin:0 0 1.5mm 0 !important;
+
+        padding:0 !important;
+    }
+
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallExamTitle{
+
+        width:100% !important;
+
+        text-align:center !important;
+
+        margin:0 auto !important;
+    }
+
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallExamTitle h2{
+
+        width:100% !important;
+
+        margin:0 auto !important;
+
+        text-align:center !important;
+
+        font-size:13pt !important;
+
+        line-height:1 !important;
+    }
+
+
+    /* LOGO NO STRETCH */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallHeaderLogo{
+
+        width:29mm !important;
+
+        height:7mm !important;
+
+        max-width:29mm !important;
+
+        max-height:7mm !important;
+
+        min-width:0 !important;
+
+        min-height:0 !important;
+
+        padding:0 !important;
+
+        margin:0 !important;
+
+        object-fit:contain !important;
+
+        object-position:left center !important;
+
+        aspect-ratio:auto !important;
+
+        border:none !important;
+
+        background:transparent !important;
+
+        box-shadow:none !important;
+    }
+
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCardLeft{
+
+        width:42mm !important;
+
+        height:100% !important;
+
+        display:flex !important;
+
+        align-items:center !important;
+
+        justify-content:flex-start !important;
+
+        overflow:hidden !important;
+    }
+
+
+    /* PHOTO */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallPhotoBox{
+
+        position:relative !important;
+
+        width:33mm !important;
+
+        height:34mm !important;
+
+        margin:0 auto !important;
+
+        padding:0 !important;
+
+        display:flex !important;
+
+        align-items:flex-end !important;
+
+        justify-content:center !important;
+
+        background:transparent !important;
+
+        border:none !important;
+
+        box-shadow:none !important;
+
+        overflow:visible !important;
+    }
+
+
+    /* CENTRE CODE 101 */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallPhotoBox::before{
+
+        content:"CENTRE CODE 101";
+
+        position:absolute;
+
+        left:0;
+
+        top:-4.5mm;
+
+        width:100%;
+
+        height:4mm;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        color:#174a78;
+
+        font-size:7.5pt;
+
+        font-weight:900;
+
+        line-height:1;
+
+        white-space:nowrap;
+
+        text-align:center;
+    }
+
+
+    /* PHOTO NO STRETCH */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallPhotoBox img{
+
+        width:32mm !important;
+
+        height:33mm !important;
+
+        max-width:32mm !important;
+
+        max-height:33mm !important;
+
+        min-width:0 !important;
+
+        min-height:0 !important;
+
+        margin:0 !important;
+
+        padding:0 !important;
+
+        object-fit:cover !important;
+
+        object-position:center center !important;
+
+        border:none !important;
+
+        border-radius:1px !important;
+
+        box-shadow:none !important;
+    }
+
+
+    /* VENUE BIGGER */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallVenue{
+
+        width:100% !important;
+
+        margin:0 !important;
+
+        padding:0 1mm !important;
+
+        box-sizing:border-box !important;
+
+        font-size:8pt !important;
+
+        font-weight:800 !important;
+
+        line-height:1.25 !important;
+
+        text-align:center !important;
+
+        white-space:nowrap !important;
+    }
+
+}
