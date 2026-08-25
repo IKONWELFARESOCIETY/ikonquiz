@@ -12881,21 +12881,32 @@ function backToHallTicketVerify(){
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
-// FINAL VERSION
-// PHOTO RIGHT + CENTRE CODE ABOVE PHOTO
-// EXAM TITLE EXACT CENTER OF BLUE BANNER
+// FINAL FIXED VERSION
+//
+// PHOTO        = RIGHT SIDE
+// CENTRE CODE  = PHOTO KE JUST ABOVE
+// EXAM TITLE   = BLUE BANNER EXACT CENTER
+// DETAILS      = SAME POSITION / SAME DATA
+// PDF ONLY FIX
 //====================================================
 
 async function downloadHallTicketPDF(){
+
+    //================================================
+    // FIND HALL TICKET
+    //================================================
 
     const hallTicketA4 =
         document.querySelector(
             "#hallTicketPage .hallTicketA4"
         );
 
+
     if(!hallTicketA4){
 
-        alert("Hall Ticket not found.");
+        alert(
+            "Hall Ticket not found."
+        );
 
         return;
     }
@@ -12905,9 +12916,14 @@ async function downloadHallTicketPDF(){
     // CHECK HTML2CANVAS
     //================================================
 
-    if(typeof html2canvas === "undefined"){
+    if(
+        typeof html2canvas ===
+        "undefined"
+    ){
 
-        alert("PDF library is not loaded.");
+        alert(
+            "PDF library is not loaded."
+        );
 
         return;
     }
@@ -12922,7 +12938,9 @@ async function downloadHallTicketPDF(){
         !window.jspdf.jsPDF
     ){
 
-        alert("PDF generator is not loaded.");
+        alert(
+            "PDF generator is not loaded."
+        );
 
         return;
     }
@@ -12940,9 +12958,14 @@ async function downloadHallTicketPDF(){
 
     try{
 
+        //================================================
+        // BUTTON LOADING
+        //================================================
+
         if(downloadBtn){
 
-            downloadBtn.disabled = true;
+            downloadBtn.disabled =
+                true;
 
             downloadBtn.innerHTML =
                 "Generating PDF...";
@@ -12966,59 +12989,75 @@ async function downloadHallTicketPDF(){
         //================================================
 
         const images =
-            hallTicketA4.querySelectorAll("img");
+            hallTicketA4.querySelectorAll(
+                "img"
+            );
 
 
         await Promise.all(
 
-            Array.from(images).map(function(img){
+            Array.from(
+                images
+            ).map(
+                function(img){
 
-                return new Promise(function(resolve){
+                    return new Promise(
+                        function(resolve){
 
-                    if(
-                        img.complete &&
-                        img.naturalWidth > 0
-                    ){
+                            if(
+                                img.complete &&
+                                img.naturalWidth > 0
+                            ){
 
-                        resolve();
+                                resolve();
 
-                    }
-                    else{
+                            }
+                            else{
 
-                        img.onload = resolve;
+                                img.onload =
+                                    resolve;
 
-                        img.onerror = resolve;
+                                img.onerror =
+                                    resolve;
 
-                    }
+                            }
 
-                });
+                        }
+                    );
 
-            })
+                }
+            )
 
         );
 
 
         //================================================
-        // WAIT FOR FINAL RENDER
+        // WAIT FOR FINAL BROWSER RENDER
         //================================================
 
-        await new Promise(function(resolve){
+        await new Promise(
+            function(resolve){
 
-            requestAnimationFrame(function(){
+                requestAnimationFrame(
+                    function(){
 
-                requestAnimationFrame(function(){
+                        requestAnimationFrame(
+                            function(){
 
-                    resolve();
+                                resolve();
 
-                });
+                            }
+                        );
 
-            });
+                    }
+                );
 
-        });
+            }
+        );
 
 
         //================================================
-        // CREATE CANVAS
+        // CREATE PDF CANVAS
         //================================================
 
         const canvas =
@@ -13034,7 +13073,8 @@ async function downloadHallTicketPDF(){
 
                     allowTaint:true,
 
-                    backgroundColor:"#ffffff",
+                    backgroundColor:
+                        "#ffffff",
 
                     imageTimeout:0,
 
@@ -13045,1261 +13085,1438 @@ async function downloadHallTicketPDF(){
                     scrollY:0,
 
 
-                    //============================================
-                    // PDF CLONE
-                    //============================================
+                    //========================================
+                    // PDF CLONE ONLY
+                    //========================================
 
-                    onclone:function(clonedDocument){
+                    onclone:
+                        function(
+                            clonedDocument
+                        ){
 
-                        const page =
-                            clonedDocument.querySelector(
-                                "#hallTicketPage"
+                            const page =
+                                clonedDocument.querySelector(
+                                    "#hallTicketPage"
+                                );
+
+
+                            if(!page){
+
+                                return;
+
+                            }
+
+
+                            //================================
+                            // HIDE ACTION BUTTONS
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallTicketActions"
+                                )
+                                .forEach(
+                                    function(el){
+
+                                        el.style.setProperty(
+                                            "display",
+                                            "none",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // A4 CONTAINER
+                            //================================
+
+                            const a4 =
+                                page.querySelector(
+                                    ".hallTicketA4"
+                                );
+
+
+                            if(a4){
+
+                                a4.style.setProperty(
+                                    "width",
+                                    "202mm",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "height",
+                                    "273mm",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "min-height",
+                                    "273mm",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "max-height",
+                                    "273mm",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "margin",
+                                    "0 auto",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "padding",
+                                    "0",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "box-sizing",
+                                    "border-box",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "gap",
+                                    "3mm",
+                                    "important"
+                                );
+
+                                a4.style.setProperty(
+                                    "overflow",
+                                    "hidden",
+                                    "important"
+                                );
+
+                            }
+
+
+                            //================================
+                            // EACH HALL CARD
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallCard"
+                                )
+                                .forEach(
+                                    function(card){
+
+                                        card.style.setProperty(
+                                            "width",
+                                            "202mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "height",
+                                            "87mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "min-height",
+                                            "87mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "max-height",
+                                            "87mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "flex",
+                                            "0 0 87mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "padding",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "box-sizing",
+                                            "border-box",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "position",
+                                            "relative",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "overflow",
+                                            "hidden",
+                                            "important"
+                                        );
+
+                                        card.style.setProperty(
+                                            "transform",
+                                            "none",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // BLUE HEADER
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallCardHeader"
+                                )
+                                .forEach(
+                                    function(header){
+
+                                        header.style.setProperty(
+                                            "position",
+                                            "relative",
+                                            "important"
+                                        );
+
+                                        header.style.setProperty(
+                                            "width",
+                                            "100%",
+                                            "important"
+                                        );
+
+                                        header.style.setProperty(
+                                            "height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        header.style.setProperty(
+                                            "min-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        header.style.setProperty(
+                                            "max-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        header.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // EXAM TITLE
+                            //
+                            // IMPORTANT:
+                            // hallExamHeader HTML me
+                            // hallCardHeader ke bahar hai.
+                            //
+                            // Isliye PDF clone me
+                            // hallCard ke relative exact
+                            // blue banner position par rakhenge.
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallExamHeader"
+                                )
+                                .forEach(
+                                    function(examHeader){
+
+                                        examHeader.style.setProperty(
+                                            "position",
+                                            "absolute",
+                                            "important"
+                                        );
+
+                                        // Card ke andar
+                                        // blue banner ka start
+
+                                        examHeader.style.setProperty(
+                                            "top",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "left",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "right",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "width",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "min-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "max-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "margin",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "padding",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "display",
+                                            "flex",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "justify-content",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "transform",
+                                            "none",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "z-index",
+                                            "1000",
+                                            "important"
+                                        );
+
+                                        examHeader.style.setProperty(
+                                            "pointer-events",
+                                            "none",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // EXAM TITLE INNER
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallExamTitle"
+                                )
+                                .forEach(
+                                    function(title){
+
+                                        title.style.setProperty(
+                                            "width",
+                                            "100%",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "margin",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "padding",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "display",
+                                            "flex",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "justify-content",
+                                            "center",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // EXAM SEPT 2026
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallExamTitle h2"
+                                )
+                                .forEach(
+                                    function(h2){
+
+                                        h2.style.setProperty(
+                                            "display",
+                                            "block",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "width",
+                                            "100%",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "height",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "margin",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "padding",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "text-align",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "font-size",
+                                            "16pt",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "font-weight",
+                                            "900",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "line-height",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "white-space",
+                                            "nowrap",
+                                            "important"
+                                        );
+
+                                        h2.style.setProperty(
+                                            "color",
+                                            "#ffffff",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // PRACTICAL / VIVA / THEORY
+                            // RIGHT TITLE
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallCardTitle"
+                                )
+                                .forEach(
+                                    function(title){
+
+                                        title.style.setProperty(
+                                            "position",
+                                            "absolute",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "top",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "right",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "width",
+                                            "38mm",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "display",
+                                            "flex",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "justify-content",
+                                            "flex-end",
+                                            "important"
+                                        );
+
+                                        title.style.setProperty(
+                                            "z-index",
+                                            "1001",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // STUDENT SECTION
+                            //
+                            // DETAILS LEFT
+                            // PHOTO RIGHT
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallStudentSection"
+                                )
+                                .forEach(
+                                    function(section){
+
+                                        section.style.setProperty(
+                                            "display",
+                                            "grid",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "grid-template-columns",
+                                            "minmax(0,1fr) 35mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "gap",
+                                            "3mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "width",
+                                            "100%",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "height",
+                                            "41mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "min-height",
+                                            "41mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "max-height",
+                                            "41mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "margin-top",
+                                            "2.5mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "padding",
+                                            "2mm",
+                                            "important"
+                                        );
+
+                                        section.style.setProperty(
+                                            "box-sizing",
+                                            "border-box",
+                                            "important"
+                                        );
+
+                                        // Photo border clipping
+                                        // prevent karna hai
+
+                                        section.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // STUDENT DETAILS
+                            //
+                            // SAME LEFT POSITION
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallStudentDetails"
+                                )
+                                .forEach(
+                                    function(details){
+
+                                        details.style.setProperty(
+                                            "grid-column",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "grid-row",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "width",
+                                            "100%",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "height",
+                                            "37mm",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "min-height",
+                                            "37mm",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "max-height",
+                                            "37mm",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "display",
+                                            "flex",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "flex-direction",
+                                            "column",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "justify-content",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "gap",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        details.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // DETAIL ROWS
+                            //
+                            // DATA SAME
+                            // POSITION SAME
+                            // ONLY TEXT-LINE GAP FIX
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallRow"
+                                )
+                                .forEach(
+                                    function(row){
+
+                                        row.style.setProperty(
+                                            "width",
+                                            "96%",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "height",
+                                            "5.1mm",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "min-height",
+                                            "5.1mm",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "max-height",
+                                            "5.1mm",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "flex",
+                                            "0 0 5.1mm",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "display",
+                                            "grid",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "grid-template-columns",
+                                            "40mm minmax(0,1fr)",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "align-items",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        // Line ke neeche
+                                        // thoda breathing space
+
+                                        row.style.setProperty(
+                                            "padding",
+                                            "0 1mm 0.8mm 1mm",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "margin",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "box-sizing",
+                                            "border-box",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                        row.style.setProperty(
+                                            "text-overflow",
+                                            "clip",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // DETAIL LABELS
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallRow span"
+                                )
+                                .forEach(
+                                    function(label){
+
+                                        label.style.setProperty(
+                                            "height",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "max-height",
+                                            "none",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "text-overflow",
+                                            "clip",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "white-space",
+                                            "nowrap",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "line-height",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        label.style.setProperty(
+                                            "font-size",
+                                            "7.7pt",
+                                            "important"
+                                        );
+
+                                        // Line se thoda upar
+
+                                        label.style.setProperty(
+                                            "transform",
+                                            "translateY(-0.25mm)",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // DETAIL VALUES
+                            //
+                            // KAMR2007 ETC.
+                            // LINE KO TOUCH NAHI KAREGA
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallRow strong"
+                                )
+                                .forEach(
+                                    function(value){
+
+                                        value.style.setProperty(
+                                            "height",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "max-height",
+                                            "none",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "text-overflow",
+                                            "clip",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "white-space",
+                                            "nowrap",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "line-height",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        value.style.setProperty(
+                                            "font-size",
+                                            "8.6pt",
+                                            "important"
+                                        );
+
+                                        // Value ko line se
+                                        // thoda upar shift
+
+                                        value.style.setProperty(
+                                            "transform",
+                                            "translateY(-0.35mm)",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // PHOTO BOX
+                            //
+                            // RIGHT SIDE
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallPhotoBox"
+                                )
+                                .forEach(
+                                    function(photoBox){
+
+                                        photoBox.style.setProperty(
+                                            "grid-column",
+                                            "2",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "grid-row",
+                                            "1",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "justify-self",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "align-self",
+                                            "center",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "width",
+                                            "30mm",
+                                            "important"
+                                        );
+
+                                        // Border clipping
+                                        // avoid
+
+                                        photoBox.style.setProperty(
+                                            "height",
+                                            "35mm",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "min-height",
+                                            "35mm",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "max-height",
+                                            "35mm",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "margin",
+                                            "0 auto",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "padding",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "position",
+                                            "relative",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "display",
+                                            "block",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "background",
+                                            "transparent",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "border",
+                                            "none",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "box-shadow",
+                                            "none",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                        photoBox.style.setProperty(
+                                            "transform",
+                                            "none",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // CENTRE CODE
+                            //
+                            // PHOTO KE EXACT ABOVE
+                            //================================
+
+                            const centreCodeStyle =
+                                clonedDocument.createElement(
+                                    "style"
+                                );
+
+
+                            centreCodeStyle.textContent = `
+
+                                #hallTicketPage .hallPhotoBox::before{
+
+                                    content:"CENTRE CODE 101" !important;
+
+                                    position:absolute !important;
+
+                                    top:0 !important;
+
+                                    left:0 !important;
+
+                                    right:0 !important;
+
+                                    width:100% !important;
+
+                                    height:4.5mm !important;
+
+                                    margin:0 !important;
+
+                                    padding:0 !important;
+
+                                    display:flex !important;
+
+                                    align-items:center !important;
+
+                                    justify-content:center !important;
+
+                                    transform:none !important;
+
+                                    font-size:6.8pt !important;
+
+                                    font-weight:800 !important;
+
+                                    line-height:1 !important;
+
+                                    white-space:nowrap !important;
+
+                                    color:#52677d !important;
+
+                                    z-index:50 !important;
+
+                                }
+
+                            `;
+
+
+                            clonedDocument.head.appendChild(
+                                centreCodeStyle
                             );
 
 
-                        if(!page){
+                            //================================
+                            // PHOTO
+                            //
+                            // CENTRE CODE KE JUST NICHE
+                            //
+                            // NO bottom:0
+                            //================================
 
-                            return;
+                            page
+                                .querySelectorAll(
+                                    ".hallPhotoBox img"
+                                )
+                                .forEach(
+                                    function(img){
+
+                                        img.style.setProperty(
+                                            "position",
+                                            "absolute",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "left",
+                                            "50%",
+                                            "important"
+                                        );
+
+                                        // IMPORTANT
+                                        // Centre code 0-4.5mm
+                                        // Photo starts at 6mm
+
+                                        img.style.setProperty(
+                                            "top",
+                                            "6mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "bottom",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "transform",
+                                            "translateX(-50%)",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "width",
+                                            "20mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "height",
+                                            "24mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "max-width",
+                                            "20mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "max-height",
+                                            "24mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "min-width",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "min-height",
+                                            "0",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "padding",
+                                            "1mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "box-sizing",
+                                            "border-box",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "object-fit",
+                                            "cover",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "object-position",
+                                            "center center",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "background",
+                                            "#ffffff",
+                                            "important"
+                                        );
+
+                                        // PHOTO BORDER
+
+                                        img.style.setProperty(
+                                            "border",
+                                            "1px solid #b5c3d1",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "border-radius",
+                                            "1.5mm",
+                                            "important"
+                                        );
+
+                                        img.style.setProperty(
+                                            "box-shadow",
+                                            "0 2px 5px rgba(20,45,70,.16), 0 0 0 1px rgba(198,164,75,.45)",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // SIGNATURE AREA
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallBottom"
+                                )
+                                .forEach(
+                                    function(bottom){
+
+                                        bottom.style.setProperty(
+                                            "height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        bottom.style.setProperty(
+                                            "min-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        bottom.style.setProperty(
+                                            "max-height",
+                                            "15mm",
+                                            "important"
+                                        );
+
+                                        bottom.style.setProperty(
+                                            "margin-top",
+                                            "2mm",
+                                            "important"
+                                        );
+
+                                        bottom.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // SIGNATURE BOXES
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallSignBox"
+                                )
+                                .forEach(
+                                    function(sign){
+
+                                        sign.style.setProperty(
+                                            "height",
+                                            "13mm",
+                                            "important"
+                                        );
+
+                                        sign.style.setProperty(
+                                            "min-height",
+                                            "13mm",
+                                            "important"
+                                        );
+
+                                        sign.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                    }
+                                );
+
+
+                            //================================
+                            // VENUE
+                            //================================
+
+                            page
+                                .querySelectorAll(
+                                    ".hallVenue"
+                                )
+                                .forEach(
+                                    function(venue){
+
+                                        venue.style.setProperty(
+                                            "height",
+                                            "auto",
+                                            "important"
+                                        );
+
+                                        venue.style.setProperty(
+                                            "max-height",
+                                            "5mm",
+                                            "important"
+                                        );
+
+                                        venue.style.setProperty(
+                                            "overflow",
+                                            "visible",
+                                            "important"
+                                        );
+
+                                        venue.style.setProperty(
+                                            "font-size",
+                                            "8.3pt",
+                                            "important"
+                                        );
+
+                                        venue.style.setProperty(
+                                            "line-height",
+                                            "1.2",
+                                            "important"
+                                        );
+
+                                    }
+                                );
 
                         }
-
-
-                        //============================================
-                        // HIDE DOWNLOAD BUTTONS
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallTicketActions"
-                        ).forEach(function(el){
-
-                            el.style.setProperty(
-                                "display",
-                                "none",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // A4
-                        //============================================
-
-                        const a4 =
-                            page.querySelector(
-                                ".hallTicketA4"
-                            );
-
-
-                        if(a4){
-
-                            a4.style.setProperty(
-                                "width",
-                                "202mm",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "height",
-                                "273mm",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "min-height",
-                                "273mm",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "max-height",
-                                "273mm",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "margin",
-                                "0 auto",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "box-sizing",
-                                "border-box",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "gap",
-                                "3mm",
-                                "important"
-                            );
-
-                            a4.style.setProperty(
-                                "overflow",
-                                "hidden",
-                                "important"
-                            );
-
-                        }
-
-
-                        //============================================
-                        // EACH HALL CARD
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallCard"
-                        ).forEach(function(card){
-
-                            card.style.setProperty(
-                                "width",
-                                "202mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "height",
-                                "87mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "min-height",
-                                "87mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "max-height",
-                                "87mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "flex",
-                                "0 0 87mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "padding",
-                                "3mm",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "box-sizing",
-                                "border-box",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "overflow",
-                                "hidden",
-                                "important"
-                            );
-
-                            // IMPORTANT
-                            // Exam title will be positioned
-                            // relative to this card.
-
-                            card.style.setProperty(
-                                "position",
-                                "relative",
-                                "important"
-                            );
-
-                            card.style.setProperty(
-                                "transform",
-                                "none",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // BLUE BANNER
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallCardHeader"
-                        ).forEach(function(header){
-
-                            header.style.setProperty(
-                                "position",
-                                "relative",
-                                "important"
-                            );
-
-                            header.style.setProperty(
-                                "width",
-                                "100%",
-                                "important"
-                            );
-
-                            header.style.setProperty(
-                                "height",
-                                "15mm",
-                                "important"
-                            );
-
-                            header.style.setProperty(
-                                "min-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            header.style.setProperty(
-                                "max-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            header.style.setProperty(
-                                "overflow",
-                                "hidden",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ EXAM TITLE
-                        //
-                        // HTML me hallExamHeader banner ka sibling hai.
-                        // Isliye ise HALL CARD ke relative position
-                        // par rakh rahe hain.
-                        //
-                        // CARD padding = 3mm
-                        // HEADER = 15mm
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallExamHeader"
-                        ).forEach(function(examHeader){
-
-                            examHeader.style.setProperty(
-                                "position",
-                                "absolute",
-                                "important"
-                            );
-
-                            // EXACT BLUE BANNER TOP
-
-                            examHeader.style.setProperty(
-                                "top",
-                                "3mm",
-                                "important"
-                            );
-
-                            // EXACT BLUE BANNER LEFT
-
-                            examHeader.style.setProperty(
-                                "left",
-                                "3mm",
-                                "important"
-                            );
-
-                            // FULL BLUE BANNER WIDTH
-
-                            examHeader.style.setProperty(
-                                "width",
-                                "calc(100% - 6mm)",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "height",
-                                "15mm",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "min-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "max-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "margin",
-                                "0",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "display",
-                                "flex",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "justify-content",
-                                "center",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "transform",
-                                "none",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "z-index",
-                                "100",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "pointer-events",
-                                "none",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // EXAM TITLE INNER
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallExamTitle"
-                        ).forEach(function(title){
-
-                            title.style.setProperty(
-                                "width",
-                                "100%",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "height",
-                                "15mm",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "margin",
-                                "0",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "display",
-                                "flex",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "justify-content",
-                                "center",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // EXAM SEPT 2026 TEXT
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallExamTitle h2"
-                        ).forEach(function(h2){
-
-                            h2.style.setProperty(
-                                "width",
-                                "100%",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "height",
-                                "auto",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "margin",
-                                "0",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "display",
-                                "block",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "text-align",
-                                "center",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "font-size",
-                                "16pt",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "font-weight",
-                                "900",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "line-height",
-                                "1",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "white-space",
-                                "nowrap",
-                                "important"
-                            );
-
-                            h2.style.setProperty(
-                                "color",
-                                "#ffffff",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // PRACTICAL / VIVA / THEORY TITLE
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallCardTitle"
-                        ).forEach(function(title){
-
-                            title.style.setProperty(
-                                "position",
-                                "absolute",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "top",
-                                "0",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "right",
-                                "3mm",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "width",
-                                "38mm",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "height",
-                                "15mm",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "display",
-                                "flex",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "justify-content",
-                                "flex-end",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "z-index",
-                                "1001",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ STUDENT SECTION
-                        //
-                        // KEEP DETAILS EXACTLY SAME
-                        //
-                        // LEFT  = DETAILS
-                        // RIGHT = PHOTO
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallStudentSection"
-                        ).forEach(function(section){
-
-                            section.style.setProperty(
-                                "display",
-                                "grid",
-                                "important"
-                            );
-
-                            // SAME AS YOUR PREVIEW CSS
-
-                            section.style.setProperty(
-                                "grid-template-columns",
-                                "minmax(0,1fr) 35mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "gap",
-                                "3mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "width",
-                                "100%",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "height",
-                                "37mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "min-height",
-                                "37mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "max-height",
-                                "37mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "margin-top",
-                                "2.5mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "padding",
-                                "1.5mm 2mm",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "box-sizing",
-                                "border-box",
-                                "important"
-                            );
-
-                            section.style.setProperty(
-                                "overflow",
-                                "hidden",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ STUDENT DETAILS
-                        //
-                        // DO NOT CHANGE CONTENT / POSITION / SIZE
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallStudentDetails"
-                        ).forEach(function(details){
-
-                            details.style.setProperty(
-                                "grid-column",
-                                "1",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "grid-row",
-                                "1",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "width",
-                                "100%",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "height",
-                                "31.5mm",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "max-height",
-                                "31.5mm",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "display",
-                                "flex",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "flex-direction",
-                                "column",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "justify-content",
-                                "center",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "gap",
-                                "0",
-                                "important"
-                            );
-
-                            details.style.setProperty(
-                                "overflow",
-                                "hidden",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // DETAIL ROWS
-                        // SAME CURRENT SETTINGS
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallRow"
-                        ).forEach(function(row){
-
-                            row.style.setProperty(
-                                "width",
-                                "96%",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "height",
-                                "4.5mm",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "min-height",
-                                "4.5mm",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "max-height",
-                                "4.5mm",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "flex",
-                                "0 0 4.5mm",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "display",
-                                "grid",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "grid-template-columns",
-                                "40mm minmax(0,1fr)",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "align-items",
-                                "center",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "padding",
-                                "0 1mm",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "margin",
-                                "0",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "box-sizing",
-                                "border-box",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                            row.style.setProperty(
-                                "text-overflow",
-                                "clip",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // DETAIL LABELS
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallRow span"
-                        ).forEach(function(label){
-
-                            label.style.setProperty(
-                                "height",
-                                "auto",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "max-height",
-                                "none",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "text-overflow",
-                                "clip",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "white-space",
-                                "nowrap",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "line-height",
-                                "1",
-                                "important"
-                            );
-
-                            label.style.setProperty(
-                                "font-size",
-                                "7.7pt",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // DETAIL VALUES
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallRow strong"
-                        ).forEach(function(value){
-
-                            value.style.setProperty(
-                                "height",
-                                "auto",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "max-height",
-                                "none",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "text-overflow",
-                                "clip",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "white-space",
-                                "nowrap",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "line-height",
-                                "1",
-                                "important"
-                            );
-
-                            value.style.setProperty(
-                                "font-size",
-                                "8.6pt",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ PHOTO BOX
-                        // RIGHT SIDE
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallPhotoBox"
-                        ).forEach(function(photoBox){
-
-                            photoBox.style.setProperty(
-                                "grid-column",
-                                "2",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "grid-row",
-                                "1",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "position",
-                                "relative",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "width",
-                                "30mm",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "height",
-                                "37mm",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "margin",
-                                "0 auto",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "display",
-                                "flex",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "align-items",
-                                "flex-end",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "justify-content",
-                                "center",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "background",
-                                "transparent",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "border",
-                                "none",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "box-shadow",
-                                "none",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                            photoBox.style.setProperty(
-                                "transform",
-                                "none",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ CENTRE CODE
-                        // PHOTO BOX KE TOP PAR
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallPhotoBox"
-                        ).forEach(function(photoBox){
-
-                            // Existing CSS pseudo-element is used.
-                            // Force exact position in PDF clone.
-
-                            photoBox.style.setProperty(
-                                "position",
-                                "relative",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // ★ PHOTO IMAGE
-                        // CENTRE CODE KE JUST NICHE
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallPhotoBox img"
-                        ).forEach(function(img){
-
-                            img.style.setProperty(
-                                "position",
-                                "absolute",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "left",
-                                "50%",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "bottom",
-                                "0",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "transform",
-                                "translateX(-50%)",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "width",
-                                "20mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "height",
-                                "24mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "max-width",
-                                "20mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "max-height",
-                                "24mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "min-width",
-                                "0",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "min-height",
-                                "0",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "padding",
-                                "1mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "box-sizing",
-                                "border-box",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "object-fit",
-                                "cover",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "object-position",
-                                "center center",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "background",
-                                "#ffffff",
-                                "important"
-                            );
-
-                            // SAME PREVIEW BORDER
-
-                            img.style.setProperty(
-                                "border",
-                                "1px solid #b5c3d1",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "border-radius",
-                                "1.5mm",
-                                "important"
-                            );
-
-                            img.style.setProperty(
-                                "box-shadow",
-                                "0 2px 5px rgba(20,45,70,.16), 0 0 0 1px rgba(198,164,75,.45)",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // SIGNATURE AREA
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallBottom"
-                        ).forEach(function(bottom){
-
-                            bottom.style.setProperty(
-                                "height",
-                                "15mm",
-                                "important"
-                            );
-
-                            bottom.style.setProperty(
-                                "min-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            bottom.style.setProperty(
-                                "max-height",
-                                "15mm",
-                                "important"
-                            );
-
-                            bottom.style.setProperty(
-                                "margin-top",
-                                "2mm",
-                                "important"
-                            );
-
-                            bottom.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // SIGNATURE BOX
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallSignBox"
-                        ).forEach(function(sign){
-
-                            sign.style.setProperty(
-                                "height",
-                                "13mm",
-                                "important"
-                            );
-
-                            sign.style.setProperty(
-                                "min-height",
-                                "13mm",
-                                "important"
-                            );
-
-                            sign.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                        });
-
-
-                        //============================================
-                        // VENUE
-                        //============================================
-
-                        page.querySelectorAll(
-                            ".hallVenue"
-                        ).forEach(function(venue){
-
-                            venue.style.setProperty(
-                                "height",
-                                "auto",
-                                "important"
-                            );
-
-                            venue.style.setProperty(
-                                "max-height",
-                                "5mm",
-                                "important"
-                            );
-
-                            venue.style.setProperty(
-                                "overflow",
-                                "visible",
-                                "important"
-                            );
-
-                            venue.style.setProperty(
-                                "font-size",
-                                "8.3pt",
-                                "important"
-                            );
-
-                            venue.style.setProperty(
-                                "line-height",
-                                "1.2",
-                                "important"
-                            );
-
-                        });
 
                     }
 
@@ -14326,7 +14543,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CONVERT CANVAS TO PNG
+        // CONVERT CANVAS TO IMAGE
         //================================================
 
         const imageData =
@@ -14346,19 +14563,23 @@ async function downloadHallTicketPDF(){
         const pdf =
             new jsPDF({
 
-                orientation:"portrait",
+                orientation:
+                    "portrait",
 
-                unit:"mm",
+                unit:
+                    "mm",
 
-                format:"a4",
+                format:
+                    "a4",
 
-                compress:true
+                compress:
+                    true
 
             });
 
 
         //================================================
-        // A4 SIZE
+        // A4 DIMENSIONS
         //================================================
 
         const A4_WIDTH =
@@ -14370,7 +14591,7 @@ async function downloadHallTicketPDF(){
 
         //================================================
         // HALL TICKET CONTENT
-        // KEEP SAME
+        // SAME AS CURRENT
         //================================================
 
         const CONTENT_WIDTH =
@@ -14381,19 +14602,25 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CENTER CONTENT ON A4
+        // CENTER ON A4
         //================================================
 
         const left =
-            (A4_WIDTH - CONTENT_WIDTH) / 2;
+            (
+                A4_WIDTH -
+                CONTENT_WIDTH
+            ) / 2;
 
 
         const top =
-            (A4_HEIGHT - CONTENT_HEIGHT) / 2;
+            (
+                A4_HEIGHT -
+                CONTENT_HEIGHT
+            ) / 2;
 
 
         //================================================
-        // ADD HALL TICKET
+        // ADD HALL TICKET IMAGE
         //================================================
 
         pdf.addImage(
