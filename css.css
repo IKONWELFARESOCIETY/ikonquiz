@@ -11239,1677 +11239,881 @@ body::after {
 
 }
 /* =========================================================
-   =========================================================
-        IKON HALL TICKET - FINAL CSS
-        A4 PORTRAIT
-        3 CARDS : PRACTICAL / VIVA / THEORY
-   =========================================================
+   IKON HALL TICKET - FINAL DESIGN
+   Replace ONLY the old Hall Ticket CSS block with this CSS.
+   HTML structure used:
+   .hallTicketA4 > .hallCard.practicalCard/.vivaCard/.theoryCard
    ========================================================= */
 
-
-/* =========================================================
-   01. HALL TICKET PAGE
-   ========================================================= */
+/* =========================
+   HALL TICKET SCREEN
+   ========================= */
 
 #hallTicketPage{
-
     width:100%;
-
     margin:0;
-
     padding:20px 0;
-
     background:#eef3f9;
-
     box-sizing:border-box;
-
 }
-
-
-/* =========================================================
-   02. A4 PAGE
-   ========================================================= */
 
 #hallTicketPage .hallTicketA4{
-
     width:202mm;
-
     max-width:202mm;
-
-    height:273mm;
-
     min-height:273mm;
-
     margin:0 auto;
-
     padding:0;
-
     box-sizing:border-box;
-
     display:flex;
-
     flex-direction:column;
-
     gap:3mm;
-
-    background:#ffffff;
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,.12);
-
+    background:#fff;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
     overflow:hidden;
-
 }
 
-
-/* =========================================================
-   03. EACH CARD
-   ========================================================= */
+/* =========================
+   CARD
+   ========================= */
 
 #hallTicketPage .hallCard{
-
     position:relative;
-
     width:202mm;
-
     height:87mm;
-
     min-height:87mm;
-
     max-height:87mm;
-
     flex:0 0 87mm;
-
     margin:0 !important;
-
     padding:3mm !important;
-
     box-sizing:border-box;
-
     display:block;
-
-    background:#ffffff;
-
+    background:#fff;
     border:1.5px solid #174a78 !important;
-
     border-radius:3px !important;
-
     box-shadow:none !important;
-
     overflow:hidden !important;
-
     page-break-inside:avoid;
-
     break-inside:avoid;
-
 }
 
-
-/* =========================================================
-   04. INNER GOLD BORDER
-   ========================================================= */
-
+/* inner gold border */
 #hallTicketPage .hallCard::before{
-
     content:"";
-
     position:absolute;
-
     inset:2px;
-
     border:1px solid #c8a445;
-
     border-radius:2px;
-
     pointer-events:none;
-
     z-index:0;
-
 }
 
-
-/* Remove old top strip */
-
-#hallTicketPage .hallCard::after{
-
-    display:none !important;
-
-}
-
-
-/* =========================================================
-   05. CARD HEADER / BLUE BANNER
-   =========================================================
-
-   LEFT   = LOGO
-   CENTER = EXAM SEPT 2026
-   RIGHT  = PRACTICAL/VIVA/THEORY
-   */
+/* =========================
+   BLUE BANNER
+   LEFT  = LOGO
+   CENTER = EXAM TITLE
+   RIGHT = CARD TYPE
+   ========================= */
 
 #hallTicketPage .hallCardHeader{
-
     position:relative;
-
-    z-index:5;
-
+    z-index:10;
     width:100%;
-
-    height:10.5mm;
-
-    min-height:10.5mm;
-
+    height:13mm;
+    min-height:13mm;
+    margin:0 !important;
+    padding:1.5mm 3mm !important;
+    box-sizing:border-box;
     display:grid !important;
-
-    grid-template-columns:
-        45mm
-        1fr
-        45mm !important;
-
+    grid-template-columns:45mm 1fr 45mm !important;
     align-items:center !important;
 
-    margin:0 0 1.5mm 0 !important;
-
-    padding:1.2mm 3mm !important;
-
-    box-sizing:border-box;
-
-    background:
-        linear-gradient(
-            135deg,
-            #063765 0%,
-            #0a5eab 50%,
-            #07457b 100%
-        );
+    background:linear-gradient(
+        135deg,
+        #063765 0%,
+        #0a5eab 50%,
+        #07457b 100%
+    );
 
     border-radius:2px;
-
-    box-shadow:
-        0 3px 8px rgba(5,51,98,.18);
-
+    box-shadow:0 3px 8px rgba(5,51,98,.18);
 }
 
-
-/* =========================================================
-   06. LEFT LOGO AREA
-   ========================================================= */
-
+/* left logo area */
 #hallTicketPage .hallCardLeft{
-
     width:45mm !important;
-
     height:100% !important;
-
     display:flex !important;
-
     align-items:center !important;
-
     justify-content:flex-start !important;
-
-    text-align:left !important;
-
     overflow:hidden !important;
-
 }
 
-
-/* =========================================================
-   07. IKON LOGO
-      NO STRETCH
-   ========================================================= */
-
+/* IKON logo - contain prevents stretching */
 #hallTicketPage .hallHeaderLogo{
-
     display:block !important;
-
     width:31mm !important;
-
-    height:7.5mm !important;
-
+    height:8.5mm !important;
     max-width:31mm !important;
-
-    max-height:7.5mm !important;
-
+    max-height:8.5mm !important;
     min-width:0 !important;
-
     min-height:0 !important;
-
     margin:0 !important;
-
     padding:0 !important;
-
     box-sizing:border-box !important;
-
     object-fit:contain !important;
-
     object-position:left center !important;
-
-    aspect-ratio:auto !important;
-
     background:transparent !important;
-
     border:none !important;
-
     border-radius:0 !important;
-
     box-shadow:none !important;
-
 }
 
+/* card name on RIGHT side */
+#hallTicketPage .hallCardTitle{
+    width:45mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    justify-self:end !important;
+    align-self:center !important;
+    color:#fff !important;
+    font-size:11.5pt !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    letter-spacing:.8px !important;
+    text-align:right !important;
+    text-transform:uppercase !important;
+    white-space:nowrap !important;
+}
 
-/* =========================================================
-   08. CENTER EXAM TITLE
-   ========================================================= */
+/* =========================
+   EXAM SEPT 2026
+   Moved INTO BLUE BANNER
+   ========================= */
+
+/* Original hallExamHeader comes AFTER hallCardHeader in HTML.
+   We position it over the center part of the banner. */
 
 #hallTicketPage .hallExamHeader{
+    position:absolute !important;
+    z-index:12 !important;
 
-    position:relative;
-
-    z-index:5;
-
-    width:100% !important;
-
-    height:100% !important;
-
+    top:3mm !important;
+    left:48mm !important;
+    right:48mm !important;
+    width:auto !important;
+    height:10mm !important;
     min-height:0 !important;
 
     margin:0 !important;
-
     padding:0 !important;
 
     display:flex !important;
-
     align-items:center !important;
-
     justify-content:center !important;
 
-    text-align:center !important;
-
+    pointer-events:none;
 }
-
-
-/* =========================================================
-   EXAM TITLE WRAPPER
-   ========================================================= */
 
 #hallTicketPage .hallExamTitle{
-
     width:100% !important;
-
     margin:0 !important;
-
     padding:0 !important;
 
     display:flex !important;
-
     align-items:center !important;
-
     justify-content:center !important;
 
     text-align:center !important;
-
 }
 
-
-/* =========================================================
-   EXAM SEPT 2026
-   ========================================================= */
-
 #hallTicketPage .hallExamTitle h2{
-
     width:100% !important;
-
     margin:0 !important;
-
     padding:0 !important;
 
-    color:#ffffff !important;
-
+    color:#fff !important;
     font-size:13pt !important;
-
     font-weight:900 !important;
-
     line-height:1 !important;
-
     letter-spacing:.8px !important;
 
     text-align:center !important;
-
     text-transform:uppercase !important;
-
     white-space:nowrap !important;
-
 }
 
-
-/* =========================================================
-   09. RIGHT CARD TITLE
-      PRACTICAL / VIVA / THEORY
-   ========================================================= */
-
-#hallTicketPage .hallCardTitle{
-
-    width:45mm !important;
-
-    margin:0 !important;
-
-    padding:0 !important;
-
-    justify-self:end !important;
-
-    align-self:center !important;
-
-    color:#ffffff !important;
-
-    font-size:11.5pt !important;
-
-    font-weight:900 !important;
-
-    line-height:1 !important;
-
-    letter-spacing:.8px !important;
-
-    text-align:right !important;
-
-    text-transform:uppercase !important;
-
-    white-space:nowrap !important;
-
-}
-
-
-/* =========================================================
-   10. OLD LARGE LOGO - HIDE
-   ========================================================= */
-
+/* old separate logo, if any, stays hidden */
 #hallTicketPage .hallLogo{
-
     display:none !important;
-
 }
 
-
-/* =========================================================
-   11. STUDENT SECTION
-   ========================================================= */
+/* =========================
+   STUDENT DETAILS SECTION
+   ========================= */
 
 #hallTicketPage .hallStudentSection{
-
     position:relative;
-
     z-index:3;
-
     width:100%;
-
     height:37mm;
-
     min-height:37mm;
 
     display:grid !important;
-
-    grid-template-columns:1fr 36mm !important;
-
+    grid-template-columns:minmax(0,1fr) 39mm !important;
     gap:4mm !important;
-
     align-items:center !important;
 
+    margin-top:1.5mm !important;
     padding:1.5mm 2mm !important;
-
     box-sizing:border-box;
 
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff,
-            #f7faff
-        );
-
+    background:linear-gradient(180deg,#fff,#f7faff);
     border:1px solid #ccd9e6;
-
     border-radius:2px;
-
 }
 
-
-/* =========================================================
-   12. STUDENT DETAILS AREA
-   ========================================================= */
-
+/* details stay visually centered */
 #hallTicketPage .hallStudentDetails{
-
     width:100% !important;
-
     height:100% !important;
 
     display:flex !important;
-
     flex-direction:column !important;
-
     justify-content:center !important;
-
     align-items:center !important;
 
     gap:0 !important;
-
 }
 
-
-/* =========================================================
-   13. DETAIL ROW
-   ========================================================= */
-
+/* individual detail row */
 #hallTicketPage .hallRow{
-
     width:96% !important;
 
     display:grid !important;
-
-    grid-template-columns:40mm 1fr !important;
+    grid-template-columns:40mm minmax(0,1fr) !important;
 
     align-items:center !important;
 
     min-height:4.55mm !important;
-
     padding:.45mm 1mm !important;
-
     box-sizing:border-box;
 
     border-bottom:1px dashed #cbd7e4;
-
 }
-
-
-/* Last row */
 
 #hallTicketPage .hallRow:last-child{
-
     border-bottom:none !important;
-
 }
 
-
-/* =========================================================
-   14. DETAIL LABEL
-   ========================================================= */
-
 #hallTicketPage .hallRow span{
-
     color:#52677d !important;
-
     font-size:8.2pt !important;
-
     font-weight:900 !important;
-
     line-height:1 !important;
-
     letter-spacing:.25px !important;
 
     text-align:center !important;
-
     text-transform:uppercase !important;
-
     white-space:nowrap !important;
-
 }
 
-
-/* =========================================================
-   15. DETAIL VALUE
-   ========================================================= */
-
 #hallTicketPage .hallRow strong{
-
     color:#142f4b !important;
-
     font-size:9.3pt !important;
-
     font-weight:900 !important;
-
     line-height:1.05 !important;
-
     letter-spacing:.1px !important;
 
     text-align:center !important;
-
     overflow-wrap:anywhere !important;
-
 }
 
-
-/* =========================================================
-   16. PHOTO AREA
-   =========================================================
-
-   CENTRE CODE
-       ↓
-     GAP
-       ↓
-     PHOTO
-   */
+/* =========================
+   PHOTO
+   CENTRE CODE ABOVE PHOTO
+   NO OUTER PHOTO BOX
+   ========================= */
 
 #hallTicketPage .hallPhotoBox{
-
     position:relative !important;
 
-    width:34mm !important;
-
-    height:35mm !important;
+    width:36mm !important;
+    height:37mm !important;
 
     margin:0 auto !important;
-
     padding:0 !important;
 
     display:flex !important;
-
     align-items:flex-end !important;
-
     justify-content:center !important;
 
     background:transparent !important;
-
     border:none !important;
-
     border-radius:0 !important;
-
     box-shadow:none !important;
-
     overflow:visible !important;
-
 }
 
-
-/* =========================================================
-   17. CENTRE CODE 101
-      PHOTO SE CHIPKA HUA NAHI HOGA
-   ========================================================= */
-
+/* Centre code */
 #hallTicketPage .hallPhotoBox::before{
-
     content:"CENTRE CODE 101";
 
     position:absolute;
-
     left:0;
-
     top:0;
 
     width:100%;
-
     height:4mm;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     color:#174a78;
-
     font-size:7pt;
-
     font-weight:900;
-
     line-height:1;
-
     letter-spacing:.2px;
-
     text-align:center;
-
     white-space:nowrap;
-
 }
 
-
-/* =========================================================
-   18. PHOTO
-   ========================================================= */
-
+/* student photo - larger but not stretched */
 #hallTicketPage .hallPhotoBox img{
-
     display:block !important;
 
-    width:32mm !important;
+    width:34mm !important;
+    height:34mm !important;
 
-    height:33mm !important;
-
-    max-width:32mm !important;
-
-    max-height:33mm !important;
-
+    max-width:34mm !important;
+    max-height:34mm !important;
     min-width:0 !important;
-
     min-height:0 !important;
 
     margin:0 !important;
-
     padding:0 !important;
 
     object-fit:cover !important;
-
     object-position:center center !important;
 
-    background:#ffffff !important;
+    background:#fff !important;
 
-    border:1px solid #174a78 !important;
-
-    border-radius:1px !important;
-
-    box-shadow:none !important;
-
+    border:none !important;
+    border-radius:2px !important;
+    box-shadow:0 2px 5px rgba(0,0,0,.10) !important;
 }
 
-
-/* =========================================================
-   19. BOTTOM SIGNATURE AREA
-   ========================================================= */
+/* =========================
+   SIGNATURE / SIGN AREAS
+   ========================= */
 
 #hallTicketPage .hallBottom{
-
     position:relative;
-
     z-index:3;
 
     width:100%;
-
     height:12mm;
-
     min-height:12mm;
 
     display:grid !important;
-
     grid-template-columns:1fr 1fr 1fr !important;
-
     gap:4mm !important;
 
     margin:1.5mm 0 0 0 !important;
-
     padding:1.5mm 1mm 0 1mm !important;
 
     box-sizing:border-box;
 
     border-top:1px solid #cbd7e3 !important;
-
 }
 
-
-/* =========================================================
-   20. SIGNATURE COLUMN
-   ========================================================= */
-
 #hallTicketPage .hallSignBox{
-
     position:relative !important;
 
     width:100% !important;
-
     height:10mm !important;
-
     min-height:10mm !important;
 
     display:flex !important;
-
     flex-direction:column !important;
-
     align-items:center !important;
-
     justify-content:flex-start !important;
 
     padding:0 !important;
-
     box-sizing:border-box !important;
-
 }
 
-
-/* =========================================================
-   21. EMPTY SIGNATURE BOX
-   ========================================================= */
-
+/* actual blank signature rectangle */
 #hallTicketPage .hallSignBox .hallBlankBox{
-
     display:block !important;
 
     width:100% !important;
-
     height:6mm !important;
-
     min-height:6mm !important;
 
     margin:0 !important;
-
     padding:0 !important;
 
     box-sizing:border-box !important;
 
-    background:#ffffff !important;
-
+    background:#fff !important;
     border:1px solid #405a73 !important;
-
     border-radius:1px !important;
-
     box-shadow:none !important;
-
 }
 
-
-/* Remove old pseudo signature */
-
+/* remove old pseudo boxes */
 #hallTicketPage .hallSignBox::before{
-
     content:none !important;
-
     display:none !important;
-
 }
-
-
-/* =========================================================
-   22. SIGNATURE LABEL
-   ========================================================= */
 
 #hallTicketPage .hallSignBox span{
-
     display:block !important;
 
     width:100% !important;
-
     margin:1mm 0 0 0 !important;
-
     padding:0 !important;
 
     color:#233f5b !important;
-
     font-size:6.8pt !important;
-
     font-weight:900 !important;
-
     line-height:1 !important;
-
     letter-spacing:.25px !important;
 
     text-align:center !important;
-
     text-transform:uppercase !important;
-
 }
 
-
-/* =========================================================
-   23. EXAM VENUE / ADDRESS
-   ========================================================= */
+/* =========================
+   EXAM VENUE / ADDRESS
+   ========================= */
 
 #hallTicketPage .hallVenue{
-
     position:relative;
-
     z-index:3;
 
     width:100% !important;
 
     margin:0 !important;
-
     padding:0 2mm !important;
 
     box-sizing:border-box;
 
     color:#294963 !important;
-
-    font-size:8pt !important;
-
+    font-size:8.5pt !important;
     font-weight:900 !important;
-
-    line-height:1.2 !important;
-
+    line-height:1.25 !important;
     letter-spacing:.1px !important;
 
     text-align:center !important;
-
-    white-space:nowrap !important;
-
+    white-space:normal !important;
 }
 
-
-/* =========================================================
-   24. CARD BORDER COLORS
-   ========================================================= */
-
+/* card border colors */
 #hallTicketPage .practicalCard{
-
     border-color:#174a78 !important;
-
 }
-
 
 #hallTicketPage .vivaCard{
-
     border-color:#9a7626 !important;
-
 }
-
 
 #hallTicketPage .theoryCard{
-
     border-color:#315b7e !important;
-
 }
 
-
-/* =========================================================
-   25. THEORY CARD
-      KEEP SIGNATURE SECTION
-   ========================================================= */
-
-#hallTicketPage .theoryCard .hallBottom{
-
-    display:grid !important;
-
-    grid-template-columns:1fr 1fr 1fr !important;
-
-}
-
-
-/* =========================================================
-   26. ACTION BUTTONS
-   SCREEN ONLY
-   ========================================================= */
+/* =========================
+   SCREEN ACTION BUTTONS
+   ========================= */
 
 #hallTicketPage .hallTicketActions{
-
     width:202mm;
-
     max-width:202mm;
 
     margin:18px auto;
-
     padding:0;
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     gap:15px;
-
 }
 
-
-/* =========================================================
-   27. MOBILE SCREEN
-   ========================================================= */
+/* =========================
+   MOBILE
+   ========================= */
 
 @media screen and (max-width:700px){
 
     #hallTicketPage{
-
         overflow-x:auto;
-
         padding:10px;
-
     }
-
 
     #hallTicketPage .hallTicketA4{
-
         width:202mm;
-
         max-width:none;
-
         flex-shrink:0;
-
     }
-
 }
 
-
 /* =========================================================
-   =========================================================
-        PRINT / PDF
-   =========================================================
+   PRINT / PDF - EXACT A4 PORTRAIT
    ========================================================= */
 
 @page{
-
     size:A4 portrait;
-
     margin:0;
-
 }
-
 
 @media print{
 
-
-    /* =====================================================
-       BODY
-       ===================================================== */
-
     html,
     body{
-
         width:210mm !important;
-
         height:297mm !important;
-
         min-width:210mm !important;
-
         min-height:297mm !important;
 
         margin:0 !important;
-
         padding:0 !important;
 
-        background:#ffffff !important;
-
+        background:#fff !important;
         overflow:hidden !important;
 
         -webkit-print-color-adjust:exact !important;
-
         print-color-adjust:exact !important;
-
     }
 
-
-    /* =====================================================
-       HIDE COMPLETE WEBSITE
-       ===================================================== */
-
+    /* hide complete website */
     body.print-hall-ticket *{
-
         visibility:hidden !important;
-
     }
 
-
-    /* =====================================================
-       SHOW ONLY HALL TICKET
-       ===================================================== */
-
+    /* show only hall ticket */
     body.print-hall-ticket #hallTicketPage,
     body.print-hall-ticket #hallTicketPage *{
-
         visibility:visible !important;
-
     }
 
-
-    /* =====================================================
-       HALL TICKET PAGE
-       ===================================================== */
-
+    /* A4 canvas */
     body.print-hall-ticket #hallTicketPage{
-
         position:absolute !important;
-
         left:0 !important;
-
         top:0 !important;
 
         width:210mm !important;
-
         height:297mm !important;
 
         margin:0 !important;
-
         padding:0 !important;
 
         display:block !important;
-
-        background:#ffffff !important;
-
+        background:#fff !important;
         overflow:hidden !important;
-
     }
 
-
-    /* =====================================================
-       A4 INNER AREA
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallTicketA4{
-
+    /* inner safe area = 4mm all sides */
+    body.print-hall-ticket #hallTicketPage .hallTicketA4{
         position:relative !important;
 
         width:202mm !important;
+        height:289mm !important;
+        min-height:289mm !important;
+        max-height:289mm !important;
 
-        height:273mm !important;
-
-        min-height:273mm !important;
-
-        max-height:273mm !important;
-
-        margin:4mm auto 0 auto !important;
-
+        margin:4mm auto !important;
         padding:0 !important;
 
         box-sizing:border-box !important;
 
         display:flex !important;
-
         flex-direction:column !important;
-
         gap:3mm !important;
 
-        background:#ffffff !important;
-
+        background:#fff !important;
         box-shadow:none !important;
 
         overflow:hidden !important;
-
     }
 
-
-    /* =====================================================
-       THREE CARDS
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallCard{
-
+    /* three cards */
+    body.print-hall-ticket #hallTicketPage .hallCard{
         width:202mm !important;
-
         height:87mm !important;
-
         min-height:87mm !important;
-
         max-height:87mm !important;
 
         flex:0 0 87mm !important;
 
         margin:0 !important;
-
         padding:3mm !important;
 
         box-sizing:border-box !important;
-
         overflow:hidden !important;
 
         page-break-inside:avoid !important;
-
         break-inside:avoid !important;
 
         border-width:1.5px !important;
-
         border-radius:2px !important;
-
         box-shadow:none !important;
-
     }
 
-
-    /* =====================================================
-       BLUE BANNER
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallCardHeader{
-
+    /* taller blue banner */
+    body.print-hall-ticket #hallTicketPage .hallCardHeader{
         width:100% !important;
-
-        height:10.5mm !important;
-
-        min-height:10.5mm !important;
+        height:13mm !important;
+        min-height:13mm !important;
 
         margin:0 0 1.5mm 0 !important;
-
-        padding:1.2mm 3mm !important;
+        padding:1.5mm 3mm !important;
 
         display:grid !important;
-
-        grid-template-columns:
-            45mm
-            1fr
-            45mm !important;
-
+        grid-template-columns:45mm 1fr 45mm !important;
         align-items:center !important;
 
         box-sizing:border-box !important;
-
     }
 
-
-    /* =====================================================
-       LOGO AREA
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallCardLeft{
-
-        width:45mm !important;
-
-        height:100% !important;
-
-        display:flex !important;
-
-        align-items:center !important;
-
-        justify-content:flex-start !important;
-
-        overflow:hidden !important;
-
-    }
-
-
-    /* =====================================================
-       IKON LOGO
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallHeaderLogo{
-
-        display:block !important;
-
+    /* logo */
+    body.print-hall-ticket #hallTicketPage .hallHeaderLogo{
         width:31mm !important;
-
-        height:7.5mm !important;
-
+        height:8.5mm !important;
         max-width:31mm !important;
-
-        max-height:7.5mm !important;
-
-        min-width:0 !important;
-
-        min-height:0 !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        box-sizing:border-box !important;
+        max-height:8.5mm !important;
 
         object-fit:contain !important;
-
         object-position:left center !important;
 
-        aspect-ratio:auto !important;
-
-        background:transparent !important;
-
         border:none !important;
-
-        border-radius:0 !important;
-
-        box-shadow:none !important;
-
-    }
-
-
-    /* =====================================================
-       CENTER EXAM TITLE
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallExamHeader{
-
-        width:100% !important;
-
-        height:100% !important;
-
-        min-height:0 !important;
-
-        margin:0 !important;
-
         padding:0 !important;
-
-        display:flex !important;
-
-        align-items:center !important;
-
-        justify-content:center !important;
-
-        text-align:center !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallExamTitle{
-
-        width:100% !important;
-
-        display:flex !important;
-
-        align-items:center !important;
-
-        justify-content:center !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        text-align:center !important;
-
-    }
-
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallExamTitle h2{
-
-        width:100% !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
-
-        color:#ffffff !important;
-
-        font-size:13pt !important;
-
-        font-weight:900 !important;
-
-        line-height:1 !important;
-
-        letter-spacing:.8px !important;
-
-        text-align:center !important;
-
-        white-space:nowrap !important;
-
-    }
-
-
-    /* =====================================================
-       RIGHT CARD TITLE
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallCardTitle{
-
+    /* right card title */
+    body.print-hall-ticket #hallTicketPage .hallCardTitle{
         width:45mm !important;
 
-        margin:0 !important;
-
-        padding:0 !important;
-
-        justify-self:end !important;
-
-        align-self:center !important;
-
-        color:#ffffff !important;
-
         font-size:11.5pt !important;
-
         font-weight:900 !important;
-
         line-height:1 !important;
 
-        letter-spacing:.8px !important;
-
         text-align:right !important;
-
         white-space:nowrap !important;
-
     }
 
+    /* EXAM SEPT 2026 inside blue banner */
+    body.print-hall-ticket #hallTicketPage .hallExamHeader{
+        position:absolute !important;
 
-    /* =====================================================
-       STUDENT SECTION
-       ===================================================== */
+        top:3mm !important;
+        left:48mm !important;
+        right:48mm !important;
 
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallStudentSection{
+        width:auto !important;
+        height:10mm !important;
 
+        margin:0 !important;
+        padding:0 !important;
+
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+
+        z-index:20 !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle{
+        width:100% !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle h2{
         width:100% !important;
 
-        height:37mm !important;
+        color:#fff !important;
+        font-size:13pt !important;
+        font-weight:900 !important;
+        line-height:1 !important;
+        letter-spacing:.8px !important;
 
+        text-align:center !important;
+        white-space:nowrap !important;
+    }
+
+    /* student details */
+    body.print-hall-ticket #hallTicketPage .hallStudentSection{
+        width:100% !important;
+        height:37mm !important;
         min-height:37mm !important;
 
-        grid-template-columns:1fr 36mm !important;
-
+        grid-template-columns:minmax(0,1fr) 39mm !important;
         gap:4mm !important;
 
+        margin-top:1.5mm !important;
         padding:1.5mm 2mm !important;
 
         align-items:center !important;
-
         box-sizing:border-box !important;
-
     }
 
-
-    /* =====================================================
-       DETAILS
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallStudentDetails{
-
+    body.print-hall-ticket #hallTicketPage .hallStudentDetails{
         width:100% !important;
-
         height:100% !important;
 
         display:flex !important;
-
         flex-direction:column !important;
-
         justify-content:center !important;
-
         align-items:center !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallRow{
-
+    body.print-hall-ticket #hallTicketPage .hallRow{
         width:96% !important;
 
-        grid-template-columns:40mm 1fr !important;
+        grid-template-columns:40mm minmax(0,1fr) !important;
 
         min-height:4.55mm !important;
-
         padding:.45mm 1mm !important;
 
         align-items:center !important;
-
+        box-sizing:border-box !important;
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallRow span{
-
+    body.print-hall-ticket #hallTicketPage .hallRow span{
         font-size:8.2pt !important;
-
         line-height:1 !important;
-
         text-align:center !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallRow strong{
-
+    body.print-hall-ticket #hallTicketPage .hallRow strong{
         font-size:9.3pt !important;
-
         line-height:1.05 !important;
-
         text-align:center !important;
-
     }
 
-
-    /* =====================================================
-       PHOTO AREA
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallPhotoBox{
-
-        position:relative !important;
-
-        width:34mm !important;
-
-        height:35mm !important;
+    /* photo */
+    body.print-hall-ticket #hallTicketPage .hallPhotoBox{
+        width:36mm !important;
+        height:37mm !important;
 
         margin:0 auto !important;
-
         padding:0 !important;
 
         display:flex !important;
-
         align-items:flex-end !important;
-
         justify-content:center !important;
 
         background:transparent !important;
-
         border:none !important;
-
         box-shadow:none !important;
-
         overflow:visible !important;
-
     }
 
+    body.print-hall-ticket #hallTicketPage .hallPhotoBox::before{
+        content:"CENTRE CODE 101" !important;
 
-    /* =====================================================
-       CENTRE CODE 101
-       ===================================================== */
+        top:0 !important;
+        left:0 !important;
 
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallPhotoBox::before{
+        width:100% !important;
+        height:4mm !important;
 
-        content:"CENTRE CODE 101";
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
 
-        position:absolute;
-
-        left:0;
-
-        top:0;
-
-        width:100%;
-
-        height:4mm;
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        color:#174a78;
-
-        font-size:7pt;
-
-        font-weight:900;
-
-        line-height:1;
-
-        letter-spacing:.2px;
-
-        text-align:center;
-
-        white-space:nowrap;
-
+        font-size:7pt !important;
+        font-weight:900 !important;
+        color:#174a78 !important;
     }
 
+    body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
+        width:34mm !important;
+        height:34mm !important;
 
-    /* =====================================================
-       PHOTO
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallPhotoBox img{
-
-        display:block !important;
-
-        width:32mm !important;
-
-        height:33mm !important;
-
-        max-width:32mm !important;
-
-        max-height:33mm !important;
-
-        min-width:0 !important;
-
-        min-height:0 !important;
-
-        margin:0 !important;
-
-        padding:0 !important;
+        max-width:34mm !important;
+        max-height:34mm !important;
 
         object-fit:cover !important;
-
         object-position:center center !important;
 
-        background:#ffffff !important;
-
-        border:1px solid #174a78 !important;
-
-        border-radius:1px !important;
-
-        box-shadow:none !important;
-
+        border:none !important;
+        border-radius:2px !important;
+        box-shadow:0 2px 5px rgba(0,0,0,.10) !important;
     }
 
-
-    /* =====================================================
-       SIGNATURES
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallBottom{
-
+    /* signatures */
+    body.print-hall-ticket #hallTicketPage .hallBottom{
+        width:100% !important;
         height:12mm !important;
-
         min-height:12mm !important;
 
         display:grid !important;
-
         grid-template-columns:1fr 1fr 1fr !important;
-
         gap:4mm !important;
 
         margin:1.5mm 0 0 0 !important;
-
         padding:1.5mm 1mm 0 1mm !important;
 
         box-sizing:border-box !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallSignBox{
-
+    body.print-hall-ticket #hallTicketPage .hallSignBox{
         width:100% !important;
-
         height:10mm !important;
-
         min-height:10mm !important;
 
         display:flex !important;
-
         flex-direction:column !important;
-
         align-items:center !important;
-
         justify-content:flex-start !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallSignBox .hallBlankBox{
-
-        display:block !important;
-
+    body.print-hall-ticket #hallTicketPage .hallSignBox .hallBlankBox{
         width:100% !important;
-
         height:6mm !important;
-
         min-height:6mm !important;
 
         border:1px solid #405a73 !important;
-
-        background:#ffffff !important;
-
+        background:#fff !important;
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallSignBox::before{
-
+    body.print-hall-ticket #hallTicketPage .hallSignBox::before{
         content:none !important;
-
         display:none !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallSignBox span{
-
+    body.print-hall-ticket #hallTicketPage .hallSignBox span{
         margin:1mm 0 0 0 !important;
-
         font-size:6.8pt !important;
-
         line-height:1 !important;
-
         text-align:center !important;
-
     }
 
-
-    /* =====================================================
-       VENUE / ADDRESS
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallVenue{
-
+    /* larger address */
+    body.print-hall-ticket #hallTicketPage .hallVenue{
         width:100% !important;
 
         margin:0 !important;
-
         padding:0 2mm !important;
 
-        box-sizing:border-box !important;
-
-        color:#294963 !important;
-
-        font-size:8pt !important;
-
+        font-size:8.5pt !important;
         font-weight:900 !important;
-
-        line-height:1.2 !important;
+        line-height:1.25 !important;
 
         text-align:center !important;
-
-        white-space:nowrap !important;
-
+        white-space:normal !important;
     }
 
-
-    /* =====================================================
-       HIDE BUTTONS IN PDF
-       ===================================================== */
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallTicketActions{
-
+    /* hide Download/Back buttons from PDF */
+    body.print-hall-ticket #hallTicketPage .hallTicketActions{
         display:none !important;
-
     }
 
-
-    body.print-hall-ticket
-    #hallTicketBtn{
-
+    body.print-hall-ticket #hallTicketBtn{
         display:none !important;
-
     }
-
 }
-
-
-/* =========================================================
-   END OF FINAL HALL TICKET CSS
-   ========================================================= */
