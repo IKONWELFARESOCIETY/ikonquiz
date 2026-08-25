@@ -14527,15 +14527,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         display:none !important;
     }
 }
-/* =========================================================
-   FINAL FIX - CENTRE CODE + EXAM TITLE POSITION
-   ========================================================= */
+/* =====================================================
+   FINAL POSITION FIX
+   ===================================================== */
 
 
-/* ================================
-   EXAM SEPT 2026 - EXACT CENTER
-   OF BLUE BANNER
-   ================================ */
+/* ---------- BLUE BANNER ---------- */
+
+#hallTicketPage .hallCardHeader{
+    position:relative !important;
+}
+
+
+/* EXAM SEPT 2026 - EXACT CENTER */
 
 #hallTicketPage .hallExamHeader{
     position:absolute !important;
@@ -14557,31 +14561,27 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     justify-content:center !important;
 
     z-index:100 !important;
-
-    pointer-events:none !important;
 }
+
 
 #hallTicketPage .hallExamTitle{
     width:100% !important;
     height:100% !important;
 
+    margin:0 !important;
+    padding:0 !important;
+
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
-
-    margin:0 !important;
-    padding:0 !important;
 }
 
-#hallTicketPage .hallExamTitle h2{
-    width:100% !important;
 
+#hallTicketPage .hallExamTitle h2{
     margin:0 !important;
     padding:0 !important;
 
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
+    width:100% !important;
 
     text-align:center !important;
 
@@ -14594,9 +14594,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 
 
-/* ================================
-   PHOTO AREA
-   ================================ */
+/* ---------- PHOTO AREA ---------- */
 
 #hallTicketPage .hallPhotoBox{
     position:relative !important;
@@ -14608,43 +14606,37 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     padding:0 !important;
 
     display:flex !important;
+    flex-direction:column !important;
 
     align-items:center !important;
     justify-content:flex-end !important;
 
-    flex-direction:column !important;
-
-    transform:none !important;
-
     background:transparent !important;
+
     border:none !important;
     box-shadow:none !important;
+
+    transform:none !important;
 }
 
 
-/* ================================
-   CENTRE CODE
-   DIRECTLY ABOVE PHOTO
-   ================================ */
+/* ---------- CENTRE CODE ---------- */
+/* Photo ke bilkul upar */
 
 #hallTicketPage .hallPhotoBox::before{
-
     content:"CENTRE CODE 101" !important;
 
     position:absolute !important;
 
+    top:0 !important;
     left:50% !important;
 
-    top:auto !important;
-    bottom:14mm !important;
-
-    width:100% !important;
+    width:30mm !important;
     height:4mm !important;
 
     transform:translateX(-50%) !important;
 
     display:flex !important;
-
     align-items:center !important;
     justify-content:center !important;
 
@@ -14659,19 +14651,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     white-space:nowrap !important;
 
-    z-index:20 !important;
+    z-index:30 !important;
 }
 
 
-/* ================================
-   PHOTO
-   ================================ */
+/* ---------- PHOTO ---------- */
 
 #hallTicketPage .hallPhotoBox img{
+    position:absolute !important;
 
-    position:relative !important;
+    left:50% !important;
+    bottom:0 !important;
 
-    z-index:10 !important;
+    transform:translateX(-50%) !important;
 
     width:20mm !important;
     height:24mm !important;
@@ -14699,13 +14691,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 
 
-/* ================================
+/* =====================================================
    PRINT / PDF - SAME POSITION
-   ================================ */
+   ===================================================== */
 
 @media print{
 
-    body.print-hall-ticket #hallTicketPage .hallExamHeader{
+    #hallTicketPage .hallCardHeader{
+        position:relative !important;
+    }
+
+
+    #hallTicketPage .hallExamHeader{
+        position:absolute !important;
 
         top:0 !important;
         left:50% !important;
@@ -14717,21 +14715,24 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         transform:translateX(-50%) !important;
 
         display:flex !important;
-
         align-items:center !important;
         justify-content:center !important;
     }
 
 
-    body.print-hall-ticket #hallTicketPage .hallExamTitle h2{
+    #hallTicketPage .hallExamTitle h2{
+        width:100% !important;
+
+        text-align:center !important;
 
         font-size:16pt !important;
 
-        text-align:center !important;
+        line-height:1 !important;
     }
 
 
-    body.print-hall-ticket #hallTicketPage .hallPhotoBox{
+    #hallTicketPage .hallPhotoBox{
+        position:relative !important;
 
         width:30mm !important;
         height:34mm !important;
@@ -14740,20 +14741,16 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 
-    body.print-hall-ticket #hallTicketPage .hallPhotoBox::before{
-
+    #hallTicketPage .hallPhotoBox::before{
+        top:0 !important;
         left:50% !important;
 
-        top:auto !important;
-        bottom:14mm !important;
+        width:30mm !important;
+        height:4mm !important;
 
         transform:translateX(-50%) !important;
 
-        width:100% !important;
-        height:4mm !important;
-
         display:flex !important;
-
         align-items:center !important;
         justify-content:center !important;
 
@@ -14761,7 +14758,13 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 
-    body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
+    #hallTicketPage .hallPhotoBox img{
+        position:absolute !important;
+
+        left:50% !important;
+        bottom:0 !important;
+
+        transform:translateX(-50%) !important;
 
         width:20mm !important;
         height:24mm !important;
