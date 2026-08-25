@@ -12977,25 +12977,327 @@ async function downloadHallTicketPDF(){
         //================================================
 
         const canvas =
-            await html2canvas(
-                hallTicket,
-                {
+    await html2canvas(
+        hallTicket,
+        {
+            scale: 3,
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: "#ffffff",
+            logging: false,
+            imageTimeout: 15000,
 
-                    scale: 2,
+            onclone: function(clonedDoc){
 
-                    useCORS: true,
+                const clonedHallTicket =
+                    clonedDoc.querySelector(
+                        "#hallTicketPage .hallTicketA4"
+                    );
 
-                    allowTaint: false,
+                if(!clonedHallTicket) return;
 
-                    backgroundColor:
-                        "#ffffff",
 
-                    logging: false,
+                /* =====================================
+                   PDF = EXACT SAME AS PREVIEW
+                   ===================================== */
 
-                    imageTimeout: 15000
+                clonedHallTicket.style.width = "202mm";
+                clonedHallTicket.style.height = "273mm";
+                clonedHallTicket.style.minHeight = "273mm";
+                clonedHallTicket.style.maxWidth = "202mm";
 
-                }
-            );
+                clonedHallTicket.style.margin = "0 auto";
+                clonedHallTicket.style.padding = "0";
+
+                clonedHallTicket.style.display = "flex";
+                clonedHallTicket.style.flexDirection = "column";
+
+                clonedHallTicket.style.gap = "3mm";
+
+                clonedHallTicket.style.overflow = "hidden";
+
+
+                /* =====================================
+                   THREE CARDS
+                   ===================================== */
+
+                const cards =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallCard"
+                    );
+
+                cards.forEach(function(card){
+
+                    card.style.width = "202mm";
+                    card.style.height = "87mm";
+                    card.style.minHeight = "87mm";
+                    card.style.maxHeight = "87mm";
+
+                    card.style.flex = "0 0 87mm";
+
+                    card.style.margin = "0";
+                    card.style.padding = "3mm";
+
+                    card.style.boxSizing = "border-box";
+
+                    card.style.overflow = "hidden";
+                });
+
+
+                /* =====================================
+                   BLUE BANNER
+                   ===================================== */
+
+                const banners =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallCardHeader"
+                    );
+
+                banners.forEach(function(banner){
+
+                    banner.style.width = "100%";
+                    banner.style.height = "15mm";
+                    banner.style.minHeight = "15mm";
+                    banner.style.maxHeight = "15mm";
+
+                    banner.style.position = "relative";
+
+                    banner.style.display = "flex";
+                    banner.style.alignItems = "center";
+                    banner.style.justifyContent =
+                        "space-between";
+                });
+
+
+                /* =====================================
+                   EXAM SEPT 2026
+                   EXACT CENTER
+                   ===================================== */
+
+                const examHeaders =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallExamHeader"
+                    );
+
+                examHeaders.forEach(function(header){
+
+                    header.style.position = "absolute";
+
+                    header.style.top = "0";
+                    header.style.left = "50%";
+                    header.style.right = "auto";
+
+                    header.style.width = "100mm";
+                    header.style.height = "15mm";
+
+                    header.style.margin = "0";
+                    header.style.padding = "0";
+
+                    header.style.transform =
+                        "translateX(-50%)";
+
+                    header.style.display = "flex";
+
+                    header.style.alignItems = "center";
+                    header.style.justifyContent =
+                        "center";
+
+                    header.style.zIndex = "50";
+                });
+
+
+                const examTitles =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallExamTitle h2"
+                    );
+
+                examTitles.forEach(function(title){
+
+                    title.style.width = "100%";
+
+                    title.style.margin = "0";
+                    title.style.padding = "0";
+
+                    title.style.textAlign = "center";
+
+                    title.style.fontSize = "16pt";
+                    title.style.fontWeight = "900";
+
+                    title.style.lineHeight = "1";
+
+                    title.style.whiteSpace = "nowrap";
+                });
+
+
+                /* =====================================
+                   STUDENT DETAILS AREA
+                   ===================================== */
+
+                const studentSections =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallStudentSection"
+                    );
+
+                studentSections.forEach(function(section){
+
+                    section.style.height = "37mm";
+                    section.style.minHeight = "37mm";
+                    section.style.maxHeight = "37mm";
+
+                    section.style.marginTop = "2.5mm";
+
+                    section.style.overflow = "hidden";
+                });
+
+
+                /* =====================================
+                   DETAILS ROWS
+                   ===================================== */
+
+                const rows =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallRow"
+                    );
+
+                rows.forEach(function(row){
+
+                    row.style.height = "4.5mm";
+                    row.style.minHeight = "4.5mm";
+                    row.style.maxHeight = "4.5mm";
+
+                    row.style.flex = "0 0 4.5mm";
+
+                    row.style.padding =
+                        "0 1mm";
+
+                    row.style.boxSizing =
+                        "border-box";
+                });
+
+
+                /* =====================================
+                   PHOTO + CENTRE CODE
+                   ===================================== */
+
+                const photoBoxes =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallPhotoBox"
+                    );
+
+                photoBoxes.forEach(function(box){
+
+                    box.style.width = "30mm";
+                    box.style.height = "34mm";
+
+                    box.style.position = "relative";
+
+                    box.style.border = "none";
+                    box.style.background =
+                        "transparent";
+
+                    box.style.boxShadow = "none";
+
+                    box.style.transform =
+                        "none";
+                });
+
+
+                const photos =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallPhotoBox img"
+                    );
+
+                photos.forEach(function(img){
+
+                    img.style.width = "25mm";
+                    img.style.height = "29mm";
+
+                    img.style.maxWidth = "25mm";
+                    img.style.maxHeight = "29mm";
+
+                    img.style.margin =
+                        "0 0 1mm 0";
+
+                    img.style.padding = "1mm";
+
+                    img.style.boxSizing =
+                        "border-box";
+
+                    img.style.objectFit = "cover";
+
+                    img.style.border =
+                        "1px solid #b5c3d1";
+
+                    img.style.borderRadius =
+                        "1.5mm";
+                });
+
+
+                /* =====================================
+                   SIGNATURE AREA
+                   ===================================== */
+
+                const bottoms =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallBottom"
+                    );
+
+                bottoms.forEach(function(bottom){
+
+                    bottom.style.height = "15mm";
+                    bottom.style.minHeight = "15mm";
+
+                    bottom.style.marginTop = "2mm";
+                });
+
+
+                const signBoxes =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallSignBox"
+                    );
+
+                signBoxes.forEach(function(box){
+
+                    box.style.height = "13mm";
+                    box.style.minHeight = "13mm";
+                });
+
+
+                const blankBoxes =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallSignBox .hallBlankBox"
+                    );
+
+                blankBoxes.forEach(function(box){
+
+                    box.style.height = "8mm";
+                    box.style.minHeight = "8mm";
+                });
+
+
+                /* =====================================
+                   VENUE
+                   ===================================== */
+
+                const venues =
+                    clonedHallTicket.querySelectorAll(
+                        ".hallVenue"
+                    );
+
+                venues.forEach(function(venue){
+
+                    venue.style.marginTop = "1mm";
+
+                    venue.style.fontSize =
+                        "8.7pt";
+
+                    venue.style.lineHeight =
+                        "1.3";
+                });
+
+            }
+        }
+    );
 
 
         //================================================
