@@ -12885,10 +12885,24 @@ function backToHallTicketVerify(){
 // A4 + SAFE MARGIN
 //================================================
 
+//====================================================
+// DOWNLOAD HALL TICKET PDF
+// ONLY HALL TICKET CARD
+// NO BUTTONS / NO PAGE BACKGROUND
+// A4 + SAFE MARGIN
+//====================================================
+
 async function downloadHallTicketPDF(){
 
+    //================================================
+    // ONLY CARD AREA
+    //================================================
+
     const hallTicket =
-        document.getElementById("hallTicketPage");
+        document.querySelector(
+            "#hallTicketPage .hallTicketA4"
+        );
+
 
     if(!hallTicket){
 
@@ -12946,6 +12960,7 @@ async function downloadHallTicketPDF(){
 
     try{
 
+        // Disable button only while generating
         if(downloadBtn){
 
             downloadBtn.disabled =
@@ -12958,6 +12973,7 @@ async function downloadHallTicketPDF(){
 
         //================================================
         // CREATE CANVAS
+        // ONLY .hallTicketA4 WILL BE CAPTURED
         //================================================
 
         const canvas =
@@ -12974,7 +12990,9 @@ async function downloadHallTicketPDF(){
                     backgroundColor:
                         "#ffffff",
 
-                    logging: false
+                    logging: false,
+
+                    imageTimeout: 15000
 
                 }
             );
@@ -12999,12 +13017,16 @@ async function downloadHallTicketPDF(){
                     "mm",
 
                 format:
-                    "a4"
+                    "a4",
+
+                compress:
+                    true
+
             });
 
 
         //================================================
-        // CONVERT CANVAS TO IMAGE
+        // IMAGE DATA
         //================================================
 
         const imageData =
@@ -13026,16 +13048,13 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // SAFE MARGIN
+        // PDF MARGIN
         //================================================
+        // 6mm gap on all four sides
 
         const margin =
             6;
 
-
-        //================================================
-        // AVAILABLE AREA
-        //================================================
 
         const availableWidth =
             pageWidth -
@@ -13048,11 +13067,12 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // ORIGINAL IMAGE RATIO
+        // ORIGINAL CARD RATIO
         //================================================
 
         const imageWidth =
             canvas.width;
+
 
         const imageHeight =
             canvas.height;
@@ -13064,19 +13084,20 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // FIT IMAGE INSIDE SAFE A4 AREA
+        // FIT CARD INSIDE A4 MARGIN
         //================================================
 
         let pdfWidth =
             availableWidth;
+
 
         let pdfHeight =
             pdfWidth /
             imageRatio;
 
 
-        // If height becomes too large,
-        // fit according to height instead.
+        // If card is too tall,
+        // reduce it proportionally
 
         if(
             pdfHeight >
@@ -13086,6 +13107,7 @@ async function downloadHallTicketPDF(){
             pdfHeight =
                 availableHeight;
 
+
             pdfWidth =
                 pdfHeight *
                 imageRatio;
@@ -13093,7 +13115,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CENTER IMAGE
+        // CENTER CARD ON A4 PAGE
         //================================================
 
         const x =
@@ -13107,7 +13129,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // ADD HALL TICKET TO PDF
+        // ADD ONLY HALL TICKET CARD
         //================================================
 
         pdf.addImage(
@@ -13122,7 +13144,11 @@ async function downloadHallTicketPDF(){
 
             pdfWidth,
 
-            pdfHeight
+            pdfHeight,
+
+            undefined,
+
+            "FAST"
         );
 
 
@@ -13180,6 +13206,8 @@ async function downloadHallTicketPDF(){
 
     finally{
 
+        // Restore button after PDF generation
+
         if(downloadBtn){
 
             downloadBtn.disabled =
@@ -13188,6 +13216,7 @@ async function downloadHallTicketPDF(){
             downloadBtn.innerHTML =
                 "📄 Download PDF";
         }
+
     }
 
 }
