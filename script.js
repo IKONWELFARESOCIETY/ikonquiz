@@ -12881,8 +12881,7 @@ function backToHallTicketVerify(){
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
-// EXACT PREVIEW LAYOUT
-// FIX TEXT CUTTING / CLIPPING
+// EXACT PREVIEW -> PDF
 //====================================================
 
 async function downloadHallTicketPDF(){
@@ -12962,16 +12961,21 @@ async function downloadHallTicketPDF(){
 
                 return new Promise(function(resolve){
 
-                    if(img.complete){
+                    if(
+                        img.complete &&
+                        img.naturalWidth > 0
+                    ){
 
                         resolve();
 
                     }
                     else{
 
-                        img.onload = resolve;
+                        img.onload =
+                            resolve;
 
-                        img.onerror = resolve;
+                        img.onerror =
+                            resolve;
 
                     }
 
@@ -12983,14 +12987,18 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // WAIT FOR FINAL BROWSER RENDER
+        // WAIT FOR BROWSER RENDER
         //================================================
 
         await new Promise(function(resolve){
 
             requestAnimationFrame(function(){
 
-                requestAnimationFrame(resolve);
+                requestAnimationFrame(function(){
+
+                    resolve();
+
+                });
 
             });
 
@@ -12998,82 +13006,145 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CAPTURE
-        //
-        // IMPORTANT:
-        // Use foreignObject rendering.
-        // This uses browser's own text rendering
-        // and prevents html2canvas text clipping.
+        // HTML2CANVAS
         //================================================
 
         const canvas =
-    await html2canvas(
-        hallTicketA4,
-        {
-            scale:3,
-            useCORS:true,
-            allowTaint:true,
-            backgroundColor:"#ffffff",
-            logging:false,
-            imageTimeout:0,
-            scrollX:0,
-            scrollY:0
-        }
-    );
+            await html2canvas(
 
-                    //========================================
-                    // IMPORTANT CLIPPING FIX
-                    //========================================
+                hallTicketA4,
 
-                    onclone:function(clonedDocument){
+                {
 
-                        const clonedPage =
-                            clonedDocument.querySelector(
-                                "#hallTicketPage"
-                            );
+                    /*
+                     * 202mm x 273mm
+                     * exact preview capture
+                     */
 
+                    scale: 3,
 
-                        if(!clonedPage){
+                    useCORS: true,
 
-                            return;
+                    allowTaint: true,
 
-                        }
+                    backgroundColor:
+                        "#ffffff",
+
+                    imageTimeout: 0,
+
+                    logging: false,
+
+                    scrollX: 0,
+
+                    scrollY: 0,
 
 
-                        //====================================
-                        // REMOVE CLIPPING ONLY IN PDF CLONE
-                        // ORIGINAL PREVIEW IS NOT CHANGED
-                        //====================================
-
-                        const selectors = [
-
-                            ".hallTicketA4",
-
-                            ".hallCard",
-
-                            ".hallStudentSection",
-
-                            ".hallStudentDetails",
-
-                            ".hallRow",
-
-                            ".hallRow span",
-
-                            ".hallRow strong",
-
-                            ".hallBottom",
-
-                            ".hallSignBox",
-
-                            ".hallVenue"
-
-                        ];
+                    // IMPORTANT:
+                    // DO NOT USE foreignObjectRendering
+                    // It was causing the blank PDF.
 
 
-                        selectors.forEach(function(selector){
+                    //================================================
+                    // PDF ONLY CLIPPING FIX
+                    //================================================
+
+                    onclone:
+                        function(clonedDocument){
+
+                            const clonedPage =
+                                clonedDocument.querySelector(
+                                    "#hallTicketPage"
+                                );
+
+
+                            if(!clonedPage){
+
+                                return;
+
+                            }
+
+
+                            //============================================
+                            // A4
+                            //============================================
+
+                            const clonedA4 =
+                                clonedPage.querySelector(
+                                    ".hallTicketA4"
+                                );
+
+
+                            if(clonedA4){
+
+                                clonedA4.style.width =
+                                    "202mm";
+
+                                clonedA4.style.maxWidth =
+                                    "202mm";
+
+                                clonedA4.style.height =
+                                    "273mm";
+
+                                clonedA4.style.minHeight =
+                                    "273mm";
+
+                                clonedA4.style.margin =
+                                    "0 auto";
+
+                                clonedA4.style.padding =
+                                    "0";
+
+                                clonedA4.style.boxSizing =
+                                    "border-box";
+
+                                clonedA4.style.overflow =
+                                    "visible";
+
+                            }
+
+
+                            //============================================
+                            // CARDS
+                            //============================================
 
                             clonedPage
-                                .querySelectorAll(selector)
+                                .querySelectorAll(
+                                    ".hallCard"
+                                )
+                                .forEach(function(card){
+
+                                    card.style.width =
+                                        "202mm";
+
+                                    card.style.height =
+                                        "87mm";
+
+                                    card.style.minHeight =
+                                        "87mm";
+
+                                    card.style.maxHeight =
+                                        "87mm";
+
+                                    card.style.flex =
+                                        "0 0 87mm";
+
+                                    card.style.overflow =
+                                        "visible";
+
+                                    card.style.boxSizing =
+                                        "border-box";
+
+                                });
+
+
+                            //============================================
+                            // STUDENT SECTION
+                            //============================================
+
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallStudentSection"
+                                )
                                 .forEach(function(el){
 
                                     el.style.overflow =
@@ -13081,150 +13152,146 @@ async function downloadHallTicketPDF(){
 
                                 });
 
-                        });
+
+                            //============================================
+                            // STUDENT DETAILS
+                            //============================================
+
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallStudentDetails"
+                                )
+                                .forEach(function(el){
+
+                                    el.style.overflow =
+                                        "visible";
+
+                                });
 
 
-                        //====================================
-                        // FIX ROW TEXT RENDERING
-                        //====================================
+                            //============================================
+                            // ROWS
+                            //============================================
 
-                        clonedPage
-                            .querySelectorAll(".hallRow")
-                            .forEach(function(row){
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallRow"
+                                )
+                                .forEach(function(row){
 
-                                row.style.overflow =
-                                    "visible";
+                                    row.style.overflow =
+                                        "visible";
 
-                                row.style.height =
-                                    "4.5mm";
+                                    row.style.textOverflow =
+                                        "clip";
 
-                                row.style.minHeight =
-                                    "4.5mm";
-
-                                row.style.maxHeight =
-                                    "4.5mm";
-
-                                row.style.lineHeight =
-                                    "normal";
-
-                            });
+                                });
 
 
-                        //====================================
-                        // LABELS
-                        //====================================
+                            //============================================
+                            // LABELS
+                            //============================================
 
-                        clonedPage
-                            .querySelectorAll(
-                                ".hallRow span"
-                            )
-                            .forEach(function(el){
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallRow span"
+                                )
+                                .forEach(function(el){
 
-                                el.style.overflow =
-                                    "visible";
+                                    el.style.overflow =
+                                        "visible";
 
-                                el.style.height =
-                                    "auto";
+                                    el.style.textOverflow =
+                                        "clip";
 
-                                el.style.lineHeight =
-                                    "1";
+                                    el.style.height =
+                                        "auto";
 
-                            });
-
-
-                        //====================================
-                        // VALUES
-                        //====================================
-
-                        clonedPage
-                            .querySelectorAll(
-                                ".hallRow strong"
-                            )
-                            .forEach(function(el){
-
-                                el.style.overflow =
-                                    "visible";
-
-                                el.style.height =
-                                    "auto";
-
-                                el.style.lineHeight =
-                                    "1";
-
-                                el.style.textOverflow =
-                                    "clip";
-
-                            });
+                                });
 
 
-                        //====================================
-                        // STUDENT DETAILS
-                        //====================================
+                            //============================================
+                            // VALUES
+                            //============================================
 
-                        const details =
-                            clonedPage.querySelectorAll(
-                                ".hallStudentDetails"
-                            );
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallRow strong"
+                                )
+                                .forEach(function(el){
 
+                                    el.style.overflow =
+                                        "visible";
 
-                        details.forEach(function(el){
+                                    el.style.textOverflow =
+                                        "clip";
 
-                            el.style.overflow =
-                                "visible";
+                                    el.style.height =
+                                        "auto";
 
-                        });
-
-
-                        //====================================
-                        // STUDENT SECTION
-                        //====================================
-
-                        clonedPage
-                            .querySelectorAll(
-                                ".hallStudentSection"
-                            )
-                            .forEach(function(el){
-
-                                el.style.overflow =
-                                    "visible";
-
-                            });
+                                });
 
 
-                        //====================================
-                        // CARD
-                        //====================================
+                            //============================================
+                            // BOTTOM / SIGNATURE
+                            //============================================
 
-                        clonedPage
-                            .querySelectorAll(
-                                ".hallCard"
-                            )
-                            .forEach(function(el){
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallBottom"
+                                )
+                                .forEach(function(el){
 
-                                el.style.overflow =
-                                    "visible";
+                                    el.style.overflow =
+                                        "visible";
 
-                            });
-
-
-                        //====================================
-                        // A4
-                        //====================================
-
-                        const a4 =
-                            clonedPage.querySelector(
-                                ".hallTicketA4"
-                            );
+                                });
 
 
-                        if(a4){
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallSignBox"
+                                )
+                                .forEach(function(el){
 
-                            a4.style.overflow =
-                                "visible";
+                                    el.style.overflow =
+                                        "visible";
+
+                                });
+
+
+                            //============================================
+                            // VENUE
+                            //============================================
+
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallVenue"
+                                )
+                                .forEach(function(el){
+
+                                    el.style.overflow =
+                                        "visible";
+
+                                });
+
+
+                            //============================================
+                            // HIDE BUTTONS
+                            //============================================
+
+                            clonedPage
+                                .querySelectorAll(
+                                    ".hallTicketActions"
+                                )
+                                .forEach(function(el){
+
+                                    el.style.display =
+                                        "none";
+
+                                });
 
                         }
-
-                    }
 
                 }
 
@@ -13232,7 +13299,24 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CREATE IMAGE
+        // CHECK CANVAS
+        //================================================
+
+        if(
+            !canvas ||
+            canvas.width <= 0 ||
+            canvas.height <= 0
+        ){
+
+            throw new Error(
+                "Hall Ticket canvas is empty."
+            );
+
+        }
+
+
+        //================================================
+        // CREATE PNG
         //================================================
 
         const imageData =
@@ -13242,7 +13326,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // CREATE A4 PDF
+        // CREATE PDF
         //================================================
 
         const { jsPDF } =
@@ -13252,13 +13336,17 @@ async function downloadHallTicketPDF(){
         const pdf =
             new jsPDF({
 
-                orientation:"portrait",
+                orientation:
+                    "portrait",
 
-                unit:"mm",
+                unit:
+                    "mm",
 
-                format:"a4",
+                format:
+                    "a4",
 
-                compress:true
+                compress:
+                    true
 
             });
 
@@ -13267,34 +13355,40 @@ async function downloadHallTicketPDF(){
         // A4
         //================================================
 
-        const A4_WIDTH = 210;
+        const A4_WIDTH =
+            210;
 
-        const A4_HEIGHT = 297;
-
-
-        //================================================
-        // HALL TICKET CONTENT
-        //================================================
-
-        const CONTENT_WIDTH = 202;
-
-        const CONTENT_HEIGHT = 273;
+        const A4_HEIGHT =
+            297;
 
 
         //================================================
-        // CENTER EXACTLY
+        // SAME CONTENT SIZE AS PREVIEW
+        //================================================
+
+        const CONTENT_WIDTH =
+            202;
+
+        const CONTENT_HEIGHT =
+            273;
+
+
+        //================================================
+        // CENTER
         //================================================
 
         const LEFT =
-            (A4_WIDTH - CONTENT_WIDTH) / 2;
+            (A4_WIDTH -
+             CONTENT_WIDTH) / 2;
 
 
         const TOP =
-            (A4_HEIGHT - CONTENT_HEIGHT) / 2;
+            (A4_HEIGHT -
+             CONTENT_HEIGHT) / 2;
 
 
         //================================================
-        // ADD IMAGE
+        // ADD EXACT PREVIEW IMAGE
         //================================================
 
         pdf.addImage(
@@ -13375,7 +13469,8 @@ async function downloadHallTicketPDF(){
 
         if(downloadBtn){
 
-            downloadBtn.disabled = false;
+            downloadBtn.disabled =
+                false;
 
             downloadBtn.innerHTML =
                 "📄 Download PDF";
