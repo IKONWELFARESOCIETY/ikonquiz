@@ -12760,3 +12760,96 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         max-height:24mm !important;
     }
 }
+/* =========================================================
+   FINAL FIX - EXAM TITLE BIGGER + DOWN
+   ========================================================= */
+
+#hallTicketPage .hallExamHeader{
+    position:absolute !important;
+
+    top:0 !important;
+    left:50% !important;
+    right:auto !important;
+
+    width:100mm !important;
+    height:15mm !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    /* CENTER + DOWN */
+    transform:translate(-50%, 2.5mm) !important;
+
+    z-index:50 !important;
+}
+
+#hallTicketPage .hallExamTitle{
+    width:100% !important;
+    height:100% !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    margin:0 !important;
+    padding:0 !important;
+}
+
+#hallTicketPage .hallExamTitle h2{
+    width:100% !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    text-align:center !important;
+
+    font-size:16pt !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+
+    white-space:nowrap !important;
+}
+
+
+/* =========================================================
+   PRINT / PDF - SAME FIX
+   ========================================================= */
+
+@media print{
+
+    body.print-hall-ticket #hallTicketPage .hallExamHeader{
+        top:0 !important;
+        left:50% !important;
+        right:auto !important;
+
+        width:100mm !important;
+        height:15mm !important;
+
+        transform:translate(-50%, 2.5mm) !important;
+
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+
+        z-index:50 !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle{
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+    }
+
+    body.print-hall-ticket #hallTicketPage .hallExamTitle h2{
+        font-size:16pt !important;
+        text-align:center !important;
+    }
+}
