@@ -12881,7 +12881,9 @@ function backToHallTicketVerify(){
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
-// FINAL PDF MATCH WITH PREVIEW
+// FINAL VERSION
+// PHOTO RIGHT + CENTRE CODE ABOVE PHOTO
+// EXAM TITLE EXACT CENTER OF BLUE BANNER
 //====================================================
 
 async function downloadHallTicketPDF(){
@@ -12892,23 +12894,43 @@ async function downloadHallTicketPDF(){
         );
 
     if(!hallTicketA4){
+
         alert("Hall Ticket not found.");
+
         return;
     }
 
+
+    //================================================
+    // CHECK HTML2CANVAS
+    //================================================
+
     if(typeof html2canvas === "undefined"){
+
         alert("PDF library is not loaded.");
+
         return;
     }
+
+
+    //================================================
+    // CHECK JSPDF
+    //================================================
 
     if(
         !window.jspdf ||
         !window.jspdf.jsPDF
     ){
+
         alert("PDF generator is not loaded.");
+
         return;
     }
 
+
+    //================================================
+    // DOWNLOAD BUTTON
+    //================================================
 
     const downloadBtn =
         document.querySelector(
@@ -12933,7 +12955,9 @@ async function downloadHallTicketPDF(){
         //================================================
 
         if(document.fonts){
+
             await document.fonts.ready;
+
         }
 
 
@@ -12955,11 +12979,14 @@ async function downloadHallTicketPDF(){
                         img.complete &&
                         img.naturalWidth > 0
                     ){
+
                         resolve();
+
                     }
                     else{
 
                         img.onload = resolve;
+
                         img.onerror = resolve;
 
                     }
@@ -12972,7 +12999,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // WAIT FOR FINAL BROWSER RENDER
+        // WAIT FOR FINAL RENDER
         //================================================
 
         await new Promise(function(resolve){
@@ -13018,9 +13045,9 @@ async function downloadHallTicketPDF(){
                     scrollY:0,
 
 
-                    //================================================
-                    // PDF ONLY CLONE FIX
-                    //================================================
+                    //============================================
+                    // PDF CLONE
+                    //============================================
 
                     onclone:function(clonedDocument){
 
@@ -13031,13 +13058,15 @@ async function downloadHallTicketPDF(){
 
 
                         if(!page){
+
                             return;
+
                         }
 
 
-                        //================================================
-                        // HIDE BUTTONS
-                        //================================================
+                        //============================================
+                        // HIDE DOWNLOAD BUTTONS
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallTicketActions"
@@ -13052,9 +13081,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
+                        //============================================
                         // A4
-                        //================================================
+                        //============================================
 
                         const a4 =
                             page.querySelector(
@@ -13121,9 +13150,9 @@ async function downloadHallTicketPDF(){
                         }
 
 
-                        //================================================
-                        // EACH CARD
-                        //================================================
+                        //============================================
+                        // EACH HALL CARD
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallCard"
@@ -13177,6 +13206,10 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
+                            // IMPORTANT
+                            // Exam title will be positioned
+                            // relative to this card.
+
                             card.style.setProperty(
                                 "position",
                                 "relative",
@@ -13192,9 +13225,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // BLUE HEADER
-                        //================================================
+                        //============================================
+                        // BLUE BANNER
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallCardHeader"
@@ -13232,17 +13265,23 @@ async function downloadHallTicketPDF(){
 
                             header.style.setProperty(
                                 "overflow",
-                                "visible",
+                                "hidden",
                                 "important"
                             );
 
                         });
 
 
-                        //================================================
-                        // ★ EXAM SEPT 2026
-                        // EXACT CENTER OF BLUE HEADER
-                        //================================================
+                        //============================================
+                        // ★ EXAM TITLE
+                        //
+                        // HTML me hallExamHeader banner ka sibling hai.
+                        // Isliye ise HALL CARD ke relative position
+                        // par rakh rahe hain.
+                        //
+                        // CARD padding = 3mm
+                        // HEADER = 15mm
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallExamHeader"
@@ -13254,32 +13293,44 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
+                            // EXACT BLUE BANNER TOP
+
                             examHeader.style.setProperty(
                                 "top",
-                                "0",
+                                "3mm",
                                 "important"
                             );
+
+                            // EXACT BLUE BANNER LEFT
 
                             examHeader.style.setProperty(
                                 "left",
-                                "50%",
+                                "3mm",
                                 "important"
                             );
 
-                            examHeader.style.setProperty(
-                                "right",
-                                "auto",
-                                "important"
-                            );
+                            // FULL BLUE BANNER WIDTH
 
                             examHeader.style.setProperty(
                                 "width",
-                                "100mm",
+                                "calc(100% - 6mm)",
                                 "important"
                             );
 
                             examHeader.style.setProperty(
                                 "height",
+                                "15mm",
+                                "important"
+                            );
+
+                            examHeader.style.setProperty(
+                                "min-height",
+                                "15mm",
+                                "important"
+                            );
+
+                            examHeader.style.setProperty(
+                                "max-height",
                                 "15mm",
                                 "important"
                             );
@@ -13293,12 +13344,6 @@ async function downloadHallTicketPDF(){
                             examHeader.style.setProperty(
                                 "padding",
                                 "0",
-                                "important"
-                            );
-
-                            examHeader.style.setProperty(
-                                "transform",
-                                "translateX(-50%)",
                                 "important"
                             );
 
@@ -13321,17 +13366,29 @@ async function downloadHallTicketPDF(){
                             );
 
                             examHeader.style.setProperty(
+                                "transform",
+                                "none",
+                                "important"
+                            );
+
+                            examHeader.style.setProperty(
                                 "z-index",
-                                "1000",
+                                "100",
+                                "important"
+                            );
+
+                            examHeader.style.setProperty(
+                                "pointer-events",
+                                "none",
                                 "important"
                             );
 
                         });
 
 
-                        //================================================
-                        // EXAM TITLE
-                        //================================================
+                        //============================================
+                        // EXAM TITLE INNER
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallExamTitle"
@@ -13350,6 +13407,18 @@ async function downloadHallTicketPDF(){
                             );
 
                             title.style.setProperty(
+                                "margin",
+                                "0",
+                                "important"
+                            );
+
+                            title.style.setProperty(
+                                "padding",
+                                "0",
+                                "important"
+                            );
+
+                            title.style.setProperty(
                                 "display",
                                 "flex",
                                 "important"
@@ -13367,20 +13436,12 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
-                            title.style.setProperty(
-                                "margin",
-                                "0",
-                                "important"
-                            );
-
-                            title.style.setProperty(
-                                "padding",
-                                "0",
-                                "important"
-                            );
-
                         });
 
+
+                        //============================================
+                        // EXAM SEPT 2026 TEXT
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallExamTitle h2"
@@ -13446,12 +13507,18 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
+                            h2.style.setProperty(
+                                "color",
+                                "#ffffff",
+                                "important"
+                            );
+
                         });
 
 
-                        //================================================
-                        // RIGHT CARD TITLE
-                        //================================================
+                        //============================================
+                        // PRACTICAL / VIVA / THEORY TITLE
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallCardTitle"
@@ -13514,29 +13581,66 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // STUDENT SECTION
-                        //================================================
+                        //============================================
+                        // ★ STUDENT SECTION
+                        //
+                        // KEEP DETAILS EXACTLY SAME
+                        //
+                        // LEFT  = DETAILS
+                        // RIGHT = PHOTO
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallStudentSection"
                         ).forEach(function(section){
 
                             section.style.setProperty(
+                                "display",
+                                "grid",
+                                "important"
+                            );
+
+                            // SAME AS YOUR PREVIEW CSS
+
+                            section.style.setProperty(
+                                "grid-template-columns",
+                                "minmax(0,1fr) 35mm",
+                                "important"
+                            );
+
+                            section.style.setProperty(
+                                "gap",
+                                "3mm",
+                                "important"
+                            );
+
+                            section.style.setProperty(
+                                "align-items",
+                                "center",
+                                "important"
+                            );
+
+                            section.style.setProperty(
+                                "width",
+                                "100%",
+                                "important"
+                            );
+
+                            section.style.setProperty(
                                 "height",
-                                "41mm",
+                                "37mm",
                                 "important"
                             );
 
                             section.style.setProperty(
                                 "min-height",
-                                "41mm",
+                                "37mm",
                                 "important"
                             );
 
                             section.style.setProperty(
                                 "max-height",
-                                "41mm",
+                                "37mm",
                                 "important"
                             );
 
@@ -13548,7 +13652,7 @@ async function downloadHallTicketPDF(){
 
                             section.style.setProperty(
                                 "padding",
-                                "2mm",
+                                "1.5mm 2mm",
                                 "important"
                             );
 
@@ -13560,36 +13664,50 @@ async function downloadHallTicketPDF(){
 
                             section.style.setProperty(
                                 "overflow",
-                                "visible",
+                                "hidden",
                                 "important"
                             );
 
                         });
 
 
-                        //================================================
-                        // DETAILS CONTAINER
-                        //================================================
+                        //============================================
+                        // ★ STUDENT DETAILS
+                        //
+                        // DO NOT CHANGE CONTENT / POSITION / SIZE
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallStudentDetails"
                         ).forEach(function(details){
 
                             details.style.setProperty(
-                                "height",
-                                "37mm",
+                                "grid-column",
+                                "1",
                                 "important"
                             );
 
                             details.style.setProperty(
-                                "min-height",
-                                "37mm",
+                                "grid-row",
+                                "1",
+                                "important"
+                            );
+
+                            details.style.setProperty(
+                                "width",
+                                "100%",
+                                "important"
+                            );
+
+                            details.style.setProperty(
+                                "height",
+                                "31.5mm",
                                 "important"
                             );
 
                             details.style.setProperty(
                                 "max-height",
-                                "37mm",
+                                "31.5mm",
                                 "important"
                             );
 
@@ -13612,18 +13730,30 @@ async function downloadHallTicketPDF(){
                             );
 
                             details.style.setProperty(
+                                "align-items",
+                                "center",
+                                "important"
+                            );
+
+                            details.style.setProperty(
+                                "gap",
+                                "0",
+                                "important"
+                            );
+
+                            details.style.setProperty(
                                 "overflow",
-                                "visible",
+                                "hidden",
                                 "important"
                             );
 
                         });
 
 
-                        //================================================
-                        // ★ DETAIL ROWS
-                        // TEXT + LINE GAP FIX
-                        //================================================
+                        //============================================
+                        // DETAIL ROWS
+                        // SAME CURRENT SETTINGS
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallRow"
@@ -13637,25 +13767,25 @@ async function downloadHallTicketPDF(){
 
                             row.style.setProperty(
                                 "height",
-                                "5.1mm",
+                                "4.5mm",
                                 "important"
                             );
 
                             row.style.setProperty(
                                 "min-height",
-                                "5.1mm",
+                                "4.5mm",
                                 "important"
                             );
 
                             row.style.setProperty(
                                 "max-height",
-                                "5.1mm",
+                                "4.5mm",
                                 "important"
                             );
 
                             row.style.setProperty(
                                 "flex",
-                                "0 0 5.1mm",
+                                "0 0 4.5mm",
                                 "important"
                             );
 
@@ -13677,12 +13807,9 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
-                            // IMPORTANT:
-                            // little bottom space before line
-
                             row.style.setProperty(
                                 "padding",
-                                "0 1mm 0.8mm 1mm",
+                                "0 1mm",
                                 "important"
                             );
 
@@ -13713,9 +13840,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // LABEL
-                        //================================================
+                        //============================================
+                        // DETAIL LABELS
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallRow span"
@@ -13753,7 +13880,7 @@ async function downloadHallTicketPDF(){
 
                             label.style.setProperty(
                                 "line-height",
-                                "1.1",
+                                "1",
                                 "important"
                             );
 
@@ -13766,9 +13893,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // VALUE
-                        //================================================
+                        //============================================
+                        // DETAIL VALUES
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallRow strong"
@@ -13806,7 +13933,7 @@ async function downloadHallTicketPDF(){
 
                             value.style.setProperty(
                                 "line-height",
-                                "1.1",
+                                "1",
                                 "important"
                             );
 
@@ -13819,14 +13946,26 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
+                        //============================================
                         // ★ PHOTO BOX
-                        // SAME AS PREVIEW
-                        //================================================
+                        // RIGHT SIDE
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallPhotoBox"
                         ).forEach(function(photoBox){
+
+                            photoBox.style.setProperty(
+                                "grid-column",
+                                "2",
+                                "important"
+                            );
+
+                            photoBox.style.setProperty(
+                                "grid-row",
+                                "1",
+                                "important"
+                            );
 
                             photoBox.style.setProperty(
                                 "position",
@@ -13842,7 +13981,7 @@ async function downloadHallTicketPDF(){
 
                             photoBox.style.setProperty(
                                 "height",
-                                "34mm",
+                                "37mm",
                                 "important"
                             );
 
@@ -13909,26 +14048,31 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // CENTRE CODE
-                        //================================================
+                        //============================================
+                        // ★ CENTRE CODE
+                        // PHOTO BOX KE TOP PAR
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallPhotoBox"
                         ).forEach(function(photoBox){
 
+                            // Existing CSS pseudo-element is used.
+                            // Force exact position in PDF clone.
+
                             photoBox.style.setProperty(
-                                "--pdf-photo-code",
-                                "1",
+                                "position",
+                                "relative",
                                 "important"
                             );
 
                         });
 
 
-                        //================================================
-                        // ★ PHOTO IMAGE FRAME
-                        //================================================
+                        //============================================
+                        // ★ PHOTO IMAGE
+                        // CENTRE CODE KE JUST NICHE
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallPhotoBox img"
@@ -14024,7 +14168,7 @@ async function downloadHallTicketPDF(){
                                 "important"
                             );
 
-                            // PREVIEW STYLE BORDER
+                            // SAME PREVIEW BORDER
 
                             img.style.setProperty(
                                 "border",
@@ -14047,9 +14191,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
-                        // SIGNATURE
-                        //================================================
+                        //============================================
+                        // SIGNATURE AREA
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallBottom"
@@ -14088,6 +14232,10 @@ async function downloadHallTicketPDF(){
                         });
 
 
+                        //============================================
+                        // SIGNATURE BOX
+                        //============================================
+
                         page.querySelectorAll(
                             ".hallSignBox"
                         ).forEach(function(sign){
@@ -14113,9 +14261,9 @@ async function downloadHallTicketPDF(){
                         });
 
 
-                        //================================================
+                        //============================================
                         // VENUE
-                        //================================================
+                        //============================================
 
                         page.querySelectorAll(
                             ".hallVenue"
@@ -14178,7 +14326,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // IMAGE
+        // CONVERT CANVAS TO PNG
         //================================================
 
         const imageData =
@@ -14188,7 +14336,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // PDF
+        // CREATE PDF
         //================================================
 
         const { jsPDF } =
@@ -14210,16 +14358,31 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // A4
+        // A4 SIZE
         //================================================
 
-        const A4_WIDTH = 210;
-        const A4_HEIGHT = 297;
+        const A4_WIDTH =
+            210;
+
+        const A4_HEIGHT =
+            297;
 
 
-        const CONTENT_WIDTH = 202;
-        const CONTENT_HEIGHT = 273;
+        //================================================
+        // HALL TICKET CONTENT
+        // KEEP SAME
+        //================================================
 
+        const CONTENT_WIDTH =
+            202;
+
+        const CONTENT_HEIGHT =
+            273;
+
+
+        //================================================
+        // CENTER CONTENT ON A4
+        //================================================
 
         const left =
             (A4_WIDTH - CONTENT_WIDTH) / 2;
@@ -14230,7 +14393,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // ADD
+        // ADD HALL TICKET
         //================================================
 
         pdf.addImage(
@@ -14299,6 +14462,7 @@ async function downloadHallTicketPDF(){
             error
         );
 
+
         alert(
             "Unable to generate Hall Ticket PDF."
         );
@@ -14310,7 +14474,8 @@ async function downloadHallTicketPDF(){
 
         if(downloadBtn){
 
-            downloadBtn.disabled = false;
+            downloadBtn.disabled =
+                false;
 
             downloadBtn.innerHTML =
                 "Download PDF";
@@ -14318,456 +14483,5 @@ async function downloadHallTicketPDF(){
         }
 
     }
-//======================================================
-// FINAL PDF POSITION FIX
-// PHOTO RIGHT + EXAM TITLE EXACT BANNER CENTER
-//======================================================
 
-
-//======================================================
-// 1. BLUE BANNER
-//======================================================
-
-page.querySelectorAll(
-    ".hallCardHeader"
-).forEach(function(header){
-
-    header.style.setProperty(
-        "position",
-        "relative",
-        "important"
-    );
-
-    header.style.setProperty(
-        "z-index",
-        "50",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 2. EXAM TITLE
-// EXACT CENTER INSIDE BLUE BANNER
-//======================================================
-
-page.querySelectorAll(
-    ".hallExamHeader"
-).forEach(function(examHeader){
-
-    examHeader.style.setProperty(
-        "position",
-        "absolute",
-        "important"
-    );
-
-    // IMPORTANT:
-    // hallCard has 3mm inner padding,
-    // so title must start from 3mm.
-
-    examHeader.style.setProperty(
-        "top",
-        "3mm",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "left",
-        "3mm",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "width",
-        "calc(100% - 6mm)",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "height",
-        "15mm",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "margin",
-        "0",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "padding",
-        "0",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "display",
-        "flex",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "align-items",
-        "center",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "justify-content",
-        "center",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "transform",
-        "none",
-        "important"
-    );
-
-    examHeader.style.setProperty(
-        "z-index",
-        "9999",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 3. EXAM TITLE INNER
-//======================================================
-
-page.querySelectorAll(
-    ".hallExamTitle"
-).forEach(function(title){
-
-    title.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-    title.style.setProperty(
-        "height",
-        "15mm",
-        "important"
-    );
-
-    title.style.setProperty(
-        "margin",
-        "0",
-        "important"
-    );
-
-    title.style.setProperty(
-        "padding",
-        "0",
-        "important"
-    );
-
-    title.style.setProperty(
-        "display",
-        "flex",
-        "important"
-    );
-
-    title.style.setProperty(
-        "align-items",
-        "center",
-        "important"
-    );
-
-    title.style.setProperty(
-        "justify-content",
-        "center",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 4. EXAM SEPT 2026 TEXT
-//======================================================
-
-page.querySelectorAll(
-    ".hallExamTitle h2"
-).forEach(function(h2){
-
-    h2.style.setProperty(
-        "display",
-        "block",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "margin",
-        "0",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "padding",
-        "0",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "text-align",
-        "center",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "font-size",
-        "16pt",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "font-weight",
-        "900",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "line-height",
-        "1",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "white-space",
-        "nowrap",
-        "important"
-    );
-
-    h2.style.setProperty(
-        "color",
-        "#ffffff",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 5. STUDENT SECTION
-// DETAILS LEFT + PHOTO RIGHT
-//======================================================
-
-page.querySelectorAll(
-    ".hallStudentSection"
-).forEach(function(section){
-
-    section.style.setProperty(
-        "display",
-        "grid",
-        "important"
-    );
-
-    section.style.setProperty(
-        "grid-template-columns",
-        "minmax(0,1fr) 35mm",
-        "important"
-    );
-
-    section.style.setProperty(
-        "gap",
-        "3mm",
-        "important"
-    );
-
-    section.style.setProperty(
-        "align-items",
-        "center",
-        "important"
-    );
-
-    section.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 6. DETAILS LEFT SIDE
-//======================================================
-
-page.querySelectorAll(
-    ".hallStudentDetails"
-).forEach(function(details){
-
-    details.style.setProperty(
-        "grid-column",
-        "1",
-        "important"
-    );
-
-    details.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-    details.style.setProperty(
-        "justify-self",
-        "stretch",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 7. PHOTO RIGHT SIDE
-//======================================================
-
-page.querySelectorAll(
-    ".hallPhotoBox"
-).forEach(function(photoBox){
-
-    photoBox.style.setProperty(
-        "grid-column",
-        "2",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "grid-row",
-        "1",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "justify-self",
-        "end",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "align-self",
-        "center",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "width",
-        "30mm",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "height",
-        "34mm",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "margin",
-        "0",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "position",
-        "relative",
-        "important"
-    );
-
-    photoBox.style.setProperty(
-        "overflow",
-        "visible",
-        "important"
-    );
-
-});
-
-
-//======================================================
-// 8. PHOTO IMAGE
-//======================================================
-
-page.querySelectorAll(
-    ".hallPhotoBox img"
-).forEach(function(img){
-
-    img.style.setProperty(
-        "width",
-        "20mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "height",
-        "24mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "max-width",
-        "20mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "max-height",
-        "24mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "margin",
-        "4mm auto 0",
-        "important"
-    );
-
-    img.style.setProperty(
-        "padding",
-        "1mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "box-sizing",
-        "border-box",
-        "important"
-    );
-
-    img.style.setProperty(
-        "object-fit",
-        "cover",
-        "important"
-    );
-
-    img.style.setProperty(
-        "border",
-        "1px solid #b5c3d1",
-        "important"
-    );
-
-    img.style.setProperty(
-        "border-radius",
-        "1.5mm",
-        "important"
-    );
-
-    img.style.setProperty(
-        "box-shadow",
-        "0 2px 5px rgba(20,45,70,.16), 0 0 0 1px rgba(198,164,75,.45)",
-        "important"
-    );
-
-});
 }
