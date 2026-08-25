@@ -14530,9 +14530,6 @@ async function downloadHallTicketPDF(){
                         }
 
                     }
-
-                }
-
             );
 
 
