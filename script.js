@@ -12881,15 +12881,11 @@ function backToHallTicketVerify(){
 
 //====================================================
 // DOWNLOAD HALL TICKET PDF
-// EXACT SAME AS SCREEN PREVIEW
-// FULL A4 AREA CAPTURE
+// EXACT PREVIEW LAYOUT
+// FIX TEXT CUTTING / CLIPPING
 //====================================================
 
 async function downloadHallTicketPDF(){
-
-    //================================================
-    // FIND COMPLETE A4 AREA
-    //================================================
 
     const hallTicketA4 =
         document.querySelector(
@@ -12904,10 +12900,6 @@ async function downloadHallTicketPDF(){
     }
 
 
-    //================================================
-    // CHECK HTML2CANVAS
-    //================================================
-
     if(typeof html2canvas === "undefined"){
 
         alert("PDF library is not loaded.");
@@ -12915,10 +12907,6 @@ async function downloadHallTicketPDF(){
         return;
     }
 
-
-    //================================================
-    // CHECK JSPDF
-    //================================================
 
     if(
         !window.jspdf ||
@@ -12930,10 +12918,6 @@ async function downloadHallTicketPDF(){
         return;
     }
 
-
-    //================================================
-    // DOWNLOAD BUTTON
-    //================================================
 
     const downloadBtn =
         document.querySelector(
@@ -12965,7 +12949,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // WAIT FOR ALL IMAGES
+        // WAIT FOR IMAGES
         //================================================
 
         const images =
@@ -12999,49 +12983,37 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // SMALL DELAY
-        // ALLOW FINAL RENDER
+        // WAIT FOR FINAL BROWSER RENDER
         //================================================
 
         await new Promise(function(resolve){
 
-            setTimeout(resolve,300);
+            requestAnimationFrame(function(){
+
+                requestAnimationFrame(resolve);
+
+            });
 
         });
 
 
         //================================================
-        // GET ACTUAL PREVIEW SIZE
-        //================================================
-
-        const rect =
-            hallTicketA4.getBoundingClientRect();
-
-
-        const captureWidth =
-            Math.ceil(rect.width);
-
-
-        const captureHeight =
-            Math.ceil(rect.height);
-
-
-        //================================================
-        // CAPTURE COMPLETE A4 AREA
+        // CAPTURE
+        //
         // IMPORTANT:
-        // DO NOT CAPTURE INDIVIDUAL CARDS
+        // Use foreignObject rendering.
+        // This uses browser's own text rendering
+        // and prevents html2canvas text clipping.
         //================================================
 
         const canvas =
             await html2canvas(
+
                 hallTicketA4,
+
                 {
 
                     scale:3,
-
-                    width:captureWidth,
-
-                    height:captureHeight,
 
                     useCORS:true,
 
@@ -13053,22 +13025,236 @@ async function downloadHallTicketPDF(){
 
                     imageTimeout:15000,
 
+                    foreignObjectRendering:true,
+
                     scrollX:0,
 
-                    scrollY:0
+                    scrollY:0,
+
+                    windowWidth:
+                        document.documentElement.clientWidth,
+
+                    windowHeight:
+                        document.documentElement.clientHeight,
+
+
+                    //========================================
+                    // IMPORTANT CLIPPING FIX
+                    //========================================
+
+                    onclone:function(clonedDocument){
+
+                        const clonedPage =
+                            clonedDocument.querySelector(
+                                "#hallTicketPage"
+                            );
+
+
+                        if(!clonedPage){
+
+                            return;
+
+                        }
+
+
+                        //====================================
+                        // REMOVE CLIPPING ONLY IN PDF CLONE
+                        // ORIGINAL PREVIEW IS NOT CHANGED
+                        //====================================
+
+                        const selectors = [
+
+                            ".hallTicketA4",
+
+                            ".hallCard",
+
+                            ".hallStudentSection",
+
+                            ".hallStudentDetails",
+
+                            ".hallRow",
+
+                            ".hallRow span",
+
+                            ".hallRow strong",
+
+                            ".hallBottom",
+
+                            ".hallSignBox",
+
+                            ".hallVenue"
+
+                        ];
+
+
+                        selectors.forEach(function(selector){
+
+                            clonedPage
+                                .querySelectorAll(selector)
+                                .forEach(function(el){
+
+                                    el.style.overflow =
+                                        "visible";
+
+                                });
+
+                        });
+
+
+                        //====================================
+                        // FIX ROW TEXT RENDERING
+                        //====================================
+
+                        clonedPage
+                            .querySelectorAll(".hallRow")
+                            .forEach(function(row){
+
+                                row.style.overflow =
+                                    "visible";
+
+                                row.style.height =
+                                    "4.5mm";
+
+                                row.style.minHeight =
+                                    "4.5mm";
+
+                                row.style.maxHeight =
+                                    "4.5mm";
+
+                                row.style.lineHeight =
+                                    "normal";
+
+                            });
+
+
+                        //====================================
+                        // LABELS
+                        //====================================
+
+                        clonedPage
+                            .querySelectorAll(
+                                ".hallRow span"
+                            )
+                            .forEach(function(el){
+
+                                el.style.overflow =
+                                    "visible";
+
+                                el.style.height =
+                                    "auto";
+
+                                el.style.lineHeight =
+                                    "1";
+
+                            });
+
+
+                        //====================================
+                        // VALUES
+                        //====================================
+
+                        clonedPage
+                            .querySelectorAll(
+                                ".hallRow strong"
+                            )
+                            .forEach(function(el){
+
+                                el.style.overflow =
+                                    "visible";
+
+                                el.style.height =
+                                    "auto";
+
+                                el.style.lineHeight =
+                                    "1";
+
+                                el.style.textOverflow =
+                                    "clip";
+
+                            });
+
+
+                        //====================================
+                        // STUDENT DETAILS
+                        //====================================
+
+                        const details =
+                            clonedPage.querySelectorAll(
+                                ".hallStudentDetails"
+                            );
+
+
+                        details.forEach(function(el){
+
+                            el.style.overflow =
+                                "visible";
+
+                        });
+
+
+                        //====================================
+                        // STUDENT SECTION
+                        //====================================
+
+                        clonedPage
+                            .querySelectorAll(
+                                ".hallStudentSection"
+                            )
+                            .forEach(function(el){
+
+                                el.style.overflow =
+                                    "visible";
+
+                            });
+
+
+                        //====================================
+                        // CARD
+                        //====================================
+
+                        clonedPage
+                            .querySelectorAll(
+                                ".hallCard"
+                            )
+                            .forEach(function(el){
+
+                                el.style.overflow =
+                                    "visible";
+
+                            });
+
+
+                        //====================================
+                        // A4
+                        //====================================
+
+                        const a4 =
+                            clonedPage.querySelector(
+                                ".hallTicketA4"
+                            );
+
+
+                        if(a4){
+
+                            a4.style.overflow =
+                                "visible";
+
+                        }
+
+                    }
 
                 }
+
             );
 
 
         //================================================
-        // CONVERT CANVAS TO IMAGE
+        // CREATE IMAGE
         //================================================
 
         const imageData =
             canvas.toDataURL(
-                "image/jpeg",
-                0.98
+                "image/png"
             );
 
 
@@ -13095,7 +13281,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // A4 DIMENSIONS
+        // A4
         //================================================
 
         const A4_WIDTH = 210;
@@ -13104,45 +13290,43 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // PREVIEW CONTENT SIZE
-        //
-        // CSS:
-        // hallTicketA4 = 202mm x 273mm
+        // HALL TICKET CONTENT
         //================================================
 
-        const PDF_WIDTH = 202;
+        const CONTENT_WIDTH = 202;
 
-        const PDF_HEIGHT = 273;
+        const CONTENT_HEIGHT = 273;
 
 
         //================================================
-        // CENTER ON A4
+        // CENTER EXACTLY
         //================================================
 
         const LEFT =
-            (A4_WIDTH - PDF_WIDTH) / 2;
+            (A4_WIDTH - CONTENT_WIDTH) / 2;
+
 
         const TOP =
-            (A4_HEIGHT - PDF_HEIGHT) / 2;
+            (A4_HEIGHT - CONTENT_HEIGHT) / 2;
 
 
         //================================================
-        // ADD COMPLETE HALL TICKET
+        // ADD IMAGE
         //================================================
 
         pdf.addImage(
 
             imageData,
 
-            "JPEG",
+            "PNG",
 
             LEFT,
 
             TOP,
 
-            PDF_WIDTH,
+            CONTENT_WIDTH,
 
-            PDF_HEIGHT,
+            CONTENT_HEIGHT,
 
             undefined,
 
@@ -13175,7 +13359,7 @@ async function downloadHallTicketPDF(){
 
 
         //================================================
-        // SAVE PDF
+        // DOWNLOAD
         //================================================
 
         pdf.save(
