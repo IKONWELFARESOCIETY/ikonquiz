@@ -12430,29 +12430,13 @@ function showHallTicketPapers(
     // CHANGE BUTTON
     //================================================
 
-   if(verifyBtn){
+  if(verifyBtn){
 
     verifyBtn.innerHTML =
-        "Continue";
+        "Select Paper";
 
     verifyBtn.disabled =
         false;
-
-    // Remove old inline click
-    verifyBtn.removeAttribute(
-        "onclick"
-    );
-
-    // Remove old JS handler
-    verifyBtn.onclick = null;
-
-    // New click handler
-    verifyBtn.onclick =
-        function(){
-
-            loadSelectedHallTicket();
-
-        };
 
 }
 
