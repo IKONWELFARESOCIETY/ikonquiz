@@ -15056,7 +15056,6 @@ async function downloadHallTicketPDF(){
 
     }
 
-
     finally{
 
         if(downloadBtn){
