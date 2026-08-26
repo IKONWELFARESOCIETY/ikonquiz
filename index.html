@@ -245,14 +245,14 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 
     <select
-        id="hallTicketPaperSelect">
+    id="hallTicketPaperSelect"
+    onchange="loadSelectedHallTicket()">
 
-        <option value="">
-            -- Select Theory Paper --
-        </option>
+    <option value="">
+        -- Select Theory Paper --
+    </option>
 
-    </select>
-
+</select>
 
     <p class="hall-ticket-paper-note">
 
@@ -265,14 +265,14 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         <br>
         <br>
 
-        <button
-            type="button"
-            class="primary"
-            onclick="hallTicketButtonAction()">
+       <button
+    type="button"
+    class="primary"
+    onclick="hallTicketButtonAction()">
 
-            Verify & Continue
+    Verify & Continue
 
-        </button>
+</button>
 
         <button
             type="button"
