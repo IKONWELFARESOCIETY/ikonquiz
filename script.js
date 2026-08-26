@@ -12295,20 +12295,38 @@ function verifyHallTicket(){
     })
 
 
-    .finally(function(){
+   .finally(function(){
 
-        if(verifyBtn){
+    if(verifyBtn){
 
-            verifyBtn.disabled =
-                false;
+        verifyBtn.disabled = false;
+
+        // Paper list successfully aa gayi hai
+        // to button Continue hi rahega
+
+        const paperBox =
+            document.getElementById(
+                "hallTicketPaperBox"
+            );
+
+        if(
+            paperBox &&
+            !paperBox.classList.contains("hidden")
+        ){
+
+            verifyBtn.innerHTML =
+                "Continue";
+
+        }else{
 
             verifyBtn.innerHTML =
                 "Verify & Continue";
 
         }
 
-    });
+    }
 
+});
 }
 //====================================================
 // SHOW THEORY PAPER DROPDOWN
@@ -12419,20 +12437,31 @@ function showHallTicketPapers(
     // CHANGE BUTTON
     //================================================
 
-    if(verifyBtn){
+   if(verifyBtn){
 
-        verifyBtn.innerHTML =
-            "Continue";
+    verifyBtn.innerHTML =
+        "Continue";
 
-        verifyBtn.onclick =
-            function(){
+    verifyBtn.disabled =
+        false;
 
-                loadSelectedHallTicket();
+    // Remove old inline click
+    verifyBtn.removeAttribute(
+        "onclick"
+    );
 
-            };
+    // Remove old JS handler
+    verifyBtn.onclick = null;
 
-    }
+    // New click handler
+    verifyBtn.onclick =
+        function(){
 
+            loadSelectedHallTicket();
+
+        };
+
+}
 
     //================================================
     // FOCUS DROPDOWN
@@ -12585,7 +12614,14 @@ function loadSelectedHallTicket(){
             populateHallTicket(
                 data
             );
+// Save selected theory paper
+paperName =
+    data.theoryPaper || "";
 
+console.log(
+    "FINAL HALL TICKET DATA:",
+    data
+);
 
             //============================================
             // HIDE VERIFY PAGE
