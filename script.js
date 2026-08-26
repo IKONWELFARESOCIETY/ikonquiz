@@ -12498,8 +12498,6 @@ function loadSelectedHallTicket(){
 
         return;
     }
-
-
     //================================================
     // REGISTRATION NUMBER
     //================================================
@@ -12508,8 +12506,6 @@ function loadSelectedHallTicket(){
         regBox.value
             .trim()
             .toUpperCase();
-
-
     //================================================
     // SELECTED THEORY PAPER
     //================================================
@@ -12529,8 +12525,6 @@ function loadSelectedHallTicket(){
 
         return;
     }
-
-
     //================================================
     // BUTTON
     //================================================
@@ -12543,8 +12537,6 @@ function loadSelectedHallTicket(){
         continueBtn.innerHTML =
             "Loading...";
     }
-
-
     //================================================
     // API
     // REG NO + THEORY PAPER
@@ -12561,7 +12553,6 @@ function loadSelectedHallTicket(){
         encodeURIComponent(
             selectedPaper
         );
-
 
     console.log(
         "Selected Theory Paper:",
