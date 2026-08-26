@@ -13718,44 +13718,38 @@ if(a4){
                 (gap / 2);
 
 
-            // Cut line
-            const cutLine =
-                clonedDocument.createElement(
-                    "div"
-                );
+            //================================================
+// CUT LINE - PDF SAFE
+//================================================
 
+const cutLine =
+    clonedDocument.createElement("div");
 
-            cutLine.style.position =
-                "absolute";
+cutLine.style.position = "absolute";
+cutLine.style.left = "4mm";
+cutLine.style.right = "4mm";
+cutLine.style.top = lineTop + "px";
+cutLine.style.height = "2px";
+cutLine.style.zIndex = "99999";
+cutLine.style.pointerEvents = "none";
+cutLine.style.display = "flex";
+cutLine.style.alignItems = "center";
+cutLine.style.justifyContent = "space-between";
 
-            cutLine.style.left =
-                "4mm";
+// Create real dash elements
+for(let d = 0; d < 120; d++){
 
-            cutLine.style.right =
-                "4mm";
+    const dash =
+        clonedDocument.createElement("span");
 
-            cutLine.style.top =
-                lineTop + "px";
+    dash.style.display = "block";
+    dash.style.width = "3px";
+    dash.style.height = "1px";
+    dash.style.backgroundColor = "#475569";
+    dash.style.flexShrink = "0";
 
-            cutLine.style.height =
-                "1px";
-
-
-            cutLine.style.background =
-                "repeating-linear-gradient(" +
-                "to right," +
-                "#64748b 0," +
-                "#64748b 3px," +
-                "transparent 3px," +
-                "transparent 7px" +
-                ")";
-
-
-            cutLine.style.zIndex =
-                "9999";
-
-            cutLine.style.pointerEvents =
-                "none";
+    cutLine.appendChild(dash);
+}
 
 
             //================================================
