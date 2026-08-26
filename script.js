@@ -15011,7 +15011,6 @@ async function downloadHallTicketPDF(){
 
     }
 
-
     catch(error){
 
         console.error(
@@ -15035,7 +15034,6 @@ async function downloadHallTicketPDF(){
 
             downloadBtn.innerHTML =
                 "Download PDF";
-
         }
 
     }
