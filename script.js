@@ -12124,6 +12124,7 @@ function openHallTicketVerifyPage(){
 
 //====================================================
 // VERIFY HALL TICKET
+// REG NO → THEORY PAPER LIST
 //====================================================
 
 function verifyHallTicket(){
@@ -12133,7 +12134,6 @@ function verifyHallTicket(){
             "hallTicketRegNo"
         );
 
-
     if(!regBox){
 
         alert(
@@ -12141,7 +12141,6 @@ function verifyHallTicket(){
         );
 
         return;
-
     }
 
 
@@ -12155,10 +12154,6 @@ function verifyHallTicket(){
             .toUpperCase();
 
 
-    //================================================
-    // VALIDATION
-    //================================================
-
     if(enteredRegNo === ""){
 
         alert(
@@ -12168,7 +12163,6 @@ function verifyHallTicket(){
         regBox.focus();
 
         return;
-
     }
 
 
@@ -12177,8 +12171,8 @@ function verifyHallTicket(){
     //================================================
 
     const verifyBtn =
-        document.querySelector(
-            "#hallTicketVerifyPage .primary"
+        document.getElementById(
+            "hallTicketVerifyBtn"
         );
 
 
@@ -12193,7 +12187,7 @@ function verifyHallTicket(){
 
 
     //================================================
-    // API URL
+    // API
     //================================================
 
     const url =
@@ -12206,14 +12200,10 @@ function verifyHallTicket(){
 
 
     console.log(
-        "Hall Ticket Request:",
+        "Hall Ticket Verify:",
         url
     );
 
-
-    //================================================
-    // FETCH DATA
-    //================================================
 
     fetch(url)
 
@@ -12242,50 +12232,19 @@ function verifyHallTicket(){
 
 
         //================================================
-        // SUCCESS
+        // THEORY PAPER LIST
         //================================================
 
         if(
             data.status ===
-            "SUCCESS"
+            "PAPERS"
         ){
 
-            populateHallTicket(
-                data
+            showHallTicketPapers(
+                data.papers || []
             );
 
-
-            // Hide Verification
-            document
-                .getElementById(
-                    "hallTicketVerifyPage"
-                )
-                ?.classList.add(
-                    "hidden"
-                );
-
-
-            // Show Hall Ticket
-            document
-                .getElementById(
-                    "hallTicketPage"
-                )
-                ?.classList.remove(
-                    "hidden"
-                );
-
-
-            window.scrollTo({
-
-                top: 0,
-
-                behavior: "smooth"
-
-            });
-
-
             return;
-
         }
 
 
@@ -12307,31 +12266,11 @@ function verifyHallTicket(){
             regBox.focus();
 
             return;
-
         }
 
 
         //================================================
-        // INVALID REQUEST
-        //================================================
-
-        if(
-            data.status ===
-            "INVALID_REQUEST"
-        ){
-
-            alert(
-                data.message ||
-                "Please enter Registration Number."
-            );
-
-            return;
-
-        }
-
-
-        //================================================
-        // OTHER ERROR
+        // ERROR
         //================================================
 
         alert(
@@ -12349,7 +12288,6 @@ function verifyHallTicket(){
             error
         );
 
-
         alert(
             "Unable to connect with server."
         );
@@ -12361,7 +12299,8 @@ function verifyHallTicket(){
 
         if(verifyBtn){
 
-            verifyBtn.disabled = false;
+            verifyBtn.disabled =
+                false;
 
             verifyBtn.innerHTML =
                 "Verify & Continue";
@@ -12371,8 +12310,382 @@ function verifyHallTicket(){
     });
 
 }
+//====================================================
+// SHOW THEORY PAPER DROPDOWN
+// PAPERS COME FROM COLUMN C
+//====================================================
+
+function showHallTicketPapers(
+    papers
+){
+
+    const paperBox =
+        document.getElementById(
+            "hallTicketPaperBox"
+        );
 
 
+    const paperSelect =
+        document.getElementById(
+            "hallTicketPaperSelect"
+        );
+
+
+    const verifyBtn =
+        document.getElementById(
+            "hallTicketVerifyBtn"
+        );
+
+
+    if(
+        !paperBox ||
+        !paperSelect
+    ){
+
+        console.error(
+            "Hall Ticket paper selection elements not found."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // CLEAR OLD OPTIONS
+    //================================================
+
+    paperSelect.innerHTML = "";
+
+
+    //================================================
+    // DEFAULT OPTION
+    //================================================
+
+    const defaultOption =
+        document.createElement(
+            "option"
+        );
+
+
+    defaultOption.value = "";
+
+    defaultOption.textContent =
+        "-- Select Theory Paper --";
+
+
+    paperSelect.appendChild(
+        defaultOption
+    );
+
+
+    //================================================
+    // ADD THEORY PAPERS
+    //================================================
+
+    papers.forEach(
+        function(paper){
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                paper;
+
+            option.textContent =
+                paper;
+
+
+            paperSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    //================================================
+    // SHOW DROPDOWN
+    //================================================
+
+    paperBox.classList.remove(
+        "hidden"
+    );
+
+
+    //================================================
+    // CHANGE BUTTON
+    //================================================
+
+    if(verifyBtn){
+
+        verifyBtn.innerHTML =
+            "Continue";
+
+        verifyBtn.onclick =
+            function(){
+
+                loadSelectedHallTicket();
+
+            };
+
+    }
+
+
+    //================================================
+    // FOCUS DROPDOWN
+    //================================================
+
+    paperSelect.focus();
+
+}
+//====================================================
+// LOAD SELECTED THEORY PAPER HALL TICKET
+//====================================================
+
+function loadSelectedHallTicket(){
+
+    const regBox =
+        document.getElementById(
+            "hallTicketRegNo"
+        );
+
+
+    const paperSelect =
+        document.getElementById(
+            "hallTicketPaperSelect"
+        );
+
+
+    const continueBtn =
+        document.getElementById(
+            "hallTicketVerifyBtn"
+        );
+
+
+    if(
+        !regBox ||
+        !paperSelect
+    ){
+
+        alert(
+            "Hall Ticket selection fields not found."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // REGISTRATION NUMBER
+    //================================================
+
+    const regNo =
+        regBox.value
+            .trim()
+            .toUpperCase();
+
+
+    //================================================
+    // SELECTED THEORY PAPER
+    //================================================
+
+    const selectedPaper =
+        paperSelect.value
+            .trim();
+
+
+    if(selectedPaper === ""){
+
+        alert(
+            "Please Select Theory Paper."
+        );
+
+        paperSelect.focus();
+
+        return;
+    }
+
+
+    //================================================
+    // BUTTON
+    //================================================
+
+    if(continueBtn){
+
+        continueBtn.disabled =
+            true;
+
+        continueBtn.innerHTML =
+            "Loading...";
+    }
+
+
+    //================================================
+    // API
+    // REG NO + THEORY PAPER
+    //================================================
+
+    const url =
+        SCRIPT_URL +
+        "?action=hallTicket" +
+        "&regNo=" +
+        encodeURIComponent(
+            regNo
+        ) +
+        "&paper=" +
+        encodeURIComponent(
+            selectedPaper
+        );
+
+
+    console.log(
+        "Selected Theory Paper:",
+        selectedPaper
+    );
+
+
+    fetch(url)
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(function(data){
+
+        console.log(
+            "Selected Hall Ticket:",
+            data
+        );
+
+
+        //================================================
+        // SUCCESS
+        //================================================
+
+        if(
+            data.status ===
+            "SUCCESS"
+        ){
+
+            populateHallTicket(
+                data
+            );
+
+
+            //============================================
+            // HIDE VERIFY PAGE
+            //============================================
+
+            document
+                .getElementById(
+                    "hallTicketVerifyPage"
+                )
+                ?.classList.add(
+                    "hidden"
+                );
+
+
+            //============================================
+            // SHOW HALL TICKET
+            //============================================
+
+            document
+                .getElementById(
+                    "hallTicketPage"
+                )
+                ?.classList.remove(
+                    "hidden"
+                );
+
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+
+            return;
+        }
+
+
+        //================================================
+        // PAPER NOT FOUND
+        //================================================
+
+        if(
+            data.status ===
+            "PAPER_NOT_FOUND"
+        ){
+
+            alert(
+                data.message ||
+                "Selected Theory Paper not found."
+            );
+
+            return;
+        }
+
+
+        //================================================
+        // ERROR
+        //================================================
+
+        alert(
+            data.message ||
+            "Unable to load Hall Ticket."
+        );
+
+    })
+
+
+    .catch(function(error){
+
+        console.error(
+            "Selected Hall Ticket Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    })
+
+
+    .finally(function(){
+
+        if(continueBtn){
+
+            continueBtn.disabled =
+                false;
+
+            continueBtn.innerHTML =
+                "Continue";
+
+        }
+
+    });
+
+}
 //====================================================
 // POPULATE HALL TICKET
 //====================================================
@@ -12389,9 +12702,14 @@ function populateHallTicket(data){
     const hallName =
         data.name || "";
 
-    const hallPaper =
-        data.paperName || "";
+    const practicalPaper =
+    data.practicalPaper || "";
 
+const vivaPaper =
+    data.vivaPaper || "";
+
+const theoryPaper =
+    data.theoryPaper || "";
     const hallCourse =
         data.courseName || "";
 
@@ -12450,7 +12768,7 @@ function populateHallTicket(data){
 
     setHallText(
         "practicalHallPackage",
-        hallPaper
+         practicalPaper
     );
 
 
@@ -12507,7 +12825,7 @@ function populateHallTicket(data){
 
     setHallText(
         "vivaHallPackage",
-        hallPaper
+         vivaPaper
     );
 
 
@@ -12562,7 +12880,7 @@ function populateHallTicket(data){
 
     setHallText(
         "theoryHallPackage",
-        hallPaper
+           theoryPaper
     );
 
 
