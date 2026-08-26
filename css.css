@@ -15454,62 +15454,75 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 }
 /* =========================================================
-   HALL TICKET
-   CUT LINE + SCISSOR
+   FINAL HALL TICKET CUT LINE
+   LINE IN GAP BETWEEN CARDS
+   LAST CARD HAS NO CUT LINE
    PREVIEW + PDF
    ========================================================= */
 
-#hallTicketPage .hallCard {
-    position: relative !important;
-    overflow: hidden !important;
+
+/* ---------------------------------------------------------
+   IMPORTANT:
+   Allow pseudo-element to come OUTSIDE the card
+   into the 3mm gap.
+   --------------------------------------------------------- */
+
+#hallTicketPage .hallCard{
+    position:relative !important;
+    overflow:visible !important;
 }
 
 
 /* ---------------------------------------------------------
-   CUT LINE + SCISSOR
-   Uses ::after only.
-   Existing ::before gold border remains untouched.
+   CUT LINE
+   Only cards before the last card
    --------------------------------------------------------- */
 
-#hallTicketPage .hallCard::after {
+#hallTicketPage .hallCard:not(:last-child)::after{
 
-    content: "✂";
+    content:"✂";
 
-    position: absolute;
+    position:absolute !important;
 
-    left: 4mm;
-    right: 4mm;
-
-    bottom: 0.8mm;
-
-    height: 5mm;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    box-sizing: border-box;
-
-    color: #475569;
-
-    font-size: 15px;
-
-    font-weight: 900;
-
-    line-height: 1;
-
-    text-align: center;
-
-    z-index: 999;
-
-    pointer-events: none;
+    left:4mm !important;
+    right:4mm !important;
 
     /*
-       Dashed line + white space behind scissors
-    */
+       Card = 87mm
+       Gap = 3mm
 
+       Put the line exactly in the
+       middle of the 3mm gap.
+    */
+    bottom:-3mm !important;
+
+    width:auto !important;
+    height:3mm !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    box-sizing:border-box !important;
+
+    color:#475569 !important;
+
+    font-size:15px !important;
+    font-weight:900 !important;
+
+    line-height:1 !important;
+
+    text-align:center !important;
+
+    z-index:999 !important;
+
+    pointer-events:none !important;
+
+    /*
+       Dashed line
+       White circle behind scissors
+    */
     background:
         radial-gradient(
             circle at center,
@@ -15523,68 +15536,79 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
             #64748b 3px,
             transparent 3px,
             transparent 7px
-        );
+        ) !important;
 
     background-size:
         100% 100%,
-        100% 1px;
+        100% 1px !important;
 
     background-position:
         center,
-        center;
+        center !important;
 
     background-repeat:
         no-repeat,
-        no-repeat;
+        no-repeat !important;
 }
 
 
 /* =========================================================
    PRINT / PDF
-   Force the cut line to appear in PDF also
+   SAME CUT LINE IN GAP
    ========================================================= */
 
-@media print {
+@media print{
 
     body.print-hall-ticket
     #hallTicketPage
-    .hallCard {
+    .hallCard{
 
-        position: relative !important;
+        position:relative !important;
 
-        overflow: hidden !important;
-
+        overflow:visible !important;
     }
 
 
+    /*
+       ONLY first + second card
+       Last card gets NO line.
+    */
+
     body.print-hall-ticket
     #hallTicketPage
-    .hallCard::after {
+    .hallCard:not(:last-child)::after{
 
-        content: "✂" !important;
+        content:"✂" !important;
 
-        display: flex !important;
+        position:absolute !important;
 
-        position: absolute !important;
+        left:4mm !important;
+        right:4mm !important;
 
-        left: 4mm !important;
-        right: 4mm !important;
+        bottom:-3mm !important;
 
-        bottom: 0.8mm !important;
+        width:auto !important;
+        height:3mm !important;
 
-        height: 5mm !important;
+        display:flex !important;
 
-        align-items: center !important;
-        justify-content: center !important;
+        align-items:center !important;
+        justify-content:center !important;
 
-        color: #475569 !important;
+        box-sizing:border-box !important;
 
-        font-size: 15px !important;
-        font-weight: 900 !important;
+        color:#475569 !important;
 
-        line-height: 1 !important;
+        font-size:15px !important;
+        font-weight:900 !important;
 
-        z-index: 999 !important;
+        line-height:1 !important;
+
+        text-align:center !important;
+
+        z-index:999 !important;
+
+        pointer-events:none !important;
 
         background:
             radial-gradient(
@@ -15613,8 +15637,23 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
             no-repeat,
             no-repeat !important;
 
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+
+
+    /*
+       VERY IMPORTANT:
+       Last card must NEVER show cut line.
+    */
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCard:last-child::after{
+
+        content:none !important;
+
+        display:none !important;
     }
 
 }
