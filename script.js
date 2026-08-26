@@ -15039,3 +15039,77 @@ async function downloadHallTicketPDF(){
     }
 
 }
+//====================================================
+// CHECK HALL TICKET PUBLISH STATUS
+// SETTINGS!B16
+// ON  = OPEN HALL TICKET
+// OFF = SHOW ALERT
+//====================================================
+
+function checkHallTicketPublished(){
+
+    fetch(
+        SCRIPT_URL +
+        "?action=hallTicketStatus"
+    )
+
+    .then(function(response){
+
+        if(!response.ok){
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+        }
+
+        return response.text();
+
+    })
+
+    .then(function(status){
+
+        status =
+            String(status)
+            .trim()
+            .toUpperCase();
+
+        console.log(
+            "Hall Ticket Publish Status:",
+            status
+        );
+
+        //============================================
+        // HALL TICKET PUBLISHED
+        //============================================
+
+        if(status === "ON"){
+
+            openHallTicketVerifyPage();
+
+            return;
+        }
+
+        //============================================
+        // HALL TICKET NOT PUBLISHED
+        //============================================
+
+        alert(
+            "Hall Ticket not published yet."
+        );
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Hall Ticket Status Error:",
+            error
+        );
+
+        alert(
+            "Unable to check Hall Ticket status."
+        );
+
+    });
+
+}
