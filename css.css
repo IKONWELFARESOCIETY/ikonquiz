@@ -15454,68 +15454,35 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 }
 /* =========================================================
-   HALL TICKET - CUT LINE + SCISSOR
-   SAFE VERSION
-   Does not disturb existing card design
+   HALL TICKET
+   CUT LINE + SCISSOR
+   PREVIEW + PDF
    ========================================================= */
-
-
-/* ---------------------------------------------------------
-   1. CARD
-   --------------------------------------------------------- */
 
 #hallTicketPage .hallCard {
     position: relative !important;
-    overflow: visible !important;
+    overflow: hidden !important;
 }
 
 
 /* ---------------------------------------------------------
-   2. CUT LINE
+   CUT LINE + SCISSOR
+   Uses ::after only.
+   Existing ::before gold border remains untouched.
    --------------------------------------------------------- */
 
 #hallTicketPage .hallCard::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    bottom: -4mm;
-
-    height: 8mm;
-
-    border-top: 1.2px dashed #64748b;
-
-    box-sizing: border-box;
-
-    z-index: 999;
-
-    pointer-events: none;
-}
-
-
-/* ---------------------------------------------------------
-   3. SCISSOR SYMBOL
-   --------------------------------------------------------- */
-
-#hallTicketPage .hallCard::before {
 
     content: "✂";
 
     position: absolute;
 
-    left: 50%;
+    left: 4mm;
+    right: 4mm;
 
-    bottom: -7.2mm;
+    bottom: 0.8mm;
 
-    transform: translateX(-50%);
-
-    width: 9mm;
-
-    height: 7mm;
+    height: 5mm;
 
     display: flex;
 
@@ -15525,27 +15492,57 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     box-sizing: border-box;
 
-    background: #ffffff;
-
     color: #475569;
 
-    font-size: 16px;
+    font-size: 15px;
 
     font-weight: 900;
 
     line-height: 1;
 
-    border-radius: 3px;
+    text-align: center;
 
-    z-index: 1000;
+    z-index: 999;
 
     pointer-events: none;
+
+    /*
+       Dashed line + white space behind scissors
+    */
+
+    background:
+        radial-gradient(
+            circle at center,
+            #ffffff 0,
+            #ffffff 3.2mm,
+            transparent 3.3mm
+        ),
+        repeating-linear-gradient(
+            to right,
+            #64748b 0,
+            #64748b 3px,
+            transparent 3px,
+            transparent 7px
+        );
+
+    background-size:
+        100% 100%,
+        100% 1px;
+
+    background-position:
+        center,
+        center;
+
+    background-repeat:
+        no-repeat,
+        no-repeat;
 }
 
 
-/* ---------------------------------------------------------
-   4. PRINT VERSION
-   --------------------------------------------------------- */
+/* =========================================================
+   PRINT / PDF
+   Force the cut line to appear in PDF also
+   ========================================================= */
 
 @media print {
 
@@ -15553,7 +15550,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     #hallTicketPage
     .hallCard {
 
-        overflow: visible !important;
+        position: relative !important;
+
+        overflow: hidden !important;
 
     }
 
@@ -15562,45 +15561,60 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     #hallTicketPage
     .hallCard::after {
 
-        display: block !important;
-
-    }
-
-
-    body.print-hall-ticket
-    #hallTicketPage
-    .hallCard::before {
+        content: "✂" !important;
 
         display: flex !important;
 
-    }
+        position: absolute !important;
 
-}
+        left: 4mm !important;
+        right: 4mm !important;
 
+        bottom: 0.8mm !important;
 
-/* ---------------------------------------------------------
-   5. MOBILE
-   --------------------------------------------------------- */
+        height: 5mm !important;
 
-@media (max-width: 600px) {
+        align-items: center !important;
+        justify-content: center !important;
 
-    #hallTicketPage .hallCard::before {
+        color: #475569 !important;
 
-        font-size: 14px;
+        font-size: 15px !important;
+        font-weight: 900 !important;
 
-        width: 8mm;
+        line-height: 1 !important;
 
-        height: 6mm;
+        z-index: 999 !important;
 
-        bottom: -6.8mm;
+        background:
+            radial-gradient(
+                circle at center,
+                #ffffff 0,
+                #ffffff 3.2mm,
+                transparent 3.3mm
+            ),
+            repeating-linear-gradient(
+                to right,
+                #64748b 0,
+                #64748b 3px,
+                transparent 3px,
+                transparent 7px
+            ) !important;
 
-    }
+        background-size:
+            100% 100%,
+            100% 1px !important;
 
+        background-position:
+            center,
+            center !important;
 
-    #hallTicketPage .hallCard::after {
+        background-repeat:
+            no-repeat,
+            no-repeat !important;
 
-        bottom: -3.5mm;
-
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
 }
