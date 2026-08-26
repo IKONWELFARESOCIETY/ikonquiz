@@ -12334,7 +12334,6 @@ function verifyHallTicket(){
 function showHallTicketPapers(
     papers
 ){
-
     const paperBox =
         document.getElementById(
             "hallTicketPaperBox"
@@ -12364,8 +12363,6 @@ function showHallTicketPapers(
 
         return;
     }
-
-
     //================================================
     // CLEAR OLD OPTIONS
     //================================================
