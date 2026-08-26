@@ -8,11 +8,9 @@
 //====================================================
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxvJs4QgvlSBAbcg5zuRyS8TeAzAt-en0h5Kb0V_FUtR6r3HVk-XOxchf0EnKiqEhbr6w/exec";
-
 //====================================================
 // STUDENT DETAILS
 //====================================================
-
 let studentName = "";
 let regNo = "";
 let paperName = "";
