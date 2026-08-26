@@ -13682,7 +13682,165 @@ page
                                     }
                                 );
 
+//================================================
+// PDF ONLY
+// CUT LINE + SCISSOR IN EXISTING 3mm GAP
+// DOES NOT CHANGE CARD DESIGN
+//================================================
 
+if(a4){
+
+    const cards =
+        Array.from(
+            a4.querySelectorAll(
+                ".hallCard"
+            )
+        );
+
+
+    cards.forEach(
+        function(card, index){
+
+            // Last card ke neeche kuch nahi
+            if(index >= cards.length - 1){
+                return;
+            }
+
+
+            const nextCard =
+                cards[index + 1];
+
+
+            // Existing gap calculate karo
+            const gap =
+                nextCard.offsetTop -
+                (
+                    card.offsetTop +
+                    card.offsetHeight
+                );
+
+
+            // Gap ke exact center ki position
+            const lineTop =
+                card.offsetTop +
+                card.offsetHeight +
+                (gap / 2);
+
+
+            // Cut line
+            const cutLine =
+                clonedDocument.createElement(
+                    "div"
+                );
+
+
+            cutLine.style.position =
+                "absolute";
+
+            cutLine.style.left =
+                "4mm";
+
+            cutLine.style.right =
+                "4mm";
+
+            cutLine.style.top =
+                lineTop + "px";
+
+            cutLine.style.height =
+                "1px";
+
+
+            cutLine.style.background =
+                "repeating-linear-gradient(" +
+                "to right," +
+                "#64748b 0," +
+                "#64748b 3px," +
+                "transparent 3px," +
+                "transparent 7px" +
+                ")";
+
+
+            cutLine.style.zIndex =
+                "9999";
+
+            cutLine.style.pointerEvents =
+                "none";
+
+
+            //================================================
+            // SCISSOR
+            //================================================
+
+            const scissors =
+                clonedDocument.createElement(
+                    "span"
+                );
+
+
+            scissors.textContent =
+                "✂";
+
+
+            scissors.style.position =
+                "absolute";
+
+            scissors.style.left =
+                "50%";
+
+            scissors.style.top =
+                "50%";
+
+
+            scissors.style.transform =
+                "translate(-50%, -50%)";
+
+
+            scissors.style.background =
+                "#ffffff";
+
+
+            scissors.style.padding =
+                "0 3mm";
+
+
+            scissors.style.color =
+                "#475569";
+
+
+            scissors.style.fontFamily =
+                "Arial, sans-serif";
+
+
+            scissors.style.fontSize =
+                "15px";
+
+
+            scissors.style.fontWeight =
+                "900";
+
+
+            scissors.style.lineHeight =
+                "1";
+
+
+            scissors.style.whiteSpace =
+                "nowrap";
+
+
+            cutLine.appendChild(
+                scissors
+            );
+
+
+            // A4 ke andar add karo
+            a4.appendChild(
+                cutLine
+            );
+
+        }
+    );
+
+}
                             //================================
                             // BLUE HEADER
                             //================================
