@@ -15453,3 +15453,154 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =========================================================
+   HALL TICKET - CUT LINE + SCISSOR
+   SAFE VERSION
+   Does not disturb existing card design
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. CARD
+   --------------------------------------------------------- */
+
+#hallTicketPage .hallCard {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+
+/* ---------------------------------------------------------
+   2. CUT LINE
+   --------------------------------------------------------- */
+
+#hallTicketPage .hallCard::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -4mm;
+
+    height: 8mm;
+
+    border-top: 1.2px dashed #64748b;
+
+    box-sizing: border-box;
+
+    z-index: 999;
+
+    pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+   3. SCISSOR SYMBOL
+   --------------------------------------------------------- */
+
+#hallTicketPage .hallCard::before {
+
+    content: "✂";
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -7.2mm;
+
+    transform: translateX(-50%);
+
+    width: 9mm;
+
+    height: 7mm;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 16px;
+
+    font-weight: 900;
+
+    line-height: 1;
+
+    border-radius: 3px;
+
+    z-index: 1000;
+
+    pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+   4. PRINT VERSION
+   --------------------------------------------------------- */
+
+@media print {
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCard {
+
+        overflow: visible !important;
+
+    }
+
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCard::after {
+
+        display: block !important;
+
+    }
+
+
+    body.print-hall-ticket
+    #hallTicketPage
+    .hallCard::before {
+
+        display: flex !important;
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   5. MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    #hallTicketPage .hallCard::before {
+
+        font-size: 14px;
+
+        width: 8mm;
+
+        height: 6mm;
+
+        bottom: -6.8mm;
+
+    }
+
+
+    #hallTicketPage .hallCard::after {
+
+        bottom: -3.5mm;
+
+    }
+
+}
