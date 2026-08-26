@@ -13481,23 +13481,14 @@ page
         cutMark.style.alignItems = "center";
         cutMark.style.justifyContent = "center";
 
-        cutMark.style.background =
-            "repeating-linear-gradient(" +
-            "to right," +
-            "#64748b 0," +
-            "#64748b 3px," +
-            "transparent 3px," +
-            "transparent 7px" +
-            ")";
+     cutMark.style.borderTop =
+    "1px dashed #475569";
 
-        cutMark.style.backgroundSize =
-            "100% 1px";
+cutMark.style.background =
+    "transparent";
 
-        cutMark.style.backgroundPosition =
-            "center";
-
-        cutMark.style.backgroundRepeat =
-            "no-repeat";
+cutMark.style.boxSizing =
+    "border-box";
 
         cutMark.style.zIndex = "9999";
         cutMark.style.pointerEvents = "none";
