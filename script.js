@@ -13459,7 +13459,85 @@ async function downloadHallTicketPDF(){
 
                                     }
                                 );
+//================================================
+// PDF ONLY - SCISSOR CUT MARK
+// DO NOT CHANGE EXISTING DESIGN
+//================================================
 
+page
+    .querySelectorAll(".hallCard:not(:last-child)")
+    .forEach(function(card){
+
+        const cutMark =
+            clonedDocument.createElement("div");
+
+        cutMark.style.position = "absolute";
+        cutMark.style.left = "4mm";
+        cutMark.style.right = "4mm";
+        cutMark.style.bottom = "-3mm";
+        cutMark.style.height = "3mm";
+
+        cutMark.style.display = "flex";
+        cutMark.style.alignItems = "center";
+        cutMark.style.justifyContent = "center";
+
+        cutMark.style.background =
+            "repeating-linear-gradient(" +
+            "to right," +
+            "#64748b 0," +
+            "#64748b 3px," +
+            "transparent 3px," +
+            "transparent 7px" +
+            ")";
+
+        cutMark.style.backgroundSize =
+            "100% 1px";
+
+        cutMark.style.backgroundPosition =
+            "center";
+
+        cutMark.style.backgroundRepeat =
+            "no-repeat";
+
+        cutMark.style.zIndex = "9999";
+        cutMark.style.pointerEvents = "none";
+
+        // Scissor
+        const scissors =
+            clonedDocument.createElement("span");
+
+        scissors.textContent = "✂";
+
+        scissors.style.position = "absolute";
+        scissors.style.left = "50%";
+        scissors.style.top = "50%";
+
+        scissors.style.transform =
+            "translate(-50%, -50%)";
+
+        scissors.style.background =
+            "#ffffff";
+
+        scissors.style.padding =
+            "0 3mm";
+
+        scissors.style.fontSize = "15px";
+        scissors.style.lineHeight = "1";
+        scissors.style.fontWeight = "900";
+
+        scissors.style.fontFamily =
+            "Arial, sans-serif";
+
+        scissors.style.color =
+            "#475569";
+
+        cutMark.appendChild(scissors);
+
+        card.style.position = "relative";
+
+        card.appendChild(cutMark);
+
+    });
 
                             //================================
                             // A4 CONTAINER
