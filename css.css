@@ -14773,3 +14773,434 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         max-height:24mm !important;
     }
 }
+/* =========================================================
+   PROFESSIONAL STUDENT RESULT VERIFICATION PAGE
+   ========================================================= */
+
+#resultVerifyPage {
+    width: 100%;
+    min-height: 430px;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    padding: 45px 20px;
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+
+/* =========================================================
+   RESULT VERIFICATION CARD
+   ========================================================= */
+
+#resultVerifyPage .result-box {
+
+    width: 100%;
+    max-width: 480px;
+
+    margin: 0 auto;
+
+    padding: 42px 42px 38px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+
+    text-align: center;
+
+    position: relative;
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, 0.12),
+        0 8px 25px rgba(37, 99, 235, 0.08);
+
+    animation: resultCardIn 0.45s ease;
+}
+
+
+/* Top Blue Premium Line */
+
+#resultVerifyPage .result-box::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0645ad,
+            #0066ff,
+            #00a2ff
+        );
+}
+
+
+/* =========================================================
+   LOGO / ICON
+   ========================================================= */
+
+#resultVerifyPage .result-box::after {
+
+    content: "";
+
+    display: block;
+
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background-color: #eff6ff;
+
+    background-image: url("ikon.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 62px auto;
+
+    border: 1px solid #dbeafe;
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+#resultVerifyPage .result-box h2 {
+
+    margin: 0 0 9px;
+
+    font-size: 25px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* Subtitle using pseudo element */
+
+#resultVerifyPage .result-box h2::after {
+
+    content: "Access your examination result securely";
+
+    display: block;
+
+    margin-top: 9px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    font-weight: 500;
+
+    color: #64748b;
+
+    letter-spacing: 0;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+#resultVerifyPage .result-box label {
+
+    display: block;
+
+    text-align: left;
+
+    margin: 27px 0 8px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #334155;
+}
+
+
+/* =========================================================
+   VERIFICATION INPUT
+   ========================================================= */
+
+#resultVerifyPage #resultStudentID {
+
+    width: 100%;
+
+    height: 52px;
+
+    box-sizing: border-box;
+
+    padding: 0 16px;
+
+    border: 1.5px solid #cbd5e1;
+
+    border-radius: 11px;
+
+    background: #f8fafc;
+
+    color: #0f172a;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+    text-align: left;
+}
+
+
+#resultVerifyPage #resultStudentID::placeholder {
+
+    color: #94a3b8;
+
+    font-weight: 500;
+}
+
+
+#resultVerifyPage #resultStudentID:hover {
+
+    border-color: #94a3b8;
+
+    background: #ffffff;
+}
+
+
+#resultVerifyPage #resultStudentID:focus {
+
+    border-color: #2563eb;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   LOGIN / VIEW RESULT BUTTON
+   ========================================================= */
+
+#resultVerifyPage .result-box .primary {
+
+    width: 100%;
+
+    height: 50px;
+
+    margin-top: 18px;
+
+    padding: 0 20px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #075ee8,
+            #087cff
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 22px rgba(7, 94, 232, 0.22);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+#resultVerifyPage .result-box .primary:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.03);
+
+    box-shadow:
+        0 14px 28px rgba(7, 94, 232, 0.30);
+}
+
+
+#resultVerifyPage .result-box .primary:active {
+
+    transform: translateY(0);
+
+    box-shadow:
+        0 7px 16px rgba(7, 94, 232, 0.20);
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+   ========================================================= */
+
+#resultVerifyPage .result-box::selection {
+
+    background: #dbeafe;
+
+    color: #1e3a8a;
+}
+
+
+/* =========================================================
+   CARD ANIMATION
+   ========================================================= */
+
+@keyframes resultCardIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(18px)
+            scale(0.98);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    #resultVerifyPage {
+
+        min-height: 420px;
+
+        padding: 35px 18px;
+    }
+
+
+    #resultVerifyPage .result-box {
+
+        max-width: 450px;
+
+        padding: 38px 30px 32px;
+
+        border-radius: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    #resultVerifyPage {
+
+        min-height: 400px;
+
+        padding: 25px 14px;
+    }
+
+
+    #resultVerifyPage .result-box {
+
+        padding: 34px 22px 28px;
+
+        border-radius: 18px;
+    }
+
+
+    #resultVerifyPage .result-box::after {
+
+        width: 64px;
+        height: 64px;
+
+        background-size: 55px auto;
+
+        margin-bottom: 17px;
+    }
+
+
+    #resultVerifyPage .result-box h2 {
+
+        font-size: 22px;
+    }
+
+
+    #resultVerifyPage .result-box h2::after {
+
+        font-size: 12px;
+    }
+
+
+    #resultVerifyPage .result-box label {
+
+        margin-top: 23px;
+
+        font-size: 12px;
+    }
+
+
+    #resultVerifyPage #resultStudentID {
+
+        height: 49px;
+
+        font-size: 13px;
+    }
+
+
+    #resultVerifyPage .result-box .primary {
+
+        height: 48px;
+
+        font-size: 12px;
+    }
+
+}
