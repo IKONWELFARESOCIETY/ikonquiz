@@ -15046,51 +15046,78 @@ async function downloadHallTicketPDF(){
 // OFF = SHOW ALERT
 //====================================================
 
+//====================================================
+// CHECK HALL TICKET PUBLISH STATUS
+// SETTINGS!B16
+//====================================================
+
 function checkHallTicketPublished(){
 
-    fetch(
+    console.log(
+        "Checking Hall Ticket Publish Status..."
+    );
+
+
+    const url =
         SCRIPT_URL +
-        "?action=hallTicketStatus"
-    )
+        "?action=hallTicketStatus";
+
+
+    console.log(
+        "Hall Ticket Status URL:",
+        url
+    );
+
+
+    fetch(url)
 
     .then(function(response){
 
         if(!response.ok){
+
             throw new Error(
                 "Server Error: " +
                 response.status
             );
+
         }
 
-        return response.text();
+        return response.json();
 
     })
 
-    .then(function(status){
 
-        status =
-            String(status)
-            .trim()
-            .toUpperCase();
+    .then(function(data){
 
         console.log(
-            "Hall Ticket Publish Status:",
-            status
+            "Hall Ticket Publish Response:",
+            data
         );
 
+
         //============================================
-        // HALL TICKET PUBLISHED
+        // ON
         //============================================
 
-        if(status === "ON"){
+        if(
+            data.status ===
+            "ON"
+        ){
+
+            console.log(
+                "Hall Ticket is published."
+            );
+
 
             openHallTicketVerifyPage();
 
             return;
+
         }
 
+
         //============================================
-        // HALL TICKET NOT PUBLISHED
+        // OFF
         //============================================
 
         alert(
@@ -15099,12 +15126,14 @@ function checkHallTicketPublished(){
 
     })
 
+
     .catch(function(error){
 
         console.error(
             "Hall Ticket Status Error:",
             error
         );
+
 
         alert(
             "Unable to check Hall Ticket status."
