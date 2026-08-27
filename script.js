@@ -16174,16 +16174,16 @@ function generateDateWiseResultPDF(results, selectedDate){
     // DATE AND GRADE REMOVED
     //================================================
 
-    const colWidths = [
-        32, // Reg No
-        48, // Name
-        47, // Paper
-        25, // Total Questions
-        25, // Correct
-        25, // Wrong
-        30, // Unattempted
-    ];
-
+   const colWidths = [
+    15, // S.No.
+    32, // Reg No
+    50, // Student Name
+    47, // Paper
+    30, // Total Questions
+    28, // Correct
+    28, // Wrong
+    43  // Unattempted
+];
     //================================================
     // COLUMN HEADINGS
     //================================================
@@ -16470,6 +16470,9 @@ row.forEach(function(value,colIndex){
     );
 
     x += colWidths[colIndex];
+
+});
+            y += rowHeight;
 
 });
     //================================================
