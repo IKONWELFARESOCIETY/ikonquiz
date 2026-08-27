@@ -15293,3 +15293,1390 @@ function checkHallTicketPublished(){
 
     });
 }
+//====================================================
+//        DATE-WISE RESULT PDF MODULE
+//        COMPLETELY SEPARATE FLOW
+//====================================================
+
+
+//====================================================
+// OPEN DATE SELECTOR
+//====================================================
+
+function openDateWiseResultPDF(){
+
+    //================================================
+    // ADMIN CHECK
+    //================================================
+
+    if(isAdminMode !== true){
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert(
+            "Admin token is missing."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // CREATE PRIVATE DATE INPUT
+    //================================================
+
+    let dateInput =
+        document.getElementById(
+            "dateWiseResultPDFInput"
+        );
+
+
+    if(!dateInput){
+
+        dateInput =
+            document.createElement("input");
+
+        dateInput.type = "date";
+
+        dateInput.id =
+            "dateWiseResultPDFInput";
+
+
+        // Keep date picker invisible
+        dateInput.style.position =
+            "fixed";
+
+        dateInput.style.left =
+            "-9999px";
+
+        dateInput.style.top =
+            "0";
+
+        dateInput.style.width =
+            "1px";
+
+        dateInput.style.height =
+            "1px";
+
+        dateInput.style.opacity =
+            "0";
+
+
+        document.body.appendChild(
+            dateInput
+        );
+
+    }
+
+
+    //================================================
+    // CLEAR PREVIOUS DATE
+    //================================================
+
+    dateInput.value = "";
+
+
+    //================================================
+    // DATE SELECTED
+    //================================================
+
+    dateInput.onchange =
+        function(){
+
+            const selectedDate =
+                dateInput.value;
+
+
+            if(!selectedDate){
+
+                return;
+            }
+
+
+            loadSelectedDateResultForPDF(
+                selectedDate
+            );
+
+        };
+
+
+    //================================================
+    // OPEN DATE PICKER
+    //================================================
+
+    if(
+        typeof dateInput.showPicker ===
+        "function"
+    ){
+
+        dateInput.showPicker();
+
+    }
+    else{
+
+        dateInput.click();
+
+    }
+
+}
+
+
+
+//====================================================
+// FETCH RESULT DATA ONLY FOR PDF
+//====================================================
+
+function loadSelectedDateResultForPDF(
+    selectedDate
+){
+
+    //================================================
+    // ADMIN CHECK
+    //================================================
+
+    if(isAdminMode !== true){
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert(
+            "Admin token is missing."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // LOADING MESSAGE
+    //================================================
+
+    alert(
+        "Preparing Result PDF..."
+    );
+
+
+    //================================================
+    // SEPARATE ALL RESULTS REQUEST
+    //================================================
+
+    const url =
+        SCRIPT_URL +
+        "?action=allResults" +
+        "&adminToken=" +
+        encodeURIComponent(
+            adminToken
+        );
+
+
+    //================================================
+    // FETCH
+    //================================================
+
+    fetch(url)
+
+    .then(
+        function(response){
+
+            if(!response.ok){
+
+                throw new Error(
+                    "Server Error: " +
+                    response.status
+                );
+
+            }
+
+
+            return response.json();
+
+        }
+    )
+
+
+    .then(
+        function(data){
+
+            console.log(
+                "DATE PDF RESULT DATA:",
+                data
+            );
+
+
+            //========================================
+            // SECURITY
+            //========================================
+
+            if(
+                data.status ===
+                "UNAUTHORIZED"
+            ){
+
+                alert(
+                    "Admin verification required."
+                );
+
+                return;
+            }
+
+
+            //========================================
+            // API ERROR
+            //========================================
+
+            if(
+                data.status !==
+                "SUCCESS"
+            ){
+
+                alert(
+                    data.message ||
+                    "Unable to load result data."
+                );
+
+                return;
+            }
+
+
+            //========================================
+            // RESULTS
+            //========================================
+
+            const results =
+                Array.isArray(
+                    data.results
+                )
+                ?
+                data.results
+                :
+                [];
+
+
+            //========================================
+            // DATE FILTER
+            //========================================
+
+            const filteredResults =
+                results.filter(
+                    function(r){
+
+                        const resultDate =
+                            r.resultDate ||
+                            r.date ||
+                            r.Date ||
+                            "";
+
+
+                        return (
+                            normalizePDFResultDate(
+                                resultDate
+                            )
+                            ===
+                            selectedDate
+                        );
+
+                    }
+                );
+
+
+            console.log(
+                "SELECTED DATE:",
+                selectedDate
+            );
+
+            console.log(
+                "MATCHING RESULTS:",
+                filteredResults
+            );
+
+
+            //========================================
+            // NO DATA
+            //========================================
+
+            if(
+                filteredResults.length === 0
+            ){
+
+                alert(
+                    "No result found for selected date."
+                );
+
+                return;
+            }
+
+
+            //========================================
+            // GENERATE PDF
+            //========================================
+
+            generateDateWiseResultPDF(
+                filteredResults,
+                selectedDate
+            );
+
+        }
+    )
+
+
+    .catch(
+        function(error){
+
+            console.error(
+                "Date Wise Result PDF Error:",
+                error
+            );
+
+
+            alert(
+                "Unable to load result data."
+            );
+
+        }
+    );
+
+}
+
+
+
+//====================================================
+// NORMALIZE RESULT DATE
+//====================================================
+
+function normalizePDFResultDate(
+    value
+){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    const date =
+        String(value)
+        .trim();
+
+
+    if(date === ""){
+
+        return "";
+
+    }
+
+
+    //================================================
+    // YYYY-MM-DD
+    //================================================
+
+    if(
+        /^\d{4}-\d{2}-\d{2}$/.test(
+            date
+        )
+    ){
+
+        return date;
+
+    }
+
+
+    //================================================
+    // DD-MM-YYYY
+    //================================================
+
+    let match =
+        date.match(
+            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/
+        );
+
+
+    if(match){
+
+        return (
+            match[3] +
+            "-" +
+            String(match[2])
+                .padStart(2,"0") +
+            "-" +
+            String(match[1])
+                .padStart(2,"0")
+        );
+
+    }
+
+
+    //================================================
+    // DD-MM-YY
+    //================================================
+
+    match =
+        date.match(
+            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2})$/
+        );
+
+
+    if(match){
+
+        let year =
+            parseInt(
+                match[3],
+                10
+            );
+
+
+        year =
+            year < 50
+            ?
+            2000 + year
+            :
+            1900 + year;
+
+
+        return (
+            String(year) +
+            "-" +
+            String(match[2])
+                .padStart(2,"0") +
+            "-" +
+            String(match[1])
+                .padStart(2,"0")
+        );
+
+    }
+
+
+    //================================================
+    // JAVASCRIPT DATE
+    //================================================
+
+    const parsed =
+        new Date(date);
+
+
+    if(
+        !isNaN(
+            parsed.getTime()
+        )
+    ){
+
+        return (
+            parsed.getFullYear() +
+            "-" +
+            String(
+                parsed.getMonth() + 1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                parsed.getDate()
+            ).padStart(2,"0")
+        );
+
+    }
+
+
+    return "";
+
+}
+
+
+
+//====================================================
+// FORMAT DATE
+//====================================================
+
+function formatPDFResultDate(
+    date
+){
+
+    const parts =
+        String(date)
+        .split("-");
+
+
+    if(
+        parts.length !== 3
+    ){
+
+        return date;
+
+    }
+
+
+    return (
+        parts[2] +
+        "-" +
+        parts[1] +
+        "-" +
+        parts[0]
+    );
+
+}
+
+//====================================================
+// GENERATE DATE-WISE RESULT PDF
+// DATA SOURCE:
+// Result_Admin ONLY
+//
+// COLUMNS:
+// Date
+// Reg No
+// Name
+// Paper
+// Total Questions
+// Correct Answer
+// Wrong Answer
+// Unattempted
+// Grade
+//====================================================
+
+function generateDateWiseResultPDF(
+    results,
+    selectedDate
+){
+
+    //================================================
+    // CHECK JSPDF
+    //================================================
+
+    if(
+        !window.jspdf ||
+        !window.jspdf.jsPDF
+    ){
+
+        alert(
+            "PDF generator is not loaded."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // VALIDATE RESULTS
+    //================================================
+
+    if(
+        !Array.isArray(results) ||
+        results.length === 0
+    ){
+
+        alert(
+            "No Result_Admin data available."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // CREATE PDF
+    //================================================
+
+    const {
+        jsPDF
+    } = window.jspdf;
+
+
+    const pdf =
+        new jsPDF({
+
+            orientation:
+                "landscape",
+
+            unit:
+                "mm",
+
+            format:
+                "a4",
+
+            compress:
+                true
+
+        });
+
+
+    const pageWidth =
+        pdf.internal.pageSize.getWidth();
+
+
+    const pageHeight =
+        pdf.internal.pageSize.getHeight();
+
+
+    //================================================
+    // HEADER
+    //================================================
+
+    pdf.setFillColor(
+        30,
+        64,
+        175
+    );
+
+
+    pdf.rect(
+        0,
+        0,
+        pageWidth,
+        25,
+        "F"
+    );
+
+
+    pdf.setTextColor(
+        255,
+        255,
+        255
+    );
+
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+
+    pdf.setFontSize(
+        18
+    );
+
+
+    pdf.text(
+        "IKON INSTITUTE",
+        pageWidth / 2,
+        10,
+        {
+            align:
+                "center"
+        }
+    );
+
+
+    pdf.setFontSize(
+        10
+    );
+
+
+    pdf.text(
+        "STUDENT RESULT REPORT",
+        pageWidth / 2,
+        17,
+        {
+            align:
+                "center"
+        }
+    );
+
+
+    //================================================
+    // REPORT INFORMATION
+    //================================================
+
+    pdf.setTextColor(
+        30,
+        41,
+        59
+    );
+
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+
+    pdf.setFontSize(
+        10
+    );
+
+
+    pdf.text(
+        "Result Date : " +
+        formatPDFResultDate(
+            selectedDate
+        ),
+        10,
+        33
+    );
+
+
+    pdf.text(
+        "Total Results : " +
+        results.length,
+        pageWidth - 10,
+        33,
+        {
+            align:
+                "right"
+        }
+    );
+
+
+    //================================================
+    // TABLE SETTINGS
+    //================================================
+
+    const startX = 7;
+
+    let y = 40;
+
+    const headerHeight = 9;
+
+    const rowHeight = 8;
+
+
+    //================================================
+    // RESULT_ADMIN COLUMNS ONLY
+    //================================================
+
+    const columns = [
+
+        {
+            title:
+                "S.No.",
+            width:
+                12
+        },
+
+        {
+            title:
+                "Date",
+            width:
+                25
+        },
+
+        {
+            title:
+                "Reg No",
+            width:
+                28
+        },
+
+        {
+            title:
+                "Name",
+            width:
+                48
+        },
+
+        {
+            title:
+                "Paper",
+            width:
+                48
+        },
+
+        {
+            title:
+                "Total Questions",
+            width:
+                25
+        },
+
+        {
+            title:
+                "Correct Answer",
+            width:
+                25
+        },
+
+        {
+            title:
+                "Wrong Answer",
+            width:
+                23
+        },
+
+        {
+            title:
+                "Unattempted",
+            width:
+                23
+        },
+
+        {
+            title:
+                "Grade",
+            width:
+                22
+        }
+
+    ];
+
+
+    //================================================
+    // TABLE WIDTH
+    //================================================
+
+    const tableWidth =
+        columns.reduce(
+            function(
+                total,
+                col
+            ){
+
+                return (
+                    total +
+                    col.width
+                );
+
+            },
+            0
+        );
+
+
+    //================================================
+    // DRAW TABLE HEADER
+    //================================================
+
+    function drawPDFTableHeader(){
+
+        let x =
+            startX;
+
+
+        pdf.setFillColor(
+            30,
+            64,
+            175
+        );
+
+
+        pdf.setTextColor(
+            255,
+            255,
+            255
+        );
+
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+
+        pdf.setFontSize(
+            7
+        );
+
+
+        columns.forEach(
+            function(col){
+
+                pdf.rect(
+                    x,
+                    y,
+                    col.width,
+                    headerHeight,
+                    "F"
+                );
+
+
+                pdf.text(
+                    col.title,
+                    x +
+                    col.width / 2,
+                    y + 6,
+                    {
+                        align:
+                            "center"
+                    }
+                );
+
+
+                x +=
+                    col.width;
+
+            }
+        );
+
+
+        y +=
+            headerHeight;
+
+    }
+
+
+    //================================================
+    // FIRST PAGE HEADER
+    //================================================
+
+    drawPDFTableHeader();
+
+
+    //================================================
+    // RESULT ROWS
+    //================================================
+
+    results.forEach(
+        function(
+            r,
+            index
+        ){
+
+            //========================================
+            // NEW PAGE
+            //========================================
+
+            if(
+                y +
+                rowHeight >
+                pageHeight - 12
+            ){
+
+                pdf.addPage();
+
+                y = 12;
+
+                drawPDFTableHeader();
+
+            }
+
+
+            //========================================
+            // RESULT_ADMIN DATA ONLY
+            //========================================
+
+            const resultDate =
+                r.date ??
+                r.Date ??
+                r.resultDate ??
+                "";
+
+
+            const regNo =
+                r.regNo ??
+                r.registrationNo ??
+                "";
+
+
+            const studentName =
+                r.name ??
+                r.studentName ??
+                "";
+
+
+            const paper =
+                r.paper ??
+                r.paperName ??
+                "";
+
+
+            const totalQuestions =
+                r.totalQuestions ??
+                r.total ??
+                "";
+
+
+            const correctAnswer =
+                r.correctAnswer ??
+                r.correct ??
+                "";
+
+
+            const wrongAnswer =
+                r.wrongAnswer ??
+                r.wrong ??
+                r.incorrect ??
+                "";
+
+
+            const unattempted =
+                r.unattempted ??
+                r.notAttempted ??
+                "";
+
+
+            const grade =
+                r.grade ??
+                r.result ??
+                "";
+
+
+            //========================================
+            // VALUES
+            //========================================
+
+            const values = [
+
+                index + 1,
+
+                resultDate,
+
+                regNo,
+
+                studentName,
+
+                paper,
+
+                totalQuestions,
+
+                correctAnswer,
+
+                wrongAnswer,
+
+                unattempted,
+
+                grade
+
+            ];
+
+
+            //========================================
+            // ALTERNATE ROW
+            //========================================
+
+            if(
+                index % 2 === 1
+            ){
+
+                pdf.setFillColor(
+                    245,
+                    247,
+                    250
+                );
+
+
+                pdf.rect(
+                    startX,
+                    y,
+                    tableWidth,
+                    rowHeight,
+                    "F"
+                );
+
+            }
+
+
+            //========================================
+            // CELL SETTINGS
+            //========================================
+
+            let x =
+                startX;
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+
+            pdf.setFontSize(
+                6.5
+            );
+
+
+            pdf.setTextColor(
+                30,
+                41,
+                59
+            );
+
+
+            //========================================
+            // DRAW EACH CELL
+            //========================================
+
+            values.forEach(
+                function(
+                    value,
+                    colIndex
+                ){
+
+                    const text =
+                        String(
+                            value ??
+                            ""
+                        );
+
+
+                    const availableWidth =
+                        columns[
+                            colIndex
+                        ].width - 3;
+
+
+                    const wrapped =
+                        pdf.splitTextToSize(
+                            text,
+                            availableWidth
+                        );
+
+
+                    //================================
+                    // CELL BORDER
+                    //================================
+
+                    pdf.setDrawColor(
+                        210,
+                        218,
+                        230
+                    );
+
+
+                    pdf.rect(
+                        x,
+                        y,
+                        columns[
+                            colIndex
+                        ].width,
+                        rowHeight
+                    );
+
+
+                    //================================
+                    // CELL TEXT
+                    //================================
+
+                    pdf.text(
+                        wrapped[0] ||
+                        "",
+                        x +
+                        columns[
+                            colIndex
+                        ].width / 2,
+                        y + 5,
+                        {
+                            align:
+                                "center"
+                        }
+                    );
+
+
+                    x +=
+                        columns[
+                            colIndex
+                        ].width;
+
+                }
+            );
+
+
+            y +=
+                rowHeight;
+
+        }
+    );
+
+
+    //================================================
+    // FOOTER
+    //================================================
+
+    const totalPages =
+        pdf.internal
+        .getNumberOfPages();
+
+
+    for(
+        let page = 1;
+        page <= totalPages;
+        page++
+    ){
+
+        pdf.setPage(
+            page
+        );
+
+
+        pdf.setFont(
+            "helvetica",
+            "normal"
+        );
+
+
+        pdf.setFontSize(
+            7
+        );
+
+
+        pdf.setTextColor(
+            100,
+            116,
+            139
+        );
+
+
+        pdf.text(
+            "IKON Institute • Result_Admin Report",
+            8,
+            pageHeight - 6
+        );
+
+
+        pdf.text(
+            "Page " +
+            page +
+            " of " +
+            totalPages,
+            pageWidth - 8,
+            pageHeight - 6,
+            {
+                align:
+                    "right"
+            }
+        );
+
+    }
+
+
+    //================================================
+    // FILE NAME
+    //================================================
+
+    const fileDate =
+        String(
+            selectedDate ||
+            ""
+        )
+        .replace(
+            /[^0-9-]/g,
+            "_"
+        );
+
+
+    //================================================
+    // DOWNLOAD
+    //================================================
+
+    pdf.save(
+        "IKON_Result_Admin_" +
+        fileDate +
+        ".pdf"
+    );
+
+}
+//====================================================
+// 3 TAP / CLICK SECRET RESULT PDF ACCESS
+//====================================================
+
+(function(){
+
+    let tapCount = 0;
+    let tapTimer = null;
+
+    const title =
+        document.getElementById(
+            "testTitle"
+        );
+
+    const pdfButton =
+        document.getElementById(
+            "hiddenResultPDFButton"
+        );
+
+
+    if(!title || !pdfButton){
+
+        return;
+
+    }
+
+
+    function handleThreeTap(){
+
+        tapCount++;
+
+
+        //============================================
+        // RESET TIMER
+        //============================================
+
+        clearTimeout(
+            tapTimer
+        );
+
+
+        tapTimer =
+            setTimeout(
+                function(){
+
+                    tapCount = 0;
+
+                },
+                800
+            );
+
+
+        //============================================
+        // THREE TAP / CLICK
+        //============================================
+
+        if(tapCount >= 3){
+
+            tapCount = 0;
+
+            clearTimeout(
+                tapTimer
+            );
+
+
+            //========================================
+            // SHOW PDF BUTTON
+            //========================================
+
+            pdfButton.style.display =
+                "block";
+
+
+            //========================================
+            // SMALL FEEDBACK
+            //========================================
+
+            console.log(
+                "Result PDF option unlocked."
+            );
+
+        }
+
+    }
+
+
+    //===============================================
+    // DESKTOP CLICK
+    //===============================================
+
+    title.addEventListener(
+        "click",
+        handleThreeTap
+    );
+
+
+    //===============================================
+    // MOBILE TOUCH
+    //===============================================
+
+    title.addEventListener(
+        "touchend",
+        function(){
+
+            handleThreeTap();
+
+        },
+        {
+            passive:true
+        }
+    );
+
+
+})();
