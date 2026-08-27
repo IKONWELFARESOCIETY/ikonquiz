@@ -15454,3 +15454,95 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 }
    FINAL HALL TICKET CUT LINE
+/* =========================================================
+   FINAL CUT LINE - PREVIEW
+   DASHED LINE + SCISSOR
+   NO WHITE BACKGROUND
+   ========================================================= */
+
+#hallTicketPage .hallTicketA4{
+    position:relative !important;
+}
+
+
+/* Cards must allow line into the gap */
+
+#hallTicketPage .hallCard{
+    position:relative !important;
+    overflow:visible !important;
+}
+
+
+/* =========================================================
+   CUT LINE
+   ========================================================= */
+
+#hallTicketPage .hallCard:not(:last-child)::after{
+
+    content:"✂";
+
+    position:absolute !important;
+
+    left:4mm !important;
+    right:4mm !important;
+
+    bottom:-1.5mm !important;
+
+    height:0 !important;
+
+    border-top:2px dashed #64748b !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+
+    justify-content:center !important;
+    align-items:center !important;
+
+    color:#475569 !important;
+
+    font-family:Arial,sans-serif !important;
+
+    font-size:15px !important;
+
+    font-weight:900 !important;
+
+    line-height:1 !important;
+
+    text-align:center !important;
+
+    z-index:999999 !important;
+
+    pointer-events:none !important;
+
+    /*
+       IMPORTANT:
+       NO background
+       NO white circle
+       NO white box
+    */
+
+    background:transparent !important;
+
+    text-shadow:none !important;
+
+}
+
+
+/* =========================================================
+   PRINT/PDF
+   Do NOT create duplicate CSS line.
+   PDF already gets its line from JS.
+   ========================================================= */
+
+@media print{
+
+    #hallTicketPage .hallCard:not(:last-child)::after{
+
+        display:none !important;
+
+        content:none !important;
+
+    }
+
+}
