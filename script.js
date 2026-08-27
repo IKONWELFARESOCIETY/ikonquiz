@@ -16189,62 +16189,64 @@ function generateDateWiseResultPDF(results, selectedDate){
     // COLUMN HEADINGS
     //================================================
 
-    const headers = [
-        "Reg No",
-        "Candidate Name",
-        "Paper",
-        "Total Questions",
-        "Correct",
-        "Wrong",
-        "Unattempted",
-        "Percentage"
-    ];
-
+   const headers = [
+    "S.No.",
+    "Reg No",
+    "Student Name",
+    "Paper",
+    "Total Questions",
+    "Correct",
+    "Wrong",
+    "Unattempted",
+    "Percentage"
+];
     //================================================
     // DRAW HEADER
     //================================================
 
-    let x = marginLeft;
+   let x = marginLeft;
 
+pdf.setDrawColor(180,190,205);
+
+headers.forEach(function(header,index){
+
+    // IMPORTANT:
+    // Fill color must be set BEFORE every cell
     pdf.setFillColor(30,80,150);
 
-    pdf.setDrawColor(180,190,205);
+    pdf.rect(
+        x,
+        startY,
+        colWidths[index],
+        headerHeight,
+        "FD"
+    );
 
-    headers.forEach(function(header,index){
+    pdf.setTextColor(
+        255,
+        255,
+        255
+    );
 
-        pdf.rect(
-            x,
-            startY,
-            colWidths[index],
-            headerHeight,
-            "FD"
-        );
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
 
-        pdf.setTextColor(
-            255,
-            255,
-            255
-        );
+    pdf.setFontSize(8);
 
-        pdf.setFont(
-            "helvetica",
-            "bold"
-        );
+    pdf.text(
+        header,
+        x + colWidths[index] / 2,
+        startY + 7.5,
+        {
+            align: "center"
+        }
+    );
 
-        pdf.setFontSize(8);
+    x += colWidths[index];
 
-        pdf.text(
-            header,
-            x + colWidths[index] / 2,
-            startY + 7.5,
-            {
-                align: "center"
-            }
-        );
-
-        x += colWidths[index];
-
-    });
+});
 
     //================================================
     // TABLE DATA
@@ -16329,16 +16331,17 @@ function generateDateWiseResultPDF(results, selectedDate){
             result.Percentage ??
             "";
 
-        const row = [
-            reg,
-            name,
-            paper,
-            total,
-            correct,
-            wrong,
-            unattempted,
-            percentage
-        ];
+       const row = [
+    index + 1,
+    reg,
+    name,
+    paper,
+    total,
+    correct,
+    wrong,
+    unattempted,
+    percentage
+];
 
         //============================================
         // ALTERNATE ROW
@@ -16369,89 +16372,109 @@ function generateDateWiseResultPDF(results, selectedDate){
 
         x = marginLeft;
 
-        row.forEach(function(value,colIndex){
+row.forEach(function(value,colIndex){
 
-            pdf.setDrawColor(
-                200,
-                205,
-                215
-            );
+    //============================================
+    // SET FILL COLOR FOR EVERY CELL
+    //============================================
 
-            pdf.rect(
-                x,
-                y,
-                colWidths[colIndex],
-                rowHeight,
-                "FD"
-            );
+    if(index % 2 === 0){
 
-            pdf.setTextColor(
-                35,
-                35,
-                35
-            );
+        pdf.setFillColor(
+            245,
+            248,
+            252
+        );
 
-            pdf.setFont(
-                "helvetica",
-                colIndex === 1
-                    ? "bold"
-                    : "normal"
-            );
+    }
+    else{
 
-            pdf.setFontSize(
-                colIndex === 1
-                    ? 8.5
-                    : 8
-            );
+        pdf.setFillColor(
+            255,
+            255,
+            255
+        );
 
-            let text =
-                String(value ?? "");
+    }
 
-            //========================================
-            // LIMIT LONG TEXT
-            //========================================
+    pdf.setDrawColor(
+        200,
+        205,
+        215
+    );
 
-            const maxWidth =
-                colWidths[colIndex] - 4;
+    //============================================
+    // DRAW CELL
+    //============================================
 
-            while(
-                text.length > 3 &&
-                pdf.getTextWidth(text) >
-                maxWidth
-            ){
+    pdf.rect(
+        x,
+        y,
+        colWidths[colIndex],
+        rowHeight,
+        "FD"
+    );
 
-                text =
-                    text.substring(
-                        0,
-                        text.length - 1
-                    );
+    //============================================
+    // TEXT COLOR
+    //============================================
 
-                text =
-                    text.substring(
-                        0,
-                        text.length - 3
-                    ) +
-                    "...";
+    pdf.setTextColor(
+        35,
+        35,
+        35
+    );
 
-            }
+    pdf.setFont(
+        "helvetica",
+        colIndex === 1
+            ? "bold"
+            : "normal"
+    );
 
-            pdf.text(
-                text,
-                x + colWidths[colIndex] / 2,
-                y + 6,
-                {
-                    align: "center"
-                }
-            );
+    pdf.setFontSize(
+        colIndex === 1
+            ? 8.5
+            : 8
+    );
 
-            x += colWidths[colIndex];
+    let text =
+        String(value ?? "");
 
-        });
+    //============================================
+    // LIMIT LONG TEXT
+    //============================================
 
-        y += rowHeight;
+    const maxWidth =
+        colWidths[colIndex] - 4;
 
-    });
+    while(
+        text.length > 3 &&
+        pdf.getTextWidth(text) >
+        maxWidth
+    ){
 
+        text =
+            text.substring(
+                0,
+                text.length - 4
+            ) +
+            "...";
+
+    }
+
+    pdf.text(
+        text,
+        x + colWidths[colIndex] / 2,
+        y + 6,
+        {
+            align: "center"
+        }
+    );
+
+    x += colWidths[colIndex];
+
+});
     //================================================
     // FOOTER
     //================================================
