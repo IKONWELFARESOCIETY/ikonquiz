@@ -13459,76 +13459,7 @@ async function downloadHallTicketPDF(){
 
                                     }
                                 );
-//================================================
-// PDF ONLY - SCISSOR CUT MARK
-// DO NOT CHANGE EXISTING DESIGN
-//================================================
 
-page
-    .querySelectorAll(".hallCard:not(:last-child)")
-    .forEach(function(card){
-
-        const cutMark =
-            clonedDocument.createElement("div");
-
-        cutMark.style.position = "absolute";
-        cutMark.style.left = "4mm";
-        cutMark.style.right = "4mm";
-        cutMark.style.bottom = "-3mm";
-        cutMark.style.height = "3mm";
-
-        cutMark.style.display = "flex";
-        cutMark.style.alignItems = "center";
-        cutMark.style.justifyContent = "center";
-
-     cutMark.style.borderTop =
-    "1px dashed #475569";
-
-cutMark.style.background =
-    "transparent";
-
-cutMark.style.boxSizing =
-    "border-box";
-
-        cutMark.style.zIndex = "9999";
-        cutMark.style.pointerEvents = "none";
-
-        // Scissor
-        const scissors =
-            clonedDocument.createElement("span");
-
-        scissors.textContent = "✂";
-
-        scissors.style.position = "absolute";
-        scissors.style.left = "50%";
-        scissors.style.top = "50%";
-
-        scissors.style.transform =
-            "translate(-50%, -50%)";
-
-        scissors.style.background =
-            "#ffffff";
-
-        scissors.style.padding =
-            "0 3mm";
-
-        scissors.style.fontSize = "15px";
-        scissors.style.lineHeight = "1";
-        scissors.style.fontWeight = "900";
-
-        scissors.style.fontFamily =
-            "Arial, sans-serif";
-
-        scissors.style.color =
-            "#475569";
-
-        cutMark.appendChild(scissors);
-
-        card.style.position = "relative";
-
-        card.appendChild(cutMark);
-
-    });
 
                             //================================
                             // A4 CONTAINER
@@ -13672,11 +13603,11 @@ cutMark.style.boxSizing =
 
                                     }
                                 );
-
 //================================================
 // PDF ONLY
-// CUT LINE + SCISSOR IN EXISTING 3mm GAP
-// DOES NOT CHANGE CARD DESIGN
+// CUT LINE + SCISSOR
+// EXISTING GAP KE EXACT CENTER ME
+// EXISTING DESIGN ME KOI CHANGE NAHI
 //================================================
 
 if(a4){
@@ -13688,21 +13619,21 @@ if(a4){
             )
         );
 
-
     cards.forEach(
         function(card, index){
 
-            // Last card ke neeche kuch nahi
+            // Last card ke neeche cut line nahi
             if(index >= cards.length - 1){
                 return;
             }
 
-
             const nextCard =
                 cards[index + 1];
 
+            //========================================
+            // EXISTING GAP CALCULATE
+            //========================================
 
-            // Existing gap calculate karo
             const gap =
                 nextCard.offsetTop -
                 (
@@ -13710,61 +13641,68 @@ if(a4){
                     card.offsetHeight
                 );
 
+            //========================================
+            // GAP KE EXACT CENTER KI POSITION
+            //========================================
 
-            // Gap ke exact center ki position
             const lineTop =
                 card.offsetTop +
                 card.offsetHeight +
                 (gap / 2);
 
+            //========================================
+            // CUT LINE
+            //========================================
 
-            //================================================
-// CUT LINE - PDF SAFE
-//================================================
+            const cutLine =
+                clonedDocument.createElement(
+                    "div"
+                );
 
-const cutLine =
-    clonedDocument.createElement("div");
+            cutLine.style.position =
+                "absolute";
 
-cutLine.style.position = "absolute";
-cutLine.style.left = "4mm";
-cutLine.style.right = "4mm";
-cutLine.style.top = lineTop + "px";
-cutLine.style.height = "2px";
-cutLine.style.zIndex = "99999";
-cutLine.style.pointerEvents = "none";
-cutLine.style.display = "flex";
-cutLine.style.alignItems = "center";
-cutLine.style.justifyContent = "space-between";
+            cutLine.style.left =
+                "4mm";
 
-// Create real dash elements
-for(let d = 0; d < 120; d++){
+            cutLine.style.right =
+                "4mm";
 
-    const dash =
-        clonedDocument.createElement("span");
+            cutLine.style.top =
+                lineTop + "px";
 
-    dash.style.display = "block";
-    dash.style.width = "3px";
-    dash.style.height = "1px";
-    dash.style.backgroundColor = "#475569";
-    dash.style.flexShrink = "0";
+            cutLine.style.height =
+                "1px";
 
-    cutLine.appendChild(dash);
-}
+            cutLine.style.zIndex =
+                "99999";
 
+            cutLine.style.pointerEvents =
+                "none";
 
-            //================================================
+            cutLine.style.backgroundImage =
+                "repeating-linear-gradient(" +
+                "to right, " +
+                "#64748b 0px, " +
+                "#64748b 6px, " +
+                "transparent 6px, " +
+                "transparent 12px" +
+                ")";
+
+            cutLine.style.backgroundRepeat =
+                "repeat-x";
+
+            //========================================
             // SCISSOR
-            //================================================
+            //========================================
 
             const scissors =
                 clonedDocument.createElement(
                     "span"
                 );
 
-
             scissors.textContent =
                 "✂";
-
 
             scissors.style.position =
                 "absolute";
@@ -13775,49 +13713,45 @@ for(let d = 0; d < 120; d++){
             scissors.style.top =
                 "50%";
 
-
             scissors.style.transform =
                 "translate(-50%, -50%)";
-
 
             scissors.style.background =
                 "#ffffff";
 
-
             scissors.style.padding =
                 "0 3mm";
-
 
             scissors.style.color =
                 "#475569";
 
-
             scissors.style.fontFamily =
                 "Arial, sans-serif";
-
 
             scissors.style.fontSize =
                 "15px";
 
-
             scissors.style.fontWeight =
                 "900";
-
 
             scissors.style.lineHeight =
                 "1";
 
-
             scissors.style.whiteSpace =
                 "nowrap";
 
+            //========================================
+            // ADD SCISSOR TO LINE
+            //========================================
 
             cutLine.appendChild(
                 scissors
             );
 
+            //========================================
+            // ADD CUT LINE TO A4
+            //========================================
 
-            // A4 ke andar add karo
             a4.appendChild(
                 cutLine
             );
