@@ -27,6 +27,7 @@ let passingMarks = "";
 //====================================================
 
 let resultNavigationToken = 0;
+let pdfAdminAccess = false;
 //====================================================
 // QUESTION DATA
 //====================================================
@@ -5010,6 +5011,16 @@ function verifyAdmin(){
                 )
                 ?.classList
                 .add("hidden");
+            
+            if(pdfAdminAccess === true){
+
+    pdfAdminAccess = false;
+
+    openDateWiseResultPDF();
+
+    return;
+}
+
 
 
             //============================================
@@ -16580,28 +16591,40 @@ function generateDateWiseResultPDF(
         document.getElementById("testTitle");
 
     if(!title){
+
         console.error(
             "3-Tap Error: testTitle not found."
         );
+
         return;
     }
+
 
     function handleThreeTap(){
 
         tapCount++;
+
 
         console.log(
             "Title Tap Count:",
             tapCount
         );
 
-        clearTimeout(tapTimer);
 
-        tapTimer = setTimeout(function(){
+        clearTimeout(
+            tapTimer
+        );
 
-            tapCount = 0;
 
-        }, 1000);
+        tapTimer =
+            setTimeout(
+                function(){
+
+                    tapCount = 0;
+
+                },
+                1000
+            );
 
 
         //============================================
@@ -16612,11 +16635,23 @@ function generateDateWiseResultPDF(
 
             tapCount = 0;
 
-            clearTimeout(tapTimer);
+            clearTimeout(
+                tapTimer
+            );
+
 
             console.log(
-                "3-Tap Admin Access Activated"
+                "3-Tap PDF Access Activated"
             );
+
+
+            //========================================
+            // IMPORTANT
+            // PDF FLOW ONLY
+            // NORMAL VIEW RESULT KO TOUCH NAHI KAREGA
+            //========================================
+
+            pdfAdminAccess = true;
 
 
             //========================================
@@ -16637,6 +16672,7 @@ function generateDateWiseResultPDF(
                     "openAdminVerify() function not found."
                 );
 
+
                 alert(
                     "Admin access is not available."
                 );
@@ -16650,7 +16686,7 @@ function generateDateWiseResultPDF(
 
     //================================================
     // POINTER EVENT
-    // Works on Desktop + Mobile
+    // DESKTOP + MOBILE
     //================================================
 
     title.addEventListener(
