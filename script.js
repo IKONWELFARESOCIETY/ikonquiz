@@ -15305,14 +15305,8 @@ function checkHallTicketPublished(){
     });
 }
 //====================================================
-// DATE-WISE RESULT PDF MODULE
-// FINAL VERSION
-// Result_Admin -> Selected Date -> PDF Download
-//====================================================
-
-
-//====================================================
-// OPEN DATE SELECTOR
+// DATE-WISE RESULT PDF
+// PROFESSIONAL ADMIN VERSION
 //====================================================
 
 function openDateWiseResultPDF(){
@@ -15334,7 +15328,7 @@ function openDateWiseResultPDF(){
     if(!adminToken){
 
         alert(
-            "Admin token is missing."
+            "Admin session expired."
         );
 
         return;
@@ -15342,116 +15336,112 @@ function openDateWiseResultPDF(){
 
 
     //================================================
-    // CREATE DATE INPUT
+    // GET MODAL
     //================================================
 
-    let dateInput =
+    const modal =
+        document.getElementById(
+            "dateWiseResultModal"
+        );
+
+
+    const dateInput =
         document.getElementById(
             "dateWiseResultPDFInput"
         );
 
 
-    if(!dateInput){
-
-        dateInput =
-            document.createElement(
-                "input"
-            );
-
-        dateInput.type = "date";
-
-        dateInput.id =
-            "dateWiseResultPDFInput";
-
-
-        //================================================
-        // HIDDEN INPUT
-        //================================================
-
-        dateInput.style.position =
-            "fixed";
-
-        dateInput.style.left =
-            "-10000px";
-
-        dateInput.style.top =
-            "0";
-
-        dateInput.style.width =
-            "1px";
-
-        dateInput.style.height =
-            "1px";
-
-        dateInput.style.opacity =
-            "0";
-
-
-        document.body.appendChild(
-            dateInput
+    const preview =
+        document.getElementById(
+            "dateWiseResultPreview"
         );
 
+
+    if(!modal || !dateInput){
+
+        alert(
+            "Date selection panel not found."
+        );
+
+        return;
     }
 
 
     //================================================
-    // CLEAR OLD VALUE
+    // RESET
     //================================================
 
     dateInput.value = "";
 
 
-    //================================================
-    // DATE CHANGE
-    //================================================
+    if(preview){
 
-    dateInput.onchange =
-        function(){
+        preview.className =
+            "dateWisePreview";
 
-            const selectedDate =
-                this.value;
-
-
-            console.log(
-                "Selected Date:",
-                selectedDate
-            );
-
-
-            if(!selectedDate){
-
-                return;
-            }
-
-
-            loadSelectedDateResultForPDF(
-                selectedDate
-            );
-
-        };
-
-
-    //================================================
-    // OPEN DATE PICKER
-    // IMPORTANT:
-    // click() IS USED INSTEAD OF showPicker()
-    //================================================
-
-    try{
-
-        dateInput.click();
+        preview.innerHTML =
+            "Select a date to continue.";
 
     }
-    catch(error){
 
-        console.error(
-            "Date Picker Error:",
-            error
+
+    //================================================
+    // SHOW MODAL
+    //================================================
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    //================================================
+    // OPEN CALENDAR
+    //================================================
+
+    setTimeout(function(){
+
+        try{
+
+            if(
+                typeof dateInput.showPicker ===
+                "function"
+            ){
+
+                dateInput.showPicker();
+
+            }
+
+        }
+        catch(error){
+
+            console.log(
+                "Calendar open:",
+                error
+            );
+
+        }
+
+    },150);
+
+}
+
+
+//====================================================
+// CLOSE DATE PDF MODAL
+//====================================================
+
+function closeDateWiseResultPDF(){
+
+    const modal =
+        document.getElementById(
+            "dateWiseResultModal"
         );
 
 
-        alert(
-            "Unable to open date selector."
+    if(modal){
+
+        modal.classList.add(
+            "hidden"
         );
 
     }
@@ -15460,12 +15450,81 @@ function openDateWiseResultPDF(){
 
 
 //====================================================
-// LOAD SELECTED DATE RESULT
+// DATE CHANGE
 //====================================================
 
-function loadSelectedDateResultForPDF(
+document.addEventListener(
+    "change",
+    function(event){
+
+        if(
+            event.target &&
+            event.target.id ===
+            "dateWiseResultPDFInput"
+        ){
+
+            updateDateWisePDFPreview(
+                event.target.value
+            );
+
+        }
+
+    }
+);
+
+
+//====================================================
+// DATE PREVIEW
+//====================================================
+
+function updateDateWisePDFPreview(
     selectedDate
 ){
+
+    const preview =
+        document.getElementById(
+            "dateWiseResultPreview"
+        );
+
+
+    if(!preview){
+
+        return;
+
+    }
+
+
+    if(!selectedDate){
+
+        preview.className =
+            "dateWisePreview";
+
+        preview.innerHTML =
+            "Select a date to continue.";
+
+        return;
+
+    }
+
+
+    preview.className =
+        "dateWisePreview active";
+
+
+    preview.innerHTML =
+        "Selected Result Date : " +
+        formatPDFResultDate(
+            selectedDate
+        );
+
+}
+
+
+//====================================================
+// GENERATE SELECTED DATE PDF
+//====================================================
+
+function generateSelectedDatePDF(){
 
     //================================================
     // ADMIN CHECK
@@ -15478,116 +15537,124 @@ function loadSelectedDateResultForPDF(
         );
 
         return;
+
     }
 
 
     if(!adminToken){
 
         alert(
-            "Admin token is missing."
+            "Admin session expired."
         );
 
         return;
+
     }
 
 
     //================================================
-    // VALIDATE DATE
+    // DATE
     //================================================
+
+    const dateInput =
+        document.getElementById(
+            "dateWiseResultPDFInput"
+        );
+
+
+    const selectedDate =
+        dateInput
+        ? dateInput.value
+        : "";
+
 
     if(!selectedDate){
 
         alert(
-            "Please select a date."
+            "Please select an examination date."
         );
 
+        if(dateInput){
+
+            dateInput.focus();
+
+        }
+
         return;
+
     }
 
 
-    console.log(
-        "PDF DATE REQUEST:",
-        selectedDate
-    );
-
-
     //================================================
-    // LOADING
+    // BUTTON
     //================================================
 
-    const loadingBox =
-        document.createElement(
-            "div"
+    const button =
+        document.getElementById(
+            "generateDateWisePDFBtn"
         );
 
 
-    loadingBox.id =
-        "pdfLoadingMessage";
+    if(button){
 
+        button.disabled = true;
 
-    loadingBox.innerHTML =
-        "Preparing Result PDF...";
+        button.innerHTML =
+            "⏳ Preparing PDF...";
 
-
-    loadingBox.style.position =
-        "fixed";
-
-    loadingBox.style.left =
-        "50%";
-
-    loadingBox.style.top =
-        "50%";
-
-    loadingBox.style.transform =
-        "translate(-50%, -50%)";
-
-    loadingBox.style.background =
-        "#ffffff";
-
-    loadingBox.style.padding =
-        "20px 30px";
-
-    loadingBox.style.borderRadius =
-        "12px";
-
-    loadingBox.style.boxShadow =
-        "0 10px 35px rgba(0,0,0,0.25)";
-
-    loadingBox.style.zIndex =
-        "999999";
-
-    loadingBox.style.fontSize =
-        "17px";
-
-    loadingBox.style.fontWeight =
-        "700";
-
-    loadingBox.style.color =
-        "#1e3a8a";
-
-
-    document.body.appendChild(
-        loadingBox
-    );
+    }
 
 
     //================================================
-    // ALL RESULTS API
+    // PREVIEW
+    //================================================
+
+    const preview =
+        document.getElementById(
+            "dateWiseResultPreview"
+        );
+
+
+    if(preview){
+
+        preview.className =
+            "dateWisePreview active";
+
+        preview.innerHTML =
+            "Loading results for " +
+            formatPDFResultDate(
+                selectedDate
+            ) +
+            "...";
+
+    }
+
+
+    //================================================
+    // API URL
     //================================================
 
     const url =
         SCRIPT_URL +
-        "?action=allResults" +
+
+        "?action=dateWiseResults" +
+
         "&adminToken=" +
         encodeURIComponent(
             adminToken
         ) +
+
+        "&date=" +
+        encodeURIComponent(
+            selectedDate
+        ) +
+
         "&_=" +
         Date.now();
 
 
     console.log(
-        "ALL RESULTS URL:",
+        "DATE-WISE RESULT URL:",
         url
     );
 
@@ -15609,7 +15676,6 @@ function loadSelectedDateResultForPDF(
 
         }
 
-
         return response.json();
 
     })
@@ -15618,31 +15684,14 @@ function loadSelectedDateResultForPDF(
     .then(function(data){
 
         console.log(
-            "ALL RESULTS RESPONSE:",
+            "DATE-WISE RESULT RESPONSE:",
             data
         );
 
 
-        //================================================
-        // REMOVE LOADING
-        //================================================
-
-        const loader =
-            document.getElementById(
-                "pdfLoadingMessage"
-            );
-
-
-        if(loader){
-
-            loader.remove();
-
-        }
-
-
-        //================================================
-        // AUTH CHECK
-        //================================================
+        //============================================
+        // AUTH
+        //============================================
 
         if(
             data &&
@@ -15654,6 +15703,8 @@ function loadSelectedDateResultForPDF(
 
             adminToken = "";
 
+            closeDateWiseResultPDF();
+
             alert(
                 "Admin verification required."
             );
@@ -15663,144 +15714,92 @@ function loadSelectedDateResultForPDF(
         }
 
 
-        //================================================
-        // GET RESULTS
-        //================================================
+        //============================================
+        // ERROR
+        //============================================
 
-        let results = [];
-
-
-        // Normal Apps Script response
         if(
-            data &&
+            !data ||
+            data.status !==
+            "SUCCESS"
+        ){
+
+            throw new Error(
+                data &&
+                data.message
+                ?
+                data.message
+                :
+                "Unable to load results."
+            );
+
+        }
+
+
+        //============================================
+        // RESULTS
+        //============================================
+
+        const results =
             Array.isArray(
                 data.results
             )
-        ){
-
-            results =
-                data.results;
-
-        }
+            ?
+            data.results
+            :
+            [];
 
 
-        // If API directly returns array
-        else if(
-            Array.isArray(data)
-        ){
-
-            results = data;
-
-        }
-
-
-        console.log(
-            "TOTAL RESULTS:",
-            results.length
-        );
-
-
-        //================================================
-        // API ERROR
-        //================================================
+        //============================================
+        // NO RESULT
+        //============================================
 
         if(
-            data &&
-            data.status &&
-            data.status !==
-            "SUCCESS" &&
-            !Array.isArray(data)
+            results.length === 0
         ){
 
-            alert(
-                data.message ||
-                "Unable to load result data."
-            );
+            if(preview){
 
-            return;
+                preview.className =
+                    "dateWisePreview";
 
-        }
-
-
-        //================================================
-        // FILTER SELECTED DATE
-        //================================================
-
-        const filteredResults =
-            results.filter(
-                function(result){
-
-                    const rawDate =
-                        result.date ??
-                        result.Date ??
-                        result.resultDate ??
-                        result.examDate ??
-                        result.testDate ??
-                        "";
-
-
-                    const normalizedDate =
-                        normalizePDFResultDate(
-                            rawDate
-                        );
-
-
-                    console.log(
-                        "RESULT DATE:",
-                        rawDate,
-                        "=>",
-                        normalizedDate
-                    );
-
-
-                    return (
-                        normalizedDate ===
+                preview.innerHTML =
+                    "❌ No result found for " +
+                    formatPDFResultDate(
                         selectedDate
                     );
 
-                }
-            );
+            }
 
 
-        console.log(
-            "SELECTED DATE:",
-            selectedDate
-        );
+            if(button){
 
+                button.disabled = false;
 
-        console.log(
-            "MATCHING RESULTS:",
-            filteredResults
-        );
+                button.innerHTML =
+                    "📄 Generate PDF";
 
+            }
 
-        //================================================
-        // NO RECORD
-        //================================================
-
-        if(
-            filteredResults.length === 0
-        ){
-
-            alert(
-                "No result found for " +
-                formatPDFResultDate(
-                    selectedDate
-                ) +
-                "."
-            );
 
             return;
 
         }
 
 
-        //================================================
+        //============================================
+        // CLOSE MODAL
+        //============================================
+
+        closeDateWiseResultPDF();
+
+
+        //============================================
         // GENERATE PDF
-        //================================================
+        //============================================
 
         generateDateWiseResultPDF(
-            filteredResults,
+            results,
             selectedDate
         );
 
@@ -15810,28 +15809,41 @@ function loadSelectedDateResultForPDF(
     .catch(function(error){
 
         console.error(
-            "DATE PDF ERROR:",
+            "DATE-WISE PDF ERROR:",
             error
         );
 
 
-        const loader =
-            document.getElementById(
-                "pdfLoadingMessage"
-            );
+        if(preview){
 
+            preview.className =
+                "dateWisePreview";
 
-        if(loader){
-
-            loader.remove();
+            preview.innerHTML =
+                "❌ " +
+                error.message;
 
         }
 
 
         alert(
-            "Unable to load result data.\n" +
-            "Please try again."
+            error.message ||
+            "Unable to generate Result PDF."
         );
+
+    })
+
+
+    .finally(function(){
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerHTML =
+                " Generate PDF";
+
+        }
 
     });
 
