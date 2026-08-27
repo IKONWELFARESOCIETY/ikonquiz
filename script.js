@@ -16301,11 +16301,15 @@ headers.forEach(function(header,index){
             result.Paper ??
             result.paperName ??
             "";
-
-        const total =
-            result.totalQuestions ??
-            result["Total Questions"] ??
-            "";
+const total =
+    result.totalQuestions ??
+    result["Total Questions"] ??
+    result.total ??
+    (
+        Number(result.correctAnswer ?? result.correct ?? 0) +
+        Number(result.wrongAnswer ?? result.wrong ?? 0) +
+        Number(result.unattempted ?? result.Unattempted ?? 0)
+    );
 
         const correct =
             result.correctAnswer ??
