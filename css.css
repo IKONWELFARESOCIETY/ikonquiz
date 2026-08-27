@@ -15546,3 +15546,360 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =====================================================
+   DATE-WISE RESULT PDF MODAL
+===================================================== */
+
+.dateWiseModal{
+    position:fixed;
+    inset:0;
+
+    background:
+        rgba(15,23,42,0.72);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:999999;
+}
+
+
+.dateWiseModal.hidden{
+    display:none;
+}
+
+
+.dateWiseModalBox{
+
+    width:100%;
+    max-width:480px;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.30);
+
+    animation:
+        dateWiseModalIn
+        .22s
+        ease-out;
+}
+
+
+@keyframes dateWiseModalIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px)
+                   scale(.96);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0)
+                   scale(1);
+    }
+
+}
+
+
+/* HEADER */
+
+.dateWiseModalHeader{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    padding:22px 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1e3a8a,
+            #2563eb
+        );
+
+    color:#ffffff;
+}
+
+
+.dateWiseSmallTitle{
+
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    opacity:.85;
+
+    margin-bottom:4px;
+}
+
+
+.dateWiseModalHeader h2{
+
+    margin:0;
+
+    font-size:23px;
+
+    font-weight:800;
+}
+
+
+.dateWiseCloseBtn{
+
+    width:38px;
+    height:38px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.15);
+
+    color:#ffffff;
+
+    font-size:27px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.2s;
+}
+
+
+.dateWiseCloseBtn:hover{
+
+    background:
+        rgba(255,255,255,.25);
+
+    transform:rotate(90deg);
+
+}
+
+
+/* BODY */
+
+.dateWiseModalBody{
+
+    padding:28px 25px 25px;
+
+    text-align:center;
+}
+
+
+.dateWiseIcon{
+
+    width:64px;
+    height:64px;
+
+    margin:0 auto 15px;
+
+    border-radius:18px;
+
+    background:#eff6ff;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+}
+
+
+.dateWiseModalBody h3{
+
+    margin:0 0 8px;
+
+    color:#0f172a;
+
+    font-size:21px;
+}
+
+
+.dateWiseModalBody p{
+
+    margin:0 auto 22px;
+
+    max-width:370px;
+
+    color:#64748b;
+
+    font-size:14px;
+
+    line-height:1.6;
+}
+
+
+.dateWiseModalBody label{
+
+    display:block;
+
+    text-align:left;
+
+    margin-bottom:8px;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    color:#334155;
+}
+
+
+.dateWiseModalBody input[type="date"]{
+
+    width:100%;
+
+    height:52px;
+
+    box-sizing:border-box;
+
+    padding:0 15px;
+
+    border:
+        1.5px solid
+        #cbd5e1;
+
+    border-radius:12px;
+
+    background:#f8fafc;
+
+    color:#0f172a;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    outline:none;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.dateWiseModalBody input[type="date"]:focus{
+
+    border-color:#2563eb;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(37,99,235,.10);
+}
+
+
+/* PREVIEW */
+
+.dateWisePreview{
+
+    margin-top:16px;
+
+    padding:13px 15px;
+
+    border-radius:11px;
+
+    background:#f8fafc;
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    color:#64748b;
+
+    font-size:13px;
+
+    line-height:1.5;
+}
+
+
+.dateWisePreview.active{
+
+    background:#eff6ff;
+
+    border-color:#bfdbfe;
+
+    color:#1e40af;
+
+    font-weight:700;
+}
+
+
+/* ACTIONS */
+
+.dateWiseModalActions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:22px;
+}
+
+
+.dateWiseModalActions button{
+
+    flex:1;
+
+    min-height:48px;
+
+    border-radius:11px;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:520px){
+
+    .dateWiseModal{
+
+        padding:12px;
+    }
+
+
+    .dateWiseModalBox{
+
+        border-radius:18px;
+    }
+
+
+    .dateWiseModalHeader{
+
+        padding:19px;
+    }
+
+
+    .dateWiseModalBody{
+
+        padding:24px 18px 20px;
+    }
+
+
+    .dateWiseModalActions{
+
+        flex-direction:column-reverse;
+    }
+
+}
