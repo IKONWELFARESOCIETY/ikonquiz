@@ -985,15 +985,117 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     Student Result List
 
 </h2>
-          <button
+         <!-- ==================================================
+     SECRET DATE-WISE RESULT PDF BUTTON
+================================================== -->
+
+<button
     type="button"
     id="hiddenResultPDFButton"
     class="primary"
     onclick="openDateWiseResultPDF()"
     style="display:none; margin:15px auto;"
 >
-    Download Result PDF
+    📄 Download Date-Wise Result PDF
 </button>
+
+
+<!-- ==================================================
+     DATE-WISE RESULT MODAL
+================================================== -->
+
+<div
+    id="dateWiseResultModal"
+    class="dateWiseModal hidden"
+>
+
+    <div class="dateWiseModalBox">
+
+        <div class="dateWiseModalHeader">
+
+            <div>
+                <div class="dateWiseSmallTitle">
+                    IKON INSTITUTE
+                </div>
+
+                <h2>
+                    Result PDF
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                class="dateWiseCloseBtn"
+                onclick="closeDateWiseResultPDF()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="dateWiseModalBody">
+
+            <div class="dateWiseIcon">
+                📅
+            </div>
+
+            <h3>
+                Select Result Date
+            </h3>
+
+            <p>
+                Select the examination date to generate
+                the Result_Admin report.
+            </p>
+
+
+            <label
+                for="dateWiseResultPDFInput"
+            >
+                Examination Date
+            </label>
+
+            <input
+                type="date"
+                id="dateWiseResultPDFInput"
+            >
+
+
+            <div
+                id="dateWiseResultPreview"
+                class="dateWisePreview"
+            >
+                Select a date to continue.
+            </div>
+
+
+            <div class="dateWiseModalActions">
+
+                <button
+                    type="button"
+                    class="secondary"
+                    onclick="closeDateWiseResultPDF()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="primary"
+                    id="generateDateWisePDFBtn"
+                    onclick="generateSelectedDatePDF()"
+                >
+                    📄 Generate PDF
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
    
           <!-- ==========================================
      HIDDEN ADMIN ANALYTICS BUTTON
