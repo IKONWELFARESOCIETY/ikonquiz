@@ -13720,7 +13720,7 @@ if(a4){
                 "0";
 
           scissors.style.transform =
-    "translate(-50%, -69%)";
+    "translate(-50%, -71%)";
 
             scissors.style.background =
                 "transparent";
