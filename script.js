@@ -15287,11 +15287,9 @@ function checkHallTicketPublished(){
             error
         );
 
-
         alert(
             "Unable to check Hall Ticket status."
         );
 
     });
-
 }
