@@ -16567,7 +16567,8 @@ function generateDateWiseResultPDF(
 
 }
 //====================================================
-// 3 TAP / CLICK SECRET RESULT PDF ACCESS
+// 3 TAP SECRET ADMIN ACCESS
+// IKON INSTITUTE ONLINE EXAM PORTAL
 //====================================================
 
 (function(){
@@ -16576,106 +16577,85 @@ function generateDateWiseResultPDF(
     let tapTimer = null;
 
     const title =
-        document.getElementById(
-            "testTitle"
+        document.getElementById("testTitle");
+
+    if(!title){
+        console.error(
+            "3-Tap Error: testTitle not found."
         );
-
-    const pdfButton =
-        document.getElementById(
-            "hiddenResultPDFButton"
-        );
-
-
-    if(!title || !pdfButton){
-
         return;
-
     }
-
 
     function handleThreeTap(){
 
         tapCount++;
 
-
-        //============================================
-        // RESET TIMER
-        //============================================
-
-        clearTimeout(
-            tapTimer
+        console.log(
+            "Title Tap Count:",
+            tapCount
         );
 
+        clearTimeout(tapTimer);
 
-        tapTimer =
-            setTimeout(
-                function(){
-
-                    tapCount = 0;
-
-                },
-                800
-            );
-
-
-        //============================================
-        // THREE TAP / CLICK
-        //============================================
-
-        if(tapCount >= 3){
+        tapTimer = setTimeout(function(){
 
             tapCount = 0;
 
-            clearTimeout(
-                tapTimer
-            );
+        }, 1000);
 
 
-            //========================================
-            // SHOW PDF BUTTON
-            //========================================
+        //============================================
+        // THREE TAP
+        //============================================
 
-            pdfButton.style.display =
-                "block";
+        if(tapCount === 3){
 
+            tapCount = 0;
 
-            //========================================
-            // SMALL FEEDBACK
-            //========================================
+            clearTimeout(tapTimer);
 
             console.log(
-                "Result PDF option unlocked."
+                "3-Tap Admin Access Activated"
             );
+
+
+            //========================================
+            // OPEN ADMIN VERIFICATION
+            //========================================
+
+            if(
+                typeof openAdminVerify ===
+                "function"
+            ){
+
+                openAdminVerify();
+
+            }
+            else{
+
+                console.error(
+                    "openAdminVerify() function not found."
+                );
+
+                alert(
+                    "Admin access is not available."
+                );
+
+            }
 
         }
 
     }
 
 
-    //===============================================
-    // DESKTOP CLICK
-    //===============================================
+    //================================================
+    // POINTER EVENT
+    // Works on Desktop + Mobile
+    //================================================
 
     title.addEventListener(
-        "click",
+        "pointerup",
         handleThreeTap
-    );
-
-
-    //===============================================
-    // MOBILE TOUCH
-    //===============================================
-
-    title.addEventListener(
-        "touchend",
-        function(){
-
-            handleThreeTap();
-
-        },
-        {
-            passive:true
-        }
     );
 
 
