@@ -5011,11 +5011,16 @@ function verifyAdmin(){
                 )
                 ?.classList
                 .add("hidden");
-            
-            if(pdfAdminAccess === true){
+         if(pdfAdminAccess === true){
 
     pdfAdminAccess = false;
 
+    // SHOW RESULT PAGE
+    document
+        .getElementById("studentResultPage")
+        ?.classList.remove("hidden");
+
+    // OPEN DATE-WISE PDF PANEL
     openDateWiseResultPDF();
 
     return;
