@@ -13735,7 +13735,7 @@ if(a4){
                 "Arial, sans-serif";
 
             scissors.style.fontSize =
-                "15px";
+                "10px";
 
             scissors.style.fontWeight =
                 "900";
