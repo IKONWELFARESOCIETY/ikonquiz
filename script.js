@@ -795,60 +795,213 @@ function openExamTypePage(){
     courseName;
 
 }
-//====================================================
-// THEORY EXAM
-//====================================================
-
 function continueTheoryExam(){
 
     const select =
-    document.getElementById("theoryPaperSelect");
+        document.getElementById("theoryPaperSelect");
 
-    if(select.value==""){
+    if(!select || select.value === ""){
 
         alert("Please Select Theory Paper");
 
         return;
+    }
+
+    // Save selected paper
+    paperName = select.value;
+
+    // Exam mode
+    examMode = "THEORY";
+
+    // Hide paper selection page
+    document
+        .getElementById("theoryPaperPage")
+        ?.classList.add("hidden");
+
+    // Check student's individual exam time
+    checkStudentExamTime();
+
+}
+//====================================================
+// STUDENT INDIVIDUAL EXAM TIME CHECK
+// Sheet1 P Column
+//====================================================
+
+let studentTimeChecker = null;
+
+function checkStudentExamTime(){
+
+    // Clear old checker
+    if(studentTimeChecker !== null){
+
+        clearInterval(studentTimeChecker);
+
+        studentTimeChecker = null;
 
     }
 
-    paperName = select.value;
+    // First check immediately
+    checkIndividualExamTime();
 
-    examMode = "THEORY";
+    // Check every 5 seconds
+    studentTimeChecker = setInterval(
+        checkIndividualExamTime,
+        5000
+    );
 
-    fetch(
-        SCRIPT_URL + "?action=theoryStatus"
-    )
+}
 
-    .then(res=>res.json())
+
+//====================================================
+// CHECK INDIVIDUAL STUDENT TIME
+//====================================================
+
+function checkIndividualExamTime(){
+
+    if(
+        !regNo ||
+        !paperName
+    ){
+
+        console.log(
+            "Student Reg No or Paper missing."
+        );
+
+        return;
+    }
+
+
+    const url =
+        SCRIPT_URL +
+        "?action=questions" +
+        "&paper=" +
+        encodeURIComponent(paperName) +
+        "&regNo=" +
+        encodeURIComponent(regNo);
+
+
+    fetch(url)
+
+    .then(function(res){
+
+        if(!res.ok){
+
+            throw new Error(
+                "Server Error: " + res.status
+            );
+
+        }
+
+        return res.json();
+
+    })
 
     .then(function(data){
 
+        console.log(
+            "Individual Exam Time Response:",
+            data
+        );
+
+
+        //================================================
+        // TIME NOT STARTED
+        //================================================
+
         if(
-            data.status &&
-            data.status.toUpperCase()=="ON"
+            data.status ===
+            "EXAM_NOT_STARTED"
         ){
 
+            // Show waiting page
             document
-            .getElementById("theoryPaperPage")
-            ?.classList.add("hidden");
+                .getElementById("waitingPage")
+                ?.classList.remove("hidden");
 
-            checkTestStatus();
 
-        }else{
+            // Hide test page
+            document
+                .getElementById("testPage")
+                ?.classList.add("hidden");
 
-            alert(
-                data.message ||
-                "Theory Examination is not available."
+
+            // Show alert only once
+            if(
+                !window.examTimeAlertShown
+            ){
+
+                window.examTimeAlertShown = true;
+
+                alert(
+                    data.message ||
+                    "Your exam has not started yet."
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        //================================================
+        // EXAM TIME REACHED
+        //================================================
+
+        if(
+            data.status ===
+            "SUCCESS"
+        ){
+
+            // Stop individual time checker
+            if(
+                studentTimeChecker !== null
+            ){
+
+                clearInterval(
+                    studentTimeChecker
+                );
+
+                studentTimeChecker = null;
+
+            }
+
+
+            // Reset alert flag
+            window.examTimeAlertShown = false;
+
+
+            // Start normal test process
+            openTest();
+
+        }
+
+
+        //================================================
+        // OTHER ERROR
+        //================================================
+
+        if(
+            data.status === "ERROR" ||
+            data.status === "TIME_NOT_ASSIGNED" ||
+            data.status === "INVALID_EXAM_TIME"
+        ){
+
+            console.log(
+                "Exam Time Error:",
+                data.message
             );
 
         }
 
     })
 
-    .catch(function(){
+    .catch(function(error){
 
-        alert("Unable to check Theory Status.");
+        console.log(
+            "Individual Exam Time Check Error:",
+            error
+        );
 
     });
 
@@ -859,15 +1012,6 @@ function continueTheoryExam(){
 
 //====================================================
 // PRACTICAL EXAM
-//====================================================
-
-
-//====================================================
-// OPEN PRACTICAL PAGE
-//====================================================
-
-//====================================================
-// OPEN PRACTICAL PAGE
 //====================================================
 
 //====================================================
@@ -1392,6 +1536,14 @@ function showRandomLine() {
 //====================================================
 
 function openTest() {
+        // Stop individual student time checker
+    if(studentTimeChecker !== null){
+
+        clearInterval(studentTimeChecker);
+
+        studentTimeChecker = null;
+
+    }
 
     // Stop waiting checker
     stopStatusChecker();
