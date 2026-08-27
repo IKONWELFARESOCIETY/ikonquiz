@@ -2133,16 +2133,17 @@ function startExam() {
 }
 
 
-//====================================================
-// LOAD PAPER QUESTIONS
-//====================================================
-
 function loadPaperQuestions() {
 
     const url =
         SCRIPT_URL +
-        "?action=questions&paper=" +
-        encodeURIComponent(paperName);
+        "?action=questions" +
+        "&paper=" +
+        encodeURIComponent(paperName) +
+        "&regNo=" +
+        encodeURIComponent(regNo);
+
+    console.log("Question URL:", url);
 
     fetch(url)
 
@@ -2161,12 +2162,76 @@ function loadPaperQuestions() {
     .then(function (data) {
 
         //--------------------------------------
-        // Validate
+        // EXAM TIME CHECK
+        //--------------------------------------
+
+        if (data.status === "EXAM_NOT_STARTED") {
+
+            alert(
+                data.message ||
+                "Your exam has not started yet."
+            );
+
+            examStarted = false;
+
+            document
+                .getElementById("examArea")
+                ?.classList.add("hidden");
+
+            document
+                .getElementById("instructionPage")
+                ?.classList.remove("hidden");
+
+            return;
+        }
+
+
+        //--------------------------------------
+        // OTHER ERROR
         //--------------------------------------
 
         if (
-            !Array.isArray(data) ||
-            data.length === 0
+            data.status === "ERROR" ||
+            data.status === "TIME_NOT_ASSIGNED" ||
+            data.status === "INVALID_EXAM_TIME"
+        ) {
+
+            alert(
+                data.message ||
+                "Unable to start examination."
+            );
+
+            examStarted = false;
+
+            return;
+        }
+
+
+        //--------------------------------------
+        // SUCCESS
+        //--------------------------------------
+
+        let questionData = data;
+
+        // New Apps Script response
+        if (
+            data.status === "SUCCESS" &&
+            Array.isArray(data.questions)
+        ) {
+
+            questionData =
+                data.questions;
+
+        }
+
+
+        //--------------------------------------
+        // VALIDATE QUESTIONS
+        //--------------------------------------
+
+        if (
+            !Array.isArray(questionData) ||
+            questionData.length === 0
         ) {
 
             alert(
@@ -2177,35 +2242,43 @@ function loadPaperQuestions() {
 
         }
 
+
         //--------------------------------------
-        // Store Questions
+        // STORE QUESTIONS
         //--------------------------------------
 
-        questions = data;
-      
+        questions =
+            questionData;
+
         shuffleQuestions(questions);
 
+
         //--------------------------------------
-        // Reset Answers
+        // RESET ANSWERS
         //--------------------------------------
 
         answers =
-            new Array(questions.length).fill("");
+            new Array(
+                questions.length
+            ).fill("");
+
 
         //--------------------------------------
-        // First Question
+        // FIRST QUESTION
         //--------------------------------------
 
         currentQuestion = 0;
 
+
         //--------------------------------------
-        // Progress
+        // PROGRESS
         //--------------------------------------
 
         updateProgress();
 
+
         //--------------------------------------
-        // Load
+        // LOAD QUESTION
         //--------------------------------------
 
         loadQuestion();
@@ -2215,6 +2288,8 @@ function loadPaperQuestions() {
     .catch(function (err) {
 
         console.log(err);
+
+        examStarted = false;
 
         alert(
             "Unable to load questions.\nPlease contact Administrator."
