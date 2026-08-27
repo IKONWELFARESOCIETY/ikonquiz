@@ -15305,8 +15305,9 @@ function checkHallTicketPublished(){
     });
 }
 //====================================================
-//        DATE-WISE RESULT PDF MODULE
-//        COMPLETELY SEPARATE FLOW
+// DATE-WISE RESULT PDF MODULE
+// FINAL VERSION
+// Result_Admin -> Selected Date -> PDF Download
 //====================================================
 
 
@@ -15341,7 +15342,7 @@ function openDateWiseResultPDF(){
 
 
     //================================================
-    // CREATE PRIVATE DATE INPUT
+    // CREATE DATE INPUT
     //================================================
 
     let dateInput =
@@ -15353,7 +15354,9 @@ function openDateWiseResultPDF(){
     if(!dateInput){
 
         dateInput =
-            document.createElement("input");
+            document.createElement(
+                "input"
+            );
 
         dateInput.type = "date";
 
@@ -15361,12 +15364,15 @@ function openDateWiseResultPDF(){
             "dateWiseResultPDFInput";
 
 
-        // Keep date picker invisible
+        //================================================
+        // HIDDEN INPUT
+        //================================================
+
         dateInput.style.position =
             "fixed";
 
         dateInput.style.left =
-            "-9999px";
+            "-10000px";
 
         dateInput.style.top =
             "0";
@@ -15389,21 +15395,27 @@ function openDateWiseResultPDF(){
 
 
     //================================================
-    // CLEAR PREVIOUS DATE
+    // CLEAR OLD VALUE
     //================================================
 
     dateInput.value = "";
 
 
     //================================================
-    // DATE SELECTED
+    // DATE CHANGE
     //================================================
 
     dateInput.onchange =
         function(){
 
             const selectedDate =
-                dateInput.value;
+                this.value;
+
+
+            console.log(
+                "Selected Date:",
+                selectedDate
+            );
 
 
             if(!selectedDate){
@@ -15421,28 +15433,34 @@ function openDateWiseResultPDF(){
 
     //================================================
     // OPEN DATE PICKER
+    // IMPORTANT:
+    // click() IS USED INSTEAD OF showPicker()
     //================================================
 
-    if(
-        typeof dateInput.showPicker ===
-        "function"
-    ){
-
-        dateInput.showPicker();
-
-    }
-    else{
+    try{
 
         dateInput.click();
+
+    }
+    catch(error){
+
+        console.error(
+            "Date Picker Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to open date selector."
+        );
 
     }
 
 }
 
 
-
 //====================================================
-// FETCH RESULT DATA ONLY FOR PDF
+// LOAD SELECTED DATE RESULT
 //====================================================
 
 function loadSelectedDateResultForPDF(
@@ -15474,16 +15492,87 @@ function loadSelectedDateResultForPDF(
 
 
     //================================================
-    // LOADING MESSAGE
+    // VALIDATE DATE
     //================================================
 
-    alert(
-        "Preparing Result PDF..."
+    if(!selectedDate){
+
+        alert(
+            "Please select a date."
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "PDF DATE REQUEST:",
+        selectedDate
     );
 
 
     //================================================
-    // SEPARATE ALL RESULTS REQUEST
+    // LOADING
+    //================================================
+
+    const loadingBox =
+        document.createElement(
+            "div"
+        );
+
+
+    loadingBox.id =
+        "pdfLoadingMessage";
+
+
+    loadingBox.innerHTML =
+        "Preparing Result PDF...";
+
+
+    loadingBox.style.position =
+        "fixed";
+
+    loadingBox.style.left =
+        "50%";
+
+    loadingBox.style.top =
+        "50%";
+
+    loadingBox.style.transform =
+        "translate(-50%, -50%)";
+
+    loadingBox.style.background =
+        "#ffffff";
+
+    loadingBox.style.padding =
+        "20px 30px";
+
+    loadingBox.style.borderRadius =
+        "12px";
+
+    loadingBox.style.boxShadow =
+        "0 10px 35px rgba(0,0,0,0.25)";
+
+    loadingBox.style.zIndex =
+        "999999";
+
+    loadingBox.style.fontSize =
+        "17px";
+
+    loadingBox.style.fontWeight =
+        "700";
+
+    loadingBox.style.color =
+        "#1e3a8a";
+
+
+    document.body.appendChild(
+        loadingBox
+    );
+
+
+    //================================================
+    // ALL RESULTS API
     //================================================
 
     const url =
@@ -15492,7 +15581,15 @@ function loadSelectedDateResultForPDF(
         "&adminToken=" +
         encodeURIComponent(
             adminToken
-        );
+        ) +
+        "&_=" +
+        Date.now();
+
+
+    console.log(
+        "ALL RESULTS URL:",
+        url
+    );
 
 
     //================================================
@@ -15501,197 +15598,305 @@ function loadSelectedDateResultForPDF(
 
     fetch(url)
 
-    .then(
-        function(response){
+    .then(function(response){
 
-            if(!response.ok){
+        if(!response.ok){
 
-                throw new Error(
-                    "Server Error: " +
-                    response.status
-                );
-
-            }
-
-
-            return response.json();
-
-        }
-    )
-
-
-    .then(
-        function(data){
-
-            console.log(
-                "DATE PDF RESULT DATA:",
-                data
-            );
-
-
-            //========================================
-            // SECURITY
-            //========================================
-
-            if(
-                data.status ===
-                "UNAUTHORIZED"
-            ){
-
-                alert(
-                    "Admin verification required."
-                );
-
-                return;
-            }
-
-
-            //========================================
-            // API ERROR
-            //========================================
-
-            if(
-                data.status !==
-                "SUCCESS"
-            ){
-
-                alert(
-                    data.message ||
-                    "Unable to load result data."
-                );
-
-                return;
-            }
-
-
-            //========================================
-            // RESULTS
-            //========================================
-
-            const results =
-                Array.isArray(
-                    data.results
-                )
-                ?
-                data.results
-                :
-                [];
-
-
-            //========================================
-            // DATE FILTER
-            //========================================
-
-            const filteredResults =
-                results.filter(
-                    function(r){
-
-                        const resultDate =
-                            r.resultDate ||
-                            r.date ||
-                            r.Date ||
-                            "";
-
-
-                        return (
-                            normalizePDFResultDate(
-                                resultDate
-                            )
-                            ===
-                            selectedDate
-                        );
-
-                    }
-                );
-
-
-            console.log(
-                "SELECTED DATE:",
-                selectedDate
-            );
-
-            console.log(
-                "MATCHING RESULTS:",
-                filteredResults
-            );
-
-
-            //========================================
-            // NO DATA
-            //========================================
-
-            if(
-                filteredResults.length === 0
-            ){
-
-                alert(
-                    "No result found for selected date."
-                );
-
-                return;
-            }
-
-
-            //========================================
-            // GENERATE PDF
-            //========================================
-
-            generateDateWiseResultPDF(
-                filteredResults,
-                selectedDate
+            throw new Error(
+                "Server Error: " +
+                response.status
             );
 
         }
-    )
 
 
-    .catch(
-        function(error){
+        return response.json();
 
-            console.error(
-                "Date Wise Result PDF Error:",
-                error
+    })
+
+
+    .then(function(data){
+
+        console.log(
+            "ALL RESULTS RESPONSE:",
+            data
+        );
+
+
+        //================================================
+        // REMOVE LOADING
+        //================================================
+
+        const loader =
+            document.getElementById(
+                "pdfLoadingMessage"
             );
 
+
+        if(loader){
+
+            loader.remove();
+
+        }
+
+
+        //================================================
+        // AUTH CHECK
+        //================================================
+
+        if(
+            data &&
+            data.status ===
+            "UNAUTHORIZED"
+        ){
+
+            isAdminMode = false;
+
+            adminToken = "";
 
             alert(
+                "Admin verification required."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // GET RESULTS
+        //================================================
+
+        let results = [];
+
+
+        // Normal Apps Script response
+        if(
+            data &&
+            Array.isArray(
+                data.results
+            )
+        ){
+
+            results =
+                data.results;
+
+        }
+
+
+        // If API directly returns array
+        else if(
+            Array.isArray(data)
+        ){
+
+            results = data;
+
+        }
+
+
+        console.log(
+            "TOTAL RESULTS:",
+            results.length
+        );
+
+
+        //================================================
+        // API ERROR
+        //================================================
+
+        if(
+            data &&
+            data.status &&
+            data.status !==
+            "SUCCESS" &&
+            !Array.isArray(data)
+        ){
+
+            alert(
+                data.message ||
                 "Unable to load result data."
             );
 
+            return;
+
         }
-    );
+
+
+        //================================================
+        // FILTER SELECTED DATE
+        //================================================
+
+        const filteredResults =
+            results.filter(
+                function(result){
+
+                    const rawDate =
+                        result.date ??
+                        result.Date ??
+                        result.resultDate ??
+                        result.examDate ??
+                        result.testDate ??
+                        "";
+
+
+                    const normalizedDate =
+                        normalizePDFResultDate(
+                            rawDate
+                        );
+
+
+                    console.log(
+                        "RESULT DATE:",
+                        rawDate,
+                        "=>",
+                        normalizedDate
+                    );
+
+
+                    return (
+                        normalizedDate ===
+                        selectedDate
+                    );
+
+                }
+            );
+
+
+        console.log(
+            "SELECTED DATE:",
+            selectedDate
+        );
+
+
+        console.log(
+            "MATCHING RESULTS:",
+            filteredResults
+        );
+
+
+        //================================================
+        // NO RECORD
+        //================================================
+
+        if(
+            filteredResults.length === 0
+        ){
+
+            alert(
+                "No result found for " +
+                formatPDFResultDate(
+                    selectedDate
+                ) +
+                "."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // GENERATE PDF
+        //================================================
+
+        generateDateWiseResultPDF(
+            filteredResults,
+            selectedDate
+        );
+
+    })
+
+
+    .catch(function(error){
+
+        console.error(
+            "DATE PDF ERROR:",
+            error
+        );
+
+
+        const loader =
+            document.getElementById(
+                "pdfLoadingMessage"
+            );
+
+
+        if(loader){
+
+            loader.remove();
+
+        }
+
+
+        alert(
+            "Unable to load result data.\n" +
+            "Please try again."
+        );
+
+    });
 
 }
 
 
-
 //====================================================
 // NORMALIZE RESULT DATE
+// Handles:
+// YYYY-MM-DD
+// DD-MM-YYYY
+// DD/MM/YYYY
+// MM/DD/YYYY
+// Google Date / ISO Date
 //====================================================
 
-function normalizePDFResultDate(
-    value
-){
+function normalizePDFResultDate(value){
 
     if(
         value === null ||
         value === undefined
     ){
-
         return "";
+    }
 
+    const date =
+        String(value).trim();
+
+    if(date === ""){
+        return "";
     }
 
 
-    const date =
-        String(value)
-        .trim();
+    //================================================
+    // SHEET FORMAT:
+    // M/D/YYYY HH:MM:SS
+    // Example:
+    // 8/21/2026 20:54:26
+    //================================================
 
+    const match =
+        date.match(
+            /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
+        );
 
-    if(date === ""){
+    if(match){
 
-        return "";
+        const month =
+            String(match[1])
+            .padStart(2,"0");
 
+        const day =
+            String(match[2])
+            .padStart(2,"0");
+
+        const year =
+            match[3];
+
+        return (
+            year +
+            "-" +
+            month +
+            "-" +
+            day
+        );
     }
 
 
@@ -15699,113 +15904,49 @@ function normalizePDFResultDate(
     // YYYY-MM-DD
     //================================================
 
-    if(
-        /^\d{4}-\d{2}-\d{2}$/.test(
-            date
-        )
-    ){
-
-        return date;
-
-    }
-
-
-    //================================================
-    // DD-MM-YYYY
-    //================================================
-
-    let match =
+    const isoMatch =
         date.match(
-            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/
+            /^(\d{4})-(\d{1,2})-(\d{1,2})/
         );
 
-
-    if(match){
+    if(isoMatch){
 
         return (
-            match[3] +
+            isoMatch[1] +
             "-" +
-            String(match[2])
+            String(isoMatch[2])
                 .padStart(2,"0") +
             "-" +
-            String(match[1])
+            String(isoMatch[3])
                 .padStart(2,"0")
         );
-
     }
 
 
     //================================================
-    // DD-MM-YY
+    // DD-MM-YYYY / DD/MM/YYYY
     //================================================
 
-    match =
+    const indianMatch =
         date.match(
-            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2})$/
+            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
         );
 
-
-    if(match){
-
-        let year =
-            parseInt(
-                match[3],
-                10
-            );
-
-
-        year =
-            year < 50
-            ?
-            2000 + year
-            :
-            1900 + year;
-
+    if(indianMatch){
 
         return (
-            String(year) +
+            indianMatch[3] +
             "-" +
-            String(match[2])
+            String(indianMatch[2])
                 .padStart(2,"0") +
             "-" +
-            String(match[1])
+            String(indianMatch[1])
                 .padStart(2,"0")
         );
-
-    }
-
-
-    //================================================
-    // JAVASCRIPT DATE
-    //================================================
-
-    const parsed =
-        new Date(date);
-
-
-    if(
-        !isNaN(
-            parsed.getTime()
-        )
-    ){
-
-        return (
-            parsed.getFullYear() +
-            "-" +
-            String(
-                parsed.getMonth() + 1
-            ).padStart(2,"0") +
-            "-" +
-            String(
-                parsed.getDate()
-            ).padStart(2,"0")
-        );
-
     }
 
 
     return "";
-
 }
 
 
