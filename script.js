@@ -13605,24 +13605,28 @@ async function downloadHallTicketPDF(){
                                 );
 //================================================
 // PDF ONLY
-// CUT LINE + SCISSOR
-// EXISTING GAP KE EXACT CENTER ME
-// EXISTING DESIGN ME KOI CHANGE NAHI
+// FINAL CUT LINE + SCISSOR
+// EXACT CENTER OF EXISTING GAP
 //================================================
 
 if(a4){
 
+    // A4 MUST BE POSITIONED
+    a4.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
     const cards =
         Array.from(
-            a4.querySelectorAll(
-                ".hallCard"
-            )
+            a4.querySelectorAll(".hallCard")
         );
 
     cards.forEach(
-        function(card, index){
+        function(card,index){
 
-            // Last card ke neeche cut line nahi
+            // Last card ke neeche line nahi
             if(index >= cards.length - 1){
                 return;
             }
@@ -13631,23 +13635,23 @@ if(a4){
                 cards[index + 1];
 
             //========================================
-            // EXISTING GAP CALCULATE
+            // EXISTING GAP
             //========================================
+
+            const cardBottom =
+                card.offsetTop +
+                card.offsetHeight;
 
             const gap =
                 nextCard.offsetTop -
-                (
-                    card.offsetTop +
-                    card.offsetHeight
-                );
+                cardBottom;
 
             //========================================
-            // GAP KE EXACT CENTER KI POSITION
+            // GAP KA EXACT CENTER
             //========================================
 
             const lineTop =
-                card.offsetTop +
-                card.offsetHeight +
+                cardBottom +
                 (gap / 2);
 
             //========================================
@@ -13655,9 +13659,7 @@ if(a4){
             //========================================
 
             const cutLine =
-                clonedDocument.createElement(
-                    "div"
-                );
+                clonedDocument.createElement("div");
 
             cutLine.style.position =
                 "absolute";
@@ -13672,34 +13674,26 @@ if(a4){
                 lineTop + "px";
 
             cutLine.style.height =
-                "1px";
+                "0px";
+
+            cutLine.style.borderTop =
+                "2px dashed #64748b";
+
+            cutLine.style.boxSizing =
+                "border-box";
 
             cutLine.style.zIndex =
-                "99999";
+                "999999";
 
             cutLine.style.pointerEvents =
                 "none";
-
-            cutLine.style.backgroundImage =
-                "repeating-linear-gradient(" +
-                "to right, " +
-                "#64748b 0px, " +
-                "#64748b 6px, " +
-                "transparent 6px, " +
-                "transparent 12px" +
-                ")";
-
-            cutLine.style.backgroundRepeat =
-                "repeat-x";
 
             //========================================
             // SCISSOR
             //========================================
 
             const scissors =
-                clonedDocument.createElement(
-                    "span"
-                );
+                clonedDocument.createElement("span");
 
             scissors.textContent =
                 "✂";
@@ -13711,7 +13705,7 @@ if(a4){
                 "50%";
 
             scissors.style.top =
-                "50%";
+                "0";
 
             scissors.style.transform =
                 "translate(-50%, -50%)";
@@ -13740,8 +13734,11 @@ if(a4){
             scissors.style.whiteSpace =
                 "nowrap";
 
+            scissors.style.zIndex =
+                "1000000";
+
             //========================================
-            // ADD SCISSOR TO LINE
+            // ADD SCISSOR
             //========================================
 
             cutLine.appendChild(
@@ -13749,7 +13746,7 @@ if(a4){
             );
 
             //========================================
-            // ADD CUT LINE TO A4
+            // ADD LINE TO A4
             //========================================
 
             a4.appendChild(
