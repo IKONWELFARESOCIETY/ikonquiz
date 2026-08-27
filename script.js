@@ -13708,8 +13708,8 @@ if(a4){
             scissors.style.top =
                 "0";
 
-            scissors.style.transform =
-                "translate(-50%, -50%)";
+          scissors.style.transform =
+    "translate(-50%, -65%)";
 
             scissors.style.background =
                 "transparent";
