@@ -16000,10 +16000,610 @@ function formatPDFResultDate(
 
 }
 
-function generateDateWiseResultPDF(
-    results,
-    selectedDate
-){
+//====================================================
+// DATE-WISE RESULT PDF GENERATOR
+//====================================================
+
+function generateDateWiseResultPDF(results, selectedDate){
+
+    //================================================
+    // CHECK JSPDF
+    //================================================
+
+    if(
+        !window.jspdf ||
+        !window.jspdf.jsPDF
+    ){
+
+        alert("PDF generator is not loaded.");
+        return;
+
+    }
+
+    if(
+        !Array.isArray(results) ||
+        results.length === 0
+    ){
+
+        alert("No result found for selected date.");
+        return;
+
+    }
+
+    //================================================
+    // CREATE PDF
+    //================================================
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4",
+        compress: true
+    });
+
+    const pageWidth = 297;
+    const pageHeight = 210;
+
+    //================================================
+    // PAGE BORDER
+    //================================================
+
+    pdf.setDrawColor(20,70,140);
+    pdf.setLineWidth(0.8);
+
+    pdf.rect(
+        7,
+        7,
+        pageWidth - 14,
+        pageHeight - 14
+    );
+
+    //================================================
+    // HEADER
+    //================================================
+
+    pdf.setFillColor(20,70,140);
+
+    pdf.roundedRect(
+        8,
+        8,
+        pageWidth - 16,
+        27,
+        3,
+        3,
+        "F"
+    );
+
+    //================================================
+    // INSTITUTE NAME
+    //================================================
+
+    pdf.setTextColor(255,255,255);
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(19);
+
+    pdf.text(
+        "IKON INSTITUTE",
+        pageWidth / 2,
+        18,
+        {
+            align: "center"
+        }
+    );
+
+    pdf.setFontSize(10);
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.text(
+        "ONLINE EXAMINATION RESULT REPORT",
+        pageWidth / 2,
+        25,
+        {
+            align: "center"
+        }
+    );
+
+    //================================================
+    // DATE
+    //================================================
+
+    pdf.setTextColor(30,30,30);
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(12);
+
+    pdf.text(
+        "Result Date : " +
+        formatPDFResultDate(selectedDate),
+        15,
+        45
+    );
+
+    //================================================
+    // TOTAL STUDENTS
+    //================================================
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.setFontSize(10);
+
+    pdf.text(
+        "Total Candidates : " +
+        results.length,
+        pageWidth - 15,
+        45,
+        {
+            align: "right"
+        }
+    );
+
+    //================================================
+    // TABLE SETTINGS
+    //================================================
+
+    const startY = 52;
+
+    const marginLeft = 12;
+
+    const rowHeight = 9;
+
+    const headerHeight = 12;
+
+    const tableWidth = 273;
+
+    //================================================
+    // COLUMN WIDTHS
+    // DATE AND GRADE REMOVED
+    //================================================
+
+    const colWidths = [
+        32, // Reg No
+        48, // Name
+        47, // Paper
+        25, // Total Questions
+        25, // Correct
+        25, // Wrong
+        30, // Unattempted
+        41  // Percentage
+    ];
+
+    //================================================
+    // COLUMN HEADINGS
+    //================================================
+
+    const headers = [
+        "Reg No",
+        "Candidate Name",
+        "Paper",
+        "Total Questions",
+        "Correct",
+        "Wrong",
+        "Unattempted",
+        "Percentage"
+    ];
+
+    //================================================
+    // DRAW HEADER
+    //================================================
+
+    let x = marginLeft;
+
+    pdf.setFillColor(30,80,150);
+
+    pdf.setDrawColor(180,190,205);
+
+    headers.forEach(function(header,index){
+
+        pdf.rect(
+            x,
+            startY,
+            colWidths[index],
+            headerHeight,
+            "FD"
+        );
+
+        pdf.setTextColor(
+            255,
+            255,
+            255
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(8);
+
+        pdf.text(
+            header,
+            x + colWidths[index] / 2,
+            startY + 7.5,
+            {
+                align: "center"
+            }
+        );
+
+        x += colWidths[index];
+
+    });
+
+    //================================================
+    // TABLE DATA
+    //================================================
+
+    let y =
+        startY +
+        headerHeight;
+
+    results.forEach(function(result,index){
+
+        //============================================
+        // NEW PAGE
+        //============================================
+
+        if(
+            y + rowHeight >
+            pageHeight - 15
+        ){
+
+            pdf.addPage();
+
+            pdf.setDrawColor(20,70,140);
+            pdf.setLineWidth(0.8);
+
+            pdf.rect(
+                7,
+                7,
+                pageWidth - 14,
+                pageHeight - 14
+            );
+
+            y = 15;
+
+        }
+
+        //============================================
+        // DATA VALUES
+        //============================================
+
+        const reg =
+            result.regNo ??
+            result.RegNo ??
+            result["Reg No"] ??
+            "";
+
+        const name =
+            result.name ??
+            result.Name ??
+            "";
+
+        const paper =
+            result.paper ??
+            result.Paper ??
+            result.paperName ??
+            "";
+
+        const total =
+            result.totalQuestions ??
+            result["Total Questions"] ??
+            "";
+
+        const correct =
+            result.correctAnswer ??
+            result["Correct Answer"] ??
+            result.correct ??
+            "";
+
+        const wrong =
+            result.wrongAnswer ??
+            result["Wrong Answer"] ??
+            result.wrong ??
+            "";
+
+        const unattempted =
+            result.unattempted ??
+            result.Unattempted ??
+            "";
+
+        const percentage =
+            result.percentage ??
+            result.Percentage ??
+            "";
+
+        const row = [
+            reg,
+            name,
+            paper,
+            total,
+            correct,
+            wrong,
+            unattempted,
+            percentage
+        ];
+
+        //============================================
+        // ALTERNATE ROW
+        //============================================
+
+        if(index % 2 === 0){
+
+            pdf.setFillColor(
+                245,
+                248,
+                252
+            );
+
+        }
+        else{
+
+            pdf.setFillColor(
+                255,
+                255,
+                255
+            );
+
+        }
+
+        //============================================
+        // DRAW CELLS
+        //============================================
+
+        x = marginLeft;
+
+        row.forEach(function(value,colIndex){
+
+            pdf.setDrawColor(
+                200,
+                205,
+                215
+            );
+
+            pdf.rect(
+                x,
+                y,
+                colWidths[colIndex],
+                rowHeight,
+                "FD"
+            );
+
+            pdf.setTextColor(
+                35,
+                35,
+                35
+            );
+
+            pdf.setFont(
+                "helvetica",
+                colIndex === 1
+                    ? "bold"
+                    : "normal"
+            );
+
+            pdf.setFontSize(
+                colIndex === 1
+                    ? 8.5
+                    : 8
+            );
+
+            let text =
+                String(value ?? "");
+
+            //========================================
+            // LIMIT LONG TEXT
+            //========================================
+
+            const maxWidth =
+                colWidths[colIndex] - 4;
+
+            while(
+                text.length > 3 &&
+                pdf.getTextWidth(text) >
+                maxWidth
+            ){
+
+                text =
+                    text.substring(
+                        0,
+                        text.length - 1
+                    );
+
+                text =
+                    text.substring(
+                        0,
+                        text.length - 3
+                    ) +
+                    "...";
+
+            }
+
+            pdf.text(
+                text,
+                x + colWidths[colIndex] / 2,
+                y + 6,
+                {
+                    align: "center"
+                }
+            );
+
+            x += colWidths[colIndex];
+
+        });
+
+        y += rowHeight;
+
+    });
+
+    //================================================
+    // FOOTER
+    //================================================
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.setFontSize(8);
+
+    pdf.setTextColor(
+        100,
+        100,
+        100
+    );
+
+    pdf.text(
+        "IKON Institute | Online Examination System",
+        pageWidth / 2,
+        pageHeight - 11,
+        {
+            align: "center"
+        }
+    );
+
+    //================================================
+    // FILE NAME
+    //================================================
+
+    const safeDate =
+        formatPDFResultDate(
+            selectedDate
+        ).replace(
+            /[^0-9-]/g,
+            "-"
+        );
+
+    pdf.save(
+        "IKON_Result_Report_" +
+        safeDate +
+        ".pdf"
+    );
+
+}
+
+
+//====================================================
+// 3-TAP SECRET RESULT PDF ACCESS
+//====================================================
+
+(function(){
+
+    let tapCount = 0;
+    let tapTimer = null;
+
+    const title =
+        document.getElementById("testTitle");
+
+    if(!title){
+
+        console.error(
+            "3-Tap Error: testTitle not found."
+        );
+
+        return;
+
+    }
+
+    function handleThreeTap(){
+
+        tapCount++;
+
+        console.log(
+            "Title Tap Count:",
+            tapCount
+        );
+
+        clearTimeout(
+            tapTimer
+        );
+
+        tapTimer =
+            setTimeout(
+                function(){
+
+                    tapCount = 0;
+
+                },
+                1000
+            );
+
+        //============================================
+        // THREE TAP
+        //============================================
+
+        if(tapCount === 3){
+
+            tapCount = 0;
+
+            clearTimeout(
+                tapTimer
+            );
+
+            console.log(
+                "3-Tap PDF Access Activated"
+            );
+
+            //========================================
+            // PDF ACCESS MODE
+            //========================================
+
+            pdfAdminAccess = true;
+
+            //========================================
+            // OPEN ADMIN VERIFICATION
+            //========================================
+
+            if(
+                typeof openAdminVerify ===
+                "function"
+            ){
+
+                openAdminVerify();
+
+            }
+            else{
+
+                console.error(
+                    "openAdminVerify() function not found."
+                );
+
+                alert(
+                    "Admin access is not available."
+                );
+
+            }
+
+        }
+
+    }
+
+    //================================================
+    // POINTER EVENT
+    //================================================
+
+    title.addEventListener(
+        "pointerup",
+        handleThreeTap
+    );
+
+})();
 //====================================================
 // 3 TAP SECRET RESULT PDF ACCESS
 //====================================================
