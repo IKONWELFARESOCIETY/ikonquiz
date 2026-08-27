@@ -13610,6 +13610,7 @@ async function downloadHallTicketPDF(){
 //================================================
 
 if(a4){
+      a4.classList.add("pdf-cutline-render");
 
     // A4 MUST BE POSITIONED
     a4.style.setProperty(
@@ -13711,7 +13712,7 @@ if(a4){
                 "translate(-50%, -50%)";
 
             scissors.style.background =
-                "#ffffff";
+                "transparent";
 
             scissors.style.padding =
                 "0 3mm";
