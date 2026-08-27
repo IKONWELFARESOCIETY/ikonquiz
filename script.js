@@ -16182,7 +16182,6 @@ function generateDateWiseResultPDF(results, selectedDate){
         25, // Correct
         25, // Wrong
         30, // Unattempted
-        41  // Percentage
     ];
 
     //================================================
@@ -16197,8 +16196,7 @@ function generateDateWiseResultPDF(results, selectedDate){
     "Total Questions",
     "Correct",
     "Wrong",
-    "Unattempted",
-    "Percentage"
+    "Unattempted"
 ];
     //================================================
     // DRAW HEADER
@@ -16339,8 +16337,7 @@ headers.forEach(function(header,index){
     total,
     correct,
     wrong,
-    unattempted,
-    percentage
+    unattempted
 ];
 
         //============================================
