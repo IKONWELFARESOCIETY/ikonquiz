@@ -16578,8 +16578,7 @@ function generateDateWiseResultPDF(
 
 }
 //====================================================
-// 3 TAP SECRET ADMIN ACCESS
-// IKON INSTITUTE ONLINE EXAM PORTAL
+// 3 TAP SECRET RESULT PDF ACCESS
 //====================================================
 
 (function(){
@@ -16646,9 +16645,7 @@ function generateDateWiseResultPDF(
 
 
             //========================================
-            // IMPORTANT
-            // PDF FLOW ONLY
-            // NORMAL VIEW RESULT KO TOUCH NAHI KAREGA
+            // PDF FLOW ACTIVE
             //========================================
 
             pdfAdminAccess = true;
@@ -16672,7 +16669,6 @@ function generateDateWiseResultPDF(
                     "openAdminVerify() function not found."
                 );
 
-
                 alert(
                     "Admin access is not available."
                 );
@@ -16686,13 +16682,11 @@ function generateDateWiseResultPDF(
 
     //================================================
     // POINTER EVENT
-    // DESKTOP + MOBILE
     //================================================
 
     title.addEventListener(
         "pointerup",
         handleThreeTap
     );
-
 
 })();
