@@ -853,7 +853,9 @@ function checkStudentExamTime(){
 
 
 //====================================================
-// CHECK INDIVIDUAL STUDENT TIME
+// CHECK INDIVIDUAL STUDENT EXAM TIME
+// P = START TIME
+// Q = END TIME
 //====================================================
 
 function checkIndividualExamTime(){
@@ -862,14 +864,8 @@ function checkIndividualExamTime(){
         !regNo ||
         !paperName
     ){
-
-        console.log(
-            "Student Reg No or Paper missing."
-        );
-
         return;
     }
-
 
     const url =
         SCRIPT_URL +
@@ -879,17 +875,14 @@ function checkIndividualExamTime(){
         "&regNo=" +
         encodeURIComponent(regNo);
 
-
     fetch(url)
 
     .then(function(res){
 
         if(!res.ok){
-
             throw new Error(
                 "Server Error: " + res.status
             );
-
         }
 
         return res.json();
@@ -903,39 +896,43 @@ function checkIndividualExamTime(){
             data
         );
 
-
-        //================================================
-        // TIME NOT STARTED
-        //================================================
+        //------------------------------------------
+        // EXAM NOT STARTED
+        //------------------------------------------
 
         if(
             data.status ===
             "EXAM_NOT_STARTED"
         ){
 
-            // Show waiting page
             document
                 .getElementById("waitingPage")
                 ?.classList.remove("hidden");
 
-
-            // Hide test page
             document
                 .getElementById("testPage")
                 ?.classList.add("hidden");
 
+            document
+                .getElementById("examArea")
+                ?.classList.add("hidden");
 
-            // Show alert only once
-            if(
-                !window.examTimeAlertShown
-            ){
+            //--------------------------------------
+            // NO ALERT
+            //--------------------------------------
 
-                window.examTimeAlertShown = true;
-
-                alert(
-                    data.message ||
-                    "Your exam has not started yet."
+            const waitingText =
+                document.getElementById(
+                    "motivationText"
                 );
+
+            if(waitingText){
+
+                waitingText.innerHTML =
+                    "Your examination will start at " +
+                    "<b>" +
+                    (data.examTime || "--") +
+                    "</b>";
 
             }
 
@@ -944,16 +941,15 @@ function checkIndividualExamTime(){
         }
 
 
-        //================================================
-        // EXAM TIME REACHED
-        //================================================
+        //------------------------------------------
+        // EXAM ENDED
+        //------------------------------------------
 
         if(
             data.status ===
-            "SUCCESS"
+            "EXAM_ENDED"
         ){
 
-            // Stop individual time checker
             if(
                 studentTimeChecker !== null
             ){
@@ -966,20 +962,63 @@ function checkIndividualExamTime(){
 
             }
 
+            stopTimer();
 
-            // Reset alert flag
-            window.examTimeAlertShown = false;
+            showExamEndedScreen(
+                data.endTime || ""
+            );
 
-
-            // Start normal test process
-            openTest();
+            return;
 
         }
 
 
-        //================================================
+        //------------------------------------------
+        // EXAM SUCCESS
+        //------------------------------------------
+
+        if(
+            data.status ===
+            "SUCCESS"
+        ){
+
+            //--------------------------------------
+            // SAVE SERVER END TIME
+            //--------------------------------------
+
+            window.studentExamEndTime =
+                data.endTime || "";
+
+            //--------------------------------------
+            // STOP START-TIME CHECKER
+            //--------------------------------------
+
+            if(
+                studentTimeChecker !== null
+            ){
+
+                clearInterval(
+                    studentTimeChecker
+                );
+
+                studentTimeChecker = null;
+
+            }
+
+            //--------------------------------------
+            // OPEN NORMAL TEST
+            //--------------------------------------
+
+            openTest();
+
+            return;
+
+        }
+
+
+        //------------------------------------------
         // OTHER ERROR
-        //================================================
+        //------------------------------------------
 
         if(
             data.status === "ERROR" ||
@@ -16971,3 +17010,152 @@ row.forEach(function(value,colIndex){
     );
 
 })();
+//====================================================
+// PROFESSIONAL EXAM ENDED SCREEN
+//====================================================
+
+function showExamEndedScreen(endTime){
+
+    //------------------------------------------
+    // STOP EVERYTHING
+    //------------------------------------------
+
+    stopTimer();
+    stopStatusChecker();
+
+    if(
+        studentTimeChecker !== null
+    ){
+
+        clearInterval(
+            studentTimeChecker
+        );
+
+        studentTimeChecker = null;
+
+    }
+
+    //------------------------------------------
+    // EXAM STATE
+    //------------------------------------------
+
+    examStarted = false;
+    examSubmitted = true;
+    focusLock = true;
+
+    //------------------------------------------
+    // HIDE ALL EXAM PAGES
+    //------------------------------------------
+
+    const pages = [
+        "loginPage",
+        "waitingPage",
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalPage",
+        "verificationPage",
+        "practicalVerificationPage",
+        "instructionPage",
+        "examArea",
+        "testPage",
+        "successPage"
+    ];
+
+    pages.forEach(function(id){
+
+        document
+            .getElementById(id)
+            ?.classList.add("hidden");
+
+    });
+
+    //------------------------------------------
+    // CREATE END PAGE
+    //------------------------------------------
+
+    let endPage =
+        document.getElementById(
+            "examEndedPage"
+        );
+
+    if(!endPage){
+
+        endPage =
+            document.createElement("div");
+
+        endPage.id =
+            "examEndedPage";
+
+        document.body.appendChild(
+            endPage
+        );
+
+    }
+
+    //------------------------------------------
+    // PROFESSIONAL DESIGN
+    //------------------------------------------
+
+    endPage.innerHTML = `
+
+        <div class="exam-ended-wrapper">
+
+            <div class="exam-ended-card">
+
+                <div class="exam-ended-icon">
+                    ✓
+                </div>
+
+                <div class="exam-ended-title">
+                    Examination Time Has Ended
+                </div>
+
+                <div class="exam-ended-line"></div>
+
+                <p class="exam-ended-message">
+                    Your examination time has been completed.
+                </p>
+
+                <div class="exam-ended-info">
+
+                    <div class="exam-ended-label">
+                        EXAMINATION STATUS
+                    </div>
+
+                    <div class="exam-ended-status">
+                        TIME COMPLETED
+                    </div>
+
+                </div>
+
+                ${
+                    endTime
+                    ?
+                    `
+                    <div class="exam-ended-time">
+                        End Time : ${endTime}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+                <div class="exam-ended-footer">
+                    IKON INSTITUTE ONLINE EXAM PORTAL
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    //------------------------------------------
+    // SHOW PAGE
+    //------------------------------------------
+
+    endPage.style.display =
+        "block";
+
+}
