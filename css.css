@@ -15903,3 +15903,244 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/*====================================================
+  EXAM TIME ENDED PAGE
+====================================================*/
+
+#examEndedPage{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    display:none;
+    background:
+        linear-gradient(
+            135deg,
+            #eef4ff 0%,
+            #f8fbff 50%,
+            #e9f1ff 100%
+        );
+    overflow:auto;
+}
+
+
+/*----------------------------------------------------
+  WRAPPER
+----------------------------------------------------*/
+
+.exam-ended-wrapper{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+    box-sizing:border-box;
+}
+
+
+/*----------------------------------------------------
+  CARD
+----------------------------------------------------*/
+
+.exam-ended-card{
+    width:min(620px, 100%);
+    background:#ffffff;
+    border-radius:24px;
+    padding:48px 42px;
+    text-align:center;
+    box-shadow:
+        0 25px 70px rgba(20,50,100,.18);
+    border:1px solid #e3ebf8;
+    position:relative;
+    overflow:hidden;
+}
+
+
+/*----------------------------------------------------
+  TOP LINE
+----------------------------------------------------*/
+
+.exam-ended-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:7px;
+    background:
+        linear-gradient(
+            90deg,
+            #0645c5,
+            #1687ff,
+            #0645c5
+        );
+}
+
+
+/*----------------------------------------------------
+  ICON
+----------------------------------------------------*/
+
+.exam-ended-icon{
+    width:82px;
+    height:82px;
+    margin:0 auto 24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#e9f7ef;
+    color:#168447;
+
+    font-size:42px;
+    font-weight:800;
+
+    box-shadow:
+        0 10px 25px rgba(22,132,71,.15);
+}
+
+
+/*----------------------------------------------------
+  TITLE
+----------------------------------------------------*/
+
+.exam-ended-title{
+    font-size:30px;
+    font-weight:800;
+    color:#17365f;
+    line-height:1.25;
+    margin-bottom:18px;
+}
+
+
+/*----------------------------------------------------
+  LINE
+----------------------------------------------------*/
+
+.exam-ended-line{
+    width:70px;
+    height:4px;
+    margin:0 auto 22px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0645c5,
+            #1687ff
+        );
+}
+
+
+/*----------------------------------------------------
+  MESSAGE
+----------------------------------------------------*/
+
+.exam-ended-message{
+    font-size:17px;
+    color:#66758a;
+    margin:0 auto 30px;
+    line-height:1.7;
+}
+
+
+/*----------------------------------------------------
+  INFO
+----------------------------------------------------*/
+
+.exam-ended-info{
+    background:#f5f8fc;
+    border:1px solid #e2eaf4;
+    border-radius:14px;
+    padding:18px;
+    margin:0 auto 18px;
+}
+
+
+.exam-ended-label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    color:#7a899d;
+    margin-bottom:7px;
+}
+
+
+.exam-ended-status{
+    font-size:18px;
+    font-weight:800;
+    color:#0645c5;
+}
+
+
+/*----------------------------------------------------
+  END TIME
+----------------------------------------------------*/
+
+.exam-ended-time{
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    background:#eef4ff;
+
+    color:#245ca8;
+
+    font-size:14px;
+    font-weight:700;
+
+    margin-bottom:28px;
+}
+
+
+/*----------------------------------------------------
+  FOOTER
+----------------------------------------------------*/
+
+.exam-ended-footer{
+    padding-top:20px;
+    border-top:1px solid #edf1f6;
+
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+
+    color:#8a98aa;
+}
+
+
+/*----------------------------------------------------
+  MOBILE
+----------------------------------------------------*/
+
+@media(max-width:600px){
+
+    .exam-ended-wrapper{
+        padding:18px;
+    }
+
+    .exam-ended-card{
+        padding:40px 22px;
+        border-radius:20px;
+    }
+
+    .exam-ended-icon{
+        width:70px;
+        height:70px;
+        font-size:34px;
+    }
+
+    .exam-ended-title{
+        font-size:24px;
+    }
+
+    .exam-ended-message{
+        font-size:15px;
+    }
+
+}
