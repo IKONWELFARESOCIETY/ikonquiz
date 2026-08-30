@@ -4193,48 +4193,40 @@ if(resultPage){
         });
 
 
-     // -------------------------------------------
+//====================================================
 // NO PUBLISHED RESULT
-// -------------------------------------------
+//====================================================
 
 //====================================================
 // NO PUBLISHED RESULT
+// COMPLETE RESULT PAGE HIDE
 //====================================================
 
 if(visibleCount === 0){
 
     const resultPage =
-        document.getElementById(
-            "studentResultPage"
-        );
+        document.getElementById("studentResultPage");
+
 
     if(resultPage){
 
-        // Hide complete existing Result List UI
-        const resultBox =
-            resultPage.querySelector(
-                ".result-list-box"
-            );
+        // ---------------------------------------------
+        // HIDE EVERYTHING INSIDE RESULT PAGE
+        // ---------------------------------------------
 
-        if(resultBox){
+        Array.from(
+            resultPage.children
+        ).forEach(function(child){
 
-            resultBox.style.display = "none";
+            child.style.display = "none";
 
-        }
-
-
-        // Remove old message if already exists
-        const oldMessage =
-            resultPage.querySelector(
-                "#resultNotPublishedMessage"
-            );
-
-        if(oldMessage){
-            oldMessage.remove();
-        }
+        });
 
 
-        // Create professional message
+        // ---------------------------------------------
+        // CREATE MESSAGE
+        // ---------------------------------------------
+
         const message =
             document.createElement("div");
 
@@ -4244,6 +4236,7 @@ if(visibleCount === 0){
 
 
         message.style.cssText = `
+            display:block !important;
             width:90%;
             max-width:650px;
             margin:40px auto;
@@ -4260,15 +4253,15 @@ if(visibleCount === 0){
         message.innerHTML = `
 
             <div style="
-                width:72px;
-                height:72px;
+                width:75px;
+                height:75px;
                 margin:0 auto 20px;
                 border-radius:50%;
                 background:#eff6ff;
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                font-size:32px;
+                font-size:34px;
             ">
                 🔒
             </div>
@@ -4277,7 +4270,7 @@ if(visibleCount === 0){
             <h2 style="
                 margin:0 0 12px;
                 color:#1d4ed8;
-                font-size:26px;
+                font-size:27px;
                 font-weight:700;
             ">
                 Result Not Published Yet
@@ -4319,9 +4312,7 @@ if(visibleCount === 0){
                 Please check again later.
             </div>
 
-
             <br>
-
 
             <button
                 type="button"
@@ -4343,12 +4334,15 @@ if(visibleCount === 0){
         `;
 
 
-        resultPage.appendChild(
-            message
-        );
+        // ---------------------------------------------
+        // ADD ONLY MESSAGE
+        // ---------------------------------------------
+
+        resultPage.appendChild(message);
 
     }
 
+    return;
 }
     })
 
