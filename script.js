@@ -7738,23 +7738,25 @@ async function submitPractical(autoSubmit = false){
 
     let files = [];
 
-    for(const input of inputs){
+   for(const input of inputs){
 
-        if(input.files.length==0){
+    // Auto submit me jis question ka screenshot nahi hai
+    // usko skip karo
+    if(input.files.length === 0){
 
-            alert("Please upload screenshot for every question.");
-
-            if(btn){
-
-                btn.disabled=false;
-                btn.innerHTML="Submit Practical";
-
-            }
-
-            return;
-
+        if(autoSubmit){
+            continue;
         }
 
+        alert("Please upload screenshot for every question.");
+
+        if(btn){
+            btn.disabled = false;
+            btn.innerHTML = "Submit Practical";
+        }
+
+        return;
+    }
         const file =
             input.files[0];
 
