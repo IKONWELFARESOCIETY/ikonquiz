@@ -4088,6 +4088,37 @@ function verifyResultStudent(){
 
 
         let visibleCount = 0;
+        //====================================================
+// RESET RESULT LIST UI
+//====================================================
+
+const resultPage =
+    document.getElementById(
+        "studentResultPage"
+    );
+
+if(resultPage){
+
+    const resultBox =
+        resultPage.querySelector(
+            ".result-list-box"
+        );
+
+    if(resultBox){
+        resultBox.style.display = "";
+    }
+
+
+    const oldMessage =
+        resultPage.querySelector(
+            "#resultNotPublishedMessage"
+        );
+
+    if(oldMessage){
+        oldMessage.remove();
+    }
+
+}
 
 
         data.results.forEach(function(r){
@@ -4166,6 +4197,10 @@ function verifyResultStudent(){
 // NO PUBLISHED RESULT
 // -------------------------------------------
 
+//====================================================
+// NO PUBLISHED RESULT
+//====================================================
+
 if(visibleCount === 0){
 
     const resultPage =
@@ -4173,50 +4208,67 @@ if(visibleCount === 0){
             "studentResultPage"
         );
 
-    if(!resultPage){
-        return;
-    }
+    if(resultPage){
+
+        // Hide complete existing Result List UI
+        const resultBox =
+            resultPage.querySelector(
+                ".result-list-box"
+            );
+
+        if(resultBox){
+
+            resultBox.style.display = "none";
+
+        }
 
 
-    //================================================
-    // SAVE ORIGINAL PAGE ONLY ONCE
-    //================================================
+        // Remove old message if already exists
+        const oldMessage =
+            resultPage.querySelector(
+                "#resultNotPublishedMessage"
+            );
 
-    if(!resultPage.dataset.originalResultPage){
-
-        resultPage.dataset.originalResultPage =
-            resultPage.innerHTML;
-
-    }
+        if(oldMessage){
+            oldMessage.remove();
+        }
 
 
-    //================================================
-    // COMPLETELY REPLACE RESULT LIST PAGE
-    //================================================
+        // Create professional message
+        const message =
+            document.createElement("div");
 
-    resultPage.innerHTML = `
 
-        <div style="
+        message.id =
+            "resultNotPublishedMessage";
+
+
+        message.style.cssText = `
+            width:90%;
             max-width:650px;
-            margin:35px auto;
+            margin:40px auto;
             padding:45px 30px;
+            box-sizing:border-box;
             text-align:center;
             background:#ffffff;
+            border:1px solid #e2e8f0;
             border-radius:18px;
-            box-shadow:0 8px 30px rgba(0,0,0,0.10);
-            border:1px solid #e5e7eb;
-        ">
+            box-shadow:0 10px 30px rgba(0,0,0,0.10);
+        `;
+
+
+        message.innerHTML = `
 
             <div style="
-                width:75px;
-                height:75px;
+                width:72px;
+                height:72px;
                 margin:0 auto 20px;
                 border-radius:50%;
-                background:#f1f5f9;
+                background:#eff6ff;
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                font-size:35px;
+                font-size:32px;
             ">
                 🔒
             </div>
@@ -4224,8 +4276,8 @@ if(visibleCount === 0){
 
             <h2 style="
                 margin:0 0 12px;
-                color:#1e3a8a;
-                font-size:27px;
+                color:#1d4ed8;
+                font-size:26px;
                 font-weight:700;
             ">
                 Result Not Published Yet
@@ -4233,21 +4285,21 @@ if(visibleCount === 0){
 
 
             <p style="
-                margin:0 auto 10px;
-                color:#374151;
+                margin:0 0 8px;
+                color:#334155;
                 font-size:16px;
-                line-height:1.7;
+                line-height:1.6;
             ">
                 Your result has been successfully recorded.
             </p>
 
 
             <p style="
-                margin:0 auto 25px;
-                color:#6b7280;
+                margin:0 auto 22px;
+                max-width:520px;
+                color:#64748b;
                 font-size:15px;
                 line-height:1.7;
-                max-width:520px;
             ">
                 The result will be available here once it is
                 officially published by the institute.
@@ -4256,10 +4308,10 @@ if(visibleCount === 0){
 
             <div style="
                 display:inline-block;
-                padding:10px 18px;
+                padding:9px 18px;
+                border-radius:8px;
                 background:#f8fafc;
                 border:1px solid #e2e8f0;
-                border-radius:10px;
                 color:#475569;
                 font-size:14px;
                 margin-bottom:25px;
@@ -4273,14 +4325,14 @@ if(visibleCount === 0){
 
             <button
                 type="button"
-                onclick="backToLogin()"
+                onclick="backToResultVerify()"
                 style="
                     border:none;
-                    padding:12px 30px;
-                    border-radius:9px;
+                    padding:11px 28px;
+                    border-radius:8px;
                     background:#475569;
                     color:#ffffff;
-                    font-size:15px;
+                    font-size:14px;
                     font-weight:600;
                     cursor:pointer;
                 "
@@ -4288,11 +4340,15 @@ if(visibleCount === 0){
                 ← Back
             </button>
 
-        </div>
+        `;
 
-    `;
 
-    return;
+        resultPage.appendChild(
+            message
+        );
+
+    }
+
 }
     })
 
