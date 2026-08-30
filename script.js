@@ -16269,7 +16269,7 @@ function formatPDFResultDate(
 
 }
 
-```javascript
+
 //====================================================
 // DATE-WISE RESULT PDF
 // DATE + PAPER FILTER
