@@ -4162,38 +4162,138 @@ function verifyResultStudent(){
         });
 
 
-        // -------------------------------------------
-        // NO RESULT
-        // -------------------------------------------
+     // -------------------------------------------
+// NO PUBLISHED RESULT
+// -------------------------------------------
 
-        if(visibleCount === 0){
+if(visibleCount === 0){
 
-            body.innerHTML = `
+    const resultPage =
+        document.getElementById(
+            "studentResultPage"
+        );
 
-                <tr>
+    if(!resultPage){
+        return;
+    }
 
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:45px;
-                            color:#d32f2f;
-                            font-size:22px;
-                            font-weight:bold;
-                            background:#fff8f8;
-                        "
-                    >
 
-                        Results will be published soon.
+    //================================================
+    // SAVE ORIGINAL PAGE ONLY ONCE
+    //================================================
 
-                    </td>
+    if(!resultPage.dataset.originalResultPage){
 
-                </tr>
+        resultPage.dataset.originalResultPage =
+            resultPage.innerHTML;
 
-            `;
+    }
 
-        }
 
+    //================================================
+    // COMPLETELY REPLACE RESULT LIST PAGE
+    //================================================
+
+    resultPage.innerHTML = `
+
+        <div style="
+            max-width:650px;
+            margin:35px auto;
+            padding:45px 30px;
+            text-align:center;
+            background:#ffffff;
+            border-radius:18px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.10);
+            border:1px solid #e5e7eb;
+        ">
+
+            <div style="
+                width:75px;
+                height:75px;
+                margin:0 auto 20px;
+                border-radius:50%;
+                background:#f1f5f9;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:35px;
+            ">
+                🔒
+            </div>
+
+
+            <h2 style="
+                margin:0 0 12px;
+                color:#1e3a8a;
+                font-size:27px;
+                font-weight:700;
+            ">
+                Result Not Published Yet
+            </h2>
+
+
+            <p style="
+                margin:0 auto 10px;
+                color:#374151;
+                font-size:16px;
+                line-height:1.7;
+            ">
+                Your result has been successfully recorded.
+            </p>
+
+
+            <p style="
+                margin:0 auto 25px;
+                color:#6b7280;
+                font-size:15px;
+                line-height:1.7;
+                max-width:520px;
+            ">
+                The result will be available here once it is
+                officially published by the institute.
+            </p>
+
+
+            <div style="
+                display:inline-block;
+                padding:10px 18px;
+                background:#f8fafc;
+                border:1px solid #e2e8f0;
+                border-radius:10px;
+                color:#475569;
+                font-size:14px;
+                margin-bottom:25px;
+            ">
+                Please check again later.
+            </div>
+
+
+            <br>
+
+
+            <button
+                type="button"
+                onclick="backToLogin()"
+                style="
+                    border:none;
+                    padding:12px 30px;
+                    border-radius:9px;
+                    background:#475569;
+                    color:#ffffff;
+                    font-size:15px;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+                ← Back
+            </button>
+
+        </div>
+
+    `;
+
+    return;
+}
     })
 
     .catch(function(err){
