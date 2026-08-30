@@ -4120,17 +4120,195 @@ if(resultPage){
 
 }
 
+//====================================================
+// CHECK PUBLISH STATUS FIRST
+//====================================================
 
-        data.results.forEach(function(r){
-
-            // Sirf Published Results Show Honge
-
-            if(r.publishStatus !== "YES"){
-                return;
-            }
+const results = Array.isArray(data.results)
+    ? data.results
+    : [];
 
 
-            visibleCount++;
+//====================================================
+// CHECK WHETHER ANY RESULT IS PUBLISHED
+//====================================================
+
+const publishedResults = results.filter(function(r){
+
+    return String(
+        r.publishStatus || ""
+    )
+    .trim()
+    .toUpperCase() === "YES";
+
+});
+
+
+//====================================================
+// RESULT NOT PUBLISHED
+//====================================================
+
+if(publishedResults.length === 0){
+
+    const resultPage =
+        document.getElementById("studentResultPage");
+
+    if(resultPage){
+
+        // Hide COMPLETE student result page
+        resultPage.style.display = "none";
+
+
+        // Hide table
+        const table =
+            resultPage.querySelector("table");
+
+        if(table){
+            table.style.display = "none";
+        }
+
+
+        // Hide all result controls
+        resultPage
+            .querySelectorAll(
+                "input, button, table, h1, h2, h3, p, div"
+            )
+            .forEach(function(el){
+
+                el.style.display = "none";
+
+            });
+
+
+        // Show professional message OUTSIDE hidden content
+        let msg =
+            document.getElementById(
+                "resultNotPublishedMessage"
+            );
+
+        if(!msg){
+
+            msg =
+                document.createElement("div");
+
+            msg.id =
+                "resultNotPublishedMessage";
+
+            msg.innerHTML = `
+
+                <div style="
+                    max-width:620px;
+                    margin:70px auto;
+                    padding:45px 30px;
+                    text-align:center;
+                    background:#fff;
+                    border:1px solid #e5e7eb;
+                    border-radius:18px;
+                    box-shadow:0 10px 35px rgba(0,0,0,.10);
+                ">
+
+                    <div style="
+                        font-size:42px;
+                        margin-bottom:18px;
+                    ">
+                        🔒
+                    </div>
+
+                    <h2 style="
+                        margin:0 0 12px;
+                        font-size:28px;
+                        color:#1e3a8a;
+                    ">
+                        Result Not Published Yet
+                    </h2>
+
+                    <p style="
+                        margin:0 0 10px;
+                        color:#374151;
+                        font-size:16px;
+                    ">
+                        Your result has been successfully recorded.
+                    </p>
+
+                    <p style="
+                        margin:0 auto 25px;
+                        max-width:500px;
+                        color:#6b7280;
+                        line-height:1.7;
+                        font-size:15px;
+                    ">
+                        The result will be available here once it
+                        is officially published by the institute.
+                    </p>
+
+                    <span style="
+                        display:inline-block;
+                        padding:9px 18px;
+                        border-radius:8px;
+                        background:#f8fafc;
+                        border:1px solid #e2e8f0;
+                        color:#475569;
+                        font-size:14px;
+                    ">
+                        Please check again later.
+                    </span>
+
+                </div>
+
+            `;
+
+            document.body.appendChild(msg);
+        }
+    }
+
+    return;
+}
+
+
+//====================================================
+// RESULT IS PUBLISHED
+//====================================================
+
+// Remove old unpublished message
+const oldMsg =
+    document.getElementById(
+        "resultNotPublishedMessage"
+    );
+
+if(oldMsg){
+    oldMsg.remove();
+}
+
+
+// Show student result page
+const resultPage =
+    document.getElementById(
+        "studentResultPage"
+    );
+
+if(resultPage){
+    resultPage.style.display = "";
+}
+
+
+//====================================================
+// CLEAR TABLE
+//====================================================
+
+body.innerHTML = "";
+
+
+//====================================================
+// CREATE ONLY PUBLISHED RESULTS
+//====================================================
+
+let visibleCount = 0;
+
+publishedResults.forEach(function(r){
+
+    visibleCount++;
+
+    // YAHAN AAPKA EXISTING ROW CODE RAHEGA
 
 
             const tr =
