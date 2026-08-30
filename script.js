@@ -4088,227 +4088,18 @@ function verifyResultStudent(){
 
 
         let visibleCount = 0;
-        //====================================================
-// RESET RESULT LIST UI
-//====================================================
-
-const resultPage =
-    document.getElementById(
-        "studentResultPage"
-    );
-
-if(resultPage){
-
-    const resultBox =
-        resultPage.querySelector(
-            ".result-list-box"
-        );
-
-    if(resultBox){
-        resultBox.style.display = "";
-    }
 
 
-    const oldMessage =
-        resultPage.querySelector(
-            "#resultNotPublishedMessage"
-        );
+        data.results.forEach(function(r){
 
-    if(oldMessage){
-        oldMessage.remove();
-    }
+            // Sirf Published Results Show Honge
 
-}
-
-//====================================================
-// CHECK PUBLISH STATUS FIRST
-//====================================================
-
-const results = Array.isArray(data.results)
-    ? data.results
-    : [];
+            if(r.publishStatus !== "YES"){
+                return;
+            }
 
 
-//====================================================
-// CHECK WHETHER ANY RESULT IS PUBLISHED
-//====================================================
-
-const publishedResults = results.filter(function(r){
-
-    return String(
-        r.publishStatus || ""
-    )
-    .trim()
-    .toUpperCase() === "YES";
-
-});
-
-
-//====================================================
-// RESULT NOT PUBLISHED
-//====================================================
-
-if(publishedResults.length === 0){
-
-    const resultPage =
-        document.getElementById("studentResultPage");
-
-    if(resultPage){
-
-        // Hide COMPLETE student result page
-        resultPage.style.display = "none";
-
-
-        // Hide table
-        const table =
-            resultPage.querySelector("table");
-
-        if(table){
-            table.style.display = "none";
-        }
-
-
-        // Hide all result controls
-        resultPage
-            .querySelectorAll(
-                "input, button, table, h1, h2, h3, p, div"
-            )
-            .forEach(function(el){
-
-                el.style.display = "none";
-
-            });
-
-
-        // Show professional message OUTSIDE hidden content
-        let msg =
-            document.getElementById(
-                "resultNotPublishedMessage"
-            );
-
-        if(!msg){
-
-            msg =
-                document.createElement("div");
-
-            msg.id =
-                "resultNotPublishedMessage";
-
-            msg.innerHTML = `
-
-                <div style="
-                    max-width:620px;
-                    margin:70px auto;
-                    padding:45px 30px;
-                    text-align:center;
-                    background:#fff;
-                    border:1px solid #e5e7eb;
-                    border-radius:18px;
-                    box-shadow:0 10px 35px rgba(0,0,0,.10);
-                ">
-
-                    <div style="
-                        font-size:42px;
-                        margin-bottom:18px;
-                    ">
-                        🔒
-                    </div>
-
-                    <h2 style="
-                        margin:0 0 12px;
-                        font-size:28px;
-                        color:#1e3a8a;
-                    ">
-                        Result Not Published Yet
-                    </h2>
-
-                    <p style="
-                        margin:0 0 10px;
-                        color:#374151;
-                        font-size:16px;
-                    ">
-                        Your result has been successfully recorded.
-                    </p>
-
-                    <p style="
-                        margin:0 auto 25px;
-                        max-width:500px;
-                        color:#6b7280;
-                        line-height:1.7;
-                        font-size:15px;
-                    ">
-                        The result will be available here once it
-                        is officially published by the institute.
-                    </p>
-
-                    <span style="
-                        display:inline-block;
-                        padding:9px 18px;
-                        border-radius:8px;
-                        background:#f8fafc;
-                        border:1px solid #e2e8f0;
-                        color:#475569;
-                        font-size:14px;
-                    ">
-                        Please check again later.
-                    </span>
-
-                </div>
-
-            `;
-
-            document.body.appendChild(msg);
-        }
-    }
-
-    return;
-}
-
-
-//====================================================
-// RESULT IS PUBLISHED
-//====================================================
-
-// Remove old unpublished message
-const oldMsg =
-    document.getElementById(
-        "resultNotPublishedMessage"
-    );
-
-if(oldMsg){
-    oldMsg.remove();
-}
-
-
-// Show student result page
-const resultPage =
-    document.getElementById(
-        "studentResultPage"
-    );
-
-if(resultPage){
-    resultPage.style.display = "";
-}
-
-
-//====================================================
-// CLEAR TABLE
-//====================================================
-
-body.innerHTML = "";
-
-
-//====================================================
-// CREATE ONLY PUBLISHED RESULTS
-//====================================================
-
-let visibleCount = 0;
-
-publishedResults.forEach(function(r){
-
-    visibleCount++;
-
-    // YAHAN AAPKA EXISTING ROW CODE RAHEGA
+            visibleCount++;
 
 
             const tr =
@@ -4371,157 +4162,38 @@ publishedResults.forEach(function(r){
         });
 
 
-//====================================================
-// NO PUBLISHED RESULT
-//====================================================
+        // -------------------------------------------
+        // NO RESULT
+        // -------------------------------------------
 
-//====================================================
-// NO PUBLISHED RESULT
-// COMPLETE RESULT PAGE HIDE
-//====================================================
+        if(visibleCount === 0){
 
-if(visibleCount === 0){
+            body.innerHTML = `
 
-    const resultPage =
-        document.getElementById("studentResultPage");
+                <tr>
 
+                    <td
+                        colspan="18"
+                        style="
+                            text-align:center;
+                            padding:45px;
+                            color:#d32f2f;
+                            font-size:22px;
+                            font-weight:bold;
+                            background:#fff8f8;
+                        "
+                    >
 
-    if(resultPage){
+                        Results will be published soon.
 
-        // ---------------------------------------------
-        // HIDE EVERYTHING INSIDE RESULT PAGE
-        // ---------------------------------------------
+                    </td>
 
-        Array.from(
-            resultPage.children
-        ).forEach(function(child){
+                </tr>
 
-            child.style.display = "none";
+            `;
 
-        });
+        }
 
-
-        // ---------------------------------------------
-        // CREATE MESSAGE
-        // ---------------------------------------------
-
-        const message =
-            document.createElement("div");
-
-
-        message.id =
-            "resultNotPublishedMessage";
-
-
-        message.style.cssText = `
-            display:block !important;
-            width:90%;
-            max-width:650px;
-            margin:40px auto;
-            padding:45px 30px;
-            box-sizing:border-box;
-            text-align:center;
-            background:#ffffff;
-            border:1px solid #e2e8f0;
-            border-radius:18px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.10);
-        `;
-
-
-        message.innerHTML = `
-
-            <div style="
-                width:75px;
-                height:75px;
-                margin:0 auto 20px;
-                border-radius:50%;
-                background:#eff6ff;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                font-size:34px;
-            ">
-                🔒
-            </div>
-
-
-            <h2 style="
-                margin:0 0 12px;
-                color:#1d4ed8;
-                font-size:27px;
-                font-weight:700;
-            ">
-                Result Not Published Yet
-            </h2>
-
-
-            <p style="
-                margin:0 0 8px;
-                color:#334155;
-                font-size:16px;
-                line-height:1.6;
-            ">
-                Your result has been successfully recorded.
-            </p>
-
-
-            <p style="
-                margin:0 auto 22px;
-                max-width:520px;
-                color:#64748b;
-                font-size:15px;
-                line-height:1.7;
-            ">
-                The result will be available here once it is
-                officially published by the institute.
-            </p>
-
-
-            <div style="
-                display:inline-block;
-                padding:9px 18px;
-                border-radius:8px;
-                background:#f8fafc;
-                border:1px solid #e2e8f0;
-                color:#475569;
-                font-size:14px;
-                margin-bottom:25px;
-            ">
-                Please check again later.
-            </div>
-
-            <br>
-
-            <button
-                type="button"
-                onclick="backToResultVerify()"
-                style="
-                    border:none;
-                    padding:11px 28px;
-                    border-radius:8px;
-                    background:#475569;
-                    color:#ffffff;
-                    font-size:14px;
-                    font-weight:600;
-                    cursor:pointer;
-                "
-            >
-                ← Back
-            </button>
-
-        `;
-
-
-        // ---------------------------------------------
-        // ADD ONLY MESSAGE
-        // ---------------------------------------------
-
-        resultPage.appendChild(message);
-
-    }
-
-    return;
-}
     })
 
     .catch(function(err){
