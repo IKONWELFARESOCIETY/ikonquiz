@@ -4005,6 +4005,11 @@ console.log(
     "Security System Loaded Successfully"
 );
 
+//====================================================
+// VERIFY STUDENT RESULT
+// PUBLISHED / NOT PUBLISHED
+//====================================================
+
 function verifyResultStudent(){
 
     const code =
@@ -4013,7 +4018,11 @@ function verifyResultStudent(){
         .value
         .trim();
 
-    if(code==""){
+    //================================================
+    // VERIFICATION CODE CHECK
+    //================================================
+
+    if(code === ""){
         alert("Please Enter Verification Code");
         return;
     }
@@ -4023,12 +4032,17 @@ function verifyResultStudent(){
         return;
     }
 
-    // -----------------------------------------------
-    // CREATE UNIQUE REQUEST TOKEN
-    // -----------------------------------------------
+
+    //================================================
+    // UNIQUE REQUEST TOKEN
+    //================================================
 
     const myToken = ++resultNavigationToken;
 
+
+    //================================================
+    // LOAD RESULT LIST
+    //================================================
 
     fetch(
         SCRIPT_URL +
@@ -4039,26 +4053,32 @@ function verifyResultStudent(){
 
     .then(data => {
 
-        // -------------------------------------------
+        //================================================
         // OLD REQUEST CHECK
-        // -------------------------------------------
+        //================================================
 
         if(myToken !== resultNavigationToken){
             return;
         }
 
 
-        if(data.status!="SUCCESS"){
+        //================================================
+        // API ERROR
+        //================================================
 
-            alert("Unable to load Result List");
+        if(data.status !== "SUCCESS"){
+
+            alert(
+                "Unable to load Result List"
+            );
+
             return;
-
         }
 
 
-        // -------------------------------------------
-        // SHOW RESULT PAGE
-        // -------------------------------------------
+        //================================================
+        // RESULT PAGE
+        //================================================
 
         document
         .getElementById("loginPage")
@@ -4075,32 +4095,60 @@ function verifyResultStudent(){
         ?.classList.remove("hidden");
 
 
+        //================================================
+        // RESULT TABLE
+        //================================================
+
         const body =
             document.getElementById(
                 "resultTableBody"
             );
 
+
         if(!body){
             return;
         }
 
+
+        //================================================
+        // CLEAR OLD DATA
+        //================================================
+
         body.innerHTML = "";
 
+
+        //================================================
+        // FIND PUBLISHED RESULTS
+        //================================================
 
         let visibleCount = 0;
 
 
         data.results.forEach(function(r){
 
-            // Sirf Published Results Show Honge
+            //--------------------------------------------
+            // ONLY PUBLISHED RESULTS
+            //--------------------------------------------
 
-            if(r.publishStatus !== "YES"){
+            if(
+                String(r.publishStatus || "")
+                .trim()
+                .toUpperCase() !== "YES"
+            ){
                 return;
             }
 
 
+            //--------------------------------------------
+            // COUNT
+            //--------------------------------------------
+
             visibleCount++;
 
+
+            //--------------------------------------------
+            // CREATE ROW
+            //--------------------------------------------
 
             const tr =
                 document.createElement("tr");
@@ -4110,48 +4158,46 @@ function verifyResultStudent(){
 
                 <td>${visibleCount}</td>
 
-                <td>${r.marksheetNo}</td>
+                <td>${r.marksheetNo || ""}</td>
 
-                <td>${r.regNo}</td>
+                <td>${r.regNo || ""}</td>
 
-                <td>${r.studentName}</td>
+                <td>${r.studentName || ""}</td>
 
-                <td>${r.course}</td>
+                <td>${r.course || ""}</td>
 
-                <td>${r.paperName}</td>
+                <td>${r.paperName || ""}</td>
 
-                <td>${r.theory}</td>
+                <td>${r.theory || ""}</td>
 
-                <td>${r.practical}</td>
+                <td>${r.practical || ""}</td>
 
-                <td>${r.viva}</td>
+                <td>${r.viva || ""}</td>
 
-                <td>${r.notes}</td>
+                <td>${r.notes || ""}</td>
 
-                <td>${r.behaviour}</td>
+                <td>${r.behaviour || ""}</td>
 
-                <td>${r.project}</td>
+                <td>${r.project || ""}</td>
 
-                <td>${r.totalMarks}</td>
+                <td>${r.totalMarks || ""}</td>
 
-                <td>${r.percentage}</td>
+                <td>${r.percentage || ""}</td>
 
-                <td>${r.grade}</td>
+                <td>${r.grade || ""}</td>
 
-                <td>${r.result}</td>
-
-                <td>${r.resultDate}</td>
+                <td>${r.result || ""}</td>
 
                 <td>
-
                     <button
-                        class="viewMarksheetBtn"
-                        onclick="verifyMarksheet('${r.paperName}')">
-
+                        type="button"
+                        onclick="openMarksheet(
+                            '${String(r.studentId || "").replace(/'/g,"\\'")}',
+                            '${String(r.paperName || "").replace(/'/g,"\\'")}'
+                        )"
+                    >
                         View Marksheet
-
                     </button>
-
                 </td>
 
             `;
@@ -4162,52 +4208,197 @@ function verifyResultStudent(){
         });
 
 
-        // -------------------------------------------
-        // NO RESULT
-        // -------------------------------------------
+        //================================================
+        // NO PUBLISHED RESULT
+        //================================================
 
         if(visibleCount === 0){
 
-            body.innerHTML = `
+            //--------------------------------------------
+            // HIDE COMPLETE TABLE
+            //--------------------------------------------
 
-                <tr>
+            const table =
+                body.closest("table");
 
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:45px;
-                            color:#d32f2f;
-                            font-size:22px;
-                            font-weight:bold;
-                            background:#fff8f8;
-                        "
-                    >
 
-                        Results will be published soon.
+            if(table){
+                table.style.display = "none";
+            }
 
-                    </td>
 
-                </tr>
+            //--------------------------------------------
+            // REMOVE OLD MESSAGE
+            //--------------------------------------------
+
+            const oldMessage =
+                document.getElementById(
+                    "resultNotPublishedMessage"
+                );
+
+
+            if(oldMessage){
+                oldMessage.remove();
+            }
+
+
+            //--------------------------------------------
+            // PROFESSIONAL MESSAGE
+            //--------------------------------------------
+
+            const message =
+                document.createElement("div");
+
+
+            message.id =
+                "resultNotPublishedMessage";
+
+
+            message.style.cssText = `
+                max-width:650px;
+                margin:50px auto;
+                padding:45px 30px;
+                text-align:center;
+                background:#ffffff;
+                border-radius:18px;
+                box-shadow:0 8px 30px rgba(0,0,0,0.10);
+                border:1px solid #e5e7eb;
+            `;
+
+
+            message.innerHTML = `
+
+                <div style="
+                    width:72px;
+                    height:72px;
+                    margin:0 auto 20px;
+                    border-radius:50%;
+                    background:#f1f5f9;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:34px;
+                ">
+                    🔒
+                </div>
+
+
+                <h2 style="
+                    margin:0 0 12px;
+                    color:#1e3a8a;
+                    font-size:26px;
+                    font-weight:700;
+                ">
+                    Result Not Published Yet
+                </h2>
+
+
+                <p style="
+                    margin:0 auto 10px;
+                    color:#374151;
+                    font-size:16px;
+                    line-height:1.7;
+                    max-width:520px;
+                ">
+                    Your result has been successfully recorded.
+                </p>
+
+
+                <p style="
+                    margin:0 auto 25px;
+                    color:#6b7280;
+                    font-size:15px;
+                    line-height:1.7;
+                    max-width:520px;
+                ">
+                    The result will be available here once it is
+                    officially published by the institute.
+                </p>
+
+
+                <div style="
+                    display:inline-block;
+                    padding:10px 18px;
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:10px;
+                    color:#475569;
+                    font-size:14px;
+                ">
+                    Please check again later.
+                </div>
 
             `;
 
+
+            //--------------------------------------------
+            // PUT MESSAGE AFTER VERIFY PAGE CONTENT
+            //--------------------------------------------
+
+            const resultPage =
+                document.getElementById(
+                    "studentResultPage"
+                );
+
+
+            if(resultPage){
+
+                resultPage.appendChild(
+                    message
+                );
+
+            }
+
+
+            return;
+        }
+
+
+        //================================================
+        // RESULT AVAILABLE
+        //================================================
+
+        const table =
+            body.closest("table");
+
+
+        if(table){
+            table.style.display = "";
+        }
+
+
+        //--------------------------------------------
+        // REMOVE NOT PUBLISHED MESSAGE IF EXISTS
+        //--------------------------------------------
+
+        const oldMessage =
+            document.getElementById(
+                "resultNotPublishedMessage"
+            );
+
+
+        if(oldMessage){
+            oldMessage.remove();
         }
 
     })
 
-    .catch(function(err){
 
-        console.log(err);
+    //================================================
+    // ERROR
+    //================================================
 
-        // Agar user meanwhile Leaderboard par chala gaya
-        // to error popup bhi unnecessary nahi dikhayenge
+    .catch(function(error){
 
-        if(myToken !== resultNavigationToken){
-            return;
-        }
+        console.error(
+            "Student Result Error:",
+            error
+        );
 
-        alert("Unable to load Result List.");
+
+        alert(
+            "Unable to load Result. Please try again."
+        );
 
     });
 
