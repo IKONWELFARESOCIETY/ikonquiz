@@ -4243,7 +4243,7 @@ if(resultBox){
 
                 <td>${r.result}</td>
 
-                <td>${r.resultDate}</td>
+                <td>${formatMarksheetDate(r.resultDate)}</td>
 
                 <td>
 
