@@ -4249,11 +4249,6 @@ if(resultBox){
         // -------------------------------------------
         // NO RESULT
         // -------------------------------------------
-//====================================================
-// NO PUBLISHED RESULT
-// SHOW ONLY PROFESSIONAL MESSAGE
-//====================================================
-
 if(visibleCount === 0){
 
     const resultBox =
@@ -4263,24 +4258,78 @@ if(visibleCount === 0){
 
     if(resultBox){
 
-        // Hide ALL existing result content
-        resultBox
-            .querySelectorAll(
-                ":scope > *"
-            )
-            .forEach(function(el){
+        // Hide heading
+        const heading =
+            resultBox.querySelector("h2");
 
-                el.style.display = "none";
-
-            });
+        if(heading){
+            heading.style.display = "none";
+        }
 
 
-        // Create message
+        // Hide search box
+        const search =
+            document.getElementById(
+                "searchResult"
+            );
+
+        if(search){
+            search.style.display = "none";
+        }
+
+
+        // Hide table
+        const table =
+            resultBox.querySelector(
+                ".table-responsive"
+            );
+
+        if(table){
+            table.style.display = "none";
+        }
+
+
+        // Hide footer buttons
+        const footer =
+            resultBox.querySelector(
+                ".result-footer"
+            );
+
+        if(footer){
+            footer.style.display = "none";
+        }
+
+
+        // Hide analytics/admin elements if present
+        const analytics =
+            document.getElementById(
+                "analyticsAccess"
+            );
+
+        if(analytics){
+            analytics.style.display = "none";
+        }
+
+
+        // Hide PDF button if present
+        const pdfButton =
+            document.getElementById(
+                "hiddenResultPDFButton"
+            );
+
+        if(pdfButton){
+            pdfButton.style.display = "none";
+        }
+
+
+        // -----------------------------------------
+        // RESULT NOT PUBLISHED MESSAGE
+        // -----------------------------------------
+
         let messageBox =
             document.getElementById(
                 "resultNotPublishedBox"
             );
-
 
         if(!messageBox){
 
@@ -4307,11 +4356,15 @@ if(visibleCount === 0){
                         align-items:center;
                         justify-content:center;
                         font-size:34px;
+                        box-shadow:
+                            0 6px 18px
+                            rgba(0,0,0,.08);
                     ">
                         📋
                     </div>
 
                     <h2 style="
+                        display:block !important;
                         margin:0 0 12px;
                         font-size:28px;
                         font-weight:700;
@@ -4321,10 +4374,11 @@ if(visibleCount === 0){
                     </h2>
 
                     <p style="
-                        margin:0;
-                        color:#64748b;
+                        margin:0 auto;
+                        max-width:520px;
                         font-size:16px;
                         line-height:1.7;
+                        color:#64748b;
                     ">
                         Your examination result has not
                         been published yet.
@@ -4332,8 +4386,8 @@ if(visibleCount === 0){
 
                     <p style="
                         margin:8px 0 0;
-                        color:#94a3b8;
                         font-size:14px;
+                        color:#94a3b8;
                     ">
                         Please check again later.
                     </p>
@@ -4346,8 +4400,7 @@ if(visibleCount === 0){
                 messageBox
             );
 
-        }
-        else{
+        }else{
 
             messageBox.style.display =
                 "block";
