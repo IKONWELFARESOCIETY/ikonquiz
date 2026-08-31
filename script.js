@@ -16900,6 +16900,8 @@ function formatPDFResultDate(
 
 //====================================================
 // DATE-WISE RESULT PDF GENERATOR
+// PROFESSIONAL RESULT REPORT
+// TOP 3 POSITION HIGHLIGHT
 //====================================================
 
 function generateDateWiseResultPDF(results, selectedDate){
@@ -16912,508 +16914,1496 @@ function generateDateWiseResultPDF(results, selectedDate){
         !window.jspdf ||
         !window.jspdf.jsPDF
     ){
-
         alert("PDF generator is not loaded.");
         return;
-
     }
 
     if(
         !Array.isArray(results) ||
         results.length === 0
     ){
-
         alert("No result found for selected date.");
         return;
-
     }
+
 
     //================================================
     // CREATE PDF
     //================================================
 
-    const { jsPDF } = window.jspdf;
+    const { jsPDF } =
+        window.jspdf;
 
-    const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "mm",
-        format: "a4",
-        compress: true
-    });
+    const pdf =
+        new jsPDF({
+            orientation:"landscape",
+            unit:"mm",
+            format:"a4",
+            compress:true
+        });
+
 
     const pageWidth = 297;
     const pageHeight = 210;
+
+    const margin = 10;
+
+
+    //================================================
+    // PREPARE RESULTS
+    //================================================
+
+    const reportResults =
+        results
+        .map(function(result){
+
+            const total =
+                Number(
+                    result.totalQuestions ??
+                    result.total ??
+                    0
+                );
+
+            const correct =
+                Number(
+                    result.correctAnswer ??
+                    result.correct ??
+                    0
+                );
+
+            const wrong =
+                Number(
+                    result.wrongAnswer ??
+                    result.wrong ??
+                    0
+                );
+
+            const unattempted =
+                Number(
+                    result.unattempted ??
+                    0
+                );
+
+            let percentage = 0;
+
+            if(total > 0){
+
+                percentage =
+                    (
+                        correct /
+                        total
+                    ) * 100;
+
+            }
+
+            return {
+
+                regNo:
+                    result.regNo ??
+                    "",
+
+                name:
+                    result.name ??
+                    result.studentName ??
+                    "",
+
+                paper:
+                    result.paper ??
+                    result.paperName ??
+                    "",
+
+                total:
+                    total,
+
+                correct:
+                    correct,
+
+                wrong:
+                    wrong,
+
+                unattempted:
+                    unattempted,
+
+                percentage:
+                    percentage
+
+            };
+
+        });
+
+
+    //================================================
+    // SORT BY PERFORMANCE
+    //================================================
+
+    reportResults.sort(
+        function(a,b){
+
+            if(
+                b.percentage !==
+                a.percentage
+            ){
+
+                return (
+                    b.percentage -
+                    a.percentage
+                );
+
+            }
+
+            if(
+                b.correct !==
+                a.correct
+            ){
+
+                return (
+                    b.correct -
+                    a.correct
+                );
+
+            }
+
+            return (
+                a.wrong -
+                b.wrong
+            );
+
+        }
+    );
+
+
+    //================================================
+    // POSITION
+    //================================================
+
+    reportResults.forEach(
+        function(result,index){
+
+            result.rank =
+                index + 1;
+
+        }
+    );
+
+
+    //================================================
+    // SUMMARY
+    //================================================
+
+    const totalCandidates =
+        reportResults.length;
+
+
+    const passCandidates =
+        reportResults.filter(
+            function(r){
+
+                return (
+                    r.percentage >= 40
+                );
+
+            }
+        ).length;
+
+
+    const failCandidates =
+        totalCandidates -
+        passCandidates;
+
+
+    const averagePercentage =
+        totalCandidates > 0
+        ?
+        reportResults.reduce(
+            function(sum,r){
+
+                return (
+                    sum +
+                    r.percentage
+                );
+
+            },
+            0
+        ) / totalCandidates
+        :
+        0;
+
+
+    const highestPercentage =
+        totalCandidates > 0
+        ?
+        reportResults[0].percentage
+        :
+        0;
+
+
+    const selectedPaper =
+        reportResults.length > 0
+        ?
+        reportResults[0].paper
+        :
+        "All Papers";
+
+
+    //================================================
+    // DATE FORMAT
+    //================================================
+
+    const displayDate =
+        formatPDFResultDate(
+            selectedDate
+        );
+
 
     //================================================
     // PAGE BORDER
     //================================================
 
-    pdf.setDrawColor(20,70,140);
-    pdf.setLineWidth(0.8);
+    function drawPageBorder(){
 
-    pdf.rect(
-        7,
-        7,
-        pageWidth - 14,
-        pageHeight - 14
-    );
+        pdf.setDrawColor(
+            25,
+            75,
+            145
+        );
+
+        pdf.setLineWidth(
+            0.7
+        );
+
+        pdf.rect(
+            6,
+            6,
+            pageWidth - 12,
+            pageHeight - 12
+        );
+
+    }
+
 
     //================================================
     // HEADER
     //================================================
 
-    pdf.setFillColor(20,70,140);
-
-    pdf.roundedRect(
-        8,
-        8,
-        pageWidth - 16,
-        27,
-        3,
-        3,
-        "F"
-    );
-
-    //================================================
-    // INSTITUTE NAME
-    //================================================
-
-    pdf.setTextColor(255,255,255);
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    pdf.setFontSize(19);
-
-    pdf.text(
-        "IKON INSTITUTE",
-        pageWidth / 2,
-        18,
-        {
-            align: "center"
-        }
-    );
-
-    pdf.setFontSize(10);
-
-    pdf.setFont(
-        "helvetica",
-        "normal"
-    );
-
-    pdf.text(
-        "ONLINE EXAMINATION RESULT REPORT",
-        pageWidth / 2,
-        25,
-        {
-            align: "center"
-        }
-    );
-
-    //================================================
-    // DATE
-    //================================================
-
-    pdf.setTextColor(30,30,30);
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    pdf.setFontSize(12);
-
-    pdf.text(
-        "Result Date : " +
-        formatPDFResultDate(selectedDate),
-        15,
-        45
-    );
-
-    //================================================
-    // TOTAL STUDENTS
-    //================================================
-
-    pdf.setFont(
-        "helvetica",
-        "normal"
-    );
-
-    pdf.setFontSize(10);
-
-    pdf.text(
-        "Total Candidates : " +
-        results.length,
-        pageWidth - 15,
-        45,
-        {
-            align: "right"
-        }
-    );
-
-    //================================================
-    // TABLE SETTINGS
-    //================================================
-
-    const startY = 52;
-
-    const marginLeft = 12;
-
-    const rowHeight = 9;
-
-    const headerHeight = 12;
-
-    const tableWidth = 273;
-
-    //================================================
-    // COLUMN WIDTHS
-    // DATE AND GRADE REMOVED
-    //================================================
-
-   const colWidths = [
-    15, // S.No.
-    32, // Reg No
-    50, // Student Name
-    47, // Paper
-    30, // Total Questions
-    28, // Correct
-    28, // Wrong
-    43  // Unattempted
-];
-    //================================================
-    // COLUMN HEADINGS
-    //================================================
-
-   const headers = [
-    "S.No.",
-    "Reg No",
-    "Student Name",
-    "Paper",
-    "Total Questions",
-    "Correct",
-    "Wrong",
-    "Unattempted"
-];
-    //================================================
-    // DRAW HEADER
-    //================================================
-
-   let x = marginLeft;
-
-pdf.setDrawColor(180,190,205);
-
-headers.forEach(function(header,index){
-
-    // IMPORTANT:
-    // Fill color must be set BEFORE every cell
-    pdf.setFillColor(30,80,150);
-
-    pdf.rect(
-        x,
-        startY,
-        colWidths[index],
-        headerHeight,
-        "FD"
-    );
-
-    pdf.setTextColor(
-        255,
-        255,
-        255
-    );
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    pdf.setFontSize(8);
-
-    pdf.text(
-        header,
-        x + colWidths[index] / 2,
-        startY + 7.5,
-        {
-            align: "center"
-        }
-    );
-
-    x += colWidths[index];
-
-});
-
-    //================================================
-    // TABLE DATA
-    //================================================
-
-    let y =
-        startY +
-        headerHeight;
-
-    results.forEach(function(result,index){
-
-        //============================================
-        // NEW PAGE
-        //============================================
-
-        if(
-            y + rowHeight >
-            pageHeight - 15
-        ){
-
-            pdf.addPage();
-
-            pdf.setDrawColor(20,70,140);
-            pdf.setLineWidth(0.8);
-
-            pdf.rect(
-                7,
-                7,
-                pageWidth - 14,
-                pageHeight - 14
-            );
-
-            y = 15;
-
-        }
-
-        //============================================
-        // DATA VALUES
-        //============================================
-
-        const reg =
-            result.regNo ??
-            result.RegNo ??
-            result["Reg No"] ??
-            "";
-
-        const name =
-            result.name ??
-            result.Name ??
-            "";
-
-        const paper =
-            result.paper ??
-            result.Paper ??
-            result.paperName ??
-            "";
-const total =
-    result.totalQuestions ??
-    result["Total Questions"] ??
-    result.total ??
-    (
-        Number(result.correctAnswer ?? result.correct ?? 0) +
-        Number(result.wrongAnswer ?? result.wrong ?? 0) +
-        Number(result.unattempted ?? result.Unattempted ?? 0)
-    );
-
-        const correct =
-            result.correctAnswer ??
-            result["Correct Answer"] ??
-            result.correct ??
-            "";
-
-        const wrong =
-            result.wrongAnswer ??
-            result["Wrong Answer"] ??
-            result.wrong ??
-            "";
-
-        const unattempted =
-            result.unattempted ??
-            result.Unattempted ??
-            "";
-
-        const percentage =
-            result.percentage ??
-            result.Percentage ??
-            "";
-
-       const row = [
-    index + 1,
-    reg,
-    name,
-    paper,
-    total,
-    correct,
-    wrong,
-    unattempted
-];
-
-        //============================================
-        // ALTERNATE ROW
-        //============================================
-
-        if(index % 2 === 0){
-
-            pdf.setFillColor(
-                245,
-                248,
-                252
-            );
-
-        }
-        else{
-
-            pdf.setFillColor(
-                255,
-                255,
-                255
-            );
-
-        }
-
-        //============================================
-        // DRAW CELLS
-        //============================================
-
-        x = marginLeft;
-
-row.forEach(function(value,colIndex){
-
-    //============================================
-    // SET FILL COLOR FOR EVERY CELL
-    //============================================
-
-    if(index % 2 === 0){
+    function drawHeader(){
 
         pdf.setFillColor(
-            245,
-            248,
-            252
+            18,
+            72,
+            145
         );
 
-    }
-    else{
+        pdf.roundedRect(
+            8,
+            8,
+            pageWidth - 16,
+            25,
+            3,
+            3,
+            "F"
+        );
 
-        pdf.setFillColor(
+
+        pdf.setTextColor(
             255,
             255,
             255
         );
 
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(
+            20
+        );
+
+        pdf.text(
+            "IKON INSTITUTE",
+            pageWidth / 2,
+            18,
+            {
+                align:"center"
+            }
+        );
+
+
+        pdf.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        pdf.setFontSize(
+            9
+        );
+
+        pdf.text(
+            "ONLINE EXAMINATION RESULT REPORT",
+            pageWidth / 2,
+            25,
+            {
+                align:"center"
+            }
+        );
+
+
+        // PAPER
+
+        pdf.setTextColor(
+            35,
+            45,
+            60
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(
+            11
+        );
+
+        pdf.text(
+            "Paper : " +
+            selectedPaper,
+            14,
+            42
+        );
+
+
+        // DATE
+
+        pdf.text(
+            "Result Date : " +
+            displayDate,
+            pageWidth - 14,
+            42,
+            {
+                align:"right"
+            }
+        );
+
     }
 
-    pdf.setDrawColor(
-        200,
-        205,
-        215
-    );
 
-    //============================================
-    // DRAW CELL
-    //============================================
+    //================================================
+    // SUMMARY CARDS
+    //================================================
 
-    pdf.rect(
-        x,
-        y,
-        colWidths[colIndex],
-        rowHeight,
-        "FD"
-    );
+    function drawSummaryCards(){
 
-    //============================================
-    // TEXT COLOR
-    //============================================
+        const y = 47;
 
-    pdf.setTextColor(
-        35,
-        35,
-        35
-    );
+        const cardWidth = 63;
 
-    pdf.setFont(
-        "helvetica",
-        colIndex === 1
-            ? "bold"
-            : "normal"
-    );
+        const gap = 5;
 
-    pdf.setFontSize(
-        colIndex === 1
-            ? 8.5
-            : 8
-    );
+        const values = [
 
-    let text =
-        String(value ?? "");
+            {
+                title:"TOTAL CANDIDATES",
+                value:
+                    totalCandidates
+            },
 
-    //============================================
-    // LIMIT LONG TEXT
-    //============================================
+            {
+                title:"PASSED",
+                value:
+                    passCandidates
+            },
 
-    const maxWidth =
-        colWidths[colIndex] - 4;
+            {
+                title:"FAILED",
+                value:
+                    failCandidates
+            },
 
-    while(
-        text.length > 3 &&
-        pdf.getTextWidth(text) >
-        maxWidth
+            {
+                title:"AVERAGE %",
+                value:
+                    averagePercentage
+                    .toFixed(2) +
+                    "%"
+            }
+
+        ];
+
+
+        values.forEach(
+            function(card,index){
+
+                const x =
+                    12 +
+                    index *
+                    (
+                        cardWidth +
+                        gap
+                    );
+
+
+                pdf.setFillColor(
+                    247,
+                    249,
+                    252
+                );
+
+                pdf.setDrawColor(
+                    205,
+                    212,
+                    222
+                );
+
+                pdf.roundedRect(
+                    x,
+                    y,
+                    cardWidth,
+                    20,
+                    2,
+                    2,
+                    "FD"
+                );
+
+
+                pdf.setTextColor(
+                    80,
+                    90,
+                    105
+                );
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(
+                    7
+                );
+
+                pdf.text(
+                    card.title,
+                    x + cardWidth / 2,
+                    y + 7,
+                    {
+                        align:"center"
+                    }
+                );
+
+
+                pdf.setTextColor(
+                    20,
+                    70,
+                    140
+                );
+
+                pdf.setFontSize(
+                    13
+                );
+
+                pdf.text(
+                    String(card.value),
+                    x + cardWidth / 2,
+                    y + 16,
+                    {
+                        align:"center"
+                    }
+                );
+
+            }
+        );
+
+
+        // HIGHEST
+
+        const x =
+            12 +
+            4 *
+            (
+                cardWidth +
+                gap
+            );
+
+
+        pdf.setFillColor(
+            255,
+            250,
+            238
+        );
+
+        pdf.setDrawColor(
+            220,
+            190,
+            120
+        );
+
+        pdf.roundedRect(
+            x,
+            y,
+            cardWidth,
+            20,
+            2,
+            2,
+            "FD"
+        );
+
+
+        pdf.setTextColor(
+            105,
+            80,
+            20
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(
+            7
+        );
+
+        pdf.text(
+            "HIGHEST PERCENTAGE",
+            x + cardWidth / 2,
+            y + 7,
+            {
+                align:"center"
+            }
+        );
+
+
+        pdf.setFontSize(
+            13
+        );
+
+        pdf.text(
+            highestPercentage
+            .toFixed(2) +
+            "%",
+            x + cardWidth / 2,
+            y + 16,
+            {
+                align:"center"
+            }
+        );
+
+    }
+
+
+    //================================================
+    // TOP 3 PODIUM
+    //================================================
+
+    function drawTopThree(){
+
+        const top3 =
+            reportResults.slice(
+                0,
+                3
+            );
+
+
+        if(top3.length === 0){
+            return;
+        }
+
+
+        const sectionY =
+            72;
+
+
+        pdf.setTextColor(
+            30,
+            50,
+            80
+        );
+
+        pdf.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        pdf.setFontSize(
+            12
+        );
+
+        pdf.text(
+            "TOP PERFORMERS",
+            pageWidth / 2,
+            sectionY,
+            {
+                align:"center"
+            }
+        );
+
+
+        const cardWidth = 82;
+
+        const cardHeight = 32;
+
+        const gap = 7;
+
+        const totalWidth =
+            (
+                cardWidth * 3
+            ) +
+            (
+                gap * 2
+            );
+
+        const startX =
+            (
+                pageWidth -
+                totalWidth
+            ) / 2;
+
+
+        top3.forEach(
+            function(student,index){
+
+                const x =
+                    startX +
+                    index *
+                    (
+                        cardWidth +
+                        gap
+                    );
+
+
+                const rank =
+                    student.rank;
+
+
+                //================================
+                // CARD
+                //================================
+
+                if(rank === 1){
+
+                    pdf.setFillColor(
+                        255,
+                        248,
+                        220
+                    );
+
+                    pdf.setDrawColor(
+                        210,
+                        170,
+                        55
+                    );
+
+                }
+
+                else if(rank === 2){
+
+                    pdf.setFillColor(
+                        245,
+                        247,
+                        250
+                    );
+
+                    pdf.setDrawColor(
+                        150,
+                        160,
+                        175
+                    );
+
+                }
+
+                else{
+
+                    pdf.setFillColor(
+                        255,
+                        244,
+                        235
+                    );
+
+                    pdf.setDrawColor(
+                        185,
+                        120,
+                        75
+                    );
+
+                }
+
+
+                pdf.setLineWidth(
+                    0.8
+                );
+
+                pdf.roundedRect(
+                    x,
+                    sectionY + 5,
+                    cardWidth,
+                    cardHeight,
+                    3,
+                    3,
+                    "FD"
+                );
+
+
+                //================================
+                // MEDAL
+                //================================
+
+                let medal = "3rd";
+
+                if(rank === 1){
+                    medal = "1st";
+                }
+
+                else if(rank === 2){
+                    medal = "2nd";
+                }
+
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(
+                    15
+                );
+
+
+                if(rank === 1){
+
+                    pdf.setTextColor(
+                        190,
+                        145,
+                        20
+                    );
+
+                }
+
+                else if(rank === 2){
+
+                    pdf.setTextColor(
+                        100,
+                        110,
+                        125
+                    );
+
+                }
+
+                else{
+
+                    pdf.setTextColor(
+                        165,
+                        90,
+                        50
+                    );
+
+                }
+
+
+                pdf.text(
+                    medal,
+                    x + 12,
+                    sectionY + 18,
+                    {
+                        align:"center"
+                    }
+                );
+
+
+                //================================
+                // NAME
+                //================================
+
+                pdf.setTextColor(
+                    30,
+                    40,
+                    55
+                );
+
+                pdf.setFontSize(
+                    9
+                );
+
+                let studentName =
+                    String(
+                        student.name
+                    );
+
+
+                if(
+                    pdf.getTextWidth(
+                        studentName
+                    ) >
+                    cardWidth - 28
+                ){
+
+                    while(
+                        studentName.length > 5 &&
+                        pdf.getTextWidth(
+                            studentName + "..."
+                        ) >
+                        cardWidth - 28
+                    ){
+
+                        studentName =
+                            studentName
+                            .substring(
+                                0,
+                                studentName.length - 1
+                            );
+
+                    }
+
+                    studentName += "...";
+
+                }
+
+
+                pdf.text(
+                    studentName,
+                    x + 28,
+                    sectionY + 14
+                );
+
+
+                //================================
+                // REG NO
+                //================================
+
+                pdf.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+                pdf.setFontSize(
+                    7
+                );
+
+                pdf.setTextColor(
+                    90,
+                    95,
+                    105
+                );
+
+                pdf.text(
+                    "Reg No : " +
+                    String(
+                        student.regNo
+                    ),
+                    x + 28,
+                    sectionY + 21
+                );
+
+
+                //================================
+                // PERCENTAGE
+                //================================
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(
+                    11
+                );
+
+                pdf.setTextColor(
+                    20,
+                    100,
+                    70
+                );
+
+                pdf.text(
+                    student.percentage
+                    .toFixed(2) +
+                    "%",
+                    x + cardWidth - 8,
+                    sectionY + 20,
+                    {
+                        align:"right"
+                    }
+                );
+
+
+                //================================
+                // MARKS
+                //================================
+
+                pdf.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+                pdf.setFontSize(
+                    7
+                );
+
+                pdf.setTextColor(
+                    90,
+                    95,
+                    105
+                );
+
+                pdf.text(
+                    student.correct +
+                    " / " +
+                    student.total +
+                    " Correct",
+                    x + cardWidth - 8,
+                    sectionY + 27,
+                    {
+                        align:"right"
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    //================================================
+    // DRAW RESULT TABLE
+    //================================================
+
+    function drawResultTable(
+        startY,
+        startIndex
     ){
 
-        text =
-            text.substring(
-                0,
-                text.length - 4
-            ) +
-            "...";
+        const marginLeft = 12;
+
+        const rowHeight = 8;
+
+        const headerHeight = 10;
+
+
+        const colWidths = [
+
+            13, // Rank
+            31, // Reg
+            54, // Name
+            42, // Paper
+            29, // Total
+            29, // Correct
+            29, // Wrong
+            30, // Unattempted
+            30  // Percentage
+
+        ];
+
+
+        const headers = [
+
+            "Rank",
+            "Reg No",
+            "Student Name",
+            "Paper",
+            "Total",
+            "Correct",
+            "Wrong",
+            "Unattempted",
+            "Percentage"
+
+        ];
+
+
+        let x =
+            marginLeft;
+
+
+        //============================================
+        // TABLE HEADER
+        //============================================
+
+        headers.forEach(
+            function(header,index){
+
+                pdf.setFillColor(
+                    24,
+                    78,
+                    145
+                );
+
+                pdf.setDrawColor(
+                    180,
+                    190,
+                    205
+                );
+
+                pdf.rect(
+                    x,
+                    startY,
+                    colWidths[index],
+                    headerHeight,
+                    "FD"
+                );
+
+
+                pdf.setTextColor(
+                    255,
+                    255,
+                    255
+                );
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(
+                    7.5
+                );
+
+                pdf.text(
+                    header,
+                    x +
+                    colWidths[index] / 2,
+                    startY + 6.5,
+                    {
+                        align:"center"
+                    }
+                );
+
+
+                x +=
+                    colWidths[index];
+
+            }
+        );
+
+
+        let y =
+            startY +
+            headerHeight;
+
+
+        //============================================
+        // ROWS
+        //============================================
+
+        for(
+            let i = startIndex;
+            i < reportResults.length;
+            i++
+        ){
+
+            const student =
+                reportResults[i];
+
+
+            //========================================
+            // PAGE BREAK
+            //========================================
+
+            if(
+                y + rowHeight >
+                pageHeight - 15
+            ){
+
+                pdf.addPage();
+
+                drawPageBorder();
+
+                drawHeader();
+
+
+                y = 50;
+
+
+                x =
+                    marginLeft;
+
+
+                headers.forEach(
+                    function(header,index){
+
+                        pdf.setFillColor(
+                            24,
+                            78,
+                            145
+                        );
+
+                        pdf.setDrawColor(
+                            180,
+                            190,
+                            205
+                        );
+
+                        pdf.rect(
+                            x,
+                            y,
+                            colWidths[index],
+                            headerHeight,
+                            "FD"
+                        );
+
+
+                        pdf.setTextColor(
+                            255,
+                            255,
+                            255
+                        );
+
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
+
+                        pdf.setFontSize(
+                            7.5
+                        );
+
+                        pdf.text(
+                            header,
+                            x +
+                            colWidths[index] / 2,
+                            y + 6.5,
+                            {
+                                align:"center"
+                            }
+                        );
+
+
+                        x +=
+                            colWidths[index];
+
+                    }
+                );
+
+
+                y +=
+                    headerHeight;
+
+            }
+
+
+            //========================================
+            // TOP 3 ROW HIGHLIGHT
+            //========================================
+
+            if(
+                student.rank === 1
+            ){
+
+                pdf.setFillColor(
+                    255,
+                    248,
+                    220
+                );
+
+            }
+
+            else if(
+                student.rank === 2
+            ){
+
+                pdf.setFillColor(
+                    245,
+                    247,
+                    250
+                );
+
+            }
+
+            else if(
+                student.rank === 3
+            ){
+
+                pdf.setFillColor(
+                    255,
+                    244,
+                    235
+                );
+
+            }
+
+            else if(
+                i % 2 === 0
+            ){
+
+                pdf.setFillColor(
+                    248,
+                    250,
+                    253
+                );
+
+            }
+
+            else{
+
+                pdf.setFillColor(
+                    255,
+                    255,
+                    255
+                );
+
+            }
+
+
+            const row = [
+
+                student.rank === 1
+                    ? "1st"
+                    :
+                    student.rank === 2
+                    ? "2nd"
+                    :
+                    student.rank === 3
+                    ? "3rd"
+                    :
+                    String(student.rank),
+
+                student.regNo,
+
+                student.name,
+
+                student.paper,
+
+                student.total,
+
+                student.correct,
+
+                student.wrong,
+
+                student.unattempted,
+
+                student.percentage
+                    .toFixed(2) +
+                    "%"
+
+            ];
+
+
+            x =
+                marginLeft;
+
+
+            row.forEach(
+                function(value,colIndex){
+
+                    pdf.setDrawColor(
+                        205,
+                        210,
+                        218
+                    );
+
+
+                    pdf.rect(
+                        x,
+                        y,
+                        colWidths[colIndex],
+                        rowHeight,
+                        "FD"
+                    );
+
+
+                    //================================
+                    // TEXT
+                    //================================
+
+                    if(
+                        student.rank <= 3
+                    ){
+
+                        pdf.setTextColor(
+                            25,
+                            55,
+                            100
+                        );
+
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
+
+                    }
+
+                    else{
+
+                        pdf.setTextColor(
+                            35,
+                            35,
+                            35
+                        );
+
+                        pdf.setFont(
+                            "helvetica",
+                            colIndex === 1
+                                ? "bold"
+                                : "normal"
+                        );
+
+                    }
+
+
+                    pdf.setFontSize(
+                        colIndex === 2
+                            ? 7.5
+                            : 7.5
+                    );
+
+
+                    let text =
+                        String(
+                            value ?? ""
+                        );
+
+
+                    const maxWidth =
+                        colWidths[colIndex] -
+                        4;
+
+
+                    while(
+                        text.length > 4 &&
+                        pdf.getTextWidth(
+                            text
+                        ) >
+                        maxWidth
+                    ){
+
+                        text =
+                            text.substring(
+                                0,
+                                text.length - 4
+                            ) +
+                            "...";
+
+                    }
+
+
+                    pdf.text(
+                        text,
+                        x +
+                        colWidths[colIndex] / 2,
+                        y + 5.5,
+                        {
+                            align:"center"
+                        }
+                    );
+
+
+                    x +=
+                        colWidths[colIndex];
+
+                }
+            );
+
+
+            y +=
+                rowHeight;
+
+        }
 
     }
 
-    pdf.text(
-        text,
-        x + colWidths[colIndex] / 2,
-        y + 6,
-        {
-            align: "center"
-        }
-    );
 
-    x += colWidths[colIndex];
-
-});
-            y += rowHeight;
-
-});
     //================================================
-    // FOOTER
+    // FIRST PAGE
     //================================================
 
-    pdf.setFont(
-        "helvetica",
-        "normal"
+    drawPageBorder();
+
+    drawHeader();
+
+    drawSummaryCards();
+
+    drawTopThree();
+
+
+    //================================================
+    // RESULT TABLE
+    //================================================
+
+    drawResultTable(
+        113,
+        0
     );
 
-    pdf.setFontSize(8);
 
-    pdf.setTextColor(
-        100,
-        100,
-        100
-    );
+    //================================================
+    // FOOTER ON ALL PAGES
+    //================================================
 
-    pdf.text(
-        "IKON Institute | Online Examination System",
-        pageWidth / 2,
-        pageHeight - 11,
-        {
-            align: "center"
-        }
-    );
+    const pageCount =
+        pdf.getNumberOfPages();
+
+
+    for(
+        let page = 1;
+        page <= pageCount;
+        page++
+    ){
+
+        pdf.setPage(
+            page
+        );
+
+
+        pdf.setDrawColor(
+            210,
+            215,
+            222
+        );
+
+        pdf.line(
+            12,
+            pageHeight - 14,
+            pageWidth - 12,
+            pageHeight - 14
+        );
+
+
+        pdf.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        pdf.setFontSize(
+            7
+        );
+
+        pdf.setTextColor(
+            100,
+            105,
+            115
+        );
+
+
+        pdf.text(
+            "IKON INSTITUTE | Online Examination System",
+            12,
+            pageHeight - 8
+        );
+
+
+        pdf.text(
+            "Page " +
+            page +
+            " of " +
+            pageCount,
+            pageWidth - 12,
+            pageHeight - 8,
+            {
+                align:"right"
+            }
+        );
+
+    }
+
 
     //================================================
     // FILE NAME
     //================================================
 
     const safeDate =
-        formatPDFResultDate(
-            selectedDate
-        ).replace(
+        displayDate
+        .replace(
             /[^0-9-]/g,
             "-"
         );
+
 
     pdf.save(
         "IKON_Result_Report_" +
