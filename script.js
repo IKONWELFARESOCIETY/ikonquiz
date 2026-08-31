@@ -4249,11 +4249,115 @@ if(resultBox){
         // -------------------------------------------
         // NO RESULT
         // -------------------------------------------
-
- //====================================================
+//====================================================
 // NO PUBLISHED RESULT
+// SHOW ONLY PROFESSIONAL MESSAGE
 //====================================================
 
+if(visibleCount === 0){
+
+    const resultBox =
+        document.querySelector(
+            "#studentResultPage .result-list-box"
+        );
+
+    if(resultBox){
+
+        // Hide ALL existing result content
+        resultBox
+            .querySelectorAll(
+                ":scope > *"
+            )
+            .forEach(function(el){
+
+                el.style.display = "none";
+
+            });
+
+
+        // Create message
+        let messageBox =
+            document.getElementById(
+                "resultNotPublishedBox"
+            );
+
+
+        if(!messageBox){
+
+            messageBox =
+                document.createElement("div");
+
+            messageBox.id =
+                "resultNotPublishedBox";
+
+            messageBox.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:70px 25px;
+                ">
+
+                    <div style="
+                        width:74px;
+                        height:74px;
+                        margin:0 auto 22px;
+                        border-radius:50%;
+                        background:#eff6ff;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:34px;
+                    ">
+                        📋
+                    </div>
+
+                    <h2 style="
+                        margin:0 0 12px;
+                        font-size:28px;
+                        font-weight:700;
+                        color:#0d5fe8;
+                    ">
+                        Result Not Published
+                    </h2>
+
+                    <p style="
+                        margin:0;
+                        color:#64748b;
+                        font-size:16px;
+                        line-height:1.7;
+                    ">
+                        Your examination result has not
+                        been published yet.
+                    </p>
+
+                    <p style="
+                        margin:8px 0 0;
+                        color:#94a3b8;
+                        font-size:14px;
+                    ">
+                        Please check again later.
+                    </p>
+
+                </div>
+
+            `;
+
+            resultBox.appendChild(
+                messageBox
+            );
+
+        }
+        else{
+
+            messageBox.style.display =
+                "block";
+
+        }
+
+    }
+
+    return;
+}
 
     })
 
@@ -4276,10 +4380,6 @@ if(resultBox){
 //====================================
 // BACK LOGIN
 //====================================
-
-//====================================================
-// BACK TO MAIN LOGIN PAGE
-//====================================================
 
 //====================================================
 // BACK TO MAIN LOGIN PAGE
