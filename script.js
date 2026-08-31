@@ -4139,6 +4139,25 @@ function verifyResultStudent(){
             document.getElementById(
                 "resultTableBody"
             );
+        // ==========================================
+// ALWAYS HIDE SECRET PDF BUTTON
+// NORMAL RESULT LIST
+// ==========================================
+
+const pdfBtn =
+    document.getElementById(
+        "hiddenResultPDFButton"
+    );
+
+if(pdfBtn){
+
+    pdfBtn.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+}
 
         if(!body){
             return;
