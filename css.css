@@ -16144,3 +16144,16 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/*==================================================
+   MARKSHEET PRINT - TOP BORDER BREATHING SPACE
+   ONLY POSITION FIX
+==================================================*/
+
+@media print {
+
+    .marksheet{
+        position:relative !important;
+        top:3mm !important;
+    }
+
+}
