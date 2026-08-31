@@ -3483,7 +3483,7 @@ MARKSHEET NO TABLE
 ==========================*/
 
 .mkTopTable{
-    width:220px;
+    width:210px;
     border-collapse:collapse;
     table-layout:fixed;
     margin:0 0 4px -10px;
