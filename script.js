@@ -4145,6 +4145,30 @@ function verifyResultStudent(){
         }
 
         body.innerHTML = "";
+        const oldMessage =
+    document.getElementById(
+        "resultNotPublishedBox"
+    );
+
+if(oldMessage){
+
+    oldMessage.remove();
+
+}
+        const resultBox =
+    document.querySelector(
+        "#studentResultPage .result-list-box"
+    );
+
+if(resultBox){
+
+    Array.from(
+        resultBox.children
+    ).forEach(function(el){
+        el.style.display = "";
+    });
+
+}
 
 
         let visibleCount = 0;
@@ -4226,121 +4250,130 @@ function verifyResultStudent(){
         // NO RESULT
         // -------------------------------------------
 
-       if(visibleCount === 0){
+ //====================================================
+// NO PUBLISHED RESULT
+//====================================================
 
-    // Hide complete result table
-    const resultTable =
+if(visibleCount === 0){
+
+    //-----------------------------------------------
+    // MAIN RESULT BOX
+    //-----------------------------------------------
+
+    const resultBox =
         document.querySelector(
-            "#studentResultPage .resultTable"
+            "#studentResultPage .result-list-box"
         );
 
-    if(resultTable){
-        resultTable.style.display = "none";
-    }
+    if(resultBox){
 
-    // Hide result filters / search if present
-    const resultSearch =
-        document.querySelector(
-            "#studentResultPage .resultSearch"
-        );
+        //-------------------------------------------
+        // HIDE EVERYTHING
+        //-------------------------------------------
 
-    if(resultSearch){
-        resultSearch.style.display = "none";
-    }
+        Array.from(
+            resultBox.children
+        ).forEach(function(el){
 
-    // Professional Not Published Message
-    const resultPage =
-        document.getElementById(
-            "studentResultPage"
-        );
+            el.style.display = "none";
 
-    if(resultPage){
+        });
 
-        let notPublished =
+        //-------------------------------------------
+        // CREATE PROFESSIONAL MESSAGE
+        //-------------------------------------------
+
+        let messageBox =
             document.getElementById(
                 "resultNotPublishedBox"
             );
 
-        if(!notPublished){
+        if(!messageBox){
 
-            notPublished =
+            messageBox =
                 document.createElement("div");
 
-            notPublished.id =
+            messageBox.id =
                 "resultNotPublishedBox";
 
-            notPublished.innerHTML = `
+            messageBox.innerHTML = `
 
                 <div style="
-                    max-width:650px;
-                    margin:70px auto;
-                    padding:45px 30px;
                     text-align:center;
-                    background:#ffffff;
-                    border-radius:18px;
-                    box-shadow:0 10px 35px rgba(0,0,0,.10);
-                    border:1px solid #e8e8e8;
+                    padding:55px 25px 60px;
                 ">
 
                     <div style="
-                        width:72px;
-                        height:72px;
-                        margin:0 auto 20px;
+                        width:76px;
+                        height:76px;
+                        margin:0 auto 22px;
                         border-radius:50%;
-                        background:#f1f5f9;
+                        background:#eff6ff;
                         display:flex;
                         align-items:center;
                         justify-content:center;
-                        font-size:34px;
+                        font-size:36px;
+                        box-shadow:
+                            0 6px 18px
+                            rgba(0,0,0,.08);
                     ">
-                        ⏳
+                        📋
                     </div>
 
                     <h2 style="
                         margin:0 0 12px;
-                        color:#1f2937;
                         font-size:28px;
                         font-weight:700;
+                        color:#1e3a8a;
                     ">
                         Result Not Published
                     </h2>
 
                     <p style="
-                        margin:0 auto 10px;
-                        color:#64748b;
+                        margin:0 auto;
+                        max-width:520px;
                         font-size:16px;
                         line-height:1.7;
-                        max-width:500px;
+                        color:#64748b;
                     ">
-                        Your examination result has not been
-                        published yet.
+                        Your examination result has not
+                        been published yet.
                     </p>
 
                     <p style="
-                        margin:0;
-                        color:#94a3b8;
+                        margin:10px 0 0;
                         font-size:14px;
+                        color:#94a3b8;
                     ">
                         Please check again later.
                     </p>
 
                 </div>
+
             `;
 
-            resultPage.appendChild(
-                notPublished
+            resultBox.appendChild(
+                messageBox
             );
+
         }
         else{
 
-            notPublished.style.display =
+            messageBox.style.display =
                 "block";
+
         }
+
+        //-------------------------------------------
+        // SHOW RESULT BOX ONLY
+        //-------------------------------------------
+
+        resultBox.style.display =
+            "block";
     }
 
     return;
 }
-
     })
 
     .catch(function(err){
