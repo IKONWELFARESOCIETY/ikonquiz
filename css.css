@@ -3469,7 +3469,7 @@ TOP RIGHT SECTION
 ==========================*/
 
 .mkTopRight{
-    width:180px;
+    width:200px;
     display:flex;
     flex-direction:column;
     align-items:flex-end;
@@ -3483,7 +3483,7 @@ MARKSHEET NO TABLE
 ==========================*/
 
 .mkTopTable{
-    width:180px;
+    width:200px;
     border-collapse:collapse;
     table-layout:fixed;
     margin:0 0 4px 0;
@@ -3504,7 +3504,7 @@ MARKSHEET NO TABLE
 }
 
 .mkTopTable td:last-child{
-    width:115px;
+    width:140px;
     background:#fff;
     text-align:center;
     font-weight:700;
