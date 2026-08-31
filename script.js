@@ -4243,7 +4243,7 @@ if(resultBox){
 
                 <td>${r.result}</td>
 
-                <td>${r.resultDate ? String(r.resultDate) : ""}</td>
+                <td>${r.resultDate}</td>
                 <td>
 
                     <button
