@@ -6995,7 +6995,8 @@ function fillMarksheet(m){
     document.getElementById("mkPaperName").textContent =
     m.paperName || "";
 
-       document.getElementById("mkResultDate").textContent = formatMarksheetDate(m.resultDate);
+   document.getElementById("mkResultDate").textContent =
+    m.resultDate || "";
         document.getElementById("mkIssueDate").textContent = m.issueDate || "";
         document.getElementById("mkExamDate").textContent = m.examDate;
         document.getElementById("mkExamCode").textContent = m.examCode;
