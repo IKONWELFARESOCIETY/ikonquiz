@@ -4226,33 +4226,120 @@ function verifyResultStudent(){
         // NO RESULT
         // -------------------------------------------
 
-        if(visibleCount === 0){
+       if(visibleCount === 0){
 
-            body.innerHTML = `
+    // Hide complete result table
+    const resultTable =
+        document.querySelector(
+            "#studentResultPage .resultTable"
+        );
 
-                <tr>
+    if(resultTable){
+        resultTable.style.display = "none";
+    }
 
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:45px;
-                            color:#d32f2f;
-                            font-size:22px;
-                            font-weight:bold;
-                            background:#fff8f8;
-                        "
-                    >
+    // Hide result filters / search if present
+    const resultSearch =
+        document.querySelector(
+            "#studentResultPage .resultSearch"
+        );
 
-                        Results will be published soon.
+    if(resultSearch){
+        resultSearch.style.display = "none";
+    }
 
-                    </td>
+    // Professional Not Published Message
+    const resultPage =
+        document.getElementById(
+            "studentResultPage"
+        );
 
-                </tr>
+    if(resultPage){
 
+        let notPublished =
+            document.getElementById(
+                "resultNotPublishedBox"
+            );
+
+        if(!notPublished){
+
+            notPublished =
+                document.createElement("div");
+
+            notPublished.id =
+                "resultNotPublishedBox";
+
+            notPublished.innerHTML = `
+
+                <div style="
+                    max-width:650px;
+                    margin:70px auto;
+                    padding:45px 30px;
+                    text-align:center;
+                    background:#ffffff;
+                    border-radius:18px;
+                    box-shadow:0 10px 35px rgba(0,0,0,.10);
+                    border:1px solid #e8e8e8;
+                ">
+
+                    <div style="
+                        width:72px;
+                        height:72px;
+                        margin:0 auto 20px;
+                        border-radius:50%;
+                        background:#f1f5f9;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:34px;
+                    ">
+                        ⏳
+                    </div>
+
+                    <h2 style="
+                        margin:0 0 12px;
+                        color:#1f2937;
+                        font-size:28px;
+                        font-weight:700;
+                    ">
+                        Result Not Published
+                    </h2>
+
+                    <p style="
+                        margin:0 auto 10px;
+                        color:#64748b;
+                        font-size:16px;
+                        line-height:1.7;
+                        max-width:500px;
+                    ">
+                        Your examination result has not been
+                        published yet.
+                    </p>
+
+                    <p style="
+                        margin:0;
+                        color:#94a3b8;
+                        font-size:14px;
+                    ">
+                        Please check again later.
+                    </p>
+
+                </div>
             `;
 
+            resultPage.appendChild(
+                notPublished
+            );
         }
+        else{
+
+            notPublished.style.display =
+                "block";
+        }
+    }
+
+    return;
+}
 
     })
 
