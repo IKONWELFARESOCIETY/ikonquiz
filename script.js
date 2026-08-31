@@ -2351,6 +2351,29 @@ function loadPaperQuestions() {
     })
 
     .then(function (data) {
+                //--------------------------------------
+        // GLOBAL EXAM STATUS CHECK
+        //--------------------------------------
+
+        if (data.status === "EXAM_OFF") {
+
+            alert(
+                data.message ||
+                "Examination is not currently active."
+            );
+
+            examStarted = false;
+
+            document
+                .getElementById("examArea")
+                ?.classList.add("hidden");
+
+            document
+                .getElementById("instructionPage")
+                ?.classList.remove("hidden");
+
+            return;
+        }
 
         //--------------------------------------
         // EXAM TIME CHECK
