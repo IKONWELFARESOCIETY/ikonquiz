@@ -15856,7 +15856,112 @@ function openDateWiseResultPDF(){
             "dateWiseResultPDFInput"
         );
 
+//================================================
+// PAPER DROPDOWN
+// FETCH PAPERS FROM SHEET
+//================================================
 
+let paperSelect =
+    document.getElementById(
+        "dateWiseResultPaperInput"
+    );
+
+if(!paperSelect){
+
+    paperSelect =
+        document.createElement("select");
+
+    paperSelect.id =
+        "dateWiseResultPaperInput";
+
+    paperSelect.style.cssText = `
+        width:100%;
+        padding:12px 14px;
+        margin-top:12px;
+        border:1px solid #d1d5db;
+        border-radius:8px;
+        font-size:15px;
+        background:#fff;
+        box-sizing:border-box;
+    `;
+
+    paperSelect.innerHTML = `
+        <option value="">
+            Loading papers...
+        </option>
+    `;
+
+    dateInput.parentNode.insertBefore(
+        paperSelect,
+        dateInput.nextSibling
+    );
+
+
+    //================================================
+    // FETCH UNIQUE PAPERS FROM RESULT SHEET
+    //================================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=getResultPapers" +
+        "&adminToken=" +
+        encodeURIComponent(adminToken) +
+        "&_=" +
+        Date.now()
+    )
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+
+        paperSelect.innerHTML = `
+            <option value="">
+                Select Paper
+            </option>
+        `;
+
+        if(
+            data.status === "success" &&
+            Array.isArray(data.papers)
+        ){
+
+            data.papers.forEach(function(paper){
+
+                if(!paper){
+                    return;
+                }
+
+                const option =
+                    document.createElement("option");
+
+                option.value = paper;
+                option.textContent = paper;
+
+                paperSelect.appendChild(
+                    option
+                );
+
+            });
+
+        }
+
+    })
+    .catch(function(error){
+
+        console.error(
+            "Paper loading error:",
+            error
+        );
+
+        paperSelect.innerHTML = `
+            <option value="">
+                Unable to load papers
+            </option>
+        `;
+
+    });
+
+}
     const preview =
         document.getElementById(
             "dateWiseResultPreview"
@@ -16087,7 +16192,32 @@ function generateSelectedDatePDF(){
         }
 
         return;
+//================================================
+// SELECTED PAPER
+//================================================
 
+const paperInput =
+    document.getElementById(
+        "dateWiseResultPaperInput"
+    );
+
+const selectedPaper =
+    paperInput
+    ? paperInput.value.trim()
+    : "";
+
+if(!selectedPaper){
+
+    alert(
+        "Please select a paper."
+    );
+
+    if(paperInput){
+        paperInput.focus();
+    }
+
+    return;
+}
     }
 
 
