@@ -15860,11 +15860,6 @@ function checkHallTicketPublished(){
 
     });
 }
-//====================================================
-// DATE-WISE RESULT PDF
-// PROFESSIONAL ADMIN VERSION
-//====================================================
-
 function openDateWiseResultPDF(){
 
     //================================================
@@ -16085,7 +16080,6 @@ if(!paperSelect){
     },150);
 
 }
-
 
 //====================================================
 // CLOSE DATE PDF MODAL
