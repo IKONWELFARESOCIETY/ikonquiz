@@ -16393,19 +16393,6 @@ const selectedPaper =
     ? paperInput.value.trim()
     : "";
 
-if(!selectedPaper){
-
-    alert(
-        "Please select a paper."
-    );
-
-    if(paperInput){
-        paperInput.focus();
-    }
-
-    return;
-}
-
     if(!selectedDate){
 
         alert(
