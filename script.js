@@ -7026,7 +7026,11 @@ function fillMarksheet(m){
     m.totalMarks || "";
 
     document.getElementById("mkPercentage").textContent =
-    m.percentage || "";
+    m.percentage !== "" &&
+    m.percentage !== null &&
+    m.percentage !== undefined
+        ? Number(m.percentage).toFixed(2) + "%"
+        : "";
 
     document.getElementById("mkGrade").textContent =
     m.grade || "";
