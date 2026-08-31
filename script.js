@@ -6995,7 +6995,7 @@ function fillMarksheet(m){
     document.getElementById("mkPaperName").textContent =
     m.paperName || "";
 
-       document.getElementById("mkResultDate").textContent = m.resultDate;
+       document.getElementById("mkResultDate").textContent = formatMarksheetDate(m.resultDate);
         document.getElementById("mkIssueDate").textContent = m.issueDate || "";
         document.getElementById("mkExamDate").textContent = m.examDate;
         document.getElementById("mkExamCode").textContent = m.examCode;
@@ -7086,6 +7086,56 @@ if(qr){
 
     });
 
+}
+//====================================================
+// FORMAT MARKSHEET DATE
+//====================================================
+
+function formatMarksheetDate(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        String(value).trim() === ""
+    ){
+        return "";
+    }
+
+    const date = String(value).trim();
+
+    // YYYY-MM-DD
+    let match = date.match(
+        /^(\d{4})-(\d{1,2})-(\d{1,2})/
+    );
+
+    if(match){
+
+        return (
+            String(match[3]).padStart(2,"0") +
+            "-" +
+            String(match[2]).padStart(2,"0") +
+            "-" +
+            match[1]
+        );
+
+    }
+
+    // Google Sheet / ISO Date
+    const d = new Date(date);
+
+    if(!isNaN(d.getTime())){
+
+        return (
+            String(d.getUTCDate()).padStart(2,"0") +
+            "-" +
+            String(d.getUTCMonth() + 1).padStart(2,"0") +
+            "-" +
+            d.getUTCFullYear()
+        );
+
+    }
+
+    return date;
 }
 function openResultVerifyPage(){
 
