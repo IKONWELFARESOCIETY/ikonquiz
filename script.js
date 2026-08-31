@@ -895,7 +895,40 @@ function checkIndividualExamTime(){
             "Individual Exam Time Response:",
             data
         );
+//------------------------------------------
+// EXAM STATUS OFF
+//------------------------------------------
 
+if(
+    data.status ===
+    "EXAM_OFF"
+){
+
+    // Show waiting page
+    document
+        .getElementById("waitingPage")
+        ?.classList.remove("hidden");
+
+    // Hide test page
+    document
+        .getElementById("testPage")
+        ?.classList.add("hidden");
+
+    // Hide exam area
+    document
+        .getElementById("examArea")
+        ?.classList.add("hidden");
+
+    // Hide instruction page
+    document
+        .getElementById("instructionPage")
+        ?.classList.add("hidden");
+
+    // Keep checking status
+    autoCheckStatus();
+
+    return;
+}
         //------------------------------------------
         // EXAM NOT STARTED
         //------------------------------------------
