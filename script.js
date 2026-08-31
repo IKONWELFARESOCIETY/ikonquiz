@@ -2351,30 +2351,34 @@ function loadPaperQuestions() {
     })
 
     .then(function (data) {
-                //--------------------------------------
-        // GLOBAL EXAM STATUS CHECK
-        //--------------------------------------
+               //--------------------------------------
+// GLOBAL EXAM STATUS OFF
+//--------------------------------------
 
-        if (data.status === "EXAM_OFF") {
+if (data.status === "EXAM_OFF") {
 
-            alert(
-                data.message ||
-                "Examination is not currently active."
-            );
+    examStarted = false;
 
-            examStarted = false;
+    // Hide exam
+    document
+        .getElementById("examArea")
+        ?.classList.add("hidden");
 
-            document
-                .getElementById("examArea")
-                ?.classList.add("hidden");
+    // Hide instruction
+    document
+        .getElementById("instructionPage")
+        ?.classList.add("hidden");
 
-            document
-                .getElementById("instructionPage")
-                ?.classList.remove("hidden");
+    // Show waiting page
+    document
+        .getElementById("waitingPage")
+        ?.classList.remove("hidden");
 
-            return;
-        }
+    // Start status checker
+    autoCheckStatus();
 
+    return;
+}
         //--------------------------------------
         // EXAM TIME CHECK
         //--------------------------------------
