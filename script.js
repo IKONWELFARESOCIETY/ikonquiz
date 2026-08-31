@@ -16068,21 +16068,227 @@ document.addEventListener(
     "change",
     function(event){
 
+        //============================================
+        // DATE SELECTED
+        //============================================
+
         if(
             event.target &&
             event.target.id ===
             "dateWiseResultPDFInput"
         ){
 
+            const selectedDate =
+                event.target.value;
+
             updateDateWisePDFPreview(
-                event.target.value
+                selectedDate
             );
+
+
+            //========================================
+            // PAPER DROPDOWN
+            //========================================
+
+            const paperSelect =
+                document.getElementById(
+                    "dateWiseResultPaperInput"
+                );
+
+            if(!paperSelect){
+                return;
+            }
+
+
+            // RESET
+            paperSelect.innerHTML =
+                `
+                <option value="">
+                    Loading papers...
+                </option>
+                `;
+
+
+            if(!selectedDate){
+
+                paperSelect.innerHTML =
+                    `
+                    <option value="">
+                        Select Paper
+                    </option>
+                    `;
+
+                return;
+            }
+
+
+            //========================================
+            // FETCH SELECTED DATE RESULTS
+            //========================================
+
+            const url =
+                SCRIPT_URL +
+
+                "?action=dateWiseResults" +
+
+                "&adminToken=" +
+                encodeURIComponent(
+                    adminToken
+                ) +
+
+                "&date=" +
+                encodeURIComponent(
+                    selectedDate
+                ) +
+
+                "&_=" +
+                Date.now();
+
+
+            fetch(url)
+
+            .then(function(response){
+
+                if(!response.ok){
+
+                    throw new Error(
+                        "Unable to load papers."
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(function(data){
+
+                console.log(
+                    "DATE-WISE PAPER RESPONSE:",
+                    data
+                );
+
+
+                //====================================
+                // CLEAR
+                //====================================
+
+                paperSelect.innerHTML =
+                    `
+                    <option value="">
+                        Select Paper
+                    </option>
+                    `;
+
+
+                if(
+                    !data ||
+                    data.status !== "SUCCESS" ||
+                    !Array.isArray(
+                        data.results
+                    )
+                ){
+
+                    return;
+
+                }
+
+
+                //====================================
+                // UNIQUE PAPERS
+                //====================================
+
+                const paperSet =
+                    new Set();
+
+
+                data.results.forEach(
+                    function(result){
+
+                        const paper =
+                            String(
+                                result.paper ||
+                                ""
+                            ).trim();
+
+
+                        if(paper !== ""){
+
+                            paperSet.add(
+                                paper
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                //====================================
+                // ADD PAPERS
+                //====================================
+
+                Array.from(
+                    paperSet
+                )
+                .sort()
+                .forEach(
+                    function(paper){
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            paper;
+
+                        option.textContent =
+                            paper;
+
+                        paperSelect.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+
+                if(
+                    paperSelect.options.length === 1
+                ){
+
+                    paperSelect.innerHTML =
+                        `
+                        <option value="">
+                            No Paper Found
+                        </option>
+                        `;
+
+                }
+
+            })
+
+            .catch(function(error){
+
+                console.error(
+                    "Paper Loading Error:",
+                    error
+                );
+
+                paperSelect.innerHTML =
+                    `
+                    <option value="">
+                        Unable to load papers
+                    </option>
+                    `;
+
+            });
 
         }
 
     }
 );
-
 
 //====================================================
 // DATE PREVIEW
@@ -16177,7 +16383,28 @@ function generateSelectedDatePDF(){
         dateInput
         ? dateInput.value
         : "";
+const paperInput =
+    document.getElementById(
+        "dateWiseResultPaperInput"
+    );
 
+const selectedPaper =
+    paperInput
+    ? paperInput.value.trim()
+    : "";
+
+if(!selectedPaper){
+
+    alert(
+        "Please select a paper."
+    );
+
+    if(paperInput){
+        paperInput.focus();
+    }
+
+    return;
+}
 
     if(!selectedDate){
 
@@ -16284,7 +16511,10 @@ if(!selectedPaper){
         encodeURIComponent(
             selectedDate
         ) +
-
+"&paper=" +
+encodeURIComponent(
+    selectedPaper
+) +
         "&_=" +
         Date.now();
 
