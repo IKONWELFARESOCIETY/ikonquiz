@@ -4243,8 +4243,7 @@ if(resultBox){
 
                 <td>${r.result}</td>
 
-                <td>${formatMarksheetDate(r.resultDate)}</td>
-
+                <td>${r.resultDate ? String(r.resultDate) : ""}</td>
                 <td>
 
                     <button
