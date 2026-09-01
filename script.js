@@ -31,14 +31,12 @@ let pdfAdminAccess = false;
 //====================================================
 // QUESTION DATA
 //====================================================
-
 let questions = [];
 let answers = [];
 let currentQuestion = 0;
 //====================================================
 // PRACTICAL TIMER
 //====================================================
-
 let practicalDuration = 30;
 
 let practicalTotalTime = practicalDuration * 60;
