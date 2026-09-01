@@ -16163,3 +16163,13 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     position:relative !important;
     left:15px !important;
 }
+@media print{
+
+    .mkHeading h2{
+        white-space:nowrap !important;
+        font-size:13px !important;
+        padding:7px 34px !important;
+        margin:6px 0 5px !important;
+    }
+
+}
