@@ -18430,7 +18430,6 @@ function showExamEndedScreen(endTime){
         );
 
     }
-
     //------------------------------------------
     // PROFESSIONAL DESIGN
     //------------------------------------------
