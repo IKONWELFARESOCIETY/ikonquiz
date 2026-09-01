@@ -18515,9 +18515,7 @@ window.addEventListener(
         ) {
 
             saveResumeState();
-
         }
-
     }
 );
 window.addEventListener(
