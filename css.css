@@ -16207,21 +16207,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
-/* =========================================================
-   ISO BADGE - FINAL POSITION
-   ========================================================= */
-
 .mkISOBadge{
     position:absolute !important;
 
-    /* BIGGER SIZE */
-    width:70px !important;
-    height:70px !important;
+    width:670px !important;
+    height:67px !important;
 
     object-fit:contain !important;
 
+    /* LEFT SIDE */
+    right:auto !important;
+    left:0px !important;
+
     /* TABLE KE JUST UPAR */
-    right:0px !important;
     top:-76px !important;
 
     display:block !important;
@@ -16236,10 +16234,12 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 @media print{
 
     .mkISOBadge{
-        width:70px !important;
-        height:70px !important;
+        width:67px !important;
+        height:67px !important;
 
-        right:0px !important;
+        right:auto !important;
+        left:0px !important;
+
         top:-76px !important;
 
         display:block !important;
