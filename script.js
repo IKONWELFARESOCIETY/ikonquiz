@@ -4466,7 +4466,31 @@ function verifyResultStudent(){
         document
         .getElementById("studentResultPage")
         ?.classList.remove("hidden");
+// ================================================
+// RESULT DATE SELECTOR
+// ================================================
 
+const dateSelect =
+    document.getElementById("resultDateSelect");
+
+if(dateSelect){
+
+    dateSelect.innerHTML =
+        '<option value="">-- Select Result Date --</option>';
+
+    (data.dates || []).forEach(function(date){
+
+        const option =
+            document.createElement("option");
+
+        option.value = date;
+        option.textContent = date;
+
+        dateSelect.appendChild(option);
+
+    });
+
+}
 
         const body =
             document.getElementById(
@@ -4775,6 +4799,163 @@ if(visibleCount === 0){
         if(myToken !== resultNavigationToken){
             return;
         }
+
+        alert("Unable to load Result List.");
+
+    });
+
+}
+//====================================================
+// FILTER RESULT BY SELECTED DATE
+//====================================================
+
+function loadSelectedResultDate(){
+
+    const dateSelect =
+        document.getElementById("resultDateSelect");
+
+    if(!dateSelect){
+        return;
+    }
+
+    const selectedDate =
+        dateSelect.value.trim();
+
+    if(selectedDate === ""){
+        return;
+    }
+
+    fetch(
+        SCRIPT_URL +
+        "?action=studentResultList" +
+        "&date=" +
+        encodeURIComponent(selectedDate)
+    )
+
+    .then(res => res.json())
+
+    .then(function(data){
+
+        if(data.status != "SUCCESS"){
+
+            alert("Unable to load Result List");
+            return;
+
+        }
+
+        const body =
+            document.getElementById(
+                "resultTableBody"
+            );
+
+        if(!body){
+            return;
+        }
+
+        body.innerHTML = "";
+
+        let visibleCount = 0;
+
+
+        data.results.forEach(function(r){
+
+            if(r.publishStatus !== "YES"){
+                return;
+            }
+
+            if(
+                String(r.examDate || "").trim()
+                !== selectedDate
+            ){
+                return;
+            }
+
+            visibleCount++;
+
+            const tr =
+                document.createElement("tr");
+
+            tr.innerHTML = `
+
+                <td>${visibleCount}</td>
+
+                <td>${r.marksheetNo}</td>
+
+                <td>${r.regNo}</td>
+
+                <td>${r.studentName}</td>
+
+                <td>${r.course}</td>
+
+                <td>${r.paperName}</td>
+
+                <td>${r.theory}</td>
+
+                <td>${r.practical}</td>
+
+                <td>${r.viva}</td>
+
+                <td>${r.notes}</td>
+
+                <td>${r.behaviour}</td>
+
+                <td>${r.project}</td>
+
+                <td>${r.totalMarks}</td>
+
+                <td>${r.percentage}</td>
+
+                <td>${r.grade}</td>
+
+                <td>${r.result}</td>
+
+                <td>${r.resultDate}</td>
+
+                <td>
+
+                    <button
+                        class="viewMarksheetBtn"
+                        onclick="openMarksheet(
+                            '${String(r.regNo || "").replace(/'/g,"\\'")}',
+                            '${String(r.paperName || "").replace(/'/g,"\\'")}',
+                            '${String(r.examDate || "").replace(/'/g,"\\'")}'
+                        )">
+
+                        View Marksheet
+
+                    </button>
+
+                </td>
+
+            `;
+
+            body.appendChild(tr);
+
+        });
+
+
+        if(visibleCount === 0){
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="18"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            font-weight:bold;
+                        ">
+                        No Result Found For ${selectedDate}
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
 
         alert("Unable to load Result List.");
 
@@ -7204,7 +7385,204 @@ isAdminMode = false;
     adminToken = "";
 
 }
+//====================================================
+// FILTER RESULT BY SELECTED DATE
+//====================================================
 
+function filterResultByDate(){
+
+    const dateSelect =
+        document.getElementById(
+            "resultDateSelect"
+        );
+
+    if(!dateSelect){
+        return;
+    }
+
+    const selectedDate =
+        dateSelect.value.trim();
+
+    if(selectedDate === ""){
+        return;
+    }
+
+
+    // ================================================
+    // LOAD RESULT LIST FOR SELECTED DATE
+    // ================================================
+
+    const myToken =
+        ++resultNavigationToken;
+
+
+    fetch(
+        SCRIPT_URL +
+        "?action=studentResultList" +
+        "&date=" +
+        encodeURIComponent(selectedDate)
+    )
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(myToken !== resultNavigationToken){
+            return;
+        }
+
+
+        if(data.status !== "SUCCESS"){
+
+            alert(
+                "Unable to load Result List"
+            );
+
+            return;
+
+        }
+
+
+        const body =
+            document.getElementById(
+                "resultTableBody"
+            );
+
+        if(!body){
+            return;
+        }
+
+
+        body.innerHTML = "";
+
+
+        let visibleCount = 0;
+
+
+        data.results.forEach(function(r){
+
+            if(r.publishStatus !== "YES"){
+                return;
+            }
+
+
+            // Extra safety:
+            // selected date ke alawa kuch nahi
+            if(
+                String(r.examDate || "").trim()
+                !== selectedDate
+            ){
+                return;
+            }
+
+
+            visibleCount++;
+
+
+            const tr =
+                document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>${visibleCount}</td>
+
+                <td>${r.marksheetNo}</td>
+
+                <td>${r.regNo}</td>
+
+                <td>${r.studentName}</td>
+
+                <td>${r.course}</td>
+
+                <td>${r.paperName}</td>
+
+                <td>${r.theory}</td>
+
+                <td>${r.practical}</td>
+
+                <td>${r.viva}</td>
+
+                <td>${r.notes}</td>
+
+                <td>${r.behaviour}</td>
+
+                <td>${r.project}</td>
+
+                <td>${r.totalMarks}</td>
+
+                <td>${r.percentage}</td>
+
+                <td>${r.grade}</td>
+
+                <td>${r.result}</td>
+
+                <td>${r.resultDate}</td>
+
+                <td>
+
+                    <button
+                        class="viewMarksheetBtn"
+                        onclick="openMarksheet(
+                            '${String(r.regNo || "")
+                                .replace(/'/g,"\\'")}',
+                            '${String(r.paperName || "")
+                                .replace(/'/g,"\\'")}',
+                            '${String(r.examDate || "")
+                                .replace(/'/g,"\\'")}'
+                        )">
+
+                        View Marksheet
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            body.appendChild(tr);
+
+        });
+
+
+        if(visibleCount === 0){
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="18"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            font-weight:bold;
+                        ">
+                        No Result Found For
+                        ${selectedDate}
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    })
+
+    .catch(function(err){
+
+        console.log(err);
+
+        if(
+            myToken !== resultNavigationToken
+        ){
+            return;
+        }
+
+        alert(
+            "Unable to load Result List."
+        );
+
+    });
+
+}
 
 //====================================================
 // RESULT MODULE
@@ -7214,7 +7592,7 @@ isAdminMode = false;
 // OPEN MARKSHEET
 //=========================================
 
-function openMarksheet(studentID,paper){
+function openMarksheet(studentID,paper,examDate){
 
     fetch(
 
@@ -7229,7 +7607,8 @@ function openMarksheet(studentID,paper){
         "&paper=" +
 
         encodeURIComponent(paper)
-
+        "&date=" +
+encodeURIComponent(examDate || "")
     )
 
     .then(res=>res.json())
