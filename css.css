@@ -16211,13 +16211,13 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 .mkISOBadge{
     position:absolute !important;
 
-    width:67px !important;
-    height:67px !important;
+    width:70px !important;
+    height:70px !important;
 
     object-fit:contain !important;
 
     /* SCREEN + PRINT SAME POSITION */
-    right:35px !important;
+    right:45px !important;
     left:auto !important;
 
     top:-76px !important;
@@ -16236,10 +16236,10 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     .mkISOBadge{
         position:absolute !important;
 
-        width:67px !important;
-        height:67px !important;
+        width:70px !important;
+        height:70px !important;
 
-        right:35px !important;
+        right:45px !important;
         left:auto !important;
 
         top:-76px !important;
