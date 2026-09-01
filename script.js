@@ -4398,356 +4398,370 @@ console.log(
     "Security System Loaded Successfully"
 );
 
-//====================================================
-// VERIFY RESULT STUDENT
-//====================================================
-
 function verifyResultStudent(){
 
-    const id =
+    const code =
         document
         .getElementById("resultStudentID")
         .value
         .trim();
 
-
-    if(id === ""){
-
-        alert("Please Enter Student ID");
-
+    if(code==""){
+        alert("Please Enter Verification Code");
         return;
-
     }
+
+    if(code !== "16112001"){
+        alert("Invalid Verification Code");
+        return;
+    }
+
+    // -----------------------------------------------
+    // CREATE UNIQUE REQUEST TOKEN
+    // -----------------------------------------------
+
+    const myToken = ++resultNavigationToken;
 
 
     fetch(
         SCRIPT_URL +
-        "?action=studentResultList&id=" +
-        encodeURIComponent(id)
+        "?action=studentResultList"
     )
 
     .then(res => res.json())
 
-    .then(function(data){
+    .then(data => {
 
-        if(data.status !== "SUCCESS"){
+        // -------------------------------------------
+        // OLD REQUEST CHECK
+        // -------------------------------------------
 
-            alert(
-                data.message ||
-                "Invalid Student ID"
-            );
+        if(myToken !== resultNavigationToken){
+            return;
+        }
 
+
+        if(data.status!="SUCCESS"){
+
+            alert("Unable to load Result List");
             return;
 
         }
 
 
-        // SAVE VERIFIED ID
-        window.resultStudentID = id;
-
-
-        //================================================
+        // -------------------------------------------
         // SHOW RESULT PAGE
-        //================================================
+        // -------------------------------------------
 
         document
         .getElementById("loginPage")
         ?.classList.add("hidden");
 
+
         document
         .getElementById("resultVerifyPage")
         ?.classList.add("hidden");
+
 
         document
         .getElementById("studentResultPage")
         ?.classList.remove("hidden");
 
 
-        //================================================
-        // DATE DROPDOWN
-        //================================================
-
-        const dateSelect =
-            document.getElementById(
-                "resultDateSelect"
-            );
-
-
-        if(dateSelect){
-
-            dateSelect.innerHTML =
-                '<option value="">-- Select Date --</option>';
-
-
-            (data.dates || []).forEach(
-                function(date){
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-                    option.value = date;
-
-                    option.textContent = date;
-
-                    dateSelect.appendChild(
-                        option
-                    );
-
-                }
-            );
-
-        }
-
-
-        //================================================
-        // DO NOT SHOW RESULT UNTIL DATE SELECTED
-        //================================================
-
         const body =
             document.getElementById(
                 "resultTableBody"
             );
+        // ==========================================
+// ALWAYS HIDE SECRET PDF BUTTON
+// NORMAL RESULT LIST
+// ==========================================
 
-        if(body){
+const pdfBtn =
+    document.getElementById(
+        "hiddenResultPDFButton"
+    );
 
-            body.innerHTML = `
-                <tr>
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:30px;
-                            font-weight:bold;
-                        "
-                    >
-                        Please Select Result Date
-                    </td>
-                </tr>
-            `;
+if(pdfBtn){
 
+    pdfBtn.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+}
+
+        if(!body){
+            return;
         }
 
-    })
+        body.innerHTML = "";
+        const oldMessage =
+    document.getElementById(
+        "resultNotPublishedBox"
+    );
 
-    .catch(function(err){
+if(oldMessage){
 
-        console.log(err);
+    oldMessage.remove();
 
-        alert(
-            "Unable to verify Student."
-        );
+}
+        const resultBox =
+    document.querySelector(
+        "#studentResultPage .result-list-box"
+    );
 
+if(resultBox){
+
+    Array.from(
+        resultBox.children
+    ).forEach(function(el){
+        el.style.display = "";
     });
 
 }
-//====================================================
-// FILTER RESULT BY SELECTED EXAM DATE
-//====================================================
-
-function filterResultByDate(){
-
-    const select =
-        document.getElementById(
-            "resultDateSelect"
-        );
-
-
-    if(!select){
-
-        return;
-
-    }
-
-
-    const selectedDate =
-        select.value.trim();
-
-
-    if(selectedDate === ""){
-
-        const body =
-            document.getElementById(
-                "resultTableBody"
-            );
-
-        if(body){
-
-            body.innerHTML = `
-                <tr>
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:30px;
-                            font-weight:bold;
-                        "
-                    >
-                        Please Select Result Date
-                    </td>
-                </tr>
-            `;
-
-        }
-
-        return;
-
-    }
-
-
-    fetch(
-        SCRIPT_URL +
-        "?action=studentResultList" +
-        "&id=" +
-        encodeURIComponent(
-            window.resultStudentID
-        ) +
-        "&date=" +
-        encodeURIComponent(
-            selectedDate
-        )
-    )
-
-    .then(res => res.json())
-
-    .then(function(data){
-
-        if(data.status !== "SUCCESS"){
-
-            alert(
-                data.message ||
-                "No Result Found"
-            );
-
-            return;
-
-        }
-
-
-        const body =
-            document.getElementById(
-                "resultTableBody"
-            );
-
-
-        if(!body){
-
-            return;
-
-        }
-
-
-        body.innerHTML = "";
 
 
         let visibleCount = 0;
 
 
-        data.results.forEach(
-            function(r){
+        data.results.forEach(function(r){
 
-                visibleCount++;
+            // Sirf Published Results Show Honge
 
-
-                const tr =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                tr.innerHTML = `
-
-                    <td>${visibleCount}</td>
-
-                    <td>${r.marksheetNo}</td>
-
-                    <td>${r.regNo}</td>
-
-                    <td>${r.studentName}</td>
-
-                    <td>${r.course}</td>
-
-                    <td>${r.paperName}</td>
-
-                    <td>${r.theory}</td>
-
-                    <td>${r.practical}</td>
-
-                    <td>${r.viva}</td>
-
-                    <td>${r.notes}</td>
-
-                    <td>${r.behaviour}</td>
-
-                    <td>${r.project}</td>
-
-                    <td>${r.totalMarks}</td>
-
-                    <td>${r.percentage}</td>
-
-                    <td>${r.grade}</td>
-
-                    <td>${r.result}</td>
-
-                    <td>${r.resultDate}</td>
-
-                    <td>
-
-                        <button
-                            class="viewMarksheetBtn"
-
-                            onclick="openMarksheet(
-                                '${String(r.regNo || "")
-                                    .replace(/'/g,"\\'")}',
-
-                                '${String(r.paperName || "")
-                                    .replace(/'/g,"\\'")}',
-
-                                '${String(r.examDate || "")
-                                    .replace(/'/g,"\\'")}'
-                            )"
-                        >
-                            View Marksheet
-                        </button>
-
-                    </td>
-
-                `;
-
-
-                body.appendChild(tr);
-
+            if(r.publishStatus !== "YES"){
+                return;
             }
-        );
 
 
-        if(visibleCount === 0){
+            visibleCount++;
 
-            body.innerHTML = `
 
-                <tr>
+            const tr =
+                document.createElement("tr");
 
-                    <td
-                        colspan="18"
-                        style="
-                            text-align:center;
-                            padding:35px;
-                            color:#d32f2f;
-                            font-weight:bold;
-                        "
-                    >
 
-                        No result found for
-                        ${selectedDate}
+            tr.innerHTML = `
 
-                    </td>
+                <td>${visibleCount}</td>
 
-                </tr>
+                <td>${r.marksheetNo}</td>
+
+                <td>${r.regNo}</td>
+
+                <td>${r.studentName}</td>
+
+                <td>${r.course}</td>
+
+                <td>${r.paperName}</td>
+
+                <td>${r.theory}</td>
+
+                <td>${r.practical}</td>
+
+                <td>${r.viva}</td>
+
+                <td>${r.notes}</td>
+
+                <td>${r.behaviour}</td>
+
+                <td>${r.project}</td>
+
+                <td>${r.totalMarks}</td>
+
+                <td>${r.percentage}</td>
+
+                <td>${r.grade}</td>
+
+                <td>${r.result}</td>
+
+                <td>${r.resultDate}</td>
+                <td>
+
+                    <button
+                        class="viewMarksheetBtn"
+                        onclick="verifyMarksheet('${r.paperName}')">
+
+                        View Marksheet
+
+                    </button>
+
+                </td>
 
             `;
 
+
+            body.appendChild(tr);
+
+        });
+
+
+        // -------------------------------------------
+        // NO RESULT
+        // -------------------------------------------
+if(visibleCount === 0){
+
+    const resultBox =
+        document.querySelector(
+            "#studentResultPage .result-list-box"
+        );
+
+    if(resultBox){
+
+        // Hide heading
+        const heading =
+            resultBox.querySelector("h2");
+
+        if(heading){
+            heading.style.display = "none";
         }
+
+
+        // Hide search box
+        const search =
+            document.getElementById(
+                "searchResult"
+            );
+
+        if(search){
+            search.style.display = "none";
+        }
+
+
+        // Hide table
+        const table =
+            resultBox.querySelector(
+                ".table-responsive"
+            );
+
+        if(table){
+            table.style.display = "none";
+        }
+
+
+        // Hide footer buttons
+        const footer =
+            resultBox.querySelector(
+                ".result-footer"
+            );
+
+        if(footer){
+            footer.style.display = "none";
+        }
+
+
+        // Hide analytics/admin elements if present
+        const analytics =
+            document.getElementById(
+                "analyticsAccess"
+            );
+
+        if(analytics){
+            analytics.style.display = "none";
+        }
+
+
+        // Hide PDF button if present
+        const pdfButton =
+            document.getElementById(
+                "hiddenResultPDFButton"
+            );
+
+        if(pdfButton){
+            pdfButton.style.display = "none";
+        }
+
+
+        // -----------------------------------------
+        // RESULT NOT PUBLISHED MESSAGE
+        // -----------------------------------------
+
+        let messageBox =
+            document.getElementById(
+                "resultNotPublishedBox"
+            );
+
+        if(!messageBox){
+
+            messageBox =
+                document.createElement("div");
+
+            messageBox.id =
+                "resultNotPublishedBox";
+
+            messageBox.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:70px 25px;
+                ">
+
+                    <div style="
+                        width:74px;
+                        height:74px;
+                        margin:0 auto 22px;
+                        border-radius:50%;
+                        background:#eff6ff;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:34px;
+                        box-shadow:
+                            0 6px 18px
+                            rgba(0,0,0,.08);
+                    ">
+                        📋
+                    </div>
+
+                    <h2 style="
+                        display:block !important;
+                        margin:0 0 12px;
+                        font-size:28px;
+                        font-weight:700;
+                        color:#0d5fe8;
+                    ">
+                        Result Not Published
+                    </h2>
+
+                    <p style="
+                        margin:0 auto;
+                        max-width:520px;
+                        font-size:16px;
+                        line-height:1.7;
+                        color:#64748b;
+                    ">
+                        Your examination result has not
+                        been published yet.
+                    </p>
+
+                    <p style="
+                        margin:8px 0 0;
+                        font-size:14px;
+                        color:#94a3b8;
+                    ">
+                        Please check again later.
+                    </p>
+
+                </div>
+
+            `;
+
+            resultBox.appendChild(
+                messageBox
+            );
+
+        }else{
+
+            messageBox.style.display =
+                "block";
+
+        }
+
+    }
+
+    return;
+}
 
     })
 
@@ -4755,9 +4769,14 @@ function filterResultByDate(){
 
         console.log(err);
 
-        alert(
-            "Unable to load result."
-        );
+        // Agar user meanwhile Leaderboard par chala gaya
+        // to error popup bhi unnecessary nahi dikhayenge
+
+        if(myToken !== resultNavigationToken){
+            return;
+        }
+
+        alert("Unable to load Result List.");
 
     });
 
@@ -7195,21 +7214,22 @@ isAdminMode = false;
 // OPEN MARKSHEET
 //=========================================
 
-//=========================================
-// OPEN MARKSHEET
-//=========================================
-
-function openMarksheet(studentID,paper,examDate){
+function openMarksheet(studentID,paper){
 
     fetch(
+
         SCRIPT_URL +
+
         "?action=marksheet" +
+
         "&id=" +
+
         encodeURIComponent(studentID) +
+
         "&paper=" +
-        encodeURIComponent(paper) +
-        "&date=" +
-        encodeURIComponent(examDate || "")
+
+        encodeURIComponent(paper)
+
     )
 
     .then(res=>res.json())
@@ -7220,10 +7240,7 @@ function openMarksheet(studentID,paper,examDate){
 
         if(data.status!="SUCCESS"){
 
-            alert(
-                data.message ||
-                "Invalid Student ID"
-            );
+            alert("Invalid Student ID");
 
             return;
 
