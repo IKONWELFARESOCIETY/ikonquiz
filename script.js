@@ -18143,8 +18143,6 @@ window.addEventListener(
 
     }
 );
-
-
 window.addEventListener(
     "pagehide",
     function () {
@@ -18155,8 +18153,6 @@ window.addEventListener(
         ) {
 
             saveResumeState();
-
         }
-
     }
 );
