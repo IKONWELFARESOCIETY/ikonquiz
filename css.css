@@ -16173,3 +16173,75 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =========================================================
+   MARKSHEET HEADER - PRINT REGISTRATION DETAILS
+   FORCE EXACTLY 3 LINES
+   ========================================================= */
+
+@media print {
+
+    .mkHeading p {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        text-align: center !important;
+
+        font-size: 8.5px !important;
+        line-height: 1.35 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        white-space: normal !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
+    }
+
+    /* Agar p ke andar <br> already hain,
+       unki spacing controlled rahegi */
+    .mkHeading p br {
+        display: block !important;
+        content: "" !important;
+        margin: 0 !important;
+        height: 0 !important;
+    }
+
+}
+/* =========================================================
+   PROFESSIONAL ISO 9001:2015 BADGE
+   ========================================================= */
+
+.mkTopRight{
+    position:relative;
+}
+
+.mkTopRight::before{
+    content:"ISO 9001:2015  •  CERTIFIED";
+
+    position:absolute;
+    top:-52px;
+    right:0;
+
+    min-width:150px;
+    padding:5px 10px;
+
+    box-sizing:border-box;
+
+    border:1.5px solid #0b4f9c;
+    border-radius:4px;
+
+    background:#f8fbff;
+
+    color:#0b4f9c;
+
+    font-family:Arial, sans-serif;
+    font-size:8.5px;
+    font-weight:800;
+
+    letter-spacing:.6px;
+    text-align:center;
+
+    box-shadow:0 2px 5px rgba(0,0,0,.12);
+
+    white-space:nowrap;
+}
