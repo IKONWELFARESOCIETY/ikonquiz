@@ -3473,8 +3473,9 @@ TOP RIGHT SECTION
     flex-direction:column;
     align-items:flex-end;
     justify-content:flex-start;
-    margin-top:78px;
+    margin-top:68px;
     position:relative;
+ height:100px;
 }
 
 /*==========================
@@ -16216,7 +16217,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     object-fit:contain !important;
 
     /* SCREEN + PRINT SAME POSITION */
-    right:15px !important;
+    right:35px !important;
     left:auto !important;
 
     top:-76px !important;
@@ -16238,7 +16239,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         width:67px !important;
         height:67px !important;
 
-        right:15px !important;
+        right:35px !important;
         left:auto !important;
 
         top:-76px !important;
