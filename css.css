@@ -3370,8 +3370,7 @@ HEADER IKON LOGO
 .mkExamInfoTable{
     grid-column:1;
     grid-row:2;
-
-    width:176px;
+    width:180px;
     margin-top:8px;      /* Logo ke paas lane ke liye */
     border-collapse:collapse;
     table-layout:fixed;
