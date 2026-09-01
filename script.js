@@ -81,7 +81,178 @@ let totalTime = 30 * 60;
 let timer = null;
 let examDuration = 30;
 
+//====================================================
+// RESUME TEST SYSTEM
+//====================================================
 
+const RESUME_STORAGE_PREFIX = "IKON_RESUME_TEST_";
+
+function getResumeKey() {
+
+    if (!regNo || !paperName) {
+        return "";
+    }
+
+    return (
+        RESUME_STORAGE_PREFIX +
+        String(regNo).trim().toUpperCase() +
+        "_" +
+        String(paperName).trim()
+    );
+}
+
+
+//====================================================
+// SAVE RESUME DATA
+//====================================================
+
+function saveResumeState() {
+
+    try {
+
+        if (
+            !regNo ||
+            !paperName ||
+            !questions ||
+            questions.length === 0 ||
+            examSubmitted
+        ) {
+            return;
+        }
+
+        const key = getResumeKey();
+
+        if (!key) {
+            return;
+        }
+
+        const resumeData = {
+
+            regNo: regNo,
+
+            paperName: paperName,
+
+            studentName: studentName,
+
+            questions: questions,
+
+            answers: answers,
+
+            currentQuestion: currentQuestion,
+
+            endTime:
+                window.ikonExamEndTime || 0,
+
+            savedAt:
+                Date.now()
+
+        };
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(resumeData)
+        );
+
+    }
+    catch(error) {
+
+        console.log(
+            "Resume Save Error:",
+            error
+        );
+
+    }
+
+}
+
+
+//====================================================
+// GET RESUME DATA
+//====================================================
+
+function getResumeState() {
+
+    try {
+
+        const key = getResumeKey();
+
+        if (!key) {
+            return null;
+        }
+
+        const saved =
+            localStorage.getItem(key);
+
+        if (!saved) {
+            return null;
+        }
+
+        const data =
+            JSON.parse(saved);
+
+        if (
+            !data ||
+            !Array.isArray(data.questions) ||
+            !Array.isArray(data.answers)
+        ) {
+            localStorage.removeItem(key);
+            return null;
+        }
+
+        if (
+            data.endTime &&
+            Date.now() >= data.endTime
+        ) {
+            localStorage.removeItem(key);
+            return null;
+        }
+
+        return data;
+
+    }
+    catch(error) {
+
+        console.log(
+            "Resume Load Error:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+//====================================================
+// CLEAR RESUME DATA
+//====================================================
+
+function clearResumeState() {
+
+    try {
+
+        const key = getResumeKey();
+
+        if (key) {
+
+            localStorage.removeItem(
+                key
+            );
+
+        }
+
+    }
+    catch(error) {
+
+        console.log(
+            "Resume Clear Error:",
+            error
+        );
+
+    }
+
+}
 //====================================================
 // WAITING PAGE STATUS CHECKER
 //====================================================
@@ -2278,13 +2449,8 @@ function showRandomLine() {
 //====================================================
 
 //====================================================
-// PART 2A
-// START EXAM + LOAD QUESTIONS
-//====================================================
-
-
-//====================================================
 // START EXAM
+// WITH RESUME SUPPORT
 //====================================================
 
 function startExam() {
@@ -2296,6 +2462,15 @@ function startExam() {
     if (examStarted) {
         return;
     }
+
+
+    //------------------------------------------
+    // Check Existing Resume
+    //------------------------------------------
+
+    const savedResume =
+        getResumeState();
+
 
     //------------------------------------------
     // Exam State
@@ -2309,6 +2484,7 @@ function startExam() {
 
     focusLock = false;
 
+
     //------------------------------------------
     // Hide Instructions
     //------------------------------------------
@@ -2316,6 +2492,7 @@ function startExam() {
     document
         .getElementById("instructionPage")
         ?.classList.add("hidden");
+
 
     //------------------------------------------
     // Show Exam Area
@@ -2325,19 +2502,58 @@ function startExam() {
         .getElementById("examArea")
         ?.classList.remove("hidden");
 
+
     //------------------------------------------
-    // Start Timer
+    // TIMER
     //------------------------------------------
-    totalTime = examDuration * 60;
+
+    if (
+        savedResume &&
+        savedResume.endTime
+    ) {
+
+        window.ikonExamEndTime =
+            savedResume.endTime;
+
+        totalTime =
+            Math.max(
+                0,
+                Math.ceil(
+                    (
+                        savedResume.endTime -
+                        Date.now()
+                    ) / 1000
+                )
+            );
+
+    }
+    else {
+
+        totalTime =
+            examDuration * 60;
+
+        window.ikonExamEndTime =
+            Date.now() +
+            (totalTime * 1000);
+
+    }
+
+
+    //------------------------------------------
+    // Show Timer
+    //------------------------------------------
 
     showTimer();
+
     startTimer();
+
 
     //------------------------------------------
     // Load Questions
     //------------------------------------------
 
     loadPaperQuestions();
+
 
     //------------------------------------------
     // Fullscreen
@@ -2355,7 +2571,6 @@ function startExam() {
     }
 
 }
-
 
 function loadPaperQuestions() {
 
@@ -2494,32 +2709,131 @@ if (data.status === "EXAM_OFF") {
         }
 
 
-        //--------------------------------------
-        // STORE QUESTIONS
-        //--------------------------------------
+     //--------------------------------------
+// STORE / RESTORE QUESTIONS
+//--------------------------------------
 
-        questions =
-            questionData;
-
-        shuffleQuestions(questions);
+const savedResume =
+    getResumeState();
 
 
-        //--------------------------------------
-        // RESET ANSWERS
-        //--------------------------------------
+if (
+    savedResume &&
+    Array.isArray(savedResume.questions) &&
+    savedResume.questions.length ===
+        questionData.length
+) {
 
-        answers =
-            new Array(
-                questions.length
-            ).fill("");
+    //------------------------------------------
+    // RESTORE OLD QUESTION ORDER
+    //------------------------------------------
+
+    questions =
+        savedResume.questions;
 
 
-        //--------------------------------------
-        // FIRST QUESTION
-        //--------------------------------------
+    //------------------------------------------
+    // RESTORE ANSWERS
+    //------------------------------------------
+
+    answers =
+        new Array(
+            questions.length
+        ).fill("");
+
+
+    for (
+        let i = 0;
+        i < questions.length;
+        i++
+    ) {
+
+        if (
+            savedResume.answers &&
+            savedResume.answers[i] !== undefined
+        ) {
+
+            answers[i] =
+                savedResume.answers[i];
+
+        }
+
+    }
+
+
+    //------------------------------------------
+    // RESTORE CURRENT QUESTION
+    //------------------------------------------
+
+    currentQuestion =
+        Number(
+            savedResume.currentQuestion || 0
+        );
+
+
+    //------------------------------------------
+    // SAFETY
+    //------------------------------------------
+
+    if (
+        currentQuestion < 0 ||
+        currentQuestion >= questions.length
+    ) {
 
         currentQuestion = 0;
 
+    }
+
+
+    console.log(
+        "RESUME TEST RESTORED",
+        currentQuestion + 1
+    );
+
+}
+else {
+
+    //------------------------------------------
+    // NEW TEST
+    //------------------------------------------
+
+    questions =
+        questionData;
+
+
+    //------------------------------------------
+    // EXISTING SHUFFLE
+    //------------------------------------------
+
+    shuffleQuestions(
+        questions
+    );
+
+
+    //------------------------------------------
+    // RESET ANSWERS
+    //------------------------------------------
+
+    answers =
+        new Array(
+            questions.length
+        ).fill("");
+
+
+    //------------------------------------------
+    // FIRST QUESTION
+    //------------------------------------------
+
+    currentQuestion = 0;
+
+
+    //------------------------------------------
+    // SAVE NEW TEST
+    //------------------------------------------
+
+    saveResumeState();
+
+}
 
         //--------------------------------------
         // PROGRESS
@@ -2716,7 +3030,7 @@ if (hindiText) {
     updateProgress();
 
     createQuestionPalette();
-
+        saveResumeState();
 }
 //====================================================
 // PART 2B
@@ -2726,6 +3040,7 @@ if (hindiText) {
 
 //====================================================
 // SAVE ANSWER
+// WITH RESUME SAVE
 //====================================================
 
 function saveAnswer(optionIndex) {
@@ -2737,13 +3052,26 @@ function saveAnswer(optionIndex) {
         return;
     }
 
+
     answers[currentQuestion] =
-        questions[currentQuestion].options[optionIndex];
+        questions[currentQuestion]
+            .options[optionIndex];
+
+
+    //------------------------------------------
+    // SAVE RESUME
+    //------------------------------------------
+
+    saveResumeState();
+
+
+    //------------------------------------------
+    // Refresh Palette
+    //------------------------------------------
 
     createQuestionPalette();
 
 }
-
 
 
 //====================================================
@@ -2978,7 +3306,7 @@ function startTimer() {
         totalTime--;
 
         showTimer();
-
+        saveResumeState();
         //----------------------------------
         // Last 5 Minutes
         //----------------------------------
@@ -3240,7 +3568,12 @@ function showSuccess() {
 
     stopTimer();
     stopStatusChecker();
+        
+    //------------------------------------------
+    // REMOVE SAVED RESUME
+    //------------------------------------------
 
+    clearResumeState();
     //------------------------------------------
     // Reset Exam Flags
     //------------------------------------------
@@ -17791,3 +18124,39 @@ function showExamEndedScreen(endTime){
         "block";
 
 }
+//====================================================
+// SAVE TEST BEFORE PAGE / BROWSER CLOSE
+//====================================================
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        if (
+            examStarted &&
+            !examSubmitted
+        ) {
+
+            saveResumeState();
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "pagehide",
+    function () {
+
+        if (
+            examStarted &&
+            !examSubmitted
+        ) {
+
+            saveResumeState();
+
+        }
+
+    }
+);
