@@ -17233,8 +17233,9 @@ function formatPDFResultDate(
 
 //====================================================
 // DATE-WISE RESULT PDF GENERATOR
-// PROFESSIONAL REPORT DESIGN
-// DATA / TABLE LOGIC UNCHANGED
+// PROFESSIONAL RESULT REPORT
+// TOP 3 = CORRECT ANSWERS BASIS
+// NO EXTRA CARD / NO EXTRA COLUMN
 //====================================================
 
 function generateDateWiseResultPDF(results, selectedDate){
@@ -17247,10 +17248,8 @@ function generateDateWiseResultPDF(results, selectedDate){
         !window.jspdf ||
         !window.jspdf.jsPDF
     ){
-
         alert("PDF generator is not loaded.");
         return;
-
     }
 
 
@@ -17258,10 +17257,8 @@ function generateDateWiseResultPDF(results, selectedDate){
         !Array.isArray(results) ||
         results.length === 0
     ){
-
         alert("No result found for selected date.");
         return;
-
     }
 
 
@@ -17274,55 +17271,260 @@ function generateDateWiseResultPDF(results, selectedDate){
     const pdf = new jsPDF({
 
         orientation: "landscape",
-
         unit: "mm",
-
         format: "a4",
-
         compress: true
 
     });
 
 
     const pageWidth = 297;
-
     const pageHeight = 210;
 
 
     //================================================
-    // PROFESSIONAL PAGE BORDER
+    // RANKING
+    // CORRECT ANSWERS BASIS
     //================================================
 
-    pdf.setDrawColor(190,198,210);
+    const rankedResults =
+        results.map(function(result, originalIndex){
 
-    pdf.setLineWidth(0.5);
+            const correct =
+                Number(
+                    result.correctAnswer ??
+                    result["Correct Answer"] ??
+                    result.correct ??
+                    0
+                );
 
-    pdf.rect(
-        7,
-        7,
-        pageWidth - 14,
-        pageHeight - 14
-    );
+            return {
+
+                result: result,
+
+                correct: isNaN(correct)
+                    ? 0
+                    : correct,
+
+                originalIndex:
+                    originalIndex
+
+            };
+
+        });
+
+
+    rankedResults.sort(function(a,b){
+
+        if(b.correct !== a.correct){
+
+            return b.correct - a.correct;
+
+        }
+
+        // Same correct answers:
+        // preserve original order
+
+        return (
+            a.originalIndex -
+            b.originalIndex
+        );
+
+    });
 
 
     //================================================
-    // INNER BORDER
+    // TOP 3 ORIGINAL INDEX
     //================================================
 
-    pdf.setDrawColor(225,229,235);
+    const rankMap = new Map();
 
-    pdf.setLineWidth(0.25);
 
-    pdf.rect(
-        9,
-        9,
-        pageWidth - 18,
-        pageHeight - 18
-    );
+    if(rankedResults.length >= 1){
+
+        rankMap.set(
+            rankedResults[0].originalIndex,
+            1
+        );
+
+    }
+
+
+    if(rankedResults.length >= 2){
+
+        rankMap.set(
+            rankedResults[1].originalIndex,
+            2
+        );
+
+    }
+
+
+    if(rankedResults.length >= 3){
+
+        rankMap.set(
+            rankedResults[2].originalIndex,
+            3
+        );
+
+    }
 
 
     //================================================
-    // HEADER AREA
+    // PAGE BORDER FUNCTION
+    //================================================
+
+    function drawPageBorder(){
+
+        pdf.setDrawColor(
+            185,
+            193,
+            204
+        );
+
+        pdf.setLineWidth(0.45);
+
+        pdf.rect(
+            7,
+            7,
+            pageWidth - 14,
+            pageHeight - 14
+        );
+
+
+        pdf.setDrawColor(
+            225,
+            229,
+            235
+        );
+
+        pdf.setLineWidth(0.2);
+
+        pdf.rect(
+            9,
+            9,
+            pageWidth - 18,
+            pageHeight - 18
+        );
+
+    }
+
+
+    //================================================
+    // HEADER FUNCTION
+    //================================================
+
+    function drawTableHeader(headerY){
+
+        const colWidths = [
+
+            15,
+            32,
+            50,
+            47,
+            30,
+            28,
+            28,
+            43
+
+        ];
+
+
+        const headers = [
+
+            "S.No.",
+            "Reg No",
+            "Student Name",
+            "Paper",
+            "Total Questions",
+            "Correct",
+            "Wrong",
+            "Unattempted"
+
+        ];
+
+
+        let headerX = 12;
+
+
+        headers.forEach(
+            function(header,index){
+
+                pdf.setFillColor(
+                    30,
+                    80,
+                    150
+                );
+
+
+                pdf.setDrawColor(
+                    30,
+                    80,
+                    150
+                );
+
+
+                pdf.setLineWidth(
+                    0.3
+                );
+
+
+                pdf.rect(
+                    headerX,
+                    headerY,
+                    colWidths[index],
+                    11,
+                    "FD"
+                );
+
+
+                pdf.setTextColor(
+                    255,
+                    255,
+                    255
+                );
+
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+
+                pdf.setFontSize(
+                    7.5
+                );
+
+
+                pdf.text(
+                    header,
+                    headerX +
+                    colWidths[index] / 2,
+                    headerY + 7,
+                    {
+                        align: "center"
+                    }
+                );
+
+
+                headerX +=
+                    colWidths[index];
+
+            }
+        );
+
+    }
+
+
+    //================================================
+    // FIRST PAGE
+    //================================================
+
+    drawPageBorder();
+
+
+    //================================================
+    // MAIN HEADER
     //================================================
 
     pdf.setFillColor(
@@ -17330,6 +17532,7 @@ function generateDateWiseResultPDF(results, selectedDate){
         80,
         150
     );
+
 
     pdf.roundedRect(
         11,
@@ -17343,7 +17546,7 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
     //================================================
-    // INSTITUTE NAME
+    // INSTITUTE
     //================================================
 
     pdf.setTextColor(
@@ -17352,12 +17555,17 @@ function generateDateWiseResultPDF(results, selectedDate){
         255
     );
 
+
     pdf.setFont(
         "helvetica",
         "bold"
     );
 
-    pdf.setFontSize(18);
+
+    pdf.setFontSize(
+        18
+    );
+
 
     pdf.text(
         "IKON INSTITUTE",
@@ -17370,7 +17578,7 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
     //================================================
-    // REPORT TITLE
+    // SUB TITLE
     //================================================
 
     pdf.setFont(
@@ -17378,7 +17586,11 @@ function generateDateWiseResultPDF(results, selectedDate){
         "normal"
     );
 
-    pdf.setFontSize(9);
+
+    pdf.setFontSize(
+        9
+    );
+
 
     pdf.text(
         "ONLINE EXAMINATION RESULT REPORT",
@@ -17391,30 +17603,38 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
     //================================================
-    // REPORT INFO AREA
+    // REPORT DATE
     //================================================
 
-    const infoY = 45;
-
-
-    // LEFT INFO
     pdf.setTextColor(
         75,
         82,
         92
     );
 
+
     pdf.setFont(
         "helvetica",
         "bold"
     );
 
-    pdf.setFontSize(10);
+
+    pdf.setFontSize(
+        9
+    );
+
 
     pdf.text(
         "RESULT DATE",
         13,
-        infoY
+        44
+    );
+
+
+    pdf.setTextColor(
+        35,
+        38,
+        43
     );
 
 
@@ -17423,31 +17643,22 @@ function generateDateWiseResultPDF(results, selectedDate){
         "normal"
     );
 
-    pdf.setFontSize(10);
 
-    pdf.setTextColor(
-        30,
-        30,
-        30
+    pdf.setFontSize(
+        10
     );
+
 
     pdf.text(
         formatPDFResultDate(selectedDate),
         13,
-        infoY + 6
+        50
     );
 
 
     //================================================
-    // RIGHT INFO
+    // CANDIDATE COUNT
     //================================================
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    pdf.setFontSize(10);
 
     pdf.setTextColor(
         75,
@@ -17455,13 +17666,32 @@ function generateDateWiseResultPDF(results, selectedDate){
         92
     );
 
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+
+    pdf.setFontSize(
+        9
+    );
+
+
     pdf.text(
         "TOTAL CANDIDATES",
         pageWidth - 13,
-        infoY,
+        44,
         {
             align: "right"
         }
+    );
+
+
+    pdf.setTextColor(
+        30,
+        80,
+        150
     );
 
 
@@ -17470,18 +17700,16 @@ function generateDateWiseResultPDF(results, selectedDate){
         "bold"
     );
 
-    pdf.setFontSize(14);
 
-    pdf.setTextColor(
-        30,
-        80,
-        150
+    pdf.setFontSize(
+        12
     );
+
 
     pdf.text(
         String(results.length),
         pageWidth - 13,
-        infoY + 7,
+        50,
         {
             align: "right"
         }
@@ -17498,13 +17726,17 @@ function generateDateWiseResultPDF(results, selectedDate){
         222
     );
 
-    pdf.setLineWidth(0.35);
+
+    pdf.setLineWidth(
+        0.3
+    );
+
 
     pdf.line(
         13,
-        56,
+        55,
         pageWidth - 13,
-        56
+        55
     );
 
 
@@ -17512,7 +17744,7 @@ function generateDateWiseResultPDF(results, selectedDate){
     // TABLE SETTINGS
     //================================================
 
-    const startY = 61;
+    const startY = 60;
 
     const marginLeft = 12;
 
@@ -17520,125 +17752,23 @@ function generateDateWiseResultPDF(results, selectedDate){
 
     const headerHeight = 11;
 
-    const tableWidth = 273;
-
-
-    //================================================
-    // COLUMN WIDTHS
-    // SAME DATA / SAME COLUMNS
-    //================================================
 
     const colWidths = [
 
-        15, // S.No.
-
-        32, // Reg No
-
-        50, // Student Name
-
-        47, // Paper
-
-        30, // Total Questions
-
-        28, // Correct
-
-        28, // Wrong
-
-        43  // Unattempted
+        15,
+        32,
+        50,
+        47,
+        30,
+        28,
+        28,
+        43
 
     ];
 
 
-    //================================================
-    // COLUMN HEADINGS
-    //================================================
-
-    const headers = [
-
-        "S.No.",
-
-        "Reg No",
-
-        "Student Name",
-
-        "Paper",
-
-        "Total Questions",
-
-        "Correct",
-
-        "Wrong",
-
-        "Unattempted"
-
-    ];
-
-
-    //================================================
-    // DRAW TABLE HEADER
-    //================================================
-
-    let x = marginLeft;
-
-
-    headers.forEach(
-        function(header,index){
-
-            // Header background
-            pdf.setFillColor(
-                30,
-                80,
-                150
-            );
-
-
-            // Header border
-            pdf.setDrawColor(
-                30,
-                80,
-                150
-            );
-
-
-            pdf.rect(
-                x,
-                startY,
-                colWidths[index],
-                headerHeight,
-                "FD"
-            );
-
-
-            // Header text
-            pdf.setTextColor(
-                255,
-                255,
-                255
-            );
-
-
-            pdf.setFont(
-                "helvetica",
-                "bold"
-            );
-
-
-            pdf.setFontSize(7.5);
-
-
-            pdf.text(
-                header,
-                x + colWidths[index] / 2,
-                startY + 7,
-                {
-                    align: "center"
-                }
-            );
-
-
-            x += colWidths[index];
-
-        }
+    drawTableHeader(
+        startY
     );
 
 
@@ -17660,103 +17790,17 @@ function generateDateWiseResultPDF(results, selectedDate){
 
             if(
                 y + rowHeight >
-                pageHeight - 18
+                pageHeight - 19
             ){
 
                 pdf.addPage();
 
 
-                // Outer border
-                pdf.setDrawColor(
-                    190,
-                    198,
-                    210
-                );
-
-                pdf.setLineWidth(0.5);
-
-                pdf.rect(
-                    7,
-                    7,
-                    pageWidth - 14,
-                    pageHeight - 14
-                );
+                drawPageBorder();
 
 
-                // Inner border
-                pdf.setDrawColor(
-                    225,
-                    229,
-                    235
-                );
-
-                pdf.setLineWidth(0.25);
-
-                pdf.rect(
-                    9,
-                    9,
-                    pageWidth - 18,
-                    pageHeight - 18
-                );
-
-
-                // Repeat header on new page
-                x = marginLeft;
-
-
-                headers.forEach(
-                    function(header,colIndex){
-
-                        pdf.setFillColor(
-                            30,
-                            80,
-                            150
-                        );
-
-                        pdf.setDrawColor(
-                            30,
-                            80,
-                            150
-                        );
-
-                        pdf.rect(
-                            x,
-                            15,
-                            colWidths[colIndex],
-                            headerHeight,
-                            "FD"
-                        );
-
-
-                        pdf.setTextColor(
-                            255,
-                            255,
-                            255
-                        );
-
-                        pdf.setFont(
-                            "helvetica",
-                            "bold"
-                        );
-
-                        pdf.setFontSize(7.5);
-
-
-                        pdf.text(
-                            header,
-                            x +
-                            colWidths[colIndex] / 2,
-                            22,
-                            {
-                                align: "center"
-                            }
-                        );
-
-
-                        x +=
-                            colWidths[colIndex];
-
-                    }
+                drawTableHeader(
+                    15
                 );
 
 
@@ -17837,12 +17881,29 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
             //========================================
+            // RANK
+            //========================================
+
+            const rank =
+                rankMap.get(index) ||
+                0;
+
+
+            //========================================
             // ROW DATA
             //========================================
 
             const row = [
 
-                index + 1,
+                rank > 0
+                    ? (
+                        rank === 1
+                            ? "1st"
+                            : rank === 2
+                                ? "2nd"
+                                : "3rd"
+                    )
+                    : index + 1,
 
                 reg,
 
@@ -17862,17 +17923,42 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
             //========================================
-            // ALTERNATE ROW
+            // TOP 3 ROW BACKGROUND
             //========================================
 
-            if(
-                index % 2 === 0
-            ){
+            if(rank === 1){
 
                 pdf.setFillColor(
-                    247,
-                    249,
-                    252
+                    255,
+                    248,
+                    220
+                );
+
+            }
+            else if(rank === 2){
+
+                pdf.setFillColor(
+                    242,
+                    245,
+                    248
+                );
+
+            }
+            else if(rank === 3){
+
+                pdf.setFillColor(
+                    248,
+                    237,
+                    225
+                );
+
+            }
+            else if(index % 2 === 0){
+
+                pdf.setFillColor(
+                    248,
+                    250,
+                    253
                 );
 
             }
@@ -17891,21 +17977,50 @@ function generateDateWiseResultPDF(results, selectedDate){
             // DRAW CELLS
             //========================================
 
-            x = marginLeft;
+            let x =
+                marginLeft;
 
 
             row.forEach(
                 function(value,colIndex){
 
-                    // Row fill
-                    if(
-                        index % 2 === 0
-                    ){
+                    //================================
+                    // ROW COLOR
+                    //================================
+
+                    if(rank === 1){
 
                         pdf.setFillColor(
-                            247,
-                            249,
-                            252
+                            255,
+                            248,
+                            220
+                        );
+
+                    }
+                    else if(rank === 2){
+
+                        pdf.setFillColor(
+                            242,
+                            245,
+                            248
+                        );
+
+                    }
+                    else if(rank === 3){
+
+                        pdf.setFillColor(
+                            248,
+                            237,
+                            225
+                        );
+
+                    }
+                    else if(index % 2 === 0){
+
+                        pdf.setFillColor(
+                            248,
+                            250,
+                            253
                         );
 
                     }
@@ -17920,7 +18035,10 @@ function generateDateWiseResultPDF(results, selectedDate){
                     }
 
 
-                    // Cell border
+                    //================================
+                    // CELL BORDER
+                    //================================
+
                     pdf.setDrawColor(
                         205,
                         211,
@@ -17943,40 +18061,158 @@ function generateDateWiseResultPDF(results, selectedDate){
 
 
                     //================================
-                    // TEXT
+                    // TEXT SETTINGS
                     //================================
 
-                    pdf.setTextColor(
-                        40,
-                        44,
-                        50
-                    );
+                    if(
+                        rank > 0 &&
+                        colIndex === 0
+                    ){
+
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
 
 
-                    pdf.setFont(
-                        "helvetica",
+                        pdf.setFontSize(
+                            8
+                        );
+
+
+                        if(rank === 1){
+
+                            pdf.setTextColor(
+                                145,
+                                105,
+                                15
+                            );
+
+                        }
+                        else if(rank === 2){
+
+                            pdf.setTextColor(
+                                85,
+                                95,
+                                105
+                            );
+
+                        }
+                        else{
+
+                            pdf.setTextColor(
+                                145,
+                                85,
+                                45
+                            );
+
+                        }
+
+                    }
+                    else if(
+                        colIndex === 5
+                    ){
+
+                        // Correct Answers
+                        // slightly stronger
+
+                        pdf.setTextColor(
+                            25,
+                            90,
+                            60
+                        );
+
+
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
+
+
+                        pdf.setFontSize(
+                            8
+                        );
+
+                    }
+                    else if(
                         colIndex === 1
-                            ? "bold"
-                            : "normal"
-                    );
+                    ){
+
+                        // Registration Number
+
+                        pdf.setTextColor(
+                            35,
+                            40,
+                            48
+                        );
 
 
-                    pdf.setFontSize(
-                        colIndex === 1
-                            ? 8
-                            : 7.7
-                    );
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
 
+
+                        pdf.setFontSize(
+                            7.9
+                        );
+
+                    }
+                    else if(
+                        colIndex === 2
+                    ){
+
+                        // Student Name
+
+                        pdf.setTextColor(
+                            35,
+                            40,
+                            48
+                        );
+
+
+                        pdf.setFont(
+                            "helvetica",
+                            "bold"
+                        );
+
+
+                        pdf.setFontSize(
+                            7.8
+                        );
+
+                    }
+                    else{
+
+                        pdf.setTextColor(
+                            45,
+                            48,
+                            54
+                        );
+
+
+                        pdf.setFont(
+                            "helvetica",
+                            "normal"
+                        );
+
+
+                        pdf.setFontSize(
+                            7.6
+                        );
+
+                    }
+
+
+                    //================================
+                    // TEXT
+                    //================================
 
                     let text =
                         String(
                             value ?? ""
                         );
 
-
-                    //================================
-                    // LIMIT LONG TEXT
-                    //================================
 
                     const maxWidth =
                         colWidths[colIndex] -
@@ -17999,10 +18235,6 @@ function generateDateWiseResultPDF(results, selectedDate){
                     }
 
 
-                    //================================
-                    // CELL TEXT
-                    //================================
-
                     pdf.text(
                         text,
                         x +
@@ -18021,14 +18253,15 @@ function generateDateWiseResultPDF(results, selectedDate){
             );
 
 
-            y += rowHeight;
+            y +=
+                rowHeight;
 
         }
     );
 
 
     //================================================
-    // FOOTER
+    // FOOTER LINE
     //================================================
 
     pdf.setDrawColor(
@@ -18037,9 +18270,11 @@ function generateDateWiseResultPDF(results, selectedDate){
         222
     );
 
+
     pdf.setLineWidth(
         0.3
     );
+
 
     pdf.line(
         13,
@@ -18053,17 +18288,21 @@ function generateDateWiseResultPDF(results, selectedDate){
     // FOOTER LEFT
     //================================================
 
+    pdf.setTextColor(
+        105,
+        110,
+        118
+    );
+
+
     pdf.setFont(
         "helvetica",
         "normal"
     );
 
-    pdf.setFontSize(7.5);
 
-    pdf.setTextColor(
-        105,
-        110,
-        118
+    pdf.setFontSize(
+        7.5
     );
 
 
@@ -18106,13 +18345,14 @@ function generateDateWiseResultPDF(results, selectedDate){
     //================================================
 
     pdf.save(
+
         "IKON_Result_Report_" +
         safeDate +
         ".pdf"
+
     );
 
 }
-
 //====================================================
 // 3-TAP SECRET RESULT PDF ACCESS
 //====================================================
