@@ -18428,7 +18428,6 @@ function showExamEndedScreen(endTime){
         document.body.appendChild(
             endPage
         );
-
     }
     //------------------------------------------
     // PROFESSIONAL DESIGN
@@ -18487,7 +18486,6 @@ function showExamEndedScreen(endTime){
         </div>
 
     `;
-
     //------------------------------------------
     // SHOW PAGE
     //------------------------------------------
