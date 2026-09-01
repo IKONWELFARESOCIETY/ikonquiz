@@ -7596,7 +7596,7 @@ function openMarksheet(studentID,paper,examDate){
 
         "&paper=" +
 
-        encodeURIComponent(paper)
+        encodeURIComponent(paper) +
         "&date=" +
 encodeURIComponent(examDate || "")
     )
