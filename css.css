@@ -16157,3 +16157,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* ONLY ISSUE DATE VALUE MOVE RIGHT */
+.mkIssueSealValue{
+    display:inline-block !important;
+    position:relative !important;
+    left:15px !important;
+}
