@@ -17233,9 +17233,6 @@ function formatPDFResultDate(
 
 //====================================================
 // DATE-WISE RESULT PDF GENERATOR
-// PROFESSIONAL RESULT REPORT
-// TOP 3 = CORRECT ANSWERS BASIS
-// NO EXTRA CARD / NO EXTRA COLUMN
 //====================================================
 
 function generateDateWiseResultPDF(results, selectedDate){
@@ -17248,19 +17245,21 @@ function generateDateWiseResultPDF(results, selectedDate){
         !window.jspdf ||
         !window.jspdf.jsPDF
     ){
+
         alert("PDF generator is not loaded.");
         return;
-    }
 
+    }
 
     if(
         !Array.isArray(results) ||
         results.length === 0
     ){
+
         alert("No result found for selected date.");
         return;
-    }
 
+    }
 
     //================================================
     // CREATE PDF
@@ -17269,285 +17268,188 @@ function generateDateWiseResultPDF(results, selectedDate){
     const { jsPDF } = window.jspdf;
 
     const pdf = new jsPDF({
-
         orientation: "landscape",
         unit: "mm",
         format: "a4",
         compress: true
-
     });
-
 
     const pageWidth = 297;
     const pageHeight = 210;
 
-
     //================================================
-    // RANKING
-    // CORRECT ANSWERS BASIS
+    // PAGE BORDER
     //================================================
 
-    const rankedResults =
-        results.map(function(result, originalIndex){
-
-            const correct =
-                Number(
-                    result.correctAnswer ??
-                    result["Correct Answer"] ??
-                    result.correct ??
-                    0
-                );
-
-            return {
-
-                result: result,
-
-                correct: isNaN(correct)
-                    ? 0
-                    : correct,
-
-                originalIndex:
-                    originalIndex
-
-            };
-
-        });
-
-
-    rankedResults.sort(function(a,b){
-
-        if(b.correct !== a.correct){
-
-            return b.correct - a.correct;
-
-        }
-
-        // Same correct answers:
-        // preserve original order
-
-        return (
-            a.originalIndex -
-            b.originalIndex
-        );
-
-    });
-
-
-    //================================================
-    // TOP 3 ORIGINAL INDEX
-    //================================================
-
-    const rankMap = new Map();
-
-
-    if(rankedResults.length >= 1){
-
-        rankMap.set(
-            rankedResults[0].originalIndex,
-            1
-        );
-
-    }
-
-
-    if(rankedResults.length >= 2){
-
-        rankMap.set(
-            rankedResults[1].originalIndex,
-            2
-        );
-
-    }
-
-
-    if(rankedResults.length >= 3){
-
-        rankMap.set(
-            rankedResults[2].originalIndex,
-            3
-        );
-
-    }
-
-
-    //================================================
-    // PAGE BORDER FUNCTION
-    //================================================
-
-    function drawPageBorder(){
-
-        pdf.setDrawColor(
-            185,
-            193,
-            204
-        );
-
-        pdf.setLineWidth(0.45);
-
-        pdf.rect(
-            7,
-            7,
-            pageWidth - 14,
-            pageHeight - 14
-        );
-
-
-        pdf.setDrawColor(
-            225,
-            229,
-            235
-        );
-
-        pdf.setLineWidth(0.2);
-
-        pdf.rect(
-            9,
-            9,
-            pageWidth - 18,
-            pageHeight - 18
-        );
-
-    }
-
-
-    //================================================
-    // HEADER FUNCTION
-    //================================================
-
-    function drawTableHeader(headerY){
-
-        const colWidths = [
-
-            15,
-            32,
-            50,
-            47,
-            30,
-            28,
-            28,
-            43
-
-        ];
-
-
-        const headers = [
-
-            "S.No.",
-            "Reg No",
-            "Student Name",
-            "Paper",
-            "Total Questions",
-            "Correct",
-            "Wrong",
-            "Unattempted"
-
-        ];
-
-
-        let headerX = 12;
-
-
-        headers.forEach(
-            function(header,index){
-
-                pdf.setFillColor(
-                    30,
-                    80,
-                    150
-                );
-
-
-                pdf.setDrawColor(
-                    30,
-                    80,
-                    150
-                );
-
-
-                pdf.setLineWidth(
-                    0.3
-                );
-
-
-                pdf.rect(
-                    headerX,
-                    headerY,
-                    colWidths[index],
-                    11,
-                    "FD"
-                );
-
-
-                pdf.setTextColor(
-                    255,
-                    255,
-                    255
-                );
-
-
-                pdf.setFont(
-                    "helvetica",
-                    "bold"
-                );
-
-
-                pdf.setFontSize(
-                    7.5
-                );
-
-
-                pdf.text(
-                    header,
-                    headerX +
-                    colWidths[index] / 2,
-                    headerY + 7,
-                    {
-                        align: "center"
-                    }
-                );
-
-
-                headerX +=
-                    colWidths[index];
-
-            }
-        );
-
-    }
-
-
-    //================================================
-    // FIRST PAGE
-    //================================================
-
-    drawPageBorder();
-
-
-    //================================================
-    // MAIN HEADER
-    //================================================
-
-    pdf.setFillColor(
-        30,
-        80,
-        150
+    pdf.setDrawColor(20,70,140);
+    pdf.setLineWidth(0.8);
+
+    pdf.rect(
+        7,
+        7,
+        pageWidth - 14,
+        pageHeight - 14
     );
 
+    //================================================
+    // HEADER
+    //================================================
+
+    pdf.setFillColor(20,70,140);
 
     pdf.roundedRect(
-        11,
-        11,
-        pageWidth - 22,
-        25,
-        2.5,
-        2.5,
+        8,
+        8,
+        pageWidth - 16,
+        27,
+        3,
+        3,
         "F"
     );
 
+    //================================================
+    // INSTITUTE NAME
+    //================================================
+
+    pdf.setTextColor(255,255,255);
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(19);
+
+    pdf.text(
+        "IKON INSTITUTE",
+        pageWidth / 2,
+        18,
+        {
+            align: "center"
+        }
+    );
+
+    pdf.setFontSize(10);
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.text(
+        "ONLINE EXAMINATION RESULT REPORT",
+        pageWidth / 2,
+        25,
+        {
+            align: "center"
+        }
+    );
 
     //================================================
-    // INSTITUTE
+    // DATE
     //================================================
+
+    pdf.setTextColor(30,30,30);
+
+    pdf.setFont(
+        "helvetica",
+        "bold"
+    );
+
+    pdf.setFontSize(12);
+
+    pdf.text(
+        "Result Date : " +
+        formatPDFResultDate(selectedDate),
+        15,
+        45
+    );
+
+    //================================================
+    // TOTAL STUDENTS
+    //================================================
+
+    pdf.setFont(
+        "helvetica",
+        "normal"
+    );
+
+    pdf.setFontSize(10);
+
+    pdf.text(
+        "Total Candidates : " +
+        results.length,
+        pageWidth - 15,
+        45,
+        {
+            align: "right"
+        }
+    );
+
+    //================================================
+    // TABLE SETTINGS
+    //================================================
+
+    const startY = 52;
+
+    const marginLeft = 12;
+
+    const rowHeight = 9;
+
+    const headerHeight = 12;
+
+    const tableWidth = 273;
+
+    //================================================
+    // COLUMN WIDTHS
+    // DATE AND GRADE REMOVED
+    //================================================
+
+   const colWidths = [
+    15, // S.No.
+    32, // Reg No
+    50, // Student Name
+    47, // Paper
+    30, // Total Questions
+    28, // Correct
+    28, // Wrong
+    43  // Unattempted
+];
+    //================================================
+    // COLUMN HEADINGS
+    //================================================
+
+   const headers = [
+    "S.No.",
+    "Reg No",
+    "Student Name",
+    "Paper",
+    "Total Questions",
+    "Correct",
+    "Wrong",
+    "Unattempted"
+];
+    //================================================
+    // DRAW HEADER
+    //================================================
+
+   let x = marginLeft;
+
+pdf.setDrawColor(180,190,205);
+
+headers.forEach(function(header,index){
+
+    // IMPORTANT:
+    // Fill color must be set BEFORE every cell
+    pdf.setFillColor(30,80,150);
+
+    pdf.rect(
+        x,
+        startY,
+        colWidths[index],
+        headerHeight,
+        "FD"
+    );
 
     pdf.setTextColor(
         255,
@@ -17555,222 +17457,25 @@ function generateDateWiseResultPDF(results, selectedDate){
         255
     );
 
-
     pdf.setFont(
         "helvetica",
         "bold"
     );
 
-
-    pdf.setFontSize(
-        18
-    );
-
+    pdf.setFontSize(8);
 
     pdf.text(
-        "IKON INSTITUTE",
-        pageWidth / 2,
-        20,
+        header,
+        x + colWidths[index] / 2,
+        startY + 7.5,
         {
             align: "center"
         }
     );
 
+    x += colWidths[index];
 
-    //================================================
-    // SUB TITLE
-    //================================================
-
-    pdf.setFont(
-        "helvetica",
-        "normal"
-    );
-
-
-    pdf.setFontSize(
-        9
-    );
-
-
-    pdf.text(
-        "ONLINE EXAMINATION RESULT REPORT",
-        pageWidth / 2,
-        27,
-        {
-            align: "center"
-        }
-    );
-
-
-    //================================================
-    // REPORT DATE
-    //================================================
-
-    pdf.setTextColor(
-        75,
-        82,
-        92
-    );
-
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    pdf.setFontSize(
-        9
-    );
-
-
-    pdf.text(
-        "RESULT DATE",
-        13,
-        44
-    );
-
-
-    pdf.setTextColor(
-        35,
-        38,
-        43
-    );
-
-
-    pdf.setFont(
-        "helvetica",
-        "normal"
-    );
-
-
-    pdf.setFontSize(
-        10
-    );
-
-
-    pdf.text(
-        formatPDFResultDate(selectedDate),
-        13,
-        50
-    );
-
-
-    //================================================
-    // CANDIDATE COUNT
-    //================================================
-
-    pdf.setTextColor(
-        75,
-        82,
-        92
-    );
-
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    pdf.setFontSize(
-        9
-    );
-
-
-    pdf.text(
-        "TOTAL CANDIDATES",
-        pageWidth - 13,
-        44,
-        {
-            align: "right"
-        }
-    );
-
-
-    pdf.setTextColor(
-        30,
-        80,
-        150
-    );
-
-
-    pdf.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    pdf.setFontSize(
-        12
-    );
-
-
-    pdf.text(
-        String(results.length),
-        pageWidth - 13,
-        50,
-        {
-            align: "right"
-        }
-    );
-
-
-    //================================================
-    // DIVIDER
-    //================================================
-
-    pdf.setDrawColor(
-        210,
-        215,
-        222
-    );
-
-
-    pdf.setLineWidth(
-        0.3
-    );
-
-
-    pdf.line(
-        13,
-        55,
-        pageWidth - 13,
-        55
-    );
-
-
-    //================================================
-    // TABLE SETTINGS
-    //================================================
-
-    const startY = 60;
-
-    const marginLeft = 12;
-
-    const rowHeight = 8.5;
-
-    const headerHeight = 11;
-
-
-    const colWidths = [
-
-        15,
-        32,
-        50,
-        47,
-        30,
-        28,
-        28,
-        43
-
-    ];
-
-
-    drawTableHeader(
-        startY
-    );
-
+});
 
     //================================================
     // TABLE DATA
@@ -17780,552 +17485,256 @@ function generateDateWiseResultPDF(results, selectedDate){
         startY +
         headerHeight;
 
-
-    results.forEach(
-        function(result,index){
-
-            //========================================
-            // NEW PAGE
-            //========================================
-
-            if(
-                y + rowHeight >
-                pageHeight - 19
-            ){
-
-                pdf.addPage();
-
-
-                drawPageBorder();
-
-
-                drawTableHeader(
-                    15
-                );
-
-
-                y =
-                    15 +
-                    headerHeight;
-
-            }
-
-
-            //========================================
-            // DATA VALUES
-            //========================================
-
-            const reg =
-                result.regNo ??
-                result.RegNo ??
-                result["Reg No"] ??
-                "";
-
-
-            const name =
-                result.name ??
-                result.Name ??
-                "";
-
-
-            const paper =
-                result.paper ??
-                result.Paper ??
-                result.paperName ??
-                "";
-
-
-            const total =
-                result.totalQuestions ??
-                result["Total Questions"] ??
-                result.total ??
-                (
-                    Number(
-                        result.correctAnswer ??
-                        result.correct ??
-                        0
-                    )
-                    +
-                    Number(
-                        result.wrongAnswer ??
-                        result.wrong ??
-                        0
-                    )
-                    +
-                    Number(
-                        result.unattempted ??
-                        result.Unattempted ??
-                        0
-                    )
-                );
-
-
-            const correct =
-                result.correctAnswer ??
-                result["Correct Answer"] ??
-                result.correct ??
-                "";
-
-
-            const wrong =
-                result.wrongAnswer ??
-                result["Wrong Answer"] ??
-                result.wrong ??
-                "";
-
-
-            const unattempted =
-                result.unattempted ??
-                result.Unattempted ??
-                "";
-
-
-            //========================================
-            // RANK
-            //========================================
-
-            const rank =
-                rankMap.get(index) ||
-                0;
-
-
-            //========================================
-            // ROW DATA
-            //========================================
-
-            const row = [
-
-                rank > 0
-                    ? (
-                        rank === 1
-                            ? "1st"
-                            : rank === 2
-                                ? "2nd"
-                                : "3rd"
-                    )
-                    : index + 1,
-
-                reg,
-
-                name,
-
-                paper,
-
-                total,
-
-                correct,
-
-                wrong,
-
-                unattempted
-
-            ];
-
-
-            //========================================
-            // TOP 3 ROW BACKGROUND
-            //========================================
-
-            if(rank === 1){
-
-                pdf.setFillColor(
-                    255,
-                    248,
-                    220
-                );
-
-            }
-            else if(rank === 2){
-
-                pdf.setFillColor(
-                    242,
-                    245,
-                    248
-                );
-
-            }
-            else if(rank === 3){
-
-                pdf.setFillColor(
-                    248,
-                    237,
-                    225
-                );
-
-            }
-            else if(index % 2 === 0){
-
-                pdf.setFillColor(
-                    248,
-                    250,
-                    253
-                );
-
-            }
-            else{
-
-                pdf.setFillColor(
-                    255,
-                    255,
-                    255
-                );
-
-            }
-
-
-            //========================================
-            // DRAW CELLS
-            //========================================
-
-            let x =
-                marginLeft;
-
-
-            row.forEach(
-                function(value,colIndex){
-
-                    //================================
-                    // ROW COLOR
-                    //================================
-
-                    if(rank === 1){
-
-                        pdf.setFillColor(
-                            255,
-                            248,
-                            220
-                        );
-
-                    }
-                    else if(rank === 2){
-
-                        pdf.setFillColor(
-                            242,
-                            245,
-                            248
-                        );
-
-                    }
-                    else if(rank === 3){
-
-                        pdf.setFillColor(
-                            248,
-                            237,
-                            225
-                        );
-
-                    }
-                    else if(index % 2 === 0){
-
-                        pdf.setFillColor(
-                            248,
-                            250,
-                            253
-                        );
-
-                    }
-                    else{
-
-                        pdf.setFillColor(
-                            255,
-                            255,
-                            255
-                        );
-
-                    }
-
-
-                    //================================
-                    // CELL BORDER
-                    //================================
-
-                    pdf.setDrawColor(
-                        205,
-                        211,
-                        220
-                    );
-
-
-                    pdf.setLineWidth(
-                        0.25
-                    );
-
-
-                    pdf.rect(
-                        x,
-                        y,
-                        colWidths[colIndex],
-                        rowHeight,
-                        "FD"
-                    );
-
-
-                    //================================
-                    // TEXT SETTINGS
-                    //================================
-
-                    if(
-                        rank > 0 &&
-                        colIndex === 0
-                    ){
-
-                        pdf.setFont(
-                            "helvetica",
-                            "bold"
-                        );
-
-
-                        pdf.setFontSize(
-                            8
-                        );
-
-
-                        if(rank === 1){
-
-                            pdf.setTextColor(
-                                145,
-                                105,
-                                15
-                            );
-
-                        }
-                        else if(rank === 2){
-
-                            pdf.setTextColor(
-                                85,
-                                95,
-                                105
-                            );
-
-                        }
-                        else{
-
-                            pdf.setTextColor(
-                                145,
-                                85,
-                                45
-                            );
-
-                        }
-
-                    }
-                    else if(
-                        colIndex === 5
-                    ){
-
-                        // Correct Answers
-                        // slightly stronger
-
-                        pdf.setTextColor(
-                            25,
-                            90,
-                            60
-                        );
-
-
-                        pdf.setFont(
-                            "helvetica",
-                            "bold"
-                        );
-
-
-                        pdf.setFontSize(
-                            8
-                        );
-
-                    }
-                    else if(
-                        colIndex === 1
-                    ){
-
-                        // Registration Number
-
-                        pdf.setTextColor(
-                            35,
-                            40,
-                            48
-                        );
-
-
-                        pdf.setFont(
-                            "helvetica",
-                            "bold"
-                        );
-
-
-                        pdf.setFontSize(
-                            7.9
-                        );
-
-                    }
-                    else if(
-                        colIndex === 2
-                    ){
-
-                        // Student Name
-
-                        pdf.setTextColor(
-                            35,
-                            40,
-                            48
-                        );
-
-
-                        pdf.setFont(
-                            "helvetica",
-                            "bold"
-                        );
-
-
-                        pdf.setFontSize(
-                            7.8
-                        );
-
-                    }
-                    else{
-
-                        pdf.setTextColor(
-                            45,
-                            48,
-                            54
-                        );
-
-
-                        pdf.setFont(
-                            "helvetica",
-                            "normal"
-                        );
-
-
-                        pdf.setFontSize(
-                            7.6
-                        );
-
-                    }
-
-
-                    //================================
-                    // TEXT
-                    //================================
-
-                    let text =
-                        String(
-                            value ?? ""
-                        );
-
-
-                    const maxWidth =
-                        colWidths[colIndex] -
-                        4;
-
-
-                    while(
-                        text.length > 3 &&
-                        pdf.getTextWidth(text) >
-                        maxWidth
-                    ){
-
-                        text =
-                            text.substring(
-                                0,
-                                text.length - 4
-                            ) +
-                            "...";
-
-                    }
-
-
-                    pdf.text(
-                        text,
-                        x +
-                        colWidths[colIndex] / 2,
-                        y + 5.7,
-                        {
-                            align: "center"
-                        }
-                    );
-
-
-                    x +=
-                        colWidths[colIndex];
-
-                }
+    results.forEach(function(result,index){
+
+        //============================================
+        // NEW PAGE
+        //============================================
+
+        if(
+            y + rowHeight >
+            pageHeight - 15
+        ){
+
+            pdf.addPage();
+
+            pdf.setDrawColor(20,70,140);
+            pdf.setLineWidth(0.8);
+
+            pdf.rect(
+                7,
+                7,
+                pageWidth - 14,
+                pageHeight - 14
             );
 
+            y = 15;
 
-            y +=
-                rowHeight;
+        }
 
+        //============================================
+        // DATA VALUES
+        //============================================
+
+        const reg =
+            result.regNo ??
+            result.RegNo ??
+            result["Reg No"] ??
+            "";
+
+        const name =
+            result.name ??
+            result.Name ??
+            "";
+
+        const paper =
+            result.paper ??
+            result.Paper ??
+            result.paperName ??
+            "";
+const total =
+    result.totalQuestions ??
+    result["Total Questions"] ??
+    result.total ??
+    (
+        Number(result.correctAnswer ?? result.correct ?? 0) +
+        Number(result.wrongAnswer ?? result.wrong ?? 0) +
+        Number(result.unattempted ?? result.Unattempted ?? 0)
+    );
+
+        const correct =
+            result.correctAnswer ??
+            result["Correct Answer"] ??
+            result.correct ??
+            "";
+
+        const wrong =
+            result.wrongAnswer ??
+            result["Wrong Answer"] ??
+            result.wrong ??
+            "";
+
+        const unattempted =
+            result.unattempted ??
+            result.Unattempted ??
+            "";
+
+        const percentage =
+            result.percentage ??
+            result.Percentage ??
+            "";
+
+       const row = [
+    index + 1,
+    reg,
+    name,
+    paper,
+    total,
+    correct,
+    wrong,
+    unattempted
+];
+
+        //============================================
+        // ALTERNATE ROW
+        //============================================
+
+        if(index % 2 === 0){
+
+            pdf.setFillColor(
+                245,
+                248,
+                252
+            );
+
+        }
+        else{
+
+            pdf.setFillColor(
+                255,
+                255,
+                255
+            );
+
+        }
+
+        //============================================
+        // DRAW CELLS
+        //============================================
+
+        x = marginLeft;
+
+row.forEach(function(value,colIndex){
+
+    //============================================
+    // SET FILL COLOR FOR EVERY CELL
+    //============================================
+
+    if(index % 2 === 0){
+
+        pdf.setFillColor(
+            245,
+            248,
+            252
+        );
+
+    }
+    else{
+
+        pdf.setFillColor(
+            255,
+            255,
+            255
+        );
+
+    }
+
+    pdf.setDrawColor(
+        200,
+        205,
+        215
+    );
+
+    //============================================
+    // DRAW CELL
+    //============================================
+
+    pdf.rect(
+        x,
+        y,
+        colWidths[colIndex],
+        rowHeight,
+        "FD"
+    );
+
+    //============================================
+    // TEXT COLOR
+    //============================================
+
+    pdf.setTextColor(
+        35,
+        35,
+        35
+    );
+
+    pdf.setFont(
+        "helvetica",
+        colIndex === 1
+            ? "bold"
+            : "normal"
+    );
+
+    pdf.setFontSize(
+        colIndex === 1
+            ? 8.5
+            : 8
+    );
+
+    let text =
+        String(value ?? "");
+
+    //============================================
+    // LIMIT LONG TEXT
+    //============================================
+
+    const maxWidth =
+        colWidths[colIndex] - 4;
+
+    while(
+        text.length > 3 &&
+        pdf.getTextWidth(text) >
+        maxWidth
+    ){
+
+        text =
+            text.substring(
+                0,
+                text.length - 4
+            ) +
+            "...";
+
+    }
+
+    pdf.text(
+        text,
+        x + colWidths[colIndex] / 2,
+        y + 6,
+        {
+            align: "center"
         }
     );
 
+    x += colWidths[colIndex];
 
+});
+            y += rowHeight;
+
+});
     //================================================
-    // FOOTER LINE
+    // FOOTER
     //================================================
-
-    pdf.setDrawColor(
-        210,
-        215,
-        222
-    );
-
-
-    pdf.setLineWidth(
-        0.3
-    );
-
-
-    pdf.line(
-        13,
-        pageHeight - 17,
-        pageWidth - 13,
-        pageHeight - 17
-    );
-
-
-    //================================================
-    // FOOTER LEFT
-    //================================================
-
-    pdf.setTextColor(
-        105,
-        110,
-        118
-    );
-
 
     pdf.setFont(
         "helvetica",
         "normal"
     );
 
+    pdf.setFontSize(8);
 
-    pdf.setFontSize(
-        7.5
+    pdf.setTextColor(
+        100,
+        100,
+        100
     );
-
 
     pdf.text(
         "IKON Institute | Online Examination System",
-        13,
-        pageHeight - 11
-    );
-
-
-    //================================================
-    // FOOTER RIGHT
-    //================================================
-
-    pdf.text(
-        "Official Result Report",
-        pageWidth - 13,
+        pageWidth / 2,
         pageHeight - 11,
         {
-            align: "right"
+            align: "center"
         }
     );
-
 
     //================================================
     // FILE NAME
@@ -18339,20 +17748,15 @@ function generateDateWiseResultPDF(results, selectedDate){
             "-"
         );
 
-
-    //================================================
-    // DOWNLOAD
-    //================================================
-
     pdf.save(
-
         "IKON_Result_Report_" +
         safeDate +
         ".pdf"
-
     );
 
 }
+
+
 //====================================================
 // 3-TAP SECRET RESULT PDF ACCESS
 //====================================================
