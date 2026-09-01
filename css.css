@@ -16216,7 +16216,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     object-fit:contain !important;
 
     /* SCREEN + PRINT SAME POSITION */
-    right:8px !important;
+    right:15px !important;
     left:auto !important;
 
     top:-76px !important;
@@ -16238,7 +16238,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         width:67px !important;
         height:67px !important;
 
-        right:8px !important;
+        right:15px !important;
         left:auto !important;
 
         top:-76px !important;
