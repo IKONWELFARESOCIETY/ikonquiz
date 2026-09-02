@@ -976,6 +976,63 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 <div id="studentResultPage" class="hidden">
 
     <div class="result-list-box">
+ <div
+            id="studentExamDateBox"
+            style="
+                margin:0 0 22px;
+                padding:20px;
+                border:1px solid #dbeafe;
+                border-radius:14px;
+                background:#f8fbff;
+            "
+        >
+
+            <div
+                style="
+                    font-size:14px;
+                    font-weight:700;
+                    color:#64748b;
+                    margin-bottom:8px;
+                "
+            >
+                📅 EXAMINATION DATE
+            </div>
+
+            <select
+                id="studentExamDateSelect"
+                onchange="loadStudentResultsByDate(this.value)"
+                style="
+                    width:100%;
+                    padding:13px 15px;
+                    border:1px solid #cbd5e1;
+                    border-radius:9px;
+                    background:#fff;
+                    font-size:15px;
+                    font-weight:600;
+                    color:#1e293b;
+                    outline:none;
+                    box-sizing:border-box;
+                "
+            >
+
+                <option value="">
+                    -- Select Examination Date --
+                </option>
+
+            </select>
+
+            <div
+                id="studentExamDateMessage"
+                style="
+                    margin-top:9px;
+                    font-size:13px;
+                    color:#64748b;
+                "
+            >
+                Please select an examination date to view results.
+            </div>
+
+        </div>
 
      <h2
     onclick="showAnalyticsButton()"
