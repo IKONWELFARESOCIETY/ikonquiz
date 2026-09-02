@@ -16257,3 +16257,174 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/*==================================================
+  STUDENT RESULT - EXAMINATION DATE SELECTOR
+==================================================*/
+
+#studentExamDateBox {
+    margin: 0 0 24px !important;
+    padding: 22px 24px !important;
+
+    background: linear-gradient(
+        135deg,
+        #f8fbff 0%,
+        #ffffff 100%
+    ) !important;
+
+    border: 1px solid #dbe5f0 !important;
+    border-radius: 16px !important;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.06),
+        0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+
+/*-----------------------------------------------
+  DATE TITLE
+------------------------------------------------*/
+
+#studentExamDateBox > div:first-child {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 10px !important;
+
+    font-size: 13px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 0.6px;
+
+    color: #334155 !important;
+}
+
+
+/*-----------------------------------------------
+  SELECT BOX
+------------------------------------------------*/
+
+#studentExamDateSelect {
+
+    width: 100% !important;
+    height: 50px !important;
+
+    padding: 0 46px 0 16px !important;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+
+    background-color: #ffffff !important;
+
+    color: #1e293b !important;
+
+    font-size: 15px !important;
+    font-weight: 600 !important;
+
+    cursor: pointer;
+
+    outline: none !important;
+
+    box-sizing: border-box !important;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Hover */
+
+#studentExamDateSelect:hover {
+
+    border-color: #94a3b8 !important;
+
+    background-color: #fcfdff !important;
+}
+
+
+/* Focus */
+
+#studentExamDateSelect:focus {
+
+    border-color: #2563eb !important;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+
+    background-color: #ffffff !important;
+}
+
+
+/* Options */
+
+#studentExamDateSelect option {
+
+    padding: 10px;
+
+    font-size: 14px;
+
+    color: #1e293b;
+
+    background: #ffffff;
+}
+
+
+/*-----------------------------------------------
+  MESSAGE BELOW SELECT
+------------------------------------------------*/
+
+#studentExamDateMessage {
+
+    margin-top: 9px !important;
+
+    font-size: 12px !important;
+
+    font-weight: 500 !important;
+
+    color: #64748b !important;
+
+    line-height: 1.5;
+}
+
+
+/*==================================================
+  MOBILE
+==================================================*/
+
+@media (max-width: 600px) {
+
+    #studentExamDateBox {
+
+        padding: 18px !important;
+
+        margin-bottom: 20px !important;
+
+        border-radius: 13px !important;
+    }
+
+
+    #studentExamDateSelect {
+
+        height: 48px !important;
+
+        font-size: 14px !important;
+
+        padding-left: 14px !important;
+    }
+
+
+    #studentExamDateBox > div:first-child {
+
+        font-size: 12px !important;
+    }
+
+
+    #studentExamDateMessage {
+
+        font-size: 11px !important;
+    }
+
+}
