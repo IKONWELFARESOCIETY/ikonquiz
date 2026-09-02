@@ -7609,19 +7609,11 @@ isAdminMode = false;
 }
 
 
-//====================================================
-// RESULT MODULE
-//====================================================
-
 //=========================================
-// OPEN MARKSHEET
+// VERIFY MARKSHEET
 //=========================================
 
-function openMarksheet(
-    studentID,
-    paper,
-    examDate
-){
+function openMarksheet(studentID, paper, examDate){
 
     if(!examDate){
 
@@ -7630,30 +7622,18 @@ function openMarksheet(
         );
 
         return;
-
     }
 
 
     fetch(
-
         SCRIPT_URL +
         "?action=marksheet" +
-
         "&id=" +
-        encodeURIComponent(
-            studentID
-        ) +
-
+        encodeURIComponent(studentID) +
         "&paper=" +
-        encodeURIComponent(
-            paper
-        ) +
-
+        encodeURIComponent(paper) +
         "&examDate=" +
-        encodeURIComponent(
-            examDate
-        )
-
+        encodeURIComponent(examDate)
     )
 
     .then(res => res.json())
@@ -7661,22 +7641,32 @@ function openMarksheet(
     .then(function(data){
 
         console.log(
-            "Marksheet Response:",
+            "MARKSHEET RESPONSE:",
             data
         );
 
 
-        if(
-            data.status !==
-            "SUCCESS"
-        ){
+        if(data.status !== "SUCCESS"){
 
-            alert(
-                "Marksheet not found for the selected examination date."
-            );
+            if(
+                data.status ===
+                "MARKSHEET_NOT_FOUND"
+            ){
+
+                alert(
+                    "Marksheet not found for the selected examination date."
+                );
+
+            }
+            else{
+
+                alert(
+                    "Invalid Student ID"
+                );
+
+            }
 
             return;
-
         }
 
 
@@ -7695,23 +7685,12 @@ function openMarksheet(
     });
 
 }
-//=========================================
-// VERIFY MARKSHEET
-//=========================================
+function verifyMarksheet(paper){
 
-//=========================================
-// VERIFY MARKSHEET
-//=========================================
-
-function verifyMarksheet(
-    paper
-){
-
-    //================================================
-    // DATE MUST BE SELECTED
-    //================================================
-
+    // Date must be selected
     if(
+        typeof selectedStudentResultDate ===
+        "undefined" ||
         !selectedStudentResultDate
     ){
 
@@ -7720,7 +7699,6 @@ function verifyMarksheet(
         );
 
         return;
-
     }
 
 
@@ -7733,20 +7711,16 @@ function verifyMarksheet(
     if(id == null){
 
         return;
-
     }
 
 
-    if(
-        id.trim() == ""
-    ){
+    if(id.trim() == ""){
 
         alert(
             "Please Enter Student ID"
         );
 
         return;
-
     }
 
 
