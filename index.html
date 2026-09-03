@@ -153,6 +153,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 <!-- ================= MOCK TEST SELECTION MODAL ================= -->
 
+<!-- ==================================================
+              MOCK TEST SELECTION MODAL
+================================================== -->
+
 <div id="mockTestModal" class="mock-test-modal">
 
     <div class="mock-test-modal-box">
@@ -236,6 +240,148 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             onclick="closeMockTestModal()">
 
             ← Back to Login
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+                  MOCK TEST PAGE
+================================================== -->
+
+<div id="mockTestPage" class="hidden">
+
+    <!-- ================= MOCK TEST HEADER ================= -->
+
+    <div class="mock-test-header">
+
+        <div class="mock-test-header-left">
+
+            <h2 id="mockTestTitle">
+                Mock Test
+            </h2>
+
+            <p>
+                Answer all questions carefully
+            </p>
+
+        </div>
+
+
+        <div class="mock-test-timer-box">
+
+            <span>
+                ⏱️
+            </span>
+
+            <span id="mockTimer">
+                45:00
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+                    MOCK TEST CONTENT
+    ================================================== -->
+
+    <div class="mock-test-content">
+
+
+        <!-- ================= QUESTION AREA ================= -->
+
+        <div
+            id="mockQuestionArea"
+            class="mock-question-area">
+        </div>
+
+
+
+        <!-- ================= QUESTION PALETTE ================= -->
+
+        <div
+            id="mockQuestionPalette"
+            class="mock-question-palette">
+
+            <div class="mock-palette-title">
+                Question Palette
+            </div>
+
+
+            <div
+                id="mockPaletteButtons"
+                class="mock-palette-buttons">
+            </div>
+
+
+            <div class="mock-palette-legend">
+
+                <span>
+                    <i class="palette-current"></i>
+                    Current
+                </span>
+
+
+                <span>
+                    <i class="palette-answered"></i>
+                    Answered
+                </span>
+
+
+                <span>
+                    <i class="palette-unvisited"></i>
+                    Not Visited
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+                    MOCK TEST NAVIGATION
+    ================================================== -->
+
+    <div class="mock-test-navigation">
+
+        <button
+            type="button"
+            id="mockPrevBtn"
+            class="secondary"
+            onclick="prevMockQuestion()">
+
+            ← Previous
+
+        </button>
+
+
+        <button
+            type="button"
+            id="mockNextBtn"
+            class="primary"
+            onclick="nextMockQuestion()">
+
+            Next →
+
+        </button>
+
+
+        <button
+            type="button"
+            class="mock-exit-btn"
+            onclick="exitMockTest()">
+
+            ✕ Exit Test
 
         </button>
 
