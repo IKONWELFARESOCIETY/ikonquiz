@@ -147,15 +147,12 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     Download Hall Ticket
 
 </button>
-          <button
-    id="mockTestBtn"
-    class="secondary"
-    onclick="openMockTestModal()">
-    Mock Test
-</button>
+    </div>
+</div>
 
-<div id="mockTestModal" class="hidden">
-    <div class="result-box">
+<!-- ================= MOCK TEST SELECTION MODAL ================= -->
+<div id="mockTestModal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 9999;">
+    <div class="result-box" style="background: #ffffff; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
         <h2>📝 Select Mock Test</h2>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
             <button class="primary" onclick="startMockTest('dca mock test')">DCA Mock Test</button>
@@ -165,10 +162,11 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             <button class="primary" onclick="startMockTest('html mock test')">HTML Mock Test</button>
         </div>
         <br>
-        <button type="button" class="secondary" onclick="closeMockTestModal()">← Back to Login</button>
+        <button type="button" class="secondary" onclick="closeMockTestModal()" style="width: 100%;">← Back to Login</button>
     </div>
 </div>
 
+<!-- ================= MOCK TEST DISPLAY PAGE ================= -->
 <div id="mockTestPage" class="hidden" style="padding: 20px;">
     <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 15px; border-radius: 8px;">
         <h3 id="mockTestTitle" style="margin:0;">Mock Test</h3>
@@ -176,7 +174,7 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
     <div id="mockQuestionArea" style="margin-top: 20px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-        </div>
+    </div>
 
     <div style="margin-top: 20px; display: flex; justify-content: space-between;">
         <button id="mockPrevBtn" class="secondary" onclick="prevMockQuestion()">Previous</button>
@@ -184,12 +182,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         <button class="secondary" style="background:#dc2626; color:white;" onclick="exitMockTest()">Exit Test</button>
     </div>
 </div>
-    </div>
-
-
-</div>
-
-
 
 <!-- ==================================================
                 RESULT VERIFY PAGE
