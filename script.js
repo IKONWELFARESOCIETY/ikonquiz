@@ -18998,18 +18998,7 @@ function startMockTimer() {
         updateMockTimerDisplay();
 
         // Time completed
-        if (mockTimeLeft <= 0) {
-
-            clearInterval(mockTimerInterval);
-
-            mockTimerInterval = null;
-
-            alert("Mock Test Time Completed!");
-
-            exitMockTest();
-
-        }
-
+       if (mockTimeLeft <= 0) {
     }, 1000);
 
 }
@@ -19411,37 +19400,20 @@ function checkMockAns(btnElement) {
 
 function nextMockQuestion() {
 
-    if (!mockQuestions.length) {
+    if (!mockQuestions || mockQuestions.length === 0) {
         return;
     }
 
 
-    //================================================
-    // IF LAST QUESTION
-    //================================================
+    // Last question
+    if (currentMockIdx >= mockQuestions.length - 1) {
 
-    if (
-        currentMockIdx >=
-        mockQuestions.length - 1
-    ) {
-
-        // Finish mock test
-        clearInterval(mockTimerInterval);
-
-        mockTimerInterval = null;
-
-        alert(
-            "Mock Test Completed!"
-        );
-
-        exitMockTest();
+        submitMockTest();
 
         return;
-
     }
 
 
-    // Move to next question
     currentMockIdx++;
 
     renderMockQuestion();
@@ -19578,10 +19550,194 @@ function submitMockTest() {
 
     mockTimerInterval = null;
 
-    alert(
-        "Mock Test Completed!"
-    );
 
-    exitMockTest();
+    //================================================
+    // CALCULATE RESULT
+    //================================================
+
+    const total =
+        mockQuestions.length;
+
+
+    let right = 0;
+
+    let wrong = 0;
+
+    let attempted = 0;
+
+
+    Object.keys(mockAnswerState).forEach(function(index) {
+
+        const answer =
+            mockAnswerState[index];
+
+
+        if (!answer) {
+            return;
+        }
+
+
+        attempted++;
+
+
+        if (answer.isCorrect === true) {
+
+            right++;
+
+        }
+
+        else {
+
+            wrong++;
+
+        }
+
+    });
+
+
+    const unattempted =
+        total - attempted;
+
+
+    const percentage =
+        total > 0
+            ? ((right / total) * 100).toFixed(2)
+            : "0.00";
+
+
+    //================================================
+    // SHOW RESULT
+    //================================================
+
+    const questionArea =
+        document.getElementById(
+            "mockQuestionArea"
+        );
+
+
+    if (!questionArea) {
+        return;
+    }
+
+
+    questionArea.innerHTML = `
+
+        <div class="mock-result-box">
+
+            <h2 class="mock-result-title">
+                🎉 Mock Test Completed
+            </h2>
+
+
+            <div class="mock-result-grid">
+
+
+                <!-- TOTAL -->
+
+                <div class="mock-result-card">
+
+                    <span class="mock-result-number">
+                        ${total}
+                    </span>
+
+                    <span class="mock-result-label">
+                        Total Questions
+                    </span>
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div class="mock-result-card right">
+
+                    <span class="mock-result-number">
+                        ${right}
+                    </span>
+
+                    <span class="mock-result-label">
+                        Correct
+                    </span>
+
+                </div>
+
+
+                <!-- WRONG -->
+
+                <div class="mock-result-card wrong">
+
+                    <span class="mock-result-number">
+                        ${wrong}
+                    </span>
+
+                    <span class="mock-result-label">
+                        Wrong
+                    </span>
+
+                </div>
+
+
+                <!-- UNATTEMPTED -->
+
+                <div class="mock-result-card unattempted">
+
+                    <span class="mock-result-number">
+                        ${unattempted}
+                    </span>
+
+                    <span class="mock-result-label">
+                        Unattempted
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="mock-result-score">
+
+                Score:
+                ${right} / ${total}
+
+                &nbsp; | &nbsp;
+
+                Percentage:
+                ${percentage}%
+
+            </div>
+
+
+            <button
+                type="button"
+                class="primary mock-result-back"
+                onclick="exitMockTest()">
+
+                ← Back to Login
+
+            </button>
+
+
+        </div>
+
+    `;
+
+
+    //================================================
+    // HIDE PREVIOUS / NEXT / EXIT BUTTON AREA
+    //================================================
+
+    const navigationArea =
+        document.querySelector(
+            "#mockTestPage > div:last-child"
+        );
+
+
+    if (navigationArea) {
+
+        navigationArea.style.display =
+            "none";
+
+    }
 
 }
