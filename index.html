@@ -152,48 +152,95 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 </div>
 
 <!-- ================= MOCK TEST SELECTION MODAL ================= -->
-<div id="mockTestModal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 9999;">
-    <div class="result-box" style="background: #ffffff; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-        <h2>📝 Select Mock Test</h2>
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-            <button class="primary" onclick="startMockTest('dca mock test')">DCA Mock Test</button>
-            <button class="primary" onclick="startMockTest('ca mock test')">CA Mock Test</button>
-            <button class="primary" onclick="startMockTest('dam mock test')">DAM Mock Test</button>
-            <button class="primary" onclick="startMockTest('c lang mock test')">C Lang Mock Test</button>
-            <button class="primary" onclick="startMockTest('html mock test')">HTML Mock Test</button>
+
+<div id="mockTestModal" class="mock-test-modal">
+
+    <div class="mock-test-modal-box">
+
+        <div class="mock-test-modal-header">
+
+            <div class="mock-test-icon">
+                📝
+            </div>
+
+            <div>
+                <h2>Select Mock Test</h2>
+                <p>Choose your subject to start the mock test</p>
+            </div>
+
         </div>
-        <br>
-        <button type="button" class="secondary" onclick="closeMockTestModal()" style="width: 100%;">← Back to Login</button>
-    </div>
-</div>
 
-<!-- ================= MOCK TEST DISPLAY PAGE ================= -->
-<div id="mockTestPage" class="hidden" style="padding: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 15px; border-radius: 8px;">
-        <h3 id="mockTestTitle" style="margin:0;">Mock Test</h3>
-        <div id="mockTimer" style="font-size: 20px; font-weight: bold; color: #f59e0b;">⏱️ 45:00</div>
+
+        <div class="mock-test-paper-list">
+
+            <button
+                type="button"
+                class="mock-paper-btn"
+                onclick="startMockTest('dca mock test')">
+
+                <span>DCA</span>
+                <small>Mock Test</small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="mock-paper-btn"
+                onclick="startMockTest('ca mock test')">
+
+                <span>CA</span>
+                <small>Mock Test</small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="mock-paper-btn"
+                onclick="startMockTest('dam mock test')">
+
+                <span>DAM</span>
+                <small>Mock Test</small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="mock-paper-btn"
+                onclick="startMockTest('c lang mock test')">
+
+                <span>C Lang</span>
+                <small>Mock Test</small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="mock-paper-btn"
+                onclick="startMockTest('html mock test')">
+
+                <span>HTML</span>
+                <small>Mock Test</small>
+
+            </button>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="mock-back-btn"
+            onclick="closeMockTestModal()">
+
+            ← Back to Login
+
+        </button>
+
     </div>
 
-    <div id="mockQuestionArea" style="margin-top: 20px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-    </div>
-<div id="mockQuestionPalette" class="mock-question-palette">
-    <div class="mock-palette-title">
-        Question Palette
-    </div>
-
-    <div id="mockPaletteButtons" class="mock-palette-buttons"></div>
-
-    <div class="mock-palette-legend">
-        <span><i class="palette-current"></i> Current</span>
-        <span><i class="palette-answered"></i> Answered</span>
-        <span><i class="palette-unvisited"></i> Not Visited</span>
-    </div>
-</div>
-    <div style="margin-top: 20px; display: flex; justify-content: space-between;">
-        <button id="mockPrevBtn" class="secondary" onclick="prevMockQuestion()">Previous</button>
-        <button id="mockNextBtn" class="primary" onclick="nextMockQuestion()">Next</button>
-        <button class="secondary" style="background:#dc2626; color:white;" onclick="exitMockTest()">Exit Test</button>
-    </div>
 </div>
 
 <!-- ==================================================
