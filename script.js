@@ -18779,3 +18779,20 @@ function exitMockTest() {
     document.getElementById("mockTestPage").classList.add("hidden");
     document.getElementById("loginPage").classList.remove("hidden");
 }
+function submitMockTest() {
+    try {
+        // 1. Hide Mock Test Container
+        const testContainer = document.getElementById('mockTestSection');
+        if (testContainer) testContainer.classList.add('hidden');
+
+        // 2. Show Result Container
+        const resultContainer = document.getElementById('resultSection'); // Verify this ID in your HTML
+        if (resultContainer) {
+            resultContainer.classList.remove('hidden');
+        } else {
+            console.error("Result Section ID not found in HTML!");
+        }
+    } catch (error) {
+        console.error("Error during submission:", error);
+    }
+}
