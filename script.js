@@ -942,24 +942,153 @@ function startTest(){
 // OPEN EXAM TYPE PAGE
 //====================================================
 
+//====================================================
+// OPEN EXAM TYPE PAGE
+//====================================================
+
 function openExamTypePage(){
 
-    document
-    .getElementById("loginPage")
-    ?.classList.add("hidden");
+    const loginPage =
+        document.getElementById("loginPage");
 
-    document
-    .getElementById("examTypePage")
-    ?.classList.remove("hidden");
+    const examTypePage =
+        document.getElementById("examTypePage");
 
-    document.getElementById("examTypeStudentName").textContent =
-    studentName;
+    const theoryPaperPage =
+        document.getElementById("theoryPaperPage");
 
-    document.getElementById("examTypeRegNo").textContent =
-    regNo;
+    const practicalPaperPage =
+        document.getElementById("practicalPaperPage");
 
-    document.getElementById("examTypeCourse").textContent =
-    courseName;
+    const resultVerifyPage =
+        document.getElementById("resultVerifyPage");
+
+    const studentResultPage =
+        document.getElementById("studentResultPage");
+
+    const mockTestPage =
+        document.getElementById("mockTestPage");
+
+    //================================================
+    // HIDE LOGIN PAGE
+    // IMPORTANT: INLINE DISPLAY KO BHI REMOVE KARO
+    //================================================
+
+    if(loginPage){
+
+        loginPage.classList.add("hidden");
+
+        loginPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // HIDE OTHER PAGES
+    //================================================
+
+    if(theoryPaperPage){
+
+        theoryPaperPage.classList.add("hidden");
+
+        theoryPaperPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    if(practicalPaperPage){
+
+        practicalPaperPage.classList.add("hidden");
+
+        practicalPaperPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    if(resultVerifyPage){
+
+        resultVerifyPage.classList.add("hidden");
+
+        resultVerifyPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    if(studentResultPage){
+
+        studentResultPage.classList.add("hidden");
+
+        studentResultPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    if(mockTestPage){
+
+        mockTestPage.classList.add("hidden");
+
+        mockTestPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // SHOW EXAM TYPE PAGE
+    //================================================
+
+    if(examTypePage){
+
+        examTypePage.classList.remove("hidden");
+
+        examTypePage.style.removeProperty("display");
+    }
+
+
+    //================================================
+    // STUDENT DETAILS
+    //================================================
+
+    const nameBox =
+        document.getElementById("examTypeStudentName");
+
+    const regBox =
+        document.getElementById("examTypeRegNo");
+
+    const courseBox =
+        document.getElementById("examTypeCourse");
+
+    if(nameBox)
+        nameBox.textContent = studentName;
+
+    if(regBox)
+        regBox.textContent = regNo;
+
+    if(courseBox)
+        courseBox.textContent = courseName;
+
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 function continueTheoryExam(){
@@ -3731,8 +3860,19 @@ document.getElementById("practicalPage")
     // Show Login
     //------------------------------------------
 
-    document.getElementById("loginPage")
-        ?.classList.remove("hidden");
+  const loginPage =
+    document.getElementById("loginPage");
+
+if(loginPage){
+
+    loginPage.classList.remove("hidden");
+
+    loginPage.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+}
 
     //------------------------------------------
     // Hide Other Pages
@@ -7910,13 +8050,6 @@ function formatMarksheetDate(value){
     }
 
     return date;
-}
-function openResultVerifyPage(){
-
-    document.getElementById("loginPage").classList.add("hidden");
-
-    document.getElementById("resultVerifyPage").classList.remove("hidden");
-
 }
 
 //====================================================
