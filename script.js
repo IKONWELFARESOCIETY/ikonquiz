@@ -18997,9 +18997,9 @@ function startMockTimer() {
 
         // Time completed
        if (mockTimeLeft <= 0) {
-    }, 1000);
+    }
 
-}
+}, 1000);
 
 
 //====================================================
