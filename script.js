@@ -18641,3 +18641,141 @@ window.addEventListener(
 
     }
 );
+//====================================================
+// MOCK TEST SYSTEM LOGIC
+//====================================================
+let mockQuestions = [];
+let currentMockIdx = 0;
+let mockTimerInterval = null;
+let mockTimeLeft = 45 * 60; // 45 Minutes
+
+function openMockTestModal() {
+    document.getElementById("loginPage")?.classList.add("hidden");
+    document.getElementById("mockTestModal")?.classList.remove("hidden");
+}
+
+function closeMockTestModal() {
+    document.getElementById("mockTestModal")?.classList.add("hidden");
+    document.getElementById("loginPage")?.classList.remove("hidden");
+}
+
+function startMockTest(sheetName) {
+    document.getElementById("mockTestModal").classList.add("hidden");
+    document.getElementById("mockTestPage").classList.remove("hidden");
+    document.getElementById("mockTestTitle").innerText = sheetName.toUpperCase();
+
+    // Reset Engine
+    currentMockIdx = 0;
+    mockTimeLeft = 45 * 60;
+    startMockTimer();
+
+    // Fetch Questions from Google Apps Script
+    fetch(SCRIPT_URL + "?action=getMockQuestions&sheetName=" + encodeURIComponent(sheetName))
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "SUCCESS") {
+                mockQuestions = data.questions;
+                renderMockQuestion();
+            } else {
+                alert("Questions load nahi ho paaye. Check Google Sheet tab name.");
+                exitMockTest();
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Network Error!");
+            exitMockTest();
+        });
+}
+
+function startMockTimer() {
+    clearInterval(mockTimerInterval);
+    mockTimerInterval = setInterval(() => {
+        let mins = Math.floor(mockTimeLeft / 60);
+        let secs = mockTimeLeft % 60;
+        document.getElementById("mockTimer").innerText = 
+            `⏱️ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        
+        if (mockTimeLeft <= 0) {
+            clearInterval(mockTimerInterval);
+            alert("Time Completed!");
+            exitMockTest();
+        }
+        mockTimeLeft--;
+    }, 1000);
+}
+
+function renderMockQuestion() {
+    if (mockQuestions.length === 0) return;
+    let q = mockQuestions[currentMockIdx];
+    
+    // Safety check for options array
+    let options = [q.opt1, q.opt2, q.opt3, q.opt4];
+
+    let html = `
+        <h3>Q${currentMockIdx + 1}. ${q.question}</h3>
+        <div id="optionsGroup">
+    `;
+
+    options.forEach((optText, index) => {
+        // Pass exact option text to the checker
+        html += `<button class="mock-option-btn" onclick="checkMockAns(this, '${encodeURIComponent(optText)}', '${encodeURIComponent(q.correct)}')">${optText}</button>`;
+    });
+
+    html += `
+        </div>
+        <div id="ansExplanation" class="correct-ans-box hidden"></div>
+    `;
+    
+    document.getElementById("mockQuestionArea").innerHTML = html;
+}
+
+function checkMockAns(btnElement, selectedOptEncoded, correctOptEncoded) {
+    let selectedOpt = decodeURIComponent(selectedOptEncoded).trim();
+    let correctOpt = decodeURIComponent(correctOptEncoded).trim();
+
+    let parent = document.getElementById("optionsGroup");
+    let allBtns = Array.from(parent.getElementsByTagName("button"));
+    
+    // Disable all option buttons once an option is selected
+    allBtns.forEach(btn => btn.disabled = true);
+
+    // Case-insensitive & Whitespace-trimmed text comparison
+    if (selectedOpt.toLowerCase() === correctOpt.toLowerCase()) {
+        btnElement.classList.add("correct-opt");
+    } else {
+        btnElement.classList.add("wrong-opt");
+        
+        // Find and highlight the button that contains the correct answer text
+        allBtns.forEach(btn => {
+            if (btn.innerText.trim().toLowerCase() === correctOpt.toLowerCase()) {
+                btn.classList.add("correct-opt");
+            }
+        });
+    }
+
+    // Display correct answer text below options
+    let expBox = document.getElementById("ansExplanation");
+    expBox.innerHTML = `✅ Correct Answer: <strong>${correctOpt}</strong>`;
+    expBox.classList.remove("hidden");
+}
+
+function nextMockQuestion() {
+    if (currentMockIdx < mockQuestions.length - 1) {
+        currentMockIdx++;
+        renderMockQuestion();
+    }
+}
+
+function prevMockQuestion() {
+    if (currentMockIdx > 0) {
+        currentMockIdx--;
+        renderMockQuestion();
+    }
+}
+
+function exitMockTest() {
+    clearInterval(mockTimerInterval);
+    document.getElementById("mockTestPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+}
