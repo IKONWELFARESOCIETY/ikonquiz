@@ -3835,61 +3835,107 @@ practicalPapers = [];
 // BACK TO LOGIN PAGE
 //====================================================
 
+//====================================================
+// BACK TO LOGIN PAGE
+//====================================================
+
 function goLogin() {
-    document
-        .getElementById("leaderboardPage")
-        ?.classList.add("hidden");
 
-    document
-.getElementById("theoryPaperPage")
-?.classList.add("hidden");
+    //================================================
+    // STOP TIMERS / CHECKERS
+    //================================================
 
-document
-.getElementById("practicalPaperPage")
-?.classList.add("hidden");
-     document.getElementById("successPage")
-    ?.classList.add("hidden");
-   document.getElementById("examTypePage")
-    ?.classList.add("hidden");
+    if (typeof stopPracticalTimer === "function") {
+        stopPracticalTimer();
+    }
 
-document.getElementById("practicalPage")
-    ?.classList.add("hidden");
-    resetExam();
+    if (typeof stopStatusChecker === "function") {
+        stopStatusChecker();
+    }
 
-    //------------------------------------------
-    // Show Login
-    //------------------------------------------
+    if (typeof clearInterval === "function" && mockTimerInterval) {
+        clearInterval(mockTimerInterval);
+        mockTimerInterval = null;
+    }
 
-  const loginPage =
-    document.getElementById("loginPage");
 
-if(loginPage){
+    //================================================
+    // ALL PAGES TO HIDE
+    //================================================
 
-    loginPage.classList.remove("hidden");
+    const pagesToHide = [
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalPage",
+        "verificationPage",
+        "practicalVerificationPage",
+        "instructionPage",
+        "waitingPage",
+        "testPage",
+        "successPage",
+        "leaderboardPage",
+        "studentResultPage",
+        "resultVerifyPage",
+        "mockTestPage",
+        "mockTestModal"
+    ];
 
-    loginPage.style.setProperty(
-        "display",
-        "block",
-        "important"
-    );
-}
 
-    //------------------------------------------
-    // Hide Other Pages
-    //------------------------------------------
+    //================================================
+    // HIDE ALL PAGES
+    //================================================
 
-    document.getElementById("waitingPage")
-        ?.classList.add("hidden");
+    pagesToHide.forEach(function(id) {
 
-    document.getElementById("testPage")
-        ?.classList.add("hidden");
+        const page =
+            document.getElementById(id);
 
-    document.getElementById("successPage")
-        ?.classList.add("hidden");
+        if (!page) return;
 
-    //------------------------------------------
-    // Clear Inputs
-    //------------------------------------------
+        page.classList.add("hidden");
+
+        page.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    });
+
+
+    //================================================
+    // SHOW LOGIN PAGE
+    //================================================
+
+    const loginPage =
+        document.getElementById("loginPage");
+
+    if (loginPage) {
+
+        loginPage.classList.remove("hidden");
+
+        loginPage.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+    }
+
+
+    //================================================
+    // RESET EXAM
+    //================================================
+
+    if (typeof resetExam === "function") {
+        resetExam();
+    }
+
+
+    //================================================
+    // CLEAR LOGIN INPUTS
+    //================================================
 
     const studentInput =
         document.getElementById("studentName");
@@ -3897,15 +3943,18 @@ if(loginPage){
     const regInput =
         document.getElementById("regNo");
 
-    if (studentInput)
+    if (studentInput) {
         studentInput.value = "";
+    }
 
-    if (regInput)
+    if (regInput) {
         regInput.value = "";
+    }
 
-    //------------------------------------------
-    // Hide Paper Selection
-    //------------------------------------------
+
+    //================================================
+    // HIDE PAPER SELECTION
+    //================================================
 
     const label =
         document.getElementById("paperLabel");
@@ -3913,8 +3962,9 @@ if(loginPage){
     const select =
         document.getElementById("paperSelect");
 
-    if (label)
+    if (label) {
         label.style.display = "none";
+    }
 
     if (select) {
 
@@ -3922,6 +3972,62 @@ if(loginPage){
         select.innerHTML = "";
 
     }
+
+
+    //================================================
+    // CLOSE MOCK MODAL
+    //================================================
+
+    const mockModal =
+        document.getElementById("mockTestModal");
+
+    if (mockModal) {
+
+        mockModal.classList.add("hidden");
+
+        mockModal.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    //================================================
+    // RESET MOCK TEST
+    //================================================
+
+    if (typeof mockQuestions !== "undefined") {
+        mockQuestions = [];
+    }
+
+    if (typeof currentMockIdx !== "undefined") {
+        currentMockIdx = 0;
+    }
+
+    if (typeof mockAnswerState !== "undefined") {
+        mockAnswerState = {};
+    }
+
+    if (typeof currentMockSheet !== "undefined") {
+        currentMockSheet = "";
+    }
+
+    if (typeof mockTimeLeft !== "undefined") {
+        mockTimeLeft = 45 * 60;
+    }
+
+
+    //================================================
+    // SCROLL TO TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 //------------------------------------------
 // Reset Exam Type Page
@@ -8808,123 +8914,229 @@ function checkQRVerification(){
 // BACK TO EXAM TYPE PAGE
 //====================================================
 
+//====================================================
+// BACK TO EXAM TYPE PAGE
+//====================================================
+
 function backToExamType(){
 
-    // Stop Timers
-    stopPracticalTimer();
-    stopStatusChecker();
+    //================================================
+    // STOP TIMERS / CHECKERS
+    //================================================
 
-    // Hide All Exam Pages
-    document
-        .getElementById("practicalPage")
-        ?.classList.add("hidden");
+    if(typeof stopPracticalTimer === "function"){
+        stopPracticalTimer();
+    }
 
-    document
-        .getElementById("theoryPaperPage")
-        ?.classList.add("hidden");
+    if(typeof stopStatusChecker === "function"){
+        stopStatusChecker();
+    }
 
-    document
-        .getElementById("practicalPaperPage")
-        ?.classList.add("hidden");
 
-    document
-        .getElementById("verificationPage")
-        ?.classList.add("hidden");
-        document
-    .getElementById(
-        "practicalVerificationPage"
-    )
-    ?.classList.add("hidden");
+    //================================================
+    // HIDE THEORY PAPER PAGE
+    //================================================
 
-    document
-        .getElementById("instructionPage")
-        ?.classList.add("hidden");
+    const theoryPaperPage =
+        document.getElementById("theoryPaperPage");
 
-    document
-        .getElementById("waitingPage")
-        ?.classList.add("hidden");
+    if(theoryPaperPage){
 
-    document
-        .getElementById("testPage")
-        ?.classList.add("hidden");
+        theoryPaperPage.classList.add("hidden");
 
-    document
-        .getElementById("successPage")
-        ?.classList.add("hidden");
+        theoryPaperPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
 
-    // Show Exam Type Page
-    document
-        .getElementById("examTypePage")
-        ?.classList.remove("hidden");
 
-    // Clear Student ID
+    //================================================
+    // HIDE PRACTICAL PAPER PAGE
+    //================================================
+
+    const practicalPaperPage =
+        document.getElementById("practicalPaperPage");
+
+    if(practicalPaperPage){
+
+        practicalPaperPage.classList.add("hidden");
+
+        practicalPaperPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // HIDE PRACTICAL EXAM PAGE
+    //================================================
+
+    const practicalPage =
+        document.getElementById("practicalPage");
+
+    if(practicalPage){
+
+        practicalPage.classList.add("hidden");
+
+        practicalPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // HIDE VERIFICATION PAGES
+    //================================================
+
+    const verificationPage =
+        document.getElementById("verificationPage");
+
+    if(verificationPage){
+
+        verificationPage.classList.add("hidden");
+
+        verificationPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    const practicalVerificationPage =
+        document.getElementById(
+            "practicalVerificationPage"
+        );
+
+    if(practicalVerificationPage){
+
+        practicalVerificationPage.classList.add("hidden");
+
+        practicalVerificationPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // HIDE OTHER EXAM PAGES
+    //================================================
+
+    const instructionPage =
+        document.getElementById("instructionPage");
+
+    if(instructionPage){
+
+        instructionPage.classList.add("hidden");
+
+        instructionPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    const waitingPage =
+        document.getElementById("waitingPage");
+
+    if(waitingPage){
+
+        waitingPage.classList.add("hidden");
+
+        waitingPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    const testPage =
+        document.getElementById("testPage");
+
+    if(testPage){
+
+        testPage.classList.add("hidden");
+
+        testPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    const successPage =
+        document.getElementById("successPage");
+
+    if(successPage){
+
+        successPage.classList.add("hidden");
+
+        successPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // SHOW EXAM TYPE PAGE
+    //================================================
+
+    const examTypePage =
+        document.getElementById("examTypePage");
+
+    if(examTypePage){
+
+        examTypePage.classList.remove("hidden");
+
+        // IMPORTANT
+        // Remove old display:none
+        examTypePage.style.removeProperty("display");
+    }
+
+
+    //================================================
+    // CLEAR INPUTS
+    //================================================
+
     const idBox =
         document.getElementById("studentIdInput");
 
     if(idBox){
         idBox.value = "";
     }
-    // Clear Practical Verification Student ID
-const practicalIdBox =
-    document.getElementById(
-        "practicalStudentIdInput"
-    );
-
-if(practicalIdBox){
-
-    practicalIdBox.value = "";
-
-}
 
 
-// Clear Practical Verification Code
-const practicalCodeBox =
-    document.getElementById(
-        "practicalVerificationCodeInput"
-    );
+    const practicalIdBox =
+        document.getElementById(
+            "practicalStudentIdInput"
+        );
 
-if(practicalCodeBox){
-
-    practicalCodeBox.value = "";
-
-}
-
-    // Clear Practical Questions
-    const area =
-        document.getElementById("practicalQuestionArea");
-
-    if(area){
-        area.innerHTML = "";
+    if(practicalIdBox){
+        practicalIdBox.value = "";
     }
 
-    // Reset Practical Timer
-    practicalTotalTime = practicalDuration * 60;
-    showPracticalTimer();
 
-    // Reset Theory Paper Dropdown
-    const theorySelect =
-        document.getElementById("theoryPaperSelect");
+    //================================================
+    // SCROLL TOP
+    //================================================
 
-    if(theorySelect){
-        theorySelect.selectedIndex = 0;
-    }
-
-    // Reset Practical Paper Dropdown
-    const practicalSelect =
-        document.getElementById("practicalPaperSelect");
-
-    if(practicalSelect){
-        practicalSelect.selectedIndex = 0;
-    }
-
-    // Enable Practical Submit Button
-    const btn =
-        document.querySelector(".submitPracticalBtn");
-
-    if(btn){
-        btn.disabled = false;
-        btn.innerHTML = "Submit Practical";
-    }
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 //====================================================
