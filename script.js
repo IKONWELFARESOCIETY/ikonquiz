@@ -18705,35 +18705,46 @@ function closeMockTestModal() {
 
 function startMockTest(sheetName) {
 
+    const modal =
+        document.getElementById("mockTestModal");
+
+    const mockPage =
+        document.getElementById("mockTestPage");
+
+    const loginPage =
+        document.getElementById("loginPage");
+
+
     //================================================
-    // SAVE SHEET NAME
+    // HIDE LOGIN
     //================================================
 
-    sheetName =
-        String(sheetName || "").trim();
+    if (loginPage) {
 
+        loginPage.classList.add("hidden");
 
-    if (!sheetName) {
-
-        alert("Mock Test Sheet Name Missing.");
-
-        return;
+        loginPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
 
     }
 
 
     //================================================
-    // HIDE MODAL
+    // HIDE MOCK TEST SELECTION
     //================================================
 
-    const mockModal =
-        document.getElementById("mockTestModal");
+    if (modal) {
 
-    if (mockModal) {
+        modal.classList.add("hidden");
 
-        mockModal.classList.add("hidden");
-
-        mockModal.style.display = "none";
+        modal.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
 
     }
 
@@ -18742,18 +18753,25 @@ function startMockTest(sheetName) {
     // SHOW MOCK TEST PAGE
     //================================================
 
-    const mockPage =
-        document.getElementById("mockTestPage");
-
     if (mockPage) {
 
         mockPage.classList.remove("hidden");
+
+        mockPage.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        mockPage.style.visibility = "visible";
+
+        mockPage.style.opacity = "1";
 
     }
 
 
     //================================================
-    // TITLE
+    // SET TITLE
     //================================================
 
     const title =
@@ -18768,157 +18786,73 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // RESET
+    // RESET MOCK TEST
     //================================================
-
-    clearInterval(mockTimerInterval);
-
-    mockQuestions = [];
 
     currentMockIdx = 0;
 
-    mockTimeLeft =
-        45 * 60;
-mockAnswerState = {};
-
-    //================================================
-    // LOADING
-    //================================================
-
-    const questionArea =
-        document.getElementById(
-            "mockQuestionArea"
-        );
+    mockTimeLeft = 45 * 60;
 
 
-    if (questionArea) {
+    if (typeof mockAnswerState !== "undefined") {
 
-        questionArea.innerHTML = `
-
-            <div style="
-                text-align:center;
-                padding:40px 20px;
-                font-size:18px;
-                color:#475569;
-            ">
-
-                Loading Questions...
-
-            </div>
-
-        `;
+        mockAnswerState = {};
 
     }
 
 
+    mockQuestions = [];
+
+
     //================================================
-    // API URL
+    // LOAD QUESTIONS
     //================================================
 
-    const apiUrl =
+    fetch(
         SCRIPT_URL +
-        "?action=getMockQuestions" +
-        "&sheetName=" +
-        encodeURIComponent(sheetName);
+        "?action=getMockQuestions&sheetName=" +
+        encodeURIComponent(sheetName)
+    )
 
+    .then(function(response) {
 
-    console.log(
-        "Mock Test API:",
-        apiUrl
-    );
+        if (!response.ok) {
 
-
-    //================================================
-    // FETCH
-    //================================================
-
-    fetch(apiUrl)
-
-        .then(function(response) {
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "HTTP Error: " +
-                    response.status
-                );
-
-            }
-
-            return response.json();
-
-        })
-
-
-        .then(function(data) {
-
-            console.log(
-                "Mock Test Response:",
-                data
+            throw new Error(
+                "Server Error: " +
+                response.status
             );
 
+        }
 
-            //========================================
-            // SUCCESS
-            //========================================
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        console.log(
+            "MOCK TEST RESPONSE:",
+            data
+        );
+
+
+        if (
+            data &&
+            data.status === "SUCCESS"
+        ) {
+
+            mockQuestions =
+                data.questions || [];
+
 
             if (
-                data &&
-                data.status === "SUCCESS" &&
-                Array.isArray(data.questions) &&
-                data.questions.length > 0
+                mockQuestions.length === 0
             ) {
 
-              mockQuestions = data.questions || [];
-
-if (mockQuestions.length === 0) {
-    alert("Mock Test me koi question nahi mila.");
-    exitMockTest();
-    return;
-}
-
-buildMockPalette();
-renderMockQuestion();
-                // Start 45 minute timer
-                startMockTimer();
-
-
-                return;
-
-            }
-
-
-            //========================================
-            // SHEET NOT FOUND
-            //========================================
-
-            if (
-                data &&
-                data.status === "NOT_FOUND"
-            ) {
-
-                let msg =
-                    "Mock Test sheet nahi mili.\n\n" +
-                    "Requested Sheet:\n" +
-                    sheetName;
-
-
-                if (
-                    Array.isArray(
-                        data.availableSheets
-                    )
-                ) {
-
-                    msg +=
-                        "\n\nAvailable Sheets:\n" +
-                        data.availableSheets.join(
-                            "\n"
-                        );
-
-                }
-
-
-                alert(msg);
+                alert(
+                    "Is Mock Test me koi question nahi mila."
+                );
 
                 exitMockTest();
 
@@ -18927,54 +18861,60 @@ renderMockQuestion();
             }
 
 
-            //========================================
-            // OTHER ERROR
-            //========================================
+            // Build palette if available
+            if (
+                typeof buildMockPalette ===
+                "function"
+            ) {
 
-            alert(
+                buildMockPalette();
 
-                "Questions load nahi ho paaye.\n\n" +
-
-                (
-                    data &&
-                    data.message
-                        ? data.message
-                        : "Unknown Error"
-                )
-
-            );
+            }
 
 
-            exitMockTest();
+            // Show first question
+            renderMockQuestion();
 
-        })
 
+            // Start timer
+            startMockTimer();
 
-        .catch(function(error) {
+        }
+
+        else {
 
             console.error(
-                "Mock Test Error:",
-                error
+                "Mock Test Load Error:",
+                data
             );
-
 
             alert(
-
-                "Mock Test load nahi ho paaya.\n\n" +
-
-                error.message +
-
-                "\n\nApps Script deployment check karein."
-
+                data?.message ||
+                "Questions load nahi ho paaye."
             );
-
 
             exitMockTest();
 
-        });
+        }
+
+    })
+
+    .catch(function(error) {
+
+        console.error(
+            "Mock Test Error:",
+            error
+        );
+
+        alert(
+            "Mock Test questions load nahi ho paaye."
+        );
+
+        exitMockTest();
+
+    });
 
 }
-
 
 //====================================================
 // MOCK TEST TIMER
@@ -19473,72 +19413,42 @@ function prevMockQuestion() {
 
 function exitMockTest() {
 
-    // Stop timer
     clearInterval(mockTimerInterval);
 
     mockTimerInterval = null;
 
 
-    // Reset timer
-    mockTimeLeft = 45 * 60;
-
-
-    // Hide mock page
     const mockPage =
-        document.getElementById(
-            "mockTestPage"
-        );
+        document.getElementById("mockTestPage");
+
+    const loginPage =
+        document.getElementById("loginPage");
+
 
     if (mockPage) {
 
-        mockPage.classList.add(
-            "hidden"
+        mockPage.classList.add("hidden");
+
+        mockPage.style.setProperty(
+            "display",
+            "none",
+            "important"
         );
 
     }
 
-
-    // Hide modal also
-    const mockModal =
-        document.getElementById(
-            "mockTestModal"
-        );
-
-    if (mockModal) {
-
-        mockModal.classList.add(
-            "hidden"
-        );
-
-        mockModal.style.display =
-            "none";
-
-    }
-
-
-    // Show login page
-    const loginPage =
-        document.getElementById(
-            "loginPage"
-        );
 
     if (loginPage) {
 
-        loginPage.classList.remove(
-            "hidden"
+        loginPage.classList.remove("hidden");
+
+        loginPage.style.setProperty(
+            "display",
+            "block",
+            "important"
         );
 
     }
-
-
-    // Clear mock data
-    mockQuestions = [];
-
-    currentMockIdx = 0;
-
-    mockAnswerState = {};
-
-    currentMockSheet = "";
 
 }
 
