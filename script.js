@@ -18649,8 +18649,6 @@ let mockQuestions = [];
 let currentMockIdx = 0;
 let mockTimerInterval = null;
 let mockTimeLeft = 45 * 60; // 45 Minutes
-let mockAnswerState = {};
-
 // Stores selected answer/result for each question
 let mockAnswerState = {};
 
