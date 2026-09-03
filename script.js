@@ -18662,41 +18662,44 @@ let currentMockSheet = "";
 
 function openMockTestModal() {
 
-    const loginPage = document.getElementById("loginPage");
-    const mockModal = document.getElementById("mockTestModal");
+    document
+        .getElementById("loginPage")
+        ?.classList.add("hidden");
 
-    if (loginPage) {
-        loginPage.classList.add("hidden");
+    const modal =
+        document.getElementById("mockTestModal");
+
+    if (modal) {
+
+        modal.style.display = "flex";
+
+        modal.classList.remove("hidden");
+
     }
 
-    if (mockModal) {
-        mockModal.classList.remove("hidden");
-
-        // In case CSS display:none is applied
-        mockModal.style.display = "flex";
-    }
 }
 
 
 //====================================================
 // CLOSE MOCK TEST SELECTION
 //====================================================
-
 function closeMockTestModal() {
 
-    const mockModal = document.getElementById("mockTestModal");
-    const loginPage = document.getElementById("loginPage");
+    const modal =
+        document.getElementById("mockTestModal");
 
-    if (mockModal) {
+    if (modal) {
 
-        mockModal.classList.add("hidden");
-        mockModal.style.display = "none";
+        modal.style.display = "none";
+
+        modal.classList.add("hidden");
 
     }
 
-    if (loginPage) {
-        loginPage.classList.remove("hidden");
-    }
+    document
+        .getElementById("loginPage")
+        ?.classList.remove("hidden");
+
 }
 
 
