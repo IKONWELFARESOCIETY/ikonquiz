@@ -16429,999 +16429,13 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 }
 /* =========================================================
-   IKON MOCK TEST - PROFESSIONAL RESPONSIVE DESIGN
-   ADD THIS AT THE VERY END OF CSS FILE
+   IKON MOCK TEST - FINAL CSS
    ========================================================= */
 
 
 /* =========================================================
-   MOCK TEST MODAL OVERLAY
-   ========================================================= */
-
-#mockTestModal {
-    position: fixed !important;
-    inset: 0 !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    box-sizing: border-box !important;
-
-    padding: 20px !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    background: rgba(15, 23, 42, 0.70) !important;
-
-    z-index: 99999 !important;
-}
-
-
-/* =========================================================
-   PAPER SELECTOR BOX
-   ========================================================= */
-
-#mockTestModal > .result-box {
-    width: 100% !important;
-    max-width: 450px !important;
-
-    height: auto !important;
-    min-height: auto !important;
-
-    margin: 0 auto !important;
-
-    padding: 28px !important;
-
-    box-sizing: border-box !important;
-
-    background: #ffffff !important;
-
-    border-radius: 18px !important;
-
-    text-align: center !important;
-
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.28) !important;
-
-    overflow: hidden !important;
-}
-
-
-/* =========================================================
-   SELECT MOCK TEST TITLE
-   ========================================================= */
-
-#mockTestModal h2 {
-    margin: 0 0 22px 0 !important;
-
-    padding: 0 !important;
-
-    font-size: 23px !important;
-
-    font-weight: 700 !important;
-
-    line-height: 1.3 !important;
-
-    color: #172033 !important;
-
-    text-align: center !important;
-}
-
-
-/* =========================================================
-   PAPER BUTTON AREA
-   ========================================================= */
-
-#mockTestModal .result-box > div {
-    display: flex !important;
-
-    flex-direction: column !important;
-
-    width: 100% !important;
-
-    gap: 11px !important;
-
-    margin-top: 0 !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* =========================================================
-   PAPER SELECT BUTTON
-   ========================================================= */
-
-#mockTestModal .primary {
-    width: 100% !important;
-
-    min-height: 48px !important;
-
-    margin: 0 !important;
-
-    padding: 12px 18px !important;
-
-    box-sizing: border-box !important;
-
-    border: none !important;
-
-    border-radius: 11px !important;
-
-    font-size: 15px !important;
-
-    font-weight: 600 !important;
-
-    line-height: 1.3 !important;
-
-    cursor: pointer !important;
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease !important;
-}
-
-
-/* Paper button hover */
-
-#mockTestModal .primary:hover {
-    transform: translateY(-2px) !important;
-
-    box-shadow:
-        0 7px 16px rgba(0, 0, 0, 0.16) !important;
-}
-
-
-/* Paper button active */
-
-#mockTestModal .primary:active {
-    transform: translateY(0) !important;
-}
-
-
-/* =========================================================
-   BACK TO LOGIN
-   ========================================================= */
-
-#mockTestModal .secondary {
-    width: 100% !important;
-
-    min-height: 46px !important;
-
-    margin-top: 4px !important;
-
-    padding: 12px 18px !important;
-
-    box-sizing: border-box !important;
-
-    border-radius: 11px !important;
-
-    font-size: 15px !important;
-
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-}
-
-
-/* =========================================================
-   MOCK TEST PAGE
-   ========================================================= */
-
-#mockTestPage {
-    width: 100% !important;
-
-    max-width: 1000px !important;
-
-    margin: 0 auto !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* =========================================================
-   MOCK TEST TOP HEADER
-   ========================================================= */
-
-#mockTestPage > div:first-child {
-    width: 100% !important;
-
-    min-height: 65px !important;
-
-    box-sizing: border-box !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    justify-content: space-between !important;
-
-    gap: 15px !important;
-}
-
-
-/* =========================================================
-   MOCK TEST TITLE
-   ========================================================= */
-
-#mockTestTitle {
-    margin: 0 !important;
-
-    font-size: 20px !important;
-
-    font-weight: 700 !important;
-
-    line-height: 1.3 !important;
-
-    word-break: break-word !important;
-}
-
-
-/* =========================================================
-   TIMER
-   ========================================================= */
-
-#mockTimer {
-    flex-shrink: 0 !important;
-
-    white-space: nowrap !important;
-
-    font-size: 20px !important;
-
-    font-weight: 700 !important;
-
-    letter-spacing: 0.3px !important;
-}
-
-
-/* =========================================================
-   QUESTION AREA
-   ========================================================= */
-
-#mockQuestionArea {
-    width: 100% !important;
-
-    box-sizing: border-box !important;
-
-    overflow-wrap: anywhere !important;
-
-    word-break: normal !important;
-}
-
-
-/* =========================================================
-   ENGLISH QUESTION
-   FUTURE HTML:
-   <div class="mock-question-english">...</div>
-   ========================================================= */
-
-.mock-question-english {
-    width: 100% !important;
-
-    margin-bottom: 10px !important;
-
-    padding: 0 !important;
-
-    color: #172033 !important;
-
-    font-size: 19px !important;
-
-    font-weight: 650 !important;
-
-    line-height: 1.65 !important;
-
-    text-align: left !important;
-
-    overflow-wrap: anywhere !important;
-}
-
-
-/* =========================================================
-   HINDI QUESTION
-   FUTURE HTML:
-   <div class="mock-question-hindi">...</div>
-   ========================================================= */
-
-.mock-question-hindi {
-    width: 100% !important;
-
-    margin-top: 6px !important;
-
-    margin-bottom: 22px !important;
-
-    padding: 12px 14px !important;
-
-    box-sizing: border-box !important;
-
-    border-left: 4px solid #2563eb !important;
-
-    border-radius: 8px !important;
-
-    background: #f8fafc !important;
-
-    color: #334155 !important;
-
-    font-size: 17px !important;
-
-    font-weight: 500 !important;
-
-    line-height: 1.75 !important;
-
-    text-align: left !important;
-
-    overflow-wrap: anywhere !important;
-}
-
-
-/* Hindi label */
-
-.mock-question-hindi-label {
-    display: block !important;
-
-    margin-bottom: 4px !important;
-
-    color: #2563eb !important;
-
-    font-size: 13px !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* English label */
-
-.mock-question-english-label {
-    display: block !important;
-
-    margin-bottom: 4px !important;
-
-    color: #64748b !important;
-
-    font-size: 13px !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* =========================================================
-   OPTIONS
-   ========================================================= */
-
-.mock-option-btn {
-    width: 100% !important;
-
-    min-height: 50px !important;
-
-    display: block !important;
-
-    box-sizing: border-box !important;
-
-    margin: 11px 0 !important;
-
-    padding: 14px 16px !important;
-
-    border: 2px solid #e2e8f0 !important;
-
-    border-radius: 11px !important;
-
-    background: #ffffff !important;
-
-    color: #1e293b !important;
-
-    text-align: left !important;
-
-    font-size: 16px !important;
-
-    font-weight: 500 !important;
-
-    line-height: 1.5 !important;
-
-    cursor: pointer !important;
-
-    overflow-wrap: anywhere !important;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.12s ease !important;
-}
-
-
-/* Option hover */
-
-.mock-option-btn:hover:not(:disabled) {
-    background: #f8fafc !important;
-
-    border-color: #64748b !important;
-
-    transform: translateX(2px) !important;
-}
-
-
-/* Disabled */
-
-.mock-option-btn:disabled {
-    cursor: not-allowed !important;
-
-    opacity: 1 !important;
-}
-
-
-/* =========================================================
-   CORRECT OPTION
-   ========================================================= */
-
-.mock-option-btn.correct-opt {
-    background: #dcfce7 !important;
-
-    border-color: #16a34a !important;
-
-    color: #166534 !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* =========================================================
-   WRONG OPTION
-   ========================================================= */
-
-.mock-option-btn.wrong-opt {
-    background: #fee2e2 !important;
-
-    border-color: #dc2626 !important;
-
-    color: #991b1b !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* =========================================================
-   CORRECT ANSWER BOX
-   ========================================================= */
-
-.correct-ans-box {
-    width: 100% !important;
-
-    margin-top: 20px !important;
-
-    padding: 14px 16px !important;
-
-    box-sizing: border-box !important;
-
-    border: 1px solid #86efac !important;
-
-    border-left: 5px solid #16a34a !important;
-
-    border-radius: 9px !important;
-
-    background: #f0fdf4 !important;
-
-    color: #166534 !important;
-
-    font-size: 15px !important;
-
-    line-height: 1.6 !important;
-
-    text-align: left !important;
-
-    overflow-wrap: anywhere !important;
-}
-
-
-.correct-ans-box.hidden {
-    display: none !important;
-}
-
-
-/* =========================================================
-   PREVIOUS / NEXT / EXIT AREA
-   ========================================================= */
-
-#mockTestPage > div:last-child {
-    width: 100% !important;
-
-    box-sizing: border-box !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    gap: 10px !important;
-}
-
-
-#mockTestPage > div:last-child button {
-    min-height: 45px !important;
-
-    padding: 11px 18px !important;
-
-    border-radius: 9px !important;
-
-    font-size: 14px !important;
-
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* Disabled Previous */
-
-#mockPrevBtn:disabled {
-    opacity: 0.5 !important;
-
-    cursor: not-allowed !important;
-}
-
-
-/* =========================================================
-   MOCK RESULT SCREEN
-   ========================================================= */
-
-.mock-result-box {
-    width: 100% !important;
-
-    max-width: 650px !important;
-
-    margin: 0 auto !important;
-
-    padding: 28px 24px !important;
-
-    box-sizing: border-box !important;
-
-    background: #ffffff !important;
-
-    border-radius: 16px !important;
-
-    text-align: center !important;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.10) !important;
-}
-
-
-/* Result heading */
-
-.mock-result-title {
-    margin: 0 0 22px 0 !important;
-
-    color: #172033 !important;
-
-    font-size: 24px !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* Result grid */
-
-.mock-result-grid {
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(4, 1fr) !important;
-
-    gap: 12px !important;
-
-    width: 100% !important;
-}
-
-
-/* Result cards */
-
-.mock-result-card {
-    padding: 18px 10px !important;
-
-    border-radius: 12px !important;
-
-    background: #f8fafc !important;
-
-    border: 1px solid #e2e8f0 !important;
-
-    box-sizing: border-box !important;
-}
-
-
-/* Result number */
-
-.mock-result-number {
-    display: block !important;
-
-    margin-bottom: 5px !important;
-
-    font-size: 26px !important;
-
-    font-weight: 800 !important;
-
-    color: #172033 !important;
-}
-
-
-/* Result label */
-
-.mock-result-label {
-    display: block !important;
-
-    font-size: 13px !important;
-
-    font-weight: 600 !important;
-
-    color: #64748b !important;
-}
-
-
-/* Right */
-
-.mock-result-card.right {
-    background: #f0fdf4 !important;
-
-    border-color: #86efac !important;
-}
-
-
-/* Wrong */
-
-.mock-result-card.wrong {
-    background: #fef2f2 !important;
-
-    border-color: #fecaca !important;
-}
-
-
-/* Unattempted */
-
-.mock-result-card.unattempted {
-    background: #fffbeb !important;
-
-    border-color: #fde68a !important;
-}
-
-
-/* Score */
-
-.mock-result-score {
-    margin-top: 22px !important;
-
-    padding: 14px !important;
-
-    border-radius: 10px !important;
-
-    background: #f1f5f9 !important;
-
-    color: #1e293b !important;
-
-    font-size: 17px !important;
-
-    font-weight: 700 !important;
-}
-
-
-/* Result back button */
-
-.mock-result-back {
-    width: 100% !important;
-
-    max-width: 300px !important;
-
-    min-height: 45px !important;
-
-    margin: 22px auto 0 auto !important;
-
-    padding: 11px 18px !important;
-
-    border: none !important;
-
-    border-radius: 9px !important;
-
-    font-size: 15px !important;
-
-    font-weight: 600 !important;
-
-    cursor: pointer !important;
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    #mockTestPage {
-        padding: 15px !important;
-    }
-
-    #mockTestPage > div:first-child {
-        padding: 14px !important;
-
-        min-height: 60px !important;
-    }
-
-    #mockTestTitle {
-        font-size: 18px !important;
-    }
-
-    #mockTimer {
-        font-size: 18px !important;
-    }
-
-    .mock-question-english {
-        font-size: 18px !important;
-    }
-
-    .mock-question-hindi {
-        font-size: 16px !important;
-    }
-
-    .mock-result-grid {
-        grid-template-columns:
-            repeat(2, 1fr) !important;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    /* Modal */
-
-    #mockTestModal {
-        padding: 12px !important;
-    }
-
-
-    #mockTestModal > .result-box {
-        width: 100% !important;
-
-        max-width: 400px !important;
-
-        padding: 22px 17px !important;
-
-        border-radius: 15px !important;
-    }
-
-
-    #mockTestModal h2 {
-        font-size: 20px !important;
-
-        margin-bottom: 18px !important;
-    }
-
-
-    #mockTestModal .primary {
-        min-height: 46px !important;
-
-        font-size: 14px !important;
-
-        padding: 11px 14px !important;
-    }
-
-
-    #mockTestModal .secondary {
-        min-height: 44px !important;
-
-        font-size: 14px !important;
-    }
-
-
-    /* Mock page */
-
-    #mockTestPage {
-        padding: 10px !important;
-    }
-
-
-    /* Header becomes vertical */
-
-    #mockTestPage > div:first-child {
-        flex-direction: column !important;
-
-        align-items: stretch !important;
-
-        justify-content: center !important;
-
-        gap: 8px !important;
-
-        padding: 13px !important;
-
-        text-align: center !important;
-    }
-
-
-    #mockTestTitle {
-        font-size: 17px !important;
-
-        text-align: center !important;
-    }
-
-
-    #mockTimer {
-        font-size: 18px !important;
-
-        text-align: center !important;
-    }
-
-
-    /* Question */
-
-    #mockQuestionArea {
-        margin-top: 12px !important;
-
-        padding: 15px !important;
-    }
-
-
-    .mock-question-english {
-        font-size: 17px !important;
-
-        line-height: 1.6 !important;
-    }
-
-
-    .mock-question-hindi {
-        font-size: 16px !important;
-
-        line-height: 1.75 !important;
-
-        padding: 11px 12px !important;
-    }
-
-
-    /* Options */
-
-    .mock-option-btn {
-        min-height: 48px !important;
-
-        margin: 9px 0 !important;
-
-        padding: 12px 13px !important;
-
-        font-size: 15px !important;
-
-        line-height: 1.5 !important;
-
-        border-radius: 9px !important;
-    }
-
-
-    /* Answer */
-
-    .correct-ans-box {
-        font-size: 14px !important;
-
-        padding: 12px 13px !important;
-    }
-
-
-    /* Bottom buttons */
-
-    #mockTestPage > div:last-child {
-        flex-wrap: wrap !important;
-
-        justify-content: space-between !important;
-
-        gap: 8px !important;
-    }
-
-
-    #mockTestPage > div:last-child button {
-        min-height: 44px !important;
-
-        padding: 10px 12px !important;
-
-        font-size: 13px !important;
-    }
-
-
-    #mockPrevBtn,
-    #mockNextBtn {
-        flex: 1 !important;
-
-        min-width: 0 !important;
-    }
-
-
-    #mockTestPage > div:last-child button:last-child {
-        width: 100% !important;
-
-        flex-basis: 100% !important;
-    }
-
-
-    /* Result */
-
-    .mock-result-box {
-        padding: 22px 15px !important;
-
-        border-radius: 13px !important;
-    }
-
-
-    .mock-result-title {
-        font-size: 21px !important;
-    }
-
-
-    .mock-result-grid {
-        grid-template-columns:
-            repeat(2, 1fr) !important;
-
-        gap: 9px !important;
-    }
-
-
-    .mock-result-card {
-        padding: 14px 8px !important;
-    }
-
-
-    .mock-result-number {
-        font-size: 23px !important;
-    }
-
-
-    .mock-result-label {
-        font-size: 12px !important;
-    }
-
-
-    .mock-result-score {
-        font-size: 15px !important;
-    }
-
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-    #mockTestModal > .result-box {
-        padding: 19px 13px !important;
-    }
-
-
-    #mockTestModal h2 {
-        font-size: 18px !important;
-    }
-
-
-    #mockTestModal .primary {
-        min-height: 43px !important;
-
-        font-size: 13px !important;
-    }
-
-
-    .mock-question-english {
-        font-size: 16px !important;
-    }
-
-
-    .mock-question-hindi {
-        font-size: 15px !important;
-    }
-
-
-    .mock-option-btn {
-        font-size: 14px !important;
-
-        padding: 11px 12px !important;
-    }
-
-}
-/* =====================================================
-   MOCK TEST SELECTION MODAL - PROFESSIONAL
-===================================================== */
+   1. MOCK TEST SELECTION MODAL
+========================================================= */
 
 #mockTestModal.mock-test-modal {
 
@@ -17432,8 +16446,6 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     width: 100%;
     height: 100%;
 
-    background: rgba(15, 23, 42, 0.72);
-
     display: none;
 
     align-items: center;
@@ -17443,9 +16455,13 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     box-sizing: border-box;
 
-    z-index: 99999;
+    background: rgba(15, 23, 42, 0.72);
 
     backdrop-filter: blur(5px);
+
+    overflow-y: auto;
+
+    z-index: 99999;
 
 }
 
@@ -17469,12 +16485,14 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     box-shadow:
         0 25px 60px rgba(0, 0, 0, 0.25);
 
+    margin: auto;
+
     animation: mockModalOpen 0.25s ease;
 
 }
 
 
-/* OPEN ANIMATION */
+/* MODAL ANIMATION */
 
 @keyframes mockModalOpen {
 
@@ -17497,7 +16515,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 
 
-/* HEADER */
+/* =========================================================
+   2. MODAL HEADER
+========================================================= */
 
 .mock-test-modal-header {
 
@@ -17515,8 +16535,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 .mock-test-icon {
 
     width: 52px;
-
     height: 52px;
+
+    min-width: 52px;
 
     border-radius: 14px;
 
@@ -17525,12 +16546,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     font-size: 26px;
-
-    flex-shrink: 0;
 
 }
 
@@ -17543,23 +16561,35 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     font-size: 23px;
 
+    line-height: 1.25;
+
     font-weight: 750;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    word-break: normal;
 
 }
 
 
 .mock-test-modal-header p {
 
-    margin: 5px 0 0;
+    margin: 6px 0 0;
 
     color: #64748b;
 
     font-size: 13px;
 
+    line-height: 1.5;
+
 }
 
 
-/* PAPER LIST */
+/* =========================================================
+   3. PAPER OPTIONS
+========================================================= */
 
 .mock-test-paper-list {
 
@@ -17568,6 +16598,8 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     flex-direction: column;
 
     gap: 11px;
+
+    width: 100%;
 
 }
 
@@ -17580,13 +16612,15 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     min-height: 58px;
 
-    border: none;
+    padding: 12px 18px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e2e8f0;
 
     border-radius: 11px;
 
     background: #f8fafc;
-
-    border: 1px solid #e2e8f0;
 
     color: #1e293b;
 
@@ -17598,15 +16632,15 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     justify-content: space-between;
 
-    padding: 12px 18px;
+    gap: 15px;
+
+    text-align: left;
 
     transition:
         transform 0.18s ease,
-        box-shadow 0.18s ease,
+        background 0.18s ease,
         border-color 0.18s ease,
-        background 0.18s ease;
-
-    text-align: left;
+        box-shadow 0.18s ease;
 
 }
 
@@ -17617,6 +16651,8 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     font-weight: 750;
 
+    line-height: 1.3;
+
 }
 
 
@@ -17626,16 +16662,18 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     color: #64748b;
 
+    white-space: nowrap;
+
 }
 
 
 .mock-paper-btn:hover {
 
-    transform: translateY(-2px);
-
     background: #eff6ff;
 
     border-color: #3b82f6;
+
+    transform: translateY(-2px);
 
     box-shadow:
         0 6px 16px rgba(37, 99, 235, 0.12);
@@ -17650,15 +16688,19 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 
 
-/* BACK BUTTON */
+/* =========================================================
+   4. BACK TO LOGIN
+========================================================= */
 
 .mock-back-btn {
 
     width: 100%;
 
+    min-height: 48px;
+
     margin-top: 18px;
 
-    min-height: 48px;
+    padding: 10px 15px;
 
     border: none;
 
@@ -17695,15 +16737,599 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* =========================================================
+   5. MOCK TEST PAGE
+========================================================= */
+
+#mockTestPage {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   6. MOCK TEST HEADER
+========================================================= */
+
+#mockTestPage > div:first-child {
+
+    width: 100%;
+
+    min-height: 64px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px 20px;
+
+    border-radius: 12px;
+
+    background: #1e293b;
+
+    color: #ffffff;
+
+}
+
+
+#mockTestTitle {
+
+    margin: 0;
+
+    font-size: 20px;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+    word-break: normal;
+
+}
+
+
+#mockTimer {
+
+    flex-shrink: 0;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #f59e0b;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   7. QUESTION AREA
+========================================================= */
+
+#mockQuestionArea {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.08);
+
+}
+
+
+/* =========================================================
+   8. QUESTION ENGLISH
+========================================================= */
+
+.mock-question-english {
+
+    font-size: 19px;
+
+    font-weight: 650;
+
+    line-height: 1.65;
+
+    color: #1e293b;
+
+    margin-bottom: 12px;
+
+    word-break: normal;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.mock-question-english-label {
+
+    display: inline-block;
+
+    margin-right: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #2563eb;
+
+}
+
+
+/* =========================================================
+   9. QUESTION HINDI
+========================================================= */
+
+.mock-question-hindi {
+
+    padding: 12px 14px;
+
+    margin-top: 8px;
+
+    margin-bottom: 22px;
+
+    border-left: 4px solid #64748b;
+
+    border-radius: 6px;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+    word-break: normal;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.mock-question-hindi-label {
+
+    display: inline-block;
+
+    margin-right: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #475569;
+
+}
+
+
+/* =========================================================
+   10. OPTIONS
+========================================================= */
+
+#optionsGroup {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    width: 100%;
+
+}
+
+
+.mock-option-btn {
+
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 13px 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #1e293b;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.mock-option-btn:hover:not(:disabled) {
+
+    background: #f8fafc;
+
+    border-color: #2563eb;
+
+    transform: translateX(2px);
+
+}
+
+
+.mock-option-btn:disabled {
+
+    cursor: default;
+
+    opacity: 1;
+
+}
+
+
+/* =========================================================
+   11. CORRECT / WRONG
+========================================================= */
+
+.mock-option-btn.correct-opt {
+
+    background: #dcfce7 !important;
+
+    border-color: #16a34a !important;
+
+    color: #166534 !important;
+
+    font-weight: 700;
+
+}
+
+
+.mock-option-btn.wrong-opt {
+
+    background: #fee2e2 !important;
+
+    border-color: #dc2626 !important;
+
+    color: #991b1b !important;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   12. CORRECT ANSWER BOX
+========================================================= */
+
+.correct-ans-box {
+
+    margin-top: 18px;
+
+    padding: 14px 16px;
+
+    border-radius: 9px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #86efac;
+
+    color: #166534;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+}
+
+
+.correct-ans-box strong {
+
+    font-weight: 750;
+
+}
+
+
+/* =========================================================
+   13. QUESTION PALETTE
+========================================================= */
+
+.mock-question-palette {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.07);
+
+}
+
+
+.mock-palette-title {
+
+    margin-bottom: 15px;
+
+    color: #1e293b;
+
+    font-size: 18px;
+
+    font-weight: 750;
+
+}
+
+
+.mock-palette-buttons {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(10, minmax(38px, 1fr));
+
+    gap: 9px;
+
+}
+
+
+/* PALETTE NUMBER */
+
+.mock-palette-btn {
+
+    width: 100%;
+
+    min-width: 38px;
+
+    height: 40px;
+
+    padding: 0;
+
+    border-radius: 8px;
+
+    border: 1px solid #cbd5e1;
+
+    background: #f8fafc;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+
+.mock-palette-btn:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(15, 23, 42, 0.12);
+
+}
+
+
+/* CURRENT */
+
+.mock-palette-btn.current {
+
+    background: #2563eb !important;
+
+    border-color: #2563eb !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* ANSWERED */
+
+.mock-palette-btn.answered {
+
+    background: #16a34a !important;
+
+    border-color: #16a34a !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* NOT VISITED / NOT ANSWERED */
+
+.mock-palette-btn.unvisited {
+
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    color: #334155;
+
+}
+
+
+/* =========================================================
+   14. PALETTE LEGEND
+========================================================= */
+
+.mock-palette-legend {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-top: 16px;
+
+    color: #475569;
+
+    font-size: 13px;
+
+}
+
+
+.mock-palette-legend span {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.mock-palette-legend i {
+
+    display: inline-block;
+
+    width: 14px;
+
+    height: 14px;
+
+    border-radius: 4px;
+
+}
+
+
+/* CURRENT */
+
+.palette-current {
+
+    background: #2563eb;
+
+}
+
+
+/* ANSWERED */
+
+.palette-answered {
+
+    background: #16a34a;
+
+}
+
+
+/* NOT VISITED */
+
+.palette-unvisited {
+
+    background: #f8fafc;
+
+    border: 1px solid #cbd5e1;
+
+}
+
+
+/* =========================================================
+   15. MOCK NAVIGATION
+========================================================= */
+
+#mockTestPage > div:last-child {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+#mockPrevBtn,
+#mockNextBtn {
+
+    min-width: 120px;
+
+    min-height: 45px;
+
+    padding: 10px 18px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   16. MOBILE MODAL
+========================================================= */
 
 @media (max-width: 600px) {
 
     #mockTestModal.mock-test-modal {
 
         padding: 15px;
+
+        align-items: center;
 
     }
 
@@ -17716,10 +17342,16 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
         border-radius: 16px;
 
+        max-height: calc(100vh - 30px);
+
+        overflow-y: auto;
+
     }
 
 
     .mock-test-modal-header {
+
+        gap: 12px;
 
         margin-bottom: 20px;
 
@@ -17729,8 +17361,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     .mock-test-icon {
 
         width: 46px;
-
         height: 46px;
+
+        min-width: 46px;
 
         font-size: 23px;
 
@@ -17755,7 +17388,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
         min-height: 54px;
 
-        padding: 10px 15px;
+        padding: 10px 14px;
 
     }
 
@@ -17766,12 +17399,141 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     }
 
+
+    .mock-paper-btn small {
+
+        font-size: 12px;
+
+    }
+
 }
 
 
-/* VERY SMALL MOBILE */
+/* =========================================================
+   17. MOBILE MOCK PAGE
+========================================================= */
 
-@media (max-width: 380px) {
+@media (max-width: 768px) {
+
+    #mockTestPage {
+
+        padding: 12px;
+
+    }
+
+
+    #mockTestPage > div:first-child {
+
+        min-height: auto;
+
+        padding: 13px 15px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+
+    }
+
+
+    #mockTestTitle {
+
+        font-size: 17px;
+
+        line-height: 1.4;
+
+    }
+
+
+    #mockTimer {
+
+        font-size: 18px;
+
+    }
+
+
+    #mockQuestionArea {
+
+        padding: 18px;
+
+        margin-top: 14px;
+
+    }
+
+
+    .mock-question-english {
+
+        font-size: 17px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .mock-question-hindi {
+
+        font-size: 16px;
+
+        line-height: 1.75;
+
+    }
+
+
+    .mock-option-btn {
+
+        min-height: 50px;
+
+        padding: 12px 14px;
+
+        font-size: 14px;
+
+    }
+
+
+    .mock-question-palette {
+
+        padding: 14px;
+
+    }
+
+
+    .mock-palette-buttons {
+
+        grid-template-columns:
+            repeat(6, minmax(36px, 1fr));
+
+        gap: 8px;
+
+    }
+
+
+    .mock-palette-btn {
+
+        height: 38px;
+
+        min-width: 0;
+
+    }
+
+
+    #mockPrevBtn,
+    #mockNextBtn {
+
+        min-width: 100px;
+
+        flex: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   18. SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
 
     #mockTestModal .mock-test-modal-box {
 
@@ -17782,7 +17544,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     .mock-test-modal-header {
 
-        gap: 10px;
+        align-items: flex-start;
 
     }
 
@@ -17790,8 +17552,9 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     .mock-test-icon {
 
         width: 42px;
-
         height: 42px;
+
+        min-width: 42px;
 
         font-size: 21px;
 
@@ -17805,9 +17568,130 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 
+    .mock-test-modal-header p {
+
+        font-size: 11px;
+
+    }
+
+
     .mock-paper-btn {
 
-        min-height: 51px;
+        min-height: 50px;
+
+        padding: 9px 12px;
+
+    }
+
+
+    .mock-paper-btn span {
+
+        font-size: 14px;
+
+    }
+
+
+    .mock-paper-btn small {
+
+        font-size: 11px;
+
+    }
+
+
+    #mockTestPage {
+
+        padding: 8px;
+
+    }
+
+
+    #mockQuestionArea {
+
+        padding: 14px;
+
+    }
+
+
+    .mock-question-english {
+
+        font-size: 16px;
+
+    }
+
+
+    .mock-question-hindi {
+
+        font-size: 15px;
+
+        padding: 10px 12px;
+
+    }
+
+
+    .mock-palette-buttons {
+
+        grid-template-columns:
+            repeat(5, minmax(36px, 1fr));
+
+        gap: 7px;
+
+    }
+
+
+    .mock-palette-btn {
+
+        height: 36px;
+
+        font-size: 13px;
+
+    }
+
+
+    .mock-palette-legend {
+
+        gap: 10px;
+
+        font-size: 11px;
+
+    }
+
+
+    #mockPrevBtn,
+    #mockNextBtn {
+
+        min-width: 0;
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   19. VERY SMALL SCREEN
+========================================================= */
+
+@media (max-width: 330px) {
+
+    .mock-test-modal-header h2 {
+
+        font-size: 17px;
+
+    }
+
+
+    .mock-test-modal-header p {
+
+        display: none;
+
+    }
+
+
+    .mock-palette-buttons {
+
+        grid-template-columns:
+            repeat(5, 1fr);
 
     }
 
