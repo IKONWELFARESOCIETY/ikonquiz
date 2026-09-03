@@ -18986,7 +18986,7 @@ function startMockTimer() {
     // Remove previous timer
     clearInterval(mockTimerInterval);
 
-    // Immediately show 45:00
+    // Immediately show current time
     updateMockTimerDisplay();
 
     mockTimerInterval = setInterval(function() {
@@ -18995,13 +18995,28 @@ function startMockTimer() {
 
         updateMockTimerDisplay();
 
-        // Time completed
-       if (mockTimeLeft <= 0) {
-    }
 
-}, 1000);
+        //============================================
+        // TIME COMPLETED
+        //============================================
 
+        if (mockTimeLeft <= 0) {
 
+            clearInterval(mockTimerInterval);
+
+            mockTimerInterval = null;
+
+            alert("Time Completed!");
+
+            submitMockTest();
+
+            return;
+
+        }
+
+    }, 1000);
+
+}
 //====================================================
 // UPDATE TIMER DISPLAY
 //====================================================
