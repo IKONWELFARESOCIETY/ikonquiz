@@ -18649,6 +18649,7 @@ let mockQuestions = [];
 let currentMockIdx = 0;
 let mockTimerInterval = null;
 let mockTimeLeft = 45 * 60; // 45 Minutes
+let mockAnswerState = {};
 
 // Stores selected answer/result for each question
 let mockAnswerState = {};
@@ -18781,7 +18782,7 @@ function startMockTest(sheetName) {
 
     mockTimeLeft =
         45 * 60;
-
+mockAnswerState = {};
 
     //================================================
     // LOADING
@@ -18871,17 +18872,16 @@ function startMockTest(sheetName) {
                 data.questions.length > 0
             ) {
 
-                mockQuestions =
-                    data.questions;
+              mockQuestions = data.questions || [];
 
+if (mockQuestions.length === 0) {
+    alert("Mock Test me koi question nahi mila.");
+    exitMockTest();
+    return;
+}
 
-                currentMockIdx =
-                    0;
-
-
-                renderMockQuestion();
-
-
+buildMockPalette();
+renderMockQuestion();
                 // Start 45 minute timer
                 startMockTimer();
 
@@ -19034,6 +19034,10 @@ function updateMockTimerDisplay() {
 //====================================================
 
 function renderMockQuestion() {
+    mockAnswerState[currentMockIdx] =
+    mockAnswerState[currentMockIdx] || null;
+
+buildMockPalette();
 
     if (!mockQuestions || mockQuestions.length === 0) {
         return;
@@ -19079,23 +19083,31 @@ function renderMockQuestion() {
 
     let html = `
 
-        <div style="
-            margin-bottom:20px;
-        ">
+      <div style="margin-bottom:20px;">
 
-            <div style="
-                font-size:18px;
-                font-weight:600;
-                line-height:1.6;
-                color:#1e293b;
-            ">
+    <div class="mock-question-english">
 
-                Q${currentMockIdx + 1}. ${escapeMockHTML(q.question)}
+        <span class="mock-question-english-label">
+            English:
+        </span>
 
-            </div>
+        Q${currentMockIdx + 1}.
+        ${escapeMockHTML(q.question)}
 
-        </div>
+    </div>
 
+
+    <div class="mock-question-hindi">
+
+        <span class="mock-question-hindi-label">
+            हिंदी:
+        </span>
+
+        ${escapeMockHTML(q.hindiQuestion || "")}
+
+    </div>
+
+</div>
         <div id="optionsGroup">
     `;
 
@@ -19308,7 +19320,7 @@ function checkMockAns(btnElement) {
 
     };
 
-
+buildMockPalette();
     //================================================
     // DISABLE ALL OPTIONS
     //================================================
@@ -19739,5 +19751,74 @@ function submitMockTest() {
             "none";
 
     }
+
+}
+function buildMockPalette() {
+
+    const container =
+        document.getElementById("mockPaletteButtons");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    mockQuestions.forEach(function(q, index) {
+
+        const btn =
+            document.createElement("button");
+
+        btn.type = "button";
+
+        btn.className =
+            "mock-palette-btn";
+
+        btn.textContent =
+            index + 1;
+
+        // Current Question
+        if (index === currentMockIdx) {
+
+            btn.classList.add("current");
+
+        }
+
+        // Answered Question
+        else if (
+            mockAnswerState[index]
+        ) {
+
+            btn.classList.add("answered");
+
+        }
+
+        // Not Answered
+        else {
+
+            btn.classList.add("unvisited");
+
+        }
+
+        btn.onclick = function() {
+
+            goToMockQuestion(index);
+
+        };
+
+        container.appendChild(btn);
+
+    });
+}
+function goToMockQuestion(index) {
+
+    if (
+        index < 0 ||
+        index >= mockQuestions.length
+    ) {
+        return;
+    }
+
+    currentMockIdx = index;
+
+    renderMockQuestion();
 
 }
