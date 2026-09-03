@@ -18644,155 +18644,819 @@ window.addEventListener(
 //====================================================
 // MOCK TEST SYSTEM LOGIC
 //====================================================
+
 let mockQuestions = [];
 let currentMockIdx = 0;
 let mockTimerInterval = null;
 let mockTimeLeft = 45 * 60; // 45 Minutes
 
+// Stores selected answer/result for each question
+let mockAnswerState = {};
+
+// Stores currently selected mock paper
+let currentMockSheet = "";
+
+
+//====================================================
+// OPEN MOCK TEST SELECTION
+//====================================================
+
 function openMockTestModal() {
-    document.getElementById("loginPage")?.classList.add("hidden");
-    document.getElementById("mockTestModal")?.classList.remove("hidden");
+
+    const loginPage = document.getElementById("loginPage");
+    const mockModal = document.getElementById("mockTestModal");
+
+    if (loginPage) {
+        loginPage.classList.add("hidden");
+    }
+
+    if (mockModal) {
+        mockModal.classList.remove("hidden");
+
+        // In case CSS display:none is applied
+        mockModal.style.display = "flex";
+    }
 }
+
+
+//====================================================
+// CLOSE MOCK TEST SELECTION
+//====================================================
 
 function closeMockTestModal() {
-    document.getElementById("mockTestModal")?.classList.add("hidden");
-    document.getElementById("loginPage")?.classList.remove("hidden");
+
+    const mockModal = document.getElementById("mockTestModal");
+    const loginPage = document.getElementById("loginPage");
+
+    if (mockModal) {
+
+        mockModal.classList.add("hidden");
+        mockModal.style.display = "none";
+
+    }
+
+    if (loginPage) {
+        loginPage.classList.remove("hidden");
+    }
 }
+
+
+//====================================================
+// START MOCK TEST
+//====================================================
 
 function startMockTest(sheetName) {
-    document.getElementById("mockTestModal").classList.add("hidden");
-    document.getElementById("mockTestPage").classList.remove("hidden");
-    document.getElementById("mockTestTitle").innerText = sheetName.toUpperCase();
 
-    // Reset Engine
+    // Save selected paper
+    currentMockSheet = String(sheetName || "").trim();
+
+    // Hide selection modal
+    const mockModal = document.getElementById("mockTestModal");
+
+    if (mockModal) {
+
+        mockModal.classList.add("hidden");
+        mockModal.style.display = "none";
+
+    }
+
+    // Show mock test page
+    const mockPage = document.getElementById("mockTestPage");
+
+    if (mockPage) {
+        mockPage.classList.remove("hidden");
+    }
+
+    // Set title
+    const title = document.getElementById("mockTestTitle");
+
+    if (title) {
+
+        let titleText = currentMockSheet
+            .replace(/ mock test$/i, "")
+            .toUpperCase();
+
+        title.innerText = titleText + " MOCK TEST";
+
+    }
+
+    //================================================
+    // RESET MOCK TEST ENGINE
+    //================================================
+
+    clearInterval(mockTimerInterval);
+
+    mockQuestions = [];
     currentMockIdx = 0;
     mockTimeLeft = 45 * 60;
-    startMockTimer();
 
-    // Fetch Questions from Google Apps Script
-    fetch(SCRIPT_URL + "?action=getMockQuestions&sheetName=" + encodeURIComponent(sheetName))
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "SUCCESS") {
-                mockQuestions = data.questions;
-                renderMockQuestion();
-            } else {
-                alert("Questions load nahi ho paaye. Check Google Sheet tab name.");
-                exitMockTest();
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Network Error!");
+    // Reset answer states
+    mockAnswerState = {};
+
+    // Reset timer display
+    const timerElement = document.getElementById("mockTimer");
+
+    if (timerElement) {
+        timerElement.innerText = "⏱️ 45:00";
+    }
+
+    // Loading message
+    const questionArea = document.getElementById("mockQuestionArea");
+
+    if (questionArea) {
+
+        questionArea.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:30px;
+                font-size:17px;
+                color:#475569;
+            ">
+                Loading Questions...
+            </div>
+        `;
+
+    }
+
+    //================================================
+    // FETCH QUESTIONS FROM GOOGLE APPS SCRIPT
+    //================================================
+
+    fetch(
+        SCRIPT_URL +
+        "?action=getMockQuestions&sheetName=" +
+        encodeURIComponent(currentMockSheet)
+    )
+
+    .then(function(res) {
+
+        if (!res.ok) {
+            throw new Error("Server Error");
+        }
+
+        return res.json();
+
+    })
+
+    .then(function(data) {
+
+        if (
+            data &&
+            data.status === "SUCCESS" &&
+            Array.isArray(data.questions) &&
+            data.questions.length > 0
+        ) {
+
+            // Save questions
+            mockQuestions = data.questions;
+
+            // Reset index
+            currentMockIdx = 0;
+
+            // Render first question
+            renderMockQuestion();
+
+            //================================================
+            // START 45 MINUTE TIMER ONLY AFTER QUESTIONS LOAD
+            //================================================
+
+            startMockTimer();
+
+        }
+
+        else {
+
+            alert(
+                "Questions load nahi ho paaye.\n\n" +
+                "Please Google Sheet tab name check karein:\n" +
+                currentMockSheet
+            );
+
             exitMockTest();
-        });
+
+        }
+
+    })
+
+    .catch(function(error) {
+
+        console.error("Mock Test Error:", error);
+
+        alert(
+            "Mock Test load nahi ho paaya.\n\n" +
+            "Please internet connection aur Apps Script deployment check karein."
+        );
+
+        exitMockTest();
+
+    });
+
 }
+
+
+//====================================================
+// MOCK TEST TIMER
+//====================================================
 
 function startMockTimer() {
+
+    // Remove previous timer
     clearInterval(mockTimerInterval);
-    mockTimerInterval = setInterval(() => {
-        let mins = Math.floor(mockTimeLeft / 60);
-        let secs = mockTimeLeft % 60;
-        document.getElementById("mockTimer").innerText = 
-            `⏱️ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        
-        if (mockTimeLeft <= 0) {
-            clearInterval(mockTimerInterval);
-            alert("Time Completed!");
-            exitMockTest();
-        }
+
+    // Immediately show 45:00
+    updateMockTimerDisplay();
+
+    mockTimerInterval = setInterval(function() {
+
         mockTimeLeft--;
+
+        updateMockTimerDisplay();
+
+        // Time completed
+        if (mockTimeLeft <= 0) {
+
+            clearInterval(mockTimerInterval);
+
+            mockTimerInterval = null;
+
+            alert("Mock Test Time Completed!");
+
+            exitMockTest();
+
+        }
+
     }, 1000);
+
 }
 
+
+//====================================================
+// UPDATE TIMER DISPLAY
+//====================================================
+
+function updateMockTimerDisplay() {
+
+    const timerElement =
+        document.getElementById("mockTimer");
+
+    if (!timerElement) {
+        return;
+    }
+
+    let mins =
+        Math.floor(mockTimeLeft / 60);
+
+    let secs =
+        mockTimeLeft % 60;
+
+    timerElement.innerText =
+        `⏱️ ${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+}
+
+
+//====================================================
+// RENDER CURRENT QUESTION
+//====================================================
+
 function renderMockQuestion() {
-    if (mockQuestions.length === 0) return;
-    let q = mockQuestions[currentMockIdx];
-    
-    // Safety check for options array
-    let options = [q.opt1, q.opt2, q.opt3, q.opt4];
+
+    if (!mockQuestions || mockQuestions.length === 0) {
+        return;
+    }
+
+    const questionArea =
+        document.getElementById("mockQuestionArea");
+
+    if (!questionArea) {
+        return;
+    }
+
+    const q =
+        mockQuestions[currentMockIdx];
+
+    if (!q) {
+        return;
+    }
+
+    //================================================
+    // GET OPTIONS
+    //================================================
+
+    const options = [
+        q.opt1,
+        q.opt2,
+        q.opt3,
+        q.opt4
+    ];
+
+    // Correct answer
+    const correctAnswer =
+        String(q.correct || "").trim();
+
+    // Previously saved answer
+    const savedState =
+        mockAnswerState[currentMockIdx] || null;
+
+
+    //================================================
+    // QUESTION HTML
+    //================================================
 
     let html = `
-        <h3>Q${currentMockIdx + 1}. ${q.question}</h3>
+
+        <div style="
+            margin-bottom:20px;
+        ">
+
+            <div style="
+                font-size:18px;
+                font-weight:600;
+                line-height:1.6;
+                color:#1e293b;
+            ">
+
+                Q${currentMockIdx + 1}. ${escapeMockHTML(q.question)}
+
+            </div>
+
+        </div>
+
         <div id="optionsGroup">
     `;
 
-    options.forEach((optText, index) => {
-        // Pass exact option text to the checker
-        html += `<button class="mock-option-btn" onclick="checkMockAns(this, '${encodeURIComponent(optText)}', '${encodeURIComponent(q.correct)}')">${optText}</button>`;
+
+    //================================================
+    // OPTIONS
+    //================================================
+
+    options.forEach(function(optText, index) {
+
+        const option =
+            String(optText || "").trim();
+
+        if (option === "") {
+            return;
+        }
+
+        // Check saved state
+        let optionClass = "";
+        let disabledAttribute = "";
+
+        if (savedState) {
+
+            disabledAttribute = "disabled";
+
+            // Correct answer always green
+            if (
+                option.toLowerCase() ===
+                correctAnswer.toLowerCase()
+            ) {
+
+                optionClass = "correct-opt";
+
+            }
+
+            // Previously selected wrong answer red
+            if (
+                savedState.selected &&
+                option.toLowerCase() ===
+                savedState.selected.toLowerCase() &&
+                option.toLowerCase() !==
+                correctAnswer.toLowerCase()
+            ) {
+
+                optionClass = "wrong-opt";
+
+            }
+
+        }
+
+
+        html += `
+
+            <button
+                type="button"
+                class="mock-option-btn ${optionClass}"
+                ${disabledAttribute}
+                data-option-index="${index}"
+                onclick="checkMockAns(this)"
+            >
+                ${escapeMockHTML(option)}
+            </button>
+
+        `;
+
     });
 
+
     html += `
+
         </div>
-        <div id="ansExplanation" class="correct-ans-box hidden"></div>
-    `;
-    
-    document.getElementById("mockQuestionArea").innerHTML = html;
-}
 
-function checkMockAns(btnElement, selectedOptEncoded, correctOptEncoded) {
-    let selectedOpt = decodeURIComponent(selectedOptEncoded).trim();
-    let correctOpt = decodeURIComponent(correctOptEncoded).trim();
-
-    let parent = document.getElementById("optionsGroup");
-    let allBtns = Array.from(parent.getElementsByTagName("button"));
-    
-    // Disable all option buttons once an option is selected
-    allBtns.forEach(btn => btn.disabled = true);
-
-    // Case-insensitive & Whitespace-trimmed text comparison
-    if (selectedOpt.toLowerCase() === correctOpt.toLowerCase()) {
-        btnElement.classList.add("correct-opt");
-    } else {
-        btnElement.classList.add("wrong-opt");
-        
-        // Find and highlight the button that contains the correct answer text
-        allBtns.forEach(btn => {
-            if (btn.innerText.trim().toLowerCase() === correctOpt.toLowerCase()) {
-                btn.classList.add("correct-opt");
+        <div
+            id="ansExplanation"
+            class="correct-ans-box ${savedState ? "" : "hidden"}"
+        >
+            ${
+                savedState
+                ? `✅ Correct Answer:
+                   <strong>${escapeMockHTML(correctAnswer)}</strong>`
+                : ""
             }
-        });
+        </div>
+
+    `;
+
+
+    // Put HTML into question area
+    questionArea.innerHTML = html;
+
+
+    //================================================
+    // UPDATE PREVIOUS / NEXT BUTTONS
+    //================================================
+
+    const prevBtn =
+        document.getElementById("mockPrevBtn");
+
+    const nextBtn =
+        document.getElementById("mockNextBtn");
+
+
+    if (prevBtn) {
+
+        prevBtn.disabled =
+            currentMockIdx === 0;
+
     }
 
-    // Display correct answer text below options
-    let expBox = document.getElementById("ansExplanation");
-    expBox.innerHTML = `✅ Correct Answer: <strong>${correctOpt}</strong>`;
-    expBox.classList.remove("hidden");
+
+    if (nextBtn) {
+
+        if (
+            currentMockIdx ===
+            mockQuestions.length - 1
+        ) {
+
+            nextBtn.innerText = "Finish";
+
+        }
+
+        else {
+
+            nextBtn.innerText = "Next";
+
+        }
+
+    }
+
 }
+
+
+//====================================================
+// CHECK MOCK ANSWER
+//====================================================
+
+function checkMockAns(btnElement) {
+
+    if (!btnElement) {
+        return;
+    }
+
+    if (!mockQuestions[currentMockIdx]) {
+        return;
+    }
+
+
+    // Already answered
+    if (
+        mockAnswerState[currentMockIdx]
+    ) {
+
+        return;
+
+    }
+
+
+    const q =
+        mockQuestions[currentMockIdx];
+
+
+    // Selected option
+    const selectedOpt =
+        String(
+            btnElement.innerText || ""
+        ).trim();
+
+
+    // Correct option
+    const correctOpt =
+        String(
+            q.correct || ""
+        ).trim();
+
+
+    // All option buttons
+    const parent =
+        document.getElementById("optionsGroup");
+
+
+    if (!parent) {
+        return;
+    }
+
+
+    const allBtns =
+        Array.from(
+            parent.querySelectorAll(
+                ".mock-option-btn"
+            )
+        );
+
+
+    //================================================
+    // SAVE ANSWER STATE
+    //================================================
+
+    const isCorrect =
+        selectedOpt.toLowerCase() ===
+        correctOpt.toLowerCase();
+
+
+    mockAnswerState[currentMockIdx] = {
+
+        selected: selectedOpt,
+
+        correct: correctOpt,
+
+        isCorrect: isCorrect
+
+    };
+
+
+    //================================================
+    // DISABLE ALL OPTIONS
+    //================================================
+
+    allBtns.forEach(function(btn) {
+
+        btn.disabled = true;
+
+    });
+
+
+    //================================================
+    // CORRECT / WRONG COLOR
+    //================================================
+
+    if (isCorrect) {
+
+        // Selected correct answer = GREEN
+        btnElement.classList.add(
+            "correct-opt"
+        );
+
+    }
+
+    else {
+
+        // Selected wrong answer = RED
+        btnElement.classList.add(
+            "wrong-opt"
+        );
+
+
+        // Find correct answer and make GREEN
+        allBtns.forEach(function(btn) {
+
+            const btnText =
+                String(
+                    btn.innerText || ""
+                ).trim();
+
+
+            if (
+                btnText.toLowerCase() ===
+                correctOpt.toLowerCase()
+            ) {
+
+                btn.classList.add(
+                    "correct-opt"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    //================================================
+    // SHOW CORRECT ANSWER BELOW OPTIONS
+    //================================================
+
+    const expBox =
+        document.getElementById(
+            "ansExplanation"
+        );
+
+
+    if (expBox) {
+
+        expBox.innerHTML = `
+            ✅ Correct Answer:
+            <strong>
+                ${escapeMockHTML(correctOpt)}
+            </strong>
+        `;
+
+        expBox.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+//====================================================
+// NEXT MOCK QUESTION
+//====================================================
 
 function nextMockQuestion() {
-    if (currentMockIdx < mockQuestions.length - 1) {
-        currentMockIdx++;
-        renderMockQuestion();
+
+    if (!mockQuestions.length) {
+        return;
     }
+
+
+    //================================================
+    // IF LAST QUESTION
+    //================================================
+
+    if (
+        currentMockIdx >=
+        mockQuestions.length - 1
+    ) {
+
+        // Finish mock test
+        clearInterval(mockTimerInterval);
+
+        mockTimerInterval = null;
+
+        alert(
+            "Mock Test Completed!"
+        );
+
+        exitMockTest();
+
+        return;
+
+    }
+
+
+    // Move to next question
+    currentMockIdx++;
+
+    renderMockQuestion();
+
 }
+
+
+//====================================================
+// PREVIOUS MOCK QUESTION
+//====================================================
 
 function prevMockQuestion() {
-    if (currentMockIdx > 0) {
-        currentMockIdx--;
-        renderMockQuestion();
+
+    if (!mockQuestions.length) {
+        return;
     }
+
+
+    if (currentMockIdx > 0) {
+
+        currentMockIdx--;
+
+        renderMockQuestion();
+
+    }
+
 }
+
+
+//====================================================
+// EXIT MOCK TEST
+//====================================================
 
 function exitMockTest() {
-    clearInterval(mockTimerInterval);
-    document.getElementById("mockTestPage").classList.add("hidden");
-    document.getElementById("loginPage").classList.remove("hidden");
-}
-function submitMockTest() {
-    try {
-        // 1. Hide Mock Test Container
-        const testContainer = document.getElementById('mockTestSection');
-        if (testContainer) testContainer.classList.add('hidden');
 
-        // 2. Show Result Container
-        const resultContainer = document.getElementById('resultSection'); // Verify this ID in your HTML
-        if (resultContainer) {
-            resultContainer.classList.remove('hidden');
-        } else {
-            console.error("Result Section ID not found in HTML!");
-        }
-    } catch (error) {
-        console.error("Error during submission:", error);
+    // Stop timer
+    clearInterval(mockTimerInterval);
+
+    mockTimerInterval = null;
+
+
+    // Reset timer
+    mockTimeLeft = 45 * 60;
+
+
+    // Hide mock page
+    const mockPage =
+        document.getElementById(
+            "mockTestPage"
+        );
+
+    if (mockPage) {
+
+        mockPage.classList.add(
+            "hidden"
+        );
+
     }
+
+
+    // Hide modal also
+    const mockModal =
+        document.getElementById(
+            "mockTestModal"
+        );
+
+    if (mockModal) {
+
+        mockModal.classList.add(
+            "hidden"
+        );
+
+        mockModal.style.display =
+            "none";
+
+    }
+
+
+    // Show login page
+    const loginPage =
+        document.getElementById(
+            "loginPage"
+        );
+
+    if (loginPage) {
+
+        loginPage.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // Clear mock data
+    mockQuestions = [];
+
+    currentMockIdx = 0;
+
+    mockAnswerState = {};
+
+    currentMockSheet = "";
+
+}
+
+
+//====================================================
+// MOCK TEST HTML ESCAPE
+// Prevents special characters in questions/options
+// from breaking the page.
+//====================================================
+
+function escapeMockHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+//====================================================
+// MOCK TEST SUBMIT
+//====================================================
+// Kept separate from the existing result system.
+// Mock Test does NOT create official result,
+// DMC, marksheet or Sheet2 response.
+
+function submitMockTest() {
+
+    clearInterval(mockTimerInterval);
+
+    mockTimerInterval = null;
+
+    alert(
+        "Mock Test Completed!"
+    );
+
+    exitMockTest();
+
 }
