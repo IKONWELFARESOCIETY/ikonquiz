@@ -9150,26 +9150,67 @@ function fileToBase64(file){
     });
 
 }
+//====================================================
+// OPEN THEORY PAPER PAGE
+//====================================================
+
 function openTheoryPaperPage(){
 
-    document
-    .getElementById("examTypePage")
-    ?.classList.add("hidden");
+    const examTypePage =
+        document.getElementById("examTypePage");
 
-    document
-    .getElementById("theoryPaperPage")
-    ?.classList.remove("hidden");
+    const theoryPaperPage =
+        document.getElementById("theoryPaperPage");
+
+
+    //================================================
+    // HIDE EXAM TYPE PAGE
+    //================================================
+
+    if(examTypePage){
+
+        examTypePage.classList.add("hidden");
+
+        examTypePage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+
+    //================================================
+    // SHOW THEORY PAPER PAGE
+    //================================================
+
+    if(theoryPaperPage){
+
+        theoryPaperPage.classList.remove("hidden");
+
+        // VERY IMPORTANT
+        // Remove old inline display:none
+        theoryPaperPage.style.removeProperty("display");
+    }
+
+
+    //================================================
+    // LOAD THEORY PAPERS
+    //================================================
 
     const select =
-    document.getElementById("theoryPaperSelect");
+        document.getElementById("theoryPaperSelect");
+
+    if(!select) return;
+
 
     select.innerHTML =
-    "<option value=''>-- Select Theory Paper --</option>";
+        "<option value=''>-- Select Theory Paper --</option>";
+
 
     theoryPapers.forEach(function(p){
 
         const option =
-        document.createElement("option");
+            document.createElement("option");
 
         option.value = p;
 
@@ -9179,7 +9220,21 @@ function openTheoryPaperPage(){
 
     });
 
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
+//====================================================
+// OPEN PRACTICAL PAPER PAGE
+//====================================================
+
 function openPracticalPaperPage(){
 
     fetch(
@@ -9187,52 +9242,131 @@ function openPracticalPaperPage(){
         "?action=practicalStatus"
     )
 
-    .then(res=>res.json())
+    .then(res => res.json())
 
     .then(function(data){
 
+        //============================================
+        // CHECK PRACTICAL STATUS
+        //============================================
+
         if(
             data.status &&
-            data.status.toUpperCase()=="OFF"
+            data.status.toUpperCase() == "OFF"
         ){
 
             alert(data.message);
-
             return;
 
         }
 
-        document
-        .getElementById("examTypePage")
-        ?.classList.add("hidden");
 
-        document
-        .getElementById("practicalPaperPage")
-        ?.classList.remove("hidden");
+        //============================================
+        // GET PAGES
+        //============================================
+
+        const examTypePage =
+            document.getElementById("examTypePage");
+
+        const practicalPaperPage =
+            document.getElementById("practicalPaperPage");
+
+
+        //============================================
+        // HIDE EXAM TYPE PAGE
+        //============================================
+
+        if(examTypePage){
+
+            examTypePage.classList.add("hidden");
+
+            examTypePage.style.setProperty(
+                "display",
+                "none",
+                "important"
+            );
+
+        }
+
+
+        //============================================
+        // SHOW PRACTICAL PAPER PAGE
+        //============================================
+
+        if(practicalPaperPage){
+
+            practicalPaperPage.classList.remove("hidden");
+
+            // IMPORTANT
+            // Remove previous display:none
+            practicalPaperPage.style.removeProperty(
+                "display"
+            );
+
+        }
+
+
+        //============================================
+        // LOAD PRACTICAL PAPERS
+        //============================================
 
         const select =
-        document.getElementById("practicalPaperSelect");
+            document.getElementById(
+                "practicalPaperSelect"
+            );
+
+        if(!select) return;
+
 
         select.innerHTML =
-        "<option value=''>-- Select Practical Paper --</option>";
+            "<option value=''>-- Select Practical Paper --</option>";
 
-        practicalPapers.forEach(function(p){
 
-            const option =
-            document.createElement("option");
+        //============================================
+        // ADD PRACTICAL PAPERS
+        //============================================
 
-            option.value = p;
+        if(
+            Array.isArray(practicalPapers)
+        ){
 
-            option.textContent = p;
+            practicalPapers.forEach(function(p){
 
-            select.appendChild(option);
+                const option =
+                    document.createElement("option");
+
+                option.value = p;
+
+                option.textContent = p;
+
+                select.appendChild(option);
+
+            });
+
+        }
+
+
+        //============================================
+        // SCROLL TOP
+        //============================================
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
 
     })
 
-    .catch(function(){
+    .catch(function(error){
 
-        alert("Unable to check Practical Status.");
+        console.error(
+            "Practical page error:",
+            error
+        );
+
+        alert(
+            "Unable to load practical examination."
+        );
 
     });
 
