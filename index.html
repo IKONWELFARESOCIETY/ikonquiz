@@ -147,6 +147,43 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     Download Hall Ticket
 
 </button>
+          <button
+    id="mockTestBtn"
+    class="secondary"
+    onclick="openMockTestModal()">
+    Mock Test
+</button>
+
+<div id="mockTestModal" class="hidden">
+    <div class="result-box">
+        <h2>📝 Select Mock Test</h2>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+            <button class="primary" onclick="startMockTest('dca mock test')">DCA Mock Test</button>
+            <button class="primary" onclick="startMockTest('ca mock test')">CA Mock Test</button>
+            <button class="primary" onclick="startMockTest('dam mock test')">DAM Mock Test</button>
+            <button class="primary" onclick="startMockTest('c lang mock test')">C Lang Mock Test</button>
+            <button class="primary" onclick="startMockTest('html mock test')">HTML Mock Test</button>
+        </div>
+        <br>
+        <button type="button" class="secondary" onclick="closeMockTestModal()">← Back to Login</button>
+    </div>
+</div>
+
+<div id="mockTestPage" class="hidden" style="padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 15px; border-radius: 8px;">
+        <h3 id="mockTestTitle" style="margin:0;">Mock Test</h3>
+        <div id="mockTimer" style="font-size: 20px; font-weight: bold; color: #f59e0b;">⏱️ 45:00</div>
+    </div>
+
+    <div id="mockQuestionArea" style="margin-top: 20px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+        </div>
+
+    <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+        <button id="mockPrevBtn" class="secondary" onclick="prevMockQuestion()">Previous</button>
+        <button id="mockNextBtn" class="primary" onclick="nextMockQuestion()">Next</button>
+        <button class="secondary" style="background:#dc2626; color:white;" onclick="exitMockTest()">Exit Test</button>
+    </div>
+</div>
     </div>
 
 
