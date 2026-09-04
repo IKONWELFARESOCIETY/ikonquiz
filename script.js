@@ -20211,7 +20211,19 @@ function submitMockTest() {
             "none";
 
     }
+//================================================
+// HIDE QUESTION PALETTE
+//================================================
 
+const mockPalette =
+    document.getElementById("mockQuestionPalette");
+
+if (mockPalette) {
+
+    mockPalette.style.display =
+        "none";
+
+}
 }
 
 function buildMockPalette() {
