@@ -19949,23 +19949,6 @@ function escapeMockHTML(value) {
 
 }
 
-
-//====================================================
-// MOCK TEST SUBMIT
-//====================================================
-// Kept separate from the existing result system.
-// Mock Test does NOT create official result,
-// DMC, marksheet or Sheet2 response.
-
-```javascript
-//====================================================
-// MOCK TEST SUBMIT
-//====================================================
-// Mock Test ka result sirf attempted questions
-// ke basis par calculate hoga.
-// Official Result / DMC / Sheet2 par koi effect nahi.
-//====================================================
-
 function submitMockTest() {
 
     //================================================
