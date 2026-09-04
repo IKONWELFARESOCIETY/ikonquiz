@@ -20199,10 +20199,10 @@ function submitMockTest() {
     // HIDE NAVIGATION
     //================================================
 
-    const navigationArea =
-        document.querySelector(
-            "#mockTestPage > div:last-child"
-        );
+   const navigationArea =
+    document.querySelector(
+        ".mock-test-navigation"
+    );
 
 
     if (navigationArea) {
