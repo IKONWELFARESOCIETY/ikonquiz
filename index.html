@@ -273,11 +273,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 
         <div class="mock-test-timer-box">
-
-            <span>
-                ⏱️
-            </span>
-
             <span id="mockTimer">
                 45:00
             </span>
@@ -285,7 +280,46 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         </div>
 
     </div>
+<!-- ==================================================
+                MOCK TEST NAVIGATION
+================================================== -->
 
+<div class="mock-test-navigation">
+
+    <button
+        type="button"
+        id="mockPrevBtn"
+        class="secondary"
+        onclick="prevMockQuestion()">
+        ← Previous
+    </button>
+
+    <button
+        type="button"
+        id="mockNextBtn"
+        class="primary"
+        onclick="nextMockQuestion()">
+        Next →
+    </button>
+
+    <button
+        type="button"
+        id="mockSubmitBtn"
+        class="primary"
+        onclick="submitMockTest()">
+        ✓ Submit Test
+    </button>
+        <button
+            type="button"
+            class="mock-exit-btn"
+            onclick="exitMockTest()">
+
+            ✕ Exit Test
+
+        </button>
+
+
+</div>
 
 
     <!-- ==================================================
@@ -345,49 +379,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         </div>
 
     </div>
-
-
-
-    <!-- ==================================================
-                    MOCK TEST NAVIGATION
-    ================================================== -->
-
-    <div class="mock-test-navigation">
-
-        <button
-            type="button"
-            id="mockPrevBtn"
-            class="secondary"
-            onclick="prevMockQuestion()">
-
-            ← Previous
-
-        </button>
-
-
-        <button
-            type="button"
-            id="mockNextBtn"
-            class="primary"
-            onclick="nextMockQuestion()">
-
-            Next →
-
-        </button>
-<!-- ================= SUBMIT MOCK TEST ================= -->
-          <button type="button" id="mockSubmitBtn" class="primary" onclick="submitMockTest()"> ✓ Submit Test </button>
-
-        <button
-            type="button"
-            class="mock-exit-btn"
-            onclick="exitMockTest()">
-
-            ✕ Exit Test
-
-        </button>
-
-    </div>
-
 </div>
 
 <!-- ==================================================
