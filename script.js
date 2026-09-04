@@ -19957,7 +19957,58 @@ function escapeMockHTML(value) {
 // Mock Test does NOT create official result,
 // DMC, marksheet or Sheet2 response.
 
+```javascript
+//====================================================
+// MOCK TEST SUBMIT
+//====================================================
+// Mock Test ka result sirf attempted questions
+// ke basis par calculate hoga.
+// Official Result / DMC / Sheet2 par koi effect nahi.
+//====================================================
+
 function submitMockTest() {
+
+    //================================================
+    // CONFIRM SUBMIT
+    //================================================
+
+    const attemptedBeforeSubmit =
+        Object.keys(mockAnswerState).filter(function(index) {
+
+            return (
+                mockAnswerState[index] &&
+                mockAnswerState[index].selected
+            );
+
+        }).length;
+
+
+    if (attemptedBeforeSubmit === 0) {
+
+        alert(
+            "Please attempt at least one question before submitting the Mock Test."
+        );
+
+        return;
+    }
+
+
+    const confirmSubmit =
+        confirm(
+            "Are you sure you want to submit the Mock Test?\n\n" +
+            "Attempted Questions: " +
+            attemptedBeforeSubmit
+        );
+
+
+    if (!confirmSubmit) {
+        return;
+    }
+
+
+    //================================================
+    // STOP TIMER
+    //================================================
 
     clearInterval(mockTimerInterval);
 
@@ -19985,7 +20036,10 @@ function submitMockTest() {
             mockAnswerState[index];
 
 
-        if (!answer) {
+        if (
+            !answer ||
+            !answer.selected
+        ) {
             return;
         }
 
@@ -19993,12 +20047,13 @@ function submitMockTest() {
         attempted++;
 
 
-        if (answer.isCorrect === true) {
+        if (
+            answer.isCorrect === true
+        ) {
 
             right++;
 
         }
-
         else {
 
             wrong++;
@@ -20012,9 +20067,15 @@ function submitMockTest() {
         total - attempted;
 
 
+    //================================================
+    // PERCENTAGE
+    // IMPORTANT:
+    // Percentage = Correct / Attempted
+    //================================================
+
     const percentage =
-        total > 0
-            ? ((right / total) * 100).toFixed(2)
+        attempted > 0
+            ? ((right / attempted) * 100).toFixed(2)
             : "0.00";
 
 
@@ -20044,8 +20105,7 @@ function submitMockTest() {
 
             <div class="mock-result-grid">
 
-
-                <!-- TOTAL -->
+                <!-- TOTAL QUESTIONS -->
 
                 <div class="mock-result-card">
 
@@ -20060,7 +20120,22 @@ function submitMockTest() {
                 </div>
 
 
-                <!-- RIGHT -->
+                <!-- ATTEMPTED -->
+
+                <div class="mock-result-card">
+
+                    <span class="mock-result-number">
+                        ${attempted}
+                    </span>
+
+                    <span class="mock-result-label">
+                        Attempted
+                    </span>
+
+                </div>
+
+
+                <!-- CORRECT -->
 
                 <div class="mock-result-card right">
 
@@ -20104,14 +20179,15 @@ function submitMockTest() {
 
                 </div>
 
-
             </div>
 
+
+            <!-- SCORE -->
 
             <div class="mock-result-score">
 
                 Score:
-                ${right} / ${total}
+                ${right} / ${attempted}
 
                 &nbsp; | &nbsp;
 
@@ -20137,7 +20213,7 @@ function submitMockTest() {
 
 
     //================================================
-    // HIDE PREVIOUS / NEXT / EXIT BUTTON AREA
+    // HIDE NAVIGATION
     //================================================
 
     const navigationArea =
@@ -20154,6 +20230,8 @@ function submitMockTest() {
     }
 
 }
+```
+
 function buildMockPalette() {
 
     const container =
