@@ -20213,7 +20213,6 @@ function submitMockTest() {
     }
 
 }
-```
 
 function buildMockPalette() {
 
