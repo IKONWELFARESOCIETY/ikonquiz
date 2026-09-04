@@ -17280,21 +17280,111 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
    15. MOCK NAVIGATION
 ========================================================= */
 
-#mockTestPage > div:last-child {
+/* =========================================================
+   MOCK TEST NAVIGATION
+   STICKY TOP NAVIGATION
+========================================================= */
 
+.mock-test-navigation {
     width: 100%;
-
-    margin-top: 20px;
+    margin-top: 12px;
+    margin-bottom: 14px;
 
     display: flex;
-
     align-items: center;
+    justify-content: center;
 
-    justify-content: space-between;
+    gap: 12px;
 
-    gap: 10px;
+    position: sticky;
+    top: 0;
 
-    flex-wrap: wrap;
+    z-index: 1000;
+
+    padding: 10px 12px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.10);
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* THREE BUTTONS */
+
+#mockPrevBtn,
+#mockNextBtn,
+#mockSubmitBtn {
+
+    min-width: 125px;
+    min-height: 44px;
+
+    padding: 10px 18px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+
+/* DISABLED PREVIOUS */
+
+#mockPrevBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* HOVER */
+
+#mockPrevBtn:not(:disabled):hover,
+#mockNextBtn:hover,
+#mockSubmitBtn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .mock-test-navigation {
+
+        gap: 7px;
+
+        padding: 8px;
+
+        margin-top: 8px;
+        margin-bottom: 10px;
+    }
+
+
+    #mockPrevBtn,
+    #mockNextBtn,
+    #mockSubmitBtn {
+
+        min-width: 0;
+
+        flex: 1;
+
+        min-height: 42px;
+
+        padding: 9px 8px;
+
+        font-size: 12px;
+    }
 
 }
 
