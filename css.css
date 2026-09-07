@@ -18310,3 +18310,82 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =========================================================
+   IKON LOGO + TAGLINE
+   Logo size unchanged
+   ========================================================= */
+
+.header-left{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Existing logo size bilkul same rahega */
+.header-left .logo{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* Tagline directly below logo */
+.header-left::after{
+    content:"IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...";
+
+    display:block;
+
+    margin-top:7px;
+    padding-top:7px;
+
+    border-top:3px solid transparent;
+    border-image:
+        linear-gradient(
+            90deg,
+            transparent,
+            #1769aa,
+            transparent
+        ) 1;
+
+    text-align:center;
+
+    color:#174b82;
+
+    font-family:
+        "Noto Sans Devanagari",
+        "Nirmala UI",
+        "Mangal",
+        sans-serif;
+
+    font-size:14px;
+    font-weight:700;
+
+    line-height:1.4;
+    letter-spacing:.1px;
+
+    white-space:nowrap;
+
+    text-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:600px){
+
+    .header-left::after{
+        font-size:11.5px;
+        line-height:1.35;
+
+        white-space:normal;
+
+        max-width:300px;
+
+        margin-top:5px;
+        padding-top:5px;
+
+        border-top-width:2px;
+    }
+}
