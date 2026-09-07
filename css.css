@@ -17786,3 +17786,633 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =========================================================
+   IKON LOGIN PAGE - PROFESSIONAL FINAL DESIGN
+   Only Login Page
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   LOGIN PAGE BACKGROUND
+   --------------------------------------------------------- */
+
+#loginPage{
+    position:relative;
+    width:100%;
+    min-height:calc(100vh - 220px);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:45px 20px 60px;
+
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            rgba(0,91,234,.07),
+            transparent 35%
+        );
+}
+
+
+/* ---------------------------------------------------------
+   LOGIN CARD
+   --------------------------------------------------------- */
+
+#loginPage .login-box{
+
+    width:100%;
+    max-width:430px;
+
+    padding:40px 38px 34px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f8fbff 100%
+        );
+
+    border:1px solid rgba(0,91,234,.12);
+
+    border-radius:24px;
+
+    box-shadow:
+        0 25px 60px rgba(15,23,42,.12),
+        0 8px 25px rgba(0,91,234,.08);
+
+    position:relative;
+
+    overflow:hidden;
+
+    animation:
+        loginProfessionalShow .55s
+        cubic-bezier(.22,1,.36,1);
+
+}
+
+
+/* TOP BLUE LINE */
+
+#loginPage .login-box::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0645b8,
+            #087cff,
+            #36a5ff
+        );
+
+}
+
+
+/* ---------------------------------------------------------
+   LOGIN TITLE
+   --------------------------------------------------------- */
+
+#loginPage .login-box h2{
+
+    margin:4px 0 30px;
+
+    text-align:center;
+
+    color:#064db8;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    letter-spacing:.2px;
+
+    line-height:1.2;
+
+}
+
+
+/* Small line below title */
+
+#loginPage .login-box h2::after{
+
+    content:"";
+
+    display:block;
+
+    width:48px;
+    height:3px;
+
+    margin:12px auto 0;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #005bea,
+            #35a8ff
+        );
+
+}
+
+
+/* ---------------------------------------------------------
+   LABELS
+   --------------------------------------------------------- */
+
+#loginPage .login-box label{
+
+    display:block;
+
+    margin:0 0 8px;
+
+    color:#26364a;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    letter-spacing:.2px;
+
+}
+
+
+/* ---------------------------------------------------------
+   INPUTS
+   --------------------------------------------------------- */
+
+#loginPage .login-box input,
+#loginPage .login-box select{
+
+    width:100%;
+
+    height:50px;
+
+    padding:0 15px;
+
+    margin-bottom:19px;
+
+    box-sizing:border-box;
+
+    border:1.5px solid #d9e3f0;
+
+    border-radius:11px;
+
+    outline:none;
+
+    background:#ffffff;
+
+    color:#1e293b;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease,
+        transform .25s ease;
+
+}
+
+
+/* INPUT HOVER */
+
+#loginPage .login-box input:hover,
+#loginPage .login-box select:hover{
+
+    border-color:#a9c8f5;
+
+}
+
+
+/* INPUT FOCUS */
+
+#loginPage .login-box input:focus,
+#loginPage .login-box select:focus{
+
+    border-color:#087cff;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(8,124,255,.09),
+        0 6px 16px rgba(8,124,255,.08);
+
+    transform:translateY(-1px);
+
+}
+
+
+/* PLACEHOLDER */
+
+#loginPage .login-box input::placeholder{
+
+    color:#9aabc0;
+
+    font-size:13px;
+
+}
+
+
+/* ---------------------------------------------------------
+   ALL LOGIN PAGE BUTTONS
+   --------------------------------------------------------- */
+
+#loginPage .login-box button{
+
+    width:100%;
+
+    min-height:48px;
+
+    margin-top:8px;
+
+    padding:12px 18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:800;
+
+    letter-spacing:.15px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        filter .22s ease;
+
+}
+
+
+/* BUTTON HOVER */
+
+#loginPage .login-box button:hover{
+
+    transform:translateY(-2px);
+
+    filter:brightness(1.03);
+
+}
+
+
+/* BUTTON CLICK */
+
+#loginPage .login-box button:active{
+
+    transform:translateY(0) scale(.985);
+
+}
+
+
+/* ---------------------------------------------------------
+   LOGIN BUTTON
+   --------------------------------------------------------- */
+
+#loginPage .login-box .primary{
+
+    background:
+        linear-gradient(
+            135deg,
+            #005bea,
+            #087cff
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 10px 22px rgba(0,91,234,.24);
+
+}
+
+
+#loginPage .login-box .primary:hover{
+
+    box-shadow:
+        0 14px 28px rgba(0,91,234,.32);
+
+}
+
+
+/* ---------------------------------------------------------
+   VIEW RESULT
+   --------------------------------------------------------- */
+
+#loginPage .login-box #resultBtn{
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ca548,
+            #20c963
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 9px 20px rgba(16,163,74,.20);
+
+}
+
+
+#loginPage .login-box #resultBtn:hover{
+
+    box-shadow:
+        0 13px 27px rgba(16,163,74,.28);
+
+}
+
+
+/* ---------------------------------------------------------
+   HALL TICKET BUTTON
+   --------------------------------------------------------- */
+
+#loginPage .login-box #hallTicketBtn{
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffdf7,
+            #fffaf0
+        );
+
+    color:#244263;
+
+    border:1px solid #d7b45c;
+
+    box-shadow:
+        0 7px 16px rgba(116,85,25,.10);
+
+}
+
+
+#loginPage .login-box #hallTicketBtn:hover{
+
+    background:#fffdf7;
+
+    border-color:#b99132;
+
+    box-shadow:
+        0 11px 23px rgba(116,85,25,.17);
+
+}
+
+
+/* ---------------------------------------------------------
+   MOCK TEST
+   --------------------------------------------------------- */
+
+#loginPage .login-box .secondary{
+
+    background:
+        linear-gradient(
+            135deg,
+            #52657e,
+            #34465d
+        );
+
+    color:#ffffff;
+
+    box-shadow:
+        0 9px 19px rgba(51,65,85,.18);
+
+}
+
+
+#loginPage .login-box .secondary:hover{
+
+    box-shadow:
+        0 13px 26px rgba(51,65,85,.26);
+
+}
+
+
+/* ---------------------------------------------------------
+   IKON LOGO - SIZE UNCHANGED
+   --------------------------------------------------------- */
+
+/*
+   Existing logo width remains untouched.
+   Only presentation is improved.
+*/
+
+.header-left .logo{
+
+    object-fit:contain;
+
+    filter:
+        drop-shadow(
+            0 5px 12px
+            rgba(0,60,150,.13)
+        );
+
+    transition:
+        transform .3s ease,
+        filter .3s ease;
+
+}
+
+
+.header-left .logo:hover{
+
+    transform:translateY(-2px);
+
+    filter:
+        drop-shadow(
+            0 8px 16px
+            rgba(0,60,150,.18)
+        );
+
+}
+
+
+/* ---------------------------------------------------------
+   IKON TAGLINE
+   Appears below the IKON logo
+   --------------------------------------------------------- */
+
+#loginPage .header-left{
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+#loginPage .header-left::after{
+
+    content:
+        "IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...";
+
+    display:block;
+
+    width:100%;
+
+    text-align:center;
+
+    color:#31506f;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    letter-spacing:.2px;
+
+    line-height:1.5;
+
+    margin-top:-2px;
+
+}
+
+
+/* ---------------------------------------------------------
+   PROFESSIONAL LOGIN ANIMATION
+   --------------------------------------------------------- */
+
+@keyframes loginProfessionalShow{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(22px)
+            scale(.98);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width:600px){
+
+    #loginPage{
+
+        min-height:calc(100vh - 160px);
+
+        padding:
+            30px 15px 45px;
+
+        align-items:center;
+
+    }
+
+
+    #loginPage .login-box{
+
+        max-width:430px;
+
+        padding:
+            34px 24px 28px;
+
+        border-radius:20px;
+
+    }
+
+
+    #loginPage .login-box h2{
+
+        font-size:25px;
+
+        margin-bottom:27px;
+
+    }
+
+
+    #loginPage .login-box input,
+    #loginPage .login-box select{
+
+        height:48px;
+
+        font-size:14px;
+
+    }
+
+
+    #loginPage .login-box button{
+
+        min-height:47px;
+
+        font-size:13px;
+
+    }
+
+
+    #loginPage .header-left::after{
+
+        font-size:12px;
+
+        padding:0 10px;
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   VERY SMALL MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width:380px){
+
+    #loginPage{
+
+        padding-left:10px;
+        padding-right:10px;
+
+    }
+
+
+    #loginPage .login-box{
+
+        padding:
+            30px 20px 25px;
+
+    }
+
+
+    #loginPage .login-box h2{
+
+        font-size:23px;
+
+    }
+
+
+    #loginPage .header-left::after{
+
+        font-size:11px;
+
+    }
+
+}
