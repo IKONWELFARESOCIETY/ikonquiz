@@ -4629,9 +4629,30 @@ window.addEventListener(
 
 function openResultVerifyPage(){
 
-    document.getElementById("loginPage").classList.add("hidden");
+    // Hide Login Page
+    const loginPage = document.getElementById("loginPage");
 
-    document.getElementById("resultVerifyPage").classList.remove("hidden");
+    if(loginPage){
+        loginPage.classList.add("hidden");
+        loginPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+    }
+
+    // Show Result Verification Page
+    const resultVerifyPage =
+        document.getElementById("resultVerifyPage");
+
+    if(resultVerifyPage){
+        resultVerifyPage.classList.remove("hidden");
+        resultVerifyPage.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+    }
 
 }
 
