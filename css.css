@@ -18628,9 +18628,8 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 }
 /* =========================================================
-   IKON PROFESSIONAL INSTITUTE HEADER
-   Current HTML ke according
-   Logo size unchanged
+   IKON HEADER - FINAL PROFESSIONAL OVERRIDE
+   Paste at VERY END of CSS
    ========================================================= */
 
 
@@ -18638,245 +18637,274 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
    MAIN HEADER
    ========================================================= */
 
-.top-header{
-    position:relative;
+.header{
+    position:relative !important;
 
-    display:grid;
-    grid-template-columns:1fr auto 1fr;
+    width:100% !important;
 
-    align-items:center;
+    display:flex !important;
+    flex-direction:column !important;
 
-    min-height:300px;
+    justify-content:center !important;
+    align-items:center !important;
 
-    padding:30px 34px 28px;
+    text-align:center !important;
+
+    padding:32px 30px 34px !important;
+
+    min-height:310px !important;
+
+    color:#ffffff !important;
+
+    overflow:hidden !important;
 
     background:
         radial-gradient(
-            circle at 50% 20%,
-            rgba(255,255,255,.12),
-            transparent 42%
+            circle at 50% 0%,
+            rgba(255,255,255,.16),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 10% 80%,
+            rgba(255,255,255,.08),
+            transparent 25%
         ),
         linear-gradient(
             135deg,
-            #124b91 0%,
-            #075dcc 48%,
-            #1685f5 100%
-        );
+            #073b82 0%,
+            #005bea 48%,
+            #1684f5 100%
+        ) !important;
 
-    border-radius:24px 24px 0 0;
+    border-radius:28px 28px 0 0 !important;
+}
 
-    overflow:hidden;
+
+/* Soft background glow */
+
+.header::after{
+    content:"" !important;
+
+    position:absolute !important;
+
+    width:500px !important;
+    height:500px !important;
+
+    top:-390px !important;
+    left:50% !important;
+
+    transform:translateX(-50%) !important;
+
+    border-radius:50% !important;
+
+    background:rgba(255,255,255,.08) !important;
+
+    pointer-events:none !important;
 
     box-shadow:
-        inset 0 -1px 0 rgba(255,255,255,.25);
+        0 0 100px rgba(255,255,255,.08) !important;
 }
 
 
-/* Decorative light glow */
-.top-header::before{
-    content:"";
+/* Keep all header content above decoration */
 
-    position:absolute;
-
-    width:420px;
-    height:420px;
-
-    top:-250px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    background:rgba(255,255,255,.08);
-
-    border-radius:50%;
-
-    pointer-events:none;
-}
-
-
-/* Bottom shine */
-.top-header::after{
-    content:"";
-
-    position:absolute;
-
-    left:8%;
-    right:8%;
-    bottom:0;
-
-    height:2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.65),
-            transparent
-        );
-
-    pointer-events:none;
+.header > *{
+    position:relative !important;
+    z-index:5 !important;
 }
 
 
 /* =========================================================
-   LEFT — IKON LOGO
+   IKON LOGO
    ========================================================= */
 
 .header-left{
-    position:relative;
-    z-index:2;
+    width:100% !important;
 
-    display:flex;
+    display:flex !important;
 
-    flex-direction:column;
+    flex-direction:column !important;
 
-    align-items:center;
-    justify-content:center;
+    justify-content:center !important;
 
-    min-width:0;
+    align-items:center !important;
+
+    margin:0 !important;
+
+    position:relative !important;
+
+    z-index:10 !important;
 }
 
 
-/* Logo actual size remains 400px */
+/* Actual logo size SAME */
+
 .header-left .logo{
-    display:block;
+    width:400px !important;
 
-    width:400px;
-    max-width:100%;
-    height:auto;
+    max-width:100% !important;
 
-    object-fit:contain;
+    height:auto !important;
 
-    padding:4px;
+    object-fit:contain !important;
 
-    box-sizing:border-box;
+    display:block !important;
 
-    background:#ffffff;
+    padding:4px !important;
 
-    border:1px solid rgba(255,255,255,.9);
+    box-sizing:border-box !important;
 
-    border-radius:8px;
+    background:#ffffff !important;
+
+    border:1px solid rgba(255,255,255,.9) !important;
+
+    border-radius:8px !important;
+
+    filter:none !important;
 
     box-shadow:
-        0 12px 28px rgba(0,0,0,.22),
-        0 3px 8px rgba(0,0,0,.12);
+        0 12px 30px rgba(0,0,0,.25),
+        0 3px 8px rgba(0,0,0,.12) !important;
 
     transition:
         transform .25s ease,
-        box-shadow .25s ease;
+        box-shadow .25s ease !important;
 }
 
 
-/* subtle professional hover */
+/* Subtle hover */
+
 .header-left .logo:hover{
-    transform:translateY(-2px);
+    transform:translateY(-2px) !important;
 
     box-shadow:
-        0 16px 34px rgba(0,0,0,.25),
-        0 5px 12px rgba(0,0,0,.14);
+        0 16px 36px rgba(0,0,0,.28),
+        0 5px 12px rgba(0,0,0,.15) !important;
 }
 
 
 /* =========================================================
-   TAGLINE
+   TAGLINE UNDER LOGO
    ========================================================= */
 
 .header-left::after{
-    content:"IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...";
+    content:"IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना..." !important;
 
-    display:block;
+    display:block !important;
 
-    margin-top:10px;
-    padding-top:8px;
+    margin-top:11px !important;
 
-    border-top:2px solid rgba(255,255,255,.60);
+    padding-top:8px !important;
 
-    color:#ffffff;
+    min-width:380px !important;
+
+    max-width:90% !important;
+
+    border-top:2px solid rgba(255,255,255,.60) !important;
+
+    color:#ffffff !important;
 
     font-family:
         "Noto Sans Devanagari",
         "Nirmala UI",
         "Mangal",
-        sans-serif;
+        sans-serif !important;
 
-    font-size:15px;
+    font-size:15px !important;
 
-    font-weight:600;
+    font-weight:600 !important;
 
-    line-height:1.4;
+    line-height:1.4 !important;
 
-    letter-spacing:.2px;
+    letter-spacing:.2px !important;
 
-    text-align:center;
+    text-align:center !important;
 
     text-shadow:
-        0 2px 5px rgba(0,0,0,.30);
+        0 2px 6px rgba(0,0,0,.35) !important;
 
-    white-space:nowrap;
+    white-space:nowrap !important;
 }
 
 
 /* =========================================================
-   CENTER — INSTITUTE NAME
+   TITLE AREA
    ========================================================= */
 
 .header-center{
-    position:relative;
-    z-index:2;
+    width:100% !important;
 
-    display:flex;
+    display:flex !important;
 
-    flex-direction:column;
+    flex-direction:column !important;
 
-    align-items:center;
+    justify-content:center !important;
 
-    justify-content:center;
+    align-items:center !important;
 
-    text-align:center;
+    margin:0 !important;
 
-    padding:0 25px;
+    padding:0 !important;
 
-    min-width:0;
+    position:relative !important;
+
+    z-index:10 !important;
 }
 
 
-/* IKON INSTITUTE */
+/* =========================================================
+   IKON INSTITUTE ONLINE EXAM PORTAL
+   ========================================================= */
 
-.header-center .institute-name{
-    position:relative;
+#testTitle{
+    width:100% !important;
 
-    color:#ffffff;
+    margin:22px 0 0 !important;
 
-    font-size:34px;
+    padding:0 !important;
 
-    font-weight:900;
+    color:#ffffff !important;
 
-    letter-spacing:1.5px;
+    text-align:center !important;
 
-    line-height:1.15;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif !important;
 
-    text-transform:uppercase;
+    font-size:clamp(
+        2rem,
+        3.2vw,
+        2.6rem
+    ) !important;
 
-    white-space:nowrap;
+    font-weight:900 !important;
+
+    line-height:1.15 !important;
+
+    letter-spacing:1.2px !important;
+
+    text-transform:uppercase !important;
 
     text-shadow:
-        0 3px 8px rgba(0,0,0,.28);
+        0 3px 10px rgba(0,0,0,.30) !important;
 }
 
 
-/* Small elegant line under institute name */
+/* Professional underline */
 
-.header-center .institute-name::after{
-    content:"";
+#testTitle::after{
+    content:"" !important;
 
-    display:block;
+    display:block !important;
 
-    width:72px;
-    height:3px;
+    width:85px !important;
 
-    margin:10px auto 9px;
+    height:3px !important;
 
-    border-radius:20px;
+    margin:12px auto 0 !important;
+
+    border-radius:20px !important;
 
     background:
         linear-gradient(
@@ -18884,125 +18912,66 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
             rgba(255,255,255,.25),
             #ffffff,
             rgba(255,255,255,.25)
-        );
+        ) !important;
 
     box-shadow:
-        0 2px 6px rgba(0,0,0,.15);
-}
-
-
-/* ONLINE EXAM PORTAL */
-
-.header-center .portal-title{
-    color:#eaf5ff;
-
-    font-size:19px;
-
-    font-weight:700;
-
-    letter-spacing:4px;
-
-    line-height:1.2;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-
-    text-shadow:
-        0 2px 5px rgba(0,0,0,.22);
-}
-
-
-/* Lines around ONLINE EXAM PORTAL */
-
-.header-center .portal-title::before,
-.header-center .portal-title::after{
-    content:"";
-
-    display:inline-block;
-
-    width:32px;
-    height:2px;
-
-    margin:0 12px;
-
-    vertical-align:middle;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.60);
+        0 2px 7px rgba(0,0,0,.20) !important;
 }
 
 
 /* =========================================================
-   RIGHT — DATE / TEST DATE
+   DATE AREA
    ========================================================= */
 
 .header-right{
-    position:relative;
-    z-index:2;
+    width:100% !important;
 
-    display:flex;
+    display:flex !important;
 
-    flex-direction:column;
+    justify-content:center !important;
 
-    align-items:flex-end;
+    align-items:center !important;
 
-    justify-content:center;
+    gap:10px !important;
 
-    gap:8px;
+    margin-top:17px !important;
 
-    min-width:0;
+    position:relative !important;
 
-    color:#ffffff;
-
-    text-align:right;
+    z-index:10 !important;
 }
 
 
-/* Current date/time */
+/* Date text */
 
-.header-right #dateTime{
-    padding:8px 13px;
-
-    border:1px solid rgba(255,255,255,.30);
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.10);
-
-    backdrop-filter:blur(6px);
-
-    color:#ffffff;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.10);
-}
-
-
-/* Test date */
-
+.header-right #dateTime,
 .header-right #testDate{
-    padding:8px 13px;
+    display:inline-flex !important;
 
-    border-radius:10px;
+    align-items:center !important;
 
-    background:rgba(255,255,255,.14);
+    justify-content:center !important;
 
-    border:1px solid rgba(255,255,255,.28);
+    min-height:32px !important;
 
-    color:#ffffff;
+    padding:6px 13px !important;
 
-    font-size:13px;
+    color:#ffffff !important;
 
-    font-weight:700;
+    background:rgba(255,255,255,.10) !important;
+
+    border:1px solid rgba(255,255,255,.28) !important;
+
+    border-radius:9px !important;
+
+    font-size:12px !important;
+
+    font-weight:600 !important;
 
     box-shadow:
-        0 4px 12px rgba(0,0,0,.10);
+        0 4px 12px rgba(0,0,0,.10) !important;
+
+    backdrop-filter:blur(6px) !important;
 }
 
 
@@ -19010,89 +18979,79 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
    MOBILE
    ========================================================= */
 
-@media(max-width:900px){
+@media(max-width:768px){
 
-    .top-header{
-        grid-template-columns:1fr;
+    .header{
+        min-height:auto !important;
 
-        min-height:auto;
+        padding:25px 15px 25px !important;
 
-        gap:18px;
-
-        padding:25px 18px 24px;
-
-        text-align:center;
-    }
-
-
-    .header-left{
-        order:1;
-    }
-
-
-    .header-center{
-        order:2;
-
-        padding:0 5px;
-    }
-
-
-    .header-right{
-        order:3;
-
-        align-items:center;
-
-        text-align:center;
-
-        flex-direction:row;
-
-        justify-content:center;
-
-        flex-wrap:wrap;
+        border-radius:22px 22px 0 0 !important;
     }
 
 
     .header-left .logo{
-        width:min(400px,88vw);
+        width:min(300px,88vw) !important;
     }
 
 
     .header-left::after{
-        font-size:13px;
+        min-width:0 !important;
 
-        white-space:normal;
+        width:100% !important;
 
-        max-width:340px;
+        max-width:320px !important;
 
-        margin-top:7px;
+        margin-top:8px !important;
 
-        padding-top:6px;
+        padding-top:6px !important;
+
+        font-size:12px !important;
+
+        line-height:1.4 !important;
+
+        white-space:normal !important;
+
+        border-top-width:1px !important;
     }
 
 
-    .header-center .institute-name{
-        font-size:27px;
+    #testTitle{
+        margin-top:17px !important;
 
-        letter-spacing:.8px;
+        font-size:1.55rem !important;
 
-        white-space:normal;
+        line-height:1.25 !important;
+
+        letter-spacing:.5px !important;
     }
 
 
-    .header-center .portal-title{
-        font-size:14px;
+    #testTitle::after{
+        width:60px !important;
 
-        letter-spacing:2.5px;
+        height:2px !important;
 
-        white-space:normal;
+        margin-top:9px !important;
     }
 
 
-    .header-center .portal-title::before,
-    .header-center .portal-title::after{
-        width:20px;
+    .header-right{
+        flex-wrap:wrap !important;
 
-        margin:0 7px;
+        margin-top:13px !important;
+
+        gap:7px !important;
+    }
+
+
+    .header-right #dateTime,
+    .header-right #testDate{
+        font-size:10.5px !important;
+
+        min-height:29px !important;
+
+        padding:5px 9px !important;
     }
 }
 
@@ -19101,54 +19060,33 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
    SMALL MOBILE
    ========================================================= */
 
-@media(max-width:500px){
+@media(max-width:480px){
 
-    .top-header{
-        padding:20px 12px;
-        gap:14px;
+    .header{
+        padding:20px 10px 22px !important;
     }
 
 
     .header-left .logo{
-        width:min(300px,90vw);
-
-        padding:3px;
-
-        border-radius:6px;
+        width:min(280px,90vw) !important;
     }
 
 
     .header-left::after{
-        font-size:11.5px;
+        font-size:11px !important;
 
-        max-width:300px;
-
-        border-top-width:1px;
+        max-width:290px !important;
     }
 
 
-    .header-center .institute-name{
-        font-size:22px;
+    #testTitle{
+        font-size:1.30rem !important;
     }
 
 
-    .header-center .portal-title{
-        font-size:12px;
+    .header-right{
+        flex-direction:column !important;
 
-        letter-spacing:1.8px;
-    }
-
-
-    .header-center .portal-title::before,
-    .header-center .portal-title::after{
-        display:none;
-    }
-
-
-    .header-right #dateTime,
-    .header-right #testDate{
-        font-size:11px;
-
-        padding:6px 9px;
+        gap:5px !important;
     }
 }
