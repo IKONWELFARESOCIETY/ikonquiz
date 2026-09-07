@@ -18627,3 +18627,528 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         border-top-width:1px;
     }
 }
+/* =========================================================
+   IKON PROFESSIONAL INSTITUTE HEADER
+   Current HTML ke according
+   Logo size unchanged
+   ========================================================= */
+
+
+/* =========================================================
+   MAIN HEADER
+   ========================================================= */
+
+.top-header{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+
+    align-items:center;
+
+    min-height:300px;
+
+    padding:30px 34px 28px;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255,255,255,.12),
+            transparent 42%
+        ),
+        linear-gradient(
+            135deg,
+            #124b91 0%,
+            #075dcc 48%,
+            #1685f5 100%
+        );
+
+    border-radius:24px 24px 0 0;
+
+    overflow:hidden;
+
+    box-shadow:
+        inset 0 -1px 0 rgba(255,255,255,.25);
+}
+
+
+/* Decorative light glow */
+.top-header::before{
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+    height:420px;
+
+    top:-250px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:50%;
+
+    pointer-events:none;
+}
+
+
+/* Bottom shine */
+.top-header::after{
+    content:"";
+
+    position:absolute;
+
+    left:8%;
+    right:8%;
+    bottom:0;
+
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.65),
+            transparent
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   LEFT — IKON LOGO
+   ========================================================= */
+
+.header-left{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    min-width:0;
+}
+
+
+/* Logo actual size remains 400px */
+.header-left .logo{
+    display:block;
+
+    width:400px;
+    max-width:100%;
+    height:auto;
+
+    object-fit:contain;
+
+    padding:4px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border:1px solid rgba(255,255,255,.9);
+
+    border-radius:8px;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.22),
+        0 3px 8px rgba(0,0,0,.12);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+/* subtle professional hover */
+.header-left .logo:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 16px 34px rgba(0,0,0,.25),
+        0 5px 12px rgba(0,0,0,.14);
+}
+
+
+/* =========================================================
+   TAGLINE
+   ========================================================= */
+
+.header-left::after{
+    content:"IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...";
+
+    display:block;
+
+    margin-top:10px;
+    padding-top:8px;
+
+    border-top:2px solid rgba(255,255,255,.60);
+
+    color:#ffffff;
+
+    font-family:
+        "Noto Sans Devanagari",
+        "Nirmala UI",
+        "Mangal",
+        sans-serif;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    line-height:1.4;
+
+    letter-spacing:.2px;
+
+    text-align:center;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.30);
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   CENTER — INSTITUTE NAME
+   ========================================================= */
+
+.header-center{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:0 25px;
+
+    min-width:0;
+}
+
+
+/* IKON INSTITUTE */
+
+.header-center .institute-name{
+    position:relative;
+
+    color:#ffffff;
+
+    font-size:34px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    line-height:1.15;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 3px 8px rgba(0,0,0,.28);
+}
+
+
+/* Small elegant line under institute name */
+
+.header-center .institute-name::after{
+    content:"";
+
+    display:block;
+
+    width:72px;
+    height:3px;
+
+    margin:10px auto 9px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.25),
+            #ffffff,
+            rgba(255,255,255,.25)
+        );
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,.15);
+}
+
+
+/* ONLINE EXAM PORTAL */
+
+.header-center .portal-title{
+    color:#eaf5ff;
+
+    font-size:19px;
+
+    font-weight:700;
+
+    letter-spacing:4px;
+
+    line-height:1.2;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.22);
+}
+
+
+/* Lines around ONLINE EXAM PORTAL */
+
+.header-center .portal-title::before,
+.header-center .portal-title::after{
+    content:"";
+
+    display:inline-block;
+
+    width:32px;
+    height:2px;
+
+    margin:0 12px;
+
+    vertical-align:middle;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.60);
+}
+
+
+/* =========================================================
+   RIGHT — DATE / TEST DATE
+   ========================================================= */
+
+.header-right{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    gap:8px;
+
+    min-width:0;
+
+    color:#ffffff;
+
+    text-align:right;
+}
+
+
+/* Current date/time */
+
+.header-right #dateTime{
+    padding:8px 13px;
+
+    border:1px solid rgba(255,255,255,.30);
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.10);
+
+    backdrop-filter:blur(6px);
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.10);
+}
+
+
+/* Test date */
+
+.header-right #testDate{
+    padding:8px 13px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.14);
+
+    border:1px solid rgba(255,255,255,.28);
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:900px){
+
+    .top-header{
+        grid-template-columns:1fr;
+
+        min-height:auto;
+
+        gap:18px;
+
+        padding:25px 18px 24px;
+
+        text-align:center;
+    }
+
+
+    .header-left{
+        order:1;
+    }
+
+
+    .header-center{
+        order:2;
+
+        padding:0 5px;
+    }
+
+
+    .header-right{
+        order:3;
+
+        align-items:center;
+
+        text-align:center;
+
+        flex-direction:row;
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+    }
+
+
+    .header-left .logo{
+        width:min(400px,88vw);
+    }
+
+
+    .header-left::after{
+        font-size:13px;
+
+        white-space:normal;
+
+        max-width:340px;
+
+        margin-top:7px;
+
+        padding-top:6px;
+    }
+
+
+    .header-center .institute-name{
+        font-size:27px;
+
+        letter-spacing:.8px;
+
+        white-space:normal;
+    }
+
+
+    .header-center .portal-title{
+        font-size:14px;
+
+        letter-spacing:2.5px;
+
+        white-space:normal;
+    }
+
+
+    .header-center .portal-title::before,
+    .header-center .portal-title::after{
+        width:20px;
+
+        margin:0 7px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media(max-width:500px){
+
+    .top-header{
+        padding:20px 12px;
+        gap:14px;
+    }
+
+
+    .header-left .logo{
+        width:min(300px,90vw);
+
+        padding:3px;
+
+        border-radius:6px;
+    }
+
+
+    .header-left::after{
+        font-size:11.5px;
+
+        max-width:300px;
+
+        border-top-width:1px;
+    }
+
+
+    .header-center .institute-name{
+        font-size:22px;
+    }
+
+
+    .header-center .portal-title{
+        font-size:12px;
+
+        letter-spacing:1.8px;
+    }
+
+
+    .header-center .portal-title::before,
+    .header-center .portal-title::after{
+        display:none;
+    }
+
+
+    .header-right #dateTime,
+    .header-right #testDate{
+        font-size:11px;
+
+        padding:6px 9px;
+    }
+}
