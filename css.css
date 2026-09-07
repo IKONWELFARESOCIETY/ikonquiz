@@ -18373,7 +18373,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif;
 
-    font-size:15px;
+    font-size:22px;
     font-weight:600;
 
     line-height:1.5;
@@ -18462,7 +18462,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 @media(max-width:600px){
 
     .header-left::after{
-        font-size:12px;
+        font-size:19px;
 
         line-height:1.4;
 
@@ -18582,7 +18582,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif;
 
-    font-size:15px;
+    font-size:18px;
     font-weight:600;
 
     line-height:1.45;
@@ -18613,7 +18613,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
     .header-left::after{
-        font-size:12px;
+        font-size:18px;
 
         line-height:1.4;
 
@@ -18810,7 +18810,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif !important;
 
-    font-size:15px !important;
+    font-size:18px !important;
 
     font-weight:600 !important;
 
@@ -19006,7 +19006,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
         padding-top:6px !important;
 
-        font-size:12px !important;
+        font-size:18px !important;
 
         line-height:1.4 !important;
 
@@ -19073,7 +19073,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
 
     .header-left::after{
-        font-size:11px !important;
+        font-size:15px !important;
 
         max-width:290px !important;
     }
@@ -19089,131 +19089,4 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
         gap:5px !important;
     }
-}
-/* =========================================================
-   IKON TAGLINE - BLACK STRIP + SCROLLING EFFECT
-   ========================================================= */
-
-.header-left{
-    width:100% !important;
-    overflow:hidden !important;
-}
-
-
-/* Black/Dark Tagline Strip */
-
-.header-left::after{
-    content:"IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...   ✦   IKON का सपना – शिक्षित समाज, रोजगार अपना-अपना...";
-
-    display:block !important;
-
-    width:100vw !important;
-    max-width:none !important;
-
-    box-sizing:border-box !important;
-
-    margin-top:12px !important;
-    padding:9px 0 !important;
-
-    border:0 !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #050505,
-            #161616,
-            #050505
-        ) !important;
-
-    color:#ffffff !important;
-
-    font-family:
-        "Noto Sans Devanagari",
-        "Nirmala UI",
-        "Mangal",
-        "Segoe UI",
-        sans-serif !important;
-
-    font-size:18px !important;
-
-    font-weight:700 !important;
-
-    line-height:1.45 !important;
-
-    letter-spacing:.3px !important;
-
-    text-align:left !important;
-
-    white-space:nowrap !important;
-
-    text-shadow:
-        0 1px 4px rgba(0,0,0,.8) !important;
-
-    overflow:hidden !important;
-
-    position:relative !important;
-
-    /* Scrolling */
-    animation:
-        ikonTaglineScroll
-        15s
-        linear
-        infinite !important;
-}
-
-
-/* =========================================================
-   SCROLLING ANIMATION
-   ========================================================= */
-
-@keyframes ikonTaglineScroll{
-
-    0%{
-        transform:translateX(100%);
-    }
-
-    100%{
-        transform:translateX(-100%);
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media(max-width:768px){
-
-    .header-left::after{
-
-        font-size:15px !important;
-
-        padding:8px 0 !important;
-
-        margin-top:9px !important;
-
-        letter-spacing:.2px !important;
-
-        animation-duration:12s !important;
-    }
-
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media(max-width:480px){
-
-    .header-left::after{
-
-        font-size:14px !important;
-
-        padding:7px 0 !important;
-
-        animation-duration:10s !important;
-    }
-
 }
