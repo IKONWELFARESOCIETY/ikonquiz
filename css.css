@@ -18373,7 +18373,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif;
 
-    font-size:22px;
+    font-size:25px;
     font-weight:600;
 
     line-height:1.5;
@@ -18481,7 +18481,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
     .header-center .institute-name{
-        font-size:24px;
+        font-size:25px;
         letter-spacing:.6px;
     }
 
@@ -18582,7 +18582,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif;
 
-    font-size:22px;
+    font-size:25px;
     font-weight:600;
 
     line-height:1.45;
@@ -18810,7 +18810,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         "Mangal",
         sans-serif !important;
 
-    font-size:22px !important;
+    font-size:25px !important;
 
     font-weight:600 !important;
 
@@ -19145,6 +19145,139 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 
     100%{
         background-position:-200% 0;
+        filter:brightness(1);
+    }
+}
+/* =========================================================
+   ✨ IKON TAGLINE - EXTRA BRIGHT GLITTER EFFECT
+   ========================================================= */
+
+.header-left::after{
+    position:relative !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff 0%,
+            #ffffff 25%,
+            #fffbd0 38%,
+            #fff700 46%,
+            #ffffff 50%,
+            #fff700 54%,
+            #fffbd0 62%,
+            #ffffff 75%,
+            #ffffff 100%
+        ) !important;
+
+    background-size:350% 100% !important;
+
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+
+    -webkit-text-fill-color:transparent !important;
+
+    animation:ikonExtraGlitter 2.2s linear infinite !important;
+
+    text-shadow:
+        0 0 4px rgba(255,255,255,.9),
+        0 0 8px rgba(255,255,255,.8),
+        0 0 16px rgba(255,245,120,.75),
+        0 0 28px rgba(255,230,50,.45) !important;
+}
+
+
+/* 🌟 Bright moving shine */
+@keyframes ikonExtraGlitter{
+
+    0%{
+        background-position:250% 0;
+        filter:brightness(1);
+    }
+
+    35%{
+        filter:brightness(1.15);
+    }
+
+    45%{
+        filter:brightness(1.5);
+    }
+
+    50%{
+        filter:brightness(2.5);
+    }
+
+    55%{
+        filter:brightness(1.7);
+    }
+
+    65%{
+        filter:brightness(1.15);
+    }
+
+    100%{
+        background-position:-250% 0;
+        filter:brightness(1);
+    }
+}
+/* =========================================================
+   💎 IKON TAGLINE - DIAMOND TWINKLE
+   ========================================================= */
+
+.header-left::after{
+    animation:
+        ikonExtraGlitter 2.2s linear infinite,
+        ikonDiamondGlow 1.4s ease-in-out infinite !important;
+
+    text-shadow:
+        0 0 4px rgba(255,255,255,1),
+        0 0 8px rgba(255,255,255,1),
+        0 0 14px rgba(255,245,140,.95),
+        0 0 22px rgba(255,235,70,.8),
+        0 0 35px rgba(255,255,255,.55) !important;
+}
+
+
+/* 💎 Diamond sparkle / twinkle */
+@keyframes ikonDiamondGlow{
+
+    0%,100%{
+        filter:brightness(1);
+        text-shadow:
+            0 0 4px rgba(255,255,255,.8),
+            0 0 10px rgba(255,245,140,.5);
+    }
+
+    20%{
+        filter:brightness(1.15);
+    }
+
+    35%{
+        filter:brightness(2.2);
+        text-shadow:
+            0 0 5px #ffffff,
+            0 0 12px #ffffff,
+            0 0 22px #fff700,
+            0 0 38px rgba(255,255,255,.9);
+    }
+
+    42%{
+        filter:brightness(1);
+    }
+
+    65%{
+        filter:brightness(1.2);
+    }
+
+    78%{
+        filter:brightness(2.4);
+        text-shadow:
+            0 0 6px #ffffff,
+            0 0 14px #ffffff,
+            0 0 26px #fff700,
+            0 0 42px rgba(255,255,255,.95);
+    }
+
+    85%{
         filter:brightness(1);
     }
 }
