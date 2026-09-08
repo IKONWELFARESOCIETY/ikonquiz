@@ -19090,3 +19090,61 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         gap:5px !important;
     }
 }
+/* =========================================================
+   ✨ IKON TAGLINE - PREMIUM GLITTER / SHINE EFFECT
+   ========================================================= */
+
+.header-left::after{
+    position:relative !important;
+    
+    background:linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #ffffff 35%,
+        #fff7a8 45%,
+        #ffffff 50%,
+        #fff7a8 55%,
+        #ffffff 65%,
+        #ffffff 100%
+    ) !important;
+
+    background-size:250% 100% !important;
+
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+
+    -webkit-text-fill-color:transparent !important;
+
+    animation:ikonTaglineGlitter 3s linear infinite !important;
+
+    text-shadow:
+        0 0 5px rgba(255,255,255,.45),
+        0 0 12px rgba(255,255,255,.25) !important;
+}
+
+
+/* Moving light / glitter */
+@keyframes ikonTaglineGlitter{
+
+    0%{
+        background-position:200% 0;
+        filter:brightness(1);
+    }
+
+    45%{
+        filter:brightness(1);
+    }
+
+    50%{
+        filter:brightness(1.8);
+    }
+
+    55%{
+        filter:brightness(1.15);
+    }
+
+    100%{
+        background-position:-200% 0;
+        filter:brightness(1);
+    }
+}
