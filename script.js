@@ -645,8 +645,6 @@ function shuffleQuestions(array) {
 // STUDENT LOGIN
 // REG NO + NAME ONLY
 //====================================================
-
-```javascript
 async function startTest(){
 
     //================================================
