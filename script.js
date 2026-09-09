@@ -765,7 +765,7 @@ async function startTest(){
 
 
         alert(
-            "Unable to verify this computer. Please try again."
+            "Unable to verify this device. Please try again."
         );
 
         return;
@@ -880,7 +880,7 @@ async function startTest(){
 
 
             alert(
-                "This computer is not approved for Student Login.\n\nPlease contact IKON Admin to approve this computer."
+                "This device is not approved for Student Login.\n\nPlease contact IKON Admin to approve this device."
             );
 
             return;
@@ -909,7 +909,7 @@ async function startTest(){
 
 
             alert(
-                "This computer has been blocked by IKON Admin.\n\nStudent Login is not allowed."
+                "This device has been blocked by IKON Admin.\n\nStudent Login is not allowed."
             );
 
             return;
