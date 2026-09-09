@@ -646,7 +646,8 @@ function shuffleQuestions(array) {
 // REG NO + NAME ONLY
 //====================================================
 
-function startTest(){
+```javascript
+async function startTest(){
 
     //================================================
     // GET INPUTS
@@ -730,8 +731,82 @@ function startTest(){
 
 
     //================================================
+    // GET DEVICE FINGERPRINT
+    //================================================
+
+    let fingerprint = "";
+
+    try{
+
+        fingerprint =
+            await getDeviceFingerprint();
+
+        console.log(
+            "Device Fingerprint:",
+            fingerprint
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Fingerprint Error:",
+            error
+        );
+
+
+        if(loginBtn){
+
+            loginBtn.disabled =
+                false;
+
+            loginBtn.innerHTML =
+                "LOGIN";
+
+        }
+
+
+        alert(
+            "Unable to verify this computer. Please try again."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // CHECK FINGERPRINT
+    //================================================
+
+    if(
+        !fingerprint ||
+        fingerprint.length < 20
+    ){
+
+        if(loginBtn){
+
+            loginBtn.disabled =
+                false;
+
+            loginBtn.innerHTML =
+                "LOGIN";
+
+        }
+
+
+        alert(
+            "Device verification failed."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
     // LOGIN API
-    // ONLY REG NO + NAME
+    // REG NO + NAME + FINGERPRINT
     //================================================
 
     const loginURL =
@@ -744,6 +819,10 @@ function startTest(){
         "&name=" +
         encodeURIComponent(
             studentName
+        ) +
+        "&fingerprint=" +
+        encodeURIComponent(
+            fingerprint
         );
 
 
@@ -752,6 +831,10 @@ function startTest(){
         loginURL
     );
 
+
+    //================================================
+    // FETCH LOGIN
+    //================================================
 
     fetch(loginURL)
 
@@ -776,6 +859,94 @@ function startTest(){
             "Login Response:",
             data
         );
+
+
+        //================================================
+        // DEVICE NOT VERIFIED
+        //================================================
+
+        if(
+            data.status ===
+            "DEVICE_NOT_VERIFIED"
+        ){
+
+            if(loginBtn){
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.innerHTML =
+                    "LOGIN";
+
+            }
+
+
+            alert(
+                "This computer is not approved for Student Login.\n\nPlease contact IKON Admin to approve this computer."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // DEVICE BLOCKED
+        //================================================
+
+        if(
+            data.status ===
+            "DEVICE_BLOCKED"
+        ){
+
+            if(loginBtn){
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.innerHTML =
+                    "LOGIN";
+
+            }
+
+
+            alert(
+                "This computer has been blocked by IKON Admin.\n\nStudent Login is not allowed."
+            );
+
+            return;
+
+        }
+
+
+        //================================================
+        // DEVICE ERROR
+        //================================================
+
+        if(
+            data.status ===
+            "DEVICE_ERROR"
+        ){
+
+            if(loginBtn){
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.innerHTML =
+                    "LOGIN";
+
+            }
+
+
+            alert(
+                data.message ||
+                "Device verification error. Please contact IKON Admin."
+            );
+
+            return;
+
+        }
 
 
         //================================================
@@ -807,23 +978,28 @@ function startTest(){
             //============================================
 
             studentName =
-                data.name || studentName;
+                data.name ||
+                studentName;
 
 
             regNo =
-                data.regNo || regNo;
+                data.regNo ||
+                regNo;
 
 
             courseName =
-                data.course || "";
+                data.course ||
+                "";
 
 
             totalMarks =
-                data.totalMarks || "";
+                data.totalMarks ||
+                "";
 
 
             passingMarks =
-                data.passingMarks || "";
+                data.passingMarks ||
+                "";
 
 
             theoryPapers =
@@ -850,7 +1026,8 @@ function startTest(){
             // lekin login par verify nahi ho raha.
 
             studentId =
-                data.idNo || "";
+                data.idNo ||
+                "";
 
 
             //============================================
@@ -938,6 +1115,8 @@ function startTest(){
     });
 
 }
+```
+
 //====================================================
 // OPEN EXAM TYPE PAGE
 //====================================================
@@ -5498,7 +5677,15 @@ function backToLogin(){
     isAdminMode = false;
     adminToken = "";
 
+document
+    .getElementById("deviceManagementAccess")
+    ?.style
+    .setProperty("display", "none");
 
+document
+    .getElementById("adminDevicePage")
+    ?.classList
+    .add("hidden");
     //================================================
     // CLEAR RESULT SEARCH
     //================================================
@@ -20314,5 +20501,1075 @@ function goToMockQuestion(index) {
     currentMockIdx = index;
 
     renderMockQuestion();
+
+}
+//====================================================
+// IKON DEVICE FINGERPRINT
+//====================================================
+
+async function getDeviceFingerprint() {
+
+  const deviceData = {
+
+    userAgent:
+      navigator.userAgent || "",
+
+    platform:
+      navigator.platform || "",
+
+    language:
+      navigator.language || "",
+
+    screenWidth:
+      screen.width || "",
+
+    screenHeight:
+      screen.height || "",
+
+    colorDepth:
+      screen.colorDepth || "",
+
+    hardwareConcurrency:
+      navigator.hardwareConcurrency || "",
+
+    deviceMemory:
+      navigator.deviceMemory || "",
+
+    maxTouchPoints:
+      navigator.maxTouchPoints || 0,
+
+    timezone:
+      Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+
+    timezoneOffset:
+      new Date().getTimezoneOffset()
+
+  };
+
+
+  // सभी device information को एक string में बदलना
+  const deviceString =
+    JSON.stringify(deviceData);
+
+
+  // SHA-256 Hash बनाना
+  const encoded =
+    new TextEncoder().encode(
+      deviceString
+    );
+
+
+  const hashBuffer =
+    await crypto.subtle.digest(
+      "SHA-256",
+      encoded
+    );
+
+
+  const hashArray =
+    Array.from(
+      new Uint8Array(hashBuffer)
+    );
+
+
+  const fingerprint =
+    hashArray
+      .map(
+        byte =>
+          byte
+            .toString(16)
+            .padStart(2, "0")
+      )
+      .join("");
+
+
+  return fingerprint;
+}
+// ============================================================
+// IKON APPROVED DEVICE MANAGEMENT
+// ADMIN ONLY
+// ============================================================
+
+
+// ============================================================
+// OPEN DEVICE MANAGEMENT
+// ============================================================
+
+async function openDeviceManagement(){
+
+    // ---------------------------------------------
+    // ADMIN SECURITY
+    // ---------------------------------------------
+
+    if(isAdminMode !== true){
+
+        alert("Admin verification required.");
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert("Admin session expired. Please verify again.");
+
+        return;
+    }
+
+
+    // ---------------------------------------------
+    // HIDE OTHER ADMIN PAGES
+    // ---------------------------------------------
+
+    document
+        .getElementById("studentResultPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("adminAnswerDetailsPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("analyticsPage")
+        ?.classList.add("hidden");
+
+    document
+        .getElementById("analyticsAccess")
+        ?.classList.add("hidden");
+
+
+    // ---------------------------------------------
+    // SHOW DEVICE PAGE
+    // ---------------------------------------------
+
+    const page =
+        document.getElementById("adminDevicePage");
+
+    if(!page){
+
+        alert("Device Management page not found.");
+
+        return;
+    }
+
+
+    page.classList.remove("hidden");
+
+
+    // ---------------------------------------------
+    // GENERATE CURRENT FINGERPRINT
+    // ---------------------------------------------
+
+    try{
+
+        const fingerprint =
+            await getDeviceFingerprint();
+
+
+        const status =
+            document.getElementById(
+                "deviceFingerprintStatus"
+            );
+
+        const icon =
+            document.getElementById(
+                "fingerprintStatusIcon"
+            );
+
+
+        if(status){
+
+            status.innerHTML =
+                fingerprint;
+
+        }
+
+
+        if(icon){
+
+            icon.innerHTML = "✅";
+
+        }
+
+
+    }catch(error){
+
+        console.error(
+            "Fingerprint Error:",
+            error
+        );
+
+        const status =
+            document.getElementById(
+                "deviceFingerprintStatus"
+            );
+
+        const icon =
+            document.getElementById(
+                "fingerprintStatusIcon"
+            );
+
+
+        if(status){
+
+            status.innerHTML =
+                "Unable to generate device fingerprint.";
+
+        }
+
+
+        if(icon){
+
+            icon.innerHTML = "❌";
+
+        }
+
+    }
+
+
+    // ---------------------------------------------
+    // LOAD DEVICES
+    // ---------------------------------------------
+
+    loadApprovedDevices();
+
+}
+
+
+
+// ============================================================
+// CLOSE DEVICE MANAGEMENT
+// ============================================================
+
+function closeDeviceManagement(){
+
+    document
+        .getElementById("adminDevicePage")
+        ?.classList.add("hidden");
+
+
+    // Show Admin Result Page again
+
+    if(isAdminMode === true){
+
+        document
+            .getElementById("studentResultPage")
+            ?.classList.remove("hidden");
+
+    }
+
+}
+
+
+
+// ============================================================
+// ADD CURRENT DEVICE
+// ============================================================
+
+async function addCurrentDevice(){
+
+    if(isAdminMode !== true){
+
+        alert(
+            "Admin verification required."
+        );
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert(
+            "Admin session expired."
+        );
+
+        return;
+    }
+
+
+    const deviceType =
+        document
+            .getElementById("deviceType")
+            ?.value
+            .trim();
+
+
+    const deviceModel =
+        document
+            .getElementById("deviceModel")
+            ?.value
+            .trim();
+
+
+    const deviceName =
+        document
+            .getElementById("deviceName")
+            ?.value
+            .trim();
+
+
+    if(deviceName === ""){
+
+        alert(
+            "Please enter Device Name."
+        );
+
+        document
+            .getElementById("deviceName")
+            ?.focus();
+
+        return;
+    }
+
+
+    // ---------------------------------------------
+    // GET FINGERPRINT
+    // ---------------------------------------------
+
+    let fingerprint = "";
+
+
+    try{
+
+        fingerprint =
+            await getDeviceFingerprint();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Unable to generate device fingerprint."
+        );
+
+        return;
+    }
+
+
+    if(!fingerprint){
+
+        alert(
+            "Device fingerprint not available."
+        );
+
+        return;
+    }
+
+
+    // ---------------------------------------------
+    // BUTTON
+    // ---------------------------------------------
+
+    const button =
+        document.querySelector(
+            ".deviceAddBtn"
+        );
+
+
+    const oldText =
+        button
+            ? button.innerHTML
+            : "";
+
+
+    if(button){
+
+        button.disabled = true;
+
+        button.innerHTML =
+            "⏳ Adding Device...";
+
+    }
+
+
+    // ---------------------------------------------
+    // URL
+    // ---------------------------------------------
+
+    const url =
+        SCRIPT_URL +
+        "?action=addDevice" +
+        "&adminToken=" +
+        encodeURIComponent(adminToken) +
+        "&deviceType=" +
+        encodeURIComponent(deviceType) +
+        "&modelNo=" +
+        encodeURIComponent(deviceModel) +
+        "&deviceName=" +
+        encodeURIComponent(deviceName) +
+        "&fingerprint=" +
+        encodeURIComponent(fingerprint);
+
+
+    try{
+
+        const response =
+            await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "ADD DEVICE:",
+            data
+        );
+
+
+        if(data.status === "SUCCESS"){
+
+            alert(
+                "Device approved successfully.\n\n" +
+                "Device ID: " +
+                (data.deviceId || "")
+            );
+
+
+            // Clear fields
+
+            const nameBox =
+                document.getElementById(
+                    "deviceName"
+                );
+
+            const modelBox =
+                document.getElementById(
+                    "deviceModel"
+                );
+
+
+            if(nameBox){
+
+                nameBox.value = "";
+
+            }
+
+
+            if(modelBox){
+
+                modelBox.value = "";
+
+            }
+
+
+            // Reload
+
+            loadApprovedDevices();
+
+
+            return;
+
+        }
+
+
+        if(
+            data.status === "DUPLICATE"
+        ){
+
+            alert(
+                "This device is already registered."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            data.status === "UNAUTHORIZED"
+        ){
+
+            alert(
+                "Admin session expired. Please verify again."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Unable to add device."
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Add Device Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    }finally{
+
+        if(button){
+
+            button.disabled = false;
+
+            button.innerHTML =
+                oldText;
+
+        }
+
+    }
+
+}
+
+
+
+// ============================================================
+// LOAD APPROVED DEVICES
+// ============================================================
+
+async function loadApprovedDevices(){
+
+    if(isAdminMode !== true){
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        return;
+    }
+
+
+    const body =
+        document.getElementById(
+            "approvedDevicesBody"
+        );
+
+
+    if(!body){
+
+        return;
+    }
+
+
+    body.innerHTML = `
+        <tr>
+            <td
+                colspan="7"
+                class="deviceLoading">
+                ⏳ Loading approved devices...
+            </td>
+        </tr>
+    `;
+
+
+    const url =
+        SCRIPT_URL +
+        "?action=deviceList" +
+        "&adminToken=" +
+        encodeURIComponent(adminToken);
+
+
+    try{
+
+        const response =
+            await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DEVICE LIST:",
+            data
+        );
+
+
+        if(
+            data.status === "UNAUTHORIZED"
+        ){
+
+            body.innerHTML = `
+                <tr>
+                    <td
+                        colspan="7"
+                        class="deviceLoading">
+                        Admin session expired.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        const devices =
+            Array.isArray(data.devices)
+                ? data.devices
+                : [];
+
+
+        if(devices.length === 0){
+
+            body.innerHTML = `
+                <tr>
+                    <td
+                        colspan="7"
+                        class="deviceLoading">
+                        No approved devices found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        body.innerHTML = "";
+
+
+        devices.forEach(function(device){
+
+            const tr =
+                document.createElement("tr");
+
+
+            const status =
+                String(
+                    device.status || ""
+                ).toUpperCase();
+
+
+            const statusHTML =
+                status === "ACTIVE"
+
+                    ? `
+                        <span
+                            class="deviceStatus active">
+                            ACTIVE
+                        </span>
+                    `
+
+                    : `
+                        <span
+                            class="deviceStatus blocked">
+                            BLOCKED
+                        </span>
+                    `;
+
+
+            const actionHTML =
+                status === "ACTIVE"
+
+                    ? `
+                        <button
+                            type="button"
+                            class="deviceActionBtn deviceBlockBtn"
+                            onclick="changeApprovedDeviceStatus(
+                                '${escapeDeviceValue(device.deviceId)}',
+                                'BLOCKED'
+                            )">
+                            Block
+                        </button>
+                    `
+
+                    : `
+                        <button
+                            type="button"
+                            class="deviceActionBtn deviceActivateBtn"
+                            onclick="changeApprovedDeviceStatus(
+                                '${escapeDeviceValue(device.deviceId)}',
+                                'ACTIVE'
+                            )">
+                            Activate
+                        </button>
+                    `;
+
+
+            tr.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${escapeDeviceHTML(device.deviceId)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeDeviceHTML(device.deviceType)}
+                </td>
+
+                <td>
+                    ${escapeDeviceHTML(device.modelNo)}
+                </td>
+
+                <td>
+                    ${escapeDeviceHTML(device.deviceName)}
+                </td>
+
+                <td>
+                    ${statusHTML}
+                </td>
+
+                <td>
+                    ${escapeDeviceHTML(device.lastLogin)}
+                </td>
+
+                <td>
+
+                    <div
+                        class="deviceActionGroup">
+
+                        ${actionHTML}
+
+                        <button
+                            type="button"
+                            class="deviceActionBtn deviceDeleteBtn"
+                            onclick="deleteApprovedDevice(
+                                '${escapeDeviceValue(device.deviceId)}'
+                            )">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            body.appendChild(tr);
+
+        });
+
+
+    }catch(error){
+
+        console.error(
+            "Device List Error:",
+            error
+        );
+
+
+        body.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    class="deviceLoading">
+                    ❌ Unable to load devices.
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+
+// ============================================================
+// CHANGE DEVICE STATUS
+// ============================================================
+
+async function changeApprovedDeviceStatus(
+    deviceId,
+    newStatus
+){
+
+    if(isAdminMode !== true){
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert(
+            "Admin session expired."
+        );
+
+        return;
+    }
+
+
+    const actionText =
+        newStatus === "ACTIVE"
+            ? "activate"
+            : "block";
+
+
+    const confirmAction =
+        confirm(
+            "Are you sure you want to " +
+            actionText +
+            " this device?"
+        );
+
+
+    if(!confirmAction){
+
+        return;
+    }
+
+
+    const url =
+        SCRIPT_URL +
+        "?action=deviceStatus" +
+        "&adminToken=" +
+        encodeURIComponent(adminToken) +
+        "&deviceId=" +
+        encodeURIComponent(deviceId) +
+        "&status=" +
+        encodeURIComponent(newStatus);
+
+
+    try{
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DEVICE STATUS:",
+            data
+        );
+
+
+        if(
+            data.status === "SUCCESS"
+        ){
+
+            loadApprovedDevices();
+
+            return;
+
+        }
+
+
+        if(
+            data.status === "UNAUTHORIZED"
+        ){
+
+            alert(
+                "Admin session expired."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Unable to change device status."
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Device Status Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// DELETE DEVICE
+// ============================================================
+
+async function deleteApprovedDevice(
+    deviceId
+){
+
+    if(isAdminMode !== true){
+
+        return;
+    }
+
+
+    if(!adminToken){
+
+        alert(
+            "Admin session expired."
+        );
+
+        return;
+    }
+
+
+    const confirmDelete =
+        confirm(
+            "Delete this approved device?\n\n" +
+            "Student login from this device will stop working."
+        );
+
+
+    if(!confirmDelete){
+
+        return;
+    }
+
+
+    const url =
+        SCRIPT_URL +
+        "?action=deleteDevice" +
+        "&adminToken=" +
+        encodeURIComponent(adminToken) +
+        "&deviceId=" +
+        encodeURIComponent(deviceId);
+
+
+    try{
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DELETE DEVICE:",
+            data
+        );
+
+
+        if(
+            data.status === "SUCCESS"
+        ){
+
+            alert(
+                "Device deleted successfully."
+            );
+
+
+            loadApprovedDevices();
+
+            return;
+
+        }
+
+
+        if(
+            data.status === "UNAUTHORIZED"
+        ){
+
+            alert(
+                "Admin session expired."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Unable to delete device."
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Delete Device Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect with server."
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// SAFE HTML
+// ============================================================
+
+function escapeDeviceHTML(value){
+
+    if(value === null || value === undefined){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+
+// ============================================================
+// SAFE ATTRIBUTE VALUE
+// ============================================================
+
+function escapeDeviceValue(value){
+
+    if(value === null || value === undefined){
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+
+        .replace(/"/g,'\\"');
 
 }
