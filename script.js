@@ -6727,6 +6727,19 @@ function verifyAdmin(){
 
             loadAdminResults();
 
+//================================================
+// SHOW APPROVED DEVICE MANAGEMENT BUTTON
+// ADMIN ONLY
+//================================================
+
+document
+    .getElementById("deviceManagementAccess")
+    ?.style
+    .setProperty(
+        "display",
+        "block"
+    );
+
 
             return;
 
