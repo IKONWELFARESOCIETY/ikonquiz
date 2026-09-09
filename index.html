@@ -1394,6 +1394,25 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </button>
 
 </div>
+          <!-- APPROVED DEVICE MANAGEMENT BUTTON -->
+<div
+    id="deviceManagementAccess"
+    style="
+        display:none;
+        text-align:center;
+        margin:15px 0;
+    ">
+
+    <button
+        type="button"
+        class="primary"
+        onclick="openDeviceManagement()">
+
+        🖥️ Manage Approved Devices
+
+    </button>
+
+</div>
         <input
             type="text"
             id="searchResult"
@@ -3727,7 +3746,232 @@ After successfully submitting one paper, please refresh the website (F5) before 
 
 </div>
 
+<!-- ==================================================
+              ADMIN DEVICE MANAGEMENT
+================================================== -->
 
+<div id="adminDevicePage" class="hidden">
+
+    <div class="deviceAdminWrapper">
+
+        <!-- HEADER -->
+        <div class="deviceAdminHeader">
+
+            <div>
+                <h2>🖥️ Approved Device Management</h2>
+                <p>
+                    Manage computers allowed for student login
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="secondary"
+                onclick="closeDeviceManagement()">
+                ← Back
+            </button>
+
+        </div>
+
+
+        <!-- ADD DEVICE CARD -->
+        <div class="deviceAdminCard">
+
+            <div class="deviceCardTitle">
+                <span>➕</span>
+
+                <div>
+                    <h3>Add New Approved Device</h3>
+                    <p>
+                        Enter device details and register this computer
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="deviceFormGrid">
+
+                <!-- DEVICE TYPE -->
+                <div class="deviceField">
+
+                    <label>
+                        Device Type
+                    </label>
+
+                    <select id="deviceType">
+
+                        <option value="Desktop">
+                            Desktop
+                        </option>
+
+                        <option value="Laptop">
+                            Laptop
+                        </option>
+
+                        <option value="Computer">
+                            Computer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MODEL -->
+                <div class="deviceField">
+
+                    <label>
+                        Model No
+                    </label>
+
+                    <input
+                        type="text"
+                        id="deviceModel"
+                        placeholder="Example: HP ProDesk 400">
+
+                </div>
+
+
+                <!-- DEVICE NAME -->
+                <div class="deviceField">
+
+                    <label>
+                        Device Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="deviceName"
+                        placeholder="Example: Lab Computer 01">
+
+                </div>
+
+            </div>
+
+
+            <!-- FINGERPRINT STATUS -->
+            <div class="fingerprintBox">
+
+                <div>
+                    <strong>Device Fingerprint</strong>
+
+                    <p id="deviceFingerprintStatus">
+                        Generating fingerprint...
+                    </p>
+                </div>
+
+                <span id="fingerprintStatusIcon">
+                    ⏳
+                </span>
+
+            </div>
+
+
+            <!-- ADD BUTTON -->
+            <button
+                type="button"
+                class="primary deviceAddBtn"
+                onclick="addCurrentDevice()">
+
+                ➕ Add Approved Device
+
+            </button>
+
+        </div>
+
+
+
+        <!-- APPROVED DEVICES -->
+        <div class="deviceAdminCard">
+
+            <div class="deviceListHeader">
+
+                <div>
+                    <h3>Approved Devices</h3>
+
+                    <p>
+                        Only ACTIVE devices can be used for student login
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="secondary"
+                    onclick="loadApprovedDevices()">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+
+            <!-- DEVICE TABLE -->
+            <div class="deviceTableWrapper">
+
+                <table class="deviceAdminTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Device ID
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                Device Name
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Last Login
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="approvedDevicesBody">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="deviceLoading">
+
+                                Loading devices...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- ==================================================
                     BODY END
