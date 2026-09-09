@@ -1113,7 +1113,6 @@ async function startTest(){
     });
 
 }
-```
 
 //====================================================
 // OPEN EXAM TYPE PAGE
