@@ -19745,3 +19745,105 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* =========================================================
+   APPROVED DEVICE MANAGEMENT - FULL PAGE
+   ========================================================= */
+
+#adminDevicePage {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 30px !important;
+
+    box-sizing: border-box !important;
+
+    background: #f4f7fb !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    z-index: 99999 !important;
+}
+
+
+/* Main device management wrapper */
+
+#adminDevicePage .deviceAdminWrapper {
+    width: 100% !important;
+    max-width: 1150px !important;
+
+    margin: 0 auto !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Header */
+
+#adminDevicePage .deviceAdminHeader {
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    margin-bottom: 18px !important;
+}
+
+
+/* Cards */
+
+#adminDevicePage .deviceAdminCard {
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    margin-bottom: 18px !important;
+}
+
+
+/* Form */
+
+#adminDevicePage .deviceFormGrid {
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+
+    gap: 14px !important;
+}
+
+
+/* Device table */
+
+#adminDevicePage .deviceTableWrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    #adminDevicePage {
+        padding: 15px !important;
+    }
+
+    #adminDevicePage .deviceAdminWrapper {
+        max-width: 100% !important;
+    }
+
+    #adminDevicePage .deviceFormGrid {
+        grid-template-columns: 1fr !important;
+    }
+
+    #adminDevicePage .deviceAdminHeader {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+}
