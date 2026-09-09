@@ -8195,132 +8195,314 @@ function verifyMarksheet(paper){
 // FILL MARKSHEET
 //====================================================
 
+//====================================================
+// FILL MARKSHEET
+//====================================================
+
 function fillMarksheet(m){
 
-    //---------------------------------------
-    // Hide Result List
-    //---------------------------------------
+    //================================================
+    // HIDE RESULT VERIFICATION PAGE
+    //================================================
 
-    document
-    .getElementById("studentResultPage")
-    ?.classList.add("hidden");
+    const resultVerifyPage =
+        document.getElementById("resultVerifyPage");
 
-    //---------------------------------------
-    // Show Marksheet
-    //---------------------------------------
+    if(resultVerifyPage){
 
-    document
-    .getElementById("marksheetPage")
-    ?.classList.remove("hidden");
+        resultVerifyPage.classList.add("hidden");
 
-    //---------------------------------------
-    // Student Details
-    //---------------------------------------
-
-    document.getElementById("mkMarksheetNo").textContent =
-    m.marksheetNo || "";
-
-    document.getElementById("mkRegNo").textContent =
-    m.regNo || "";
-
-    document.getElementById("mkStudentName").textContent =
-    m.studentName || "";
-
-    document.getElementById("mkCourse").textContent =
-    m.course || "";
-
-    document.getElementById("mkPaperName").textContent =
-    m.paperName || "";
-
-   document.getElementById("mkResultDate").textContent =
-    m.resultDate || "";
-        document.getElementById("mkIssueDate").textContent = m.issueDate || "";
-        document.getElementById("mkExamDate").textContent = m.examDate;
-        document.getElementById("mkExamCode").textContent = m.examCode;
-
-    //---------------------------------------
-    // Marks
-    //---------------------------------------
-
-    document.getElementById("mkTheory").textContent =
-    m.theory || "";
-
-    document.getElementById("mkPractical").textContent =
-    m.practical || "";
-
-    document.getElementById("mkViva").textContent =
-    m.viva || "";
-
-    document.getElementById("mkNotes").textContent =
-    m.notes || "";
-
-    document.getElementById("mkBehaviour").textContent =
-    m.behaviour || "";
-
-    document.getElementById("mkProject").textContent =
-    m.project || "";
-
-    document.getElementById("mkTotal").textContent =
-    m.totalMarks || "";
-
-    document.getElementById("mkPercentage").textContent =
-       m.percentage || "";
-
-    document.getElementById("mkGrade").textContent =
-    m.grade || "";
-
-    document.getElementById("mkResult").textContent =
-    m.result || "";
-
-    //---------------------------------------
-    // Student Image (Repo)
-    //---------------------------------------
-
-    const photo =
-    document.getElementById("mkStudentPhoto");
-
-    if(photo){
-
-        photo.src = m.regNo + ".jpeg";
-
-        photo.onerror = function(){
-
-            this.src = "no-photo.jpeg";
-
-        };
+        resultVerifyPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
 
     }
 
-   //---------------------------------------
-// QR Code
-//---------------------------------------
 
-const qr =
-document.getElementById("mkQRCode");
+    //================================================
+    // HIDE STUDENT RESULT PAGE
+    //================================================
 
-if(qr){
+    const studentResultPage =
+        document.getElementById("studentResultPage");
 
-    const verifyURL =
-        window.location.origin +
-        window.location.pathname +
-        "?verifyQR=" +
-        encodeURIComponent(m.regNo) +
-        "&paper=" +
-        encodeURIComponent(m.paperName);
+    if(studentResultPage){
 
-    generateMarksheetQR(verifyURL);
+        studentResultPage.classList.add("hidden");
 
-}
+        studentResultPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
 
-    //---------------------------------------
-    // Scroll Top
-    //---------------------------------------
+    }
+
+
+    //================================================
+    // SHOW MARKSHEET PAGE
+    //================================================
+
+    const marksheetPage =
+        document.getElementById("marksheetPage");
+
+    if(marksheetPage){
+
+        marksheetPage.classList.remove("hidden");
+
+        marksheetPage.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+    }
+
+
+    //================================================
+    // STUDENT DETAILS
+    //================================================
+
+    const mkMarksheetNo =
+        document.getElementById("mkMarksheetNo");
+
+    if(mkMarksheetNo){
+        mkMarksheetNo.textContent =
+            m.marksheetNo || "";
+    }
+
+
+    const mkRegNo =
+        document.getElementById("mkRegNo");
+
+    if(mkRegNo){
+        mkRegNo.textContent =
+            m.regNo || "";
+    }
+
+
+    const mkStudentName =
+        document.getElementById("mkStudentName");
+
+    if(mkStudentName){
+        mkStudentName.textContent =
+            m.studentName || "";
+    }
+
+
+    const mkCourse =
+        document.getElementById("mkCourse");
+
+    if(mkCourse){
+        mkCourse.textContent =
+            m.course || "";
+    }
+
+
+    const mkPaperName =
+        document.getElementById("mkPaperName");
+
+    if(mkPaperName){
+        mkPaperName.textContent =
+            m.paperName || "";
+    }
+
+
+    const mkResultDate =
+        document.getElementById("mkResultDate");
+
+    if(mkResultDate){
+        mkResultDate.textContent =
+            m.resultDate || "";
+    }
+
+
+    const mkIssueDate =
+        document.getElementById("mkIssueDate");
+
+    if(mkIssueDate){
+        mkIssueDate.textContent =
+            m.issueDate || "";
+    }
+
+
+    const mkExamDate =
+        document.getElementById("mkExamDate");
+
+    if(mkExamDate){
+        mkExamDate.textContent =
+            m.examDate || "";
+    }
+
+
+    const mkExamCode =
+        document.getElementById("mkExamCode");
+
+    if(mkExamCode){
+        mkExamCode.textContent =
+            m.examCode || "";
+    }
+
+
+    //================================================
+    // MARKS
+    //================================================
+
+    const mkTheory =
+        document.getElementById("mkTheory");
+
+    if(mkTheory){
+        mkTheory.textContent =
+            m.theory || "";
+    }
+
+
+    const mkPractical =
+        document.getElementById("mkPractical");
+
+    if(mkPractical){
+        mkPractical.textContent =
+            m.practical || "";
+    }
+
+
+    const mkViva =
+        document.getElementById("mkViva");
+
+    if(mkViva){
+        mkViva.textContent =
+            m.viva || "";
+    }
+
+
+    const mkNotes =
+        document.getElementById("mkNotes");
+
+    if(mkNotes){
+        mkNotes.textContent =
+            m.notes || "";
+    }
+
+
+    const mkBehaviour =
+        document.getElementById("mkBehaviour");
+
+    if(mkBehaviour){
+        mkBehaviour.textContent =
+            m.behaviour || "";
+    }
+
+
+    const mkProject =
+        document.getElementById("mkProject");
+
+    if(mkProject){
+        mkProject.textContent =
+            m.project || "";
+    }
+
+
+    const mkTotal =
+        document.getElementById("mkTotal");
+
+    if(mkTotal){
+        mkTotal.textContent =
+            m.totalMarks || "";
+    }
+
+
+    const mkPercentage =
+        document.getElementById("mkPercentage");
+
+    if(mkPercentage){
+        mkPercentage.textContent =
+            m.percentage || "";
+    }
+
+
+    const mkGrade =
+        document.getElementById("mkGrade");
+
+    if(mkGrade){
+        mkGrade.textContent =
+            m.grade || "";
+    }
+
+
+    const mkResult =
+        document.getElementById("mkResult");
+
+    if(mkResult){
+        mkResult.textContent =
+            m.result || "";
+    }
+
+
+    //================================================
+    // STUDENT IMAGE
+    //================================================
+
+    const photo =
+        document.getElementById("mkStudentPhoto");
+
+    if(photo){
+
+        photo.src =
+            (m.regNo || "") + ".jpeg";
+
+        photo.onerror =
+            function(){
+
+                this.onerror = null;
+
+                this.src =
+                    "no-photo.jpeg";
+
+            };
+
+    }
+
+
+    //================================================
+    // QR CODE
+    //================================================
+
+    const qr =
+        document.getElementById("mkQRCode");
+
+    if(qr){
+
+        const verifyURL =
+            window.location.origin +
+            window.location.pathname +
+            "?verifyQR=" +
+            encodeURIComponent(
+                m.regNo || ""
+            ) +
+            "&paper=" +
+            encodeURIComponent(
+                m.paperName || ""
+            );
+
+
+        generateMarksheetQR(
+            verifyURL
+        );
+
+    }
+
+
+    //================================================
+    // SCROLL TO TOP
+    //================================================
 
     window.scrollTo({
 
-        top:0,
+        top: 0,
 
-        behavior:"smooth"
+        behavior: "smooth"
 
     });
 
@@ -8438,7 +8620,7 @@ function backToResultVerify(){
 
     // Verification page show
     const resultVerificationPage =
-        document.getElementById("resultVerificationPage");
+        document.getElementById("resultVerifyPage");
 
     if(resultVerificationPage){
         resultVerificationPage.style.display = "block";
