@@ -3672,20 +3672,44 @@ function stopTimer() {
 // SUBMIT TEST
 //====================================================
 
-function submitTest(autoSubmit = false) {
+//====================================================
+// SUBMIT TEST - RATE LIMIT SAFE VERSION
+//====================================================
+
+let submitInProgress = false;
+let submitRetryCount = 0;
+const MAX_SUBMIT_RETRIES = 3;
+
+
+//----------------------------------------------------
+// WAIT BEFORE RETRY
+//----------------------------------------------------
+
+function submitWait(ms) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+
+//----------------------------------------------------
+// SUBMIT TEST
+//----------------------------------------------------
+
+async function submitTest(autoSubmit = false) {
 
     //------------------------------------------
-    // Prevent Duplicate Submit
+    // HARD DUPLICATE PROTECTION
     //------------------------------------------
 
-    if (examSubmitted) {
-
+    if (examSubmitted || submitInProgress) {
+        console.log("Submit already in progress.");
         return;
-
     }
 
+
     //------------------------------------------
-    // Manual Confirmation
+    // MANUAL CONFIRMATION
     //------------------------------------------
 
     if (!autoSubmit) {
@@ -3695,31 +3719,38 @@ function submitTest(autoSubmit = false) {
         );
 
         if (!ok) {
-
             return;
-
         }
-
     }
 
+
     //------------------------------------------
-    // Lock Exam
+    // LOCK CLIENT IMMEDIATELY
     //------------------------------------------
 
+    submitInProgress = true;
     examSubmitted = true;
-
     focusLock = true;
-
     examStarted = false;
 
+
     //------------------------------------------
-    // Stop Timer
+    // STOP ALL EXAM TIMERS / CHECKERS
     //------------------------------------------
 
     stopTimer();
+    stopStatusChecker();
+
+    if (typeof studentTimeChecker !== "undefined" &&
+        studentTimeChecker !== null) {
+
+        clearInterval(studentTimeChecker);
+        studentTimeChecker = null;
+    }
+
 
     //------------------------------------------
-    // Disable Submit Button
+    // DISABLE BUTTON
     //------------------------------------------
 
     const submitBtn =
@@ -3729,127 +3760,300 @@ function submitTest(autoSubmit = false) {
 
         submitBtn.disabled = true;
 
-        submitBtn.innerHTML = "Submitting...";
+        submitBtn.innerHTML =
+            "Submitting...";
 
+        submitBtn.style.pointerEvents =
+            "none";
     }
 
+
     //------------------------------------------
-    // Data
+    // PREPARE DATA
     //------------------------------------------
-const unattemptedCount = answers.filter(answer => answer === "").length;
+
+    const unattemptedCount =
+        answers.filter(function(answer) {
+            return answer === "";
+        }).length;
+
+
     const payload = {
 
-        name: studentName,
+        name:
+            studentName,
 
-        regNo: regNo,
+        regNo:
+            regNo,
 
-        paperName: paperName,
+        paperName:
+            paperName,
 
-        submitReason: submitReason,
+        submitReason:
+            submitReason,
 
-        answers: answers,
-        questions: questions,
-     unattempted: unattemptedCount,
-          passingMarks: passingMarks
+        answers:
+            answers,
 
+        questions:
+            questions,
+
+        unattempted:
+            unattemptedCount,
+
+        passingMarks:
+            passingMarks
     };
 
-    console.log(payload);
+
+    console.log(
+        "IKON SUBMIT START",
+        payload
+    );
+
 
     //------------------------------------------
-    // Send
+    // SUBMIT WITH LIMITED RETRY
     //------------------------------------------
 
-    fetch(SCRIPT_URL, {
+    let lastError = "";
 
-        method: "POST",
 
-        body: JSON.stringify(payload)
+    for (
+        let attempt = 1;
+        attempt <= MAX_SUBMIT_RETRIES + 1;
+        attempt++
+    ) {
 
-    })
+        try {
 
-    .then(function (res) {
-
-        return res.text();
-
-    })
-
-    .then(function (result) {
-
-        result = result.trim();
-
-        console.log(result);
-
-        //--------------------------------------
-        // Success
-        //--------------------------------------
-
-        if (result === "SUCCESS") {
-
-            showSuccess();
-
-            return;
-
-        }
-
-        //--------------------------------------
-        // Already Submitted
-        //--------------------------------------
-
-        if (result === "ALREADY_SUBMITTED") {
-
-            alert(
-                "This paper has already been submitted."
+            console.log(
+                "Submit attempt:",
+                attempt
             );
 
-            showSuccess();
 
-            return;
+            const response =
+                await fetch(
+                    SCRIPT_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "text/plain;charset=utf-8"
+                        },
+
+                        body:
+                            JSON.stringify(payload),
+
+                        cache:
+                            "no-store"
+                    }
+                );
+
+
+            const result =
+                (
+                    await response.text()
+                ).trim();
+
+
+            console.log(
+                "Submit response:",
+                result
+            );
+
+
+            //----------------------------------
+            // SUCCESS
+            //----------------------------------
+
+            if (
+                result === "SUCCESS"
+            ) {
+
+                submitRetryCount = 0;
+
+                showSuccess();
+
+                return;
+            }
+
+
+            //----------------------------------
+            // ALREADY SUBMITTED
+            //----------------------------------
+
+            if (
+                result ===
+                "ALREADY_SUBMITTED"
+            ) {
+
+                submitRetryCount = 0;
+
+                showSuccess();
+
+                return;
+            }
+
+
+            //----------------------------------
+            // RATE LIMIT
+            //----------------------------------
+
+            const rateLimited =
+                result
+                    .toLowerCase()
+                    .includes(
+                        "rate limit"
+                    ) ||
+                result
+                    .toLowerCase()
+                    .includes(
+                        "too many"
+                    ) ||
+                result
+                    .toLowerCase()
+                    .includes(
+                        "quota"
+                    ) ||
+                response.status === 429;
+
+
+            if (
+                rateLimited &&
+                attempt <= MAX_SUBMIT_RETRIES
+            ) {
+
+                const waitTime =
+                    attempt === 1
+                        ? 3000
+                        : attempt === 2
+                            ? 7000
+                            : 15000;
+
+
+                console.log(
+                    "Rate limited. Retrying after:",
+                    waitTime
+                );
+
+
+                if (submitBtn) {
+
+                    submitBtn.innerHTML =
+                        "Please wait...";
+
+                }
+
+
+                await submitWait(
+                    waitTime
+                );
+
+                continue;
+            }
+
+
+            //----------------------------------
+            // OTHER SERVER ERROR
+            //----------------------------------
+
+            lastError =
+                result ||
+                (
+                    "Server Error " +
+                    response.status
+                );
+
+            break;
 
         }
+        catch (error) {
 
-        //--------------------------------------
-        // Other Error
-        //--------------------------------------
+            console.error(
+                "Submit network error:",
+                error
+            );
 
-        examSubmitted = false;
 
-        focusLock = false;
+            lastError =
+                error.message ||
+                "Network error";
 
-        alert(result);
 
-        if (submitBtn) {
+            //----------------------------------
+            // NETWORK RETRY
+            //----------------------------------
 
-            submitBtn.disabled = false;
+            if (
+                attempt <= MAX_SUBMIT_RETRIES
+            ) {
 
-            submitBtn.innerHTML = "Submit Test";
+                const waitTime =
+                    attempt * 4000;
 
+
+                if (submitBtn) {
+
+                    submitBtn.innerHTML =
+                        "Reconnecting...";
+
+                }
+
+
+                await submitWait(
+                    waitTime
+                );
+
+                continue;
+            }
+
+
+            break;
         }
+    }
 
-    })
 
-    .catch(function (err) {
+    //------------------------------------------
+    // FINAL FAILURE
+    //------------------------------------------
 
-        console.log(err);
+    console.error(
+        "FINAL SUBMIT ERROR:",
+        lastError
+    );
 
-        examSubmitted = false;
 
-        focusLock = false;
+    /*
+     * IMPORTANT:
+     * We do NOT immediately unlock the exam.
+     * This prevents accidental second submission.
+     */
 
-        alert(
-            "Unable to submit your responses."
-        );
+    if (submitBtn) {
 
-        if (submitBtn) {
+        submitBtn.innerHTML =
+            "Submission Pending...";
 
-            submitBtn.disabled = false;
+        submitBtn.disabled =
+            true;
+    }
 
-            submitBtn.innerHTML = "Submit Test";
 
-        }
+    alert(
+        "Your submission could not be confirmed because the server is busy.\n\n" +
+        "Please wait a moment and do not submit again."
+    );
 
-    });
 
+    submitInProgress = false;
+
+    /*
+     * Keep examSubmitted TRUE so another click
+     * cannot create duplicate submissions.
+     */
 }
 //====================================================
 // PART 3B
