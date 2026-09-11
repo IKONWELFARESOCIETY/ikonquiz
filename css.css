@@ -19847,3 +19847,779 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+/* ============================================================
+   IKON PAPER SELECTION - SAFE PREMIUM VERSION
+   IMPORTANT:
+   DOES NOT OVERRIDE .hidden
+   DOES NOT AFFECT LOGIN PAGE
+   ============================================================ */
+
+
+/* ============================================================
+   1. HIDDEN STATE — MOST IMPORTANT
+   ============================================================ */
+
+#theoryPaperPage.hidden,
+#practicalPaperPage.hidden {
+    display: none !important;
+}
+
+
+/* ============================================================
+   2. THEORY PAGE - ONLY WHEN VISIBLE
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) {
+
+    width: 100%;
+    min-height: calc(100vh - 170px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    padding: 45px 18px 60px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(0,91,234,.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(0,184,255,.08),
+            transparent 32%
+        ),
+        #f7faff;
+}
+
+
+/* ============================================================
+   3. PRACTICAL PAGE - ONLY WHEN VISIBLE
+   ============================================================ */
+
+#practicalPaperPage:not(.hidden) {
+
+    width: 100%;
+    min-height: calc(100vh - 170px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    padding: 45px 18px 60px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(8,166,106,.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(0,200,140,.07),
+            transparent 32%
+        ),
+        #f7fbf9;
+}
+
+
+/* ============================================================
+   4. MAIN PAPER CARD
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) .examTypeContainer,
+#practicalPaperPage:not(.hidden) .examTypeContainer {
+
+    width: 100%;
+    max-width: 570px;
+
+    box-sizing: border-box;
+
+    position: relative;
+
+    padding: 42px 42px 35px;
+
+    background: rgba(255,255,255,.98);
+
+    border-radius: 26px;
+
+    border: 1px solid rgba(20,50,90,.09);
+
+    box-shadow:
+        0 25px 65px rgba(20,45,80,.12),
+        0 8px 22px rgba(20,45,80,.05);
+
+    text-align: center;
+
+    overflow: hidden;
+
+    animation:
+        ikonPaperOpen .45s cubic-bezier(.22,1,.36,1);
+}
+
+
+/* Theory card */
+
+#theoryPaperPage:not(.hidden) .examTypeContainer {
+
+    border-top: 4px solid #006bea;
+}
+
+
+/* Practical card */
+
+#practicalPaperPage:not(.hidden) .examTypeContainer {
+
+    border-top: 4px solid #08a66a;
+}
+
+
+/* ============================================================
+   5. HEADING
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) h3,
+#practicalPaperPage:not(.hidden) h3 {
+
+    margin: 0 0 25px;
+
+    color: #102a43;
+
+    font-size: 25px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    letter-spacing: -.4px;
+}
+
+
+/* ============================================================
+   6. ICON
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) h3::before,
+#practicalPaperPage:not(.hidden) h3::before {
+
+    content: "";
+
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    font-size: 29px;
+
+    animation: ikonPaperFloat 3s ease-in-out infinite;
+}
+
+
+/* Theory icon */
+
+#theoryPaperPage:not(.hidden) h3::before {
+
+    content: "📝";
+
+    background: #edf5ff;
+
+    border: 1px solid #d6e8fb;
+
+    box-shadow:
+        0 10px 24px rgba(0,91,234,.10);
+}
+
+
+/* Practical icon */
+
+#practicalPaperPage:not(.hidden) h3::before {
+
+    content: "💻";
+
+    background: #eaf9f2;
+
+    border: 1px solid #d4eddf;
+
+    box-shadow:
+        0 10px 24px rgba(8,166,106,.09);
+}
+
+
+/* ============================================================
+   7. SUBTITLE
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) h3::after,
+#practicalPaperPage:not(.hidden) h3::after {
+
+    content: "Select your paper to continue";
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #829ab1;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: .1px;
+}
+
+
+/* ============================================================
+   8. THEORY SELECT
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) #theoryPaperSelect {
+
+    width: 100%;
+    height: 58px;
+
+    box-sizing: border-box;
+
+    padding: 0 17px;
+
+    border-radius: 14px;
+
+    border: 1px solid #d2e1ef;
+
+    outline: none;
+
+    background: #f8fbff;
+
+    color: #243b53;
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease,
+        transform .2s ease;
+}
+
+
+#theoryPaperPage:not(.hidden) #theoryPaperSelect:hover {
+
+    background: #fff;
+
+    border-color: #91b7df;
+
+    transform: translateY(-1px);
+}
+
+
+#theoryPaperPage:not(.hidden) #theoryPaperSelect:focus {
+
+    background: #fff;
+
+    border-color: #006bea;
+
+    box-shadow:
+        0 0 0 4px rgba(0,91,234,.09),
+        0 8px 20px rgba(0,91,234,.06);
+}
+
+
+/* ============================================================
+   9. PRACTICAL SELECT
+   ============================================================ */
+
+#practicalPaperPage:not(.hidden) #practicalPaperSelect {
+
+    width: 100%;
+    height: 58px;
+
+    box-sizing: border-box;
+
+    padding: 0 17px;
+
+    border-radius: 14px;
+
+    border: 1px solid #d4e5dd;
+
+    outline: none;
+
+    background: #f8fcfa;
+
+    color: #243b53;
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease,
+        transform .2s ease;
+}
+
+
+#practicalPaperPage:not(.hidden) #practicalPaperSelect:hover {
+
+    background: #fff;
+
+    border-color: #8fc3ab;
+
+    transform: translateY(-1px);
+}
+
+
+#practicalPaperPage:not(.hidden) #practicalPaperSelect:focus {
+
+    background: #fff;
+
+    border-color: #08a66a;
+
+    box-shadow:
+        0 0 0 4px rgba(8,166,106,.09),
+        0 8px 20px rgba(8,166,106,.06);
+}
+
+
+/* ============================================================
+   10. THEORY CONTINUE BUTTON
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn {
+
+    position: relative;
+
+    width: 100%;
+    height: 55px;
+
+    margin-top: 19px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #004fc4,
+            #006bea,
+            #0085ff
+        );
+
+    color: #fff;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: .15px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 26px rgba(0,91,234,.22);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+}
+
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn:hover {
+
+    transform: translateY(-3px);
+
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 17px 32px rgba(0,91,234,.28);
+}
+
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn:active {
+
+    transform: scale(.985);
+}
+
+
+/* ============================================================
+   11. PRACTICAL CONTINUE BUTTON
+   ============================================================ */
+
+#practicalPaperPage:not(.hidden) .practicalExamBtn {
+
+    position: relative;
+
+    width: 100%;
+    height: 55px;
+
+    margin-top: 19px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #087a50,
+            #08a66a,
+            #00bd7c
+        );
+
+    color: #fff;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: .15px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 26px rgba(8,166,106,.20);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+}
+
+
+#practicalPaperPage:not(.hidden) .practicalExamBtn:hover {
+
+    transform: translateY(-3px);
+
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 17px 32px rgba(8,166,106,.27);
+}
+
+
+#practicalPaperPage:not(.hidden) .practicalExamBtn:active {
+
+    transform: scale(.985);
+}
+
+
+/* ============================================================
+   12. BUTTON SHINE
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn::before,
+#practicalPaperPage:not(.hidden) .practicalExamBtn::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -110%;
+
+    width: 65%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.22),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+}
+
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn:hover::before,
+#practicalPaperPage:not(.hidden) .practicalExamBtn:hover::before {
+
+    animation: ikonButtonShine .7s ease;
+}
+
+
+/* ============================================================
+   13. BACK BUTTON
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) .backLoginBtn,
+#practicalPaperPage:not(.hidden) .backLoginBtn {
+
+    width: 100%;
+    height: 47px;
+
+    margin-top: 10px;
+
+    border-radius: 13px;
+
+    background: #fff;
+
+    color: #526b82;
+
+    font-size: 13px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+/* Theory back */
+
+#theoryPaperPage:not(.hidden) .backLoginBtn {
+
+    border: 1px solid #d4e1ed;
+}
+
+
+#theoryPaperPage:not(.hidden) .backLoginBtn:hover {
+
+    background: #f4f8fd;
+
+    border-color: #a8c1da;
+
+    color: #005bea;
+
+    transform: translateY(-1px);
+}
+
+
+/* Practical back */
+
+#practicalPaperPage:not(.hidden) .backLoginBtn {
+
+    border: 1px solid #d5e4dd;
+}
+
+
+#practicalPaperPage:not(.hidden) .backLoginBtn:hover {
+
+    background: #f3faf7;
+
+    border-color: #a4c8b6;
+
+    color: #078a5a;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   14. LOADING STATE
+   ============================================================ */
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn:disabled,
+#practicalPaperPage:not(.hidden) .practicalExamBtn:disabled {
+
+    color: transparent !important;
+
+    cursor: wait !important;
+
+    opacity: 1 !important;
+
+    transform: none !important;
+}
+
+
+/* Loading spinner */
+
+#theoryPaperPage:not(.hidden) .theoryExamBtn:disabled::after,
+#practicalPaperPage:not(.hidden) .practicalExamBtn:disabled::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    margin-left: -10px;
+    margin-top: -10px;
+
+    border-radius: 50%;
+
+    border: 3px solid rgba(255,255,255,.35);
+
+    border-top-color: #fff;
+
+    animation: ikonSpinner .7s linear infinite;
+}
+
+
+/* ============================================================
+   15. ANIMATIONS
+   ============================================================ */
+
+@keyframes ikonPaperOpen {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateY(22px)
+            scale(.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+@keyframes ikonPaperFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+
+@keyframes ikonButtonShine {
+
+    0% {
+        left: -110%;
+    }
+
+    100% {
+        left: 140%;
+    }
+}
+
+
+@keyframes ikonSpinner {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   16. MOBILE
+   ============================================================ */
+
+@media (max-width:700px) {
+
+    #theoryPaperPage:not(.hidden),
+    #practicalPaperPage:not(.hidden) {
+
+        min-height: calc(100vh - 130px);
+
+        padding: 30px 14px 45px;
+    }
+
+
+    #theoryPaperPage:not(.hidden) .examTypeContainer,
+    #practicalPaperPage:not(.hidden) .examTypeContainer {
+
+        padding: 34px 24px 29px;
+
+        border-radius: 23px;
+    }
+
+
+    #theoryPaperPage:not(.hidden) h3,
+    #practicalPaperPage:not(.hidden) h3 {
+
+        font-size: 23px;
+    }
+
+
+    #theoryPaperPage:not(.hidden) h3::before,
+    #practicalPaperPage:not(.hidden) h3::before {
+
+        width: 60px;
+        height: 60px;
+
+        font-size: 27px;
+    }
+
+
+    #theoryPaperPage:not(.hidden) #theoryPaperSelect,
+    #practicalPaperPage:not(.hidden) #practicalPaperSelect {
+
+        height: 55px;
+
+        font-size: 14px;
+    }
+
+
+    #theoryPaperPage:not(.hidden) .theoryExamBtn,
+    #practicalPaperPage:not(.hidden) .practicalExamBtn {
+
+        height: 53px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* ============================================================
+   17. SMALL MOBILE
+   ============================================================ */
+
+@media (max-width:400px) {
+
+    #theoryPaperPage:not(.hidden) .examTypeContainer,
+    #practicalPaperPage:not(.hidden) .examTypeContainer {
+
+        padding: 30px 18px 25px;
+
+        border-radius: 21px;
+    }
+
+    #theoryPaperPage:not(.hidden) h3,
+    #practicalPaperPage:not(.hidden) h3 {
+
+        font-size: 21px;
+    }
+}
