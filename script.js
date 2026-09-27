@@ -22011,9 +22011,10 @@ function resetExamFormEligibility() {
         submitBtn.disabled = true;
     }
 
-    if (downloadOptions) {
-        downloadOptions.style.display = "none";
-    }
+   // Downloads remain hidden until form submission succeeds
+if (downloadOptions) {
+    downloadOptions.style.display = "none";
+}
 
     // Update Paper field in Student Details
     updateExamFormSelectedPaper();
@@ -22462,14 +22463,7 @@ async function submitExamForm() {
     return;
 }
 
-// Hall Ticket is allowed only after successful form submission
-if (
-    !examFormStudentData.formNo ||
-    !String(examFormStudentData.formNo).trim()
-) {
-    alert("Please submit your Exam Form first. Hall Ticket download is locked.");
-    return;
-}
+
 
     const selectedPaper = String(paperSelect.value).trim();
     const selectedRegNo = String(examFormStudentData.regNo || "").trim();
@@ -22680,6 +22674,14 @@ function downloadExamHallTicket() {
         alert("Please check eligibility first.");
         return;
     }
+    // Hall Ticket is allowed only after successful form submission
+if (
+    !examFormStudentData.formNo ||
+    !String(examFormStudentData.formNo).trim()
+) {
+    alert("Please submit your Exam Form first. Hall Ticket download is locked.");
+    return;
+}
 
     const paperSelect =
         document.getElementById("examFormPaperSelect");
