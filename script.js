@@ -22536,6 +22536,11 @@ function downloadExamHallTicket() {
 // Marksheet print flow remains untouched
 // ===============================================
 
+// ===============================================
+// EXAM FORM PDF - ISOLATED A4 PRINT
+// Marksheet print flow remains untouched
+// ===============================================
+
 function downloadExamFormPDF() {
 
     if (!examFormStudentData) {
@@ -22563,40 +22568,31 @@ function downloadExamFormPDF() {
     }
 
     // Fill existing Exam Form template
-    const setText = function(id, value) {
-        const element = document.getElementById(id);
+    document.getElementById("printExamRegNo").textContent =
+        examFormStudentData.regNo || "—";
 
-        if (element) {
-            element.textContent =
-                value !== undefined && value !== null && value !== ""
-                    ? value
-                    : "—";
-        }
-    };
+    document.getElementById("printExamStudentName").textContent =
+        examFormStudentData.name || "—";
 
-    setText("printExamRegNo", examFormStudentData.regNo);
-    setText("printExamStudentName", examFormStudentData.name);
-    setText("printExamCourse", examFormStudentData.course);
-    setText("printExamPaper", selectedPaper);
-    setText("printExamBillDate", examFormStudentData.billDate);
-    setText("printExamBillNo", examFormStudentData.billNo);
-    setText("printExamBillAmount", examFormStudentData.billAmount);
+    document.getElementById("printExamCourse").textContent =
+        examFormStudentData.course || "—";
+
+    document.getElementById("printExamPaper").textContent =
+        selectedPaper;
+
+    document.getElementById("printExamBillDate").textContent =
+        examFormStudentData.billDate || "—";
+
+    document.getElementById("printExamBillNo").textContent =
+        examFormStudentData.billNo || "—";
+
+    document.getElementById("printExamBillAmount").textContent =
+        examFormStudentData.billAmount || "—";
 
     // Clone only Exam Form, not the entire website
     const printClone = sourceArea.cloneNode(true);
-
     printClone.removeAttribute("id");
-    printClone.classList.add("exam-form-print");
-
-    // Force the cloned form to use the available page width
     printClone.style.display = "block";
-    printClone.style.width = "100%";
-    printClone.style.maxWidth = "100%";
-    printClone.style.minWidth = "0";
-    printClone.style.margin = "0";
-    printClone.style.padding = "0";
-    printClone.style.overflow = "visible";
-    printClone.style.boxSizing = "border-box";
 
     // Convert relative image paths to absolute URLs
     printClone.querySelectorAll("img").forEach(function(img) {
@@ -22620,13 +22616,10 @@ function downloadExamFormPDF() {
 
     const printStyles = `
         * {
-            box-sizing: border-box !important;
+            box-sizing: border-box;
         }
 
-        html,
-        body {
-            width: 100%;
-            max-width: 100%;
+        html, body {
             margin: 0;
             padding: 0;
             background: #ffffff;
@@ -22636,46 +22629,35 @@ function downloadExamFormPDF() {
             print-color-adjust: exact;
         }
 
+        /* A4 page with safe left-right margins */
         @page {
             size: A4 portrait;
-            margin: 10mm;
-        }
-
-        body {
-            overflow-x: hidden;
+            margin: 15mm 16mm;
         }
 
         .exam-form-print {
             display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            margin: 0 auto !important;
-            padding: 0 !important;
-            overflow: visible !important;
-            background: #ffffff;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            background: #fff;
             color: #172033;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
-            line-height: 1.4;
+            overflow-wrap: break-word;
         }
 
-        .exam-form-print * {
-            max-width: 100%;
-            box-sizing: border-box !important;
-        }
-
+        /* Header */
         .exam-print-header {
-            width: 100%;
             text-align: center;
-            margin: 0 0 12px;
+            margin: 0 0 15px;
         }
 
         .exam-print-logo {
             display: block;
-            width: 68px;
-            height: 68px;
-            max-width: 68px;
+            width: 75px;
+            height: 75px;
             object-fit: contain;
             margin: 0 auto 5px;
         }
@@ -22688,27 +22670,24 @@ function downloadExamFormPDF() {
         }
 
         .exam-print-tagline {
-            margin: 3px 0 8px;
+            margin: 3px 0 9px;
             font-size: 10px;
         }
 
         .exam-print-line {
-            width: 100%;
             height: 2px;
             background: #1747c8;
-            margin: 0 0 10px;
+            margin: 0 0 11px;
         }
 
         .exam-print-header h2 {
             margin: 0;
-            font-size: 15px;
-            line-height: 1.3;
+            font-size: 16px;
         }
 
+        /* Sections */
         .exam-print-section {
-            width: 100%;
-            max-width: 100%;
-            margin-top: 13px;
+            margin-top: 14px;
             break-inside: avoid;
             page-break-inside: avoid;
         }
@@ -22719,31 +22698,26 @@ function downloadExamFormPDF() {
             background: #eef3ff;
             border-left: 3px solid #1747c8;
             color: #1747c8;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.3;
         }
 
+        /* Student details */
         .exam-print-table {
-            display: table;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            table-layout: fixed;
+            width: 100%;
             border-collapse: collapse;
-            border-spacing: 0;
-            font-size: 12px;
+            table-layout: fixed;
+            font-size: 13px;
         }
 
         .exam-print-table th,
         .exam-print-table td {
-            width: auto;
             border: 1px solid #aeb8c8;
             padding: 8px 10px;
-            line-height: 1.35;
+            line-height: 1.4;
             text-align: left;
             vertical-align: middle;
-            overflow-wrap: anywhere;
-            word-break: normal;
+            overflow-wrap: break-word;
         }
 
         .exam-print-table th {
@@ -22752,68 +22726,81 @@ function downloadExamFormPDF() {
             font-weight: 600;
         }
 
-        .exam-guidelines {
-            width: 100%;
-            max-width: 100%;
-            font-size: 11px;
+        .exam-print-table td {
+            font-weight: 500;
         }
 
+        /* Guidelines: one point smaller than details */
         .exam-guidelines ol {
-            margin: 6px 0 0;
-            padding-left: 20px;
-            font-size: 11px;
-            line-height: 1.45;
+            margin: 7px 0 0;
+            padding-left: 22px;
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .exam-guidelines li {
             margin: 0 0 5px;
-            padding-left: 2px;
-            overflow-wrap: anywhere;
+            padding-left: 3px;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
+        /* Signature area */
         .exam-print-signatures {
             display: flex;
-            width: 100%;
-            max-width: 100%;
             justify-content: space-between;
             align-items: flex-end;
             gap: 25px;
-            margin-top: 24px;
+            width: 100%;
+            margin-top: 35px;
             break-inside: avoid;
             page-break-inside: avoid;
         }
 
         .exam-sign-box {
+            position: relative;
             width: 44%;
-            min-width: 0;
+            min-height: 95px;
             text-align: center;
-            font-size: 10px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
         }
 
+        /* Signature lines aligned at the same level */
         .exam-sign-space {
             width: 100%;
-            height: 30px;
-            border-bottom: 1px solid #333333;
-            margin-bottom: 6px;
+            height: 1px;
+            border-bottom: 1px solid #333;
+            margin: 0 0 7px;
+            flex-shrink: 0;
         }
 
         .exam-sign-box p {
             margin: 0 0 4px;
+            line-height: 1.3;
         }
 
+        /* Issued By image */
         .exam-authorized-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative;
+            padding-top: 55px;
         }
 
         .exam-issued-by-image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
             display: block;
-            width: auto;
-            max-width: 110px;
-            max-height: 42px;
+            width: 135px;
+            max-width: 100%;
+            height: 48px;
             object-fit: contain;
-            margin: 0 auto 4px;
+            object-position: center;
+            margin: 0;
         }
 
         .exam-authorized-box .exam-sign-space {
@@ -22821,22 +22808,25 @@ function downloadExamFormPDF() {
         }
 
         .exam-authorized-box strong {
-            font-size: 10px;
+            display: block;
+            font-size: 12px;
+            line-height: 1.3;
         }
 
         .exam-authorized-box span {
+            display: block;
             margin-top: 3px;
-            font-size: 9px;
+            font-size: 10px;
+            line-height: 1.3;
         }
 
+        /* Footer */
         .exam-print-footer {
-            width: 100%;
-            max-width: 100%;
-            margin-top: 17px;
-            padding-top: 7px;
+            margin-top: 20px;
+            padding-top: 8px;
             border-top: 1px solid #cbd2df;
             text-align: center;
-            color: #555555;
+            color: #555;
             font-size: 9px;
             line-height: 1.4;
             break-inside: avoid;
@@ -22848,34 +22838,23 @@ function downloadExamFormPDF() {
         }
 
         @media print {
-            html,
-            body {
-                width: 100%;
-                max-width: 100%;
+            html, body {
+                width: auto;
                 height: auto;
-                margin: 0;
-                padding: 0;
-                overflow: visible !important;
+                overflow: visible;
             }
 
             .exam-form-print {
                 display: block !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                min-width: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: visible !important;
-            }
-
-            table {
-                width: 100% !important;
-                max-width: 100% !important;
-                table-layout: fixed;
-            }
-
-            img {
+                width: 100%;
                 max-width: 100%;
+            }
+
+            .exam-print-section,
+            .exam-print-signatures,
+            .exam-print-footer {
+                break-inside: avoid;
+                page-break-inside: avoid;
             }
         }
     `;
@@ -22887,7 +22866,6 @@ function downloadExamFormPDF() {
         <html>
         <head>
             <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>IKON Examination Form</title>
             <style>${printStyles}</style>
         </head>
@@ -22923,7 +22901,7 @@ function downloadExamFormPDF() {
 
         setTimeout(function() {
             printWindow.print();
-        }, 500);
+        }, 300);
 
     });
 }
