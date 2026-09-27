@@ -22457,10 +22457,19 @@ async function submitExamForm() {
         return;
     }
 
-    if (!examFormEligible) {
-        alert("Please check eligibility first.");
-        return;
-    }
+   if (!examFormStudentData || !examFormEligible) {
+    alert("Please check eligibility first.");
+    return;
+}
+
+// Hall Ticket is allowed only after successful form submission
+if (
+    !examFormStudentData.formNo ||
+    !String(examFormStudentData.formNo).trim()
+) {
+    alert("Please submit your Exam Form first. Hall Ticket download is locked.");
+    return;
+}
 
     const selectedPaper = String(paperSelect.value).trim();
     const selectedRegNo = String(examFormStudentData.regNo || "").trim();
@@ -22715,7 +22724,14 @@ function downloadExamFormPDF() {
         alert("Please search student details first.");
         return;
     }
-
+// Block PDF until form is submitted
+if (
+    !examFormStudentData.formNo ||
+    !String(examFormStudentData.formNo).trim()
+) {
+    alert("Please submit your Exam Form first. PDF download is locked.");
+    return;
+}
     const paperSelect =
         document.getElementById("examFormPaperSelect");
 
@@ -22740,6 +22756,12 @@ const formNoElement = document.getElementById("printExamFormNo");
 if (formNoElement) {
     formNoElement.textContent =
         examFormStudentData.formNo || "Not Generated";
+}
+    const formNoElement = document.getElementById("printExamFormNo");
+
+if (formNoElement) {
+    formNoElement.textContent =
+        examFormStudentData.formNo || "Form No unavailable";
 }
     // Fill existing Exam Form template
     document.getElementById("printExamRegNo").textContent =
