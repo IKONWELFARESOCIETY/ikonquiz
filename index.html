@@ -286,18 +286,38 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             ">
         </div>
 
-        <!-- FORM SUBMISSION BUTTON -->
+     <!-- Submit Exam Form Button -->
+<button
+    type="button"
+    id="examFormSubmitBtn"
+    class="primary-btn"
+    style="display: none;"
+    onclick="submitExamForm()">
+    Submit Exam Form
+</button>
 
-        <button
-            type="button"
-            id="examFormSubmitBtn"
-            class="primary hidden"
-            onclick="submitExamForm()">
+<!-- Download Options -->
+<div
+    id="examFormDownloadOptions"
+    style="display: none; margin-top: 15px;">
 
-            Submit Exam Form
+    <button
+        type="button"
+        id="downloadExamFormBtn"
+        class="primary-btn"
+        onclick="downloadExamFormPDF()">
+        Download Exam Form
+    </button>
 
-        </button>
+    <button
+        type="button"
+        id="downloadExamHallTicketBtn"
+        class="primary-btn"
+        onclick="downloadExamFormHallTicket()">
+        Download Hall Ticket
+    </button>
 
+</div>
         <!-- BACK BUTTON -->
 
         <button
