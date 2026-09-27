@@ -137,21 +137,164 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             View Result
 
         </button>
-<!-- ================= DOWNLOAD HALL TICKET ================= -->
+<!-- ================= FILL EXAM FORM ================= -->
 
 <button
-    id="hallTicketBtn"
+    type="button"
+    id="examFormBtn"
     class="secondary"
-    onclick="checkHallTicketPublished()">
+    onclick="openExamFormPage()">
 
-    Download Hall Ticket
+    Fill Exam Form
 
 </button>
           <button id="mockTestBtn" class="secondary" onclick="openMockTestModal()">Mock Test</button>
     </div>
 </div>
 
-<!-- ================= MOCK TEST SELECTION MODAL ================= -->
+<!-- ==================================================
+                 STUDENT EXAM FORM PAGE
+================================================== -->
+
+<div id="examFormPage" class="hidden">
+
+    <div class="result-box">
+
+        <h2>📝 Student Exam Form</h2>
+
+        <p>
+            Enter your Registration Number to check your
+            details and examination eligibility.
+        </p>
+
+        <!-- REGISTRATION NUMBER -->
+
+        <label for="examFormRegNo">
+            Registration Number
+        </label>
+
+        <input
+            type="text"
+            id="examFormRegNo"
+            placeholder="Enter Registration Number"
+            autocomplete="off">
+
+        <button
+            type="button"
+            id="examFormSearchBtn"
+            class="primary"
+            onclick="lookupExamFormStudent()">
+
+            Get Student Details
+
+        </button>
+
+        <!-- STUDENT DETAILS -->
+
+        <div
+            id="examFormStudentDetails"
+            class="hidden"
+            style="
+                margin-top:20px;
+                padding:16px;
+                border:1px solid #dbeafe;
+                border-radius:10px;
+                background:#f8fbff;
+                text-align:left;
+            ">
+
+            <h3>Student Details</h3>
+
+            <p>
+                <strong>Registration No:</strong>
+                <span id="examFormDisplayRegNo"></span>
+            </p>
+
+            <p>
+                <strong>Student Name:</strong>
+                <span id="examFormDisplayName"></span>
+            </p>
+
+            <p>
+                <strong>Course:</strong>
+                <span id="examFormDisplayCourse"></span>
+            </p>
+
+        </div>
+
+        <!-- PAPER SELECTION -->
+
+        <div
+            id="examFormPaperSection"
+            class="hidden"
+            style="margin-top:20px;">
+
+            <label for="examFormPaperSelect">
+                Select Examination Paper
+            </label>
+
+            <select
+                id="examFormPaperSelect"
+                onchange="resetExamFormEligibility()">
+
+                <option value="">
+                    -- Select Paper --
+                </option>
+
+            </select>
+
+            <button
+                type="button"
+                id="examFormCheckBtn"
+                class="primary"
+                onclick="checkExamFormEligibility()">
+
+                Check Eligibility
+
+            </button>
+
+        </div>
+
+        <!-- ELIGIBILITY MESSAGE -->
+
+        <div
+            id="examFormEligibilityMessage"
+            style="
+                display:none;
+                margin-top:18px;
+                padding:14px;
+                border-radius:10px;
+                font-weight:600;
+                text-align:center;
+            ">
+        </div>
+
+        <!-- FORM SUBMISSION BUTTON -->
+
+        <button
+            type="button"
+            id="examFormSubmitBtn"
+            class="primary hidden"
+            onclick="submitExamForm()">
+
+            Submit Exam Form
+
+        </button>
+
+        <!-- BACK BUTTON -->
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="backToLoginFromExamForm()">
+
+            ← Back to Login
+
+        </button>
+
+    </div>
+
+</div>
 
 <!-- ==================================================
               MOCK TEST SELECTION MODAL
