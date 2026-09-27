@@ -22410,6 +22410,7 @@ function checkExamFormEligibility() {
 }
 //----------------------------------------------------
 // SUBMIT EXAM FORM - CONNECTED TO APPS SCRIPT
+// Prevents duplicate clicks and handles existing submissions
 //----------------------------------------------------
 
 async function submitExamForm() {
@@ -22418,6 +22419,15 @@ async function submitExamForm() {
     const downloadOptions = document.getElementById("examFormDownloadOptions");
     const paperSelect = document.getElementById("examFormPaperSelect");
     const message = document.getElementById("examFormEligibilityMessage");
+
+    // Prevent rapid double-clicks on the same page
+    if (window.__ikonExamFormSubmitting) {
+        return;
+    }
+
+    // -----------------------------------------------
+    // 1. BASIC VALIDATION
+    // -----------------------------------------------
 
     if (!examFormStudentData) {
         alert("Please search student details first.");
@@ -22434,13 +22444,19 @@ async function submitExamForm() {
         return;
     }
 
-    const selectedPaper = paperSelect.value.trim();
+    const selectedPaper = String(paperSelect.value).trim();
     const selectedRegNo = String(examFormStudentData.regNo || "").trim();
 
     if (!selectedRegNo || !selectedPaper) {
         alert("Registration Number or Paper is missing.");
         return;
     }
+
+    // -----------------------------------------------
+    // 2. LOCK SUBMIT BUTTON
+    // -----------------------------------------------
+
+    window.__ikonExamFormSubmitting = true;
 
     if (submitBtn) {
         submitBtn.disabled = true;
@@ -22450,10 +22466,15 @@ async function submitExamForm() {
     if (message) {
         message.style.display = "block";
         message.style.color = "#1d4ed8";
+        message.style.background = "#eff6ff";
         message.textContent = "Submitting your exam form. Please wait...";
     }
 
     try {
+
+        // -----------------------------------------------
+        // 3. SEND DATA TO APPS SCRIPT
+        // -----------------------------------------------
 
         const response = await fetch(SCRIPT_URL, {
             method: "POST",
@@ -22475,22 +22496,32 @@ async function submitExamForm() {
             data = JSON.parse(responseText);
         } catch (parseError) {
             throw new Error(
-                "Server returned an invalid response: " + responseText.substring(0, 150)
+                "Server returned an invalid response: " +
+                responseText.substring(0, 150)
             );
         }
 
         console.log("Exam Form Submission Response:", data);
 
-        if (data.status === "SUCCESS") {
+        const status = String(data.status || "")
+            .trim()
+            .toUpperCase();
+
+        // -----------------------------------------------
+        // 4. SUCCESSFUL SUBMISSION
+        // -----------------------------------------------
+
+        if (status === "SUCCESS") {
 
             examFormStudentData.selectedPaper = selectedPaper;
-            examFormStudentData.formNo = data.formNo;
+            examFormStudentData.formNo = data.formNo || "";
 
             if (downloadOptions) {
                 downloadOptions.style.display = "block";
             }
 
             if (submitBtn) {
+                submitBtn.disabled = true;
                 submitBtn.style.display = "none";
             }
 
@@ -22500,27 +22531,56 @@ async function submitExamForm() {
                 message.style.background = "#f0fdf4";
                 message.textContent =
                     "Exam form submitted successfully. Form No: " +
-                    data.formNo +
+                    (data.formNo || "Not available") +
                     ". You can now download your documents.";
             }
 
             return;
         }
 
-        if (data.status === "ALREADY_SUBMITTED") {
+        // -----------------------------------------------
+        // 5. FORM ALREADY SUBMITTED
+        // -----------------------------------------------
+
+        if (status === "ALREADY_SUBMITTED") {
+
+            // Save existing submission details for PDF
+            examFormStudentData.selectedPaper = selectedPaper;
+            examFormStudentData.formNo = data.formNo || "";
+
+            // Allow student to access download options
+            if (downloadOptions) {
+                downloadOptions.style.display = "block";
+            }
+
+            // Hide submit button to prevent another attempt
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.display = "none";
+            }
 
             if (message) {
                 message.style.display = "block";
                 message.style.color = "#b45309";
+                message.style.background = "#fffbeb";
                 message.textContent =
                     "This paper has already been submitted. Form No: " +
-                    (data.formNo || "Not available");
+                    (data.formNo || "Not available") +
+                    ". You can download your documents.";
             }
 
             return;
         }
 
-        throw new Error(data.message || data.status || "Exam form submission failed.");
+        // -----------------------------------------------
+        // 6. OTHER SERVER ERRORS
+        // -----------------------------------------------
+
+        throw new Error(
+            data.message ||
+            data.status ||
+            "Exam form submission failed."
+        );
 
     } catch (error) {
 
@@ -22537,6 +22597,11 @@ async function submitExamForm() {
 
     } finally {
 
+        // Release the local click lock
+        window.__ikonExamFormSubmitting = false;
+
+        // Re-enable button only if it is still visible
+        // Success and ALREADY_SUBMITTED keep it hidden
         if (submitBtn && submitBtn.style.display !== "none") {
             submitBtn.disabled = false;
             submitBtn.textContent = "Submit Exam Form";
