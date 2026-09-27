@@ -22186,11 +22186,14 @@ function lookupExamFormStudent() {
             const studentCourse = data.student.course || "";
             const papers = Array.isArray(data.papers) ? data.papers : [];
 
-            setExamFormStudentDetails(
-                studentRegNo,
-                studentName,
-                studentCourse
-            );
+           setExamFormStudentDetails(
+    studentRegNo,
+    studentName,
+    studentCourse,
+    data.student.billDate,
+    data.student.billNo,
+    data.student.billAmount
+);
 // SHOW STUDENT DETAILS
 const detailsBox = document.getElementById("examFormStudentDetails");
 const paperSection = document.getElementById("examFormPaperSection");
@@ -22444,4 +22447,29 @@ function submitExamForm() {
     */
 
     alert("Eligibility verified. Exam Form submission will be enabled after the Exam Form sheet is connected.");
+}
+function setExamFormStudentDetails(
+    regNo,
+    name,
+    course,
+    billDate = "",
+    billNo = "",
+    billAmount = ""
+) {
+    const fields = {
+        examFormDisplayRegNo: regNo,
+        examFormDisplayName: name,
+        examFormDisplayCourse: course,
+        examFormDisplayBillDate: billDate,
+        examFormDisplayBillNo: billNo,
+        examFormDisplayBillAmount: billAmount
+    };
+
+    Object.keys(fields).forEach(function(id) {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = fields[id] || "--";
+        }
+    });
 }
