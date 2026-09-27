@@ -22364,11 +22364,15 @@ function checkExamFormEligibility() {
 
     examFormEligible = false;
 
+    // Show message box
     if (message) {
+        message.style.display = "block";
         message.textContent = "Checking fee eligibility...";
         message.style.color = "#555";
+        message.style.background = "#f1f5f9";
     }
 
+    // Hide submit button until eligibility is confirmed
     if (submitBtn) {
         submitBtn.style.display = "none";
         submitBtn.disabled = true;
@@ -22385,6 +22389,8 @@ function checkExamFormEligibility() {
         "&regNo=" + encodeURIComponent(regNo) +
         "&paper=" + encodeURIComponent(paper);
 
+    console.log("Eligibility API URL:", url);
+
     fetch(url)
         .then(function(res) {
             if (!res.ok) {
@@ -22394,6 +22400,8 @@ function checkExamFormEligibility() {
         })
         .then(function(data) {
 
+            console.log("Eligibility API Response:", data);
+
             const status = String(data.status || "").toUpperCase();
 
             if (status === "ELIGIBLE") {
@@ -22401,13 +22409,15 @@ function checkExamFormEligibility() {
                 examFormEligible = true;
 
                 if (message) {
+                    message.style.display = "block";
                     message.textContent =
-                        data.message || "Eligible. You may proceed with the exam form.";
+                        data.message || "You are eligible to fill this paper's exam form.";
                     message.style.color = "#15803d";
+                    message.style.background = "#f0fdf4";
                 }
 
                 if (submitBtn) {
-                    submitBtn.style.display = "inline-block";
+                    submitBtn.style.display = "block";
                     submitBtn.disabled = false;
                 }
 
@@ -22416,9 +22426,11 @@ function checkExamFormEligibility() {
                 examFormEligible = false;
 
                 if (message) {
+                    message.style.display = "block";
                     message.textContent =
                         data.message || "Not eligible. Please clear the required course fee.";
                     message.style.color = "#b91c1c";
+                    message.style.background = "#fef2f2";
                 }
 
             } else if (status === "NOT_APPLICABLE") {
@@ -22426,9 +22438,11 @@ function checkExamFormEligibility() {
                 examFormEligible = false;
 
                 if (message) {
+                    message.style.display = "block";
                     message.textContent =
                         data.message || "This paper is not applicable to your course.";
                     message.style.color = "#b45309";
+                    message.style.background = "#fffbeb";
                 }
 
             } else {
@@ -22436,9 +22450,12 @@ function checkExamFormEligibility() {
                 examFormEligible = false;
 
                 if (message) {
+                    message.style.display = "block";
                     message.textContent =
-                        data.message || "Unable to verify eligibility. Please contact IKON Admin.";
+                        data.message ||
+                        ("Eligibility check failed. Server status: " + (status || "Unknown"));
                     message.style.color = "#b91c1c";
+                    message.style.background = "#fef2f2";
                 }
             }
         })
@@ -22449,8 +22466,11 @@ function checkExamFormEligibility() {
             examFormEligible = false;
 
             if (message) {
-                message.textContent = "Unable to connect with server. Please try again.";
+                message.style.display = "block";
+                message.textContent =
+                    "Unable to connect with server. " + error.message;
                 message.style.color = "#b91c1c";
+                message.style.background = "#fef2f2";
             }
         })
         .finally(function() {
@@ -22461,7 +22481,6 @@ function checkExamFormEligibility() {
             }
         });
 }
-
 
 //----------------------------------------------------
 // SUBMIT EXAM FORM - BACKEND NOT CONNECTED YET
