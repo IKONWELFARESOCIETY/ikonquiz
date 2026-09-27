@@ -22757,12 +22757,6 @@ if (formNoElement) {
     formNoElement.textContent =
         examFormStudentData.formNo || "Not Generated";
 }
-    const formNoElement = document.getElementById("printExamFormNo");
-
-if (formNoElement) {
-    formNoElement.textContent =
-        examFormStudentData.formNo || "Form No unavailable";
-}
     // Fill existing Exam Form template
     document.getElementById("printExamRegNo").textContent =
         examFormStudentData.regNo || "—";
