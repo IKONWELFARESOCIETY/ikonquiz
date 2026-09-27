@@ -20539,54 +20539,91 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 .exam-print-signatures {
     display: flex;
     justify-content: space-between;
-    gap: 40px;
-    margin-top: 55px;
+    align-items: flex-start;
+    gap: 25px;
+    width: 100%;
+    margin-top: 22px !important;
+    break-inside: avoid;
     page-break-inside: avoid;
 }
 
 .exam-sign-box {
-    width: 45%;
+    position: relative;
+    width: 44%;
+    height: 125px !important;
+    min-height: 125px !important;
+    padding: 0 !important;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px !important;
+    flex: 0 0 44%;
 }
 
+/* Both signature lines stay at exactly the same height */
 .exam-sign-space {
-    height: 35px;
+    position: absolute;
+    left: 0;
+    bottom: 52px;
+    width: 100%;
+    height: 1px;
     border-bottom: 1px solid #333;
-    margin-bottom: 7px;
+    margin: 0 !important;
 }
 
-.exam-sign-box p {
-    margin: 0 0 5px;
+/* Student Signature label */
+.exam-sign-box > p {
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+    width: 100%;
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.3;
 }
-
+/* Issued By image above the right signature line */
 .exam-authorized-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
+    padding-top: 0 !important;
 }
 
 .exam-issued-by-image {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     display: block;
-    max-width: 135px;
-    max-height: 55px;
+    width: 135px;
+    max-width: 100%;
+    height: 45px !important;
     object-fit: contain;
-    margin-bottom: 5px;
+    object-position: center;
+    margin: 0;
 }
 
-.exam-authorized-box .exam-sign-space {
-    width: 100%;
+/* Issued By labels below the right signature line */
+.exam-authorized-box > p {
+    bottom: 30px;
 }
-
 .exam-authorized-box strong {
-    font-size: 11px;
+    position: absolute;
+    left: 0;
+    bottom: 14px;
+    width: 100%;
+    display: block;
+    font-size: 13px !important;
+    line-height: 1.3;
 }
+
 
 .exam-authorized-box span {
-    margin-top: 3px;
-    font-size: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    margin: 0 !important;
+    font-size: 11px !important;
+    line-height: 1.3;
 }
-
 .exam-print-footer {
     margin-top: 35px;
     padding-top: 10px;
