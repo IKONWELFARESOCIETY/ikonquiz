@@ -14962,10 +14962,10 @@ function showHallTicketPapers(
 }
 //====================================================
 // LOAD SELECTED THEORY PAPER HALL TICKET
-// NORMAL HALL TICKET + EXAM FORM DOWNLOAD
+// NORMAL FLOW + EXAM FORM PDF DOWNLOAD
 //====================================================
 
-async function loadSelectedHallTicket(
+function loadSelectedHallTicket(
     fromExamForm = false,
     regNoOverride = "",
     paperOverride = ""
@@ -14980,13 +14980,14 @@ async function loadSelectedHallTicket(
     const continueBtn =
         document.getElementById("hallTicketVerifyBtn");
 
-    // Registration No. and Paper
+    // Registration Number
     const regNo = String(
         fromExamForm
             ? regNoOverride
             : (regBox ? regBox.value : "")
     ).trim().toUpperCase();
 
+    // Selected Paper
     const selectedPaper = String(
         fromExamForm
             ? paperOverride
@@ -15003,15 +15004,18 @@ async function loadSelectedHallTicket(
         return;
     }
 
-    if (!fromExamForm && (!regBox || !paperSelect)) {
-        alert("Hall Ticket selection fields not found.");
-        return;
-    }
-
     if (!fromExamForm && continueBtn) {
         continueBtn.disabled = true;
         continueBtn.innerHTML = "Loading...";
     }
+
+    const hallTicketPage =
+        document.getElementById("hallTicketPage");
+
+    const wasHidden =
+        hallTicketPage
+            ? hallTicketPage.classList.contains("hidden")
+            : true;
 
     const url =
         SCRIPT_URL +
@@ -15019,105 +15023,95 @@ async function loadSelectedHallTicket(
         "&regNo=" + encodeURIComponent(regNo) +
         "&paper=" + encodeURIComponent(selectedPaper);
 
-    console.log("Selected Theory Paper:", selectedPaper);
-    console.log("Hall Ticket API URL:", url);
+    console.log("Hall Ticket API:", url);
 
-    const hallTicketPage =
-        document.getElementById("hallTicketPage");
+    fetch(url)
 
-    const wasHallTicketHidden =
-        hallTicketPage
-            ? hallTicketPage.classList.contains("hidden")
-            : true;
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("Server Error: " + response.status);
+            }
+            return response.json();
+        })
 
-    try {
+        .then(async function(data) {
 
-        const response = await fetch(url);
+            console.log("Selected Hall Ticket:", data);
 
-        if (!response.ok) {
-            throw new Error("Server Error: " + response.status);
-        }
-
-        const data = await response.json();
-
-        console.log("Selected Hall Ticket:", data);
-
-        if (data.status !== "SUCCESS") {
-            throw new Error(
-                data.message ||
-                "Selected Theory Paper not found."
-            );
-        }
-
-        // Fill the EXISTING Hall Ticket design
-        populateHallTicket(data);
-
-        paperName = data.theoryPaper || selectedPaper;
-
-        console.log("FINAL HALL TICKET DATA:", data);
-
-        if (!hallTicketPage) {
-            throw new Error("Hall Ticket page not found.");
-        }
-
-        // Show existing Hall Ticket design
-        hallTicketPage.classList.remove("hidden");
-
-        // Exam Form download mode
-        if (fromExamForm) {
-
-            if (typeof downloadHallTicketPDF !== "function") {
-                throw new Error("Existing Hall Ticket PDF function not found.");
+            if (data.status !== "SUCCESS") {
+                throw new Error(
+                    data.message || "Selected paper Hall Ticket not found."
+                );
             }
 
-            // Let the existing design render before PDF capture
-            await new Promise(function(resolve) {
-                requestAnimationFrame(function() {
-                    requestAnimationFrame(resolve);
+            // Fill ORIGINAL existing Hall Ticket design
+            populateHallTicket(data);
+
+            paperName = data.theoryPaper || selectedPaper;
+
+            if (!hallTicketPage) {
+                throw new Error("Hall Ticket page not found.");
+            }
+
+            // Show original design for rendering/PDF capture
+            hallTicketPage.classList.remove("hidden");
+
+            if (fromExamForm) {
+
+                // Wait for original design to render
+                await new Promise(function(resolve) {
+                    requestAnimationFrame(function() {
+                        requestAnimationFrame(resolve);
+                    });
                 });
+
+                if (typeof downloadHallTicketPDF !== "function") {
+                    throw new Error("Existing Hall Ticket PDF function not found.");
+                }
+
+                // Use existing Hall Ticket PDF generator
+                await downloadHallTicketPDF();
+
+                // Restore page visibility
+                if (wasHidden) {
+                    hallTicketPage.classList.add("hidden");
+                }
+
+                return;
+            }
+
+            // Normal Hall Ticket flow
+            document
+                .getElementById("hallTicketVerifyPage")
+                ?.classList.add("hidden");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
             });
+        })
 
-            // Use your EXISTING PDF function
-            await downloadHallTicketPDF();
+        .catch(function(error) {
 
-            // Restore original hidden/visible state
-            if (wasHallTicketHidden) {
+            console.error("Hall Ticket Error:", error);
+
+            alert(
+                error.message ||
+                "Unable to load Hall Ticket."
+            );
+
+            if (fromExamForm && hallTicketPage && wasHidden) {
                 hallTicketPage.classList.add("hidden");
             }
+        })
 
-            return;
-        }
+        .finally(function() {
 
-        // Normal Hall Ticket flow
-        document
-            .getElementById("hallTicketVerifyPage")
-            ?.classList.add("hidden");
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+            if (!fromExamForm && continueBtn) {
+                continueBtn.disabled = false;
+                continueBtn.innerHTML = "Continue";
+            }
         });
-
-    } catch (error) {
-
-        console.error("Selected Hall Ticket Error:", error);
-
-        alert(
-            error.message ||
-            "Unable to load Hall Ticket."
-        );
-
-        if (fromExamForm && hallTicketPage && wasHallTicketHidden) {
-            hallTicketPage.classList.add("hidden");
-        }
-
-    } finally {
-
-        if (!fromExamForm && continueBtn) {
-            continueBtn.disabled = false;
-            continueBtn.innerHTML = "Continue";
-        }
-    }
 }
 //====================================================
 // POPULATE HALL TICKET
@@ -22492,4 +22486,47 @@ function updateExamFormSelectedPaper() {
     paperDisplay.textContent =
       paperSelect.options[paperSelect.selectedIndex]?.text || "--";
   }
+}
+//====================================================
+// EXAM FORM HALL TICKET BUTTON
+// CALL EXISTING HALL TICKET DESIGN + PDF
+//====================================================
+
+function downloadExamHallTicket() {
+
+    if (!examFormStudentData || !examFormEligible) {
+        alert("Please check eligibility first.");
+        return;
+    }
+
+    const paperSelect =
+        document.getElementById("examFormPaperSelect");
+
+    const selectedPaper =
+        paperSelect ? paperSelect.value.trim() : "";
+
+    const regNo =
+        String(examFormStudentData.regNo || "")
+            .trim()
+            .toUpperCase();
+
+    if (!regNo) {
+        alert("Student Registration Number not found.");
+        return;
+    }
+
+    if (!selectedPaper) {
+        alert("Please select an exam paper.");
+        return;
+    }
+
+    // Save selected paper for Exam Form data
+    examFormStudentData.selectedPaper = selectedPaper;
+
+    // Load existing Hall Ticket design and download its PDF
+    loadSelectedHallTicket(
+        true,
+        regNo,
+        selectedPaper
+    );
 }
