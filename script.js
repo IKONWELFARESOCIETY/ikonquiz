@@ -22409,10 +22409,10 @@ function checkExamFormEligibility() {
         });
 }
 //----------------------------------------------------
-// SUBMIT EXAM FORM - BACKEND NOT CONNECTED YET
+// SUBMIT EXAM FORM - CONNECTED TO APPS SCRIPT
 //----------------------------------------------------
 
-function submitExamForm() {
+async function submitExamForm() {
 
     const submitBtn = document.getElementById("examFormSubmitBtn");
     const downloadOptions = document.getElementById("examFormDownloadOptions");
@@ -22434,23 +22434,113 @@ function submitExamForm() {
         return;
     }
 
-    // Keep selected paper available for PDF downloads
-    examFormStudentData.selectedPaper = paperSelect.value;
+    const selectedPaper = paperSelect.value.trim();
+    const selectedRegNo = String(examFormStudentData.regNo || "").trim();
 
-    if (downloadOptions) {
-        downloadOptions.style.display = "block";
+    if (!selectedRegNo || !selectedPaper) {
+        alert("Registration Number or Paper is missing.");
+        return;
     }
 
     if (submitBtn) {
-        submitBtn.style.display = "none";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
     }
 
     if (message) {
-        message.textContent =
-            "Exam form submitted successfully. You can now download your documents.";
         message.style.display = "block";
-        message.style.color = "#15803d";
-        message.style.background = "#f0fdf4";
+        message.style.color = "#1d4ed8";
+        message.textContent = "Submitting your exam form. Please wait...";
+    }
+
+    try {
+
+        const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                action: "submitExamForm",
+                regNo: selectedRegNo,
+                paper: selectedPaper
+            })
+        });
+
+        const responseText = await response.text();
+
+        let data;
+
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            throw new Error(
+                "Server returned an invalid response: " + responseText.substring(0, 150)
+            );
+        }
+
+        console.log("Exam Form Submission Response:", data);
+
+        if (data.status === "SUCCESS") {
+
+            examFormStudentData.selectedPaper = selectedPaper;
+            examFormStudentData.formNo = data.formNo;
+
+            if (downloadOptions) {
+                downloadOptions.style.display = "block";
+            }
+
+            if (submitBtn) {
+                submitBtn.style.display = "none";
+            }
+
+            if (message) {
+                message.style.display = "block";
+                message.style.color = "#15803d";
+                message.style.background = "#f0fdf4";
+                message.textContent =
+                    "Exam form submitted successfully. Form No: " +
+                    data.formNo +
+                    ". You can now download your documents.";
+            }
+
+            return;
+        }
+
+        if (data.status === "ALREADY_SUBMITTED") {
+
+            if (message) {
+                message.style.display = "block";
+                message.style.color = "#b45309";
+                message.textContent =
+                    "This paper has already been submitted. Form No: " +
+                    (data.formNo || "Not available");
+            }
+
+            return;
+        }
+
+        throw new Error(data.message || data.status || "Exam form submission failed.");
+
+    } catch (error) {
+
+        console.error("Exam Form Submission Error:", error);
+
+        if (message) {
+            message.style.display = "block";
+            message.style.color = "#b91c1c";
+            message.style.background = "#fef2f2";
+            message.textContent = "Submission failed: " + error.message;
+        } else {
+            alert("Submission failed: " + error.message);
+        }
+
+    } finally {
+
+        if (submitBtn && submitBtn.style.display !== "none") {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Exam Form";
+        }
     }
 }
 function setExamFormStudentDetails(
@@ -22532,12 +22622,7 @@ function downloadExamHallTicket() {
 }
 // ===============================================
 // EXAM FORM PDF - ISOLATED A4 PRINT
-// Larger font + fit to page width
-// Marksheet print flow remains untouched
-// ===============================================
-
-// ===============================================
-// EXAM FORM PDF - ISOLATED A4 PRINT
+// Updated font size + page margins
 // Marksheet print flow remains untouched
 // ===============================================
 
@@ -22591,11 +22676,13 @@ function downloadExamFormPDF() {
 
     // Clone only Exam Form, not the entire website
     const printClone = sourceArea.cloneNode(true);
+
     printClone.removeAttribute("id");
     printClone.style.display = "block";
 
     // Convert relative image paths to absolute URLs
     printClone.querySelectorAll("img").forEach(function(img) {
+
         const src = img.getAttribute("src");
 
         if (src) {
@@ -22615,43 +22702,48 @@ function downloadExamFormPDF() {
     }
 
     const printStyles = `
+
         * {
             box-sizing: border-box;
         }
 
-        html, body {
-            margin: 0;
-            padding: 0;
+        html,
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
             background: #ffffff;
             color: #172033;
             font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
-        /* A4 page with safe left-right margins */
+        /* A4 page margins */
         @page {
             size: A4 portrait;
-            margin: 15mm 16mm;
+            margin: 8mm !important;
         }
 
+        /* Main Exam Form */
         .exam-form-print {
             display: block !important;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0;
-            background: #fff;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #ffffff;
             color: #172033;
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
+            font-size: 14px !important;
+            line-height: 1.45 !important;
             overflow-wrap: break-word;
         }
 
         /* Header */
         .exam-print-header {
             text-align: center;
-            margin: 0 0 15px;
+            margin: 0 0 10px !important;
         }
 
         .exam-print-logo {
@@ -22665,56 +22757,58 @@ function downloadExamFormPDF() {
         .exam-print-header h1 {
             margin: 0;
             color: #1747c8;
-            font-size: 21px;
+            font-size: 24px !important;
             line-height: 1.25;
         }
 
         .exam-print-tagline {
-            margin: 3px 0 9px;
-            font-size: 10px;
+            margin: 3px 0 8px;
+            font-size: 12px !important;
         }
 
         .exam-print-line {
             height: 2px;
             background: #1747c8;
-            margin: 0 0 11px;
+            margin: 0 0 9px;
         }
 
         .exam-print-header h2 {
             margin: 0;
-            font-size: 16px;
+            font-size: 18px !important;
+            line-height: 1.3;
         }
 
         /* Sections */
         .exam-print-section {
-            margin-top: 14px;
+            margin-top: 10px !important;
             break-inside: avoid;
             page-break-inside: avoid;
         }
 
         .exam-print-section h3 {
-            margin: 0 0 7px;
-            padding: 7px 9px;
+            margin: 0 0 7px !important;
+            padding: 8px 10px !important;
             background: #eef3ff;
             border-left: 3px solid #1747c8;
             color: #1747c8;
-            font-size: 13px;
+            font-size: 15px !important;
             line-height: 1.3;
         }
 
-        /* Student details */
+        /* Student Details Table */
         .exam-print-table {
-            width: 100%;
+            width: 100% !important;
             border-collapse: collapse;
             table-layout: fixed;
-            font-size: 13px;
+            font-size: 14px !important;
         }
 
         .exam-print-table th,
         .exam-print-table td {
             border: 1px solid #aeb8c8;
-            padding: 8px 10px;
-            line-height: 1.4;
+            padding: 7px 9px !important;
+            font-size: 14px !important;
+            line-height: 1.35 !important;
             text-align: left;
             vertical-align: middle;
             overflow-wrap: break-word;
@@ -22730,29 +22824,31 @@ function downloadExamFormPDF() {
             font-weight: 500;
         }
 
-        /* Guidelines: one point smaller than details */
+        /* Guidelines */
         .exam-guidelines ol {
             margin: 7px 0 0;
             padding-left: 22px;
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
         }
 
         .exam-guidelines li {
-            margin: 0 0 5px;
+            margin: 0 0 4px !important;
             padding-left: 3px;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
             break-inside: avoid;
             page-break-inside: avoid;
         }
 
-        /* Signature area */
+        /* Signature Area */
         .exam-print-signatures {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             gap: 25px;
             width: 100%;
-            margin-top: 35px;
+            margin-top: 22px !important;
             break-inside: avoid;
             page-break-inside: avoid;
         }
@@ -22760,16 +22856,16 @@ function downloadExamFormPDF() {
         .exam-sign-box {
             position: relative;
             width: 44%;
-            min-height: 95px;
+            min-height: 85px !important;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px !important;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
         }
 
-        /* Signature lines aligned at the same level */
+        /* Signature Lines */
         .exam-sign-space {
             width: 100%;
             height: 1px;
@@ -22780,13 +22876,14 @@ function downloadExamFormPDF() {
 
         .exam-sign-box p {
             margin: 0 0 4px;
+            font-size: 12px !important;
             line-height: 1.3;
         }
 
-        /* Issued By image */
+        /* Issued By Image */
         .exam-authorized-box {
             position: relative;
-            padding-top: 55px;
+            padding-top: 50px !important;
         }
 
         .exam-issued-by-image {
@@ -22797,7 +22894,7 @@ function downloadExamFormPDF() {
             display: block;
             width: 135px;
             max-width: 100%;
-            height: 48px;
+            height: 45px !important;
             object-fit: contain;
             object-position: center;
             margin: 0;
@@ -22809,25 +22906,25 @@ function downloadExamFormPDF() {
 
         .exam-authorized-box strong {
             display: block;
-            font-size: 12px;
+            font-size: 13px !important;
             line-height: 1.3;
         }
 
         .exam-authorized-box span {
             display: block;
             margin-top: 3px;
-            font-size: 10px;
+            font-size: 11px !important;
             line-height: 1.3;
         }
 
         /* Footer */
         .exam-print-footer {
-            margin-top: 20px;
-            padding-top: 8px;
+            margin-top: 12px !important;
+            padding-top: 7px;
             border-top: 1px solid #cbd2df;
             text-align: center;
             color: #555;
-            font-size: 9px;
+            font-size: 11px !important;
             line-height: 1.4;
             break-inside: avoid;
             page-break-inside: avoid;
@@ -22835,19 +22932,27 @@ function downloadExamFormPDF() {
 
         .exam-print-footer p {
             margin: 3px 0;
+            font-size: 11px !important;
         }
 
+        /* Print-specific layout */
         @media print {
-            html, body {
+
+            html,
+            body {
                 width: auto;
                 height: auto;
+                margin: 0 !important;
+                padding: 0 !important;
                 overflow: visible;
             }
 
             .exam-form-print {
                 display: block !important;
-                width: 100%;
-                max-width: 100%;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
             .exam-print-section,
@@ -22879,11 +22984,13 @@ function downloadExamFormPDF() {
 
     // Wait for images before opening print dialog
     const waitForImages = function() {
+
         const images = Array.from(
             printWindow.document.images
         );
 
         return Promise.all(images.map(function(img) {
+
             if (img.complete) {
                 return Promise.resolve();
             }
