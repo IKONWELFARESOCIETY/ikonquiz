@@ -64,7 +64,6 @@ select,
 textarea{
     font:inherit;
 }
-
 /*========================
  MAIN CONTAINER
 ========================*/
@@ -248,8 +247,6 @@ header::before{
     align-items:center;
 
 }
-
-
 /*==================================================
  LOGIN CARD
 ==================================================*/
@@ -279,8 +276,6 @@ header::before{
   margin:auto;
 
 }
-
-
 /* Decorative Top Strip */
 
 .login-box::before{
