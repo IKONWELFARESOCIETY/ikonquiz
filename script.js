@@ -22810,13 +22810,6 @@ if (formNoElement) {
 
     const printStyles = `
 
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            const printStyles = `
     * {
         box-sizing: border-box !important;
     }
