@@ -22156,6 +22156,13 @@ function lookupExamFormStudent() {
     const submitBtn = document.getElementById("examFormSubmitBtn");
     if (submitBtn) submitBtn.style.display = "none";
 
+    const downloadOptions = document.getElementById("examFormDownloadOptions");
+    if (downloadOptions) downloadOptions.style.display = "none";
+
+    // Clear previously displayed selected paper
+    const paperDisplay = document.getElementById("examFormDisplayPaper");
+    if (paperDisplay) paperDisplay.textContent = "--";
+
     if (searchBtn) {
         searchBtn.disabled = true;
         searchBtn.textContent = "Searching...";
@@ -22186,28 +22193,32 @@ function lookupExamFormStudent() {
             const studentCourse = data.student.course || "";
             const papers = Array.isArray(data.papers) ? data.papers : [];
 
-           setExamFormStudentDetails(
-    studentRegNo,
-    studentName,
-    studentCourse,
-    data.student.billDate,
-    data.student.billNo,
-    data.student.billAmount
-);
-// SHOW STUDENT DETAILS
-const detailsBox = document.getElementById("examFormStudentDetails");
-const paperSection = document.getElementById("examFormPaperSection");
+            // Display student and bill details
+            setExamFormStudentDetails(
+                studentRegNo,
+                studentName,
+                studentCourse,
+                data.student.billDate,
+                data.student.billNo,
+                data.student.billAmount
+            );
 
-if (detailsBox) {
-    detailsBox.classList.remove("hidden");
-    detailsBox.style.removeProperty("display");
-}
+            // Show student details and paper section
+            const detailsBox = document.getElementById("examFormStudentDetails");
+            const paperSection = document.getElementById("examFormPaperSection");
 
-if (paperSection) {
-    paperSection.classList.remove("hidden");
-    paperSection.style.removeProperty("display");
-}
+            if (detailsBox) {
+                detailsBox.classList.remove("hidden");
+                detailsBox.style.removeProperty("display");
+            }
+
+            if (paperSection) {
+                paperSection.classList.remove("hidden");
+                paperSection.style.removeProperty("display");
+            }
+
             if (!papers.length) {
+
                 if (paperSelect) {
                     paperSelect.innerHTML = "";
                     paperSelect.add(new Option("No assigned papers found", ""));
@@ -22215,12 +22226,15 @@ if (paperSection) {
                 }
 
                 if (message) {
-                    message.textContent = "No exam papers are assigned to this Registration Number.";
+                    message.textContent =
+                        "No exam papers are assigned to this Registration Number.";
                     message.style.color = "#b45309";
                 }
+
                 return;
             }
 
+            // Populate paper dropdown
             if (paperSelect) {
                 paperSelect.innerHTML = "";
                 paperSelect.add(new Option("Select Exam Paper", ""));
@@ -22230,10 +22244,21 @@ if (paperSection) {
                 });
 
                 paperSelect.disabled = false;
+
+                // Update displayed paper whenever dropdown selection changes
+                paperSelect.onchange = function() {
+                    updateExamFormSelectedPaper();
+                };
+            }
+
+            // Initially show placeholder until a paper is selected
+            if (paperDisplay) {
+                paperDisplay.textContent = "--";
             }
 
             if (message) {
-                message.textContent = "Student found. Select a paper and check eligibility.";
+                message.textContent =
+                    "Student found. Select a paper and check eligibility.";
                 message.style.color = "#166534";
             }
         })
@@ -22243,7 +22268,7 @@ if (paperSection) {
 
             examFormStudentData = null;
 
-            setExamFormStudentDetails("", "", "");
+            setExamFormStudentDetails("", "", "", "", "", "");
 
             if (paperSelect) {
                 paperSelect.innerHTML = "";
@@ -22251,8 +22276,13 @@ if (paperSection) {
                 paperSelect.disabled = true;
             }
 
+            if (paperDisplay) {
+                paperDisplay.textContent = "--";
+            }
+
             if (message) {
-                message.textContent = error.message || "Unable to find student.";
+                message.textContent =
+                    error.message || "Unable to find student.";
                 message.style.color = "#b91c1c";
             }
         })
@@ -22265,6 +22295,22 @@ if (paperSection) {
         });
 }
 
+
+// Update Paper field shown in Exam Form
+function updateExamFormSelectedPaper() {
+
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const paperDisplay = document.getElementById("examFormDisplayPaper");
+
+    if (!paperSelect || !paperDisplay) return;
+
+    const selectedOption = paperSelect.options[paperSelect.selectedIndex];
+
+    paperDisplay.textContent =
+        selectedOption && paperSelect.value
+            ? selectedOption.text
+            : "--";
+}
 
 //----------------------------------------------------
 // RESET ELIGIBILITY WHEN PAPER CHANGES
@@ -22473,3 +22519,12 @@ function setExamFormStudentDetails(
         }
     });
 }
+function updateExamFormSelectedPaper() {
+  const paperSelect = document.getElementById("examFormPaperSelect");
+  const paperDisplay = document.getElementById("examFormDisplayPaper");
+
+  if (paperSelect && paperDisplay) {
+    paperDisplay.textContent =
+      paperSelect.options[paperSelect.selectedIndex]?.text || "--";
+  }
+}0
