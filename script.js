@@ -22191,7 +22191,19 @@ function lookupExamFormStudent() {
                 studentName,
                 studentCourse
             );
+// SHOW STUDENT DETAILS
+const detailsBox = document.getElementById("examFormStudentDetails");
+const paperSection = document.getElementById("examFormPaperSection");
 
+if (detailsBox) {
+    detailsBox.classList.remove("hidden");
+    detailsBox.style.removeProperty("display");
+}
+
+if (paperSection) {
+    paperSection.classList.remove("hidden");
+    paperSection.style.removeProperty("display");
+}
             if (!papers.length) {
                 if (paperSelect) {
                     paperSelect.innerHTML = "";
