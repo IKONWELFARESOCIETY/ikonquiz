@@ -22233,6 +22233,11 @@ function resetExamFormEligibility() {
 
     const message = document.getElementById("examFormEligibilityMessage");
     const submitBtn = document.getElementById("examFormSubmitBtn");
+    const submitSection = document.getElementById("examFormSubmitSection");
+
+if (submitSection) {
+    submitSection.style.display = "none";
+}
 
     if (message) {
         message.textContent = "";
@@ -22336,6 +22341,19 @@ function checkExamFormEligibility() {
             if (status === "ELIGIBLE") {
 
                 examFormEligible = true;
+                // Show Submit Exam Form button
+const submitSection = document.getElementById("examFormSubmitSection");
+const submitBtn = document.getElementById("examFormSubmitBtn");
+
+if (submitSection) {
+    submitSection.style.display = "block";
+}
+
+if (submitBtn) {
+    submitBtn.style.display = "inline-block";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Exam Form";
+}
 
                 // Save the exact paper that passed eligibility
                 examFormStudentData.selectedPaper = paper;
@@ -22716,7 +22734,13 @@ function downloadExamFormPDF() {
         alert("Exam Form print template not found.");
         return;
     }
+// Display generated Form Number in PDF
+const formNoElement = document.getElementById("printExamFormNo");
 
+if (formNoElement) {
+    formNoElement.textContent =
+        examFormStudentData.formNo || "Not Generated";
+}
     // Fill existing Exam Form template
     document.getElementById("printExamRegNo").textContent =
         examFormStudentData.regNo || "—";
