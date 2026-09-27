@@ -23410,7 +23410,7 @@ body > .exam-form-print {
 .exam-print-section h3 {
     margin: 0 0 1mm !important;
     padding: 1.2mm 2mm !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
     line-height: 1.2 !important;
 }
 
@@ -23443,8 +23443,8 @@ body > .exam-form-print {
 
 .exam-print-section li {
     margin: 0.5mm 0 !important;
-    font-size: 8.5px !important;
-    line-height: 1.15 !important;
+    font-size: 10.5px !important;
+    line-height: 1.3 !important;
 }
 
 /* Fee criteria compact */
@@ -23465,8 +23465,8 @@ body > .exam-form-print {
 
 .fee-criteria-note {
     margin: 1mm 0 !important;
-    font-size: 8px !important;
-    line-height: 1.15 !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
 }
 
 .fee-criteria-list {
@@ -23477,8 +23477,8 @@ body > .exam-form-print {
 .fee-criteria-list li {
     margin: 0.5mm 0 !important;
     padding-left: 0.5mm !important;
-    font-size: 8.5px !important;
-    line-height: 1.15 !important;
+    font-size: 10.5px !important;
+    line-height: 1.3 !important;
 }
 
 /* Signature row */
