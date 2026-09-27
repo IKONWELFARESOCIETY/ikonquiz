@@ -14962,246 +14962,180 @@ function showHallTicketPapers(
 }
 //====================================================
 // LOAD SELECTED THEORY PAPER HALL TICKET
+// NORMAL HALL TICKET + EXAM FORM DOWNLOAD
 //====================================================
 
-function loadSelectedHallTicket(){
+async function loadSelectedHallTicket(
+    fromExamForm = false,
+    regNoOverride = "",
+    paperOverride = ""
+) {
 
     const regBox =
-        document.getElementById(
-            "hallTicketRegNo"
-        );
-
+        document.getElementById("hallTicketRegNo");
 
     const paperSelect =
-        document.getElementById(
-            "hallTicketPaperSelect"
-        );
-
+        document.getElementById("hallTicketPaperSelect");
 
     const continueBtn =
-        document.getElementById(
-            "hallTicketVerifyBtn"
-        );
+        document.getElementById("hallTicketVerifyBtn");
 
+    // -----------------------------------------------
+    // GET REGISTRATION NUMBER
+    // -----------------------------------------------
 
-    if(
-        !regBox ||
-        !paperSelect
-    ){
+    const regNo = String(
+        fromExamForm
+            ? regNoOverride
+            : (regBox ? regBox.value : "")
+    ).trim().toUpperCase();
 
-        alert(
-            "Hall Ticket selection fields not found."
-        );
+    // -----------------------------------------------
+    // GET SELECTED PAPER
+    // -----------------------------------------------
 
+    const selectedPaper = String(
+        fromExamForm
+            ? paperOverride
+            : (paperSelect ? paperSelect.value : "")
+    ).trim();
+
+    if (!regNo) {
+        alert("Please enter Registration Number.");
         return;
     }
-    //================================================
-    // REGISTRATION NUMBER
-    //================================================
 
-    const regNo =
-        regBox.value
-            .trim()
-            .toUpperCase();
-    //================================================
-    // SELECTED THEORY PAPER
-    //================================================
-
-    const selectedPaper =
-        paperSelect.value
-            .trim();
-
-
-    if(selectedPaper === ""){
-
-        alert(
-            "Please Select Theory Paper."
-        );
-
-        paperSelect.focus();
-
+    if (!selectedPaper) {
+        alert("Please select Theory Paper.");
         return;
     }
-    //================================================
-    // BUTTON
-    //================================================
 
-    if(continueBtn){
+    // -----------------------------------------------
+    // BUTTON LOADING — NORMAL FLOW ONLY
+    // -----------------------------------------------
 
-        continueBtn.disabled =
-            true;
-
-        continueBtn.innerHTML =
-            "Loading...";
+    if (!fromExamForm && continueBtn) {
+        continueBtn.disabled = true;
+        continueBtn.innerHTML = "Loading...";
     }
-    //================================================
-    // API
-    // REG NO + THEORY PAPER
-    //================================================
+
+    // -----------------------------------------------
+    // API URL
+    // -----------------------------------------------
 
     const url =
         SCRIPT_URL +
         "?action=hallTicket" +
-        "&regNo=" +
-        encodeURIComponent(
-            regNo
-        ) +
-        "&paper=" +
-        encodeURIComponent(
-            selectedPaper
-        );
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&paper=" + encodeURIComponent(selectedPaper);
 
-    console.log(
-        "Selected Theory Paper:",
-        selectedPaper
-    );
+    console.log("Selected Theory Paper:", selectedPaper);
+    console.log("Hall Ticket API URL:", url);
 
+    try {
 
-    fetch(url)
+        const response = await fetch(url);
 
-    .then(function(response){
-
-        if(!response.ok){
-
-            throw new Error(
-                "Server Error: " +
-                response.status
-            );
-
+        if (!response.ok) {
+            throw new Error("Server Error: " + response.status);
         }
 
-        return response.json();
+        const data = await response.json();
 
-    })
+        console.log("Selected Hall Ticket:", data);
 
+        // -------------------------------------------
+        // CHECK SUCCESS
+        // -------------------------------------------
 
-    .then(function(data){
-
-        console.log(
-            "Selected Hall Ticket:",
-            data
-        );
-
-
-        //================================================
-        // SUCCESS
-        //================================================
-
-        if(
-            data.status ===
-            "SUCCESS"
-        ){
-
-            populateHallTicket(
-                data
+        if (data.status !== "SUCCESS") {
+            throw new Error(
+                data.message ||
+                "Hall Ticket data not found for selected paper."
             );
-// Save selected theory paper
-paperName =
-    data.theoryPaper || "";
+        }
 
-console.log(
-    "FINAL HALL TICKET DATA:",
-    data
-);
+        // -------------------------------------------
+        // POPULATE EXISTING HALL TICKET DESIGN
+        // -------------------------------------------
 
-            //============================================
-            // HIDE VERIFY PAGE
-            //============================================
+        populateHallTicket(data);
 
-            document
-                .getElementById(
-                    "hallTicketVerifyPage"
-                )
-                ?.classList.add(
-                    "hidden"
-                );
+        paperName = data.theoryPaper || selectedPaper;
 
+        console.log("FINAL HALL TICKET DATA:", data);
 
-            //============================================
-            // SHOW HALL TICKET
-            //============================================
+        const hallTicketPage =
+            document.getElementById("hallTicketPage");
 
-            document
-                .getElementById(
-                    "hallTicketPage"
-                )
-                ?.classList.remove(
-                    "hidden"
-                );
+        if (!hallTicketPage) {
+            throw new Error("Existing Hall Ticket page not found.");
+        }
 
+        // Remember current visibility before showing it
+        const wasHidden =
+            hallTicketPage.classList.contains("hidden");
 
-            window.scrollTo({
+        // Show the existing design for PDF capture
+        hallTicketPage.classList.remove("hidden");
 
-                top: 0,
+        // -------------------------------------------
+        // EXAM FORM DOWNLOAD MODE
+        // -------------------------------------------
 
-                behavior: "smooth"
+        if (fromExamForm) {
 
+            // Wait for existing Hall Ticket design to render
+            await new Promise(function(resolve) {
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(resolve);
+                });
             });
 
+            // Use existing PDF download function
+            if (typeof downloadHallTicketPDF !== "function") {
+                throw new Error("Existing Hall Ticket PDF function not found.");
+            }
+
+            await downloadHallTicketPDF();
+
+            // Restore hidden state after PDF generation
+            if (wasHidden) {
+                hallTicketPage.classList.add("hidden");
+            }
 
             return;
         }
 
+        // -------------------------------------------
+        // NORMAL HALL TICKET FLOW
+        // -------------------------------------------
 
-        //================================================
-        // PAPER NOT FOUND
-        //================================================
+        document
+            .getElementById("hallTicketVerifyPage")
+            ?.classList.add("hidden");
 
-        if(
-            data.status ===
-            "PAPER_NOT_FOUND"
-        ){
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
-            alert(
-                data.message ||
-                "Selected Theory Paper not found."
-            );
+    } catch (error) {
 
-            return;
-        }
-
-
-        //================================================
-        // ERROR
-        //================================================
+        console.error("Selected Hall Ticket Error:", error);
 
         alert(
-            data.message ||
+            error.message ||
             "Unable to load Hall Ticket."
         );
 
-    })
+    } finally {
 
-
-    .catch(function(error){
-
-        console.error(
-            "Selected Hall Ticket Error:",
-            error
-        );
-
-
-        alert(
-            "Unable to connect with server."
-        );
-
-    })
-
-
-    .finally(function(){
-
-        if(continueBtn){
-
-            continueBtn.disabled =
-                false;
-
-            continueBtn.innerHTML =
-                "Continue";
-
+        if (!fromExamForm && continueBtn) {
+            continueBtn.disabled = false;
+            continueBtn.innerHTML = "Continue";
         }
-
-    });
-
+    }
 }
 //====================================================
 // POPULATE HALL TICKET
