@@ -23266,6 +23266,35 @@ body > .exam-form-print {
         page-break-inside: avoid !important;
     }
 }
+/* =====================================
+   INCREASE IKON LOGO & ISSUED BY SIZE
+===================================== */
+
+/* IKON Institute Logo */
+.exam-print-logo {
+    display: block !important;
+    width: 35mm !important;
+    height: 35mm !important;
+    max-width: 35mm !important;
+    object-fit: contain !important;
+    margin: 0 auto 3mm !important;
+}
+
+/* Issued By Image / Signature */
+.exam-issued-by-image {
+    display: block !important;
+    width: 48mm !important;
+    max-width: 48mm !important;
+    height: 18mm !important;
+    object-fit: contain !important;
+    margin: 0 auto 1mm !important;
+}
+
+/* Keep issued-by image centered */
+.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
     `;
 
     // 10. Write complete HTML into print window
