@@ -22828,8 +22828,8 @@ if (formNoElement) {
 
         /* A4 page margins */
         @page {
-            size: A4 portrait;
-            margin: 8mm !important;
+           size: A4 portrait;
+    margin: 15mm 16mm !important;
         }
 
         /* Main Exam Form */
