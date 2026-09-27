@@ -23076,6 +23076,196 @@ function downloadExamFormPDF() {
                 padding: 0 2mm !important;
             }
         }
+        /* =========================================
+   FINAL EXAM FORM PRINT FIX
+   A4 left-right margin + aligned signatures
+========================================= */
+
+/* Page margins */
+@page {
+    size: A4 portrait;
+    margin: 12mm 16mm !important;
+}
+
+/* Add inner page gap even if browser margins are set to None */
+html,
+body {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+/* Use body padding for reliable left-right gap */
+body {
+    padding: 12mm 16mm !important;
+}
+
+/* Form stays inside the padded page area */
+body > .exam-form-print {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* Signature row */
+.exam-print-signatures {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 18mm !important;
+    width: 100% !important;
+    margin: 18mm 0 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+/* Both signature boxes have identical height and positioning */
+.exam-print-signatures > .exam-sign-box {
+    position: relative !important;
+    display: block !important;
+    flex: 1 1 0 !important;
+    width: 50% !important;
+    min-width: 0 !important;
+    height: 32mm !important;
+    min-height: 32mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+}
+
+/* Both signature lines are placed at the exact same vertical position */
+.exam-print-signatures > .exam-sign-box > .exam-sign-space {
+    position: absolute !important;
+    top: 17mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #333333 !important;
+    box-sizing: border-box !important;
+}
+
+/* Student Signature label */
+.exam-print-signatures > .exam-sign-box:not(.exam-authorized-box) > p {
+    position: absolute !important;
+    top: 18.5mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+}
+
+/* Issued By image sits above the right signature line */
+.exam-print-signatures > .exam-authorized-box {
+    padding-top: 0 !important;
+}
+
+.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: block !important;
+    width: 35mm !important;
+    max-width: 100% !important;
+    height: 14mm !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+}
+
+/* Authorized Signature label */
+.exam-print-signatures > .exam-authorized-box > p {
+    position: absolute !important;
+    top: 18.5mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+}
+
+/* Issued By and institute labels */
+.exam-print-signatures > .exam-authorized-box > strong {
+    position: absolute !important;
+    top: 23mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+}
+
+.exam-print-signatures > .exam-authorized-box > span {
+    position: absolute !important;
+    top: 27mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+/* Print-specific enforcement */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 12mm 16mm !important;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    body {
+        padding: 12mm 16mm !important;
+    }
+
+    body > .exam-form-print {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    .exam-print-signatures {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+}
     `;
 
     // 10. Write complete HTML into print window
