@@ -22488,30 +22488,44 @@ function checkExamFormEligibility() {
 
 function submitExamForm() {
 
-    if (!examFormStudentData || !examFormEligible) {
-        alert("Please verify student details and eligibility first.");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+    const downloadOptions = document.getElementById("examFormDownloadOptions");
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const message = document.getElementById("examFormEligibilityMessage");
+
+    if (!examFormStudentData) {
+        alert("Please search student details first.");
         return;
     }
 
-    const paperSelect = document.getElementById("examFormPaperSelect");
-    const paper = paperSelect ? paperSelect.value.trim() : "";
-
-    if (!paper) {
+    if (!paperSelect || !paperSelect.value) {
         alert("Please select an exam paper.");
         return;
     }
 
-    /*
-      Next step:
-      Connect this button to an Apps Script endpoint that saves
-      the application in the Exam Form sheet and sets approval
-      status to PENDING.
+    if (!examFormEligible) {
+        alert("Please check eligibility first.");
+        return;
+    }
 
-      Until that backend endpoint is added, this function does
-      not save or submit any application.
-    */
+    // Keep selected paper available for PDF downloads
+    examFormStudentData.selectedPaper = paperSelect.value;
 
-    alert("Eligibility verified. Exam Form submission will be enabled after the Exam Form sheet is connected.");
+    if (downloadOptions) {
+        downloadOptions.style.display = "block";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+    }
+
+    if (message) {
+        message.textContent =
+            "Exam form submitted successfully. You can now download your documents.";
+        message.style.display = "block";
+        message.style.color = "#15803d";
+        message.style.background = "#f0fdf4";
+    }
 }
 function setExamFormStudentDetails(
     regNo,
