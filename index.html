@@ -1357,14 +1357,17 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         </button>
 
 
-        <button
-            type="button"
-            class="primary"
-            onclick="downloadHallTicketPDF()">
-
-            Download PDF
-
-        </button>
+      <button
+    type="button"
+    id="downloadExamHallTicketBtn"
+    class="primary"
+    onclick="loadSelectedHallTicket(
+        true,
+        examFormStudentData.regNo,
+        document.getElementById('examFormPaperSelect').value
+    )">
+    Download Hall Ticket
+</button>
 
 
     </div>
