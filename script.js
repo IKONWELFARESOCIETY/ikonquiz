@@ -14980,19 +14980,12 @@ async function loadSelectedHallTicket(
     const continueBtn =
         document.getElementById("hallTicketVerifyBtn");
 
-    // -----------------------------------------------
-    // GET REGISTRATION NUMBER
-    // -----------------------------------------------
-
+    // Registration No. and Paper
     const regNo = String(
         fromExamForm
             ? regNoOverride
             : (regBox ? regBox.value : "")
     ).trim().toUpperCase();
-
-    // -----------------------------------------------
-    // GET SELECTED PAPER
-    // -----------------------------------------------
 
     const selectedPaper = String(
         fromExamForm
@@ -15010,18 +15003,15 @@ async function loadSelectedHallTicket(
         return;
     }
 
-    // -----------------------------------------------
-    // BUTTON LOADING — NORMAL FLOW ONLY
-    // -----------------------------------------------
+    if (!fromExamForm && (!regBox || !paperSelect)) {
+        alert("Hall Ticket selection fields not found.");
+        return;
+    }
 
     if (!fromExamForm && continueBtn) {
         continueBtn.disabled = true;
         continueBtn.innerHTML = "Loading...";
     }
-
-    // -----------------------------------------------
-    // API URL
-    // -----------------------------------------------
 
     const url =
         SCRIPT_URL +
@@ -15031,6 +15021,14 @@ async function loadSelectedHallTicket(
 
     console.log("Selected Theory Paper:", selectedPaper);
     console.log("Hall Ticket API URL:", url);
+
+    const hallTicketPage =
+        document.getElementById("hallTicketPage");
+
+    const wasHallTicketHidden =
+        hallTicketPage
+            ? hallTicketPage.classList.contains("hidden")
+            : true;
 
     try {
 
@@ -15044,73 +15042,53 @@ async function loadSelectedHallTicket(
 
         console.log("Selected Hall Ticket:", data);
 
-        // -------------------------------------------
-        // CHECK SUCCESS
-        // -------------------------------------------
-
         if (data.status !== "SUCCESS") {
             throw new Error(
                 data.message ||
-                "Hall Ticket data not found for selected paper."
+                "Selected Theory Paper not found."
             );
         }
 
-        // -------------------------------------------
-        // POPULATE EXISTING HALL TICKET DESIGN
-        // -------------------------------------------
-
+        // Fill the EXISTING Hall Ticket design
         populateHallTicket(data);
 
         paperName = data.theoryPaper || selectedPaper;
 
         console.log("FINAL HALL TICKET DATA:", data);
 
-        const hallTicketPage =
-            document.getElementById("hallTicketPage");
-
         if (!hallTicketPage) {
-            throw new Error("Existing Hall Ticket page not found.");
+            throw new Error("Hall Ticket page not found.");
         }
 
-        // Remember current visibility before showing it
-        const wasHidden =
-            hallTicketPage.classList.contains("hidden");
-
-        // Show the existing design for PDF capture
+        // Show existing Hall Ticket design
         hallTicketPage.classList.remove("hidden");
 
-        // -------------------------------------------
-        // EXAM FORM DOWNLOAD MODE
-        // -------------------------------------------
-
+        // Exam Form download mode
         if (fromExamForm) {
 
-            // Wait for existing Hall Ticket design to render
+            if (typeof downloadHallTicketPDF !== "function") {
+                throw new Error("Existing Hall Ticket PDF function not found.");
+            }
+
+            // Let the existing design render before PDF capture
             await new Promise(function(resolve) {
                 requestAnimationFrame(function() {
                     requestAnimationFrame(resolve);
                 });
             });
 
-            // Use existing PDF download function
-            if (typeof downloadHallTicketPDF !== "function") {
-                throw new Error("Existing Hall Ticket PDF function not found.");
-            }
-
+            // Use your EXISTING PDF function
             await downloadHallTicketPDF();
 
-            // Restore hidden state after PDF generation
-            if (wasHidden) {
+            // Restore original hidden/visible state
+            if (wasHallTicketHidden) {
                 hallTicketPage.classList.add("hidden");
             }
 
             return;
         }
 
-        // -------------------------------------------
-        // NORMAL HALL TICKET FLOW
-        // -------------------------------------------
-
+        // Normal Hall Ticket flow
         document
             .getElementById("hallTicketVerifyPage")
             ?.classList.add("hidden");
@@ -15128,6 +15106,10 @@ async function loadSelectedHallTicket(
             error.message ||
             "Unable to load Hall Ticket."
         );
+
+        if (fromExamForm && hallTicketPage && wasHallTicketHidden) {
+            hallTicketPage.classList.add("hidden");
+        }
 
     } finally {
 
@@ -22510,205 +22492,4 @@ function updateExamFormSelectedPaper() {
     paperDisplay.textContent =
       paperSelect.options[paperSelect.selectedIndex]?.text || "--";
   }
-}
-//====================================================
-// EXAM FORM / HALL TICKET PDF PRINT
-//====================================================
-
-function printExamDocument(documentType) {
-
-    if (!examFormStudentData || !examFormEligible) {
-        alert("Please check eligibility first.");
-        return;
-    }
-
-    const student = examFormStudentData;
-
-    const paperSelect =
-        document.getElementById("examFormPaperSelect");
-
-    const selectedPaper =
-        student.selectedPaper ||
-        (paperSelect ? paperSelect.value.trim() : "");
-
-    if (!selectedPaper) {
-        alert("Please select an exam paper.");
-        return;
-    }
-
-    const isHallTicket = documentType === "hallticket";
-
-    const documentTitle = isHallTicket
-        ? "EXAM HALL TICKET"
-        : "EXAM FORM";
-
-    function safe(value) {
-        return String(value == null ? "" : value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    const regNo = safe(student.regNo);
-    const name = safe(student.name);
-    const course = safe(student.course);
-    const paper = safe(selectedPaper);
-    const billDate = safe(student.billDate);
-    const billNo = safe(student.billNo);
-    const billAmount = safe(student.billAmount);
-
-    const printWindow = window.open("", "_blank");
-
-    if (!printWindow) {
-        alert("Please allow pop-ups for this website and try again.");
-        return;
-    }
-
-    printWindow.document.open();
-
-    printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>${documentTitle}</title>
-
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    color: #222;
-                    margin: 35px;
-                }
-
-                .header {
-                    text-align: center;
-                    border-bottom: 2px solid #1d4ed8;
-                    padding-bottom: 15px;
-                    margin-bottom: 25px;
-                }
-
-                .header h1 {
-                    margin: 0;
-                    color: #1d4ed8;
-                    font-size: 25px;
-                }
-
-                .header p {
-                    margin: 6px 0 0;
-                    font-size: 13px;
-                }
-
-                h2 {
-                    text-align: center;
-                    font-size: 19px;
-                    margin-bottom: 25px;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                td {
-                    border: 1px solid #bbb;
-                    padding: 12px;
-                    font-size: 14px;
-                }
-
-                td:first-child {
-                    width: 35%;
-                    font-weight: bold;
-                    background: #f3f6fc;
-                }
-
-                .signature {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 75px;
-                    font-size: 13px;
-                }
-
-                @media print {
-                    body {
-                        margin: 15mm;
-                    }
-                }
-            </style>
-        </head>
-
-        <body>
-
-            <div class="header">
-                <h1>IKON INSTITUTE</h1>
-                <p>A Symbol of Success</p>
-            </div>
-
-            <h2>${documentTitle}</h2>
-
-            <table>
-                <tr>
-                    <td>Registration No.</td>
-                    <td>${regNo}</td>
-                </tr>
-
-                <tr>
-                    <td>Student Name</td>
-                    <td>${name}</td>
-                </tr>
-
-                <tr>
-                    <td>Course</td>
-                    <td>${course}</td>
-                </tr>
-
-                <tr>
-                    <td>Examination Paper</td>
-                    <td>${paper}</td>
-                </tr>
-
-                <tr>
-                    <td>Bill Date</td>
-                    <td>${billDate}</td>
-                </tr>
-
-                <tr>
-                    <td>Bill No.</td>
-                    <td>${billNo}</td>
-                </tr>
-
-                <tr>
-                    <td>Bill Amount</td>
-                    <td>${billAmount}</td>
-                </tr>
-            </table>
-
-            <div class="signature">
-                <div>Student Signature: __________________</div>
-                <div>Authorized Signature: __________________</div>
-            </div>
-
-        </body>
-        </html>
-    `);
-
-    printWindow.document.close();
-
-    printWindow.onload = function() {
-        printWindow.focus();
-        printWindow.print();
-    };
-}
-
-
-// Download / Print Exam Form
-function downloadExamFormPDF() {
-    printExamDocument("examform");
-}
-
-
-// Download / Print Hall Ticket
-function downloadExamHallTicket() {
-    printExamDocument("hallticket");
 }
