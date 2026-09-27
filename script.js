@@ -22941,7 +22941,7 @@ function downloadExamFormPDF() {
             background: #eef3ff !important;
             border-left: 3px solid #1747c8 !important;
             color: #1747c8 !important;
-            font-size: 12px !important;
+            font-size: 14px !important;
             line-height: 1.3 !important;
         }
 
