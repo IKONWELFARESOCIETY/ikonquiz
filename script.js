@@ -23610,6 +23610,125 @@ body > .exam-form-print {
         padding: 0 !important;
     }
 }
+/* =========================================
+   FEE PAYMENT ELIGIBILITY - PDF ONLY
+   Larger, Professional, A4 Safe
+========================================= */
+
+.exam-fee-criteria {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+
+    margin: 3mm 0 2mm !important;
+    padding: 3mm 4mm !important;
+
+    background: #f3f7ff !important;
+    border: 1px solid #b9cdec !important;
+    border-left: 4px solid #1455c0 !important;
+    border-radius: 2mm !important;
+
+    color: #24344d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+
+    /* Important: don't force the entire section to a new page */
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+}
+
+/* Section heading */
+.exam-fee-criteria h3 {
+    display: block !important;
+
+    margin: 0 0 2mm !important;
+    padding: 0 0 2mm !important;
+
+    color: #1249a8 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+
+    border-bottom: 1px solid #c5d8f0 !important;
+}
+
+/* Intro note */
+.exam-fee-criteria .fee-criteria-note {
+    margin: 1.5mm 0 2mm !important;
+    padding: 1.5mm 2mm !important;
+
+    background: #ffffff !important;
+    border: 1px solid #dce8f8 !important;
+    border-radius: 1mm !important;
+
+    color: #334155 !important;
+    font-size: 11.5px !important;
+    line-height: 1.35 !important;
+}
+
+/* Numbered criteria list */
+.exam-fee-criteria .fee-criteria-list {
+    margin: 2mm 0 !important;
+    padding-left: 7mm !important;
+
+    list-style-type: decimal !important;
+    list-style-position: outside !important;
+}
+
+/* Each eligibility item */
+.exam-fee-criteria .fee-criteria-list li {
+    margin: 1.5mm 0 !important;
+    padding: 1mm 1.5mm !important;
+
+    color: #26364d !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+
+    /* Prevent splitting an individual criterion */
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+/* Paper name */
+.exam-fee-criteria .fee-criteria-list li > strong:first-child {
+    color: #1249a8 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+/* Percentage emphasis */
+.exam-fee-criteria .fee-criteria-list li strong {
+    color: #087f6a !important;
+    font-weight: 700 !important;
+}
+
+/* Last note / eligibility disclaimer */
+.exam-fee-criteria .fee-criteria-note:last-child {
+    margin: 2mm 0 0 !important;
+    padding: 2mm 2.5mm !important;
+
+    background: #e7f1ff !important;
+    border: 1px solid #c5d9f2 !important;
+    border-left: 3px solid #1455c0 !important;
+    border-radius: 1mm !important;
+
+    color: #334155 !important;
+    font-size: 10.5px !important;
+    line-height: 1.3 !important;
+}
+
+/* Keep fee criteria within the printable width */
+@media print {
+    .exam-fee-criteria,
+    .exam-fee-criteria * {
+        max-width: 100% !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
     `;
 
     // 10. Write complete HTML into print window
