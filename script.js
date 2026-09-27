@@ -23295,6 +23295,231 @@ body > .exam-form-print {
     left: 50% !important;
     transform: translateX(-50%) !important;
 }
+/* =========================================
+   FINAL COMPACT A4 EXAM FORM
+   Remove excess space above IKON logo
+   Fit form content more compactly
+========================================= */
+
+@page {
+    size: A4 portrait;
+    margin: 8mm 12mm !important;
+}
+
+html,
+body {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+}
+
+/* Remove extra top spacing from form */
+body > .exam-form-print {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Form number */
+.exam-print-form-no {
+    margin: 0 0 3mm !important;
+    padding: 0 !important;
+}
+
+/* Compact institute header */
+.exam-print-header {
+    margin: 0 0 3mm !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+/* Institute name */
+.exam-print-header h1 {
+    margin: 0 0 1mm !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* IKON logo: remove excess top gap */
+.exam-print-logo {
+    display: block !important;
+    width: 35mm !important;
+    height: 35mm !important;
+    max-width: 35mm !important;
+    object-fit: contain !important;
+    margin: 0 auto 1mm !important;
+}
+
+/* Tagline and exam title */
+.exam-print-tagline {
+    margin: 1mm 0 2mm !important;
+    padding: 0 !important;
+}
+
+.exam-print-header h2 {
+    margin: 1mm 0 0 !important;
+    padding: 0 !important;
+}
+
+/* Reduce vertical gaps between sections */
+.exam-print-section {
+    margin-top: 3mm !important;
+    padding: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+.exam-print-section h3 {
+    margin-bottom: 1.5mm !important;
+    padding: 1.5mm 2.5mm !important;
+}
+
+/* Compact table */
+.exam-print-table th,
+.exam-print-table td {
+    padding: 1.5mm 2mm !important;
+    line-height: 1.2 !important;
+    font-size: 10px !important;
+}
+
+/* Compact fee criteria and guidelines */
+.exam-fee-criteria {
+    margin: 3mm 0 !important;
+    padding: 3mm 4mm !important;
+}
+
+.exam-fee-criteria h3 {
+    margin-bottom: 2mm !important;
+    padding-bottom: 1.5mm !important;
+}
+
+.fee-criteria-note {
+    margin: 2mm 0 !important;
+    line-height: 1.3 !important;
+    font-size: 10px !important;
+}
+
+.fee-criteria-list {
+    margin: 2mm 0 !important;
+    padding-left: 5mm !important;
+}
+
+.fee-criteria-list li {
+    margin: 1mm 0 !important;
+    padding-left: 1mm !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+}
+
+/* Keep both signature blocks on the same row */
+.exam-print-signatures {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 12mm !important;
+    width: 100% !important;
+    margin: 8mm 0 0 !important;
+    padding: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+.exam-print-signatures > .exam-sign-box {
+    flex: 1 1 0 !important;
+    width: 50% !important;
+    height: 27mm !important;
+    min-height: 27mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+}
+
+/* Align signature lines */
+.exam-print-signatures > .exam-sign-box > .exam-sign-space {
+    position: absolute !important;
+    top: 15mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+/* Larger Issued By image, without pushing signature line down */
+.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
+    position: absolute !important;
+    top: -2mm !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 45mm !important;
+    max-width: 100% !important;
+    height: 15mm !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+}
+
+/* Signature labels */
+.exam-print-signatures > .exam-sign-box > p {
+    position: absolute !important;
+    top: 16.5mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+/* Authorized details */
+.exam-print-signatures > .exam-authorized-box > strong {
+    position: absolute !important;
+    top: 21mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+    font-size: 10px !important;
+}
+
+.exam-print-signatures > .exam-authorized-box > span {
+    position: absolute !important;
+    top: 24mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+    font-size: 9px !important;
+}
+
+/* Footer */
+.exam-print-footer {
+    margin: 4mm 0 0 !important;
+    padding: 2mm 0 0 !important;
+    font-size: 9px !important;
+}
+
+@media print {
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    body > .exam-form-print {
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+}
     `;
 
     // 10. Write complete HTML into print window
