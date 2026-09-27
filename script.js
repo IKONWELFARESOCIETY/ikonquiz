@@ -22530,3 +22530,74 @@ function downloadExamHallTicket() {
         selectedPaper
     );
 }
+// =====================================
+// DOWNLOAD EXAM FORM PDF
+// =====================================
+
+function downloadExamFormPDF() {
+
+    if (!examFormStudentData) {
+        alert("Please search student details first.");
+        return;
+    }
+
+    const paperSelect =
+        document.getElementById("examFormPaperSelect");
+
+    const selectedPaper =
+        paperSelect ? paperSelect.value.trim() : "";
+
+    if (!selectedPaper) {
+        alert("Please select an examination paper.");
+        return;
+    }
+
+    // Fill printable form with current student details
+    document.getElementById("printExamRegNo").textContent =
+        examFormStudentData.regNo || "—";
+
+    document.getElementById("printExamStudentName").textContent =
+        examFormStudentData.name || "—";
+
+    document.getElementById("printExamCourse").textContent =
+        examFormStudentData.course || "—";
+
+    document.getElementById("printExamPaper").textContent =
+        selectedPaper;
+
+    document.getElementById("printExamBillDate").textContent =
+        examFormStudentData.billDate || "—";
+
+    document.getElementById("printExamBillNo").textContent =
+        examFormStudentData.billNo || "—";
+
+    document.getElementById("printExamBillAmount").textContent =
+        examFormStudentData.billAmount || "—";
+
+    const printArea =
+        document.getElementById("examFormPrintArea");
+
+    if (!printArea) {
+        alert("Exam Form print template not found.");
+        return;
+    }
+
+    // Make sure Issued By image is loaded before printing
+    const issuedImage =
+        document.getElementById("examIssuedByImage");
+
+    if (issuedImage && !issuedImage.complete) {
+        issuedImage.onload = function() {
+            window.print();
+        };
+
+        issuedImage.onerror = function() {
+            alert("Issued By image could not be loaded. Please check its GitHub path.");
+            window.print();
+        };
+
+        return;
+    }
+
+    window.print();
+}
