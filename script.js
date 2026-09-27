@@ -22022,3 +22022,414 @@ function escapeDeviceValue(value){
         .replace(/"/g,'\\"');
 
 }
+//====================================================
+// EXAM FORM PAGE
+//====================================================
+
+let examFormStudentData = null;
+let examFormEligible = false;
+
+
+//----------------------------------------------------
+// SHOW / HIDE PAGE
+//----------------------------------------------------
+
+function openExamFormPage() {
+
+    const loginPage = document.getElementById("loginPage");
+    const examFormPage = document.getElementById("examFormPage");
+
+    if (loginPage) {
+        loginPage.classList.add("hidden");
+        loginPage.style.setProperty("display", "none", "important");
+    }
+
+    if (examFormPage) {
+        examFormPage.classList.remove("hidden");
+        examFormPage.style.removeProperty("display");
+    }
+
+    resetExamFormPage();
+}
+
+
+function backToLoginFromExamForm() {
+
+    const examFormPage = document.getElementById("examFormPage");
+    const loginPage = document.getElementById("loginPage");
+
+    if (examFormPage) {
+        examFormPage.classList.add("hidden");
+        examFormPage.style.setProperty("display", "none", "important");
+    }
+
+    if (loginPage) {
+        loginPage.classList.remove("hidden");
+        loginPage.style.removeProperty("display");
+    }
+
+    resetExamFormPage();
+}
+
+
+//----------------------------------------------------
+// RESET FORM
+//----------------------------------------------------
+
+function resetExamFormPage() {
+
+    examFormStudentData = null;
+    examFormEligible = false;
+
+    const regInput = document.getElementById("examFormRegNo");
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const message = document.getElementById("examFormEligibilityMessage");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+
+    if (regInput) regInput.value = "";
+
+    if (paperSelect) {
+        paperSelect.innerHTML = "";
+        paperSelect.add(new Option("First search registration number", ""));
+        paperSelect.disabled = true;
+    }
+
+    if (message) {
+        message.textContent = "";
+        message.style.color = "";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+        submitBtn.disabled = true;
+    }
+
+    setExamFormStudentDetails("", "", "");
+}
+
+
+//----------------------------------------------------
+// SHOW STUDENT DETAILS
+//----------------------------------------------------
+
+function setExamFormStudentDetails(regNo, name, course) {
+
+    const regBox = document.getElementById("examFormDisplayRegNo");
+    const nameBox = document.getElementById("examFormDisplayName");
+    const courseBox = document.getElementById("examFormDisplayCourse");
+
+    if (regBox) regBox.textContent = regNo || "--";
+    if (nameBox) nameBox.textContent = name || "--";
+    if (courseBox) courseBox.textContent = course || "--";
+}
+
+
+//----------------------------------------------------
+// SEARCH STUDENT BY REGISTRATION NUMBER
+//----------------------------------------------------
+
+function lookupExamFormStudent() {
+
+    const regInput = document.getElementById("examFormRegNo");
+    const searchBtn = document.getElementById("examFormSearchBtn");
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const message = document.getElementById("examFormEligibilityMessage");
+
+    const regNo = regInput ? regInput.value.trim() : "";
+
+    if (!regNo) {
+        alert("Please enter Registration Number.");
+        return;
+    }
+
+    examFormStudentData = null;
+    examFormEligible = false;
+
+    if (message) message.textContent = "";
+
+    if (paperSelect) {
+        paperSelect.innerHTML = "";
+        paperSelect.add(new Option("Loading papers...", ""));
+        paperSelect.disabled = true;
+    }
+
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+    if (submitBtn) submitBtn.style.display = "none";
+
+    if (searchBtn) {
+        searchBtn.disabled = true;
+        searchBtn.textContent = "Searching...";
+    }
+
+    const url =
+        SCRIPT_URL +
+        "?action=examFormStudent&regNo=" +
+        encodeURIComponent(regNo);
+
+    fetch(url)
+        .then(function(res) {
+            if (!res.ok) {
+                throw new Error("Server error: " + res.status);
+            }
+            return res.json();
+        })
+        .then(function(data) {
+
+            if (data.status !== "SUCCESS" || !data.student) {
+                throw new Error(data.message || "Student not found.");
+            }
+
+            examFormStudentData = data.student;
+
+            const studentRegNo = data.student.regNo || regNo;
+            const studentName = data.student.name || "";
+            const studentCourse = data.student.course || "";
+            const papers = Array.isArray(data.papers) ? data.papers : [];
+
+            setExamFormStudentDetails(
+                studentRegNo,
+                studentName,
+                studentCourse
+            );
+
+            if (!papers.length) {
+                if (paperSelect) {
+                    paperSelect.innerHTML = "";
+                    paperSelect.add(new Option("No assigned papers found", ""));
+                    paperSelect.disabled = true;
+                }
+
+                if (message) {
+                    message.textContent = "No exam papers are assigned to this Registration Number.";
+                    message.style.color = "#b45309";
+                }
+                return;
+            }
+
+            if (paperSelect) {
+                paperSelect.innerHTML = "";
+                paperSelect.add(new Option("Select Exam Paper", ""));
+
+                papers.forEach(function(paper) {
+                    paperSelect.add(new Option(String(paper), String(paper)));
+                });
+
+                paperSelect.disabled = false;
+            }
+
+            if (message) {
+                message.textContent = "Student found. Select a paper and check eligibility.";
+                message.style.color = "#166534";
+            }
+        })
+        .catch(function(error) {
+
+            console.error("Exam Form Student Lookup Error:", error);
+
+            examFormStudentData = null;
+
+            setExamFormStudentDetails("", "", "");
+
+            if (paperSelect) {
+                paperSelect.innerHTML = "";
+                paperSelect.add(new Option("Student not found", ""));
+                paperSelect.disabled = true;
+            }
+
+            if (message) {
+                message.textContent = error.message || "Unable to find student.";
+                message.style.color = "#b91c1c";
+            }
+        })
+        .finally(function() {
+
+            if (searchBtn) {
+                searchBtn.disabled = false;
+                searchBtn.textContent = "Search";
+            }
+        });
+}
+
+
+//----------------------------------------------------
+// RESET ELIGIBILITY WHEN PAPER CHANGES
+//----------------------------------------------------
+
+function resetExamFormEligibility() {
+
+    examFormEligible = false;
+
+    const message = document.getElementById("examFormEligibilityMessage");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+
+    if (message) {
+        message.textContent = "";
+        message.style.color = "";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+        submitBtn.disabled = true;
+    }
+}
+
+
+//----------------------------------------------------
+// CHECK FEE ELIGIBILITY
+//----------------------------------------------------
+
+function checkExamFormEligibility() {
+
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const checkBtn = document.getElementById("examFormCheckBtn");
+    const message = document.getElementById("examFormEligibilityMessage");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+
+    const regNo = examFormStudentData
+        ? String(examFormStudentData.regNo || "").trim()
+        : "";
+
+    const paper = paperSelect ? paperSelect.value.trim() : "";
+
+    if (!examFormStudentData || !regNo) {
+        alert("Please search and verify your Registration Number first.");
+        return;
+    }
+
+    if (!paper) {
+        alert("Please select an exam paper.");
+        return;
+    }
+
+    examFormEligible = false;
+
+    if (message) {
+        message.textContent = "Checking fee eligibility...";
+        message.style.color = "#555";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+        submitBtn.disabled = true;
+    }
+
+    if (checkBtn) {
+        checkBtn.disabled = true;
+        checkBtn.textContent = "Checking...";
+    }
+
+    const url =
+        SCRIPT_URL +
+        "?action=checkExamFormEligibility" +
+        "&regNo=" + encodeURIComponent(regNo) +
+        "&paper=" + encodeURIComponent(paper);
+
+    fetch(url)
+        .then(function(res) {
+            if (!res.ok) {
+                throw new Error("Server error: " + res.status);
+            }
+            return res.json();
+        })
+        .then(function(data) {
+
+            const status = String(data.status || "").toUpperCase();
+
+            if (status === "ELIGIBLE") {
+
+                examFormEligible = true;
+
+                if (message) {
+                    message.textContent =
+                        data.message || "Eligible. You may proceed with the exam form.";
+                    message.style.color = "#15803d";
+                }
+
+                if (submitBtn) {
+                    submitBtn.style.display = "inline-block";
+                    submitBtn.disabled = false;
+                }
+
+            } else if (status === "NOT_ELIGIBLE") {
+
+                examFormEligible = false;
+
+                if (message) {
+                    message.textContent =
+                        data.message || "Not eligible. Please clear the required course fee.";
+                    message.style.color = "#b91c1c";
+                }
+
+            } else if (status === "NOT_APPLICABLE") {
+
+                examFormEligible = false;
+
+                if (message) {
+                    message.textContent =
+                        data.message || "This paper is not applicable to your course.";
+                    message.style.color = "#b45309";
+                }
+
+            } else {
+
+                examFormEligible = false;
+
+                if (message) {
+                    message.textContent =
+                        data.message || "Unable to verify eligibility. Please contact IKON Admin.";
+                    message.style.color = "#b91c1c";
+                }
+            }
+        })
+        .catch(function(error) {
+
+            console.error("Eligibility Check Error:", error);
+
+            examFormEligible = false;
+
+            if (message) {
+                message.textContent = "Unable to connect with server. Please try again.";
+                message.style.color = "#b91c1c";
+            }
+        })
+        .finally(function() {
+
+            if (checkBtn) {
+                checkBtn.disabled = false;
+                checkBtn.textContent = "Check Eligibility";
+            }
+        });
+}
+
+
+//----------------------------------------------------
+// SUBMIT EXAM FORM - BACKEND NOT CONNECTED YET
+//----------------------------------------------------
+
+function submitExamForm() {
+
+    if (!examFormStudentData || !examFormEligible) {
+        alert("Please verify student details and eligibility first.");
+        return;
+    }
+
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const paper = paperSelect ? paperSelect.value.trim() : "";
+
+    if (!paper) {
+        alert("Please select an exam paper.");
+        return;
+    }
+
+    /*
+      Next step:
+      Connect this button to an Apps Script endpoint that saves
+      the application in the Exam Form sheet and sets approval
+      status to PENDING.
+
+      Until that backend endpoint is added, this function does
+      not save or submit any application.
+    */
+
+    alert("Eligibility verified. Exam Form submission will be enabled after the Exam Form sheet is connected.");
+}
