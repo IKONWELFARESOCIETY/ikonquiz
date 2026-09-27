@@ -22076,27 +22076,24 @@ function backToLoginFromExamForm() {
 // RESET FORM
 //----------------------------------------------------
 
-function resetExamFormPage() {
+function resetExamFormEligibility() {
 
-    examFormStudentData = null;
     examFormEligible = false;
 
-    const regInput = document.getElementById("examFormRegNo");
-    const paperSelect = document.getElementById("examFormPaperSelect");
-    const message = document.getElementById("examFormEligibilityMessage");
-    const submitBtn = document.getElementById("examFormSubmitBtn");
+    const message =
+        document.getElementById("examFormEligibilityMessage");
 
-    if (regInput) regInput.value = "";
+    const submitBtn =
+        document.getElementById("examFormSubmitBtn");
 
-    if (paperSelect) {
-        paperSelect.innerHTML = "";
-        paperSelect.add(new Option("First search registration number", ""));
-        paperSelect.disabled = true;
-    }
+    const downloadOptions =
+        document.getElementById("examFormDownloadOptions");
 
     if (message) {
         message.textContent = "";
+        message.style.display = "none";
         message.style.color = "";
+        message.style.background = "";
     }
 
     if (submitBtn) {
@@ -22104,9 +22101,13 @@ function resetExamFormPage() {
         submitBtn.disabled = true;
     }
 
-    setExamFormStudentDetails("", "", "");
-}
+    if (downloadOptions) {
+        downloadOptions.style.display = "none";
+    }
 
+    // Update Paper field in Student Details
+    updateExamFormSelectedPaper();
+}
 
 //----------------------------------------------------
 // SHOW STUDENT DETAILS
@@ -22341,16 +22342,28 @@ function resetExamFormEligibility() {
 
 function checkExamFormEligibility() {
 
-    const paperSelect = document.getElementById("examFormPaperSelect");
-    const checkBtn = document.getElementById("examFormCheckBtn");
-    const message = document.getElementById("examFormEligibilityMessage");
-    const submitBtn = document.getElementById("examFormSubmitBtn");
+    const paperSelect =
+        document.getElementById("examFormPaperSelect");
+
+    const checkBtn =
+        document.getElementById("examFormCheckBtn");
+
+    const message =
+        document.getElementById("examFormEligibilityMessage");
+
+    const submitBtn =
+        document.getElementById("examFormSubmitBtn");
+
+    const downloadOptions =
+        document.getElementById("examFormDownloadOptions");
 
     const regNo = examFormStudentData
         ? String(examFormStudentData.regNo || "").trim()
         : "";
 
-    const paper = paperSelect ? paperSelect.value.trim() : "";
+    const paper = paperSelect
+        ? paperSelect.value.trim()
+        : "";
 
     if (!examFormStudentData || !regNo) {
         alert("Please search and verify your Registration Number first.");
@@ -22364,18 +22377,21 @@ function checkExamFormEligibility() {
 
     examFormEligible = false;
 
-    // Show message box
+    // Hide download buttons until eligibility is confirmed
+    if (downloadOptions) {
+        downloadOptions.style.display = "none";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+        submitBtn.disabled = true;
+    }
+
     if (message) {
         message.style.display = "block";
         message.textContent = "Checking fee eligibility...";
         message.style.color = "#555";
         message.style.background = "#f1f5f9";
-    }
-
-    // Hide submit button until eligibility is confirmed
-    if (submitBtn) {
-        submitBtn.style.display = "none";
-        submitBtn.disabled = true;
     }
 
     if (checkBtn) {
@@ -22393,56 +22409,40 @@ function checkExamFormEligibility() {
 
     fetch(url)
         .then(function(res) {
+
             if (!res.ok) {
                 throw new Error("Server error: " + res.status);
             }
+
             return res.json();
         })
         .then(function(data) {
 
             console.log("Eligibility API Response:", data);
 
-            const status = String(data.status || "").toUpperCase();
+            const status =
+                String(data.status || "").trim().toUpperCase();
 
             if (status === "ELIGIBLE") {
 
                 examFormEligible = true;
 
+                // Save the exact paper that passed eligibility
+                examFormStudentData.selectedPaper = paper;
+
                 if (message) {
                     message.style.display = "block";
                     message.textContent =
-                        data.message || "You are eligible to fill this paper's exam form.";
+                        data.message ||
+                        "You are eligible to fill this paper's exam form.";
+
                     message.style.color = "#15803d";
                     message.style.background = "#f0fdf4";
                 }
 
-                if (submitBtn) {
-                    submitBtn.style.display = "block";
-                    submitBtn.disabled = false;
-                }
-
-            } else if (status === "NOT_ELIGIBLE") {
-
-                examFormEligible = false;
-
-                if (message) {
-                    message.style.display = "block";
-                    message.textContent =
-                        data.message || "Not eligible. Please clear the required course fee.";
-                    message.style.color = "#b91c1c";
-                    message.style.background = "#fef2f2";
-                }
-
-            } else if (status === "NOT_APPLICABLE") {
-
-                examFormEligible = false;
-
-                if (message) {
-                    message.style.display = "block";
-                    message.textContent =
-                        data.message || "This paper is not applicable to your course.";
-                    message.style.color = "#b45309";
-                    message.style.background = "#fffbeb";
+                // Show both download buttons immediately
+                if (downloadOptions) {
+                    downloadOptions.style.display = "block";
                 }
 
             } else {
@@ -22453,9 +22453,21 @@ function checkExamFormEligibility() {
                     message.style.display = "block";
                     message.textContent =
                         data.message ||
-                        ("Eligibility check failed. Server status: " + (status || "Unknown"));
-                    message.style.color = "#b91c1c";
-                    message.style.background = "#fef2f2";
+                        "You are not eligible for this paper.";
+
+                    message.style.color =
+                        status === "NOT_APPLICABLE"
+                            ? "#b45309"
+                            : "#b91c1c";
+
+                    message.style.background =
+                        status === "NOT_APPLICABLE"
+                            ? "#fffbeb"
+                            : "#fef2f2";
+                }
+
+                if (downloadOptions) {
+                    downloadOptions.style.display = "none";
                 }
             }
         })
@@ -22469,8 +22481,13 @@ function checkExamFormEligibility() {
                 message.style.display = "block";
                 message.textContent =
                     "Unable to connect with server. " + error.message;
+
                 message.style.color = "#b91c1c";
                 message.style.background = "#fef2f2";
+            }
+
+            if (downloadOptions) {
+                downloadOptions.style.display = "none";
             }
         })
         .finally(function() {
@@ -22481,7 +22498,6 @@ function checkExamFormEligibility() {
             }
         });
 }
-
 //----------------------------------------------------
 // SUBMIT EXAM FORM - BACKEND NOT CONNECTED YET
 //----------------------------------------------------
@@ -22560,4 +22576,205 @@ function updateExamFormSelectedPaper() {
     paperDisplay.textContent =
       paperSelect.options[paperSelect.selectedIndex]?.text || "--";
   }
-}0
+}
+//====================================================
+// EXAM FORM / HALL TICKET PDF PRINT
+//====================================================
+
+function printExamDocument(documentType) {
+
+    if (!examFormStudentData || !examFormEligible) {
+        alert("Please check eligibility first.");
+        return;
+    }
+
+    const student = examFormStudentData;
+
+    const paperSelect =
+        document.getElementById("examFormPaperSelect");
+
+    const selectedPaper =
+        student.selectedPaper ||
+        (paperSelect ? paperSelect.value.trim() : "");
+
+    if (!selectedPaper) {
+        alert("Please select an exam paper.");
+        return;
+    }
+
+    const isHallTicket = documentType === "hallticket";
+
+    const documentTitle = isHallTicket
+        ? "EXAM HALL TICKET"
+        : "EXAM FORM";
+
+    function safe(value) {
+        return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    const regNo = safe(student.regNo);
+    const name = safe(student.name);
+    const course = safe(student.course);
+    const paper = safe(selectedPaper);
+    const billDate = safe(student.billDate);
+    const billNo = safe(student.billNo);
+    const billAmount = safe(student.billAmount);
+
+    const printWindow = window.open("", "_blank");
+
+    if (!printWindow) {
+        alert("Please allow pop-ups for this website and try again.");
+        return;
+    }
+
+    printWindow.document.open();
+
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${documentTitle}</title>
+
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #222;
+                    margin: 35px;
+                }
+
+                .header {
+                    text-align: center;
+                    border-bottom: 2px solid #1d4ed8;
+                    padding-bottom: 15px;
+                    margin-bottom: 25px;
+                }
+
+                .header h1 {
+                    margin: 0;
+                    color: #1d4ed8;
+                    font-size: 25px;
+                }
+
+                .header p {
+                    margin: 6px 0 0;
+                    font-size: 13px;
+                }
+
+                h2 {
+                    text-align: center;
+                    font-size: 19px;
+                    margin-bottom: 25px;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                td {
+                    border: 1px solid #bbb;
+                    padding: 12px;
+                    font-size: 14px;
+                }
+
+                td:first-child {
+                    width: 35%;
+                    font-weight: bold;
+                    background: #f3f6fc;
+                }
+
+                .signature {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 75px;
+                    font-size: 13px;
+                }
+
+                @media print {
+                    body {
+                        margin: 15mm;
+                    }
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="header">
+                <h1>IKON INSTITUTE</h1>
+                <p>A Symbol of Success</p>
+            </div>
+
+            <h2>${documentTitle}</h2>
+
+            <table>
+                <tr>
+                    <td>Registration No.</td>
+                    <td>${regNo}</td>
+                </tr>
+
+                <tr>
+                    <td>Student Name</td>
+                    <td>${name}</td>
+                </tr>
+
+                <tr>
+                    <td>Course</td>
+                    <td>${course}</td>
+                </tr>
+
+                <tr>
+                    <td>Examination Paper</td>
+                    <td>${paper}</td>
+                </tr>
+
+                <tr>
+                    <td>Bill Date</td>
+                    <td>${billDate}</td>
+                </tr>
+
+                <tr>
+                    <td>Bill No.</td>
+                    <td>${billNo}</td>
+                </tr>
+
+                <tr>
+                    <td>Bill Amount</td>
+                    <td>${billAmount}</td>
+                </tr>
+            </table>
+
+            <div class="signature">
+                <div>Student Signature: __________________</div>
+                <div>Authorized Signature: __________________</div>
+            </div>
+
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+
+    printWindow.onload = function() {
+        printWindow.focus();
+        printWindow.print();
+    };
+}
+
+
+// Download / Print Exam Form
+function downloadExamFormPDF() {
+    printExamDocument("examform");
+}
+
+
+// Download / Print Hall Ticket
+function downloadExamHallTicket() {
+    printExamDocument("hallticket");
+}
