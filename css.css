@@ -20055,3 +20055,32 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         width: 100%;
     }
 }
+/* Exam Form uses existing result-box layout */
+#examFormPage .result-box {
+    width: 100%;
+    max-width: 650px;
+    margin: 30px auto;
+    box-sizing: border-box;
+}
+
+/* Keep hidden sections hidden until JS reveals them */
+#examFormPage .hidden {
+    display: none !important;
+}
+
+/* Student details appearance */
+#examFormStudentDetails:not(.hidden) {
+    display: block !important;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    background: #f8fbff;
+    text-align: left;
+}
+
+/* Paper section appearance */
+#examFormPaperSection:not(.hidden) {
+    display: block !important;
+    margin-top: 20px;
+}
