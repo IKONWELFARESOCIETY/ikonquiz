@@ -23443,7 +23443,7 @@ body > .exam-form-print {
 
 .exam-print-section li {
     margin: 0.5mm 0 !important;
-    font-size: 10.5px !important;
+    font-size: 12.5px !important;
     line-height: 1.3 !important;
 }
 
@@ -23465,7 +23465,7 @@ body > .exam-form-print {
 
 .fee-criteria-note {
     margin: 1mm 0 !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
     line-height: 1.3 !important;
 }
 
@@ -23477,7 +23477,7 @@ body > .exam-form-print {
 .fee-criteria-list li {
     margin: 0.5mm 0 !important;
     padding-left: 0.5mm !important;
-    font-size: 10.5px !important;
+    font-size: 12.5px !important;
     line-height: 1.3 !important;
 }
 
