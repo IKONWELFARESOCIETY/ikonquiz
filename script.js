@@ -21940,31 +21940,24 @@ let examFormStudentData = null;
 let examFormEligible = false;
 
 
-//----------------------------------------------------
-// SHOW / HIDE PAGE
-//----------------------------------------------------
-
 function openExamFormPage() {
-
     const loginPage = document.getElementById("loginPage");
     const examFormPage = document.getElementById("examFormPage");
 
     if (loginPage) {
-        loginPage.classList.add("hidden");
-        loginPage.style.setProperty("display", "none", "important");
+        loginPage.classList.remove("hidden");
+        loginPage.style.removeProperty("display");
     }
 
     if (examFormPage) {
         examFormPage.classList.remove("hidden");
-        examFormPage.style.removeProperty("display");
+        examFormPage.style.setProperty("display", "block", "important");
     }
 
     resetExamFormPage();
 }
 
-
 function backToLoginFromExamForm() {
-
     const examFormPage = document.getElementById("examFormPage");
     const loginPage = document.getElementById("loginPage");
 
@@ -21980,7 +21973,6 @@ function backToLoginFromExamForm() {
 
     resetExamFormPage();
 }
-
 
 //----------------------------------------------------
 // RESET FORM
@@ -23955,4 +23947,22 @@ function resetExamFormPreview() {
     if (submitBtn) {
         submitBtn.disabled = true;
     }
+}
+// Initial page state: hide Exam Form, keep login visible
+function initializeExamFormVisibility() {
+    const examFormPage = document.getElementById("examFormPage");
+
+    if (examFormPage) {
+        examFormPage.classList.add("hidden");
+        examFormPage.style.setProperty("display", "none", "important");
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeExamFormVisibility
+    );
+} else {
+    initializeExamFormVisibility();
 }
