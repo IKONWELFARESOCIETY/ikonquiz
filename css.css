@@ -21135,3 +21135,57 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 #examFormPage:not(.hidden) {
     display: block !important;
 }
+/* =========================================
+   EXAM FORM CONFIRMATION CHECKBOX
+   Small size + left aligned
+========================================= */
+
+#examFormPreviewSection .exam-form-confirmation {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    text-align: left;
+}
+
+#examFormPreviewSection .exam-form-confirmation label {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 9px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left !important;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#examFormPreviewSection #examFormConfirmCheckbox {
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    display: inline-block !important;
+    flex: 0 0 16px !important;
+    width: 16px !important;
+    min-width: 16px !important;
+    max-width: 16px !important;
+    height: 16px !important;
+    min-height: 16px !important;
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+    cursor: pointer;
+    accent-color: #1d4ed8;
+    box-sizing: border-box !important;
+}
+
+#examFormPreviewSection .exam-form-confirmation label span {
+    display: block;
+    flex: 1;
+    text-align: left;
+}
