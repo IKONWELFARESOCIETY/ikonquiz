@@ -55,7 +55,6 @@ img{
     max-width:100%;
     display:block;
 }
-
 button,
 input,
 select,
@@ -224,8 +223,6 @@ header::before{
     padding:45px;
     background:linear-gradient(180deg,#ffffff,#fbfdff);
 }
-
-
 /*==================================================
  LOGIN PAGE
 ==================================================*/
