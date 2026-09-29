@@ -21939,24 +21939,39 @@ function escapeDeviceValue(value){
 let examFormStudentData = null;
 let examFormEligible = false;
 
-
 function openExamFormPage() {
     const loginPage = document.getElementById("loginPage");
     const examFormPage = document.getElementById("examFormPage");
 
-    if (loginPage) {
-        loginPage.classList.remove("hidden");
-        loginPage.style.removeProperty("display");
+    if (!loginPage || !examFormPage) {
+        console.error("Login page or Exam Form page not found.");
+        return;
     }
 
-    if (examFormPage) {
-        examFormPage.classList.remove("hidden");
-        examFormPage.style.setProperty("display", "block", "important");
+    // Hide login page and its buttons
+    loginPage.classList.add("hidden");
+    loginPage.style.setProperty("display", "none", "important");
+
+    // Show only Exam Form page
+    examFormPage.classList.remove("hidden");
+    examFormPage.style.setProperty("display", "block", "important");
+
+    // Reset form fields/sections when opening
+    const regNo = document.getElementById("examFormRegNo");
+    if (regNo) regNo.value = "";
+
+    if (typeof resetExamFormEligibility === "function") {
+        resetExamFormEligibility();
     }
 
-    resetExamFormPage();
+    const studentDetails = document.getElementById("examFormStudentDetails");
+    if (studentDetails) studentDetails.classList.add("hidden");
+
+    const paperSection = document.getElementById("examFormPaperSection");
+    if (paperSection) paperSection.classList.add("hidden");
+
+    window.scrollTo({ top: 0, behavior: "instant" });
 }
-
 function backToLoginFromExamForm() {
     const examFormPage = document.getElementById("examFormPage");
     const loginPage = document.getElementById("loginPage");
@@ -21968,12 +21983,11 @@ function backToLoginFromExamForm() {
 
     if (loginPage) {
         loginPage.classList.remove("hidden");
-        loginPage.style.removeProperty("display");
+        loginPage.style.setProperty("display", "block", "important");
     }
 
-    resetExamFormPage();
+    window.scrollTo({ top: 0, behavior: "instant" });
 }
-
 //----------------------------------------------------
 // RESET FORM
 //----------------------------------------------------
