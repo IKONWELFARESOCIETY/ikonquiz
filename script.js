@@ -22894,6 +22894,12 @@ if (
 // Only Exam Form PDF is affected
 // =====================================================
 
+// =====================================================
+// IKON EXAM FORM PDF
+// A4 Portrait | One-page compact layout | Watermark
+// Uses existing Exam Form HTML template and IDs only
+// =====================================================
+
 async function downloadExamFormPDF() {
 
     // 1. Validate student data
@@ -22903,15 +22909,18 @@ async function downloadExamFormPDF() {
     }
 
     // 2. PDF allowed only after successful submission
-    const formNo = String(examFormStudentData.formNo || "").trim();
+    const formNo = String(
+        examFormStudentData.formNo || ""
+    ).trim();
 
     if (!formNo) {
         alert("Please submit your Exam Form first. PDF download is locked.");
         return;
     }
 
-    // 3. Selected paper
+    // 3. Get selected paper
     const paperSelect = document.getElementById("examFormPaperSelect");
+
     const selectedPaper = paperSelect
         ? String(paperSelect.value || "").trim()
         : "";
@@ -22929,22 +22938,35 @@ async function downloadExamFormPDF() {
         return;
     }
 
-    // 5. Clone only Exam Form
+    // 5. Clone template so original page remains unchanged
     const printClone = sourceArea.cloneNode(true);
 
     printClone.removeAttribute("id");
     printClone.classList.add("exam-form-print");
 
-    // Safely set text in cloned template
+    printClone.style.display = "block";
+    printClone.style.visibility = "visible";
+    printClone.style.position = "relative";
+    printClone.style.width = "100%";
+    printClone.style.height = "auto";
+    printClone.style.maxWidth = "100%";
+    printClone.style.minWidth = "0";
+    printClone.style.overflow = "visible";
+
+    // 6. Safely fill existing template fields
     function setPrintValue(id, value) {
         const element = printClone.querySelector("#" + id);
 
-        if (element) {
-            element.textContent =
-                value !== undefined && value !== null && String(value).trim() !== ""
-                    ? String(value)
-                    : "—";
-        }
+        if (!element) return;
+
+        const textValue =
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+                ? String(value)
+                : "—";
+
+        element.textContent = textValue;
     }
 
     setPrintValue("printExamFormNo", formNo);
@@ -22956,7 +22978,7 @@ async function downloadExamFormPDF() {
     setPrintValue("printExamBillNo", examFormStudentData.billNo);
     setPrintValue("printExamBillAmount", examFormStudentData.billAmount);
 
-    // 6. Copy student photo from the visible preview
+    // 7. Copy student photo from the visible preview
     const previewPhoto = document.getElementById("examFormStudentPhoto");
     const printPhoto = printClone.querySelector("#printExamStudentPhoto");
 
@@ -22966,27 +22988,33 @@ async function downloadExamFormPDF() {
         previewPhoto.getAttribute("src") &&
         previewPhoto.getAttribute("src").trim() !== ""
     ) {
-        printPhoto.src = new URL(
-            previewPhoto.getAttribute("src"),
-            window.location.href
-        ).href;
+        printPhoto.setAttribute(
+            "src",
+            new URL(
+                previewPhoto.getAttribute("src"),
+                window.location.href
+            ).href
+        );
 
         printPhoto.style.display = "block";
     } else if (printPhoto) {
         printPhoto.style.display = "none";
     }
 
-    // 7. Convert relative image paths to absolute URLs
+    // 8. Convert all existing image paths to absolute URLs
     printClone.querySelectorAll("img").forEach(function(img) {
         const src = img.getAttribute("src");
 
         if (src && src.trim() !== "") {
-            img.src = new URL(src, window.location.href).href;
+            img.setAttribute(
+                "src",
+                new URL(src, window.location.href).href
+            );
         }
     });
 
-    // 8. Create watermark as an absolute image
-    // It will not occupy space or push the form content.
+    // 9. Create watermark image
+    // It is positioned absolutely and does not occupy document space.
     const watermark = document.createElement("img");
 
     watermark.src =
@@ -22996,7 +23024,7 @@ async function downloadExamFormPDF() {
     watermark.className = "exam-form-pdf-watermark";
     watermark.setAttribute("aria-hidden", "true");
 
-    // Move form content into a separate foreground layer
+    // 10. Put all existing form content in foreground layer
     const contentLayer = document.createElement("div");
     contentLayer.className = "exam-form-pdf-content";
 
@@ -23007,7 +23035,7 @@ async function downloadExamFormPDF() {
     printClone.appendChild(watermark);
     printClone.appendChild(contentLayer);
 
-    // 9. Open isolated print window
+    // 11. Open isolated print window
     const printWindow = window.open(
         "",
         "_blank",
@@ -23019,7 +23047,7 @@ async function downloadExamFormPDF() {
         return;
     }
 
-    // 10. Print-only CSS
+    // 12. Print-only CSS
     const printStyles = `
         * {
             box-sizing: border-box !important;
@@ -23027,7 +23055,7 @@ async function downloadExamFormPDF() {
 
         @page {
             size: A4 portrait;
-            margin: 8mm;
+            margin: 6mm;
         }
 
         html,
@@ -23042,7 +23070,11 @@ async function downloadExamFormPDF() {
             print-color-adjust: exact !important;
         }
 
-        /* Main A4 form */
+        body {
+            display: block !important;
+        }
+
+        /* Main form sheet */
         .exam-form-print {
             display: block !important;
             position: relative !important;
@@ -23052,24 +23084,24 @@ async function downloadExamFormPDF() {
             min-width: 0 !important;
             height: auto !important;
             margin: 0 auto !important;
-            padding: 4mm !important;
+            padding: 3mm !important;
             overflow: visible !important;
             background: #ffffff !important;
             color: #172033 !important;
             border: 1px solid #b8c8dc !important;
-            border-radius: 2mm !important;
+            border-radius: 1.5mm !important;
             box-shadow: none !important;
             font-family: Arial, Helvetica, sans-serif !important;
-            font-size: 8.5pt !important;
-            line-height: 1.2 !important;
+            font-size: 7.5pt !important;
+            line-height: 1.18 !important;
         }
 
-        /* Watermark behind the form */
+        /* Watermark behind all form content */
         .exam-form-pdf-watermark {
-            position: absolute !important;
             display: block !important;
-            width: 105mm !important;
-            height: 105mm !important;
+            position: absolute !important;
+            width: 75mm !important;
+            height: 75mm !important;
             max-width: none !important;
             max-height: none !important;
             object-fit: contain !important;
@@ -23082,59 +23114,75 @@ async function downloadExamFormPDF() {
         }
 
         .exam-form-pdf-content {
+            display: block !important;
             position: relative !important;
             z-index: 1 !important;
             width: 100% !important;
+            max-width: 100% !important;
         }
 
         /* Form number */
         .exam-print-form-no {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 2mm !important;
+            margin: 0 0 1.5mm !important;
+            padding: 0 !important;
             text-align: right !important;
-            font-size: 8pt !important;
-            line-height: 1.2 !important;
+            font-size: 7pt !important;
+            line-height: 1.15 !important;
         }
 
         /* Institute header */
         .exam-print-header {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 3mm !important;
+            margin: 0 0 2mm !important;
             padding: 0 0 2mm !important;
             text-align: center !important;
-            border-bottom: 1.5px solid #1d4ed8 !important;
+            border-bottom: 1px solid #1d4ed8 !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
 
         .exam-print-header h1 {
-            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-wrap: wrap !important;
+            gap: 2mm !important;
             margin: 0 0 1mm !important;
             padding: 0 !important;
             color: #123b75 !important;
-            font-size: 17pt !important;
-            line-height: 1.2 !important;
+            font-size: 15pt !important;
+            font-weight: 700 !important;
+            line-height: 1.15 !important;
             text-align: center !important;
         }
 
-        /* Prevent logo from becoming huge */
+        /* Restrict institute logo size */
         .exam-print-logo {
-            display: block !important;
-            width: 28mm !important;
-            height: 16mm !important;
-            max-width: 28mm !important;
-            max-height: 16mm !important;
+            display: inline-block !important;
+            position: static !important;
+            width: 22mm !important;
+            height: 13mm !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: 22mm !important;
+            max-height: 13mm !important;
             object-fit: contain !important;
-            margin: 1mm auto !important;
+            object-position: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
             border: 0 !important;
+            vertical-align: middle !important;
         }
 
         .exam-print-tagline {
             margin: 0 0 1mm !important;
-            font-size: 8pt !important;
+            padding: 0 !important;
+            font-size: 7pt !important;
             font-weight: 600 !important;
+            line-height: 1.15 !important;
             text-align: center !important;
         }
 
@@ -23146,16 +23194,18 @@ async function downloadExamFormPDF() {
             margin: 1mm 0 0 !important;
             padding: 0 !important;
             color: #123b75 !important;
-            font-size: 12pt !important;
-            line-height: 1.2 !important;
+            font-size: 10pt !important;
+            font-weight: 700 !important;
+            line-height: 1.15 !important;
             text-align: center !important;
         }
 
-        /* Sections */
+        /* Main sections */
         .exam-print-section {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 3mm !important;
+            max-width: 100% !important;
+            margin: 0 0 2mm !important;
             padding: 0 !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -23163,44 +23213,53 @@ async function downloadExamFormPDF() {
 
         .exam-print-section h3,
         .exam-fee-criteria h3 {
-            margin: 0 0 2mm !important;
-            padding: 1.5mm 2mm !important;
+            margin: 0 0 1.3mm !important;
+            padding: 1.2mm 1.8mm !important;
             background: #edf4ff !important;
             color: #123b75 !important;
-            border-left: 3px solid #1d4ed8 !important;
-            font-size: 9pt !important;
-            line-height: 1.2 !important;
+            border-left: 2px solid #1d4ed8 !important;
+            font-size: 7.8pt !important;
+            font-weight: 700 !important;
+            line-height: 1.15 !important;
             page-break-after: avoid !important;
             break-after: avoid !important;
         }
 
-        /* Student photo */
+        /* Student photo area */
         .exam-print-student-photo-wrap {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 2mm !important;
+            margin: 0 0 1.5mm !important;
+            padding: 0 !important;
             text-align: right !important;
+            line-height: 0 !important;
         }
 
         .exam-print-student-photo {
             display: inline-block !important;
-            width: 25mm !important;
-            height: 31mm !important;
-            max-width: 25mm !important;
-            max-height: 31mm !important;
+            width: 20mm !important;
+            height: 25mm !important;
+            max-width: 20mm !important;
+            max-height: 25mm !important;
             object-fit: cover !important;
+            object-position: center !important;
             border: 1px solid #64748b !important;
-            padding: 1mm !important;
+            padding: 0.5mm !important;
             background: #ffffff !important;
+            vertical-align: top !important;
         }
 
-        /* Details table */
+        /* Student details table */
         .exam-print-table {
+            display: table !important;
             width: 100% !important;
+            max-width: 100% !important;
             border-collapse: collapse !important;
             table-layout: fixed !important;
             margin: 0 !important;
-            font-size: 8.5pt !important;
+            padding: 0 !important;
+            font-size: 7.5pt !important;
+            line-height: 1.15 !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
@@ -23212,61 +23271,203 @@ async function downloadExamFormPDF() {
 
         .exam-print-table th,
         .exam-print-table td {
-            padding: 1.7mm 2mm !important;
+            padding: 1.15mm 1.7mm !important;
             border: 1px solid #cbd5e1 !important;
             vertical-align: middle !important;
             text-align: left !important;
             overflow-wrap: anywhere !important;
-            line-height: 1.2 !important;
+            word-break: normal !important;
+            line-height: 1.15 !important;
         }
 
         .exam-print-table th {
-            width: 36% !important;
+            width: 35% !important;
             background: #f1f5f9 !important;
             color: #243b5a !important;
             font-weight: 700 !important;
         }
 
         .exam-print-table td {
+            color: #172033 !important;
             font-weight: 500 !important;
         }
 
-        /* Guidelines: compact but readable */
-        .exam-guidelines ol {
+        /* Examination guidelines */
+        .exam-guidelines ol,
+        .exam-fee-criteria ol,
+        .fee-criteria-list {
             margin: 0 !important;
-            padding-left: 5mm !important;
-            font-size: 7.5pt !important;
-            line-height: 1.22 !important;
+            padding-left: 4.5mm !important;
+            font-size: 6.8pt !important;
+            line-height: 1.16 !important;
         }
 
-        .exam-guidelines li {
-            margin: 0 0 1mm !important;
-            padding-left: 0.5mm !important;
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-        }
-
-        /* Fee eligibility block */
-        .exam-fee-criteria {
-            display: block !important;
-            margin: 0 0 3mm !important;
+        .exam-guidelines li,
+        .exam-fee-criteria li,
+        .fee-criteria-list li {
+            margin: 0 0 0.8mm !important;
             padding: 0 !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
 
-        /* Signature / declaration blocks */
-        .exam-form-print table,
-        .exam-form-print section,
-        .exam-form-print .exam-fee-criteria {
+        /* Fee eligibility criteria */
+        .exam-fee-criteria {
+            display: block !important;
+            width: 100% !important;
             max-width: 100% !important;
+            margin: 0 0 2mm !important;
+            padding: 0 !important;
+            font-size: 6.8pt !important;
+            line-height: 1.16 !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
         }
 
+        .exam-fee-criteria p,
+        .fee-criteria-note {
+            margin: 0 0 1mm !important;
+            padding: 0 !important;
+            font-size: 6.8pt !important;
+            line-height: 1.16 !important;
+        }
+
+        /* Signature section */
+        .exam-print-signatures {
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: space-between !important;
+            gap: 8mm !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 3mm 0 2mm !important;
+            padding: 0 2mm !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .exam-sign-box {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            width: 45% !important;
+            min-width: 0 !important;
+            max-width: 45% !important;
+            min-height: 20mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .exam-sign-space {
+            display: block !important;
+            width: 100% !important;
+            height: 11mm !important;
+            min-height: 11mm !important;
+            margin: 0 0 1mm !important;
+            padding: 0 !important;
+            border-bottom: 1px solid #334155 !important;
+        }
+
+        .exam-sign-box p {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 7pt !important;
+            font-weight: 600 !important;
+            line-height: 1.15 !important;
+            text-align: center !important;
+        }
+
+        .exam-authorized-box {
+            min-height: 20mm !important;
+        }
+
+        /* Restrict authorized stamp / issued-by image.
+           This prevents the oversized seal from creating page 2. */
+        .exam-issued-by-image {
+            display: block !important;
+            position: static !important;
+            width: 20mm !important;
+            height: 12mm !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: 20mm !important;
+            max-height: 12mm !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            margin: 0 auto 0.5mm !important;
+            padding: 0 !important;
+            border: 0 !important;
+        }
+
+        .exam-authorized-box .exam-sign-space {
+            height: 6mm !important;
+            min-height: 6mm !important;
+            margin-bottom: 0.8mm !important;
+        }
+
+        .exam-authorized-box strong,
+        .exam-authorized-box span {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 6.5pt !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+        }
+
+        /* Footer */
+        .exam-print-footer {
+            display: block !important;
+            width: 100% !important;
+            margin: 2mm 0 0 !important;
+            padding: 1.5mm 0 0 !important;
+            border-top: 1px solid #cbd5e1 !important;
+            text-align: center !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .exam-print-footer p {
+            margin: 0 0 0.7mm !important;
+            padding: 0 !important;
+            font-size: 6.5pt !important;
+            line-height: 1.15 !important;
+            text-align: center !important;
+        }
+
+        /* Do not allow any other image to expand beyond the form */
         .exam-form-print img:not(.exam-form-pdf-watermark) {
             max-width: 100% !important;
         }
 
-        /* Do not show website controls */
+        /* Re-apply fixed dimensions after general image rule */
+        .exam-form-print .exam-print-logo {
+            width: 22mm !important;
+            height: 13mm !important;
+            max-width: 22mm !important;
+            max-height: 13mm !important;
+        }
+
+        .exam-form-print .exam-print-student-photo {
+            width: 20mm !important;
+            height: 25mm !important;
+            max-width: 20mm !important;
+            max-height: 25mm !important;
+        }
+
+        .exam-form-print .exam-issued-by-image {
+            width: 20mm !important;
+            height: 12mm !important;
+            max-width: 20mm !important;
+            max-height: 12mm !important;
+        }
+
+        /* Hide any form controls if present */
         button,
         input,
         select,
@@ -23285,6 +23486,8 @@ async function downloadExamFormPDF() {
             .exam-form-print {
                 page-break-after: avoid !important;
                 break-after: avoid-page !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
             .exam-form-pdf-watermark {
@@ -23294,7 +23497,7 @@ async function downloadExamFormPDF() {
         }
     `;
 
-    // 11. Write the isolated form and its own CSS
+    // 13. Write isolated form and print CSS
     printWindow.document.open();
 
     printWindow.document.write(`
@@ -23314,21 +23517,25 @@ async function downloadExamFormPDF() {
 
     printWindow.document.close();
 
-    // 12. Wait for logo, student photo and watermark to load
-    const images = Array.from(printWindow.document.images);
+    // 14. Wait for all images (logo, student photo, stamp, watermark)
+    const images = Array.from(
+        printWindow.document.images
+    );
 
-    await Promise.all(images.map(function(img) {
-        if (img.complete && img.naturalWidth > 0) {
-            return Promise.resolve();
-        }
+    await Promise.all(
+        images.map(function(img) {
+            if (img.complete) {
+                return Promise.resolve();
+            }
 
-        return new Promise(function(resolve) {
-            img.onload = resolve;
-            img.onerror = resolve;
-        });
-    }));
+            return new Promise(function(resolve) {
+                img.onload = resolve;
+                img.onerror = resolve;
+            });
+        })
+    );
 
-    // 13. Open Chrome print dialog
+    // 15. Open Chrome print dialog
     printWindow.focus();
 
     setTimeout(function() {
