@@ -22900,7 +22900,7 @@ if (
 // Uses existing Exam Form HTML template and IDs only
 // =====================================================
 
-function downloadExamFormPDF() {
+async function downloadExamFormPDF() {
 
     // 1. Validate student data
     if (!examFormStudentData) {
@@ -22939,8 +22939,12 @@ function downloadExamFormPDF() {
     const printClone = sourceArea.cloneNode(true);
 
     printClone.removeAttribute("id");
-    printClone.style.display = "block";
-    printClone.style.visibility = "visible";
+    printClone.style.setProperty("display", "block", "important");
+    printClone.style.setProperty("visibility", "visible", "important");
+    printClone.style.setProperty("position", "relative", "important");
+    printClone.style.setProperty("margin", "0", "important");
+    printClone.style.setProperty("padding", "0", "important");
+    printClone.style.setProperty("top", "0", "important");
 
     // 6. Safely fill form values inside the clone
     function setPrintValue(id, value) {
@@ -22948,7 +22952,9 @@ function downloadExamFormPDF() {
 
         if (element) {
             element.textContent =
-                value !== undefined && value !== null && String(value).trim() !== ""
+                value !== undefined &&
+                value !== null &&
+                String(value).trim() !== ""
                     ? String(value)
                     : "—";
         }
@@ -22971,32 +22977,98 @@ function downloadExamFormPDF() {
         : null;
 
     if (printHeader && logo && instituteName) {
-        // Remove logo from inside the heading
         logo.remove();
-
-        // Keep only the institute name text in the heading
         instituteName.textContent = instituteName.textContent.trim();
-
-        // Place logo before institute name
         printHeader.insertBefore(logo, instituteName);
     }
 
-    // 8. Convert relative image paths to absolute URLs
-    printClone.querySelectorAll("img").forEach(function(img) {
-        const src = img.getAttribute("src");
+    // 8. Synchronize image sources from original template to cloned template.
+    // This preserves dynamically assigned image URLs and currentSrc values.
+    const sourceImages = Array.from(sourceArea.querySelectorAll("img"));
+    const clonedImages = Array.from(printClone.querySelectorAll("img"));
+
+    clonedImages.forEach(function (img, index) {
+        const originalImg = sourceImages[index];
+
+        img.removeAttribute("srcset");
+        img.removeAttribute("sizes");
+        img.loading = "eager";
+        img.decoding = "sync";
+
+        if (originalImg) {
+            const originalSrc =
+                originalImg.currentSrc ||
+                originalImg.getAttribute("src") ||
+                originalImg.src ||
+                originalImg.getAttribute("data-src") ||
+                originalImg.getAttribute("data-original");
+
+            if (originalSrc) {
+                img.src = originalSrc;
+            }
+        }
+
+        // Convert relative paths to absolute URLs
+        const rawSrc =
+            img.getAttribute("src") ||
+            img.getAttribute("data-src") ||
+            img.getAttribute("data-original");
 
         if (
-            src &&
-            !src.startsWith("data:") &&
-            !src.startsWith("blob:") &&
-            !/^https?:\/\//i.test(src)
+            rawSrc &&
+            !rawSrc.startsWith("data:") &&
+            !rawSrc.startsWith("blob:") &&
+            !/^https?:\/\//i.test(rawSrc)
         ) {
-            img.setAttribute("src", new URL(src, window.location.href).href);
+            try {
+                img.src = new URL(rawSrc, window.location.href).href;
+            } catch (error) {
+                console.warn("Could not resolve print image URL:", rawSrc);
+            }
         }
     });
 
-    // 9. Add watermark as a real image element
-    // This is more reliable for PDF printing than a CSS background image.
+    // 9. Make student photo visible and correctly sized
+    const studentPhoto = printClone.querySelector(".exam-print-student-photo");
+
+    if (studentPhoto) {
+        studentPhoto.loading = "eager";
+        studentPhoto.style.setProperty("display", "inline-block", "important");
+        studentPhoto.style.setProperty("visibility", "visible", "important");
+        studentPhoto.style.setProperty("width", "28mm", "important");
+        studentPhoto.style.setProperty("height", "34mm", "important");
+        studentPhoto.style.setProperty("max-width", "28mm", "important");
+        studentPhoto.style.setProperty("object-fit", "cover", "important");
+        studentPhoto.style.setProperty("border", "1px solid #64748b", "important");
+        studentPhoto.style.setProperty("background", "#ffffff", "important");
+    }
+
+    const studentPhotoWrap =
+        printClone.querySelector(".exam-print-student-photo-wrap");
+
+    if (studentPhotoWrap) {
+        studentPhotoWrap.style.setProperty("display", "block", "important");
+        studentPhotoWrap.style.setProperty("visibility", "visible", "important");
+        studentPhotoWrap.style.setProperty("text-align", "right", "important");
+        studentPhotoWrap.style.setProperty("min-height", "35mm", "important");
+    }
+
+    // 10. Enlarge Issued By stamp even if it is nested differently
+    const issuedByImages =
+        printClone.querySelectorAll(".exam-issued-by-image");
+
+    issuedByImages.forEach(function (stamp) {
+        stamp.style.setProperty("display", "block", "important");
+        stamp.style.setProperty("visibility", "visible", "important");
+        stamp.style.setProperty("width", "48mm", "important");
+        stamp.style.setProperty("max-width", "48mm", "important");
+        stamp.style.setProperty("height", "19mm", "important");
+        stamp.style.setProperty("object-fit", "contain", "important");
+        stamp.style.setProperty("object-position", "center", "important");
+        stamp.style.setProperty("margin", "0 auto", "important");
+    });
+
+    // 11. Add watermark as a real image element
     const watermark = document.createElement("img");
 
     watermark.className = "exam-print-watermark";
@@ -23007,7 +23079,7 @@ function downloadExamFormPDF() {
 
     printClone.insertBefore(watermark, printClone.firstChild);
 
-    // 10. Open print window
+    // 12. Open print window
     const printWindow = window.open(
         "",
         "_blank",
@@ -23019,7 +23091,7 @@ function downloadExamFormPDF() {
         return;
     }
 
-    // 11. Complete A4 print design
+    // 13. Complete A4 print design
     const printStyles = `
         * {
             box-sizing: border-box !important;
@@ -23027,7 +23099,7 @@ function downloadExamFormPDF() {
 
         @page {
             size: A4 portrait;
-            margin: 9mm 12mm;
+            margin: 8mm 10mm;
         }
 
         html,
@@ -23058,6 +23130,7 @@ function downloadExamFormPDF() {
             height: auto !important;
             margin: 0 auto !important;
             padding: 0 !important;
+            top: 0 !important;
             overflow: visible !important;
             border: 1px solid #b9c8df !important;
             background: #ffffff !important;
@@ -23067,33 +23140,16 @@ function downloadExamFormPDF() {
             box-shadow: none !important;
         }
 
-        /* Watermark behind all form content */
-        .exam-print-watermark {
-            position: absolute !important;
-            z-index: 0 !important;
-            top: 50% !important;
-            left: 50% !important;
-            display: block !important;
-            width: 92mm !important;
-            height: 92mm !important;
-            max-width: none !important;
-            object-fit: contain !important;
-            opacity: 0.075 !important;
-            transform: translate(-50%, -50%) !important;
-            pointer-events: none !important;
+        /* Remove unwanted top spacing from first content element */
+        .exam-form-print > :first-child:not(.exam-print-watermark) {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
 
-        /* Keep all regular content above watermark */
-        .exam-form-print > :not(.exam-print-watermark) {
-            position: relative !important;
-            z-index: 1 !important;
-        }
-
-        /* Form number */
         .exam-print-form-no {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 2mm !important;
+            margin: 0 0 1.5mm !important;
             padding: 0 !important;
             text-align: right !important;
             color: #172033 !important;
@@ -23113,11 +23169,11 @@ function downloadExamFormPDF() {
             font-weight: 700 !important;
         }
 
-        /* Header: logo above institute name */
+        /* Header: no unwanted space above logo */
         .exam-print-header {
             display: block !important;
             width: 100% !important;
-            margin: 0 0 3mm !important;
+            margin: 0 0 2mm !important;
             padding: 0 0 2mm !important;
             text-align: center !important;
             border-bottom: 1.5px solid #1747c8 !important;
@@ -23126,10 +23182,11 @@ function downloadExamFormPDF() {
         .exam-print-logo {
             position: relative !important;
             display: block !important;
-            width: 42mm !important;
-            height: 23mm !important;
-            max-width: 42mm !important;
+            width: 48mm !important;
+            height: 18mm !important;
+            max-width: 48mm !important;
             margin: 0 auto 1mm !important;
+            padding: 0 !important;
             object-fit: contain !important;
             object-position: center !important;
         }
@@ -23168,12 +23225,33 @@ function downloadExamFormPDF() {
             text-align: center !important;
         }
 
-        /* Form sections */
+        /* Watermark */
+        .exam-print-watermark {
+            position: absolute !important;
+            z-index: 0 !important;
+            top: 50% !important;
+            left: 50% !important;
+            display: block !important;
+            width: 92mm !important;
+            height: 92mm !important;
+            max-width: none !important;
+            object-fit: contain !important;
+            opacity: 0.075 !important;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: none !important;
+        }
+
+        .exam-form-print > :not(.exam-print-watermark) {
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        /* Sections */
         .exam-print-section {
             display: block !important;
             width: 100% !important;
             max-width: 100% !important;
-            margin: 2.5mm 0 0 !important;
+            margin: 2mm 0 0 !important;
             padding: 0 !important;
             break-inside: auto !important;
             page-break-inside: auto !important;
@@ -23195,18 +23273,20 @@ function downloadExamFormPDF() {
         .exam-print-student-photo-wrap {
             display: block !important;
             width: 100% !important;
+            min-height: 35mm !important;
             margin: 0 0 1.5mm !important;
+            padding: 0 !important;
             text-align: right !important;
         }
 
         .exam-print-student-photo {
             display: inline-block !important;
-            width: 27mm !important;
-            height: 32mm !important;
-            max-width: 27mm !important;
+            width: 28mm !important;
+            height: 34mm !important;
+            max-width: 28mm !important;
             object-fit: cover !important;
             object-position: center !important;
-            border: 1px solid #8ea1bd !important;
+            border: 1px solid #64748b !important;
             padding: 1px !important;
             background: #ffffff !important;
         }
@@ -23250,7 +23330,7 @@ function downloadExamFormPDF() {
             font-weight: 500 !important;
         }
 
-        /* Guidelines and lists */
+        /* Guidelines */
         .exam-print-section ol,
         .exam-print-section ul {
             margin: 1mm 0 !important;
@@ -23266,7 +23346,7 @@ function downloadExamFormPDF() {
             page-break-inside: avoid !important;
         }
 
-        /* Fee eligibility criteria */
+        /* Fee criteria */
         .exam-fee-criteria {
             display: block !important;
             width: 100% !important;
@@ -23280,7 +23360,6 @@ function downloadExamFormPDF() {
             color: #24344d !important;
             font-size: 8px !important;
             line-height: 1.2 !important;
-            box-sizing: border-box !important;
             break-inside: auto !important;
             page-break-inside: auto !important;
         }
@@ -23326,9 +23405,9 @@ function downloadExamFormPDF() {
             flex-direction: row !important;
             justify-content: space-between !important;
             align-items: flex-start !important;
-            gap: 12mm !important;
+            gap: 10mm !important;
             width: 100% !important;
-            margin: 4mm 0 0 !important;
+            margin: 3mm 0 0 !important;
             padding: 0 !important;
             break-inside: avoid !important;
             page-break-inside: avoid !important;
@@ -23340,18 +23419,17 @@ function downloadExamFormPDF() {
             flex: 1 1 0 !important;
             width: 50% !important;
             min-width: 0 !important;
-            height: 25mm !important;
-            min-height: 25mm !important;
+            height: 31mm !important;
+            min-height: 31mm !important;
             margin: 0 !important;
             padding: 0 !important;
             box-sizing: border-box !important;
             text-align: center !important;
         }
 
-        /* Both signature lines at the same height */
         .exam-print-signatures > .exam-sign-box > .exam-sign-space {
             position: absolute !important;
-            top: 15mm !important;
+            top: 21mm !important;
             left: 0 !important;
             display: block !important;
             width: 100% !important;
@@ -23362,10 +23440,9 @@ function downloadExamFormPDF() {
             border-bottom: 1px solid #334155 !important;
         }
 
-        /* Student / authorized signature labels */
         .exam-print-signatures > .exam-sign-box > p {
             position: absolute !important;
-            top: 16.5mm !important;
+            top: 22mm !important;
             left: 0 !important;
             display: block !important;
             width: 100% !important;
@@ -23377,24 +23454,25 @@ function downloadExamFormPDF() {
             text-align: center !important;
         }
 
-        /* Larger Issued By stamp, centered above right signature line */
-        .exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
+        /* Stamp sizing: broad selector so nested stamp is also resized */
+        .exam-print-signatures .exam-issued-by-image {
             position: absolute !important;
             top: 0 !important;
             left: 50% !important;
             display: block !important;
-            width: 43mm !important;
-            max-width: 100% !important;
-            height: 14mm !important;
+            width: 48mm !important;
+            max-width: 48mm !important;
+            height: 19mm !important;
             margin: 0 !important;
+            padding: 0 !important;
             object-fit: contain !important;
             object-position: center !important;
             transform: translateX(-50%) !important;
         }
 
-        .exam-print-signatures > .exam-authorized-box > strong {
+        .exam-print-signatures .exam-authorized-box > strong {
             position: absolute !important;
-            top: 20mm !important;
+            top: 25mm !important;
             left: 0 !important;
             display: block !important;
             width: 100% !important;
@@ -23406,9 +23484,9 @@ function downloadExamFormPDF() {
             text-align: center !important;
         }
 
-        .exam-print-signatures > .exam-authorized-box > span {
+        .exam-print-signatures .exam-authorized-box > span {
             position: absolute !important;
-            top: 22.5mm !important;
+            top: 27mm !important;
             left: 0 !important;
             display: block !important;
             width: 100% !important;
@@ -23453,6 +23531,7 @@ function downloadExamFormPDF() {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 0 auto !important;
+                padding: 0 !important;
                 overflow: visible !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -23466,7 +23545,7 @@ function downloadExamFormPDF() {
         }
     `;
 
-    // 12. Write the cloned form into the print window
+    // 14. Write cloned form into the print window
     printWindow.document.open();
 
     printWindow.document.write(`
@@ -23488,27 +23567,30 @@ function downloadExamFormPDF() {
 
     printWindow.document.close();
 
-    // 13. Wait until all images load before opening print dialog
+    // 15. Wait for images to load before opening print dialog
     function startPrintWhenReady() {
         const images = Array.from(printWindow.document.images);
 
-        const imagePromises = images.map(function(img) {
-            if (img.complete && img.naturalWidth > 0) {
+        const imagePromises = images.map(function (img) {
+            if (img.complete) {
                 return Promise.resolve();
             }
 
-            return new Promise(function(resolve) {
+            return new Promise(function (resolve) {
                 img.onload = resolve;
                 img.onerror = resolve;
+
+                // Safety timeout in case an image never responds
+                printWindow.setTimeout(resolve, 5000);
             });
         });
 
-        Promise.all(imagePromises).then(function() {
+        Promise.all(imagePromises).then(function () {
             printWindow.focus();
 
-            printWindow.setTimeout(function() {
+            printWindow.setTimeout(function () {
                 printWindow.print();
-            }, 500);
+            }, 700);
         });
     }
 
