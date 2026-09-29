@@ -21379,3 +21379,18 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     margin-left: auto !important;
     margin-right: auto !important;
 }
+/* Center Exam Form Preview */
+#examFormPreviewSection {
+    display: block;
+    width: min(760px, calc(100% - 32px));
+    max-width: 760px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: relative;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    box-sizing: border-box;
+    grid-column: 1 / -1;
+    justify-self: center;
+}
