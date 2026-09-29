@@ -21198,26 +21198,71 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     display: none !important;
 }
 
+/* =========================================
+   EXAM FORM PREVIEW - FULL SCREEN MODAL
+========================================= */
+
+#examFormPreviewSection.hidden {
+    display: none !important;
+}
+
 #examFormPreviewSection:not(.hidden) {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 99999 !important;
+    z-index: 999999 !important;
 
     display: flex !important;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center !important;
 
     width: 100vw !important;
     height: 100vh !important;
+    max-width: none !important;
     max-height: 100vh !important;
-    overflow-y: auto !important;
 
-    box-sizing: border-box !important;
     margin: 0 !important;
-    padding: 35px 16px 50px !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box !important;
 
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    /* Opaque background: piche ka page nahi dikhega */
     background: #f1f5f9 !important;
+    isolation: isolate;
+}
+
+/* Preview ke andar ke sections */
+#examFormPreviewSection .exam-preview-header,
+#examFormPreviewSection .exam-preview-grid,
+#examFormPreviewSection .exam-preview-notice,
+#examFormPreviewSection .exam-form-confirmation,
+#examFormPreviewSection .exam-review-actions {
+    width: 100%;
+    max-width: 760px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+    #examFormPreviewSection:not(.hidden) {
+        justify-content: flex-start !important;
+        padding: 16px 10px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-grid {
+        grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    #examFormPreviewSection .exam-preview-header,
+    #examFormPreviewSection .exam-preview-notice,
+    #examFormPreviewSection .exam-form-confirmation {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
 
 /* Review card */
@@ -21370,53 +21415,4 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     #examFormPreviewSection .exam-review-back-btn {
         width: 100%;
     }
-}
-/* Center Exam Form Preview after eligibility check */
-#examFormPreviewSection {
-    grid-column: 1 / -1 !important;
-    justify-self: center !important;
-    width: min(100%, 610px) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-/* Center Exam Form Preview */
-#examFormPreviewSection {
-    display: block;
-    width: min(760px, calc(100% - 32px));
-    max-width: 760px;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    position: relative;
-    left: auto !important;
-    right: auto !important;
-    transform: none !important;
-    box-sizing: border-box;
-    grid-column: 1 / -1;
-    justify-self: center;
-}
-/* Exam Form page: hide the background website behind it */
-#examFormPage {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    margin: 0 !important;
-    padding: 20px !important;
-    box-sizing: border-box !important;
-
-    background: #f4f7fb !important;
-    z-index: 999999 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-}
-
-/* Keep the exam form content centered */
-#examFormPage > * {
-    box-sizing: border-box;
-}
-
-/* Prevent the page behind the form from scrolling */
-body:has(#examFormPage:not(.hidden)) {
-    overflow: hidden !important;
 }
