@@ -21394,3 +21394,29 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     grid-column: 1 / -1;
     justify-self: center;
 }
+/* Exam Form page: hide the background website behind it */
+#examFormPage {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    background: #f4f7fb !important;
+    z-index: 999999 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Keep the exam form content centered */
+#examFormPage > * {
+    box-sizing: border-box;
+}
+
+/* Prevent the page behind the form from scrolling */
+body:has(#examFormPage:not(.hidden)) {
+    overflow: hidden !important;
+}
