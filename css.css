@@ -21371,3 +21371,11 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         width: 100%;
     }
 }
+/* Center Exam Form Preview after eligibility check */
+#examFormPreviewSection {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    width: min(100%, 610px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
