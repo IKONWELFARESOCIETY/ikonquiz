@@ -21416,3 +21416,14 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         width: 100%;
     }
 }
+/* Only center the Exam Form Preview horizontally */
+@media (min-width: 601px) {
+    #examFormPreviewSection:not(.hidden) .exam-preview-header,
+    #examFormPreviewSection:not(.hidden) .exam-preview-grid,
+    #examFormPreviewSection:not(.hidden) .exam-preview-notice,
+    #examFormPreviewSection:not(.hidden) .exam-form-confirmation,
+    #examFormPreviewSection:not(.hidden) .exam-review-actions {
+        position: relative !important;
+        left: -47px !important;
+    }
+}
