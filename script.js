@@ -22481,115 +22481,57 @@ if (entrySection) {
 }
 function showExamFormSuccessMessage(title, description, formNo) {
 
-    const examFormPage = document.getElementById("examFormPage");
-    const downloadOptions = document.getElementById("examFormDownloadOptions");
+    const successBox = document.getElementById("examFormSuccessMessage");
     const previewSection = document.getElementById("examFormPreviewSection");
     const submitSection = document.getElementById("examFormSubmitSection");
     const message = document.getElementById("examFormEligibilityMessage");
+    const downloadOptions = document.getElementById("examFormDownloadOptions");
 
-    // Hide preview and submission controls
+    if (!successBox) {
+        console.error("Exam Form Success Message HTML not found.");
+        alert("Submission successful, but success message section is missing.");
+        return;
+    }
+
+    // Hide preview and submit controls
     if (previewSection) {
-        previewSection.style.display = "none";
+        previewSection.classList.add("hidden");
+        previewSection.style.setProperty("display", "none", "important");
     }
 
     if (submitSection) {
-        submitSection.style.display = "none";
+        submitSection.style.setProperty("display", "none", "important");
     }
 
     if (message) {
-        message.style.display = "none";
+        message.style.setProperty("display", "none", "important");
     }
 
-    // Create professional success card only once
-    let successBox = document.getElementById("examFormSuccessMessage");
+    // Use the existing HTML success card
+    const heading = successBox.querySelector("h2");
+    const descriptionText = successBox.querySelector("p");
+    const formNumber = document.getElementById("examFormSuccessNumber");
 
-    if (!successBox) {
-        successBox = document.createElement("div");
-        successBox.id = "examFormSuccessMessage";
-
-        successBox.style.cssText = `
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 35px 25px;
-            background: #ffffff;
-            border: 1px solid #d1fae5;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-            text-align: center;
-            font-family: Arial, sans-serif;
-            box-sizing: border-box;
-        `;
-
-        successBox.innerHTML = `
-            <div style="
-                width: 72px;
-                height: 72px;
-                margin: 0 auto 18px;
-                border-radius: 50%;
-                background: #dcfce7;
-                color: #15803d;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 42px;
-                font-weight: bold;
-            ">✓</div>
-
-            <h2 id="examFormSuccessTitle" style="
-                margin: 0 0 12px;
-                color: #166534;
-                font-size: 25px;
-            "></h2>
-
-            <p id="examFormSuccessDescription" style="
-                margin: 0 auto 20px;
-                max-width: 520px;
-                color: #475569;
-                font-size: 15px;
-                line-height: 1.7;
-            "></p>
-
-            <div style="
-                display: inline-block;
-                padding: 12px 22px;
-                background: #f0fdf4;
-                border: 1px dashed #86efac;
-                border-radius: 10px;
-                color: #166534;
-                font-size: 15px;
-                font-weight: bold;
-            ">
-                Form Number: <span id="examFormSuccessNumber"></span>
-            </div>
-
-            <p style="
-                margin: 22px 0 0;
-                color: #64748b;
-                font-size: 14px;
-            ">
-                Please download and keep your exam documents safely.
-            </p>
-        `;
-
-        if (downloadOptions && downloadOptions.parentNode) {
-            downloadOptions.parentNode.insertBefore(
-                successBox,
-                downloadOptions
-            );
-        } else if (examFormPage) {
-            examFormPage.appendChild(successBox);
-        }
+    if (heading) {
+        heading.textContent = title;
     }
 
-    document.getElementById("examFormSuccessTitle").textContent = title;
-    document.getElementById("examFormSuccessDescription").textContent = description;
-    document.getElementById("examFormSuccessNumber").textContent = formNo || "Not available";
+    if (descriptionText) {
+        descriptionText.textContent = description;
+    }
 
-    successBox.style.display = "block";
+    if (formNumber) {
+        formNumber.textContent = formNo || "Not available";
+    }
 
-    // Keep download buttons visible below the success message
+    // Show professional success card
+    successBox.classList.remove("hidden");
+    successBox.style.setProperty("display", "block", "important");
+
+    // Show download buttons
     if (downloadOptions) {
-        downloadOptions.style.display = "block";
+        downloadOptions.classList.remove("hidden");
+        downloadOptions.style.setProperty("display", "block", "important");
     }
 
     successBox.scrollIntoView({
