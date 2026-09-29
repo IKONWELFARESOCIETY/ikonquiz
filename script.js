@@ -22424,10 +22424,7 @@ if (entrySection) {
                     message.style.background = "#f0fdf4";
                 }
 
-                // Show both download buttons immediately
-                if (downloadOptions) {
-                    downloadOptions.style.display = "block";
-                }
+                
 
             } else {
 
@@ -22494,14 +22491,32 @@ async function submitExamForm() {
     const paperSelect = document.getElementById("examFormPaperSelect");
     const message = document.getElementById("examFormEligibilityMessage");
 
+    // Hide preview and show download section after submission
+    function showDownloadAfterSubmission() {
+
+        // Preview section hide
+        const previewSection = document.querySelector(
+            "#examFormPreviewSection, #examFormPreview, #examFormPreviewContainer"
+        );
+
+        if (previewSection) {
+            previewSection.classList.add("hidden");
+            previewSection.style.setProperty("display", "none", "important");
+        }
+
+        // Download options show
+        if (downloadOptions) {
+            downloadOptions.classList.remove("hidden");
+            downloadOptions.style.setProperty("display", "block", "important");
+        }
+    }
+
     // Prevent rapid double-clicks on the same page
     if (window.__ikonExamFormSubmitting) {
         return;
     }
 
-    // -----------------------------------------------
     // 1. BASIC VALIDATION
-    // -----------------------------------------------
 
     if (!examFormStudentData) {
         alert("Please search student details first.");
@@ -22513,27 +22528,29 @@ async function submitExamForm() {
         return;
     }
 
-   if (!examFormStudentData || !examFormEligible) {
-    alert("Please check eligibility first.");
-    return;
-}
-const confirmCheckbox = document.getElementById("examFormConfirmCheckbox");
+    if (!examFormEligible) {
+        alert("Please check eligibility first.");
+        return;
+    }
 
-if (!confirmCheckbox || !confirmCheckbox.checked) {
-    alert("Please confirm that you have checked your exam form details.");
-    return;
-}
-const currentPaper = String(paperSelect.value).trim();
-const eligiblePaper = String(
-    examFormStudentData.selectedPaper || ""
-).trim();
+    const confirmCheckbox = document.getElementById("examFormConfirmCheckbox");
 
-if (currentPaper !== eligiblePaper) {
-    alert("Paper changed. Please check eligibility again.");
-    return;
-}
+    if (!confirmCheckbox || !confirmCheckbox.checked) {
+        alert("Please confirm that you have checked your exam form details.");
+        return;
+    }
 
-    const selectedPaper = String(paperSelect.value).trim();
+    const currentPaper = String(paperSelect.value).trim();
+    const eligiblePaper = String(
+        examFormStudentData.selectedPaper || ""
+    ).trim();
+
+    if (currentPaper !== eligiblePaper) {
+        alert("Paper changed. Please check eligibility again.");
+        return;
+    }
+
+    const selectedPaper = currentPaper;
     const selectedRegNo = String(examFormStudentData.regNo || "").trim();
 
     if (!selectedRegNo || !selectedPaper) {
@@ -22541,9 +22558,7 @@ if (currentPaper !== eligiblePaper) {
         return;
     }
 
-    // -----------------------------------------------
     // 2. LOCK SUBMIT BUTTON
-    // -----------------------------------------------
 
     window.__ikonExamFormSubmitting = true;
 
@@ -22561,9 +22576,7 @@ if (currentPaper !== eligiblePaper) {
 
     try {
 
-        // -----------------------------------------------
         // 3. SEND DATA TO APPS SCRIPT
-        // -----------------------------------------------
 
         const response = await fetch(SCRIPT_URL, {
             method: "POST",
@@ -22596,18 +22609,15 @@ if (currentPaper !== eligiblePaper) {
             .trim()
             .toUpperCase();
 
-        // -----------------------------------------------
         // 4. SUCCESSFUL SUBMISSION
-        // -----------------------------------------------
 
         if (status === "SUCCESS") {
 
             examFormStudentData.selectedPaper = selectedPaper;
             examFormStudentData.formNo = data.formNo || "";
 
-            if (downloadOptions) {
-                downloadOptions.style.display = "block";
-            }
+            // Hide preview and show download buttons
+            showDownloadAfterSubmission();
 
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -22627,22 +22637,16 @@ if (currentPaper !== eligiblePaper) {
             return;
         }
 
-        // -----------------------------------------------
         // 5. FORM ALREADY SUBMITTED
-        // -----------------------------------------------
 
         if (status === "ALREADY_SUBMITTED") {
 
-            // Save existing submission details for PDF
             examFormStudentData.selectedPaper = selectedPaper;
             examFormStudentData.formNo = data.formNo || "";
 
-            // Allow student to access download options
-            if (downloadOptions) {
-                downloadOptions.style.display = "block";
-            }
+            // Hide preview and show download buttons
+            showDownloadAfterSubmission();
 
-            // Hide submit button to prevent another attempt
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.style.display = "none";
@@ -22661,9 +22665,7 @@ if (currentPaper !== eligiblePaper) {
             return;
         }
 
-        // -----------------------------------------------
         // 6. OTHER SERVER ERRORS
-        // -----------------------------------------------
 
         throw new Error(
             data.message ||
@@ -22686,11 +22688,8 @@ if (currentPaper !== eligiblePaper) {
 
     } finally {
 
-        // Release the local click lock
         window.__ikonExamFormSubmitting = false;
 
-        // Re-enable button only if it is still visible
-        // Success and ALREADY_SUBMITTED keep it hidden
         if (submitBtn && submitBtn.style.display !== "none") {
             submitBtn.disabled = false;
             submitBtn.textContent = "Submit Exam Form";
