@@ -20991,3 +20991,139 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         font-size: 9px !important;
     }
 }
+/* =========================================
+   IKON EXAM FORM - SCREEN PREVIEW
+   Scoped only to Exam Form
+========================================= */
+
+#examFormPrintArea.exam-form-print {
+    display: block;
+    position: relative;
+    width: min(100%, 850px);
+    margin: 24px auto;
+    padding: 28px;
+    background: #ffffff;
+    color: #172033;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.10);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+#examFormPrintArea .exam-print-form-no {
+    text-align: right;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+#examFormPrintArea .exam-print-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+#examFormPrintArea .exam-print-header h1 {
+    margin: 0;
+    color: #123b72;
+    font-size: 27px;
+    font-weight: 800;
+}
+
+#examFormPrintArea .exam-print-logo {
+    display: block;
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    margin: 10px auto;
+}
+
+#examFormPrintArea .exam-print-tagline {
+    margin: 4px 0 12px;
+    color: #475569;
+    font-size: 13px;
+    font-style: italic;
+}
+
+#examFormPrintArea .exam-print-line {
+    height: 3px;
+    width: 100%;
+    margin: 12px auto;
+    background: #1d4ed8;
+    border-radius: 5px;
+}
+
+#examFormPrintArea .exam-print-header h2 {
+    margin: 12px 0 0;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #172033;
+}
+
+#examFormPrintArea .exam-print-section {
+    margin-top: 22px;
+}
+
+#examFormPrintArea .exam-print-section h3 {
+    margin: 0 0 10px;
+    padding: 9px 12px;
+    color: #ffffff;
+    background: #174a83;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+#examFormPrintArea .exam-print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+#examFormPrintArea .exam-print-table th,
+#examFormPrintArea .exam-print-table td {
+    border: 1px solid #cbd5e1;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+#examFormPrintArea .exam-print-table th {
+    width: 36%;
+    background: #eff6ff;
+    color: #1e3a5f;
+    font-weight: 700;
+}
+
+#examFormPrintArea .exam-print-table td {
+    background: #ffffff;
+    overflow-wrap: anywhere;
+}
+
+#examFormPrintArea .exam-guidelines ol {
+    padding-left: 22px;
+    margin: 10px 0;
+}
+
+#examFormPrintArea .exam-guidelines li {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    #examFormPrintArea.exam-form-print {
+        width: 100%;
+        margin: 12px auto;
+        padding: 16px;
+        border-radius: 8px;
+    }
+
+    #examFormPrintArea .exam-print-header h1 {
+        font-size: 22px;
+    }
+
+    #examFormPrintArea .exam-print-table th,
+    #examFormPrintArea .exam-print-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
