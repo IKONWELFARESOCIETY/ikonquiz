@@ -22479,6 +22479,124 @@ if (entrySection) {
             }
         });
 }
+function showExamFormSuccessMessage(title, description, formNo) {
+
+    const examFormPage = document.getElementById("examFormPage");
+    const downloadOptions = document.getElementById("examFormDownloadOptions");
+    const previewSection = document.getElementById("examFormPreviewSection");
+    const submitSection = document.getElementById("examFormSubmitSection");
+    const message = document.getElementById("examFormEligibilityMessage");
+
+    // Hide preview and submission controls
+    if (previewSection) {
+        previewSection.style.display = "none";
+    }
+
+    if (submitSection) {
+        submitSection.style.display = "none";
+    }
+
+    if (message) {
+        message.style.display = "none";
+    }
+
+    // Create professional success card only once
+    let successBox = document.getElementById("examFormSuccessMessage");
+
+    if (!successBox) {
+        successBox = document.createElement("div");
+        successBox.id = "examFormSuccessMessage";
+
+        successBox.style.cssText = `
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 35px 25px;
+            background: #ffffff;
+            border: 1px solid #d1fae5;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        `;
+
+        successBox.innerHTML = `
+            <div style="
+                width: 72px;
+                height: 72px;
+                margin: 0 auto 18px;
+                border-radius: 50%;
+                background: #dcfce7;
+                color: #15803d;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 42px;
+                font-weight: bold;
+            ">✓</div>
+
+            <h2 id="examFormSuccessTitle" style="
+                margin: 0 0 12px;
+                color: #166534;
+                font-size: 25px;
+            "></h2>
+
+            <p id="examFormSuccessDescription" style="
+                margin: 0 auto 20px;
+                max-width: 520px;
+                color: #475569;
+                font-size: 15px;
+                line-height: 1.7;
+            "></p>
+
+            <div style="
+                display: inline-block;
+                padding: 12px 22px;
+                background: #f0fdf4;
+                border: 1px dashed #86efac;
+                border-radius: 10px;
+                color: #166534;
+                font-size: 15px;
+                font-weight: bold;
+            ">
+                Form Number: <span id="examFormSuccessNumber"></span>
+            </div>
+
+            <p style="
+                margin: 22px 0 0;
+                color: #64748b;
+                font-size: 14px;
+            ">
+                Please download and keep your exam documents safely.
+            </p>
+        `;
+
+        if (downloadOptions && downloadOptions.parentNode) {
+            downloadOptions.parentNode.insertBefore(
+                successBox,
+                downloadOptions
+            );
+        } else if (examFormPage) {
+            examFormPage.appendChild(successBox);
+        }
+    }
+
+    document.getElementById("examFormSuccessTitle").textContent = title;
+    document.getElementById("examFormSuccessDescription").textContent = description;
+    document.getElementById("examFormSuccessNumber").textContent = formNo || "Not available";
+
+    successBox.style.display = "block";
+
+    // Keep download buttons visible below the success message
+    if (downloadOptions) {
+        downloadOptions.style.display = "block";
+    }
+
+    successBox.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
 //----------------------------------------------------
 // SUBMIT EXAM FORM - CONNECTED TO APPS SCRIPT
 // Prevents duplicate clicks and handles existing submissions
@@ -22624,16 +22742,11 @@ async function submitExamForm() {
                 submitBtn.style.display = "none";
             }
 
-            if (message) {
-                message.style.display = "block";
-                message.style.color = "#15803d";
-                message.style.background = "#f0fdf4";
-                message.textContent =
-                    "Exam form submitted successfully. Form No: " +
-                    (data.formNo || "Not available") +
-                    ". You can now download your documents.";
-            }
-
+           showExamFormSuccessMessage(
+    "Exam Form Submitted Successfully!",
+    "Your examination form has been submitted successfully. Your submission has been recorded. You can now download your exam form and hall ticket.",
+    data.formNo || ""
+);
             return;
         }
 
@@ -22652,15 +22765,11 @@ async function submitExamForm() {
                 submitBtn.style.display = "none";
             }
 
-            if (message) {
-                message.style.display = "block";
-                message.style.color = "#b45309";
-                message.style.background = "#fffbeb";
-                message.textContent =
-                    "This paper has already been submitted. Form No: " +
-                    (data.formNo || "Not available") +
-                    ". You can download your documents.";
-            }
+            showExamFormSuccessMessage(
+    "Exam Form Already Submitted",
+    "Our records show that your examination form has already been submitted. You can download your available documents below.",
+    data.formNo || ""
+);
 
             return;
         }
