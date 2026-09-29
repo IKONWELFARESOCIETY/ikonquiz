@@ -22825,6 +22825,16 @@ function downloadExamFormPDF() {
     setPrintValue("printExamBillDate", examFormStudentData.billDate);
     setPrintValue("printExamBillNo", examFormStudentData.billNo);
     setPrintValue("printExamBillAmount", examFormStudentData.billAmount);
+    // Copy student photo from the loaded Exam Form preview
+const previewPhoto = document.getElementById("examFormStudentPhoto");
+const printPhoto = document.getElementById("printExamStudentPhoto");
+
+if (printPhoto && previewPhoto && previewPhoto.src) {
+    printPhoto.src = previewPhoto.src;
+    printPhoto.style.display = "block";
+} else if (printPhoto) {
+    printPhoto.style.display = "none";
+}
 
     // 7. Clone only Exam Form
     const printClone = sourceArea.cloneNode(true);
@@ -22871,6 +22881,24 @@ function downloadExamFormPDF() {
             size: A4 portrait;
             margin: 15mm 18mm;
         }
+        /* Student photo - Exam Form print only */
+.exam-print-student-photo-wrap {
+    display: block;
+    width: 100%;
+    margin: 8px 0 12px;
+    text-align: left;
+}
+
+.exam-print-student-photo {
+    display: block;
+    width: 28mm;
+    height: 35mm;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid #64748b;
+    padding: 2px;
+    background: #ffffff;
+}
     /* =========================================
    EXAM FORM ONLY - PRINT WATERMARK
    Does not affect marksheet printing
@@ -23976,4 +24004,35 @@ if (document.readyState === "loading") {
     );
 } else {
     initializeExamFormVisibility();
+}
+function backToExamFormEdit() {
+    const previewSection =
+        document.getElementById("examFormPreviewSection");
+
+    const submitSection =
+        document.getElementById("examFormSubmitSection");
+
+    const submitBtn =
+        document.getElementById("examFormSubmitBtn");
+
+    const checkbox =
+        document.getElementById("examFormConfirmCheckbox");
+
+    if (previewSection) {
+        previewSection.classList.add("hidden");
+    }
+
+    if (submitSection) {
+        submitSection.style.display = "none";
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+    }
+
+    if (checkbox) {
+        checkbox.checked = false;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
