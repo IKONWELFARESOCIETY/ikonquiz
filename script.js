@@ -25,7 +25,6 @@ let passingMarks = "";
 //====================================================
 // RESULT PAGE NAVIGATION CONTROL
 //====================================================
-
 let resultNavigationToken = 0;
 let pdfAdminAccess = false;
 //====================================================
@@ -53,8 +52,6 @@ let examStarted = false;
 let examSubmitted = false;
 
 let submitReason = "Manual Submit";
-
-
 
 //====================================================
 // SECURITY
