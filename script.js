@@ -22721,6 +22721,11 @@ function showExamFormSubmissionNotice(type, formNo) {
 
             examFormStudentData.selectedPaper = selectedPaper;
             examFormStudentData.formNo = data.formNo || "";
+            const successFormNumber = document.getElementById("successFormNumber");
+
+if (successFormNumber) {
+    successFormNumber.textContent = data.formNo || "Not available";
+}
 
             // Hide preview and show download buttons
             showDownloadAfterSubmission();
