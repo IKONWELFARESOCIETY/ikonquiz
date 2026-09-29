@@ -21127,3 +21127,15 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         font-size: 12px;
     }
 }
+/* Exam Form page switching */
+#loginPage.hidden {
+    display: none !important;
+}
+
+#examFormPage.hidden {
+    display: none !important;
+}
+
+#examFormPage:not(.hidden) {
+    display: block !important;
+}
