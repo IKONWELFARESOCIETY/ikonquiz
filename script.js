@@ -22359,47 +22359,51 @@ if (submitSection) {
             const status =
                 String(data.status || "").trim().toUpperCase();
 
-            if (status === "ELIGIBLE") {
+           if (status === "ELIGIBLE") {
 
-                examFormEligible = true;
-                // Show Submit Exam Form button
-const submitSection = document.getElementById("examFormSubmitSection");
-const submitBtn = document.getElementById("examFormSubmitBtn");
+    examFormEligible = true;
 
-if (submitSection) {
-    submitSection.style.display = "block";
-}
+    const submitSection =
+        document.getElementById("examFormSubmitSection");
 
-const previewSection =
-    document.getElementById("examFormPreviewSection");
+    const submitBtn =
+        document.getElementById("examFormSubmitBtn");
 
-if (previewSection) {
-    previewSection.classList.remove("hidden");
-    previewSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-}
-updateExamFormPreview();
+    const previewSection =
+        document.getElementById("examFormPreviewSection");
 
-const previewSection = document.getElementById("examFormPreviewSection");
-const confirmCheckbox = document.getElementById("examFormConfirmCheckbox");
+    const confirmCheckbox =
+        document.getElementById("examFormConfirmCheckbox");
 
-if (previewSection) {
-    previewSection.classList.remove("hidden");
-}
+    if (previewSection) {
+        previewSection.classList.remove("hidden");
+    }
 
-if (confirmCheckbox) {
-    confirmCheckbox.checked = false;
-}
+    updateExamFormPreview();
 
-if (submitBtn) {
-    submitBtn.style.display = "inline-block";
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submit Exam Form";
-}
-                // Save the exact paper that passed eligibility
-                examFormStudentData.selectedPaper = paper;
+    if (confirmCheckbox) {
+        confirmCheckbox.checked = false;
+    }
+
+    if (submitSection) {
+        submitSection.style.display = "block";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "inline-block";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submit Exam Form";
+    }
+
+    if (previewSection) {
+        previewSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    // Save the exact paper that passed eligibility
+    examFormStudentData.selectedPaper = paper;
 
                 if (message) {
                     message.style.display = "block";
