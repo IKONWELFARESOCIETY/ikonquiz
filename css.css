@@ -21189,3 +21189,185 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     flex: 1;
     text-align: left;
 }
+/* =========================================
+   IKON EXAM FORM - SEPARATE REVIEW SCREEN
+   Only Exam Form review; no marksheet impact
+========================================= */
+
+#examFormPreviewSection.hidden {
+    display: none !important;
+}
+
+#examFormPreviewSection:not(.hidden) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 35px 16px 50px !important;
+
+    background: #f1f5f9 !important;
+}
+
+/* Review card */
+#examFormPreviewSection .exam-preview-header,
+#examFormPreviewSection .exam-preview-grid,
+#examFormPreviewSection .exam-preview-notice,
+#examFormPreviewSection .exam-form-confirmation,
+#examFormPreviewSection .exam-review-actions {
+    width: 100%;
+    max-width: 760px;
+    box-sizing: border-box;
+    background: #ffffff;
+}
+
+/* Header */
+#examFormPreviewSection .exam-preview-header {
+    padding: 24px 28px 12px;
+    margin: 0 auto;
+    border: 1px solid #dbe4f0;
+    border-radius: 14px 14px 0 0;
+}
+
+/* Details grid */
+#examFormPreviewSection .exam-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 18px 28px;
+    border-left: 1px solid #dbe4f0;
+    border-right: 1px solid #dbe4f0;
+}
+
+/* Individual details */
+#examFormPreviewSection .exam-preview-item {
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+}
+
+#examFormPreviewSection .exam-preview-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#examFormPreviewSection .exam-preview-item strong {
+    display: block;
+    color: #173b70;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+/* Notice */
+#examFormPreviewSection .exam-preview-notice {
+    padding: 14px 28px;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 1px solid #dbe4f0;
+    border-right: 1px solid #dbe4f0;
+}
+
+/* Confirmation */
+#examFormPreviewSection .exam-form-confirmation {
+    padding: 18px 28px;
+    border-left: 1px solid #dbe4f0;
+    border-right: 1px solid #dbe4f0;
+}
+
+#examFormPreviewSection .exam-form-confirmation label {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#examFormPreviewSection #examFormConfirmCheckbox {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    margin: 2px 0 0 !important;
+    flex: 0 0 17px;
+}
+
+/* Buttons area */
+#examFormPreviewSection .exam-review-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px 24px;
+    border: 1px solid #dbe4f0;
+    border-top: 0;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+#examFormPreviewSection .exam-review-back-btn {
+    padding: 12px 20px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#examFormPreviewSection #examFormSubmitSection {
+    display: block;
+    margin: 0 !important;
+}
+
+#examFormPreviewSection #examFormSubmitBtn {
+    min-width: 220px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #examFormPreviewSection:not(.hidden) {
+        padding: 14px 10px 28px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-header,
+    #examFormPreviewSection .exam-preview-grid,
+    #examFormPreviewSection .exam-preview-notice,
+    #examFormPreviewSection .exam-form-confirmation,
+    #examFormPreviewSection .exam-review-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    #examFormPreviewSection .exam-preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #examFormPreviewSection .exam-review-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    #examFormPreviewSection #examFormSubmitBtn,
+    #examFormPreviewSection .exam-review-back-btn {
+        width: 100%;
+    }
+}
