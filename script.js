@@ -22082,29 +22082,41 @@ if (submitSection) {
             examFormStudentData = data.student;
             updateExamFormPreview();
             const studentRegNo = data.student.regNo || regNo;
-            // Load student photo from GitHub main folder
+         // Load student photo from GitHub repository root
 const studentPhoto = document.getElementById("examFormStudentPhoto");
 
 if (studentPhoto) {
     const photoBase =
         "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/";
 
-    const photoName = encodeURIComponent(studentRegNo.trim());
+    const photoName = encodeURIComponent(
+        String(studentRegNo || "").trim()
+    );
+
+    const extensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"];
+    let photoIndex = 0;
 
     studentPhoto.style.display = "block";
+    studentPhoto.onerror = function () {
+        photoIndex++;
 
-    // Try JPG first, then JPEG
-    studentPhoto.onerror = function() {
-        if (this.dataset.tryJpeg !== "yes") {
-            this.dataset.tryJpeg = "yes";
-            this.src = photoBase + photoName + ".jpeg";
+        if (photoIndex < extensions.length) {
+            this.src = photoBase + photoName + "." + extensions[photoIndex];
         } else {
+            console.error(
+                "Student photo not found. Tried registration number:",
+                studentRegNo
+            );
             this.style.display = "none";
         }
     };
 
-    studentPhoto.dataset.tryJpeg = "no";
-    studentPhoto.src = photoBase + photoName + ".jpg";
+    studentPhoto.onload = function () {
+        console.log("Student photo loaded:", this.src);
+        this.style.display = "block";
+    };
+
+    studentPhoto.src = photoBase + photoName + "." + extensions[0];
 }
             const studentName = data.student.name || "";
             const studentCourse = data.student.course || "";
@@ -23029,7 +23041,9 @@ async function downloadExamFormPDF() {
     });
 
     // 9. Make student photo visible and correctly sized
-    const studentPhoto = printClone.querySelector(".exam-print-student-photo");
+   const studentPhoto = printClone.querySelector(
+    ".exam-print-student-photo, #examFormStudentPhoto"
+);
 
     if (studentPhoto) {
         studentPhoto.loading = "eager";
