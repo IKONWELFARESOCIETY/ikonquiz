@@ -21960,7 +21960,12 @@ function openExamFormPage() {
     if (typeof resetExamFormEligibility === "function") {
         resetExamFormEligibility();
     }
+// Show Exam Form entry section when opening the page
+const entrySection = document.getElementById("examFormEntrySection");
 
+if (entrySection) {
+    entrySection.style.display = "block";
+}
     const studentDetails = document.getElementById("examFormStudentDetails");
     if (studentDetails) studentDetails.classList.add("hidden");
 
@@ -22362,7 +22367,11 @@ if (submitSection) {
            if (status === "ELIGIBLE") {
 
     examFormEligible = true;
+const entrySection = document.getElementById("examFormEntrySection");
 
+if (entrySection) {
+    entrySection.style.display = "none";
+}
     const submitSection =
         document.getElementById("examFormSubmitSection");
 
@@ -24035,7 +24044,11 @@ function backToExamFormEdit() {
     if (previewSection) {
         previewSection.classList.add("hidden");
     }
+const entrySection = document.getElementById("examFormEntrySection");
 
+if (entrySection) {
+    entrySection.style.display = "block";
+}
     if (submitSection) {
         submitSection.style.display = "none";
     }
