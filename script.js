@@ -21986,39 +21986,6 @@ function backToLoginFromExamForm() {
 // RESET FORM
 //----------------------------------------------------
 
-function resetExamFormEligibility() {
-
-    examFormEligible = false;
-
-    const message =
-        document.getElementById("examFormEligibilityMessage");
-
-    const submitBtn =
-        document.getElementById("examFormSubmitBtn");
-
-    const downloadOptions =
-        document.getElementById("examFormDownloadOptions");
-
-    if (message) {
-        message.textContent = "";
-        message.style.display = "none";
-        message.style.color = "";
-        message.style.background = "";
-    }
-
-    if (submitBtn) {
-        submitBtn.style.display = "none";
-        submitBtn.disabled = true;
-    }
-
-   // Downloads remain hidden until form submission succeeds
-if (downloadOptions) {
-    downloadOptions.style.display = "none";
-}
-
-    // Update Paper field in Student Details
-    updateExamFormSelectedPaper();
-}
 
 //----------------------------------------------------
 // SHOW STUDENT DETAILS
@@ -22056,6 +22023,12 @@ function lookupExamFormStudent() {
 
     examFormStudentData = null;
     examFormEligible = false;
+    resetExamFormPreview();
+
+const submitSection = document.getElementById("examFormSubmitSection");
+if (submitSection) {
+    submitSection.style.display = "none";
+}
 
     if (message) message.textContent = "";
 
@@ -22099,8 +22072,32 @@ function lookupExamFormStudent() {
             }
 
             examFormStudentData = data.student;
-
+            updateExamFormPreview();
             const studentRegNo = data.student.regNo || regNo;
+            // Load student photo from GitHub main folder
+const studentPhoto = document.getElementById("examFormStudentPhoto");
+
+if (studentPhoto) {
+    const photoBase =
+        "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/";
+
+    const photoName = encodeURIComponent(studentRegNo.trim());
+
+    studentPhoto.style.display = "block";
+
+    // Try JPG first, then JPEG
+    studentPhoto.onerror = function() {
+        if (this.dataset.tryJpeg !== "yes") {
+            this.dataset.tryJpeg = "yes";
+            this.src = photoBase + photoName + ".jpeg";
+        } else {
+            this.style.display = "none";
+        }
+    };
+
+    studentPhoto.dataset.tryJpeg = "no";
+    studentPhoto.src = photoBase + photoName + ".jpg";
+}
             const studentName = data.student.name || "";
             const studentCourse = data.student.course || "";
             const papers = Array.isArray(data.papers) ? data.papers : [];
@@ -22158,9 +22155,11 @@ function lookupExamFormStudent() {
                 paperSelect.disabled = false;
 
                 // Update displayed paper whenever dropdown selection changes
-                paperSelect.onchange = function() {
-                    updateExamFormSelectedPaper();
-                };
+               paperSelect.onchange = function() {
+    resetExamFormEligibility();
+    updateExamFormSelectedPaper();
+    updateExamFormPreview();
+};
             }
 
             // Initially show placeholder until a paper is selected
@@ -22234,23 +22233,34 @@ function resetExamFormEligibility() {
 
     const message = document.getElementById("examFormEligibilityMessage");
     const submitBtn = document.getElementById("examFormSubmitBtn");
-    const submitSection = document.getElementById("examFormSubmitSection");
 
-if (submitSection) {
-    submitSection.style.display = "none";
-}
+ 
+    const submitSection = document.getElementById("examFormSubmitSection");
+    const downloadOptions = document.getElementById("examFormDownloadOptions");
+
+    if (submitSection) {
+        submitSection.style.display = "none";
+    }
 
     if (message) {
         message.textContent = "";
+        message.style.display = "none";
         message.style.color = "";
+        message.style.background = "";
     }
 
     if (submitBtn) {
         submitBtn.style.display = "none";
         submitBtn.disabled = true;
     }
-}
 
+    if (downloadOptions) {
+        downloadOptions.style.display = "none";
+    }
+
+    resetExamFormPreview();
+    updateExamFormSelectedPaper();
+}
 
 //----------------------------------------------------
 // CHECK FEE ELIGIBILITY
@@ -22292,7 +22302,14 @@ function checkExamFormEligibility() {
     }
 
     examFormEligible = false;
+    resetExamFormPreview();
 
+const submitSection =
+    document.getElementById("examFormSubmitSection");
+
+if (submitSection) {
+    submitSection.style.display = "none";
+}
     // Hide download buttons until eligibility is confirmed
     if (downloadOptions) {
         downloadOptions.style.display = "none";
@@ -22350,12 +22367,24 @@ if (submitSection) {
     submitSection.style.display = "block";
 }
 
-if (submitBtn) {
-    submitBtn.style.display = "inline-block";
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Exam Form";
+updateExamFormPreview();
+
+const previewSection = document.getElementById("examFormPreviewSection");
+const confirmCheckbox = document.getElementById("examFormConfirmCheckbox");
+
+if (previewSection) {
+    previewSection.classList.remove("hidden");
 }
 
+if (confirmCheckbox) {
+    confirmCheckbox.checked = false;
+}
+
+if (submitBtn) {
+    submitBtn.style.display = "inline-block";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submit Exam Form";
+}
                 // Save the exact paper that passed eligibility
                 examFormStudentData.selectedPaper = paper;
 
@@ -22462,8 +22491,21 @@ async function submitExamForm() {
     alert("Please check eligibility first.");
     return;
 }
+const confirmCheckbox = document.getElementById("examFormConfirmCheckbox");
 
+if (!confirmCheckbox || !confirmCheckbox.checked) {
+    alert("Please confirm that you have checked your exam form details.");
+    return;
+}
+const currentPaper = String(paperSelect.value).trim();
+const eligiblePaper = String(
+    examFormStudentData.selectedPaper || ""
+).trim();
 
+if (currentPaper !== eligiblePaper) {
+    alert("Paper changed. Please check eligibility again.");
+    return;
+}
 
     const selectedPaper = String(paperSelect.value).trim();
     const selectedRegNo = String(examFormStudentData.regNo || "").trim();
@@ -22826,7 +22868,70 @@ function downloadExamFormPDF() {
             size: A4 portrait;
             margin: 15mm 18mm;
         }
+    /* =========================================
+   EXAM FORM ONLY - PRINT WATERMARK
+   Does not affect marksheet printing
+========================================= */
 
+.exam-form-print {
+    position: relative !important;
+    isolation: isolate !important;
+    background: #ffffff !important;
+}
+
+/* Watermark behind the form content */
+.exam-form-print::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 105mm;
+    height: 105mm;
+    transform: translate(-50%, -50%);
+    background-image: url("https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/ikon.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.09;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* Keep all actual form content above watermark */
+.exam-form-print > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Preserve A4 print layout */
+@media print {
+    .exam-form-print {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
+        background: transparent !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .exam-form-print::before {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        opacity: 0.09 !important;
+        z-index: 0 !important;
+    }
+
+    .exam-form-print > * {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+}
         html,
         body {
             width: 100%;
@@ -23786,5 +23891,68 @@ body > .exam-form-print {
         startPrint();
     } else {
         printWindow.onload = startPrint;
+    }
+}
+//----------------------------------------------------
+// EXAM FORM PREVIEW + CONFIRMATION
+//----------------------------------------------------
+
+function updateExamFormPreview() {
+    const previewSection = document.getElementById("examFormPreviewSection");
+
+    if (!examFormStudentData) {
+        if (previewSection) previewSection.classList.add("hidden");
+        return;
+    }
+
+    const paperSelect = document.getElementById("examFormPaperSelect");
+    const selectedPaper = paperSelect ? paperSelect.value.trim() : "";
+
+    const previewFields = {
+        previewExamRegNo: examFormStudentData.regNo || "--",
+        previewExamStudentName: examFormStudentData.name || "--",
+        previewExamCourse: examFormStudentData.course || "--",
+        previewExamPaper: selectedPaper || "--",
+        previewExamBillNo: examFormStudentData.billNo || "--",
+        previewExamBillAmount: examFormStudentData.billAmount || "--"
+    };
+
+    Object.keys(previewFields).forEach(function(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = previewFields[id];
+        }
+    });
+}
+
+
+function toggleExamFormSubmitButton() {
+    const checkbox = document.getElementById("examFormConfirmCheckbox");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+
+    if (!checkbox || !submitBtn) return;
+
+    submitBtn.disabled = !(
+        checkbox.checked &&
+        examFormEligible
+    );
+}
+
+
+function resetExamFormPreview() {
+    const previewSection = document.getElementById("examFormPreviewSection");
+    const checkbox = document.getElementById("examFormConfirmCheckbox");
+    const submitBtn = document.getElementById("examFormSubmitBtn");
+
+    if (previewSection) {
+        previewSection.classList.add("hidden");
+    }
+
+    if (checkbox) {
+        checkbox.checked = false;
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
     }
 }
