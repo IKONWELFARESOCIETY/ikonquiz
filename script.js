@@ -22370,6 +22370,16 @@ if (submitSection) {
     submitSection.style.display = "block";
 }
 
+const previewSection =
+    document.getElementById("examFormPreviewSection");
+
+if (previewSection) {
+    previewSection.classList.remove("hidden");
+    previewSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
 updateExamFormPreview();
 
 const previewSection = document.getElementById("examFormPreviewSection");
