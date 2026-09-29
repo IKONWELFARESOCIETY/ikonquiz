@@ -22970,7 +22970,19 @@ if (printPhoto && previewPhoto && previewPhoto.src) {
     printClone.style.width = "100%";
     printClone.style.height = "auto";
     printClone.style.overflow = "visible";
+    // Exam Form PDF watermark
+printClone.classList.add("exam-form-print");
+printClone.style.position = "relative";
 
+const watermark = document.createElement("img");
+watermark.src =
+    "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/ikon.jpg";
+
+watermark.alt = "";
+watermark.className = "exam-form-pdf-watermark";
+watermark.setAttribute("aria-hidden", "true");
+
+printClone.insertBefore(watermark, printClone.firstChild);
     // Convert relative image URLs to absolute URLs
     printClone.querySelectorAll("img").forEach(function(img) {
         const src = img.getAttribute("src");
@@ -22996,1001 +23008,382 @@ if (printPhoto && previewPhoto && previewPhoto.src) {
     }
 
     // 9. Print CSS
-    const printStyles = `
-        * {
-            box-sizing: border-box !important;
-        }
+ 
+  const printStyles = `
+    * {
+        box-sizing: border-box !important;
+    }
 
-        @page {
-            size: A4 portrait;
-            margin: 15mm 18mm;
-        }
-        /* Student photo - Exam Form print only */
-.exam-print-student-photo-wrap {
-    display: block;
-    width: 100%;
-    margin: 8px 0 12px;
-    text-align: left;
-}
-
-.exam-print-student-photo {
-    display: block;
-    width: 28mm;
-    height: 35mm;
-    object-fit: cover;
-    object-position: center;
-    border: 1px solid #64748b;
-    padding: 2px;
-    background: #ffffff;
-}
-    /* =========================================
-   EXAM FORM ONLY - PRINT WATERMARK
-   Does not affect marksheet printing
-========================================= */
-
+    @page {
+        size: A4 portrait;
+        margin: 8mm;
+    }
+/* Exam Form PDF watermark */
 .exam-form-print {
     position: relative !important;
     isolation: isolate !important;
+    overflow: visible !important;
     background: #ffffff !important;
 }
 
-/* Watermark behind the form content */
-.exam-form-print::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 105mm;
-    height: 105mm;
-    transform: translate(-50%, -50%);
-    background-image: url("https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/ikon.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    opacity: 0.09;
-    z-index: 0;
-    pointer-events: none;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+.exam-form-pdf-watermark {
+    position: absolute !important;
+    width: 105mm !important;
+    height: 105mm !important;
+    object-fit: contain !important;
+
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+
+    opacity: 0.09 !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
 }
 
-/* Keep all actual form content above watermark */
-.exam-form-print > * {
-    position: relative;
-    z-index: 1;
+.exam-form-print > :not(.exam-form-pdf-watermark) {
+    position: relative !important;
+    z-index: 1 !important;
 }
-
-/* Preserve A4 print layout */
-@media print {
-    .exam-form-print {
-        position: relative !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        overflow: visible !important;
-        background: transparent !important;
+    html,
+    body {
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #1e293b !important;
+        font-family: Arial, Helvetica, sans-serif !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
+    /* Main A4 form */
+    .exam-form-print {
+        display: block !important;
+        position: relative !important;
+        isolation: isolate !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        padding: 5mm !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        color: #1e293b !important;
+        border: 1px solid #b9cbe2 !important;
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 9pt !important;
+        line-height: 1.25 !important;
+        box-shadow: none !important;
+    }
+
+    /* IKON watermark behind all form content */
     .exam-form-print::before {
+        content: "";
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
+        width: 105mm !important;
+        height: 105mm !important;
         transform: translate(-50%, -50%) !important;
-        opacity: 0.09 !important;
+        background-image: url("https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/ikon.jpg");
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: contain !important;
+        opacity: 0.075 !important;
         z-index: 0 !important;
+        pointer-events: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     .exam-form-print > * {
         position: relative !important;
         z-index: 1 !important;
     }
-}
-        html,
-        body {
-            width: 100%;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: #ffffff !important;
-            color: #172033 !important;
-            font-family: Arial, Helvetica, sans-serif !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
 
-        .exam-form-print {
-            display: block !important;
-            position: static !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            height: auto !important;
-            margin: 0 auto !important;
-            padding: 0 2mm !important;
-            border: none !important;
-            box-shadow: none !important;
-            background: #ffffff !important;
-            color: #172033 !important;
-            font-family: Arial, Helvetica, sans-serif !important;
-            font-size: 12px !important;
-            line-height: 1.4 !important;
-            overflow: visible !important;
-            visibility: visible !important;
-        }
-
-        .exam-print-form-no {
-            display: block !important;
-            width: 100% !important;
-            margin: 0 0 7mm !important;
-            padding: 0 !important;
-            text-align: right !important;
-            font-size: 11px !important;
-            color: #111827 !important;
-        }
-
-        .exam-print-form-no strong {
-            display: inline-block !important;
-            min-width: 42mm !important;
-            padding: 2mm 3mm !important;
-            border: 1px solid #333333 !important;
-            text-align: center !important;
-            font-size: 11px !important;
-        }
-
-        .exam-print-header {
-            display: block !important;
-            width: 100% !important;
-            margin: 0 0 5mm !important;
-            padding: 0 !important;
-            text-align: center !important;
-        }
-
-        .exam-print-logo {
-            display: block !important;
-            width: 24mm !important;
-            height: 24mm !important;
-            max-width: 24mm !important;
-            object-fit: contain !important;
-            margin: 0 auto 2mm !important;
-        }
-
-        .exam-print-header h1 {
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #1747c8 !important;
-            font-size: 20px !important;
-            line-height: 1.25 !important;
-            text-align: center !important;
-        }
-
-        .exam-print-tagline {
-            margin: 2mm 0 3mm !important;
-            font-size: 10px !important;
-            text-align: center !important;
-        }
-
-        .exam-print-line {
-            width: 100% !important;
-            height: 1px !important;
-            margin: 3mm 0 !important;
-            background: #1747c8 !important;
-            border: 0 !important;
-        }
-
-        .exam-print-header h2 {
-            margin: 2mm 0 0 !important;
-            font-size: 15px !important;
-            line-height: 1.3 !important;
-            text-align: center !important;
-        }
-
-        .exam-print-section {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 5mm 0 0 !important;
-            padding: 0 !important;
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-        .exam-print-section h3 {
-            margin: 0 0 2mm !important;
-            padding: 2mm 3mm !important;
-            background: #eef3ff !important;
-            border-left: 3px solid #1747c8 !important;
-            color: #1747c8 !important;
-            font-size: 14px !important;
-            line-height: 1.3 !important;
-        }
-
-        .exam-print-table {
-            display: table !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border-collapse: collapse !important;
-            table-layout: fixed !important;
-            font-size: 11px !important;
-        }
-
-        .exam-print-table tr {
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-        .exam-print-table th,
-        .exam-print-table td {
-            border: 1px solid #aeb8c8 !important;
-            padding: 2.5mm 3mm !important;
-            font-size: 11px !important;
-            line-height: 1.35 !important;
-            text-align: left !important;
-            vertical-align: middle !important;
-            overflow-wrap: anywhere !important;
-        }
-
-        .exam-print-table th {
-            width: 36% !important;
-            background: #f5f7fb !important;
-            font-weight: 600 !important;
-        }
-
-        .exam-print-signatures {
-            display: flex !important;
-            flex-direction: row !important;
-            justify-content: space-between !important;
-            align-items: flex-end !important;
-            gap: 12mm !important;
-            width: 100% !important;
-            margin: 18mm 0 0 !important;
-            padding: 0 !important;
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-        .exam-sign-box {
-            position: relative !important;
-            display: block !important;
-            flex: 1 1 0 !important;
-            width: 50% !important;
-            min-width: 0 !important;
-            height: 25mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            text-align: center !important;
-            font-size: 11px !important;
-        }
-
-        .exam-sign-space {
-            display: block !important;
-            width: 100% !important;
-            height: 1px !important;
-            margin: 0 0 2mm !important;
-            border-bottom: 1px solid #333333 !important;
-        }
-
-        .exam-sign-box p {
-            margin: 0 !important;
-            padding: 0 !important;
-            font-size: 11px !important;
-            line-height: 1.3 !important;
-            text-align: center !important;
-        }
-
-        .exam-authorized-box {
-            padding-top: 0 !important;
-        }
-
-        .exam-issued-by-image {
-            display: block !important;
-            width: 35mm !important;
-            max-width: 100% !important;
-            height: 12mm !important;
-            margin: 0 auto 1mm !important;
-            object-fit: contain !important;
-        }
-
-        .exam-authorized-box strong,
-        .exam-authorized-box span {
-            display: block !important;
-            margin: 1mm 0 0 !important;
-            font-size: 10px !important;
-            line-height: 1.25 !important;
-            text-align: center !important;
-        }
-
-        .exam-print-footer {
-            width: 100% !important;
-            margin: 8mm 0 0 !important;
-            padding: 3mm 0 0 !important;
-            border-top: 1px solid #cbd2df !important;
-            color: #555555 !important;
-            font-size: 9px !important;
-            line-height: 1.4 !important;
-            text-align: center !important;
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-        .exam-print-footer p {
-            margin: 1mm 0 !important;
-            font-size: 9px !important;
-        }
-
-        @media print {
-            html,
-            body {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-                overflow: visible !important;
-            }
-
-            .exam-form-print {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 auto !important;
-                padding: 0 2mm !important;
-            }
-        }
-        /* =========================================
-   FINAL EXAM FORM PRINT FIX
-   A4 left-right margin + aligned signatures
-========================================= */
-
-/* Page margins */
-@page {
-    size: A4 portrait;
-    margin: 12mm 16mm !important;
-}
-
-/* Add inner page gap even if browser margins are set to None */
-html,
-body {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-    box-sizing: border-box !important;
-}
-
-/* Use body padding for reliable left-right gap */
-body {
-    padding: 12mm 16mm !important;
-}
-
-/* Form stays inside the padded page area */
-body > .exam-form-print {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-}
-
-/* Signature row */
-.exam-print-signatures {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: flex-start !important;
-    gap: 18mm !important;
-    width: 100% !important;
-    margin: 18mm 0 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-}
-
-/* Both signature boxes have identical height and positioning */
-.exam-print-signatures > .exam-sign-box {
-    position: relative !important;
-    display: block !important;
-    flex: 1 1 0 !important;
-    width: 50% !important;
-    min-width: 0 !important;
-    height: 32mm !important;
-    min-height: 32mm !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-}
-
-/* Both signature lines are placed at the exact same vertical position */
-.exam-print-signatures > .exam-sign-box > .exam-sign-space {
-    position: absolute !important;
-    top: 17mm !important;
-    left: 0 !important;
-    display: block !important;
-    width: 100% !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #333333 !important;
-    box-sizing: border-box !important;
-}
-
-/* Student Signature label */
-.exam-print-signatures > .exam-sign-box:not(.exam-authorized-box) > p {
-    position: absolute !important;
-    top: 18.5mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-}
-
-/* Issued By image sits above the right signature line */
-.exam-print-signatures > .exam-authorized-box {
-    padding-top: 0 !important;
-}
-
-.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
-    position: absolute !important;
-    top: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    display: block !important;
-    width: 35mm !important;
-    max-width: 100% !important;
-    height: 14mm !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-}
-
-/* Authorized Signature label */
-.exam-print-signatures > .exam-authorized-box > p {
-    position: absolute !important;
-    top: 18.5mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-}
-
-/* Issued By and institute labels */
-.exam-print-signatures > .exam-authorized-box > strong {
-    position: absolute !important;
-    top: 23mm !important;
-    left: 0 !important;
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    line-height: 1.2 !important;
-}
-
-.exam-print-signatures > .exam-authorized-box > span {
-    position: absolute !important;
-    top: 27mm !important;
-    left: 0 !important;
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    font-size: 10px !important;
-    line-height: 1.2 !important;
-}
-
-/* Print-specific enforcement */
-@media print {
-    @page {
-        size: A4 portrait;
-        margin: 12mm 16mm !important;
+    /* Form number */
+    #examFormPrintArea .exam-print-form-no {
+        text-align: right !important;
+        font-size: 8.5pt !important;
+        margin: 0 0 2mm !important;
+        padding-bottom: 2mm !important;
+        border-bottom: 1px solid #cbd5e1 !important;
     }
 
-    html,
-    body {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
+    /* Institute header */
+    #examFormPrintArea .exam-print-header {
+        text-align: center !important;
+        margin: 0 0 4mm !important;
+        padding: 0 0 3mm !important;
+        border-bottom: 2px solid #174a8b !important;
     }
 
-    body {
-        padding: 12mm 16mm !important;
-    }
-
-    body > .exam-form-print {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-    }
-
-    .exam-print-signatures {
+    #examFormPrintArea .exam-print-header h1 {
         display: flex !important;
-        flex-direction: row !important;
-        align-items: flex-start !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 1mm !important;
+        margin: 0 !important;
+        color: #123b72 !important;
+        font-size: 20pt !important;
+        line-height: 1.1 !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.4px !important;
+    }
+
+    #examFormPrintArea .exam-print-logo {
+        display: block !important;
+        width: 17mm !important;
+        height: 17mm !important;
+        object-fit: contain !important;
+        margin: 1mm auto !important;
+    }
+
+    #examFormPrintArea .exam-print-tagline {
+        margin: 1mm 0 2mm !important;
+        color: #475569 !important;
+        font-size: 8.5pt !important;
+        font-style: italic !important;
+    }
+
+    #examFormPrintArea .exam-print-line {
+        display: none !important;
+    }
+
+    #examFormPrintArea .exam-print-header h2 {
+        margin: 2mm 0 0 !important;
+        padding: 2mm 0 !important;
+        background: #eaf2ff !important;
+        color: #123b72 !important;
+        border: 1px solid #c8d9f2 !important;
+        border-radius: 2mm !important;
+        font-size: 13pt !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* Section headings */
+    #examFormPrintArea .exam-print-section {
+        display: block !important;
+        margin: 0 0 3mm !important;
+        padding: 0 !important;
         break-inside: avoid !important;
         page-break-inside: avoid !important;
     }
-}
-/* =====================================
-   INCREASE IKON LOGO & ISSUED BY SIZE
-===================================== */
 
-/* IKON Institute Logo */
-.exam-print-logo {
-    display: block !important;
-    width: 35mm !important;
-    height: 35mm !important;
-    max-width: 35mm !important;
-    object-fit: contain !important;
-    margin: 0 auto 3mm !important;
-}
-
-/* Issued By Image / Signature */
-.exam-issued-by-image {
-    display: block !important;
-    width: 48mm !important;
-    max-width: 48mm !important;
-    height: 18mm !important;
-    object-fit: contain !important;
-    margin: 0 auto 1mm !important;
-}
-
-/* Keep issued-by image centered */
-.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-/* =================================================
-   FINAL EXAM FORM PRINT LAYOUT
-   One-page compact layout + proper side margins
-   Larger IKON logo and Issued By image
-================================================= */
-
-/* A4 page margins: top/bottom 7mm, left/right 13mm */
-@page {
-    size: A4 portrait;
-    margin: 7mm 13mm !important;
-}
-
-/* Do not add extra body padding.
-   Page margins are controlled only by @page. */
-html,
-body {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    background: #ffffff !important;
-    color: #172033 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-}
-
-/* Main form container */
-body > .exam-form-print {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: auto !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    box-sizing: border-box !important;
-    background: #ffffff !important;
-}
-
-/* Form number */
-.exam-print-form-no {
-    width: 100% !important;
-    margin: 0 0 2mm !important;
-    padding: 0 !important;
-    text-align: right !important;
-    font-size: 9px !important;
-}
-
-.exam-print-form-no strong {
-    min-width: 38mm !important;
-    padding: 1.5mm 2mm !important;
-    font-size: 9px !important;
-}
-
-/* Header spacing */
-.exam-print-header {
-    width: 100% !important;
-    margin: 0 0 2mm !important;
-    padding: 0 !important;
-    text-align: center !important;
-}
-
-/* Institute name */
-.exam-print-header h1 {
-    margin: 0 0 1mm !important;
-    padding: 0 !important;
-    font-size: 15px !important;
-    line-height: 1.15 !important;
-}
-
-/* Larger IKON logo */
-.exam-print-logo {
-    display: block !important;
-    width: 38mm !important;
-    height: 27mm !important;
-    max-width: 38mm !important;
-    object-fit: contain !important;
-    margin: 0 auto 1mm !important;
-}
-
-/* Tagline and exam title */
-.exam-print-tagline {
-    margin: 1mm 0 !important;
-    padding: 0 !important;
-    font-size: 9px !important;
-    line-height: 1.15 !important;
-}
-
-.exam-print-header h2 {
-    margin: 1mm 0 !important;
-    padding: 0 !important;
-    font-size: 12px !important;
-    line-height: 1.2 !important;
-}
-
-/* Sections: allow natural flow to avoid forced page breaks */
-.exam-print-section {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 2mm 0 0 !important;
-    padding: 0 !important;
-    break-inside: auto !important;
-    page-break-inside: auto !important;
-}
-
-.exam-print-section h3 {
-    margin: 0 0 1mm !important;
-    padding: 1.2mm 2mm !important;
-    font-size: 12px !important;
-    line-height: 1.2 !important;
-}
-
-/* Tables */
-.exam-print-table {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    border-collapse: collapse !important;
-    table-layout: fixed !important;
-    font-size: 9px !important;
-}
-
-.exam-print-table th,
-.exam-print-table td {
-    padding: 1mm 1.5mm !important;
-    font-size: 9px !important;
-    line-height: 1.15 !important;
-    vertical-align: middle !important;
-    overflow-wrap: anywhere !important;
-}
-
-/* Guidelines compact */
-.exam-print-section ol,
-.exam-print-section ul {
-    margin-top: 1mm !important;
-    margin-bottom: 1mm !important;
-    padding-left: 5mm !important;
-}
-
-.exam-print-section li {
-    margin: 0.5mm 0 !important;
-    font-size: 12.5px !important;
-    line-height: 1.3 !important;
-}
-
-/* Fee criteria compact */
-.exam-fee-criteria {
-    width: 100% !important;
-    margin: 2mm 0 !important;
-    padding: 2mm 3mm !important;
-    box-sizing: border-box !important;
-    break-inside: auto !important;
-    page-break-inside: auto !important;
-}
-
-.exam-fee-criteria h3 {
-    margin: 0 0 1mm !important;
-    padding: 0 0 1mm !important;
-    font-size: 10px !important;
-}
-
-.fee-criteria-note {
-    margin: 1mm 0 !important;
-    font-size: 12px !important;
-    line-height: 1.3 !important;
-}
-
-.fee-criteria-list {
-    margin: 1mm 0 !important;
-    padding-left: 5mm !important;
-}
-
-.fee-criteria-list li {
-    margin: 0.5mm 0 !important;
-    padding-left: 0.5mm !important;
-    font-size: 12.5px !important;
-    line-height: 1.3 !important;
-}
-
-/* Signature row */
-.exam-print-signatures {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: flex-start !important;
-    gap: 12mm !important;
-    width: 100% !important;
-    margin: 5mm 0 0 !important;
-    padding: 0 !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-}
-
-.exam-print-signatures > .exam-sign-box {
-    position: relative !important;
-    display: block !important;
-    flex: 1 1 0 !important;
-    width: 50% !important;
-    min-width: 0 !important;
-    height: 24mm !important;
-    min-height: 24mm !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    text-align: center !important;
-}
-
-/* Align both signature lines */
-.exam-print-signatures > .exam-sign-box > .exam-sign-space {
-    position: absolute !important;
-    top: 14mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #333333 !important;
-}
-
-/* Larger Issued By image */
-.exam-print-signatures > .exam-authorized-box > .exam-issued-by-image {
-    position: absolute !important;
-    top: -1mm !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    display: block !important;
-    width: 48mm !important;
-    max-width: 100% !important;
-    height: 14mm !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-}
-
-/* Signature labels */
-.exam-print-signatures > .exam-sign-box > p {
-    position: absolute !important;
-    top: 15.5mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 9px !important;
-    line-height: 1.15 !important;
-    text-align: center !important;
-}
-
-/* Authorized details */
-.exam-print-signatures > .exam-authorized-box > strong {
-    position: absolute !important;
-    top: 19mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    font-size: 9px !important;
-    line-height: 1.1 !important;
-    text-align: center !important;
-}
-
-.exam-print-signatures > .exam-authorized-box > span {
-    position: absolute !important;
-    top: 22mm !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    font-size: 8px !important;
-    line-height: 1.1 !important;
-    text-align: center !important;
-}
-
-/* Footer */
-.exam-print-footer {
-    width: 100% !important;
-    margin: 2mm 0 0 !important;
-    padding: 1.5mm 0 0 !important;
-    font-size: 8px !important;
-    line-height: 1.15 !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-}
-
-.exam-print-footer p {
-    margin: 0.5mm 0 !important;
-    font-size: 8px !important;
-}
-
-/* Print-specific rules */
-@media print {
-    @page {
-        size: A4 portrait;
-        margin: 7mm 13mm !important;
+    #examFormPrintArea .exam-print-section h3,
+    #examFormPrintArea .exam-fee-criteria h3 {
+        margin: 0 0 2mm !important;
+        padding: 2mm 3mm !important;
+        background: #edf4ff !important;
+        color: #123b72 !important;
+        border-left: 3px solid #1455c0 !important;
+        font-size: 10pt !important;
+        font-weight: 700 !important;
     }
 
-    html,
-    body {
+    /* Student photo */
+    #examFormPrintArea .exam-print-student-photo-wrap {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 0 2mm !important;
+        text-align: right !important;
+    }
+
+    #examFormPrintArea .exam-print-student-photo {
+        display: inline-block !important;
+        width: 23mm !important;
+        height: 29mm !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border: 1px solid #64748b !important;
+        padding: 1mm !important;
+        background: #ffffff !important;
+    }
+
+    /* Student details table */
+    #examFormPrintArea .exam-print-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
         margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        overflow: visible !important;
+        font-size: 9pt !important;
     }
 
-    body > .exam-form-print {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
+    #examFormPrintArea .exam-print-table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
     }
-}
-/* =========================================
-   FEE PAYMENT ELIGIBILITY - PDF ONLY
-   Larger, Professional, A4 Safe
-========================================= */
 
-.exam-fee-criteria {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-
-    margin: 3mm 0 2mm !important;
-    padding: 3mm 4mm !important;
-
-    background: #f3f7ff !important;
-    border: 1px solid #b9cdec !important;
-    border-left: 4px solid #1455c0 !important;
-    border-radius: 2mm !important;
-
-    color: #24344d !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-
-    /* Important: don't force the entire section to a new page */
-    break-inside: auto !important;
-    page-break-inside: auto !important;
-}
-
-/* Section heading */
-.exam-fee-criteria h3 {
-    display: block !important;
-
-    margin: 0 0 2mm !important;
-    padding: 0 0 2mm !important;
-
-    color: #1249a8 !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    line-height: 1.25 !important;
-
-    border-bottom: 1px solid #c5d8f0 !important;
-}
-
-/* Intro note */
-.exam-fee-criteria .fee-criteria-note {
-    margin: 1.5mm 0 2mm !important;
-    padding: 1.5mm 2mm !important;
-
-    background: #ffffff !important;
-    border: 1px solid #dce8f8 !important;
-    border-radius: 1mm !important;
-
-    color: #334155 !important;
-    font-size: 11.5px !important;
-    line-height: 1.35 !important;
-}
-
-/* Numbered criteria list */
-.exam-fee-criteria .fee-criteria-list {
-    margin: 2mm 0 !important;
-    padding-left: 7mm !important;
-
-    list-style-type: decimal !important;
-    list-style-position: outside !important;
-}
-
-/* Each eligibility item */
-.exam-fee-criteria .fee-criteria-list li {
-    margin: 1.5mm 0 !important;
-    padding: 1mm 1.5mm !important;
-
-    color: #26364d !important;
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-
-    /* Prevent splitting an individual criterion */
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-}
-
-/* Paper name */
-.exam-fee-criteria .fee-criteria-list li > strong:first-child {
-    color: #1249a8 !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-}
-
-/* Percentage emphasis */
-.exam-fee-criteria .fee-criteria-list li strong {
-    color: #087f6a !important;
-    font-weight: 700 !important;
-}
-
-/* Last note / eligibility disclaimer */
-.exam-fee-criteria .fee-criteria-note:last-child {
-    margin: 2mm 0 0 !important;
-    padding: 2mm 2.5mm !important;
-
-    background: #e7f1ff !important;
-    border: 1px solid #c5d9f2 !important;
-    border-left: 3px solid #1455c0 !important;
-    border-radius: 1mm !important;
-
-    color: #334155 !important;
-    font-size: 10.5px !important;
-    line-height: 1.3 !important;
-}
-
-/* Keep fee criteria within the printable width */
-@media print {
-    .exam-fee-criteria,
-    .exam-fee-criteria * {
-        max-width: 100% !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+    #examFormPrintArea .exam-print-table th,
+    #examFormPrintArea .exam-print-table td {
+        border: 1px solid #b8c9df !important;
+        padding: 2mm 3mm !important;
+        text-align: left !important;
+        vertical-align: middle !important;
+        line-height: 1.2 !important;
+        overflow-wrap: anywhere !important;
     }
-}
-    `;
 
+    #examFormPrintArea .exam-print-table th {
+        width: 34% !important;
+        background: #edf4ff !important;
+        color: #1e3a5f !important;
+        font-weight: 700 !important;
+    }
+
+    #examFormPrintArea .exam-print-table td {
+        background: rgba(255,255,255,0.88) !important;
+        color: #172033 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Examination guidelines */
+    #examFormPrintArea .exam-guidelines {
+        margin-bottom: 3mm !important;
+    }
+
+    #examFormPrintArea .exam-guidelines ol {
+        margin: 1mm 0 0 !important;
+        padding-left: 6mm !important;
+    }
+
+    #examFormPrintArea .exam-guidelines li {
+        margin: 0 0 1.2mm !important;
+        padding-left: 1mm !important;
+        font-size: 8pt !important;
+        line-height: 1.2 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Fee eligibility criteria */
+    #examFormPrintArea .exam-fee-criteria {
+        display: block !important;
+        margin: 0 0 3mm !important;
+        padding: 2.5mm !important;
+        border: 1px solid #c5d6ea !important;
+        border-radius: 1.5mm !important;
+        background: rgba(255,255,255,0.88) !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    #examFormPrintArea .exam-fee-criteria .fee-criteria-note {
+        margin: 1mm 0 1.5mm !important;
+        padding: 1.5mm 2mm !important;
+        border: 1px solid #dce8f8 !important;
+        background: #f7faff !important;
+        color: #334155 !important;
+        font-size: 7.5pt !important;
+        line-height: 1.2 !important;
+    }
+
+    #examFormPrintArea .exam-fee-criteria .fee-criteria-list {
+        margin: 1mm 0 !important;
+        padding-left: 6mm !important;
+        list-style: decimal !important;
+    }
+
+    #examFormPrintArea .exam-fee-criteria .fee-criteria-list li {
+        margin: 1mm 0 !important;
+        padding-left: 1mm !important;
+        color: #26364d !important;
+        font-size: 7.5pt !important;
+        line-height: 1.2 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    #examFormPrintArea .exam-fee-criteria .fee-criteria-list li strong {
+        color: #1249a8 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Signature area */
+    #examFormPrintArea .exam-print-signatures {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        gap: 15mm !important;
+        margin: 5mm 0 3mm !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    #examFormPrintArea .exam-sign-box {
+        position: relative !important;
+        flex: 1 1 50% !important;
+        min-width: 0 !important;
+        text-align: center !important;
+        color: #334155 !important;
+        font-size: 8pt !important;
+    }
+
+    #examFormPrintArea .exam-sign-space {
+        height: 13mm !important;
+        border-bottom: 1px solid #64748b !important;
+        margin-bottom: 1.5mm !important;
+    }
+
+    #examFormPrintArea .exam-sign-box p {
+        margin: 0 !important;
+        font-weight: 700 !important;
+    }
+
+    #examFormPrintArea .exam-authorized-box strong,
+    #examFormPrintArea .exam-authorized-box span {
+        display: block !important;
+        margin-top: 1mm !important;
+        font-size: 7.5pt !important;
+    }
+
+    #examFormPrintArea .exam-issued-by-image {
+        display: block !important;
+        width: 23mm !important;
+        height: 10mm !important;
+        object-fit: contain !important;
+        margin: 0 auto 1mm !important;
+    }
+
+    /* Footer */
+    #examFormPrintArea .exam-print-footer {
+        margin-top: 3mm !important;
+        padding-top: 2mm !important;
+        border-top: 1px solid #cbd5e1 !important;
+        text-align: center !important;
+        color: #64748b !important;
+        font-size: 7.5pt !important;
+        line-height: 1.25 !important;
+    }
+
+    #examFormPrintArea .exam-print-footer p {
+        margin: 0.5mm 0 !important;
+    }
+
+    /* Keep print colors and avoid splitting the form */
+    @media print {
+        html,
+        body {
+            width: 100% !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+
+        .exam-form-print {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .exam-form-print::before {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }
+`;
     // 10. Write complete HTML into print window
     printWindow.document.open();
 
