@@ -285,15 +285,80 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
                 text-align:center;
             ">
         </div>
+          <!-- ================= EXAM FORM PREVIEW ================= -->
+
+<div id="examFormPreviewSection" class="exam-form-preview hidden">
+
+    <div class="exam-preview-header">
+        <div>
+            <h3>Review Your Exam Form</h3>
+            <p>Please verify your details before submitting the form.</p>
+        </div>
+        <span class="exam-preview-badge">Preview</span>
+    </div>
+
+    <div class="exam-preview-grid">
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Registration Number</span>
+            <strong id="previewExamRegNo">—</strong>
+        </div>
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Student Name</span>
+            <strong id="previewExamStudentName">—</strong>
+        </div>
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Course</span>
+            <strong id="previewExamCourse">—</strong>
+        </div>
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Examination Paper</span>
+            <strong id="previewExamPaper">—</strong>
+        </div>
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Bill Number</span>
+            <strong id="previewExamBillNo">—</strong>
+        </div>
+
+        <div class="exam-preview-item">
+            <span class="exam-preview-label">Bill Amount</span>
+            <strong id="previewExamBillAmount">—</strong>
+        </div>
+
+    </div>
+
+    <div class="exam-preview-notice">
+        <strong>Important:</strong>
+        Check your registration number, name, course and examination paper carefully.
+        Submit only after confirming that the details are correct.
+    </div>
+
+</div>
+<div class="exam-form-confirmation">
+    <label for="examFormConfirmCheckbox">
+        <input
+            type="checkbox"
+            id="examFormConfirmCheckbox"
+            onchange="toggleExamFormSubmitButton()"
+        >
+        I have checked the details above and confirm that they are correct.
+    </label>
+</div>
+<!-- ================= END EXAM FORM PREVIEW ================= -->
 <!-- SUBMIT EXAM FORM BUTTON -->
 <div id="examFormSubmitSection"
      style="display:none; margin-top:15px; text-align:center;">
 
-    <button
-        type="button"
-        id="examFormSubmitBtn"
-        class="primary"
-        onclick="submitExamForm()">
+   <button
+    type="button"
+    id="examFormSubmitBtn"
+    class="primary"
+    onclick="submitExamForm()"
+    disabled>
 
         Submit Exam Form
     </button>
