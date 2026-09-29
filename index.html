@@ -192,18 +192,44 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         <!-- STUDENT DETAILS -->
 
         <div
-            id="examFormStudentDetails"
-            class="hidden"
+    id="examFormStudentDetails"
+    class="hidden"
+    style="
+        margin-top:20px;
+        padding:16px;
+        border:1px solid #dbeafe;
+        border-radius:10px;
+        background:#f8fbff;
+        text-align:left;
+    ">
+
+    <div style="
+        display:flex;
+        align-items:flex-start;
+        gap:16px;
+        flex-wrap:wrap;
+    ">
+
+        <!-- STUDENT PHOTO - TOP LEFT -->
+        <img
+            id="examFormStudentPhoto"
+            src=""
+            alt="Student Photo"
             style="
-                margin-top:20px;
-                padding:16px;
-                border:1px solid #dbeafe;
-                border-radius:10px;
-                background:#f8fbff;
-                text-align:left;
+                width:110px;
+                height:130px;
+                object-fit:cover;
+                border:1px solid #cbd5e1;
+                border-radius:6px;
+                background:#fff;
+                display:none;
+                flex-shrink:0;
             ">
 
-            <h3>Student Details</h3>
+        <!-- STUDENT DETAILS -->
+        <div style="flex:1; min-width:180px;">
+
+            <h3 style="margin-top:0;">Student Details</h3>
 
             <p>
                 <strong>Registration No:</strong>
@@ -219,25 +245,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
                 <strong>Course:</strong>
                 <span id="examFormDisplayCourse"></span>
             </p>
-              <p>
-  <strong>Paper:</strong>
-  <span id="examFormDisplayPaper">--</span>
-</p>
-<p>
-    <strong>Bill Date:</strong>
-    <span id="examFormDisplayBillDate">--</span>
-</p>
 
-<p>
-    <strong>Bill No:</strong>
-    <span id="examFormDisplayBillNo">--</span>
-</p>
-
-<p>
-    <strong>Bill Amount:</strong>
-    <span id="examFormDisplayBillAmount">--</span>
-</p>
         </div>
+    </div>
+</div>
 
         <!-- PAPER SELECTION -->
 
