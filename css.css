@@ -21127,3 +21127,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         font-size: 12px;
     }
 }
+/* FIX: Hide Exam Form on initial page load */
+#examFormPage {
+    display: none !important;
+}
