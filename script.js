@@ -22628,7 +22628,53 @@ async function submitExamForm() {
             downloadOptions.style.setProperty("display", "block", "important");
         }
     }
+function showExamFormSubmissionNotice(type, formNo) {
+    if (!downloadOptions) return;
 
+    let notice = document.getElementById("examFormSubmissionNotice");
+
+    if (!notice) {
+        notice = document.createElement("div");
+        notice.id = "examFormSubmissionNotice";
+        downloadOptions.insertBefore(notice, downloadOptions.firstChild);
+    }
+
+    const isSuccess = type === "success";
+
+    notice.style.cssText = `
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 24px;
+        margin: 0 0 18px 0;
+        border-radius: 12px;
+        border: 1px solid ${isSuccess ? "#86efac" : "#fcd34d"};
+        background: ${isSuccess ? "#f0fdf4" : "#fffbeb"};
+        color: ${isSuccess ? "#166534" : "#92400e"};
+        font-family: Arial, sans-serif;
+        text-align: center;
+    `;
+
+    notice.innerHTML = `
+        <div style="font-size:30px; margin-bottom:8px;">
+            ${isSuccess ? "&#10004;" : "&#9432;"}
+        </div>
+        <div style="font-size:20px; font-weight:700; margin-bottom:8px;">
+            ${isSuccess ? "Exam Form Submitted Successfully!" : "Exam Form Already Submitted"}
+        </div>
+        <div style="font-size:14px; line-height:1.6;">
+            ${isSuccess
+                ? "Your exam form has been received successfully. Please keep your Form Number for future reference."
+                : "Our records show that your exam form has already been submitted. You can download your documents below."}
+        </div>
+        <div style="font-size:16px; font-weight:700; margin-top:12px;">
+            Form No: ${formNo || "Not available"}
+        </div>
+        <div style="font-size:13px; margin-top:8px;">
+            You can now download your Exam Form and Hall Ticket.
+        </div>
+    `;
+}
     // Prevent rapid double-clicks on the same page
     if (window.__ikonExamFormSubmitting) {
         return;
