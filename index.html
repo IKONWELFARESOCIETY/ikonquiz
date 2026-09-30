@@ -289,34 +289,56 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
             ">
         </div>
                   </div>
-          <!-- ================= EXAM FORM PREVIEW ================= -->
+      <!-- ================= EXAM FORM PREVIEW ================= -->
 
 <div id="examFormPreviewSection" class="exam-form-preview hidden">
 
+    <div class="exam-preview-university-band">
+        <div class="exam-preview-institution">
+            <img src="ikon.jpg" alt="IKON Institute" class="exam-preview-logo">
+            <div>
+                <div class="exam-preview-institute-name">IKON INSTITUTE</div>
+                <div class="exam-preview-institute-address">
+                    Infront of Anughrah College, Gaya Bihar (823001)
+                </div>
+                <div class="exam-preview-motto">A Symbol of Success</div>
+            </div>
+        </div>
+
+        <div class="exam-preview-document-title">
+            <span>STUDENT EXAMINATION FORM</span>
+            <small>Candidate Copy · Review before submission</small>
+        </div>
+
+        <span class="exam-preview-badge">PREVIEW</span>
+    </div>
+
     <div class="exam-preview-header">
         <div>
-            <h3>Review Your Exam Form</h3>
-            <p>Please verify your details before submitting the form.</p>
+            <h3>Verify Candidate Information</h3>
+            <p>Check the photograph and examination details before confirming.</p>
         </div>
-        <span class="exam-preview-badge">Preview</span>
     </div>
 
     <div class="exam-preview-grid">
-<!-- STUDENT PHOTO IN PREVIEW -->
-<div class="exam-preview-photo-row">
-    <div class="exam-preview-photo-frame">
-        <img
-            id="previewExamStudentPhoto"
-            src=""
-            alt="Student Photo"
-        >
-        <span id="previewExamPhotoFallback">Student Photo</span>
-    </div>
-    <div class="exam-preview-photo-caption">
-        <strong>Candidate Photograph</strong>
-        <small>Verify that the photograph belongs to you.</small>
-    </div>
-</div>
+
+        <!-- STUDENT PHOTO -->
+        <div class="exam-preview-photo-row">
+            <div class="exam-preview-photo-frame">
+                <img
+                    id="previewExamStudentPhoto"
+                    src=""
+                    alt="Student Photo"
+                >
+                <span id="previewExamPhotoFallback">Student Photo</span>
+            </div>
+
+            <div class="exam-preview-photo-caption">
+                <strong>Candidate Photograph</strong>
+                <small>Verify that the photograph belongs to you.</small>
+            </div>
+        </div>
+
         <div class="exam-preview-item">
             <span class="exam-preview-label">Registration Number</span>
             <strong id="previewExamRegNo">—</strong>
@@ -348,49 +370,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         </div>
 
     </div>
-
-      <div class="exam-preview-notice">
-        <strong>Important:</strong>
-        Check your registration number, name, course and examination paper carefully.
-        Submit only after confirming that the details are correct.
-    </div>
-
-    <!-- CONFIRMATION CHECKBOX -->
-    <div class="exam-form-confirmation">
-        <label for="examFormConfirmCheckbox">
-            <input
-                type="checkbox"
-                id="examFormConfirmCheckbox"
-                onchange="toggleExamFormSubmitButton()"
-            >
-            <span>
-                I have checked the details above and confirm that they are correct.
-            </span>
-        </label>
-    </div>
-
-    <!-- REVIEW ACTIONS -->
-    <div class="exam-review-actions">
-        <button
-            type="button"
-            class="exam-review-back-btn"
-            onclick="backToExamFormEdit()">
-            ← Back to Edit
-        </button>
-
-        <div id="examFormSubmitSection" style="display:none;">
-            <button
-                type="button"
-                id="examFormSubmitBtn"
-                class="primary"
-                onclick="submitExamForm()"
-                disabled>
-                Confirm & Submit Exam Form
-            </button>
-        </div>
-    </div>
-
-</div>
 <!-- END EXAM FORM PREVIEW -->
 
 </div>
