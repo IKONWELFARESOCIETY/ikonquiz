@@ -22111,10 +22111,38 @@ if (studentPhoto) {
         }
     };
 
-    studentPhoto.onload = function () {
-        console.log("Student photo loaded:", this.src);
-        this.style.display = "block";
-    };
+  studentPhoto.onload = function () {
+    console.log("Student photo loaded:", this.src);
+    this.style.display = "block";
+
+    // Sync student photo to preview and print/PDF template.
+    const photoSource = this.currentSrc || this.src;
+
+    ["previewExamStudentPhoto", "printExamStudentPhoto"].forEach(function(id) {
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        target.onload = function() {
+            this.style.display = "block";
+
+            if (id === "previewExamStudentPhoto") {
+                const fallback = document.getElementById("previewExamPhotoFallback");
+                if (fallback) fallback.style.display = "none";
+            }
+        };
+
+        target.onerror = function() {
+            this.style.display = "none";
+
+            if (id === "previewExamStudentPhoto") {
+                const fallback = document.getElementById("previewExamPhotoFallback");
+                if (fallback) fallback.style.display = "flex";
+            }
+        };
+
+        target.src = photoSource;
+    });
+};
 
     studentPhoto.src = photoBase + photoName + "." + extensions[0];
 }
@@ -23640,10 +23668,35 @@ function updateExamFormPreview() {
 
     Object.keys(previewFields).forEach(function(id) {
         const element = document.getElementById(id);
+
         if (element) {
             element.textContent = previewFields[id];
         }
     });
+
+    // Keep preview photo synchronized with the loaded student photo.
+    const sourcePhoto = document.getElementById("examFormStudentPhoto");
+    const previewPhoto = document.getElementById("previewExamStudentPhoto");
+    const fallback = document.getElementById("previewExamPhotoFallback");
+
+    if (
+        sourcePhoto &&
+        previewPhoto &&
+        sourcePhoto.src &&
+        sourcePhoto.style.display !== "none"
+    ) {
+        previewPhoto.onload = function() {
+            previewPhoto.style.display = "block";
+            if (fallback) fallback.style.display = "none";
+        };
+
+        previewPhoto.onerror = function() {
+            previewPhoto.style.display = "none";
+            if (fallback) fallback.style.display = "flex";
+        };
+
+        previewPhoto.src = sourcePhoto.currentSrc || sourcePhoto.src;
+    }
 }
 
 
