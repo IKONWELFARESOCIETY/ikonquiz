@@ -371,7 +371,135 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
     </div>
 <!-- END EXAM FORM PREVIEW -->
+<!-- EXAM FORM CONFIRMATION + ACTION BUTTONS -->
+<div class="exam-form-preview-actions"
+     style="
+        width:100%;
+        max-width:760px;
+        box-sizing:border-box;
+        margin:24px auto 30px;
+        padding:22px;
+        background:#ffffff;
+        border:1px solid #dbe4f0;
+        border-radius:12px;
+        box-shadow:0 4px 14px rgba(15,23,42,0.06);
+     ">
 
+    <div style="
+        padding:14px 16px;
+        margin-bottom:18px;
+        border:1px solid #bfdbfe;
+        border-left:4px solid #1d4ed8;
+        border-radius:8px;
+        background:#eff6ff;
+        color:#1e3a8a;
+        font-size:14px;
+        line-height:1.6;
+    ">
+        <strong>Important Instructions</strong>
+        <p style="margin:5px 0 0;">
+            Please verify your photograph, registration number, name,
+            course and examination paper before submitting the form.
+        </p>
+    </div>
+
+    <!-- Candidate confirmation -->
+    <label for="examFormConfirmCheckbox"
+           style="
+              display:flex;
+              align-items:flex-start;
+              gap:12px;
+              padding:15px;
+              margin-bottom:20px;
+              border:1px solid #cbd5e1;
+              border-radius:8px;
+              background:#f8fafc;
+              color:#1e293b;
+              font-size:14px;
+              line-height:1.5;
+              cursor:pointer;
+           ">
+
+        <input
+            type="checkbox"
+            id="examFormConfirmCheckbox"
+            onchange="toggleExamFormSubmitButton()"
+            style="
+                width:18px;
+                height:18px;
+                flex:0 0 18px;
+                margin-top:2px;
+                cursor:pointer;
+            "
+        >
+
+        <span>
+            I have checked my photograph and all examination details.
+            I confirm that the information provided above is correct.
+        </span>
+    </label>
+
+    <!-- Action buttons -->
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-wrap:wrap;
+        gap:12px;
+    ">
+
+        <button
+            type="button"
+            onclick="backToExamFormEdit()"
+            style="
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                min-height:46px;
+                padding:12px 22px;
+                border:1px solid #cbd5e1;
+                border-radius:8px;
+                background:#ffffff;
+                color:#334155;
+                font-size:14px;
+                font-weight:700;
+                cursor:pointer;
+            ">
+            ← Back to Edit
+        </button>
+
+        <div id="examFormSubmitSection"
+             style="display:block;">
+
+            <button
+                type="button"
+                id="examFormSubmitBtn"
+                onclick="submitExamForm()"
+                disabled
+                style="
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    min-height:46px;
+                    min-width:230px;
+                    padding:12px 22px;
+                    border:0;
+                    border-radius:8px;
+                    background:#15803d;
+                    color:#ffffff;
+                    font-size:14px;
+                    font-weight:700;
+                    cursor:pointer;
+                    opacity:0.55;
+                ">
+                Confirm &amp; Submit Exam Form
+            </button>
+
+        </div>
+    </div>
+
+</div>
+<!-- END EXAM FORM CONFIRMATION + ACTION BUTTONS -->
 </div>
 
       <!-- ================= EXAM FORM SUCCESS MESSAGE ================= -->
