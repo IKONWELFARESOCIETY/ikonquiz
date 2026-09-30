@@ -21622,3 +21622,481 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         font-size: 18px;
     }
 }
+/* =========================================
+   IKON EXAM FORM PREVIEW - PROFESSIONAL
+========================================= */
+
+#examFormPreviewSection {
+    width: 100%;
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 24px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #dbe4f0;
+    border-radius: 16px;
+    box-shadow: 0 14px 35px rgba(15, 40, 80, 0.10);
+    color: #172033;
+}
+
+#examFormPreviewSection .exam-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e8eef8;
+}
+
+#examFormPreviewSection .exam-preview-header h3 {
+    margin: 0 0 6px;
+    color: #123b75;
+    font-size: 22px;
+    font-weight: 750;
+}
+
+#examFormPreviewSection .exam-preview-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#examFormPreviewSection .exam-preview-badge {
+    flex-shrink: 0;
+    padding: 7px 13px;
+    border-radius: 30px;
+    background: #eaf2ff;
+    color: #1455c0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.exam-preview-photo-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background: #f8faff;
+    border: 1px solid #e1eaf7;
+    border-radius: 12px;
+}
+
+.exam-preview-photo-frame {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 100px;
+    width: 100px;
+    height: 120px;
+    overflow: hidden;
+    background: #eef2f7;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+#previewExamStudentPhoto {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#previewExamPhotoFallback {
+    color: #64748b;
+    font-size: 12px;
+    text-align: center;
+}
+
+.exam-preview-photo-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.exam-preview-photo-caption strong {
+    color: #123b75;
+    font-size: 15px;
+}
+
+.exam-preview-photo-caption small {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#examFormPreviewSection .exam-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+#examFormPreviewSection .exam-preview-item {
+    min-width: 0;
+    padding: 15px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+#examFormPreviewSection .exam-preview-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .45px;
+}
+
+#examFormPreviewSection .exam-preview-item strong {
+    display: block;
+    color: #172033;
+    font-size: 15px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+#examFormPreviewSection .exam-preview-notice {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    #examFormPreviewSection {
+        padding: 16px;
+        margin: 16px auto;
+    }
+
+    #examFormPreviewSection .exam-preview-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #examFormPreviewSection .exam-preview-grid {
+        grid-template-columns: 1fr;
+    }
+}/* =========================================
+   EXAM FORM — PROFESSIONAL PREVIEW DESIGN
+   ========================================= */
+
+#examFormPreviewSection .exam-preview-university-band {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 24px 18px;
+    color: #fff;
+    background: linear-gradient(120deg, #092f70, #1556b8 65%, #2478cb);
+    border-bottom: 4px solid #d6ad50;
+}
+
+#examFormPreviewSection .exam-preview-institution {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+#examFormPreviewSection .exam-preview-logo {
+    width: 88px;
+    height: 68px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 7px;
+    padding: 5px;
+    flex: 0 0 auto;
+}
+
+#examFormPreviewSection .exam-preview-institute-name {
+    font-size: clamp(19px, 3vw, 27px);
+    font-weight: 800;
+    letter-spacing: .7px;
+    line-height: 1.15;
+}
+
+#examFormPreviewSection .exam-preview-institute-address {
+    margin-top: 5px;
+    font-size: 12px;
+    opacity: .92;
+}
+
+#examFormPreviewSection .exam-preview-motto {
+    margin-top: 5px;
+    color: #f7d98a;
+    font-size: 12px;
+    font-style: italic;
+    letter-spacing: .4px;
+}
+
+#examFormPreviewSection .exam-preview-document-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,.28);
+    padding-top: 13px;
+    margin-top: 3px;
+}
+
+#examFormPreviewSection .exam-preview-document-title span {
+    display: block;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+#examFormPreviewSection .exam-preview-document-title small {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    opacity: .86;
+}
+
+#examFormPreviewSection .exam-preview-badge {
+    align-self: start;
+    padding: 7px 11px;
+    color: #123b75;
+    background: #fff;
+    border: 1px solid #d6ad50;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+#examFormPreviewSection .exam-preview-header {
+    margin: 0;
+    padding: 20px 24px 8px;
+}
+
+#examFormPreviewSection .exam-preview-header h3 {
+    color: #123b75;
+    font-size: 17px;
+}
+
+#examFormPreviewSection .exam-preview-photo-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 8px 24px 20px;
+    padding: 17px;
+    border: 1px solid #d7e1ef;
+    border-radius: 8px;
+    background: rgba(248,250,252,.92);
+}
+
+#examFormPreviewSection .exam-preview-photo-frame {
+    position: relative;
+    flex-basis: 112px;
+    width: 112px;
+    height: 138px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid #1747c8;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(15, 45, 90, .12);
+}
+
+#examFormPreviewSection .exam-preview-photo-frame img {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+#examFormPreviewSection #previewExamPhotoFallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 12px;
+    text-align: center;
+}
+
+#examFormPreviewSection .exam-preview-photo-caption strong {
+    display: block;
+    color: #123b75;
+    font-size: 14px;
+}
+
+#examFormPreviewSection .exam-preview-photo-caption small {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+#examFormPreviewSection .exam-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 24px 22px;
+    gap: 0;
+    border-top: 1px solid #dbe3ef;
+}
+
+#examFormPreviewSection .exam-preview-item {
+    border: 0;
+    border-bottom: 1px solid #dbe3ef;
+    border-radius: 0;
+    background: rgba(255,255,255,.88);
+    padding: 15px 12px;
+}
+
+#examFormPreviewSection .exam-preview-item:nth-child(odd) {
+    border-right: 1px solid #dbe3ef;
+}
+
+#examFormPreviewSection .exam-preview-label {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .45px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+#examFormPreviewSection .exam-preview-item strong {
+    color: #172b4d;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+#examFormPreviewSection .exam-preview-notice,
+#examFormPreviewSection .exam-form-confirmation,
+#examFormPreviewSection .exam-review-actions {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+#examFormPreviewSection .exam-preview-notice {
+    border-left: 4px solid #d6ad50;
+    background: #fffaf0;
+    color: #59451c;
+    padding: 13px 15px;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+#examFormPreviewSection .exam-form-confirmation {
+    padding: 17px 0;
+}
+
+#examFormPreviewSection .exam-review-actions {
+    padding: 0 0 24px;
+}
+
+/* Mobile preview */
+@media (max-width: 620px) {
+    #examFormPreviewSection .exam-preview-university-band {
+        grid-template-columns: 1fr;
+        padding: 17px 15px;
+    }
+
+    #examFormPreviewSection .exam-preview-logo {
+        width: 66px;
+        height: 58px;
+    }
+
+    #examFormPreviewSection .exam-preview-institute-address {
+        font-size: 10px;
+    }
+
+    #examFormPreviewSection .exam-preview-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+
+    #examFormPreviewSection .exam-preview-document-title span {
+        font-size: 16px;
+    }
+
+    #examFormPreviewSection .exam-preview-header {
+        padding: 17px 15px 8px;
+    }
+
+    #examFormPreviewSection .exam-preview-photo-row {
+        margin: 8px 15px 17px;
+        gap: 13px;
+        padding: 12px;
+    }
+
+    #examFormPreviewSection .exam-preview-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px 17px;
+    }
+
+    #examFormPreviewSection .exam-preview-item:nth-child(odd) {
+        border-right: 0;
+    }
+
+    #examFormPreviewSection .exam-preview-notice,
+    #examFormPreviewSection .exam-form-confirmation,
+    #examFormPreviewSection .exam-review-actions {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+/* =========================================
+   EXISTING PRINT/PDF TEMPLATE — PHOTO + WATERMARK
+   ========================================= */
+
+.exam-form-print {
+    position: relative;
+    isolation: isolate;
+}
+
+.exam-print-watermark {
+    position: absolute;
+    z-index: 0;
+    width: 92mm;
+    height: 92mm;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+    opacity: .075;
+    pointer-events: none;
+}
+
+.exam-form-print > :not(.exam-print-watermark) {
+    position: relative;
+    z-index: 1;
+}
+
+.exam-print-student-photo-wrap {
+    float: right;
+    width: 30mm;
+    min-height: 37mm;
+    margin: 0 0 4mm 6mm;
+    padding: 1mm;
+    border: 1px solid #8da2bd;
+    background: #fff;
+    text-align: center;
+}
+
+.exam-print-student-photo-wrap img {
+    display: block;
+    width: 100%;
+    height: 35mm;
+    object-fit: cover;
+    object-position: center top;
+}
