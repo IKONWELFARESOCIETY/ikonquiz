@@ -22760,6 +22760,8 @@ function showExamFormSubmissionNotice(type, formNo) {
         if (status === "SUCCESS") {
 
             examFormStudentData.selectedPaper = selectedPaper;
+           // Save original submission date returned by Apps Script
+examFormStudentData.submittedOn = data.submissionDate || "";
             examFormStudentData.formNo = data.formNo || "";
             const successFormNumber = document.getElementById("successFormNumber");
 
@@ -22789,6 +22791,8 @@ if (successFormNumber) {
 
             examFormStudentData.selectedPaper = selectedPaper;
             examFormStudentData.formNo = data.formNo || "";
+            // Preserve the original submission date from Form Record
+examFormStudentData.submittedOn = data.submissionDate || "";
 
             // Hide preview and show download buttons
             showDownloadAfterSubmission();
@@ -23006,6 +23010,10 @@ async function downloadExamFormPDF() {
     setPrintValue("printExamCourse", examFormStudentData.course);
     setPrintValue("printExamPaper", selectedPaper);
     setPrintValue("printExamBillDate", examFormStudentData.billDate);
+    setPrintValue(
+    "printExamSubmitDate",
+    examFormStudentData.submittedOn || "—"
+);
     setPrintValue("printExamBillNo", examFormStudentData.billNo);
     setPrintValue("printExamBillAmount", examFormStudentData.billAmount);
 
