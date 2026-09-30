@@ -21414,16 +21414,7 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 }
 /* Only center the Exam Form Preview horizontally */
-@media (min-width: 601px) {
-    #examFormPreviewSection:not(.hidden) .exam-preview-header,
-    #examFormPreviewSection:not(.hidden) .exam-preview-grid,
-    #examFormPreviewSection:not(.hidden) .exam-preview-notice,
-    #examFormPreviewSection:not(.hidden) .exam-form-confirmation,
-    #examFormPreviewSection:not(.hidden) .exam-review-actions {
-        position: relative !important;
-        left: -47px !important;
-    }
-}
+
 /* Professional Exam Form Success Message */
 .exam-form-success-message {
     max-width: 760px;
@@ -22299,5 +22290,72 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     #examFormPreviewSection #examFormSubmitBtn {
         width: 100% !important;
         min-width: 0 !important;
+    }
+}
+/* =========================================
+   FINAL FIX: CENTER ALL EXAM FORM PREVIEW BOXES
+   Header + Candidate Details + Action Buttons
+========================================= */
+
+/* Full-screen preview */
+#examFormPreviewSection:not(.hidden) {
+    display: block !important;
+    width: 100vw !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+/* Center all three main boxes */
+#examFormPreviewSection .exam-preview-university-band,
+#examFormPreviewSection .exam-preview-header,
+#examFormPreviewSection .exam-preview-grid,
+#examFormPreviewSection .exam-form-preview-actions {
+    position: relative !important;
+    left: auto !important;
+    float: none !important;
+
+    width: 100% !important;
+    max-width: 760px !important;
+    min-width: 0 !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Candidate details photo row stays inside the details box */
+#examFormPreviewSection .exam-preview-photo-row {
+    width: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Mobile: equal side spacing */
+@media (max-width: 600px) {
+    #examFormPreviewSection:not(.hidden) {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-university-band,
+    #examFormPreviewSection .exam-preview-header,
+    #examFormPreviewSection .exam-preview-grid,
+    #examFormPreviewSection .exam-form-preview-actions {
+        width: 100% !important;
+        max-width: 760px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    #examFormPreviewSection .exam-preview-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    #examFormPreviewSection .exam-form-preview-actions {
+        padding: 16px !important;
     }
 }
