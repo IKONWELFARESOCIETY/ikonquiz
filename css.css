@@ -21788,7 +21788,8 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     #examFormPreviewSection .exam-preview-grid {
         grid-template-columns: 1fr;
     }
-}/* =========================================
+}
+/* =========================================
    EXAM FORM — PROFESSIONAL PREVIEW DESIGN
    ========================================= */
 
@@ -22099,4 +22100,64 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     height: 35mm;
     object-fit: cover;
     object-position: center top;
+}
+/* =========================================
+   FIX: EXAM FORM PREVIEW HEADER WIDTH
+   + TOP CONTENT CLIPPING
+   ========================================= */
+
+/* Modal ko top se scrollable rakhein */
+#examFormPreviewSection:not(.hidden) {
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 24px 16px 40px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* University header ko full preview width dein */
+#examFormPreviewSection .exam-preview-university-band {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 760px !important;
+    min-width: 0 !important;
+    flex: 0 0 auto !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+}
+
+/* Header content ko container ke andar rakhein */
+#examFormPreviewSection .exam-preview-institution {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+#examFormPreviewSection .exam-preview-document-title {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Preview card sections same width mein align hon */
+#examFormPreviewSection .exam-preview-header,
+#examFormPreviewSection .exam-preview-grid,
+#examFormPreviewSection .exam-preview-notice,
+#examFormPreviewSection .exam-form-confirmation,
+#examFormPreviewSection .exam-review-actions {
+    width: 100% !important;
+    max-width: 760px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Mobile spacing */
+@media (max-width: 620px) {
+    #examFormPreviewSection:not(.hidden) {
+        justify-content: flex-start !important;
+        padding: 12px 10px 30px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-university-band {
+        width: 100% !important;
+    }
 }
