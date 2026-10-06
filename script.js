@@ -224,9 +224,7 @@ function clearResumeState() {
             localStorage.removeItem(
                 key
             );
-
         }
-
     }
     catch(error) {
 
