@@ -4956,33 +4956,125 @@ window.addEventListener(
 // RESULT MODULE
 //====================================================
 
-function openResultVerifyPage(){
+//====================================================
+// OPEN RESULT VERIFY PAGE
+// FINAL ISOLATED FIX
+//====================================================
 
-    // Hide Login Page
-    const loginPage = document.getElementById("loginPage");
+function openResultVerifyPage(event) {
 
-    if(loginPage){
-        loginPage.classList.add("hidden");
-        loginPage.style.setProperty(
+    // Stop button event from affecting other pages
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    console.log("OPENING VIEW RESULT PAGE");
+
+    //================================================
+    // ALL PAGES TO HIDE
+    //================================================
+
+    const pagesToHide = [
+        "loginPage",
+        "examFormPage",
+        "mockTestModal",
+        "mockTestPage",
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalPage",
+        "verificationPage",
+        "practicalVerificationPage",
+        "instructionPage",
+        "waitingPage",
+        "testPage",
+        "successPage",
+        "hallTicketVerifyPage",
+        "hallTicketPage",
+        "studentResultPage"
+    ];
+
+    pagesToHide.forEach(function(id) {
+
+        const page = document.getElementById(id);
+
+        if (!page) {
+            return;
+        }
+
+        page.classList.add("hidden");
+
+        page.style.setProperty(
             "display",
             "none",
             "important"
         );
-    }
 
-    // Show Result Verification Page
-    const resultVerifyPage =
+        page.style.visibility = "hidden";
+        page.style.opacity = "0";
+        page.style.pointerEvents = "none";
+
+    });
+
+
+    //================================================
+    // SHOW RESULT VERIFY PAGE
+    //================================================
+
+    const resultPage =
         document.getElementById("resultVerifyPage");
 
-    if(resultVerifyPage){
-        resultVerifyPage.classList.remove("hidden");
-        resultVerifyPage.style.setProperty(
-            "display",
-            "block",
-            "important"
+    if (!resultPage) {
+
+        console.error(
+            "resultVerifyPage not found"
         );
+
+        return;
     }
 
+
+    resultPage.classList.remove("hidden");
+
+    resultPage.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    resultPage.style.visibility = "visible";
+    resultPage.style.opacity = "1";
+    resultPage.style.pointerEvents = "auto";
+    resultPage.style.position = "relative";
+    resultPage.style.zIndex = "100";
+
+
+    //================================================
+    // CLEAR PREVIOUS VERIFICATION CODE
+    //================================================
+
+    const resultInput =
+        document.getElementById("resultStudentID");
+
+    if (resultInput) {
+        resultInput.value = "";
+    }
+
+
+    //================================================
+    // SCROLL TO TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+
+    console.log(
+        "VIEW RESULT PAGE OPENED"
+    );
 }
 
 
@@ -19693,109 +19785,74 @@ let currentMockSheet = "";
 
 //====================================================
 // OPEN MOCK TEST MODAL
-// FINAL ISOLATED VERSION
+// FINAL ISOLATED FIX
 //====================================================
 
 function openMockTestModal(event) {
 
-    // Stop other events
+    // Stop any other event
     if (event) {
-
         event.preventDefault();
         event.stopPropagation();
-
     }
 
+    console.log("OPENING MOCK TEST");
 
-    console.log(
-        "OPENING MOCK TEST"
-    );
+    //================================================
+    // ALL PAGES TO HIDE
+    //================================================
+
+    const pagesToHide = [
+        "loginPage",
+        "examFormPage",
+        "mockTestPage",
+        "resultVerifyPage",
+        "studentResultPage",
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalPage",
+        "verificationPage",
+        "practicalVerificationPage",
+        "instructionPage",
+        "waitingPage",
+        "testPage",
+        "successPage",
+        "hallTicketVerifyPage",
+        "hallTicketPage"
+    ];
 
 
-    const loginPage =
-        document.getElementById(
-            "loginPage"
+    pagesToHide.forEach(function(id) {
+
+        const page = document.getElementById(id);
+
+        if (!page) {
+            return;
+        }
+
+        page.classList.add("hidden");
+
+        page.style.setProperty(
+            "display",
+            "none",
+            "important"
         );
 
-    const examFormPage =
-        document.getElementById(
-            "examFormPage"
-        );
+        page.style.visibility = "hidden";
+        page.style.opacity = "0";
+        page.style.pointerEvents = "none";
+
+    });
+
+
+    //================================================
+    // GET MOCK MODAL
+    //================================================
 
     const mockModal =
-        document.getElementById(
-            "mockTestModal"
-        );
+        document.getElementById("mockTestModal");
 
-    const mockPage =
-        document.getElementById(
-            "mockTestPage"
-        );
-
-
-    //================================================
-    // HIDE EXAM FORM
-    //================================================
-
-    if (examFormPage) {
-
-        examFormPage.classList.add(
-            "hidden"
-        );
-
-        examFormPage.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        examFormPage.style.visibility =
-            "hidden";
-
-    }
-
-
-    //================================================
-    // HIDE MOCK TEST PAGE
-    //================================================
-
-    if (mockPage) {
-
-        mockPage.classList.add(
-            "hidden"
-        );
-
-        mockPage.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    }
-
-
-    //================================================
-    // HIDE LOGIN
-    //================================================
-
-    if (loginPage) {
-
-        loginPage.classList.add(
-            "hidden"
-        );
-
-        loginPage.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    }
-
-
-    //================================================
-    // SHOW MOCK MODAL
-    //================================================
 
     if (!mockModal) {
 
@@ -19803,14 +19860,19 @@ function openMockTestModal(event) {
             "mockTestModal not found"
         );
 
-        return;
+        alert(
+            "Mock Test page not found."
+        );
 
+        return;
     }
 
 
-    mockModal.classList.remove(
-        "hidden"
-    );
+    //================================================
+    // SHOW MOCK TEST MODAL
+    //================================================
+
+    mockModal.classList.remove("hidden");
 
     mockModal.style.setProperty(
         "display",
@@ -19818,17 +19880,26 @@ function openMockTestModal(event) {
         "important"
     );
 
-    mockModal.style.visibility =
-        "visible";
+    mockModal.style.visibility = "visible";
+    mockModal.style.opacity = "1";
+    mockModal.style.pointerEvents = "auto";
+    mockModal.style.position = "fixed";
+    mockModal.style.zIndex = "999999";
 
-    mockModal.style.opacity =
-        "1";
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
 
 
     console.log(
         "MOCK TEST MODAL OPENED"
     );
-
 }
 
 //====================================================
