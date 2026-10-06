@@ -22612,102 +22612,122 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     font-weight: 800 !important;
 }
 
-
 /* =====================================================
-   PDF — EXTRA LARGE
-===================================================== */
+   EXAM FORM PDF - LARGE TEXT
+   A4 SIZE MUST REMAIN SAME
+   ===================================================== */
 
-.exam-form-print {
-    font-size: 16px !important;
+#examFormPrintArea.exam-form-print{
+    width:734px !important;
+    max-width:734px !important;
+    box-sizing:border-box !important;
+    padding:18px !important;
+    margin:0 !important;
+    font-family:Arial,Helvetica,sans-serif !important;
 }
 
-.exam-print-header h1 {
-    font-size: 34px !important;
-    font-weight: 900 !important;
+/* Form No */
+#examFormPrintArea .exam-print-form-no{
+    font-size:14px !important;
+    margin-bottom:6px !important;
 }
 
-.exam-print-tagline {
-    font-size: 16px !important;
+/* Institute Name */
+#examFormPrintArea .exam-print-header h1{
+    font-size:29px !important;
+    line-height:1.15 !important;
+    margin:0 !important;
 }
 
-.exam-print-header h2 {
-    font-size: 26px !important;
-    font-weight: 800 !important;
+/* Logo */
+#examFormPrintArea .exam-print-logo{
+    width:75px !important;
+    height:75px !important;
+    margin:5px auto !important;
 }
 
-.exam-print-section h3 {
-    font-size: 20px !important;
-    font-weight: 800 !important;
+/* Tagline */
+#examFormPrintArea .exam-print-tagline{
+    font-size:13px !important;
+    margin:3px 0 7px !important;
 }
 
-.exam-print-table {
-    font-size: 18px !important;
+/* Blue line */
+#examFormPrintArea .exam-print-line{
+    margin:7px 0 !important;
 }
 
-.exam-print-table th,
-.exam-print-table td {
-    font-size: 18px !important;
-    padding: 13px 14px !important;
-    line-height: 1.5 !important;
+/* EXAMINATION FORM */
+#examFormPrintArea .exam-print-header h2{
+    font-size:21px !important;
+    margin:7px 0 0 !important;
 }
 
-.exam-print-table th {
-    font-weight: 800 !important;
+/* Section headings */
+#examFormPrintArea .exam-print-section{
+    margin-top:12px !important;
 }
 
-.exam-guidelines ol {
-    font-size: 17px !important;
-    line-height: 1.8 !important;
+#examFormPrintArea .exam-print-section h3{
+    font-size:16px !important;
+    padding:7px 10px !important;
+    margin-bottom:6px !important;
 }
 
-.exam-guidelines li {
-    margin-bottom: 7px !important;
+/* Main student table */
+#examFormPrintArea .exam-print-table{
+    font-size:15px !important;
+    line-height:1.25 !important;
 }
 
-.exam-sign-box {
-    font-size: 16px !important;
+#examFormPrintArea .exam-print-table th,
+#examFormPrintArea .exam-print-table td{
+    font-size:15px !important;
+    padding:7px 9px !important;
+    line-height:1.25 !important;
 }
 
+#examFormPrintArea .exam-print-table th{
+    font-weight:800 !important;
+}
 
-/* ================= MOBILE ================= */
+/* Guidelines */
+#examFormPrintArea .exam-guidelines ol{
+    margin:6px 0 !important;
+    padding-left:20px !important;
+}
 
-@media (max-width: 600px) {
+#examFormPrintArea .exam-guidelines li{
+    font-size:14px !important;
+    line-height:1.35 !important;
+    margin-bottom:4px !important;
+}
 
-    #examFormPreviewSection .exam-preview-institute-name {
-        font-size: 24px !important;
-    }
+/* Fee criteria */
+#examFormPrintArea .exam-fee-criteria{
+    margin:10px 0 !important;
+    padding:10px 12px !important;
+}
 
-    #examFormPreviewSection .exam-preview-institute-address {
-        font-size: 14px !important;
-    }
+#examFormPrintArea .exam-fee-criteria h3{
+    font-size:16px !important;
+    margin-bottom:7px !important;
+    padding-bottom:6px !important;
+}
 
-    #examFormPreviewSection .exam-preview-document-title span {
-        font-size: 23px !important;
-    }
+#examFormPrintArea .exam-fee-criteria,
+#examFormPrintArea .exam-fee-criteria *{
+    line-height:1.3 !important;
+}
 
-    #examFormPreviewSection .exam-preview-header h3 {
-        font-size: 21px !important;
-    }
+/* Footer */
+#examFormPrintArea .exam-print-footer{
+    margin-top:12px !important;
+    padding-top:6px !important;
+    font-size:10px !important;
+}
 
-    #examFormPreviewSection .exam-preview-header p {
-        font-size: 15px !important;
-    }
-
-    #examFormPreviewSection .exam-preview-label {
-        font-size: 15px !important;
-    }
-
-    #examFormPreviewSection .exam-preview-item strong {
-        font-size: 20px !important;
-    }
-
-    #examFormPreviewSection label[for="examFormConfirmCheckbox"] {
-        font-size: 16px !important;
-    }
-
-    .exam-print-table,
-    .exam-print-table th,
-    .exam-print-table td {
-        font-size: 17px !important;
-    }
+/* Signature area */
+#examFormPrintArea .exam-print-signatures{
+    margin-top:12px !important;
 }
