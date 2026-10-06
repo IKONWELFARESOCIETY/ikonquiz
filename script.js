@@ -169,7 +169,6 @@ function getResumeState() {
         if (!key) {
             return null;
         }
-
         const saved =
             localStorage.getItem(key);
 
@@ -198,7 +197,6 @@ function getResumeState() {
         }
 
         return data;
-
     }
     catch(error) {
 
@@ -210,7 +208,6 @@ function getResumeState() {
         return null;
 
     }
-
 }
 //====================================================
 // CLEAR RESUME DATA
