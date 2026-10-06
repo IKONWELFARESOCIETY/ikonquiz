@@ -19743,10 +19743,12 @@ function closeMockTestModal() {
 
 
 //====================================================
-// START MOCK TEST
+// START MOCK TEST - FIXED VERSION
 //====================================================
 
 function startMockTest(sheetName) {
+
+    console.log("Starting Mock Test:", sheetName);
 
     const modal =
         document.getElementById("mockTestModal");
@@ -19757,6 +19759,65 @@ function startMockTest(sheetName) {
     const loginPage =
         document.getElementById("loginPage");
 
+    const questionArea =
+        document.getElementById("mockQuestionArea");
+
+    const title =
+        document.getElementById("mockTestTitle");
+
+
+    //================================================
+    // CHECK MOCK PAGE
+    //================================================
+
+    if (!mockPage) {
+
+        console.error(
+            "mockTestPage element not found."
+        );
+
+        alert(
+            "Mock Test page load nahi ho pa raha."
+        );
+
+        return;
+    }
+
+
+    //================================================
+    // SAVE CURRENT MOCK PAPER
+    //================================================
+
+    currentMockSheet = sheetName;
+
+
+    //================================================
+    // STOP OLD TIMER
+    //================================================
+
+    if (mockTimerInterval) {
+
+        clearInterval(
+            mockTimerInterval
+        );
+
+        mockTimerInterval = null;
+
+    }
+
+
+    //================================================
+    // RESET MOCK TEST
+    //================================================
+
+    mockQuestions = [];
+
+    currentMockIdx = 0;
+
+    mockAnswerState = {};
+
+    mockTimeLeft = 45 * 60;
+
 
     //================================================
     // HIDE LOGIN
@@ -19764,7 +19825,9 @@ function startMockTest(sheetName) {
 
     if (loginPage) {
 
-        loginPage.classList.add("hidden");
+        loginPage.classList.add(
+            "hidden"
+        );
 
         loginPage.style.setProperty(
             "display",
@@ -19776,12 +19839,14 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // HIDE MOCK TEST SELECTION
+    // HIDE MODAL
     //================================================
 
     if (modal) {
 
-        modal.classList.add("hidden");
+        modal.classList.add(
+            "hidden"
+        );
 
         modal.style.setProperty(
             "display",
@@ -19793,71 +19858,145 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // SHOW MOCK TEST PAGE
+    // SHOW MOCK PAGE
     //================================================
 
-    if (mockPage) {
+    mockPage.classList.remove(
+        "hidden"
+    );
 
-        mockPage.classList.remove("hidden");
+    mockPage.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
 
-        mockPage.style.setProperty(
-            "display",
-            "block",
-            "important"
-        );
+    mockPage.style.visibility =
+        "visible";
 
-        mockPage.style.visibility = "visible";
-
-        mockPage.style.opacity = "1";
-
-    }
+    mockPage.style.opacity =
+        "1";
 
 
     //================================================
     // SET TITLE
     //================================================
 
-    const title =
-        document.getElementById("mockTestTitle");
-
     if (title) {
 
         title.innerText =
-            sheetName.toUpperCase();
+            String(sheetName)
+            .toUpperCase();
 
     }
 
 
     //================================================
-    // RESET MOCK TEST
+    // SHOW LOADING MESSAGE
     //================================================
 
-    currentMockIdx = 0;
+    if (questionArea) {
 
-    mockTimeLeft = 45 * 60;
+        questionArea.innerHTML = `
 
+            <div style="
+                width:100%;
+                box-sizing:border-box;
+                padding:50px 25px;
+                text-align:center;
+                background:#ffffff;
+                border-radius:14px;
+                border:1px solid #e2e8f0;
+                box-shadow:0 8px 25px rgba(15,23,42,.08);
+            ">
 
-    if (typeof mockAnswerState !== "undefined") {
+                <div style="
+                    font-size:42px;
+                    margin-bottom:15px;
+                ">
+                    ⏳
+                </div>
 
-        mockAnswerState = {};
+                <h3 style="
+                    margin:0 0 10px;
+                    color:#1e293b;
+                    font-size:22px;
+                ">
+                    Loading Mock Test...
+                </h3>
+
+                <p style="
+                    margin:0;
+                    color:#64748b;
+                    font-size:15px;
+                ">
+                    Please wait while questions are loading.
+                </p>
+
+                <p style="
+                    margin:12px 0 0;
+                    color:#2563eb;
+                    font-weight:700;
+                ">
+                    ${escapeMockHTML(sheetName)}
+                </p>
+
+            </div>
+
+        `;
 
     }
 
 
-    mockQuestions = [];
+    //================================================
+    // RESET TIMER DISPLAY
+    //================================================
+
+    updateMockTimerDisplay();
+
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+
+    //================================================
+    // BUILD API URL
+    //================================================
+
+    const apiURL =
+        SCRIPT_URL +
+        "?action=getMockQuestions" +
+        "&sheetName=" +
+        encodeURIComponent(
+            sheetName
+        );
+
+
+    console.log(
+        "Mock Test API:",
+        apiURL
+    );
 
 
     //================================================
     // LOAD QUESTIONS
     //================================================
 
-    fetch(
-        SCRIPT_URL +
-        "?action=getMockQuestions&sheetName=" +
-        encodeURIComponent(sheetName)
-    )
+    fetch(apiURL)
 
     .then(function(response) {
+
+        console.log(
+            "Mock API HTTP Status:",
+            response.status
+        );
+
 
         if (!response.ok) {
 
@@ -19868,11 +20007,48 @@ function startMockTest(sheetName) {
 
         }
 
-        return response.json();
+
+        return response.text();
 
     })
 
-    .then(function(data) {
+
+    .then(function(responseText) {
+
+        console.log(
+            "Mock API Raw Response:",
+            responseText
+        );
+
+
+        //================================================
+        // PARSE JSON
+        //================================================
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(
+                    responseText
+                );
+
+        }
+
+        catch(error) {
+
+            console.error(
+                "Mock JSON Parse Error:",
+                error
+            );
+
+            throw new Error(
+                "Server ne valid JSON response nahi diya."
+            );
+
+        }
+
 
         console.log(
             "MOCK TEST RESPONSE:",
@@ -19880,80 +20056,188 @@ function startMockTest(sheetName) {
         );
 
 
+        //================================================
+        // CHECK SUCCESS
+        //================================================
+
         if (
-            data &&
-            data.status === "SUCCESS"
+            !data ||
+            data.status !== "SUCCESS"
         ) {
 
-            mockQuestions =
-                data.questions || [];
+            const message =
+                data &&
+                data.message
+                    ? data.message
+                    : "Mock Test questions load nahi ho paaye.";
 
-
-            if (
-                mockQuestions.length === 0
-            ) {
-
-                alert(
-                    "Is Mock Test me koi question nahi mila."
-                );
-
-                exitMockTest();
-
-                return;
-
-            }
-
-
-            // Build palette if available
-            if (
-                typeof buildMockPalette ===
-                "function"
-            ) {
-
-                buildMockPalette();
-
-            }
-
-
-            // Show first question
-            renderMockQuestion();
-
-
-            // Start timer
-            startMockTimer();
+            throw new Error(
+                message
+            );
 
         }
 
-        else {
 
-            console.error(
-                "Mock Test Load Error:",
-                data
+        //================================================
+        // GET QUESTIONS
+        //================================================
+
+        mockQuestions =
+            Array.isArray(
+                data.questions
+            )
+            ? data.questions
+            : [];
+
+
+        //================================================
+        // NO QUESTIONS
+        //================================================
+
+        if (
+            mockQuestions.length === 0
+        ) {
+
+            throw new Error(
+                "Is Mock Test ke liye koi question nahi mila."
             );
-
-            alert(
-                data?.message ||
-                "Questions load nahi ho paaye."
-            );
-
-            exitMockTest();
 
         }
+
+
+        //================================================
+        // RESET INDEX
+        //================================================
+
+        currentMockIdx = 0;
+
+
+        //================================================
+        // BUILD QUESTION PALETTE
+        //================================================
+
+        if (
+            typeof buildMockPalette ===
+            "function"
+        ) {
+
+            buildMockPalette();
+
+        }
+
+
+        //================================================
+        // RENDER FIRST QUESTION
+        //================================================
+
+        renderMockQuestion();
+
+
+        //================================================
+        // START TIMER
+        //================================================
+
+        startMockTimer();
+
+
+        console.log(
+            "Mock Test Started Successfully."
+        );
 
     })
+
+
+    //================================================
+    // ERROR HANDLING
+    //================================================
 
     .catch(function(error) {
 
         console.error(
-            "Mock Test Error:",
+            "Mock Test Load Error:",
             error
         );
 
-        alert(
-            "Mock Test questions load nahi ho paaye."
+
+        clearInterval(
+            mockTimerInterval
         );
 
-        exitMockTest();
+        mockTimerInterval =
+            null;
+
+
+        //================================================
+        // SHOW ERROR IN PAGE
+        //================================================
+
+        if (questionArea) {
+
+            questionArea.innerHTML = `
+
+                <div style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:45px 25px;
+                    text-align:center;
+                    background:#ffffff;
+                    border-radius:14px;
+                    border:1px solid #fecaca;
+                    box-shadow:0 8px 25px rgba(15,23,42,.08);
+                ">
+
+                    <div style="
+                        font-size:45px;
+                        margin-bottom:15px;
+                    ">
+                        ⚠️
+                    </div>
+
+                    <h3 style="
+                        margin:0 0 12px;
+                        color:#b91c1c;
+                        font-size:22px;
+                    ">
+                        Unable to Load Mock Test
+                    </h3>
+
+                    <p style="
+                        margin:0 auto 10px;
+                        max-width:650px;
+                        color:#475569;
+                        line-height:1.6;
+                    ">
+                        ${escapeMockHTML(
+                            error.message ||
+                            "Questions load nahi ho paaye."
+                        )}
+                    </p>
+
+                    <p style="
+                        margin:12px 0 22px;
+                        color:#64748b;
+                        font-size:13px;
+                    ">
+                        Please try again or go back to Login.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="secondary"
+                        onclick="exitMockTest()"
+                        style="
+                            max-width:220px;
+                            margin:auto;
+                        "
+                    >
+                        ← Back to Login
+                    </button>
+
+                </div>
+
+            `;
+
+        }
 
     });
 
@@ -20029,11 +20313,21 @@ function updateMockTimerDisplay() {
 //====================================================
 
 function renderMockQuestion() {
-    mockAnswerState[currentMockIdx] =
-    mockAnswerState[currentMockIdx] || null;
+   function renderMockQuestion() {
 
-buildMockPalette();
+    if (!mockQuestions || mockQuestions.length === 0) {
+        return;
+    }
 
+    if (!mockAnswerState[currentMockIdx]) {
+        mockAnswerState[currentMockIdx] = null;
+    }
+
+    if (typeof buildMockPalette === "function") {
+        buildMockPalette();
+    }
+
+    // baaki aapka existing renderMockQuestion code
     if (!mockQuestions || mockQuestions.length === 0) {
         return;
     }
