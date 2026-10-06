@@ -4950,127 +4950,57 @@ window.addEventListener(
 // RESULT MODULE
 //====================================================
 
-//====================================================
-// OPEN RESULT VERIFY PAGE
-// FINAL ISOLATED FIX
-//====================================================
-
 function openResultVerifyPage(event) {
 
-    // Stop button event from affecting other pages
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    console.log("OPENING VIEW RESULT PAGE");
-
-    //================================================
-    // ALL PAGES TO HIDE
-    //================================================
-
-    const pagesToHide = [
+    const pages = [
         "loginPage",
+        "examTypePage",
+        "theoryPage",
+        "practicalPage",
         "examFormPage",
         "mockTestModal",
         "mockTestPage",
-        "examTypePage",
-        "theoryPaperPage",
-        "practicalPaperPage",
-        "practicalPage",
-        "verificationPage",
-        "practicalVerificationPage",
-        "instructionPage",
-        "waitingPage",
-        "testPage",
-        "successPage",
-        "hallTicketVerifyPage",
-        "hallTicketPage",
-        "studentResultPage"
+        "hallTicketVerifyPage"
     ];
 
-    pagesToHide.forEach(function(id) {
+    pages.forEach(function(id) {
+        const el = document.getElementById(id);
 
-        const page = document.getElementById(id);
-
-        if (!page) {
-            return;
+        if (el) {
+            el.classList.add("hidden");
+            el.style.setProperty("display", "none", "important");
+            el.style.visibility = "hidden";
+            el.style.opacity = "0";
+            el.style.pointerEvents = "none";
         }
-
-        page.classList.add("hidden");
-
-        page.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        page.style.visibility = "hidden";
-        page.style.opacity = "0";
-        page.style.pointerEvents = "none";
-
     });
 
-
-    //================================================
-    // SHOW RESULT VERIFY PAGE
-    //================================================
-
-    const resultPage =
-        document.getElementById("resultVerifyPage");
+    const resultPage = document.getElementById("resultVerifyPage");
 
     if (!resultPage) {
-
-        console.error(
-            "resultVerifyPage not found"
-        );
-
+        console.error("resultVerifyPage not found");
         return;
     }
 
-
     resultPage.classList.remove("hidden");
 
-    resultPage.style.setProperty(
-        "display",
-        "block",
-        "important"
-    );
-
+    resultPage.style.setProperty("display", "block", "important");
     resultPage.style.visibility = "visible";
     resultPage.style.opacity = "1";
     resultPage.style.pointerEvents = "auto";
     resultPage.style.position = "relative";
-    resultPage.style.zIndex = "100";
-
-
-    //================================================
-    // CLEAR PREVIOUS VERIFICATION CODE
-    //================================================
-
-    const resultInput =
-        document.getElementById("resultStudentID");
-
-    if (resultInput) {
-        resultInput.value = "";
-    }
-
-
-    //================================================
-    // SCROLL TO TOP
-    //================================================
+    resultPage.style.zIndex = "99999";
 
     window.scrollTo({
         top: 0,
         behavior: "instant"
     });
-
-
-    console.log(
-        "VIEW RESULT PAGE OPENED"
-    );
 }
-
 
 console.log(
     "Security System Loaded Successfully"
@@ -19784,116 +19714,55 @@ let currentMockSheet = "";
 
 function openMockTestModal(event) {
 
-    // Stop any other event
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    console.log("OPENING MOCK TEST");
-
-    //================================================
-    // ALL PAGES TO HIDE
-    //================================================
-
-    const pagesToHide = [
+    const pages = [
         "loginPage",
-        "examFormPage",
-        "mockTestPage",
-        "resultVerifyPage",
-        "studentResultPage",
         "examTypePage",
-        "theoryPaperPage",
-        "practicalPaperPage",
+        "theoryPage",
         "practicalPage",
-        "verificationPage",
-        "practicalVerificationPage",
-        "instructionPage",
-        "waitingPage",
-        "testPage",
-        "successPage",
+        "examFormPage",
+        "resultVerifyPage",
         "hallTicketVerifyPage",
-        "hallTicketPage"
+        "mockTestPage"
     ];
 
+    pages.forEach(function(id) {
+        const el = document.getElementById(id);
 
-    pagesToHide.forEach(function(id) {
-
-        const page = document.getElementById(id);
-
-        if (!page) {
-            return;
+        if (el) {
+            el.classList.add("hidden");
+            el.style.setProperty("display", "none", "important");
+            el.style.visibility = "hidden";
+            el.style.opacity = "0";
+            el.style.pointerEvents = "none";
         }
-
-        page.classList.add("hidden");
-
-        page.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        page.style.visibility = "hidden";
-        page.style.opacity = "0";
-        page.style.pointerEvents = "none";
-
     });
 
+    const modal = document.getElementById("mockTestModal");
 
-    //================================================
-    // GET MOCK MODAL
-    //================================================
-
-    const mockModal =
-        document.getElementById("mockTestModal");
-
-
-    if (!mockModal) {
-
-        console.error(
-            "mockTestModal not found"
-        );
-
-        alert(
-            "Mock Test page not found."
-        );
-
+    if (!modal) {
+        console.error("mockTestModal not found");
         return;
     }
 
+    modal.classList.remove("hidden");
 
-    //================================================
-    // SHOW MOCK TEST MODAL
-    //================================================
-
-    mockModal.classList.remove("hidden");
-
-    mockModal.style.setProperty(
-        "display",
-        "flex",
-        "important"
-    );
-
-    mockModal.style.visibility = "visible";
-    mockModal.style.opacity = "1";
-    mockModal.style.pointerEvents = "auto";
-    mockModal.style.position = "fixed";
-    mockModal.style.zIndex = "999999";
-
-
-    //================================================
-    // SCROLL TOP
-    //================================================
+    modal.style.setProperty("display", "flex", "important");
+    modal.style.visibility = "visible";
+    modal.style.opacity = "1";
+    modal.style.pointerEvents = "auto";
+    modal.style.position = "fixed";
+    modal.style.inset = "0";
+    modal.style.zIndex = "999999";
 
     window.scrollTo({
         top: 0,
         behavior: "instant"
     });
-
-
-    console.log(
-        "MOCK TEST MODAL OPENED"
-    );
 }
 
 //====================================================
