@@ -26187,11 +26187,27 @@ if (entrySection) {
 
     }
 
+if (
+    document.readyState ===
+    "loading"
+) {
 
-  function installNavigation()
+    document.addEventListener(
+        "DOMContentLoaded",
+        installNavigation
+    );
 
-    }
+} else {
 
+    installNavigation();
+
+}
+
+console.log(
+    "FINAL NAVIGATION CONTROLLER LOADED"
+);
+
+})();
 
     /* =====================================================
        RUN AFTER HTML IS READY
