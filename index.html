@@ -4611,25 +4611,32 @@ After successfully submitting one paper, please refresh the website (F5) before 
     <!-- STUDENT DETAILS -->
     <section class="exam-print-section">
         <h3>Student Details</h3>
- <div class="exam-print-student-photo-wrap">
+<div class="exam-print-student-photo-wrap"
+     style="position:relative;">
 
-<div class="exam-print-exam-session"
-     style="
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        width:100%;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:flex-start;
-        text-align:center;
-        margin:0;
-        padding:0;
-        line-height:1.15;
-        z-index:2;
-     ">
+    <!-- CENTER EXAMINATION TITLE -->
+    <div class="exam-print-exam-session"
+         style="
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            width:100%;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            margin:0;
+            padding:0;
+            line-height:1.15;
+            z-index:2;
+         ">
+        <span>EXAMINATION</span>
+        <strong>OCTOBER 2026</strong>
+    </div>
+
+    <!-- STUDENT PHOTO -->
     <img
         id="printExamStudentPhoto"
         class="exam-print-student-photo"
