@@ -26209,24 +26209,3 @@ console.log(
 
 })();
 
-  if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        installNavigation
-    );
-
-} else {
-
-    installNavigation();
-
-}
-
-console.log(
-    "FINAL NAVIGATION CONTROLLER LOADED"
-);
-
-})();
