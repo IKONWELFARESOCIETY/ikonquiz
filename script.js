@@ -25010,14 +25010,6 @@ async function downloadExamFormPDF() {
     }
 }
 
-//----------------------------------------------------
-// EXAM FORM PREVIEW + CONFIRMATION
-//----------------------------------------------------
-
-function updateExamFormPreview() {
-//----------------------------------------------------
-// EXAM FORM PREVIEW + CONFIRMATION
-//----------------------------------------------------
 
 function updateExamFormPreview() {
     const previewSection = document.getElementById("examFormPreviewSection");
