@@ -25134,14 +25134,24 @@ if (entrySection) {
 
 })();
 /* =========================================================
-   FINAL FIX - VIEW RESULT + MOCK TEST
+   FINAL NAVIGATION CONTROLLER
+   VIEW RESULT / MOCK TEST / LOGIN
    ========================================================= */
 
 (function () {
 
-    function hideElement(id) {
+    function get(id) {
+        return document.getElementById(id);
+    }
 
-        const el = document.getElementById(id);
+
+    /* =====================================================
+       HIDE PAGE
+       ===================================================== */
+
+    function hide(id) {
+
+        const el = get(id);
 
         if (!el) return;
 
@@ -25153,33 +25163,113 @@ if (entrySection) {
             "important"
         );
 
-        el.style.visibility = "hidden";
-        el.style.opacity = "0";
-        el.style.pointerEvents = "none";
-    }
-
-
-    function showElement(id, displayType) {
-
-        const el = document.getElementById(id);
-
-        if (!el) return;
-
-        el.classList.remove("hidden");
-
-        el.style.removeProperty("visibility");
-        el.style.removeProperty("opacity");
-        el.style.removeProperty("pointer-events");
-
         el.style.setProperty(
-            "display",
-            displayType,
+            "visibility",
+            "hidden",
             "important"
         );
 
-        el.style.visibility = "visible";
-        el.style.opacity = "1";
-        el.style.pointerEvents = "auto";
+        el.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
+
+        el.style.setProperty(
+            "pointer-events",
+            "none",
+            "important"
+        );
+    }
+
+
+    /* =====================================================
+       SHOW PAGE
+       ===================================================== */
+
+    function show(id, displayType) {
+
+        const el = get(id);
+
+        if (!el) return null;
+
+        el.classList.remove("hidden");
+
+        el.style.setProperty(
+            "display",
+            displayType || "block",
+            "important"
+        );
+
+        el.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        el.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+
+        el.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+
+        return el;
+    }
+
+
+    /* =====================================================
+       HIDE ALL MAIN PAGES
+       ===================================================== */
+
+    function hideAllPages() {
+
+        const ids = [
+
+            "loginPage",
+
+            "examFormPage",
+
+            "resultVerifyPage",
+            "studentResultPage",
+            "marksheetPage",
+
+            "mockTestModal",
+            "mockTestPage",
+
+            "examTypePage",
+            "theoryPaperPage",
+            "practicalPaperPage",
+            "practicalPage",
+
+            "verificationPage",
+            "practicalVerificationPage",
+
+            "instructionPage",
+            "waitingPage",
+            "testPage",
+            "successPage",
+
+            "hallTicketVerifyPage",
+            "hallTicketPage",
+
+            "leaderboardPage",
+
+            "adminVerifyPage",
+            "adminDevicePage"
+
+        ];
+
+        ids.forEach(function (id) {
+
+            hide(id);
+
+        });
     }
 
 
@@ -25187,134 +25277,142 @@ if (entrySection) {
        VIEW RESULT
        ===================================================== */
 
-    window.openResultVerifyPage = function (event) {
+    function openResultPage(event) {
 
         if (event) {
+
             event.preventDefault();
             event.stopPropagation();
+            event.stopImmediatePropagation();
+
         }
+
 
         console.log(
-            "FINAL VIEW RESULT CLICK"
-        );
-
-        /* Hide only navigation pages */
-
-        [
-            "loginPage",
-            "examFormPage",
-            "mockTestModal",
-            "mockTestPage",
-            "examTypePage",
-            "theoryPaperPage",
-            "practicalPaperPage",
-            "practicalPage",
-            "verificationPage",
-            "practicalVerificationPage",
-            "instructionPage",
-            "waitingPage",
-            "testPage",
-            "successPage",
-            "hallTicketVerifyPage",
-            "hallTicketPage",
-            "studentResultPage",
-            "marksheetPage",
-            "leaderboardPage",
-            "adminVerifyPage",
-            "adminDevicePage"
-        ].forEach(function (id) {
-
-            hideElement(id);
-
-        });
-
-
-        /* Show result verification */
-
-        showElement(
-            "resultVerifyPage",
-            "block"
+            "NAVIGATION: VIEW RESULT"
         );
 
 
-        /* Clear old code */
+        /* Hide everything */
 
-        const input =
-            document.getElementById(
-                "resultStudentID"
+        hideAllPages();
+
+
+        /* Open result verification page */
+
+        const page =
+            show(
+                "resultVerifyPage",
+                "block"
             );
 
-        if (input) {
-            input.value = "";
-            input.focus();
+
+        if (!page) {
+
+            console.error(
+                "ERROR: resultVerifyPage not found"
+            );
+
+            return;
+
         }
 
 
-        window.scrollTo(
-            0,
-            0
-        );
+        /* Reset verification input */
 
-    };
+        const input =
+            get("resultStudentID");
+
+        if (input) {
+
+            input.value = "";
+
+        }
+
+
+        /* Make result box visible */
+
+        const box =
+            page.querySelector(
+                ".result-box"
+            );
+
+        if (box) {
+
+            box.style.setProperty(
+                "display",
+                "block",
+                "important"
+            );
+
+            box.style.setProperty(
+                "visibility",
+                "visible",
+                "important"
+            );
+
+            box.style.setProperty(
+                "opacity",
+                "1",
+                "important"
+            );
+
+            box.style.setProperty(
+                "pointer-events",
+                "auto",
+                "important"
+            );
+
+        }
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+    }
 
 
     /* =====================================================
-       MOCK TEST MODAL
+       MOCK TEST SELECTION
        ===================================================== */
 
-    window.openMockTestModal = function (event) {
+    function openMockPage(event) {
 
         if (event) {
+
             event.preventDefault();
             event.stopPropagation();
+            event.stopImmediatePropagation();
+
         }
 
+
         console.log(
-            "FINAL MOCK TEST CLICK"
+            "NAVIGATION: MOCK TEST"
         );
 
 
-        /* Hide other pages */
+        /* Hide every other page */
 
-        [
-            "loginPage",
-            "examFormPage",
-            "resultVerifyPage",
-            "studentResultPage",
-            "mockTestPage",
-            "examTypePage",
-            "theoryPaperPage",
-            "practicalPaperPage",
-            "practicalPage",
-            "verificationPage",
-            "practicalVerificationPage",
-            "instructionPage",
-            "waitingPage",
-            "testPage",
-            "successPage",
-            "hallTicketVerifyPage",
-            "hallTicketPage"
-        ].forEach(function (id) {
-
-            hideElement(id);
-
-        });
+        hideAllPages();
 
 
-        /* Show mock selection */
+        /* Open mock selection modal */
 
         const modal =
-            document.getElementById(
-                "mockTestModal"
-            );
+            get("mockTestModal");
+
 
         if (!modal) {
 
             console.error(
-                "mockTestModal NOT FOUND"
+                "ERROR: mockTestModal not found"
             );
 
             return;
+
         }
 
 
@@ -25322,37 +25420,180 @@ if (entrySection) {
             "hidden"
         );
 
+
         modal.style.setProperty(
             "display",
             "flex",
             "important"
         );
 
-        modal.style.visibility =
-            "visible";
-
-        modal.style.opacity =
-            "1";
-
-        modal.style.pointerEvents =
-            "auto";
-
-        modal.style.position =
-            "fixed";
-
-        modal.style.inset =
-            "0";
-
-        modal.style.zIndex =
-            "999999";
-
-
-        window.scrollTo(
-            0,
-            0
+        modal.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
         );
 
-    };
+        modal.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
 
+        modal.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+
+        modal.style.setProperty(
+            "position",
+            "fixed",
+            "important"
+        );
+
+        modal.style.setProperty(
+            "inset",
+            "0",
+            "important"
+        );
+
+        modal.style.setProperty(
+            "z-index",
+            "999999",
+            "important"
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+    }
+
+
+    /* =====================================================
+       LOGIN PAGE
+       ===================================================== */
+
+    function openLoginPage(event) {
+
+        if (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+        }
+
+
+        console.log(
+            "NAVIGATION: LOGIN"
+        );
+
+
+        hideAllPages();
+
+
+        const login =
+            show(
+                "loginPage",
+                "block"
+            );
+
+
+        if (!login) {
+
+            console.error(
+                "ERROR: loginPage not found"
+            );
+
+            return;
+
+        }
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+    }
+
+
+    /* =====================================================
+       DIRECT BUTTON CONTROL
+       ===================================================== */
+
+    function installNavigation() {
+
+        const resultBtn =
+            get("resultBtn");
+
+        const mockBtn =
+            get("mockTestBtn");
+
+
+        /* -----------------------------------------------
+           VIEW RESULT
+        ------------------------------------------------ */
+
+        if (resultBtn) {
+
+            resultBtn.onclick =
+                openResultPage;
+
+        }
+
+
+        /* -----------------------------------------------
+           MOCK TEST
+        ------------------------------------------------ */
+
+        if (mockBtn) {
+
+            mockBtn.onclick =
+                openMockPage;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RUN AFTER HTML IS READY
+       ===================================================== */
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            installNavigation
+        );
+
+    } else {
+
+        installNavigation();
+
+    }
+
+
+    /* =====================================================
+       ALSO EXPOSE FUNCTIONS
+       ===================================================== */
+
+    window.openResultVerifyPage =
+        openResultPage;
+
+    window.openMockTestModal =
+        openMockPage;
+
+
+    console.log(
+        "FINAL NAVIGATION CONTROLLER LOADED"
+    );
 
 })();
