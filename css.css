@@ -22517,3 +22517,173 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 #mockTestBtn::before {
     pointer-events: none !important;
 }
+/* =====================================================
+   FINAL FIX: EXAM FORM TEXT SIZE INCREASE
+   PREVIEW + PDF
+===================================================== */
+
+/* ---------- PREVIEW ---------- */
+
+#examFormPreviewSection .exam-preview-institute-name {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+}
+
+#examFormPreviewSection .exam-preview-institute-address {
+    font-size: 14px !important;
+}
+
+#examFormPreviewSection .exam-preview-motto {
+    font-size: 13px !important;
+}
+
+#examFormPreviewSection .exam-preview-document-title span {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+}
+
+#examFormPreviewSection .exam-preview-document-title small {
+    font-size: 14px !important;
+}
+
+#examFormPreviewSection .exam-preview-header h3 {
+    font-size: 21px !important;
+}
+
+#examFormPreviewSection .exam-preview-header p {
+    font-size: 15px !important;
+}
+
+#examFormPreviewSection .exam-preview-label {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+#examFormPreviewSection .exam-preview-item strong {
+    font-size: 19px !important;
+    font-weight: 800 !important;
+}
+
+#examFormPreviewSection .exam-preview-photo-caption strong {
+    font-size: 17px !important;
+}
+
+#examFormPreviewSection .exam-preview-photo-caption small {
+    font-size: 14px !important;
+}
+
+#examFormPreviewSection .exam-preview-badge {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+}
+
+/* ---------- CONFIRMATION AREA ---------- */
+
+#examFormPreviewSection .exam-form-preview-actions {
+    font-size: 16px !important;
+}
+
+#examFormPreviewSection .exam-form-preview-actions > div:first-child {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+}
+
+#examFormPreviewSection .exam-form-preview-actions > div:first-child strong {
+    font-size: 17px !important;
+}
+
+#examFormPreviewSection #examFormConfirmCheckbox {
+    width: 21px !important;
+    height: 21px !important;
+}
+
+#examFormPreviewSection label[for="examFormConfirmCheckbox"] {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+}
+
+#examFormPreviewSection .exam-form-preview-actions button {
+    font-size: 16px !important;
+}
+
+
+/* =====================================================
+   PDF TEXT SIZE
+===================================================== */
+
+.exam-form-print {
+    font-size: 14px !important;
+}
+
+.exam-print-header h1 {
+    font-size: 30px !important;
+}
+
+.exam-print-tagline {
+    font-size: 14px !important;
+}
+
+.exam-print-header h2 {
+    font-size: 22px !important;
+}
+
+.exam-print-section h3 {
+    font-size: 17px !important;
+}
+
+.exam-print-table {
+    font-size: 15px !important;
+}
+
+.exam-print-table th,
+.exam-print-table td {
+    font-size: 15px !important;
+    padding: 11px 12px !important;
+}
+
+.exam-guidelines ol {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+}
+
+.exam-sign-box {
+    font-size: 14px !important;
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 600px) {
+
+    #examFormPreviewSection .exam-preview-institute-name {
+        font-size: 21px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-institute-address {
+        font-size: 13px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-document-title span {
+        font-size: 20px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-header h3 {
+        font-size: 19px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-header p {
+        font-size: 14px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-label {
+        font-size: 13px !important;
+    }
+
+    #examFormPreviewSection .exam-preview-item strong {
+        font-size: 18px !important;
+    }
+
+    #examFormPreviewSection label[for="examFormConfirmCheckbox"] {
+        font-size: 15px !important;
+    }
+}
