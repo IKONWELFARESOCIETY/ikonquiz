@@ -26201,27 +26201,7 @@ if (entrySection) {
             get("mockTestBtn");
 
 
-        /* -----------------------------------------------
-           VIEW RESULT
-        ------------------------------------------------ */
-
-        if (resultBtn) {
-
-            resultBtn.onclick =
-                openResultPage;
-
-        }
-
-
-        /* -----------------------------------------------
-           MOCK TEST
-        ------------------------------------------------ */
-
-        if (mockBtn) {
-
-            mockBtn.onclick =
-                openMockPage;
-
+      
         }
 
     }
@@ -26248,16 +26228,7 @@ if (entrySection) {
     }
 
 
-    /* =====================================================
-       ALSO EXPOSE FUNCTIONS
-       ===================================================== */
-
-    window.openResultVerifyPage =
-        openResultPage;
-
-    window.openMockTestModal =
-        openMockPage;
-
+   
 
     console.log(
         "FINAL NAVIGATION CONTROLLER LOADED"
