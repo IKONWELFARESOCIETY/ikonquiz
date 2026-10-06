@@ -26184,3 +26184,282 @@ window.openLoginPage = function(event) {
 console.log(
     "FINAL NAVIGATION CONTROLLER LOADED"
 );
+/* =====================================================
+   FINAL BLANK PAGE FIX
+   VIEW RESULT + MOCK TEST
+   ===================================================== */
+
+window.openResultVerifyPage = function (event) {
+
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+    }
+
+    const login = document.getElementById("loginPage");
+    const result = document.getElementById("resultVerifyPage");
+    const modal = document.getElementById("mockTestModal");
+    const mockPage = document.getElementById("mockTestPage");
+
+    /* Hide only these navigation pages */
+    [
+        login,
+        modal,
+        mockPage,
+        document.getElementById("examFormPage"),
+        document.getElementById("examTypePage"),
+        document.getElementById("theoryPaperPage"),
+        document.getElementById("practicalPaperPage"),
+        document.getElementById("practicalPage"),
+        document.getElementById("verificationPage"),
+        document.getElementById("practicalVerificationPage"),
+        document.getElementById("instructionPage"),
+        document.getElementById("waitingPage"),
+        document.getElementById("testPage"),
+        document.getElementById("successPage"),
+        document.getElementById("hallTicketVerifyPage"),
+        document.getElementById("hallTicketPage"),
+        document.getElementById("studentResultPage"),
+        document.getElementById("marksheetPage")
+    ].forEach(function (el) {
+
+        if (!el) return;
+
+        el.classList.add("hidden");
+
+        el.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        el.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        el.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
+
+        el.style.setProperty(
+            "pointer-events",
+            "none",
+            "important"
+        );
+    });
+
+
+    /* SHOW RESULT */
+    if (!result) {
+        console.error("resultVerifyPage not found");
+        return;
+    }
+
+    result.classList.remove("hidden");
+
+    result.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    result.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    result.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    result.style.setProperty(
+        "pointer-events",
+        "auto",
+        "important"
+    );
+
+    result.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    result.style.setProperty(
+        "z-index",
+        "999999",
+        "important"
+    );
+
+
+    /* SHOW RESULT BOX */
+    const box =
+        result.querySelector(".result-box");
+
+    if (box) {
+
+        box.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        box.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        box.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+
+        box.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+    }
+
+
+    window.scrollTo(0, 0);
+
+    console.log(
+        "FINAL RESULT PAGE VISIBLE"
+    );
+};
+
+
+
+window.openMockTestModal = function (event) {
+
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+    }
+
+    const login = document.getElementById("loginPage");
+    const modal = document.getElementById("mockTestModal");
+    const mockPage = document.getElementById("mockTestPage");
+    const result = document.getElementById("resultVerifyPage");
+
+    /* Hide login/result/mock paper page */
+
+    [
+        login,
+        result,
+        mockPage,
+        document.getElementById("examFormPage"),
+        document.getElementById("examTypePage"),
+        document.getElementById("theoryPaperPage"),
+        document.getElementById("practicalPaperPage"),
+        document.getElementById("practicalPage"),
+        document.getElementById("verificationPage"),
+        document.getElementById("practicalVerificationPage"),
+        document.getElementById("instructionPage"),
+        document.getElementById("waitingPage"),
+        document.getElementById("testPage"),
+        document.getElementById("successPage"),
+        document.getElementById("hallTicketVerifyPage"),
+        document.getElementById("hallTicketPage"),
+        document.getElementById("studentResultPage"),
+        document.getElementById("marksheetPage")
+    ].forEach(function (el) {
+
+        if (!el) return;
+
+        el.classList.add("hidden");
+
+        el.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        el.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        el.style.setProperty(
+            "opacity",
+            "0",
+            "important"
+        );
+
+        el.style.setProperty(
+            "pointer-events",
+            "none",
+            "important"
+        );
+    });
+
+
+    /* SHOW MOCK MODAL */
+
+    if (!modal) {
+        console.error("mockTestModal not found");
+        return;
+    }
+
+    modal.classList.remove("hidden");
+
+    modal.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "pointer-events",
+        "auto",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "position",
+        "fixed",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "inset",
+        "0",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "z-index",
+        "999999",
+        "important"
+    );
+
+    window.scrollTo(0, 0);
+
+    console.log(
+        "FINAL MOCK MODAL VISIBLE"
+    );
+};
