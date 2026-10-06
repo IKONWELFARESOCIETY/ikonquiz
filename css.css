@@ -22438,3 +22438,88 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 #loginPage.hidden {
     display: none !important;
 }
+/* =========================================================
+   FINAL FIX - VIEW RESULT + MOCK TEST NAVIGATION
+   DO NOT REMOVE
+========================================================= */
+
+/* RESULT PAGE */
+
+#resultVerifyPage.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#resultVerifyPage:not(.hidden) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+
+/* MOCK MODAL */
+
+#mockTestModal.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#mockTestModal:not(.hidden) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important;
+}
+
+
+/* MOCK TEST PAGE */
+
+#mockTestPage.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#mockTestPage:not(.hidden) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+
+/* RESULT BUTTON */
+
+#resultBtn {
+    position: relative !important;
+    z-index: 110 !important;
+    pointer-events: auto !important;
+}
+
+#resultBtn::before {
+    pointer-events: none !important;
+}
+
+
+/* MOCK BUTTON */
+
+#mockTestBtn {
+    position: relative !important;
+    z-index: 110 !important;
+    pointer-events: auto !important;
+}
+
+#mockTestBtn::before {
+    pointer-events: none !important;
+}
