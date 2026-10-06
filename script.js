@@ -25136,3 +25136,226 @@ if (entrySection) {
     };
 
 })();
+/* =========================================================
+   FINAL FIX - VIEW RESULT + MOCK TEST
+   ========================================================= */
+
+(function () {
+
+    function hideElement(id) {
+
+        const el = document.getElementById(id);
+
+        if (!el) return;
+
+        el.classList.add("hidden");
+
+        el.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        el.style.visibility = "hidden";
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+    }
+
+
+    function showElement(id, displayType) {
+
+        const el = document.getElementById(id);
+
+        if (!el) return;
+
+        el.classList.remove("hidden");
+
+        el.style.removeProperty("visibility");
+        el.style.removeProperty("opacity");
+        el.style.removeProperty("pointer-events");
+
+        el.style.setProperty(
+            "display",
+            displayType,
+            "important"
+        );
+
+        el.style.visibility = "visible";
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+    }
+
+
+    /* =====================================================
+       VIEW RESULT
+       ===================================================== */
+
+    window.openResultVerifyPage = function (event) {
+
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        console.log(
+            "FINAL VIEW RESULT CLICK"
+        );
+
+        /* Hide only navigation pages */
+
+        [
+            "loginPage",
+            "examFormPage",
+            "mockTestModal",
+            "mockTestPage",
+            "examTypePage",
+            "theoryPaperPage",
+            "practicalPaperPage",
+            "practicalPage",
+            "verificationPage",
+            "practicalVerificationPage",
+            "instructionPage",
+            "waitingPage",
+            "testPage",
+            "successPage",
+            "hallTicketVerifyPage",
+            "hallTicketPage",
+            "studentResultPage",
+            "marksheetPage",
+            "leaderboardPage",
+            "adminVerifyPage",
+            "adminDevicePage"
+        ].forEach(function (id) {
+
+            hideElement(id);
+
+        });
+
+
+        /* Show result verification */
+
+        showElement(
+            "resultVerifyPage",
+            "block"
+        );
+
+
+        /* Clear old code */
+
+        const input =
+            document.getElementById(
+                "resultStudentID"
+            );
+
+        if (input) {
+            input.value = "";
+            input.focus();
+        }
+
+
+        window.scrollTo(
+            0,
+            0
+        );
+
+    };
+
+
+    /* =====================================================
+       MOCK TEST MODAL
+       ===================================================== */
+
+    window.openMockTestModal = function (event) {
+
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        console.log(
+            "FINAL MOCK TEST CLICK"
+        );
+
+
+        /* Hide other pages */
+
+        [
+            "loginPage",
+            "examFormPage",
+            "resultVerifyPage",
+            "studentResultPage",
+            "mockTestPage",
+            "examTypePage",
+            "theoryPaperPage",
+            "practicalPaperPage",
+            "practicalPage",
+            "verificationPage",
+            "practicalVerificationPage",
+            "instructionPage",
+            "waitingPage",
+            "testPage",
+            "successPage",
+            "hallTicketVerifyPage",
+            "hallTicketPage"
+        ].forEach(function (id) {
+
+            hideElement(id);
+
+        });
+
+
+        /* Show mock selection */
+
+        const modal =
+            document.getElementById(
+                "mockTestModal"
+            );
+
+        if (!modal) {
+
+            console.error(
+                "mockTestModal NOT FOUND"
+            );
+
+            return;
+        }
+
+
+        modal.classList.remove(
+            "hidden"
+        );
+
+        modal.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+        modal.style.visibility =
+            "visible";
+
+        modal.style.opacity =
+            "1";
+
+        modal.style.pointerEvents =
+            "auto";
+
+        modal.style.position =
+            "fixed";
+
+        modal.style.inset =
+            "0";
+
+        modal.style.zIndex =
+            "999999";
+
+
+        window.scrollTo(
+            0,
+            0
+        );
+
+    };
+
+
+})();
