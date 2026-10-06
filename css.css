@@ -22359,3 +22359,82 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         padding: 16px !important;
     }
 }
+/* =========================================================
+   FINAL FIX - EXAM FORM / MOCK TEST BUTTON ISOLATION
+========================================================= */
+
+
+/* LOGIN BUTTON AREA */
+
+#loginPage .login-box {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+
+/* EXAM FORM BUTTON */
+
+#examFormBtn {
+    position: relative !important;
+    z-index: 110 !important;
+    pointer-events: auto !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+
+/* MOCK TEST BUTTON */
+
+#mockTestBtn {
+    position: relative !important;
+    z-index: 110 !important;
+    pointer-events: auto !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+
+/* PREVENT BUTTON PSEUDO ELEMENT FROM STEALING CLICK */
+
+#examFormBtn::before,
+#mockTestBtn::before {
+    pointer-events: none !important;
+}
+
+
+/* EXAM FORM ALWAYS ABOVE HIDDEN MOCK */
+
+#examFormPage {
+    position: relative;
+}
+
+
+#examFormPage.hidden {
+    display: none !important;
+}
+
+
+/* MOCK MODAL */
+
+#mockTestModal.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+
+/* MOCK PAGE */
+
+#mockTestPage.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* LOGIN PAGE */
+
+#loginPage.hidden {
+    display: none !important;
+}
