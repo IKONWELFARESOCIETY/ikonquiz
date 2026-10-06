@@ -25805,407 +25805,382 @@ if (entrySection) {
    VIEW RESULT / MOCK TEST / LOGIN
    ========================================================= */
 
-(function () {
+/* =========================================================
+   HIDE PAGE
+   ========================================================= */
 
-    function get(id) {
-        return document.getElementById(id);
-    }
+function ikonHidePage(id) {
 
+    const el = document.getElementById(id);
 
-    /* =====================================================
-       HIDE PAGE
-       ===================================================== */
+    if (!el) return;
 
-    function hide(id) {
+    el.classList.add("hidden");
 
-        const el = get(id);
-
-        if (!el) return;
-
-        el.classList.add("hidden");
-
-        el.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        el.style.setProperty(
-            "visibility",
-            "hidden",
-            "important"
-        );
-
-        el.style.setProperty(
-            "opacity",
-            "0",
-            "important"
-        );
-
-        el.style.setProperty(
-            "pointer-events",
-            "none",
-            "important"
-        );
-    }
-
-
-    /* =====================================================
-       SHOW PAGE
-       ===================================================== */
-
-    function show(id, displayType) {
-
-        const el = get(id);
-
-        if (!el) return null;
-
-        el.classList.remove("hidden");
-
-        el.style.setProperty(
-            "display",
-            displayType || "block",
-            "important"
-        );
-
-        el.style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-        );
-
-        el.style.setProperty(
-            "opacity",
-            "1",
-            "important"
-        );
-
-        el.style.setProperty(
-            "pointer-events",
-            "auto",
-            "important"
-        );
-
-        return el;
-    }
-
-
-    /* =====================================================
-       HIDE ALL MAIN PAGES
-       ===================================================== */
-
-    function hideAllPages() {
-
-        const ids = [
-
-            "loginPage",
-
-            "examFormPage",
-
-            "resultVerifyPage",
-            "studentResultPage",
-            "marksheetPage",
-
-            "mockTestModal",
-            "mockTestPage",
-
-            "examTypePage",
-            "theoryPaperPage",
-            "practicalPaperPage",
-            "practicalPage",
-
-            "verificationPage",
-            "practicalVerificationPage",
-
-            "instructionPage",
-            "waitingPage",
-            "testPage",
-            "successPage",
-
-            "hallTicketVerifyPage",
-            "hallTicketPage",
-
-            "leaderboardPage",
-
-            "adminVerifyPage",
-            "adminDevicePage"
-
-        ];
-
-        ids.forEach(function (id) {
-
-            hide(id);
-
-        });
-    }
-
-
-    /* =====================================================
-       VIEW RESULT
-       ===================================================== */
-
-    function openResultPage(event) {
-
-        if (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-        }
-
-
-        console.log(
-            "NAVIGATION: VIEW RESULT"
-        );
-
-
-        /* Hide everything */
-
-        hideAllPages();
-
-
-        /* Open result verification page */
-
-        const page =
-            show(
-                "resultVerifyPage",
-                "block"
-            );
-
-
-        if (!page) {
-
-            console.error(
-                "ERROR: resultVerifyPage not found"
-            );
-
-            return;
-
-        }
-
-
-        /* Reset verification input */
-
-        const input =
-            get("resultStudentID");
-
-        if (input) {
-
-            input.value = "";
-
-        }
-
-
-        /* Make result box visible */
-
-        const box =
-            page.querySelector(
-                ".result-box"
-            );
-
-        if (box) {
-
-            box.style.setProperty(
-                "display",
-                "block",
-                "important"
-            );
-
-            box.style.setProperty(
-                "visibility",
-                "visible",
-                "important"
-            );
-
-            box.style.setProperty(
-                "opacity",
-                "1",
-                "important"
-            );
-
-            box.style.setProperty(
-                "pointer-events",
-                "auto",
-                "important"
-            );
-
-        }
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
-
-    }
-
-
-    /* =====================================================
-       MOCK TEST SELECTION
-       ===================================================== */
-
-    function openMockPage(event) {
-
-        if (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-        }
-
-
-        console.log(
-            "NAVIGATION: MOCK TEST"
-        );
-
-
-        /* Hide every other page */
-
-        hideAllPages();
-
-
-        /* Open mock selection modal */
-
-        const modal =
-            get("mockTestModal");
-
-
-        if (!modal) {
-
-            console.error(
-                "ERROR: mockTestModal not found"
-            );
-
-            return;
-
-        }
-
-
-        modal.classList.remove(
-            "hidden"
-        );
-
-
-        modal.style.setProperty(
-            "display",
-            "flex",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "opacity",
-            "1",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "pointer-events",
-            "auto",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "position",
-            "fixed",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "inset",
-            "0",
-            "important"
-        );
-
-        modal.style.setProperty(
-            "z-index",
-            "999999",
-            "important"
-        );
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
-
-    }
-
-
-    /* =====================================================
-       LOGIN PAGE
-       ===================================================== */
-
-    function openLoginPage(event) {
-
-        if (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-        }
-
-
-        console.log(
-            "NAVIGATION: LOGIN"
-        );
-
-
-        hideAllPages();
-
-
-        const login =
-            show(
-                "loginPage",
-                "block"
-            );
-
-
-        if (!login) {
-
-            console.error(
-                "ERROR: loginPage not found"
-            );
-
-            return;
-
-        }
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
-
-    }
-
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        installNavigation
+    el.style.setProperty(
+        "display",
+        "none",
+        "important"
     );
 
-} else {
+    el.style.setProperty(
+        "visibility",
+        "hidden",
+        "important"
+    );
 
-    installNavigation();
+    el.style.setProperty(
+        "opacity",
+        "0",
+        "important"
+    );
+
+    el.style.setProperty(
+        "pointer-events",
+        "none",
+        "important"
+    );
+}
+
+
+/* =========================================================
+   SHOW PAGE
+   ========================================================= */
+
+function ikonShowPage(id, displayType) {
+
+    const el = document.getElementById(id);
+
+    if (!el) return null;
+
+    el.classList.remove("hidden");
+
+    el.style.setProperty(
+        "display",
+        displayType || "block",
+        "important"
+    );
+
+    el.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    el.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    el.style.setProperty(
+        "pointer-events",
+        "auto",
+        "important"
+    );
+
+    return el;
+}
+
+
+/* =========================================================
+   HIDE ALL PAGES
+   ========================================================= */
+
+function ikonHideAllPages() {
+
+    const pages = [
+
+        "loginPage",
+
+        "examFormPage",
+
+        "resultVerifyPage",
+        "studentResultPage",
+        "marksheetPage",
+
+        "mockTestModal",
+        "mockTestPage",
+
+        "examTypePage",
+        "theoryPaperPage",
+        "practicalPaperPage",
+        "practicalPage",
+
+        "verificationPage",
+        "practicalVerificationPage",
+
+        "instructionPage",
+        "waitingPage",
+        "testPage",
+        "successPage",
+
+        "hallTicketVerifyPage",
+        "hallTicketPage",
+
+        "leaderboardPage",
+
+        "adminVerifyPage",
+        "adminDevicePage"
+
+    ];
+
+    pages.forEach(function(id) {
+
+        ikonHidePage(id);
+
+    });
 
 }
+
+
+/* =========================================================
+   VIEW RESULT
+   ========================================================= */
+
+window.openResultVerifyPage = function(event) {
+
+    if (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+    }
+
+    console.log(
+        "NAVIGATION: VIEW RESULT"
+    );
+
+
+    /* Hide all pages */
+
+    ikonHideAllPages();
+
+
+    /* Show Result Verification */
+
+    const page =
+        ikonShowPage(
+            "resultVerifyPage",
+            "block"
+        );
+
+
+    if (!page) {
+
+        console.error(
+            "ERROR: resultVerifyPage not found"
+        );
+
+        return;
+
+    }
+
+
+    /* Reset input */
+
+    const input =
+        document.getElementById(
+            "resultStudentID"
+        );
+
+    if (input) {
+
+        input.value = "";
+
+    }
+
+
+    /* Force result box visible */
+
+    const box =
+        page.querySelector(
+            ".result-box"
+        );
+
+    if (box) {
+
+        box.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        box.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        box.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+
+        box.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+};
+
+
+/* =========================================================
+   MOCK TEST MODAL
+   ========================================================= */
+
+window.openMockTestModal = function(event) {
+
+    if (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+    }
+
+    console.log(
+        "NAVIGATION: MOCK TEST"
+    );
+
+
+    /* Hide all pages */
+
+    ikonHideAllPages();
+
+
+    /* Get modal */
+
+    const modal =
+        document.getElementById(
+            "mockTestModal"
+        );
+
+
+    if (!modal) {
+
+        console.error(
+            "ERROR: mockTestModal not found"
+        );
+
+        return;
+
+    }
+
+
+    /* Show modal */
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+    modal.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "pointer-events",
+        "auto",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "position",
+        "fixed",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "inset",
+        "0",
+        "important"
+    );
+
+    modal.style.setProperty(
+        "z-index",
+        "999999",
+        "important"
+    );
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+};
+
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+window.openLoginPage = function(event) {
+
+    if (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+    }
+
+    console.log(
+        "NAVIGATION: LOGIN"
+    );
+
+    ikonHideAllPages();
+
+    const login =
+        ikonShowPage(
+            "loginPage",
+            "block"
+        );
+
+    if (!login) {
+
+        console.error(
+            "ERROR: loginPage not found"
+        );
+
+        return;
+
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+};
+
+
+/* =========================================================
+   FINAL CHECK
+   ========================================================= */
 
 console.log(
     "FINAL NAVIGATION CONTROLLER LOADED"
 );
-
-})();
-
