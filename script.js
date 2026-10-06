@@ -24677,3 +24677,462 @@ if (entrySection) {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
+/* =========================================================
+   FINAL FIX
+   VIEW RESULT + MOCK TEST NAVIGATION
+   DO NOT REMOVE
+========================================================= */
+
+(function () {
+
+    /* -----------------------------------------
+       COMMON PAGE HIDE FUNCTION
+    ----------------------------------------- */
+
+    function hidePage(id) {
+
+        const el = document.getElementById(id);
+
+        if (!el) return;
+
+        el.classList.add("hidden");
+
+        el.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        el.style.visibility = "hidden";
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+    }
+
+
+    /* -----------------------------------------
+       COMMON PAGE SHOW FUNCTION
+    ----------------------------------------- */
+
+    function showPage(id, displayType) {
+
+        const el = document.getElementById(id);
+
+        if (!el) return null;
+
+        el.classList.remove("hidden");
+
+        el.style.setProperty(
+            "display",
+            displayType || "block",
+            "important"
+        );
+
+        el.style.visibility = "visible";
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+
+        return el;
+    }
+
+
+    /* -----------------------------------------
+       ALL OTHER PAGES
+    ----------------------------------------- */
+
+    function hideAllForNavigation() {
+
+        const pages = [
+
+            "loginPage",
+            "examFormPage",
+
+            "mockTestModal",
+            "mockTestPage",
+
+            "resultVerifyPage",
+            "studentResultPage",
+
+            "examTypePage",
+            "theoryPaperPage",
+            "practicalPaperPage",
+
+            "practicalPage",
+            "verificationPage",
+            "practicalVerificationPage",
+
+            "instructionPage",
+            "waitingPage",
+            "testPage",
+            "successPage",
+
+            "hallTicketVerifyPage",
+            "hallTicketPage",
+
+            "marksheetPage"
+        ];
+
+        pages.forEach(hidePage);
+    }
+
+
+    /* =================================================
+       VIEW RESULT
+       ================================================= */
+
+    window.openResultVerifyPage = function (event) {
+
+        if (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+        }
+
+        console.log(
+            "FINAL FIX: OPEN VIEW RESULT"
+        );
+
+
+        /* Hide everything first */
+
+        hideAllForNavigation();
+
+
+        /* Show ONLY result verification page */
+
+        const resultPage =
+            showPage(
+                "resultVerifyPage",
+                "block"
+            );
+
+
+        if (!resultPage) {
+
+            console.error(
+                "ERROR: resultVerifyPage not found in HTML"
+            );
+
+            return;
+
+        }
+
+
+        /* Reset verification input */
+
+        const input =
+            document.getElementById(
+                "resultStudentID"
+            );
+
+        if (input) {
+
+            input.value = "";
+
+        }
+
+
+        /* Reset old result data if function exists */
+
+        try {
+
+            if (
+                typeof clearStudentResultTable ===
+                "function"
+            ) {
+
+                clearStudentResultTable();
+
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Result reset skipped:",
+                error
+            );
+
+        }
+
+
+        /* Make sure page is visible */
+
+        resultPage.classList.remove(
+            "hidden"
+        );
+
+        resultPage.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+        resultPage.style.visibility =
+            "visible";
+
+        resultPage.style.opacity =
+            "1";
+
+        resultPage.style.pointerEvents =
+            "auto";
+
+        resultPage.style.position =
+            "relative";
+
+        resultPage.style.zIndex =
+            "100";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+
+        console.log(
+            "FINAL FIX: RESULT PAGE OPENED"
+        );
+
+    };
+
+
+    /* =================================================
+       MOCK TEST MODAL
+       ================================================= */
+
+    window.openMockTestModal = function (event) {
+
+        if (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+        }
+
+        console.log(
+            "FINAL FIX: OPEN MOCK TEST"
+        );
+
+
+        /* Hide everything */
+
+        hideAllForNavigation();
+
+
+        /* Show Mock Test Modal */
+
+        const modal =
+            showPage(
+                "mockTestModal",
+                "flex"
+            );
+
+
+        if (!modal) {
+
+            console.error(
+                "ERROR: mockTestModal not found in HTML"
+            );
+
+            return;
+
+        }
+
+
+        /* Force modal visible */
+
+        modal.classList.remove(
+            "hidden"
+        );
+
+        modal.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+        modal.style.visibility =
+            "visible";
+
+        modal.style.opacity =
+            "1";
+
+        modal.style.pointerEvents =
+            "auto";
+
+        modal.style.position =
+            "fixed";
+
+        modal.style.inset =
+            "0";
+
+        modal.style.zIndex =
+            "999999";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+
+        console.log(
+            "FINAL FIX: MOCK MODAL OPENED"
+        );
+
+    };
+
+
+    /* =================================================
+       CLOSE MOCK MODAL
+       ================================================= */
+
+    window.closeMockTestModal = function () {
+
+        console.log(
+            "FINAL FIX: CLOSE MOCK MODAL"
+        );
+
+
+        hidePage(
+            "mockTestModal"
+        );
+
+
+        hidePage(
+            "mockTestPage"
+        );
+
+
+        /* Return to login */
+
+        const loginPage =
+            showPage(
+                "loginPage",
+                "flex"
+            );
+
+
+        if (loginPage) {
+
+            loginPage.style.minHeight =
+                "calc(100vh - 220px)";
+
+        }
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+    };
+
+
+    /* =================================================
+       EXIT MOCK TEST
+       ================================================= */
+
+    window.exitMockTest = function () {
+
+        console.log(
+            "FINAL FIX: EXIT MOCK TEST"
+        );
+
+
+        /* Stop timer */
+
+        try {
+
+            if (
+                typeof mockTimerInterval !==
+                "undefined" &&
+                mockTimerInterval
+            ) {
+
+                clearInterval(
+                    mockTimerInterval
+                );
+
+                mockTimerInterval =
+                    null;
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+
+        /* Hide mock page */
+
+        hidePage(
+            "mockTestPage"
+        );
+
+
+        /* Reset mock data */
+
+        try {
+
+            if (
+                typeof mockQuestions !==
+                "undefined"
+            ) {
+
+                mockQuestions = [];
+
+            }
+
+            if (
+                typeof currentMockIdx !==
+                "undefined"
+            ) {
+
+                currentMockIdx = 0;
+
+            }
+
+            if (
+                typeof mockAnswerState !==
+                "undefined"
+            ) {
+
+                mockAnswerState = {};
+
+            }
+
+            if (
+                typeof currentMockSheet !==
+                "undefined"
+            ) {
+
+                currentMockSheet = "";
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+
+        /* Back to login */
+
+        showPage(
+            "loginPage",
+            "flex"
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+    };
+
+})();
