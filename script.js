@@ -24759,7 +24759,7 @@ async function downloadExamFormPDF() {
 
         color: #334155 !important;
 
-        font-size: 10px !important;
+        font-size:12px !important;
 
         line-height: 1.2 !important;
     }
@@ -24775,7 +24775,7 @@ async function downloadExamFormPDF() {
 
         color: #26364d !important;
 
-        font-size: 10px !important;
+        font-size: 12px !important;
 
         line-height: 1.2 !important;
 
