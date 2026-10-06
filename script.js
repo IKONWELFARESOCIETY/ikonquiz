@@ -102,7 +102,6 @@ function getResumeKey() {
 //====================================================
 
 function saveResumeState() {
-
     try {
 
         if (
@@ -120,7 +119,6 @@ function saveResumeState() {
         if (!key) {
             return;
         }
-
         const resumeData = {
 
             regNo: regNo,
