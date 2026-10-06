@@ -19694,25 +19694,78 @@ let currentMockSheet = "";
 
 
 //====================================================
-// OPEN MOCK TEST PAPER SELECTION
+// OPEN MOCK TEST MODAL
+// FINAL ISOLATED VERSION
 //====================================================
 
-function openMockTestModal() {
+function openMockTestModal(event) {
+
+    // Stop other events
+    if (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+    }
+
+
+    console.log(
+        "OPENING MOCK TEST"
+    );
+
 
     const loginPage =
-        document.getElementById("loginPage");
+        document.getElementById(
+            "loginPage"
+        );
 
-    const modal =
-        document.getElementById("mockTestModal");
+    const examFormPage =
+        document.getElementById(
+            "examFormPage"
+        );
+
+    const mockModal =
+        document.getElementById(
+            "mockTestModal"
+        );
 
     const mockPage =
-        document.getElementById("mockTestPage");
+        document.getElementById(
+            "mockTestPage"
+        );
 
 
-    // Hide mock page first
+    //================================================
+    // HIDE EXAM FORM
+    //================================================
+
+    if (examFormPage) {
+
+        examFormPage.classList.add(
+            "hidden"
+        );
+
+        examFormPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        examFormPage.style.visibility =
+            "hidden";
+
+    }
+
+
+    //================================================
+    // HIDE MOCK TEST PAGE
+    //================================================
+
     if (mockPage) {
 
-        mockPage.classList.add("hidden");
+        mockPage.classList.add(
+            "hidden"
+        );
 
         mockPage.style.setProperty(
             "display",
@@ -19723,10 +19776,15 @@ function openMockTestModal() {
     }
 
 
-    // Hide login
+    //================================================
+    // HIDE LOGIN
+    //================================================
+
     if (loginPage) {
 
-        loginPage.classList.add("hidden");
+        loginPage.classList.add(
+            "hidden"
+        );
 
         loginPage.style.setProperty(
             "display",
@@ -19737,43 +19795,100 @@ function openMockTestModal() {
     }
 
 
-    // Show paper selection
-    if (modal) {
+    //================================================
+    // SHOW MOCK MODAL
+    //================================================
 
-        modal.classList.remove("hidden");
+    if (!mockModal) {
 
-        modal.style.setProperty(
-            "display",
-            "flex",
-            "important"
+        console.error(
+            "mockTestModal not found"
         );
 
-        modal.style.visibility = "visible";
-        modal.style.opacity = "1";
+        return;
 
     }
 
-}
 
+    mockModal.classList.remove(
+        "hidden"
+    );
+
+    mockModal.style.setProperty(
+        "display",
+        "flex",
+        "important"
+    );
+
+    mockModal.style.visibility =
+        "visible";
+
+    mockModal.style.opacity =
+        "1";
+
+
+    console.log(
+        "MOCK TEST MODAL OPENED"
+    );
+
+}
 
 //====================================================
 // CLOSE MOCK TEST PAPER SELECTION
 //====================================================
 
+//====================================================
+// CLOSE MOCK TEST MODAL
+//====================================================
+
 function closeMockTestModal() {
 
-    const modal =
-        document.getElementById("mockTestModal");
+    const mockModal =
+        document.getElementById(
+            "mockTestModal"
+        );
+
+    const mockPage =
+        document.getElementById(
+            "mockTestPage"
+        );
 
     const loginPage =
-        document.getElementById("loginPage");
+        document.getElementById(
+            "loginPage"
+        );
 
 
-    if (modal) {
+    // Hide modal
+    if (mockModal) {
 
-        modal.classList.add("hidden");
+        mockModal.classList.add(
+            "hidden"
+        );
 
-        modal.style.setProperty(
+        mockModal.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        mockModal.style.visibility =
+            "hidden";
+
+        mockModal.style.opacity =
+            "0";
+
+    }
+
+
+    // Hide mock page
+    if (mockPage) {
+
+        mockPage.classList.add(
+            "hidden"
+        );
+
+        mockPage.style.setProperty(
             "display",
             "none",
             "important"
@@ -19782,9 +19897,12 @@ function closeMockTestModal() {
     }
 
 
+    // Show login
     if (loginPage) {
 
-        loginPage.classList.remove("hidden");
+        loginPage.classList.remove(
+            "hidden"
+        );
 
         loginPage.style.setProperty(
             "display",
@@ -19792,10 +19910,21 @@ function closeMockTestModal() {
             "important"
         );
 
+        loginPage.style.visibility =
+            "visible";
+
+        loginPage.style.opacity =
+            "1";
+
     }
 
-}
 
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
 
 //====================================================
 // START SELECTED MOCK TEST
@@ -22350,43 +22479,320 @@ function escapeDeviceValue(value){
 let examFormStudentData = null;
 let examFormEligible = false;
 
-function openExamFormPage() {
-    const loginPage = document.getElementById("loginPage");
-    const examFormPage = document.getElementById("examFormPage");
+//====================================================
+// OPEN STUDENT EXAM FORM
+// FINAL ISOLATED VERSION
+//====================================================
 
-    if (!loginPage || !examFormPage) {
-        console.error("Login page or Exam Form page not found.");
+function openStudentExamForm(event) {
+
+    // Stop any other button/event from firing
+    if (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+    }
+
+
+    console.log(
+        "OPENING STUDENT EXAM FORM"
+    );
+
+
+    const loginPage =
+        document.getElementById(
+            "loginPage"
+        );
+
+    const examFormPage =
+        document.getElementById(
+            "examFormPage"
+        );
+
+    const mockModal =
+        document.getElementById(
+            "mockTestModal"
+        );
+
+    const mockPage =
+        document.getElementById(
+            "mockTestPage"
+        );
+
+    const examTypePage =
+        document.getElementById(
+            "examTypePage"
+        );
+
+    const theoryPage =
+        document.getElementById(
+            "theoryPaperPage"
+        );
+
+    const practicalPage =
+        document.getElementById(
+            "practicalPaperPage"
+        );
+
+    const resultPage =
+        document.getElementById(
+            "resultVerifyPage"
+        );
+
+    const studentResultPage =
+        document.getElementById(
+            "studentResultPage"
+        );
+
+
+    //================================================
+    // HIDE LOGIN
+    //================================================
+
+    if (loginPage) {
+
+        loginPage.classList.add(
+            "hidden"
+        );
+
+        loginPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    //================================================
+    // HIDE MOCK MODAL
+    //================================================
+
+    if (mockModal) {
+
+        mockModal.classList.add(
+            "hidden"
+        );
+
+        mockModal.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        mockModal.style.visibility =
+            "hidden";
+
+        mockModal.style.opacity =
+            "0";
+
+    }
+
+
+    //================================================
+    // HIDE MOCK TEST PAGE
+    //================================================
+
+    if (mockPage) {
+
+        mockPage.classList.add(
+            "hidden"
+        );
+
+        mockPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        mockPage.style.visibility =
+            "hidden";
+
+    }
+
+
+    //================================================
+    // HIDE OTHER PAGES
+    //================================================
+
+    [
+        examTypePage,
+        theoryPage,
+        practicalPage,
+        resultPage,
+        studentResultPage
+    ].forEach(function(page) {
+
+        if (!page) {
+            return;
+        }
+
+        page.classList.add(
+            "hidden"
+        );
+
+        page.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    });
+
+
+    //================================================
+    // SHOW EXAM FORM
+    //================================================
+
+    if (!examFormPage) {
+
+        console.error(
+            "examFormPage not found"
+        );
+
         return;
+
     }
 
-    // Hide login page and its buttons
-    loginPage.classList.add("hidden");
-    loginPage.style.setProperty("display", "none", "important");
 
-    // Show only Exam Form page
-    examFormPage.classList.remove("hidden");
-    examFormPage.style.setProperty("display", "block", "important");
+    examFormPage.classList.remove(
+        "hidden"
+    );
 
-    // Reset form fields/sections when opening
-    const regNo = document.getElementById("examFormRegNo");
-    if (regNo) regNo.value = "";
+    examFormPage.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
 
-    if (typeof resetExamFormEligibility === "function") {
+    examFormPage.style.visibility =
+        "visible";
+
+    examFormPage.style.opacity =
+        "1";
+
+    examFormPage.style.position =
+        "relative";
+
+    examFormPage.style.zIndex =
+        "100";
+
+
+    //================================================
+    // RESET FORM
+    //================================================
+
+    const formReg =
+        document.getElementById(
+            "examFormRegNo"
+        );
+
+    if (formReg) {
+
+        formReg.value = "";
+
+    }
+
+
+    if (
+        typeof resetExamFormEligibility ===
+        "function"
+    ) {
+
         resetExamFormEligibility();
+
     }
-// Show Exam Form entry section when opening the page
-const entrySection = document.getElementById("examFormEntrySection");
 
-if (entrySection) {
-    entrySection.style.display = "block";
-}
-    const studentDetails = document.getElementById("examFormStudentDetails");
-    if (studentDetails) studentDetails.classList.add("hidden");
 
-    const paperSection = document.getElementById("examFormPaperSection");
-    if (paperSection) paperSection.classList.add("hidden");
+    //================================================
+    // SHOW ENTRY SECTION
+    //================================================
 
-    window.scrollTo({ top: 0, behavior: "instant" });
+    const entrySection =
+        document.getElementById(
+            "examFormEntrySection"
+        );
+
+    if (entrySection) {
+
+        entrySection.style.display =
+            "block";
+
+    }
+
+
+    //================================================
+    // HIDE STUDENT DETAILS
+    //================================================
+
+    const studentDetails =
+        document.getElementById(
+            "examFormStudentDetails"
+        );
+
+    if (studentDetails) {
+
+        studentDetails.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    //================================================
+    // HIDE PAPER SECTION
+    //================================================
+
+    const paperSection =
+        document.getElementById(
+            "examFormPaperSection"
+        );
+
+    if (paperSection) {
+
+        paperSection.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    //================================================
+    // RESET PREVIEW
+    //================================================
+
+    const preview =
+        document.getElementById(
+            "examFormPreviewSection"
+        );
+
+    if (preview) {
+
+        preview.classList.add(
+            "hidden"
+        );
+
+        preview.style.display =
+            "none";
+
+    }
+
+
+    //================================================
+    // SCROLL TOP
+    //================================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+
+    console.log(
+        "EXAM FORM OPENED SUCCESSFULLY"
+    );
+
 }
 function backToLoginFromExamForm() {
     const examFormPage = document.getElementById("examFormPage");
