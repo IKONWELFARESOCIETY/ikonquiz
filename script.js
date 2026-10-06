@@ -26209,31 +26209,24 @@ console.log(
 
 })();
 
-    /* =====================================================
-       RUN AFTER HTML IS READY
-       ===================================================== */
+  if (
+    document.readyState ===
+    "loading"
+) {
 
-    if (
-        document.readyState ===
-        "loading"
-    ) {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            installNavigation
-        );
-
-    } else {
-
-        installNavigation();
-
-    }
-
-
-   
-
-    console.log(
-        "FINAL NAVIGATION CONTROLLER LOADED"
+    document.addEventListener(
+        "DOMContentLoaded",
+        installNavigation
     );
+
+} else {
+
+    installNavigation();
+
+}
+
+console.log(
+    "FINAL NAVIGATION CONTROLLER LOADED"
+);
 
 })();
