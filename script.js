@@ -20313,7 +20313,6 @@ function updateMockTimerDisplay() {
 //====================================================
 
 function renderMockQuestion() {
-   function renderMockQuestion() {
 
     if (!mockQuestions || mockQuestions.length === 0) {
         return;
