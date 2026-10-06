@@ -19681,74 +19681,26 @@ window.addEventListener(
     }
 );
 //====================================================
-// MOCK TEST SYSTEM LOGIC
+// MOCK TEST SYSTEM - FINAL FIXED VERSION
 //====================================================
 
 let mockQuestions = [];
 let currentMockIdx = 0;
 let mockTimerInterval = null;
-let mockTimeLeft = 45 * 60; // 45 Minutes
-// Stores selected answer/result for each question
-let mockAnswerState = {};
+let mockTimeLeft = 45 * 60;
 
-// Stores currently selected mock paper
+let mockAnswerState = {};
 let currentMockSheet = "";
 
 
 //====================================================
-// OPEN MOCK TEST SELECTION
+// OPEN MOCK TEST PAPER SELECTION
 //====================================================
 
 function openMockTestModal() {
 
-    document
-        .getElementById("loginPage")
-        ?.classList.add("hidden");
-
-    const modal =
-        document.getElementById("mockTestModal");
-
-    if (modal) {
-
-        modal.style.display = "flex";
-
-        modal.classList.remove("hidden");
-
-    }
-
-}
-
-
-//====================================================
-// CLOSE MOCK TEST SELECTION
-//====================================================
-function closeMockTestModal() {
-
-    const modal =
-        document.getElementById("mockTestModal");
-
-    if (modal) {
-
-        modal.style.display = "none";
-
-        modal.classList.add("hidden");
-
-    }
-
-    document
-        .getElementById("loginPage")
-        ?.classList.remove("hidden");
-
-}
-
-
-//====================================================
-// START MOCK TEST - FIXED VERSION
-//====================================================
-
-function startMockTest(sheetName) {
-
-    console.log("Starting Mock Test:", sheetName);
+    const loginPage =
+        document.getElementById("loginPage");
 
     const modal =
         document.getElementById("mockTestModal");
@@ -19756,59 +19708,154 @@ function startMockTest(sheetName) {
     const mockPage =
         document.getElementById("mockTestPage");
 
+
+    // Hide mock page first
+    if (mockPage) {
+
+        mockPage.classList.add("hidden");
+
+        mockPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    // Hide login
+    if (loginPage) {
+
+        loginPage.classList.add("hidden");
+
+        loginPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    // Show paper selection
+    if (modal) {
+
+        modal.classList.remove("hidden");
+
+        modal.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+        modal.style.visibility = "visible";
+        modal.style.opacity = "1";
+
+    }
+
+}
+
+
+//====================================================
+// CLOSE MOCK TEST PAPER SELECTION
+//====================================================
+
+function closeMockTestModal() {
+
+    const modal =
+        document.getElementById("mockTestModal");
+
     const loginPage =
         document.getElementById("loginPage");
 
-    const questionArea =
-        document.getElementById("mockQuestionArea");
+
+    if (modal) {
+
+        modal.classList.add("hidden");
+
+        modal.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    if (loginPage) {
+
+        loginPage.classList.remove("hidden");
+
+        loginPage.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+    }
+
+}
+
+
+//====================================================
+// START SELECTED MOCK TEST
+//====================================================
+
+function startMockTest(sheetName) {
+
+    console.log(
+        "Starting Mock Test:",
+        sheetName
+    );
+
+
+    const modal =
+        document.getElementById("mockTestModal");
+
+    const loginPage =
+        document.getElementById("loginPage");
+
+    const mockPage =
+        document.getElementById("mockTestPage");
 
     const title =
         document.getElementById("mockTestTitle");
 
+    const questionArea =
+        document.getElementById("mockQuestionArea");
 
-    //================================================
-    // CHECK MOCK PAGE
-    //================================================
+    const palette =
+        document.getElementById("mockQuestionPalette");
+
 
     if (!mockPage) {
 
-        console.error(
-            "mockTestPage element not found."
-        );
-
         alert(
-            "Mock Test page load nahi ho pa raha."
+            "Mock Test page not found."
         );
 
         return;
-    }
-
-
-    //================================================
-    // SAVE CURRENT MOCK PAPER
-    //================================================
-
-    currentMockSheet = sheetName;
-
-
-    //================================================
-    // STOP OLD TIMER
-    //================================================
-
-    if (mockTimerInterval) {
-
-        clearInterval(
-            mockTimerInterval
-        );
-
-        mockTimerInterval = null;
 
     }
 
 
     //================================================
-    // RESET MOCK TEST
+    // SAVE SELECTED PAPER
     //================================================
+
+    currentMockSheet =
+        String(sheetName || "").trim();
+
+
+    //================================================
+    // RESET OLD TEST
+    //================================================
+
+    clearInterval(
+        mockTimerInterval
+    );
+
+    mockTimerInterval = null;
 
     mockQuestions = [];
 
@@ -19825,9 +19872,7 @@ function startMockTest(sheetName) {
 
     if (loginPage) {
 
-        loginPage.classList.add(
-            "hidden"
-        );
+        loginPage.classList.add("hidden");
 
         loginPage.style.setProperty(
             "display",
@@ -19839,14 +19884,12 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // HIDE MODAL
+    // HIDE PAPER MODAL
     //================================================
 
     if (modal) {
 
-        modal.classList.add(
-            "hidden"
-        );
+        modal.classList.add("hidden");
 
         modal.style.setProperty(
             "display",
@@ -19858,12 +19901,10 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // SHOW MOCK PAGE
+    // SHOW MOCK TEST PAGE
     //================================================
 
-    mockPage.classList.remove(
-        "hidden"
-    );
+    mockPage.classList.remove("hidden");
 
     mockPage.style.setProperty(
         "display",
@@ -19879,67 +19920,56 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // SET TITLE
+    // SHOW PAPER NAME
     //================================================
 
     if (title) {
 
-        title.innerText =
-            String(sheetName)
-            .toUpperCase();
+        title.textContent =
+            currentMockSheet.toUpperCase();
 
     }
 
 
     //================================================
-    // SHOW LOADING MESSAGE
+    // RESET PALETTE
+    //================================================
+
+    if (palette) {
+
+        palette.style.display =
+            "block";
+
+    }
+
+
+    //================================================
+    // LOADING SCREEN
     //================================================
 
     if (questionArea) {
 
         questionArea.innerHTML = `
 
-            <div style="
-                width:100%;
-                box-sizing:border-box;
-                padding:50px 25px;
-                text-align:center;
-                background:#ffffff;
-                border-radius:14px;
-                border:1px solid #e2e8f0;
-                box-shadow:0 8px 25px rgba(15,23,42,.08);
-            ">
+            <div class="mock-loading-box">
 
-                <div style="
-                    font-size:42px;
-                    margin-bottom:15px;
-                ">
+                <div class="mock-loading-icon">
                     ⏳
                 </div>
 
-                <h3 style="
-                    margin:0 0 10px;
-                    color:#1e293b;
-                    font-size:22px;
-                ">
+                <h2>
                     Loading Mock Test...
-                </h3>
+                </h2>
 
-                <p style="
-                    margin:0;
-                    color:#64748b;
-                    font-size:15px;
-                ">
+                <p>
                     Please wait while questions are loading.
                 </p>
 
-                <p style="
-                    margin:12px 0 0;
-                    color:#2563eb;
-                    font-weight:700;
-                ">
-                    ${escapeMockHTML(sheetName)}
-                </p>
+                <strong>
+                    ${escapeMockHTML(
+                        currentMockSheet
+                    )}
+                </strong>
 
             </div>
 
@@ -19949,24 +19979,14 @@ function startMockTest(sheetName) {
 
 
     //================================================
-    // RESET TIMER DISPLAY
+    // TIMER DISPLAY
     //================================================
 
     updateMockTimerDisplay();
 
 
     //================================================
-    // SCROLL TOP
-    //================================================
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-
-    //================================================
-    // BUILD API URL
+    // API URL
     //================================================
 
     const apiURL =
@@ -19974,7 +19994,7 @@ function startMockTest(sheetName) {
         "?action=getMockQuestions" +
         "&sheetName=" +
         encodeURIComponent(
-            sheetName
+            currentMockSheet
         );
 
 
@@ -19992,12 +20012,6 @@ function startMockTest(sheetName) {
 
     .then(function(response) {
 
-        console.log(
-            "Mock API HTTP Status:",
-            response.status
-        );
-
-
         if (!response.ok) {
 
             throw new Error(
@@ -20007,41 +20021,29 @@ function startMockTest(sheetName) {
 
         }
 
-
         return response.text();
 
     })
 
 
-    .then(function(responseText) {
+    .then(function(text) {
 
         console.log(
-            "Mock API Raw Response:",
-            responseText
+            "Mock API Response:",
+            text
         );
 
-
-        //================================================
-        // PARSE JSON
-        //================================================
 
         let data;
 
         try {
 
             data =
-                JSON.parse(
-                    responseText
-                );
+                JSON.parse(text);
 
         }
 
         catch(error) {
-
-            console.error(
-                "Mock JSON Parse Error:",
-                error
-            );
 
             throw new Error(
                 "Server ne valid JSON response nahi diya."
@@ -20051,110 +20053,80 @@ function startMockTest(sheetName) {
 
 
         console.log(
-            "MOCK TEST RESPONSE:",
+            "Mock Data:",
             data
         );
 
-
-        //================================================
-        // CHECK SUCCESS
-        //================================================
 
         if (
             !data ||
             data.status !== "SUCCESS"
         ) {
 
-            const message =
-                data &&
-                data.message
-                    ? data.message
-                    : "Mock Test questions load nahi ho paaye.";
-
             throw new Error(
-                message
+                data?.message ||
+                "Questions load nahi ho paaye."
             );
 
         }
 
 
-        //================================================
-        // GET QUESTIONS
-        //================================================
-
-        mockQuestions =
-            Array.isArray(
+        if (
+            !Array.isArray(
                 data.questions
             )
-            ? data.questions
-            : [];
+        ) {
+
+            throw new Error(
+                "Questions data invalid hai."
+            );
+
+        }
 
 
-        //================================================
-        // NO QUESTIONS
-        //================================================
+        mockQuestions =
+            data.questions;
+
 
         if (
             mockQuestions.length === 0
         ) {
 
             throw new Error(
-                "Is Mock Test ke liye koi question nahi mila."
+                "Is paper ke liye koi question nahi mila."
             );
 
         }
 
 
         //================================================
-        // RESET INDEX
+        // START FIRST QUESTION
         //================================================
 
         currentMockIdx = 0;
 
-
-        //================================================
-        // BUILD QUESTION PALETTE
-        //================================================
-
-        if (
-            typeof buildMockPalette ===
-            "function"
-        ) {
-
-            buildMockPalette();
-
-        }
+        mockAnswerState = {};
 
 
-        //================================================
-        // RENDER FIRST QUESTION
-        //================================================
+        buildMockPalette();
 
         renderMockQuestion();
-
-
-        //================================================
-        // START TIMER
-        //================================================
 
         startMockTimer();
 
 
         console.log(
-            "Mock Test Started Successfully."
+            "Mock Test Started:",
+            currentMockSheet
         );
 
     })
 
 
-    //================================================
-    // ERROR HANDLING
-    //================================================
-
     .catch(function(error) {
 
         console.error(
-            "Mock Test Load Error:",
+            "Mock Test Error:",
             error
         );
 
@@ -20163,74 +20135,37 @@ function startMockTest(sheetName) {
             mockTimerInterval
         );
 
-        mockTimerInterval =
-            null;
+        mockTimerInterval = null;
 
-
-        //================================================
-        // SHOW ERROR IN PAGE
-        //================================================
 
         if (questionArea) {
 
             questionArea.innerHTML = `
 
-                <div style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:45px 25px;
-                    text-align:center;
-                    background:#ffffff;
-                    border-radius:14px;
-                    border:1px solid #fecaca;
-                    box-shadow:0 8px 25px rgba(15,23,42,.08);
-                ">
+                <div class="mock-error-box">
 
-                    <div style="
-                        font-size:45px;
-                        margin-bottom:15px;
-                    ">
+                    <div class="mock-error-icon">
                         ⚠️
                     </div>
 
-                    <h3 style="
-                        margin:0 0 12px;
-                        color:#b91c1c;
-                        font-size:22px;
-                    ">
-                        Unable to Load Mock Test
-                    </h3>
+                    <h2>
+                        Mock Test Load Failed
+                    </h2>
 
-                    <p style="
-                        margin:0 auto 10px;
-                        max-width:650px;
-                        color:#475569;
-                        line-height:1.6;
-                    ">
+                    <p>
                         ${escapeMockHTML(
                             error.message ||
                             "Questions load nahi ho paaye."
                         )}
                     </p>
 
-                    <p style="
-                        margin:12px 0 22px;
-                        color:#64748b;
-                        font-size:13px;
-                    ">
-                        Please try again or go back to Login.
-                    </p>
-
                     <button
                         type="button"
                         class="secondary"
-                        onclick="exitMockTest()"
-                        style="
-                            max-width:220px;
-                            margin:auto;
-                        "
-                    >
+                        onclick="closeMockTestModal()">
+
                         ← Back to Login
+
                     </button>
 
                 </div>
@@ -20243,195 +20178,244 @@ function startMockTest(sheetName) {
 
 }
 
+
 //====================================================
-// MOCK TEST TIMER
+// MOCK TIMER
 //====================================================
 
 function startMockTimer() {
 
-    // Remove previous timer
-    clearInterval(mockTimerInterval);
+    clearInterval(
+        mockTimerInterval
+    );
 
-    // Immediately show current time
+
     updateMockTimerDisplay();
 
-    mockTimerInterval = setInterval(function() {
 
-        mockTimeLeft--;
+    mockTimerInterval =
+        setInterval(function() {
 
-        updateMockTimerDisplay();
+            mockTimeLeft--;
 
 
-        //============================================
-        // TIME COMPLETED
-        //============================================
+            updateMockTimerDisplay();
 
-        if (mockTimeLeft <= 0) {
 
-            clearInterval(mockTimerInterval);
+            if (
+                mockTimeLeft <= 0
+            ) {
 
-            mockTimerInterval = null;
+                clearInterval(
+                    mockTimerInterval
+                );
 
-            alert("Time Completed!");
+                mockTimerInterval = null;
 
-            submitMockTest();
 
-            return;
+                alert(
+                    "Time Completed!"
+                );
 
-        }
 
-    }, 1000);
+                submitMockTest();
+
+            }
+
+        }, 1000);
 
 }
+
+
 //====================================================
-// UPDATE TIMER DISPLAY
+// UPDATE MOCK TIMER
 //====================================================
 
 function updateMockTimerDisplay() {
 
-    const timerElement =
-        document.getElementById("mockTimer");
+    const timer =
+        document.getElementById(
+            "mockTimer"
+        );
 
-    if (!timerElement) {
+
+    if (!timer) {
+
         return;
+
     }
 
-    let mins =
-        Math.floor(mockTimeLeft / 60);
 
-    let secs =
+    const mins =
+        Math.floor(
+            mockTimeLeft / 60
+        );
+
+
+    const secs =
         mockTimeLeft % 60;
 
-    timerElement.innerText =
-        `⏱️ ${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+    timer.textContent =
+        "⏱️ " +
+        String(mins).padStart(2, "0") +
+        ":" +
+        String(secs).padStart(2, "0");
 
 }
 
 
 //====================================================
-// RENDER CURRENT QUESTION
+// RENDER MOCK QUESTION
 //====================================================
 
 function renderMockQuestion() {
 
-    if (!mockQuestions || mockQuestions.length === 0) {
+    if (
+        !mockQuestions ||
+        mockQuestions.length === 0
+    ) {
+
         return;
+
     }
 
-    if (!mockAnswerState[currentMockIdx]) {
-        mockAnswerState[currentMockIdx] = null;
-    }
-
-    if (typeof buildMockPalette === "function") {
-        buildMockPalette();
-    }
-
-    // baaki aapka existing renderMockQuestion code
-    if (!mockQuestions || mockQuestions.length === 0) {
-        return;
-    }
 
     const questionArea =
-        document.getElementById("mockQuestionArea");
+        document.getElementById(
+            "mockQuestionArea"
+        );
+
 
     if (!questionArea) {
+
         return;
+
     }
+
 
     const q =
-        mockQuestions[currentMockIdx];
+        mockQuestions[
+            currentMockIdx
+        ];
+
 
     if (!q) {
+
         return;
+
     }
 
-    //================================================
-    // GET OPTIONS
-    //================================================
 
     const options = [
+
         q.opt1,
         q.opt2,
         q.opt3,
         q.opt4
+
     ];
 
-    // Correct answer
+
     const correctAnswer =
-        String(q.correct || "").trim();
+        String(
+            q.correct || ""
+        ).trim();
 
-    // Previously saved answer
+
     const savedState =
-        mockAnswerState[currentMockIdx] || null;
+        mockAnswerState[
+            currentMockIdx
+        ] || null;
 
-
-    //================================================
-    // QUESTION HTML
-    //================================================
 
     let html = `
 
-      <div style="margin-bottom:20px;">
+        <div class="mock-question-card">
 
-    <div class="mock-question-english">
+            <div class="mock-question-number">
 
-        <span class="mock-question-english-label">
-            English:
-        </span>
+                Question
+                ${currentMockIdx + 1}
+                of
+                ${mockQuestions.length}
 
-        Q${currentMockIdx + 1}.
-        ${escapeMockHTML(q.question)}
-
-    </div>
+            </div>
 
 
-    <div class="mock-question-hindi">
+            <div class="mock-question-english">
 
-        <span class="mock-question-hindi-label">
-            हिंदी:
-        </span>
+                <strong>
+                    English:
+                </strong>
 
-        ${escapeMockHTML(q.hindiQuestion || "")}
+                ${escapeMockHTML(
+                    q.question || ""
+                )}
 
-    </div>
+            </div>
 
-</div>
-        <div id="optionsGroup">
+
+            <div class="mock-question-hindi">
+
+                <strong>
+                    हिंदी:
+                </strong>
+
+                ${escapeMockHTML(
+                    q.hindiQuestion || ""
+                )}
+
+            </div>
+
+
+            <div
+                id="optionsGroup"
+                class="mock-options-group">
+
     `;
 
 
-    //================================================
-    // OPTIONS
-    //================================================
-
-    options.forEach(function(optText, index) {
+    options.forEach(function(
+        optText,
+        index
+    ) {
 
         const option =
-            String(optText || "").trim();
+            String(
+                optText || ""
+            ).trim();
 
-        if (option === "") {
+
+        if (!option) {
+
             return;
+
         }
 
-        // Check saved state
+
         let optionClass = "";
-        let disabledAttribute = "";
+
+        let disabled = "";
+
 
         if (savedState) {
 
-            disabledAttribute = "disabled";
+            disabled =
+                "disabled";
 
-            // Correct answer always green
+
             if (
                 option.toLowerCase() ===
                 correctAnswer.toLowerCase()
             ) {
 
-                optionClass = "correct-opt";
+                optionClass =
+                    "correct-opt";
 
             }
 
-            // Previously selected wrong answer red
+
             if (
                 savedState.selected &&
                 option.toLowerCase() ===
@@ -20440,7 +20424,8 @@ function renderMockQuestion() {
                 correctAnswer.toLowerCase()
             ) {
 
-                optionClass = "wrong-opt";
+                optionClass =
+                    "wrong-opt";
 
             }
 
@@ -20452,11 +20437,17 @@ function renderMockQuestion() {
             <button
                 type="button"
                 class="mock-option-btn ${optionClass}"
-                ${disabledAttribute}
-                data-option-index="${index}"
-                onclick="checkMockAns(this)"
-            >
-                ${escapeMockHTML(option)}
+                ${disabled}
+                onclick="selectMockAnswer(this)">
+
+                <span class="mock-option-letter">
+                    ${String.fromCharCode(65 + index)}
+                </span>
+
+                <span>
+                    ${escapeMockHTML(option)}
+                </span>
+
             </button>
 
         `;
@@ -20466,86 +20457,59 @@ function renderMockQuestion() {
 
     html += `
 
-        </div>
+            </div>
 
-        <div
-            id="ansExplanation"
-            class="correct-ans-box ${savedState ? "" : "hidden"}"
-        >
-            ${
-                savedState
-                ? `✅ Correct Answer:
-                   <strong>${escapeMockHTML(correctAnswer)}</strong>`
-                : ""
-            }
+
+            <div
+                id="ansExplanation"
+                class="mock-answer-explanation
+                ${savedState ? "" : "hidden"}">
+
+                ${
+                    savedState
+                    ?
+                    `
+                    ✅ Correct Answer:
+                    <strong>
+                        ${escapeMockHTML(
+                            correctAnswer
+                        )}
+                    </strong>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
         </div>
 
     `;
 
 
-    // Put HTML into question area
-    questionArea.innerHTML = html;
+    questionArea.innerHTML =
+        html;
 
 
-    //================================================
-    // UPDATE PREVIOUS / NEXT BUTTONS
-    //================================================
-
-    const prevBtn =
-        document.getElementById("mockPrevBtn");
-
-    const nextBtn =
-        document.getElementById("mockNextBtn");
+    buildMockPalette();
 
 
-    if (prevBtn) {
-
-        prevBtn.disabled =
-            currentMockIdx === 0;
-
-    }
-
-
-    if (nextBtn) {
-
-        if (
-            currentMockIdx ===
-            mockQuestions.length - 1
-        ) {
-
-            nextBtn.innerText = "Finish";
-
-        }
-
-        else {
-
-            nextBtn.innerText = "Next";
-
-        }
-
-    }
+    updateMockNavigation();
 
 }
 
 
 //====================================================
-// CHECK MOCK ANSWER
+// SELECT ANSWER
 //====================================================
 
-function checkMockAns(btnElement) {
+function selectMockAnswer(
+    btnElement
+) {
 
-    if (!btnElement) {
-        return;
-    }
-
-    if (!mockQuestions[currentMockIdx]) {
-        return;
-    }
-
-
-    // Already answered
     if (
-        mockAnswerState[currentMockIdx]
+        !mockQuestions ||
+        mockQuestions.length === 0
     ) {
 
         return;
@@ -20554,30 +20518,63 @@ function checkMockAns(btnElement) {
 
 
     const q =
-        mockQuestions[currentMockIdx];
+        mockQuestions[
+            currentMockIdx
+        ];
 
 
-    // Selected option
-    const selectedOpt =
-        String(
-            btnElement.innerText || ""
-        ).trim();
+    if (!q) {
+
+        return;
+
+    }
 
 
-    // Correct option
     const correctOpt =
         String(
             q.correct || ""
         ).trim();
 
 
-    // All option buttons
+    const selectedOpt =
+        String(
+            btnElement.innerText || ""
+        )
+        .replace(/^[A-D]\s*/, "")
+        .trim();
+
+
+    const isCorrect =
+        selectedOpt.toLowerCase() ===
+        correctOpt.toLowerCase();
+
+
+    mockAnswerState[
+        currentMockIdx
+    ] = {
+
+        selected:
+            selectedOpt,
+
+        correct:
+            correctOpt,
+
+        isCorrect:
+            isCorrect
+
+    };
+
+
     const parent =
-        document.getElementById("optionsGroup");
+        document.getElementById(
+            "optionsGroup"
+        );
 
 
     if (!parent) {
+
         return;
+
     }
 
 
@@ -20589,30 +20586,6 @@ function checkMockAns(btnElement) {
         );
 
 
-    //================================================
-    // SAVE ANSWER STATE
-    //================================================
-
-    const isCorrect =
-        selectedOpt.toLowerCase() ===
-        correctOpt.toLowerCase();
-
-
-    mockAnswerState[currentMockIdx] = {
-
-        selected: selectedOpt,
-
-        correct: correctOpt,
-
-        isCorrect: isCorrect
-
-    };
-
-buildMockPalette();
-    //================================================
-    // DISABLE ALL OPTIONS
-    //================================================
-
     allBtns.forEach(function(btn) {
 
         btn.disabled = true;
@@ -20620,13 +20593,8 @@ buildMockPalette();
     });
 
 
-    //================================================
-    // CORRECT / WRONG COLOR
-    //================================================
-
     if (isCorrect) {
 
-        // Selected correct answer = GREEN
         btnElement.classList.add(
             "correct-opt"
         );
@@ -20635,86 +20603,184 @@ buildMockPalette();
 
     else {
 
-        // Selected wrong answer = RED
         btnElement.classList.add(
             "wrong-opt"
         );
 
 
-        // Find correct answer and make GREEN
-        allBtns.forEach(function(btn) {
+        allBtns.forEach(
+            function(btn) {
 
-            const btnText =
-                String(
-                    btn.innerText || ""
-                ).trim();
+                const text =
+                    String(
+                        btn.innerText || ""
+                    )
+                    .replace(
+                        /^[A-D]\s*/,
+                        ""
+                    )
+                    .trim();
 
 
-            if (
-                btnText.toLowerCase() ===
-                correctOpt.toLowerCase()
-            ) {
+                if (
+                    text.toLowerCase() ===
+                    correctOpt.toLowerCase()
+                ) {
 
-                btn.classList.add(
-                    "correct-opt"
-                );
+                    btn.classList.add(
+                        "correct-opt"
+                    );
+
+                }
 
             }
-
-        });
+        );
 
     }
 
 
-    //================================================
-    // SHOW CORRECT ANSWER BELOW OPTIONS
-    //================================================
-
-    const expBox =
+    const explanation =
         document.getElementById(
             "ansExplanation"
         );
 
 
-    if (expBox) {
+    if (explanation) {
 
-        expBox.innerHTML = `
+        explanation.innerHTML = `
+
             ✅ Correct Answer:
             <strong>
-                ${escapeMockHTML(correctOpt)}
+                ${escapeMockHTML(
+                    correctOpt
+                )}
             </strong>
+
         `;
 
-        expBox.classList.remove(
+        explanation.classList.remove(
             "hidden"
         );
 
     }
 
+
+    buildMockPalette();
+
+    updateMockNavigation();
+
 }
 
 
 //====================================================
-// NEXT MOCK QUESTION
+// BUILD QUESTION PALETTE
 //====================================================
 
-function nextMockQuestion() {
+function buildMockPalette() {
 
-    if (!mockQuestions || mockQuestions.length === 0) {
+    const container =
+        document.getElementById(
+            "mockPaletteButtons"
+        );
+
+
+    if (!container) {
+
         return;
+
     }
 
 
-    // Last question
-    if (currentMockIdx >= mockQuestions.length - 1) {
+    container.innerHTML = "";
 
-        submitMockTest();
+
+    mockQuestions.forEach(
+        function(q, index) {
+
+            const btn =
+                document.createElement(
+                    "button"
+                );
+
+
+            btn.type = "button";
+
+            btn.className =
+                "mock-palette-btn";
+
+
+            btn.textContent =
+                index + 1;
+
+
+            if (
+                index === currentMockIdx
+            ) {
+
+                btn.classList.add(
+                    "current"
+                );
+
+            }
+
+            else if (
+                mockAnswerState[index]
+            ) {
+
+                btn.classList.add(
+                    "answered"
+                );
+
+            }
+
+            else {
+
+                btn.classList.add(
+                    "unvisited"
+                );
+
+            }
+
+
+            btn.onclick =
+                function() {
+
+                    goToMockQuestion(
+                        index
+                    );
+
+                };
+
+
+            container.appendChild(
+                btn
+            );
+
+        }
+    );
+
+}
+
+
+//====================================================
+// GO TO QUESTION
+//====================================================
+
+function goToMockQuestion(index) {
+
+    if (
+        index < 0 ||
+        index >= mockQuestions.length
+    ) {
 
         return;
+
     }
 
 
-    currentMockIdx++;
+    currentMockIdx =
+        index;
+
 
     renderMockQuestion();
 
@@ -20722,21 +20788,91 @@ function nextMockQuestion() {
 
 
 //====================================================
-// PREVIOUS MOCK QUESTION
+// NEXT QUESTION
+//====================================================
+
+function nextMockQuestion() {
+
+    if (
+        !mockQuestions ||
+        mockQuestions.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        currentMockIdx <
+        mockQuestions.length - 1
+    ) {
+
+        currentMockIdx++;
+
+        renderMockQuestion();
+
+        return;
+
+    }
+
+
+    submitMockTest();
+
+}
+
+
+//====================================================
+// PREVIOUS QUESTION
 //====================================================
 
 function prevMockQuestion() {
 
-    if (!mockQuestions.length) {
-        return;
-    }
-
-
-    if (currentMockIdx > 0) {
+    if (
+        currentMockIdx > 0
+    ) {
 
         currentMockIdx--;
 
         renderMockQuestion();
+
+    }
+
+}
+
+
+//====================================================
+// NAVIGATION BUTTON STATE
+//====================================================
+
+function updateMockNavigation() {
+
+    const prev =
+        document.getElementById(
+            "mockPrevBtn"
+        );
+
+    const next =
+        document.getElementById(
+            "mockNextBtn"
+        );
+
+
+    if (prev) {
+
+        prev.disabled =
+            currentMockIdx === 0;
+
+    }
+
+
+    if (next) {
+
+        next.textContent =
+            currentMockIdx ===
+            mockQuestions.length - 1
+            ? "✓ Submit Test"
+            : "Next →";
 
     }
 
@@ -20749,21 +20885,34 @@ function prevMockQuestion() {
 
 function exitMockTest() {
 
-    clearInterval(mockTimerInterval);
+    clearInterval(
+        mockTimerInterval
+    );
 
     mockTimerInterval = null;
 
 
     const mockPage =
-        document.getElementById("mockTestPage");
+        document.getElementById(
+            "mockTestPage"
+        );
+
+    const modal =
+        document.getElementById(
+            "mockTestModal"
+        );
 
     const loginPage =
-        document.getElementById("loginPage");
+        document.getElementById(
+            "loginPage"
+        );
 
 
     if (mockPage) {
 
-        mockPage.classList.add("hidden");
+        mockPage.classList.add(
+            "hidden"
+        );
 
         mockPage.style.setProperty(
             "display",
@@ -20774,46 +20923,93 @@ function exitMockTest() {
     }
 
 
-    if (loginPage) {
+    if (modal) {
 
-        loginPage.classList.remove("hidden");
+        modal.classList.add(
+            "hidden"
+        );
 
-        loginPage.style.setProperty(
+        modal.style.setProperty(
             "display",
-            "block",
+            "none",
             "important"
         );
 
     }
 
+
+    if (loginPage) {
+
+        loginPage.classList.remove(
+            "hidden"
+        );
+
+        loginPage.style.setProperty(
+            "display",
+            "flex",
+            "important"
+        );
+
+    }
+
+
+    mockQuestions = [];
+
+    currentMockIdx = 0;
+
+    mockAnswerState = {};
+
+    currentMockSheet = "";
+
+    mockTimeLeft =
+        45 * 60;
+
 }
 
 
 //====================================================
-// MOCK TEST HTML ESCAPE
-// Prevents special characters in questions/options
-// from breaking the page.
+// ESCAPE HTML
 //====================================================
 
 function escapeMockHTML(value) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
+
+//====================================================
+// SUBMIT MOCK TEST
+//====================================================
+
 function submitMockTest() {
 
-    //================================================
-    // CONFIRM SUBMIT
-    //================================================
-
-    const attemptedBeforeSubmit =
-        Object.keys(mockAnswerState).filter(function(index) {
+    const attempted =
+        Object.keys(
+            mockAnswerState
+        ).filter(function(index) {
 
             return (
                 mockAnswerState[index] &&
@@ -20823,41 +21019,34 @@ function submitMockTest() {
         }).length;
 
 
-    if (attemptedBeforeSubmit === 0) {
+    if (attempted === 0) {
 
         alert(
-            "Please attempt at least one question before submitting the Mock Test."
+            "Please attempt at least one question before submitting."
         );
 
         return;
+
     }
 
 
-    const confirmSubmit =
-        confirm(
-            "Are you sure you want to submit the Mock Test?\n\n" +
-            "Attempted Questions: " +
-            attemptedBeforeSubmit
-        );
+    if (
+        !confirm(
+            "Are you sure you want to submit the Mock Test?"
+        )
+    ) {
 
-
-    if (!confirmSubmit) {
         return;
+
     }
 
 
-    //================================================
-    // STOP TIMER
-    //================================================
-
-    clearInterval(mockTimerInterval);
+    clearInterval(
+        mockTimerInterval
+    );
 
     mockTimerInterval = null;
 
-
-    //================================================
-    // CALCULATE RESULT
-    //================================================
 
     const total =
         mockQuestions.length;
@@ -20867,10 +21056,10 @@ function submitMockTest() {
 
     let wrong = 0;
 
-    let attempted = 0;
 
-
-    Object.keys(mockAnswerState).forEach(function(index) {
+    Object.keys(
+        mockAnswerState
+    ).forEach(function(index) {
 
         const answer =
             mockAnswerState[index];
@@ -20880,20 +21069,20 @@ function submitMockTest() {
             !answer ||
             !answer.selected
         ) {
+
             return;
+
         }
 
 
-        attempted++;
-
-
         if (
-            answer.isCorrect === true
+            answer.isCorrect
         ) {
 
             right++;
 
         }
+
         else {
 
             wrong++;
@@ -20904,24 +21093,17 @@ function submitMockTest() {
 
 
     const unattempted =
-        total - attempted;
+        total -
+        attempted;
 
-
-    //================================================
-    // PERCENTAGE
-    // IMPORTANT:
-    // Percentage = Correct / Attempted
-    //================================================
 
     const percentage =
-        attempted > 0
-            ? ((right / attempted) * 100).toFixed(2)
-            : "0.00";
+        total > 0
+        ?
+        ((right / total) * 100).toFixed(2)
+        :
+        "0.00";
 
-
-    //================================================
-    // SHOW RESULT
-    //================================================
 
     const questionArea =
         document.getElementById(
@@ -20930,7 +21112,9 @@ function submitMockTest() {
 
 
     if (!questionArea) {
+
         return;
+
     }
 
 
@@ -20938,149 +21122,86 @@ function submitMockTest() {
 
         <div class="mock-result-box">
 
-            <h2 class="mock-result-title">
+            <h2>
                 🎉 Mock Test Completed
             </h2>
 
-
             <div class="mock-result-grid">
 
-                <!-- TOTAL QUESTIONS -->
+                <div class="mock-result-card">
+                    <strong>${total}</strong>
+                    <span>Total Questions</span>
+                </div>
 
                 <div class="mock-result-card">
-
-                    <span class="mock-result-number">
-                        ${total}
-                    </span>
-
-                    <span class="mock-result-label">
-                        Total Questions
-                    </span>
-
+                    <strong>${attempted}</strong>
+                    <span>Attempted</span>
                 </div>
-
-
-                <!-- ATTEMPTED -->
 
                 <div class="mock-result-card">
-
-                    <span class="mock-result-number">
-                        ${attempted}
-                    </span>
-
-                    <span class="mock-result-label">
-                        Attempted
-                    </span>
-
+                    <strong>${right}</strong>
+                    <span>Correct</span>
                 </div>
 
-
-                <!-- CORRECT -->
-
-                <div class="mock-result-card right">
-
-                    <span class="mock-result-number">
-                        ${right}
-                    </span>
-
-                    <span class="mock-result-label">
-                        Correct
-                    </span>
-
+                <div class="mock-result-card">
+                    <strong>${wrong}</strong>
+                    <span>Wrong</span>
                 </div>
 
-
-                <!-- WRONG -->
-
-                <div class="mock-result-card wrong">
-
-                    <span class="mock-result-number">
-                        ${wrong}
-                    </span>
-
-                    <span class="mock-result-label">
-                        Wrong
-                    </span>
-
+                <div class="mock-result-card">
+                    <strong>${unattempted}</strong>
+                    <span>Unattempted</span>
                 </div>
 
-
-                <!-- UNATTEMPTED -->
-
-                <div class="mock-result-card unattempted">
-
-                    <span class="mock-result-number">
-                        ${unattempted}
-                    </span>
-
-                    <span class="mock-result-label">
-                        Unattempted
-                    </span>
-
+                <div class="mock-result-card">
+                    <strong>${percentage}%</strong>
+                    <span>Score</span>
                 </div>
-
-            </div>
-
-
-            <!-- SCORE -->
-
-            <div class="mock-result-score">
-
-                Score:
-                ${right} / ${attempted}
-
-                &nbsp; | &nbsp;
-
-                Percentage:
-                ${percentage}%
 
             </div>
 
 
             <button
                 type="button"
-                class="primary mock-result-back"
+                class="primary"
                 onclick="exitMockTest()">
 
                 ← Back to Login
 
             </button>
 
-
         </div>
 
     `;
 
 
-    //================================================
-    // HIDE NAVIGATION
-    //================================================
-
-   const navigationArea =
-    document.querySelector(
-        ".mock-test-navigation"
-    );
+    const navigation =
+        document.querySelector(
+            ".mock-test-navigation"
+        );
 
 
-    if (navigationArea) {
+    if (navigation) {
 
-        navigationArea.style.display =
+        navigation.style.display =
             "none";
 
     }
-//================================================
-// HIDE QUESTION PALETTE
-//================================================
 
-const mockPalette =
-    document.getElementById("mockQuestionPalette");
 
-if (mockPalette) {
+    const palette =
+        document.getElementById(
+            "mockQuestionPalette"
+        );
 
-    mockPalette.style.display =
-        "none";
 
-}
+    if (palette) {
+
+        palette.style.display =
+            "none";
+
+    }
+
 }
 
 function buildMockPalette() {
