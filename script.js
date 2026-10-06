@@ -23733,8 +23733,31 @@ async function downloadExamFormPDF() {
 
     // 5. Clone template so original page is not modified
     const printClone = sourceArea.cloneNode(true);
+printClone.id = "examFormPrintArea";
+    /* ===== A4 PRINT SIZE - DO NOT CHANGE ===== */
+printClone.style.setProperty(
+    "width",
+    "734px",
+    "important"
+);
 
-    printClone.removeAttribute("id");
+printClone.style.setProperty(
+    "max-width",
+    "734px",
+    "important"
+);
+
+printClone.style.setProperty(
+    "box-sizing",
+    "border-box",
+    "important"
+);
+
+printClone.style.setProperty(
+    "padding",
+    "18px",
+    "important"
+);
     printClone.style.setProperty("display", "block", "important");
     printClone.style.setProperty("visibility", "visible", "important");
     printClone.style.setProperty("position", "relative", "important");
