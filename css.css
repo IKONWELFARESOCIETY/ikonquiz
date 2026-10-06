@@ -29,7 +29,6 @@
 html{
     scroll-behavior:smooth;
 }
-
 body{
     font-family:"Segoe UI", Arial, sans-serif;
     color:var(--text);
@@ -98,7 +97,6 @@ textarea{
     linear-gradient(135deg, #003b8e 0%, #005bea 42%, #0b7cff 100%);
 }
 header::before{
-
     content:"";
 
     position:absolute;
@@ -116,7 +114,6 @@ header::before{
     pointer-events:none;
 
 }
-
 }
 
 .header > *{
