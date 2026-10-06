@@ -26188,21 +26188,7 @@ if (entrySection) {
     }
 
 
-    /* =====================================================
-       DIRECT BUTTON CONTROL
-       ===================================================== */
-
-    function installNavigation() {
-
-        const resultBtn =
-            get("resultBtn");
-
-        const mockBtn =
-            get("mockTestBtn");
-
-
-      
-        }
+  function installNavigation()
 
     }
 
