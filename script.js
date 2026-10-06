@@ -24643,7 +24643,7 @@ async function downloadExamFormPDF() {
 
         table-layout: fixed !important;
 
-        font-size: 9.8px !important;
+        font-size: 12px !important;
     }
 
     .exam-print-table tr {
@@ -24659,7 +24659,7 @@ async function downloadExamFormPDF() {
 
         color: #172033 !important;
 
-        font-size: 9.8px !important;
+        font-size: 12px !important;
 
         line-height: 1.2 !important;
 
@@ -24697,7 +24697,7 @@ async function downloadExamFormPDF() {
         margin: 0.45mm 0 !important;
         padding: 0 !important;
 
-        font-size: 9px !important;
+        font-size: 10px !important;
         line-height: 1.22 !important;
 
         break-inside: avoid !important;
@@ -24729,7 +24729,7 @@ async function downloadExamFormPDF() {
 
         color: #24344d !important;
 
-        font-size: 9px !important;
+        font-size: 12px !important;
         line-height: 1.2 !important;
     }
 
@@ -24775,7 +24775,7 @@ async function downloadExamFormPDF() {
 
         color: #26364d !important;
 
-        font-size: 8.5px !important;
+        font-size: 10px !important;
 
         line-height: 1.2 !important;
 
