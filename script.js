@@ -27026,3 +27026,228 @@ function showExamFormStatusError(){
     document.body.appendChild(overlay);
 
 }
+//====================================================
+// FINAL MARKSHEET VISIBILITY FIX
+//====================================================
+
+(function(){
+
+    const oldFillMarksheet =
+        window.fillMarksheet;
+
+    if(
+        typeof oldFillMarksheet !==
+        "function"
+    ){
+
+        console.error(
+            "fillMarksheet function not found."
+        );
+
+        return;
+    }
+
+
+    window.fillMarksheet =
+        function(data){
+
+            // Original function run karo
+            oldFillMarksheet(data);
+
+
+            //========================================
+            // FORCE MARKSHEET PAGE VISIBLE
+            //========================================
+
+            const page =
+                document.getElementById(
+                    "marksheetPage"
+                );
+
+            if(!page){
+
+                console.error(
+                    "marksheetPage not found."
+                );
+
+                return;
+            }
+
+
+            page.classList.remove(
+                "hidden"
+            );
+
+
+            page.style.setProperty(
+                "display",
+                "block",
+                "important"
+            );
+
+            page.style.setProperty(
+                "visibility",
+                "visible",
+                "important"
+            );
+
+            page.style.setProperty(
+                "opacity",
+                "1",
+                "important"
+            );
+
+            page.style.setProperty(
+                "pointer-events",
+                "auto",
+                "important"
+            );
+
+            page.style.setProperty(
+                "position",
+                "relative",
+                "important"
+            );
+
+            page.style.setProperty(
+                "z-index",
+                "999999",
+                "important"
+            );
+
+
+            //========================================
+            // MARKSHEET CONTENT FORCE VISIBLE
+            //========================================
+
+            const marksheet =
+                page.querySelector(
+                    ".marksheet"
+                );
+
+            if(marksheet){
+
+                marksheet.style.setProperty(
+                    "display",
+                    "block",
+                    "important"
+                );
+
+                marksheet.style.setProperty(
+                    "visibility",
+                    "visible",
+                    "important"
+                );
+
+                marksheet.style.setProperty(
+                    "opacity",
+                    "1",
+                    "important"
+                );
+
+                marksheet.style.setProperty(
+                    "pointer-events",
+                    "auto",
+                    "important"
+                );
+
+            }
+
+
+            //========================================
+            // HIDE OTHER PAGES
+            //========================================
+
+            [
+                "loginPage",
+                "resultVerifyPage",
+                "studentResultPage",
+                "examFormPage",
+                "hallTicketVerifyPage",
+                "hallTicketPage",
+                "mockTestModal",
+                "mockTestPage"
+            ].forEach(function(id){
+
+                const el =
+                    document.getElementById(id);
+
+                if(!el) return;
+
+                el.classList.add(
+                    "hidden"
+                );
+
+                el.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
+                el.style.setProperty(
+                    "visibility",
+                    "hidden",
+                    "important"
+                );
+
+                el.style.setProperty(
+                    "pointer-events",
+                    "none",
+                    "important"
+                );
+
+            });
+
+
+            //========================================
+            // MARKSHEET AGAIN AFTER OTHER PAGES
+            //========================================
+
+            page.classList.remove(
+                "hidden"
+            );
+
+            page.style.setProperty(
+                "display",
+                "block",
+                "important"
+            );
+
+            page.style.setProperty(
+                "visibility",
+                "visible",
+                "important"
+            );
+
+            page.style.setProperty(
+                "opacity",
+                "1",
+                "important"
+            );
+
+            page.style.setProperty(
+                "pointer-events",
+                "auto",
+                "important"
+            );
+
+            page.style.setProperty(
+                "z-index",
+                "999999",
+                "important"
+            );
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "instant"
+            });
+
+
+            console.log(
+                "FINAL MARKSHEET PAGE VISIBLE"
+            );
+
+        };
+
+})();
