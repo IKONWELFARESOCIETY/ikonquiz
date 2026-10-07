@@ -5004,42 +5004,90 @@ console.log(
     "Security System Loaded Successfully"
 );
 
-function verifyResultStudent(){
+//====================================================
+// VERIFY RESULT STUDENT
+// FINAL CLICK FIX
+//====================================================
+
+window.verifyResultStudent = function () {
+
+    console.log(
+        "VERIFY RESULT BUTTON CLICKED"
+    );
+
+    const input =
+        document.getElementById(
+            "resultStudentID"
+        );
+
+    if (!input) {
+
+        console.error(
+            "resultStudentID not found"
+        );
+
+        alert(
+            "Verification field not found."
+        );
+
+        return;
+    }
 
     const code =
-        document
-        .getElementById("resultStudentID")
-        .value
-        .trim();
+        String(
+            input.value || ""
+        ).trim();
 
 
-    if(code === ""){
+    //===============================================
+    // EMPTY CODE
+    //===============================================
+
+    if (code === "") {
 
         alert(
             "Please Enter Verification Code"
         );
 
-        return;
+        input.focus();
 
+        return;
     }
 
 
-    if(code !== "16112001"){
+    //===============================================
+    // VERIFY CODE
+    //===============================================
+
+    if (code !== "16112001") {
 
         alert(
             "Invalid Verification Code"
         );
 
-        return;
+        input.focus();
 
+        return;
     }
 
 
-    //================================================
-    // NEW RESULT DATE SYSTEM
-    //================================================
+    console.log(
+        "Verification Code Accepted"
+    );
 
-    resultNavigationToken++;
+
+    //===============================================
+    // RESULT DATE SYSTEM
+    //===============================================
+
+    if (
+        typeof resultNavigationToken !==
+        "undefined"
+    ) {
+
+        resultNavigationToken++;
+
+    }
 
 
     const dateBox =
@@ -5058,8 +5106,140 @@ function verifyResultStudent(){
         );
 
 
-    // Reset date
-    if(dateSelect){
+    //===============================================
+    // CLEAR OLD RESULT
+    //===============================================
+
+    if (
+        typeof clearStudentResultTable ===
+        "function"
+    ) {
+
+        clearStudentResultTable();
+
+    }
+
+
+    //===============================================
+    // HIDE VERIFICATION PAGE
+    //===============================================
+
+    const verifyPage =
+        document.getElementById(
+            "resultVerifyPage"
+        );
+
+    if (verifyPage) {
+
+        verifyPage.classList.add(
+            "hidden"
+        );
+
+        verifyPage.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        verifyPage.style.setProperty(
+            "visibility",
+            "hidden",
+            "important"
+        );
+
+        verifyPage.style.setProperty(
+            "pointer-events",
+            "none",
+            "important"
+        );
+
+    }
+
+
+    //===============================================
+    // SHOW STUDENT RESULT PAGE
+    //===============================================
+
+    const resultPage =
+        document.getElementById(
+            "studentResultPage"
+        );
+
+    if (!resultPage) {
+
+        console.error(
+            "studentResultPage not found"
+        );
+
+        alert(
+            "Student Result Page not found."
+        );
+
+        return;
+    }
+
+
+    resultPage.classList.remove(
+        "hidden"
+    );
+
+    resultPage.style.setProperty(
+        "display",
+        "block",
+        "important"
+    );
+
+    resultPage.style.setProperty(
+        "visibility",
+        "visible",
+        "important"
+    );
+
+    resultPage.style.setProperty(
+        "opacity",
+        "1",
+        "important"
+    );
+
+    resultPage.style.setProperty(
+        "pointer-events",
+        "auto",
+        "important"
+    );
+
+    resultPage.style.setProperty(
+        "position",
+        "relative",
+        "important"
+    );
+
+    resultPage.style.setProperty(
+        "z-index",
+        "999999",
+        "important"
+    );
+
+
+    //===============================================
+    // DATE BOX
+    //===============================================
+
+    if (dateBox) {
+
+        dateBox.style.setProperty(
+            "display",
+            "block",
+            "important"
+        );
+
+    }
+
+
+    //===============================================
+    // RESET DATE DROPDOWN
+    //===============================================
+
+    if (dateSelect) {
 
         dateSelect.innerHTML = `
             <option value="">
@@ -5070,44 +5250,17 @@ function verifyResultStudent(){
     }
 
 
-    //================================================
-    // HIDE OLD RESULT DATA
-    //================================================
+    if (dateMessage) {
 
-    clearStudentResultTable();
-
-
-    //================================================
-    // SHOW RESULT PAGE
-    // BUT NO RESULTS YET
-    //================================================
-
-    document
-        .getElementById("loginPage")
-        ?.classList.add("hidden");
-
-
-    document
-        .getElementById("resultVerifyPage")
-        ?.classList.add("hidden");
-
-
-    document
-        .getElementById("studentResultPage")
-        ?.classList.remove("hidden");
-
-
-    if(dateBox){
-
-        dateBox.style.display =
-            "block";
+        dateMessage.textContent =
+            "Loading examination dates...";
 
     }
 
 
-    //================================================
-    // LOAD AVAILABLE DATES
-    //================================================
+    //===============================================
+    // LOAD DATES
+    //===============================================
 
     fetch(
         SCRIPT_URL +
@@ -5116,107 +5269,113 @@ function verifyResultStudent(){
         Date.now()
     )
 
-    .then(function(res){
+    .then(function (response) {
 
-        if(!res.ok){
+        if (!response.ok) {
 
             throw new Error(
                 "Server Error: " +
-                res.status
+                response.status
             );
 
         }
 
-        return res.json();
+        return response.json();
 
     })
 
-    .then(function(data){
+    .then(function (data) {
 
-        if(
+        console.log(
+            "Result Dates:",
+            data
+        );
+
+
+        if (
             !data ||
             data.status !== "SUCCESS"
-        ){
+        ) {
 
             throw new Error(
-                "Unable to load dates."
+                "Unable to load examination dates."
             );
 
         }
 
 
-        if(dateSelect){
+        if (!dateSelect) {
+
+            return;
+
+        }
+
+
+        dateSelect.innerHTML = `
+            <option value="">
+                -- Select Examination Date --
+            </option>
+        `;
+
+
+        if (
+            !Array.isArray(data.dates) ||
+            data.dates.length === 0
+        ) {
 
             dateSelect.innerHTML = `
                 <option value="">
-                    -- Select Examination Date --
+                    No Result Date Available
                 </option>
             `;
 
-
-            if(
-                !Array.isArray(data.dates) ||
-                data.dates.length === 0
-            ){
-
-                dateSelect.innerHTML = `
-                    <option value="">
-                        No Result Date Available
-                    </option>
-                `;
-
-
-                if(dateMessage){
-
-                    dateMessage.textContent =
-                        "No published examination result is available.";
-
-                }
-
-                return;
-
-            }
-
-
-            data.dates.forEach(
-                function(date){
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        date;
-
-
-                    option.textContent =
-                        formatStudentResultDate(
-                            date
-                        );
-
-
-                    dateSelect.appendChild(
-                        option
-                    );
-
-                }
-            );
-
-
-            if(dateMessage){
+            if (dateMessage) {
 
                 dateMessage.textContent =
-                    "Please select an examination date to view results.";
+                    "No published examination result is available.";
 
             }
+
+            return;
+
+        }
+
+
+        data.dates.forEach(
+            function (date) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    date;
+
+                option.textContent =
+                    typeof formatStudentResultDate ===
+                    "function"
+                    ? formatStudentResultDate(date)
+                    : date;
+
+                dateSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        if (dateMessage) {
+
+            dateMessage.textContent =
+                "Please select an examination date to view results.";
 
         }
 
     })
 
-    .catch(function(error){
+    .catch(function (error) {
 
         console.error(
             "Result Date Error:",
@@ -5224,7 +5383,7 @@ function verifyResultStudent(){
         );
 
 
-        if(dateSelect){
+        if (dateSelect) {
 
             dateSelect.innerHTML = `
                 <option value="">
@@ -5235,7 +5394,7 @@ function verifyResultStudent(){
         }
 
 
-        if(dateMessage){
+        if (dateMessage) {
 
             dateMessage.textContent =
                 "Unable to load examination dates.";
@@ -5244,7 +5403,7 @@ function verifyResultStudent(){
 
     });
 
-}
+};
 //====================================================
 // CLEAR STUDENT RESULT DATA
 //====================================================
