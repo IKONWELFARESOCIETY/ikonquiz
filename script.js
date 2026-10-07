@@ -19976,7 +19976,8 @@ function startMockTest(sheetName) {
 
     mockPage.style.opacity =
         "1";
-
+mockPage.style.pointerEvents =
+    "auto";
 
     //================================================
     // SHOW PAPER NAME
