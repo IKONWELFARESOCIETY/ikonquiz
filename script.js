@@ -22409,26 +22409,314 @@ function escapeDeviceValue(value){
 let examFormStudentData = null;
 let examFormEligible = false;
 
-//====================================================
-// OPEN STUDENT EXAM FORM
-// FINAL ISOLATED VERSION
-//====================================================
 
-function openStudentExamForm(event) {
+async function openExamFormPage() {
 
-    // Stop any other button/event from firing
-    if (event) {
+    //==================================================
+    // CHECK EXAM FORM STATUS
+    // SOURCE : Settings!B17
+    // ON  = OPEN FORM
+    // OFF = FORM CLOSED
+    //==================================================
 
-        event.preventDefault();
-        event.stopPropagation();
+    try {
 
+        const response =
+            await fetch(
+                SCRIPT_URL +
+                "?action=examFormStatus"
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server Error: " +
+                response.status
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        console.log(
+            "Exam Form Status:",
+            data.status
+        );
+
+
+        //================================================
+        // FORM CLOSED
+        //================================================
+
+        if(
+            String(data.status)
+                .trim()
+                .toUpperCase()
+            !== "ON"
+        ){
+
+            const oldMessage =
+                document.getElementById(
+                    "examFormClosedOverlay"
+                );
+
+            if(oldMessage){
+                oldMessage.remove();
+            }
+
+
+            const overlay =
+                document.createElement("div");
+
+            overlay.id =
+                "examFormClosedOverlay";
+
+
+            overlay.innerHTML = `
+
+                <div style="
+                    width:min(92%,500px);
+                    box-sizing:border-box;
+                    background:#ffffff;
+                    border-radius:18px;
+                    padding:32px 28px;
+                    text-align:center;
+                    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+                    border:1px solid #e5e7eb;
+                ">
+
+                    <div style="
+                        width:68px;
+                        height:68px;
+                        margin:0 auto 18px;
+                        border-radius:50%;
+                        background:#fff7ed;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:32px;
+                    ">
+                        🔒
+                    </div>
+
+
+                    <h2 style="
+                        margin:0 0 10px;
+                        color:#111827;
+                        font-size:24px;
+                        font-weight:700;
+                    ">
+                        Examination Form Closed
+                    </h2>
+
+
+                    <p style="
+                        margin:0 0 8px;
+                        color:#374151;
+                        font-size:16px;
+                        line-height:1.6;
+                    ">
+                        The last date for submission of
+                        the examination form has expired.
+                    </p>
+
+
+                    <p style="
+                        margin:0 0 24px;
+                        color:#6b7280;
+                        font-size:14px;
+                        line-height:1.6;
+                    ">
+                        Form submission is currently closed.
+                        Please contact the institute office
+                        for further assistance.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        id="closeExamFormClosedBtn"
+                        style="
+                            border:0;
+                            padding:11px 30px;
+                            border-radius:9px;
+                            background:#111827;
+                            color:#ffffff;
+                            font-size:15px;
+                            font-weight:600;
+                            cursor:pointer;
+                        "
+                    >
+                        OK
+                    </button>
+
+                </div>
+            `;
+
+
+            overlay.style.cssText = `
+                position:fixed;
+                inset:0;
+                z-index:999999;
+                background:rgba(15,23,42,0.65);
+                backdrop-filter:blur(5px);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:20px;
+                box-sizing:border-box;
+            `;
+
+
+            document.body.appendChild(
+                overlay
+            );
+
+
+            const closeBtn =
+                document.getElementById(
+                    "closeExamFormClosedBtn"
+                );
+
+
+            if(closeBtn){
+
+                closeBtn.onclick =
+                    function(){
+
+                        overlay.remove();
+
+                    };
+
+            }
+
+
+            return;
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Exam Form Status Error:",
+            error
+        );
+
+
+        const errorOverlay =
+            document.createElement("div");
+
+        errorOverlay.id =
+            "examFormStatusError";
+
+
+        errorOverlay.innerHTML = `
+
+            <div style="
+                width:min(92%,480px);
+                box-sizing:border-box;
+                background:#ffffff;
+                border-radius:18px;
+                padding:30px 26px;
+                text-align:center;
+                box-shadow:0 20px 60px rgba(0,0,0,0.25);
+            ">
+
+                <div style="
+                    font-size:42px;
+                    margin-bottom:12px;
+                ">
+                    ⚠️
+                </div>
+
+
+                <h2 style="
+                    margin:0 0 10px;
+                    color:#111827;
+                    font-size:22px;
+                ">
+                    Unable to Check Form Status
+                </h2>
+
+
+                <p style="
+                    margin:0 0 22px;
+                    color:#6b7280;
+                    font-size:14px;
+                    line-height:1.6;
+                ">
+                    Unable to connect with the server.
+                    Please check your internet connection
+                    and try again.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="closeExamFormStatusError"
+                    style="
+                        border:0;
+                        padding:11px 30px;
+                        border-radius:9px;
+                        background:#111827;
+                        color:#ffffff;
+                        font-size:15px;
+                        font-weight:600;
+                        cursor:pointer;
+                    "
+                >
+                    OK
+                </button>
+
+            </div>
+        `;
+
+
+        errorOverlay.style.cssText = `
+            position:fixed;
+            inset:0;
+            z-index:999999;
+            background:rgba(15,23,42,0.65);
+            backdrop-filter:blur(5px);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            box-sizing:border-box;
+        `;
+
+
+        document.body.appendChild(
+            errorOverlay
+        );
+
+
+        const closeErrorBtn =
+            document.getElementById(
+                "closeExamFormStatusError"
+            );
+
+
+        if(closeErrorBtn){
+
+            closeErrorBtn.onclick =
+                function(){
+
+                    errorOverlay.remove();
+
+                };
+
+        }
+
+
+        return;
     }
 
 
-    console.log(
-        "OPENING STUDENT EXAM FORM"
-    );
-
+    //==================================================
+    // ORIGINAL EXAM FORM OPENING CODE
+    //==================================================
 
     const loginPage =
         document.getElementById(
@@ -22440,152 +22728,33 @@ function openStudentExamForm(event) {
             "examFormPage"
         );
 
-    const mockModal =
-        document.getElementById(
-            "mockTestModal"
-        );
 
-    const mockPage =
-        document.getElementById(
-            "mockTestPage"
-        );
-
-    const examTypePage =
-        document.getElementById(
-            "examTypePage"
-        );
-
-    const theoryPage =
-        document.getElementById(
-            "theoryPaperPage"
-        );
-
-    const practicalPage =
-        document.getElementById(
-            "practicalPaperPage"
-        );
-
-    const resultPage =
-        document.getElementById(
-            "resultVerifyPage"
-        );
-
-    const studentResultPage =
-        document.getElementById(
-            "studentResultPage"
-        );
-
-
-    //================================================
-    // HIDE LOGIN
-    //================================================
-
-    if (loginPage) {
-
-        loginPage.classList.add(
-            "hidden"
-        );
-
-        loginPage.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    }
-
-
-    //================================================
-    // HIDE MOCK MODAL
-    //================================================
-
-    if (mockModal) {
-
-        mockModal.classList.add(
-            "hidden"
-        );
-
-        mockModal.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        mockModal.style.visibility =
-            "hidden";
-
-        mockModal.style.opacity =
-            "0";
-
-    }
-
-
-    //================================================
-    // HIDE MOCK TEST PAGE
-    //================================================
-
-    if (mockPage) {
-
-        mockPage.classList.add(
-            "hidden"
-        );
-
-        mockPage.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-        mockPage.style.visibility =
-            "hidden";
-
-    }
-
-
-    //================================================
-    // HIDE OTHER PAGES
-    //================================================
-
-    [
-        examTypePage,
-        theoryPage,
-        practicalPage,
-        resultPage,
-        studentResultPage
-    ].forEach(function(page) {
-
-        if (!page) {
-            return;
-        }
-
-        page.classList.add(
-            "hidden"
-        );
-
-        page.style.setProperty(
-            "display",
-            "none",
-            "important"
-        );
-
-    });
-
-
-    //================================================
-    // SHOW EXAM FORM
-    //================================================
-
-    if (!examFormPage) {
+    if(
+        !loginPage ||
+        !examFormPage
+    ){
 
         console.error(
-            "examFormPage not found"
+            "Login page or Exam Form page not found."
         );
 
         return;
-
     }
 
 
+    // Hide login page
+    loginPage.classList.add(
+        "hidden"
+    );
+
+    loginPage.style.setProperty(
+        "display",
+        "none",
+        "important"
+    );
+
+
+    // Show Exam Form
     examFormPage.classList.remove(
         "hidden"
     );
@@ -22596,55 +22765,38 @@ function openStudentExamForm(event) {
         "important"
     );
 
-    examFormPage.style.visibility =
-        "visible";
 
-    examFormPage.style.opacity =
-        "1";
-
-    examFormPage.style.position =
-        "relative";
-
-    examFormPage.style.zIndex =
-        "100";
-
-
-    //================================================
-    // RESET FORM
-    //================================================
-
-    const formReg =
+    // Reset Registration Number
+    const regNo =
         document.getElementById(
             "examFormRegNo"
         );
 
-    if (formReg) {
+    if(regNo){
 
-        formReg.value = "";
+        regNo.value = "";
 
     }
 
 
-    if (
-        typeof resetExamFormEligibility ===
-        "function"
-    ) {
+    // Reset eligibility
+    if(
+        typeof resetExamFormEligibility
+        === "function"
+    ){
 
         resetExamFormEligibility();
 
     }
 
 
-    //================================================
-    // SHOW ENTRY SECTION
-    //================================================
-
+    // Show entry section
     const entrySection =
         document.getElementById(
             "examFormEntrySection"
         );
 
-    if (entrySection) {
+    if(entrySection){
 
         entrySection.style.display =
             "block";
@@ -22652,16 +22804,13 @@ function openStudentExamForm(event) {
     }
 
 
-    //================================================
-    // HIDE STUDENT DETAILS
-    //================================================
-
+    // Hide student details
     const studentDetails =
         document.getElementById(
             "examFormStudentDetails"
         );
 
-    if (studentDetails) {
+    if(studentDetails){
 
         studentDetails.classList.add(
             "hidden"
@@ -22670,16 +22819,13 @@ function openStudentExamForm(event) {
     }
 
 
-    //================================================
-    // HIDE PAPER SECTION
-    //================================================
-
+    // Hide paper section
     const paperSection =
         document.getElementById(
             "examFormPaperSection"
         );
 
-    if (paperSection) {
+    if(paperSection){
 
         paperSection.classList.add(
             "hidden"
@@ -22688,40 +22834,59 @@ function openStudentExamForm(event) {
     }
 
 
-    //================================================
-    // RESET PREVIEW
-    //================================================
-
-    const preview =
+    // Hide preview
+    const previewSection =
         document.getElementById(
             "examFormPreviewSection"
         );
 
-    if (preview) {
+    if(previewSection){
 
-        preview.classList.add(
+        previewSection.classList.add(
             "hidden"
         );
 
-        preview.style.display =
+        previewSection.style.display =
             "none";
 
     }
 
 
-    //================================================
-    // SCROLL TOP
-    //================================================
+    // Hide success message
+    const successMessage =
+        document.getElementById(
+            "examFormSuccessMessage"
+        );
+
+    if(successMessage){
+
+        successMessage.style.display =
+            "none";
+
+    }
+
+
+    // Hide download options
+    const downloadOptions =
+        document.getElementById(
+            "examFormDownloadOptions"
+        );
+
+    if(downloadOptions){
+
+        downloadOptions.style.display =
+            "none";
+
+    }
+
 
     window.scrollTo({
-        top: 0,
-        behavior: "instant"
+
+        top:0,
+
+        behavior:"instant"
+
     });
-
-
-    console.log(
-        "EXAM FORM OPENED SUCCESSFULLY"
-    );
 
 }
 function backToLoginFromExamForm() {
@@ -26463,3 +26628,241 @@ window.openMockTestModal = function (event) {
         "FINAL MOCK MODAL VISIBLE"
     );
 };
+//==================================================
+// EXAM FORM CLOSED MESSAGE
+//==================================================
+
+function showExamFormClosedMessage(){
+
+    // Remove old message if already present
+    const old =
+        document.getElementById(
+            "examFormClosedOverlay"
+        );
+
+    if(old){
+        old.remove();
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "examFormClosedOverlay";
+
+
+    overlay.innerHTML = `
+
+        <div style="
+            width: min(92%, 500px);
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 32px 28px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            border: 1px solid #e5e7eb;
+            animation: examFormPopupIn 0.25s ease;
+        ">
+
+            <div style="
+                width: 64px;
+                height: 64px;
+                margin: 0 auto 18px;
+                border-radius: 50%;
+                background: #fff1f2;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 30px;
+            ">
+                🔒
+            </div>
+
+
+            <h2 style="
+                margin: 0 0 10px;
+                font-size: 24px;
+                color: #111827;
+            ">
+                Examination Form Closed
+            </h2>
+
+
+            <p style="
+                margin: 0 auto 8px;
+                color: #374151;
+                font-size: 16px;
+                line-height: 1.6;
+            ">
+                The last date for submission of the
+                examination form has expired.
+            </p>
+
+
+            <p style="
+                margin: 0 auto 24px;
+                color: #6b7280;
+                font-size: 14px;
+                line-height: 1.5;
+            ">
+                Form submission is currently closed.
+                Please contact the institute office
+                for further assistance.
+            </p>
+
+
+            <button
+                type="button"
+                onclick="closeExamFormClosedMessage()"
+                style="
+                    border: none;
+                    padding: 11px 28px;
+                    border-radius: 10px;
+                    background: #111827;
+                    color: #ffffff;
+                    font-size: 15px;
+                    font-weight: 600;
+                    cursor: pointer;
+                "
+            >
+                OK
+            </button>
+
+        </div>
+    `;
+
+
+    overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background: rgba(15,23,42,0.65);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    `;
+
+
+    document.body.appendChild(overlay);
+}
+
+
+//==================================================
+// CLOSE EXAM FORM CLOSED MESSAGE
+//==================================================
+
+function closeExamFormClosedMessage(){
+
+    const overlay =
+        document.getElementById(
+            "examFormClosedOverlay"
+        );
+
+    if(overlay){
+
+        overlay.remove();
+
+    }
+
+}
+
+
+//==================================================
+// EXAM FORM STATUS ERROR
+//==================================================
+
+function showExamFormStatusError(){
+
+    const old =
+        document.getElementById(
+            "examFormStatusError"
+        );
+
+    if(old){
+        old.remove();
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "examFormStatusError";
+
+
+    overlay.innerHTML = `
+
+        <div style="
+            width: min(92%, 480px);
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        ">
+
+            <div style="
+                font-size: 42px;
+                margin-bottom: 12px;
+            ">
+                ⚠️
+            </div>
+
+
+            <h2 style="
+                margin: 0 0 10px;
+                color: #111827;
+            ">
+                Unable to Check Form Status
+            </h2>
+
+
+            <p style="
+                margin: 0 0 22px;
+                color: #6b7280;
+                line-height: 1.6;
+            ">
+                Please check your internet connection
+                and try again.
+            </p>
+
+
+            <button
+                type="button"
+                onclick="this.closest('#examFormStatusError').remove()"
+                style="
+                    border: none;
+                    padding: 11px 28px;
+                    border-radius: 10px;
+                    background: #111827;
+                    color: white;
+                    font-weight: 600;
+                    cursor: pointer;
+                "
+            >
+                OK
+            </button>
+
+        </div>
+    `;
+
+
+    overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background: rgba(15,23,42,0.65);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    `;
+
+
+    document.body.appendChild(overlay);
+
+}
