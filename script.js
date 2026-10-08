@@ -23774,14 +23774,6 @@ const papers =
             );
 
 
-            const courses =
-                Object.keys(courseMap).map(
-                    function(key) {
-                        return courseMap[key];
-                    }
-                );
-
-
             //========================================
             // CREATE COURSE SELECT
             //========================================
