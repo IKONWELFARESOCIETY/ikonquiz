@@ -23490,13 +23490,61 @@ function lookupExamFormStudent() {
              * }
              */
 
-            const paperCourses =
-                data.student.paperCourses || {};
+         const coursePapers =
+    data.student.coursePapers || {};
 
-            const papers =
-                Array.isArray(data.papers)
-                    ? data.papers
-                    : [];
+const courses =
+    Array.isArray(data.student.courses)
+        ? data.student.courses
+        : [];
+
+// Convert:
+// Course -> [Papers]
+// into:
+// Paper -> Course
+
+const paperCourses = {};
+
+Object.keys(coursePapers).forEach(
+    function(courseKey) {
+
+        const paperList =
+            Array.isArray(coursePapers[courseKey])
+                ? coursePapers[courseKey]
+                : [];
+
+        const displayCourse =
+            courses.find(function(course) {
+
+                return String(course)
+                    .trim()
+                    .toUpperCase()
+                    ===
+                    String(courseKey)
+                        .trim()
+                        .toUpperCase();
+
+            }) || courseKey;
+
+        paperList.forEach(
+            function(paper) {
+
+                if (!paper) return;
+
+                paperCourses[
+                    String(paper).trim()
+                ] = displayCourse;
+
+            }
+        );
+
+    }
+);
+
+const papers =
+    Array.isArray(data.papers)
+        ? data.papers
+        : [];
 
             //========================================
             // STUDENT PHOTO
