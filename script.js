@@ -23085,250 +23085,1305 @@ function setExamFormStudentDetails(regNo, name, course) {
     if (courseBox) courseBox.textContent = course || "--";
 }
 
+//====================================================
+// EXAM FORM - LOAD PAPERS BY SELECTED COURSE
+//====================================================
 
+function loadExamFormPapersByCourse(course) {
+
+    const paperSelect =
+        document.getElementById("examFormPaperSelect");
+
+    const paperDisplay =
+        document.getElementById("examFormDisplayPaper");
+
+    const message =
+        document.getElementById(
+            "examFormEligibilityMessage"
+        );
+
+    if (!paperSelect) return;
+
+    const courseKey =
+        String(course || "")
+            .trim()
+            .toUpperCase();
+
+    const coursePapers =
+        examFormStudentData &&
+        examFormStudentData.coursePapers
+            ? examFormStudentData.coursePapers
+            : {};
+
+    const papers =
+        Array.isArray(coursePapers[courseKey])
+            ? coursePapers[courseKey]
+            : [];
+
+    // Reset old eligibility
+    resetExamFormEligibility();
+
+    // Save selected course
+    examFormStudentData.selectedCourse =
+        course;
+
+    examFormStudentData.course =
+        course;
+
+    // Reset paper dropdown
+    paperSelect.innerHTML = "";
+
+    paperSelect.add(
+        new Option(
+            "Select Exam Paper",
+            ""
+        )
+    );
+
+    if (!papers.length) {
+
+        paperSelect.disabled = true;
+
+        paperSelect.add(
+            new Option(
+                "No paper available for this course",
+                ""
+            )
+        );
+
+        if (message) {
+
+            message.style.display = "block";
+
+            message.textContent =
+                "No exam paper is assigned under the selected course.";
+
+            message.style.color =
+                "#b45309";
+
+        }
+
+        if (paperDisplay) {
+            paperDisplay.textContent = "--";
+        }
+
+        return;
+    }
+
+    // Add only selected course papers
+    papers.forEach(function(paper) {
+
+        paperSelect.add(
+            new Option(
+                String(paper),
+                String(paper)
+            )
+        );
+
+    });
+
+    paperSelect.disabled = false;
+
+    paperSelect.onchange = function() {
+
+        resetExamFormEligibility();
+
+        updateExamFormSelectedPaper();
+
+        updateExamFormPreview();
+
+    };
+
+    if (paperDisplay) {
+        paperDisplay.textContent = "--";
+    }
+
+}
+
+
+//====================================================
+// EXAM FORM - COURSE SELECTOR
+//====================================================
+
+function setupExamFormCourseSelector() {
+
+    const courseBox =
+        document.getElementById(
+            "examFormDisplayCourse"
+        );
+
+    if (!courseBox) return;
+
+    const courses =
+        examFormStudentData &&
+        Array.isArray(
+            examFormStudentData.courses
+        )
+            ? examFormStudentData.courses
+            : [];
+
+    // Clear old course display
+    courseBox.innerHTML = "";
+
+    const courseSelect =
+        document.createElement("select");
+
+    courseSelect.id =
+        "examFormCourseSelect";
+
+    courseSelect.style.cssText = `
+        width:100%;
+        min-height:42px;
+        padding:9px 12px;
+        border:1px solid #cbd5e1;
+        border-radius:8px;
+        background:#ffffff;
+        color:#111827;
+        font-size:15px;
+        font-weight:600;
+        outline:none;
+        box-sizing:border-box;
+        cursor:pointer;
+    `;
+
+    courseSelect.add(
+        new Option(
+            courses.length > 1
+                ? "Select Course"
+                : "Select Course",
+            ""
+        )
+    );
+
+    courses.forEach(function(course) {
+
+        courseSelect.add(
+            new Option(
+                String(course),
+                String(course)
+            )
+        );
+
+    });
+
+    courseBox.appendChild(
+        courseSelect
+    );
+
+    //==============================================
+    // COURSE CHANGED
+    //==============================================
+
+    courseSelect.onchange =
+        function() {
+
+            const selectedCourse =
+                this.value.trim();
+
+            if (!selectedCourse) {
+
+                examFormStudentData.selectedCourse =
+                    "";
+
+                examFormStudentData.course =
+                    "";
+
+                const paperSelect =
+                    document.getElementById(
+                        "examFormPaperSelect"
+                    );
+
+                if (paperSelect) {
+
+                    paperSelect.innerHTML = "";
+
+                    paperSelect.add(
+                        new Option(
+                            "Select Course First",
+                            ""
+                        )
+                    );
+
+                    paperSelect.disabled = true;
+
+                }
+
+                resetExamFormEligibility();
+
+                updateExamFormPreview();
+
+                return;
+
+            }
+
+            loadExamFormPapersByCourse(
+                selectedCourse
+            );
+
+            updateExamFormPreview();
+
+        };
+
+    //==============================================
+    // ONE COURSE ONLY
+    //==============================================
+
+    if (courses.length === 1) {
+
+        courseSelect.value =
+            courses[0];
+
+        loadExamFormPapersByCourse(
+            courses[0]
+        );
+
+    } else {
+
+        const paperSelect =
+            document.getElementById(
+                "examFormPaperSelect"
+            );
+
+        if (paperSelect) {
+
+            paperSelect.innerHTML = "";
+
+            paperSelect.add(
+                new Option(
+                    "Select Course First",
+                    ""
+                )
+            );
+
+            paperSelect.disabled = true;
+
+        }
+
+    }
+
+}
 //----------------------------------------------------
 // SEARCH STUDENT BY REGISTRATION NUMBER
 //----------------------------------------------------
 
+//----------------------------------------------------
+// SEARCH STUDENT BY REGISTRATION NUMBER
+// COURSE-WISE PAPER SELECTION
+//----------------------------------------------------
+
 function lookupExamFormStudent() {
 
-    const regInput = document.getElementById("examFormRegNo");
-    const searchBtn = document.getElementById("examFormSearchBtn");
-    const paperSelect = document.getElementById("examFormPaperSelect");
-    const message = document.getElementById("examFormEligibilityMessage");
+    const regInput =
+        document.getElementById(
+            "examFormRegNo"
+        );
 
-    const regNo = regInput ? regInput.value.trim() : "";
+    const searchBtn =
+        document.getElementById(
+            "examFormSearchBtn"
+        );
+
+    const paperSelect =
+        document.getElementById(
+            "examFormPaperSelect"
+        );
+
+    const message =
+        document.getElementById(
+            "examFormEligibilityMessage"
+        );
+
+    const regNo =
+        regInput
+            ? regInput.value.trim()
+            : "";
+
+
+    //================================================
+    // VALIDATE REG NO
+    //================================================
 
     if (!regNo) {
-        alert("Please enter Registration Number.");
+
+        alert(
+            "Please enter Registration Number."
+        );
+
         return;
+
     }
+
+
+    //================================================
+    // RESET OLD DATA
+    //================================================
 
     examFormStudentData = null;
+
     examFormEligible = false;
+
     resetExamFormPreview();
 
-const submitSection = document.getElementById("examFormSubmitSection");
-if (submitSection) {
-    submitSection.style.display = "none";
-}
 
-    if (message) message.textContent = "";
+    const submitSection =
+        document.getElementById(
+            "examFormSubmitSection"
+        );
+
+    if (submitSection) {
+
+        submitSection.style.display =
+            "none";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+            "";
+
+    }
+
+
+    //================================================
+    // RESET PAPER DROPDOWN
+    //================================================
 
     if (paperSelect) {
-        paperSelect.innerHTML = "";
-        paperSelect.add(new Option("Loading papers...", ""));
-        paperSelect.disabled = true;
+
+        paperSelect.innerHTML =
+            "";
+
+        paperSelect.add(
+            new Option(
+                "Loading courses...",
+                ""
+            )
+        );
+
+        paperSelect.disabled =
+            true;
+
     }
 
-    const submitBtn = document.getElementById("examFormSubmitBtn");
-    if (submitBtn) submitBtn.style.display = "none";
 
-    const downloadOptions = document.getElementById("examFormDownloadOptions");
-    if (downloadOptions) downloadOptions.style.display = "none";
+    const submitBtn =
+        document.getElementById(
+            "examFormSubmitBtn"
+        );
 
-    // Clear previously displayed selected paper
-    const paperDisplay = document.getElementById("examFormDisplayPaper");
-    if (paperDisplay) paperDisplay.textContent = "--";
+    if (submitBtn) {
+
+        submitBtn.style.display =
+            "none";
+
+    }
+
+
+    const downloadOptions =
+        document.getElementById(
+            "examFormDownloadOptions"
+        );
+
+    if (downloadOptions) {
+
+        downloadOptions.style.display =
+            "none";
+
+    }
+
+
+    //================================================
+    // CLEAR DISPLAYED PAPER
+    //================================================
+
+    const paperDisplay =
+        document.getElementById(
+            "examFormDisplayPaper"
+        );
+
+    if (paperDisplay) {
+
+        paperDisplay.textContent =
+            "--";
+
+    }
+
+
+    //================================================
+    // SEARCH BUTTON
+    //================================================
 
     if (searchBtn) {
-        searchBtn.disabled = true;
-        searchBtn.textContent = "Searching...";
+
+        searchBtn.disabled =
+            true;
+
+        searchBtn.textContent =
+            "Searching...";
+
     }
+
+
+    //================================================
+    // API URL
+    //================================================
 
     const url =
         SCRIPT_URL +
         "?action=examFormStudent&regNo=" +
         encodeURIComponent(regNo);
 
-    fetch(url)
-        .then(function(res) {
-            if (!res.ok) {
-                throw new Error("Server error: " + res.status);
-            }
-            return res.json();
-        })
-        .then(function(data) {
 
-            if (data.status !== "SUCCESS" || !data.student) {
-                throw new Error(data.message || "Student not found.");
-            }
-
-            examFormStudentData = data.student;
-            updateExamFormPreview();
-            const studentRegNo = data.student.regNo || regNo;
-         // Load student photo from GitHub repository root
-const studentPhoto = document.getElementById("examFormStudentPhoto");
-
-if (studentPhoto) {
-    const photoBase =
-        "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/";
-
-    const photoName = encodeURIComponent(
-        String(studentRegNo || "").trim()
+    console.log(
+        "Exam Form Student API:",
+        url
     );
 
-    const extensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"];
-    let photoIndex = 0;
 
-    studentPhoto.style.display = "block";
-    studentPhoto.onerror = function () {
-        photoIndex++;
+    //================================================
+    // FETCH
+    //================================================
 
-        if (photoIndex < extensions.length) {
-            this.src = photoBase + photoName + "." + extensions[photoIndex];
-        } else {
-            console.error(
-                "Student photo not found. Tried registration number:",
-                studentRegNo
+    fetch(url)
+
+        .then(function(res) {
+
+            if (!res.ok) {
+
+                throw new Error(
+                    "Server error: " +
+                    res.status
+                );
+
+            }
+
+            return res.json();
+
+        })
+
+
+        .then(function(data) {
+
+            console.log(
+                "Exam Form Student Response:",
+                data
             );
-            this.style.display = "none";
-        }
-    };
 
-  studentPhoto.onload = function () {
-    console.log("Student photo loaded:", this.src);
-    this.style.display = "block";
 
-    // Sync student photo to preview and print/PDF template.
-    const photoSource = this.currentSrc || this.src;
+            //================================================
+            // VALIDATE RESPONSE
+            //================================================
 
-    ["previewExamStudentPhoto", "printExamStudentPhoto"].forEach(function(id) {
-        const target = document.getElementById(id);
-        if (!target) return;
+            if (
+                data.status !== "SUCCESS" ||
+                !data.student
+            ) {
 
-        target.onload = function() {
-            this.style.display = "block";
+                throw new Error(
+                    data.message ||
+                    "Student not found."
+                );
 
-            if (id === "previewExamStudentPhoto") {
-                const fallback = document.getElementById("previewExamPhotoFallback");
-                if (fallback) fallback.style.display = "none";
             }
-        };
 
-        target.onerror = function() {
-            this.style.display = "none";
 
-            if (id === "previewExamStudentPhoto") {
-                const fallback = document.getElementById("previewExamPhotoFallback");
-                if (fallback) fallback.style.display = "flex";
+            //================================================
+            // SAVE STUDENT DATA
+            //================================================
+
+            examFormStudentData =
+                data.student;
+
+
+            //================================================
+            // SAVE COURSE DATA
+            //================================================
+
+            examFormStudentData.courses =
+                Array.isArray(
+                    data.student.courses
+                )
+                    ? data.student.courses
+                    : [];
+
+
+            examFormStudentData.coursePapers =
+                data.student.coursePapers ||
+                {};
+
+
+            //================================================
+            // UPDATE PREVIEW
+            //================================================
+
+            updateExamFormPreview();
+
+
+            const studentRegNo =
+                data.student.regNo ||
+                regNo;
+
+
+            //================================================
+            // STUDENT PHOTO
+            //================================================
+
+            const studentPhoto =
+                document.getElementById(
+                    "examFormStudentPhoto"
+                );
+
+
+            if (studentPhoto) {
+
+                const photoBase =
+                    "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/";
+
+
+                const photoName =
+                    encodeURIComponent(
+                        String(
+                            studentRegNo || ""
+                        ).trim()
+                    );
+
+
+                const extensions = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "JPG",
+                    "JPEG",
+                    "PNG"
+                ];
+
+
+                let photoIndex = 0;
+
+
+                studentPhoto.style.display =
+                    "block";
+
+
+                studentPhoto.onerror =
+                    function() {
+
+                        photoIndex++;
+
+
+                        if (
+                            photoIndex <
+                            extensions.length
+                        ) {
+
+                            this.src =
+                                photoBase +
+                                photoName +
+                                "." +
+                                extensions[
+                                    photoIndex
+                                ];
+
+                        } else {
+
+                            console.error(
+                                "Student photo not found:",
+                                studentRegNo
+                            );
+
+                            this.style.display =
+                                "none";
+
+                        }
+
+                    };
+
+
+                studentPhoto.onload =
+                    function() {
+
+                        console.log(
+                            "Student photo loaded:",
+                            this.src
+                        );
+
+
+                        this.style.display =
+                            "block";
+
+
+                        const photoSource =
+                            this.currentSrc ||
+                            this.src;
+
+
+                        [
+                            "previewExamStudentPhoto",
+                            "printExamStudentPhoto"
+                        ]
+                        .forEach(function(id) {
+
+                            const target =
+                                document.getElementById(
+                                    id
+                                );
+
+
+                            if (!target) {
+                                return;
+                            }
+
+
+                            target.onload =
+                                function() {
+
+                                    this.style.display =
+                                        "block";
+
+
+                                    if (
+                                        id ===
+                                        "previewExamStudentPhoto"
+                                    ) {
+
+                                        const fallback =
+                                            document.getElementById(
+                                                "previewExamPhotoFallback"
+                                            );
+
+
+                                        if (fallback) {
+
+                                            fallback.style.display =
+                                                "none";
+
+                                        }
+
+                                    }
+
+                                };
+
+
+                            target.onerror =
+                                function() {
+
+                                    this.style.display =
+                                        "none";
+
+
+                                    if (
+                                        id ===
+                                        "previewExamStudentPhoto"
+                                    ) {
+
+                                        const fallback =
+                                            document.getElementById(
+                                                "previewExamPhotoFallback"
+                                            );
+
+
+                                        if (fallback) {
+
+                                            fallback.style.display =
+                                                "flex";
+
+                                        }
+
+                                    }
+
+                                };
+
+
+                            target.src =
+                                photoSource;
+
+                        });
+
+                    };
+
+
+                studentPhoto.src =
+                    photoBase +
+                    photoName +
+                    "." +
+                    extensions[0];
+
             }
-        };
 
-        target.src = photoSource;
-    });
-};
 
-    studentPhoto.src = photoBase + photoName + "." + extensions[0];
-}
-            const studentName = data.student.name || "";
-            const studentCourse = data.student.course || "";
-            const papers = Array.isArray(data.papers) ? data.papers : [];
+            //================================================
+            // STUDENT BASIC DETAILS
+            //================================================
 
-            // Display student and bill details
+            const studentName =
+                data.student.name ||
+                "";
+
+
+            const studentCourse =
+                data.student.course ||
+                "";
+
+
             setExamFormStudentDetails(
+
                 studentRegNo,
+
                 studentName,
+
                 studentCourse,
+
                 data.student.billDate,
+
                 data.student.billNo,
+
                 data.student.billAmount
+
             );
 
-            // Show student details and paper section
-            const detailsBox = document.getElementById("examFormStudentDetails");
-            const paperSection = document.getElementById("examFormPaperSection");
+
+            //================================================
+            // SHOW STUDENT DETAILS
+            //================================================
+
+            const detailsBox =
+                document.getElementById(
+                    "examFormStudentDetails"
+                );
+
+
+            const paperSection =
+                document.getElementById(
+                    "examFormPaperSection"
+                );
+
 
             if (detailsBox) {
-                detailsBox.classList.remove("hidden");
-                detailsBox.style.removeProperty("display");
+
+                detailsBox.classList.remove(
+                    "hidden"
+                );
+
+                detailsBox.style.removeProperty(
+                    "display"
+                );
+
             }
+
 
             if (paperSection) {
-                paperSection.classList.remove("hidden");
-                paperSection.style.removeProperty("display");
+
+                paperSection.classList.remove(
+                    "hidden"
+                );
+
+                paperSection.style.removeProperty(
+                    "display"
+                );
+
             }
 
-            if (!papers.length) {
+
+            //================================================
+            // GET COURSES
+            //================================================
+
+            const courses =
+                Array.isArray(
+                    data.student.courses
+                )
+                    ? data.student.courses
+                    : [];
+
+
+            const coursePapers =
+                data.student.coursePapers ||
+                {};
+
+
+            //================================================
+            // NO COURSE
+            //================================================
+
+            if (!courses.length) {
 
                 if (paperSelect) {
-                    paperSelect.innerHTML = "";
-                    paperSelect.add(new Option("No assigned papers found", ""));
-                    paperSelect.disabled = true;
+
+                    paperSelect.innerHTML =
+                        "";
+
+                    paperSelect.add(
+                        new Option(
+                            "No course assigned",
+                            ""
+                        )
+                    );
+
+                    paperSelect.disabled =
+                        true;
+
                 }
 
+
                 if (message) {
+
                     message.textContent =
-                        "No exam papers are assigned to this Registration Number.";
-                    message.style.color = "#b45309";
+                        "No course is assigned to this Registration Number.";
+
+                    message.style.color =
+                        "#b91c1c";
+
                 }
 
                 return;
+
             }
 
-            // Populate paper dropdown
+
+            //================================================
+            // CREATE COURSE DROPDOWN
+            // USING EXISTING COURSE DISPLAY BOX
+            //================================================
+
+            const courseBox =
+                document.getElementById(
+                    "examFormDisplayCourse"
+                );
+
+
+            let courseSelect =
+                document.getElementById(
+                    "examFormCourseSelect"
+                );
+
+
+            if (courseBox) {
+
+                courseBox.innerHTML =
+                    "";
+
+
+                courseSelect =
+                    document.createElement(
+                        "select"
+                    );
+
+
+                courseSelect.id =
+                    "examFormCourseSelect";
+
+
+                courseSelect.style.cssText = `
+                    width:100%;
+                    min-height:42px;
+                    padding:9px 12px;
+                    border:1px solid #cbd5e1;
+                    border-radius:8px;
+                    background:#ffffff;
+                    color:#111827;
+                    font-size:15px;
+                    font-weight:600;
+                    outline:none;
+                    box-sizing:border-box;
+                    cursor:pointer;
+                `;
+
+
+                courseSelect.add(
+                    new Option(
+                        "Select Course",
+                        ""
+                    )
+                );
+
+
+                //================================================
+                // ADD COURSES
+                //================================================
+
+                courses.forEach(
+                    function(course) {
+
+                        courseSelect.add(
+                            new Option(
+                                String(course),
+                                String(course)
+                            )
+                        );
+
+                    }
+                );
+
+
+                courseBox.appendChild(
+                    courseSelect
+                );
+
+            }
+
+
+            //================================================
+            // RESET PAPER
+            //================================================
+
             if (paperSelect) {
-                paperSelect.innerHTML = "";
-                paperSelect.add(new Option("Select Exam Paper", ""));
 
-                papers.forEach(function(paper) {
-                    paperSelect.add(new Option(String(paper), String(paper)));
-                });
+                paperSelect.innerHTML =
+                    "";
 
-                paperSelect.disabled = false;
+                paperSelect.add(
+                    new Option(
+                        "Select Course First",
+                        ""
+                    )
+                );
 
-                // Update displayed paper whenever dropdown selection changes
-               paperSelect.onchange = function() {
-    resetExamFormEligibility();
-    updateExamFormSelectedPaper();
-    updateExamFormPreview();
-};
+                paperSelect.disabled =
+                    true;
+
             }
 
-            // Initially show placeholder until a paper is selected
-            if (paperDisplay) {
-                paperDisplay.textContent = "--";
+
+            //================================================
+            // COURSE CHANGE
+            //================================================
+
+            if (courseSelect) {
+
+                courseSelect.onchange =
+                    function() {
+
+                        const selectedCourse =
+                            this.value.trim();
+
+
+                        // Reset eligibility
+                        resetExamFormEligibility();
+
+
+                        // Clear selected paper
+                        examFormStudentData.selectedPaper =
+                            "";
+
+
+                        // No course selected
+                        if (!selectedCourse) {
+
+                            examFormStudentData.selectedCourse =
+                                "";
+
+                            examFormStudentData.course =
+                                "";
+
+
+                            if (paperSelect) {
+
+                                paperSelect.innerHTML =
+                                    "";
+
+                                paperSelect.add(
+                                    new Option(
+                                        "Select Course First",
+                                        ""
+                                    )
+                                );
+
+                                paperSelect.disabled =
+                                    true;
+
+                            }
+
+
+                            updateExamFormPreview();
+
+                            return;
+
+                        }
+
+
+                        // Save selected course
+                        examFormStudentData.selectedCourse =
+                            selectedCourse;
+
+                        examFormStudentData.course =
+                            selectedCourse;
+
+
+                        //========================================
+                        // GET PAPERS FOR SELECTED COURSE
+                        //========================================
+
+                        const courseKey =
+                            normalizeText(
+                                selectedCourse
+                            );
+
+
+                        let availablePapers =
+                            [];
+
+
+                        // Find exact normalized course key
+                        Object.keys(
+                            coursePapers
+                        )
+                        .forEach(
+                            function(key) {
+
+                                if (
+                                    normalizeText(key) ===
+                                    courseKey
+                                ) {
+
+                                    availablePapers =
+                                        Array.isArray(
+                                            coursePapers[key]
+                                        )
+                                            ? coursePapers[key]
+                                            : [];
+
+                                }
+
+                            }
+                        );
+
+
+                        //========================================
+                        // POPULATE PAPER DROPDOWN
+                        //========================================
+
+                        if (paperSelect) {
+
+                            paperSelect.innerHTML =
+                                "";
+
+                            paperSelect.add(
+                                new Option(
+                                    "Select Exam Paper",
+                                    ""
+                                )
+                            );
+
+
+                            if (
+                                !availablePapers.length
+                            ) {
+
+                                paperSelect.add(
+                                    new Option(
+                                        "No paper available for this course",
+                                        ""
+                                    )
+                                );
+
+                                paperSelect.disabled =
+                                    true;
+
+                            } else {
+
+                                availablePapers.forEach(
+                                    function(paper) {
+
+                                        paperSelect.add(
+                                            new Option(
+                                                String(paper),
+                                                String(paper)
+                                            )
+                                        );
+
+                                    }
+                                );
+
+
+                                paperSelect.disabled =
+                                    false;
+
+                            }
+
+                        }
+
+
+                        // Reset display
+                        if (paperDisplay) {
+
+                            paperDisplay.textContent =
+                                "--";
+
+                        }
+
+
+                        updateExamFormPreview();
+
+
+                        if (message) {
+
+                            if (
+                                availablePapers.length
+                            ) {
+
+                                message.textContent =
+                                    "Course selected. Now select the exam paper.";
+
+                                message.style.color =
+                                    "#166534";
+
+                            } else {
+
+                                message.textContent =
+                                    "No exam paper is assigned under this course.";
+
+                                message.style.color =
+                                    "#b45309";
+
+                            }
+
+                        }
+
+                    };
+
             }
+
+
+            //================================================
+            // PAPER CHANGE
+            //================================================
+
+            if (paperSelect) {
+
+                paperSelect.onchange =
+                    function() {
+
+                        resetExamFormEligibility();
+
+                        updateExamFormSelectedPaper();
+
+                        updateExamFormPreview();
+
+                    };
+
+            }
+
+
+            //================================================
+            // MESSAGE
+            //================================================
 
             if (message) {
+
                 message.textContent =
-                    "Student found. Select a paper and check eligibility.";
-                message.style.color = "#166534";
+                    courses.length > 1
+                        ? "Student found. Select your course first."
+                        : "Student found. Select your course and exam paper.";
+
+                message.style.color =
+                    "#166534";
+
             }
+
         })
+
+
+        //================================================
+        // ERROR
+        //================================================
+
         .catch(function(error) {
 
-            console.error("Exam Form Student Lookup Error:", error);
+            console.error(
+                "Exam Form Student Lookup Error:",
+                error
+            );
 
-            examFormStudentData = null;
 
-            setExamFormStudentDetails("", "", "", "", "", "");
+            examFormStudentData =
+                null;
+
+
+            setExamFormStudentDetails(
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            );
+
 
             if (paperSelect) {
-                paperSelect.innerHTML = "";
-                paperSelect.add(new Option("Student not found", ""));
-                paperSelect.disabled = true;
+
+                paperSelect.innerHTML =
+                    "";
+
+                paperSelect.add(
+                    new Option(
+                        "Student not found",
+                        ""
+                    )
+                );
+
+                paperSelect.disabled =
+                    true;
+
             }
+
+
+            const courseBox =
+                document.getElementById(
+                    "examFormDisplayCourse"
+                );
+
+
+            if (courseBox) {
+
+                courseBox.textContent =
+                    "--";
+
+            }
+
 
             if (paperDisplay) {
-                paperDisplay.textContent = "--";
+
+                paperDisplay.textContent =
+                    "--";
+
             }
 
+
             if (message) {
+
                 message.textContent =
-                    error.message || "Unable to find student.";
-                message.style.color = "#b91c1c";
+                    error.message ||
+                    "Unable to find student.";
+
+                message.style.color =
+                    "#b91c1c";
+
             }
+
         })
+
+
+        //================================================
+        // FINALLY
+        //================================================
+
         .finally(function() {
 
             if (searchBtn) {
-                searchBtn.disabled = false;
-                searchBtn.textContent = "Search";
-            }
-        });
-}
 
+                searchBtn.disabled =
+                    false;
+
+                searchBtn.textContent =
+                    "Search";
+
+            }
+
+        });
+
+}
 
 // Update Paper field shown in Exam Form
 function updateExamFormSelectedPaper() {
@@ -23387,212 +24442,562 @@ function resetExamFormEligibility() {
 
 //----------------------------------------------------
 // CHECK FEE ELIGIBILITY
+// COURSE + PAPER BOTH SENT TO APPS SCRIPT
 //----------------------------------------------------
 
 function checkExamFormEligibility() {
 
     const paperSelect =
-        document.getElementById("examFormPaperSelect");
+        document.getElementById(
+            "examFormPaperSelect"
+        );
+
+
+    const courseSelect =
+        document.getElementById(
+            "examFormCourseSelect"
+        );
+
 
     const checkBtn =
-        document.getElementById("examFormCheckBtn");
+        document.getElementById(
+            "examFormCheckBtn"
+        );
+
 
     const message =
-        document.getElementById("examFormEligibilityMessage");
+        document.getElementById(
+            "examFormEligibilityMessage"
+        );
+
 
     const submitBtn =
-        document.getElementById("examFormSubmitBtn");
+        document.getElementById(
+            "examFormSubmitBtn"
+        );
+
 
     const downloadOptions =
-        document.getElementById("examFormDownloadOptions");
+        document.getElementById(
+            "examFormDownloadOptions"
+        );
 
-    const regNo = examFormStudentData
-        ? String(examFormStudentData.regNo || "").trim()
-        : "";
 
-    const paper = paperSelect
-        ? paperSelect.value.trim()
-        : "";
+    //================================================
+    // GET REG NO
+    //================================================
 
-    if (!examFormStudentData || !regNo) {
-        alert("Please search and verify your Registration Number first.");
+    const regNo =
+        examFormStudentData
+            ? String(
+                examFormStudentData.regNo ||
+                ""
+              ).trim()
+            : "";
+
+
+    //================================================
+    // GET COURSE
+    //================================================
+
+    const course =
+        courseSelect
+            ? courseSelect.value.trim()
+            : "";
+
+
+    //================================================
+    // GET PAPER
+    //================================================
+
+    const paper =
+        paperSelect
+            ? paperSelect.value.trim()
+            : "";
+
+
+    //================================================
+    // VALIDATE STUDENT
+    //================================================
+
+    if (
+        !examFormStudentData ||
+        !regNo
+    ) {
+
+        alert(
+            "Please search and verify your Registration Number first."
+        );
+
         return;
+
     }
+
+
+    //================================================
+    // VALIDATE COURSE
+    //================================================
+
+    if (!course) {
+
+        alert(
+            "Please select a course."
+        );
+
+        return;
+
+    }
+
+
+    //================================================
+    // VALIDATE PAPER
+    //================================================
 
     if (!paper) {
-        alert("Please select an exam paper.");
+
+        alert(
+            "Please select an exam paper."
+        );
+
         return;
+
     }
 
-    examFormEligible = false;
+
+    //================================================
+    // RESET ELIGIBILITY
+    //================================================
+
+    examFormEligible =
+        false;
+
+
     resetExamFormPreview();
 
-const submitSection =
-    document.getElementById("examFormSubmitSection");
 
-if (submitSection) {
-    submitSection.style.display = "none";
-}
-    // Hide download buttons until eligibility is confirmed
-    if (downloadOptions) {
-        downloadOptions.style.display = "none";
+    const submitSection =
+        document.getElementById(
+            "examFormSubmitSection"
+        );
+
+
+    if (submitSection) {
+
+        submitSection.style.display =
+            "none";
+
     }
+
+
+    //================================================
+    // HIDE DOWNLOAD
+    //================================================
+
+    if (downloadOptions) {
+
+        downloadOptions.style.display =
+            "none";
+
+    }
+
+
+    //================================================
+    // DISABLE SUBMIT
+    //================================================
 
     if (submitBtn) {
-        submitBtn.style.display = "none";
-        submitBtn.disabled = true;
+
+        submitBtn.style.display =
+            "none";
+
+        submitBtn.disabled =
+            true;
+
     }
+
+
+    //================================================
+    // CHECKING MESSAGE
+    //================================================
 
     if (message) {
-        message.style.display = "block";
-        message.textContent = "Checking fee eligibility...";
-        message.style.color = "#555";
-        message.style.background = "#f1f5f9";
+
+        message.style.display =
+            "block";
+
+        message.textContent =
+            "Checking fee eligibility...";
+
+        message.style.color =
+            "#555";
+
+        message.style.background =
+            "#f1f5f9";
+
     }
 
+
+    //================================================
+    // DISABLE CHECK BUTTON
+    //================================================
+
     if (checkBtn) {
-        checkBtn.disabled = true;
-        checkBtn.textContent = "Checking...";
+
+        checkBtn.disabled =
+            true;
+
+        checkBtn.textContent =
+            "Checking...";
+
     }
+
+
+    //================================================
+    // SAVE SELECTED COURSE
+    //================================================
+
+    examFormStudentData.selectedCourse =
+        course;
+
+    examFormStudentData.course =
+        course;
+
+
+    //================================================
+    // API URL
+    //================================================
 
     const url =
         SCRIPT_URL +
         "?action=checkExamFormEligibility" +
-        "&regNo=" + encodeURIComponent(regNo) +
-        "&paper=" + encodeURIComponent(paper);
+        "&regNo=" +
+        encodeURIComponent(regNo) +
+        "&course=" +
+        encodeURIComponent(course) +
+        "&paper=" +
+        encodeURIComponent(paper);
 
-    console.log("Eligibility API URL:", url);
+
+    console.log(
+        "Eligibility API URL:",
+        url
+    );
+
+
+    //================================================
+    // FETCH
+    //================================================
 
     fetch(url)
+
         .then(function(res) {
 
             if (!res.ok) {
-                throw new Error("Server error: " + res.status);
+
+                throw new Error(
+                    "Server error: " +
+                    res.status
+                );
+
             }
 
             return res.json();
+
         })
+
+
         .then(function(data) {
 
-            console.log("Eligibility API Response:", data);
+            console.log(
+                "Eligibility API Response:",
+                data
+            );
+
 
             const status =
-                String(data.status || "").trim().toUpperCase();
+                String(
+                    data.status || ""
+                )
+                    .trim()
+                    .toUpperCase();
 
-           if (status === "ELIGIBLE") {
 
-    examFormEligible = true;
-const entrySection = document.getElementById("examFormEntrySection");
+            //================================================
+            // ELIGIBLE
+            //================================================
 
-if (entrySection) {
-    entrySection.style.display = "none";
-}
-    const submitSection =
-        document.getElementById("examFormSubmitSection");
+            if (
+                status === "ELIGIBLE"
+            ) {
 
-    const submitBtn =
-        document.getElementById("examFormSubmitBtn");
+                examFormEligible =
+                    true;
 
-    const previewSection =
-        document.getElementById("examFormPreviewSection");
 
-    const confirmCheckbox =
-        document.getElementById("examFormConfirmCheckbox");
+                const entrySection =
+                    document.getElementById(
+                        "examFormEntrySection"
+                    );
 
-    if (previewSection) {
-        previewSection.classList.remove("hidden");
-    }
 
-    updateExamFormPreview();
+                if (entrySection) {
 
-    if (confirmCheckbox) {
-        confirmCheckbox.checked = false;
-    }
+                    entrySection.style.display =
+                        "none";
 
-    if (submitSection) {
-        submitSection.style.display = "block";
-    }
+                }
 
-    if (submitBtn) {
-        submitBtn.style.display = "inline-block";
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Submit Exam Form";
-    }
 
-    if (previewSection) {
-        previewSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
+                const submitSection =
+                    document.getElementById(
+                        "examFormSubmitSection"
+                    );
 
-    // Save the exact paper that passed eligibility
-    examFormStudentData.selectedPaper = paper;
+
+                const submitButton =
+                    document.getElementById(
+                        "examFormSubmitBtn"
+                    );
+
+
+                const previewSection =
+                    document.getElementById(
+                        "examFormPreviewSection"
+                    );
+
+
+                const confirmCheckbox =
+                    document.getElementById(
+                        "examFormConfirmCheckbox"
+                    );
+
+
+                //============================================
+                // SAVE EXACT COURSE + PAPER
+                //============================================
+
+                examFormStudentData.selectedCourse =
+                    course;
+
+                examFormStudentData.course =
+                    course;
+
+                examFormStudentData.selectedPaper =
+                    paper;
+
+
+                //============================================
+                // SHOW PREVIEW
+                //============================================
+
+                if (previewSection) {
+
+                    previewSection.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                updateExamFormPreview();
+
+
+                //============================================
+                // RESET CONFIRM CHECKBOX
+                //============================================
+
+                if (confirmCheckbox) {
+
+                    confirmCheckbox.checked =
+                        false;
+
+                }
+
+
+                //============================================
+                // SHOW SUBMIT SECTION
+                //============================================
+
+                if (submitSection) {
+
+                    submitSection.style.display =
+                        "block";
+
+                }
+
+
+                //============================================
+                // ENABLE SUBMIT AFTER CHECKBOX
+                //============================================
+
+                if (submitButton) {
+
+                    submitButton.style.display =
+                        "inline-block";
+
+                    submitButton.disabled =
+                        true;
+
+                    submitButton.textContent =
+                        "Submit Exam Form";
+
+                }
+
+
+                //============================================
+                // SUCCESS MESSAGE
+                //============================================
 
                 if (message) {
-                    message.style.display = "block";
+
+                    message.style.display =
+                        "block";
+
                     message.textContent =
                         data.message ||
                         "You are eligible to fill this paper's exam form.";
 
-                    message.style.color = "#15803d";
-                    message.style.background = "#f0fdf4";
+                    message.style.color =
+                        "#15803d";
+
+                    message.style.background =
+                        "#f0fdf4";
+
                 }
 
-                
 
-            } else {
+                //============================================
+                // SCROLL TO PREVIEW
+                //============================================
 
-                examFormEligible = false;
+                if (previewSection) {
+
+                    previewSection.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                }
+
+            }
+
+
+            //================================================
+            // NOT ELIGIBLE
+            //================================================
+
+            else {
+
+                examFormEligible =
+                    false;
+
 
                 if (message) {
-                    message.style.display = "block";
+
+                    message.style.display =
+                        "block";
+
+
                     message.textContent =
                         data.message ||
                         "You are not eligible for this paper.";
 
+
                     message.style.color =
-                        status === "NOT_APPLICABLE"
+                        status ===
+                        "NOT_APPLICABLE"
                             ? "#b45309"
                             : "#b91c1c";
 
+
                     message.style.background =
-                        status === "NOT_APPLICABLE"
+                        status ===
+                        "NOT_APPLICABLE"
                             ? "#fffbeb"
                             : "#fef2f2";
+
                 }
+
 
                 if (downloadOptions) {
-                    downloadOptions.style.display = "none";
+
+                    downloadOptions.style.display =
+                        "none";
+
                 }
+
             }
+
         })
+
+
+        //================================================
+        // ERROR
+        //================================================
+
         .catch(function(error) {
 
-            console.error("Eligibility Check Error:", error);
+            console.error(
+                "Eligibility Check Error:",
+                error
+            );
 
-            examFormEligible = false;
+
+            examFormEligible =
+                false;
+
 
             if (message) {
-                message.style.display = "block";
-                message.textContent =
-                    "Unable to connect with server. " + error.message;
 
-                message.style.color = "#b91c1c";
-                message.style.background = "#fef2f2";
+                message.style.display =
+                    "block";
+
+                message.textContent =
+                    "Unable to connect with server. " +
+                    error.message;
+
+                message.style.color =
+                    "#b91c1c";
+
+                message.style.background =
+                    "#fef2f2";
+
             }
+
 
             if (downloadOptions) {
-                downloadOptions.style.display = "none";
+
+                downloadOptions.style.display =
+                    "none";
+
             }
+
         })
+
+
+        //================================================
+        // FINALLY
+        //================================================
+
         .finally(function() {
 
             if (checkBtn) {
-                checkBtn.disabled = false;
-                checkBtn.textContent = "Check Eligibility";
+
+                checkBtn.disabled =
+                    false;
+
+                checkBtn.textContent =
+                    "Check Eligibility";
+
             }
+
         });
+
 }
 function showExamFormSuccessMessage(title, description, formNo) {
 
