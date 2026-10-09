@@ -25471,16 +25471,18 @@ async function downloadExamFormPDF() {
     printClone.querySelectorAll(
         ".exam-issued-by-image"
     ).forEach(stamp => {
-        const styles = {
-            display: "block",
-            visibility: "visible",
-            width: "40mm",
-            maxWidth: "40mm",
-            height: "16mm",
-            objectFit: "contain",
-            objectPosition: "center",
-            margin: "0 auto"
-        };
+      
+const styles = {
+    display: "block",
+    visibility: "visible",
+    width: "48mm",
+    maxWidth: "48mm",
+    height: "20mm",
+    objectFit: "contain",
+    objectPosition: "center",
+    margin: "0 auto"
+};
+
 
         Object.entries(styles).forEach(([key, value]) => {
             stamp.style.setProperty(
@@ -25568,24 +25570,24 @@ async function downloadExamFormPDF() {
             box-shadow: none !important;
         }
 
-        /* FORM NUMBER */
-        .exam-print-form-no {
-            width: 100% !important;
-            margin: 0 0 1mm !important;
-            text-align: right !important;
-            font-size: 12px !important;
-        }
+     
+.exam-print-form-no {
+    width: 100% !important;
+    margin: 0 0 1mm !important;
+    text-align: right !important;
+    font-size: 15px !important;
+}
 
-        .exam-print-form-no strong {
-            display: inline-block !important;
-            min-width: 52mm !important;
-            padding: 1.5mm 2mm !important;
-            border: 1px solid #8094b3 !important;
-            background: #f7faff !important;
-            text-align: center !important;
-            font-size: 12px !important;
-            font-weight: 700 !important;
-        }
+.exam-print-form-no strong {
+    display: inline-block !important;
+    min-width: 65mm !important;
+    padding: 2mm 3mm !important;
+    border: 1px solid #8094b3 !important;
+    background: #f7faff !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
 
         /* HEADER */
         .exam-print-header {
@@ -25862,21 +25864,22 @@ async function downloadExamFormPDF() {
             text-align: center !important;
         }
 
-        /* BIG STAMP ABOVE SIGNATURE LINE */
-        .exam-print-signatures .exam-issued-by-image {
-            position: absolute !important;
-            top: 0 !important;
-            left: 50% !important;
-            display: block !important;
-            width: 38mm !important;
-            max-width: 38mm !important;
-            height: 14mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            object-fit: contain !important;
-            object-position: center !important;
-            transform: translateX(-50%) !important;
-        }
+      
+.exam-print-signatures .exam-issued-by-image {
+    position: absolute !important;
+    top: -1mm !important;
+    left: 50% !important;
+    display: block !important;
+    width: 46mm !important;
+    max-width: 46mm !important;
+    height: 18mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: translateX(-50%) !important;
+}
+
 
         .exam-print-signatures .exam-authorized-box > strong {
             position: absolute !important;
