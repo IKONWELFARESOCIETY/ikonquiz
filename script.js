@@ -25831,8 +25831,8 @@ const styles = {
     flex: 1 1 0 !important;
     width: 50% !important;
     min-width: 0 !important;
-    height: 32mm !important;
-    min-height: 32mm !important;
+    height: 40mm !important;
+    min-height: 40mm !important;
     margin: 0 !important;
     padding: 0 !important;
     text-align: center !important;
@@ -25840,7 +25840,7 @@ const styles = {
 
        .exam-print-signatures > .exam-sign-box > .exam-sign-space {
     position: absolute !important;
-    top: 23mm !important;
+    top: 31mm !important;
     left: 0 !important;
     display: block !important;
     width: 100% !important;
@@ -25853,7 +25853,7 @@ const styles = {
 
 .exam-print-signatures > .exam-sign-box > p {
     position: absolute !important;
-    top: 24mm !important;
+    top: 32mm !important;
     left: 0 !important;
     width: 100% !important;
     margin: 0 !important;
@@ -25865,14 +25865,15 @@ const styles = {
 }
 
       
+
 .exam-print-signatures .exam-issued-by-image {
     position: absolute !important;
     top: -1mm !important;
     left: 50% !important;
     display: block !important;
-    width: 46mm !important;
-    max-width: 46mm !important;
-    height: 18mm !important;
+    width: 55mm !important;
+    max-width: 55mm !important;
+    height: 22mm !important;
     margin: 0 !important;
     padding: 0 !important;
     object-fit: contain !important;
@@ -25883,7 +25884,7 @@ const styles = {
 
       .exam-print-signatures .exam-authorized-box > strong {
     position: absolute !important;
-    top: 26mm !important;
+    top: 34mm !important;
     left: 0 !important;
     display: block !important;
     width: 100% !important;
@@ -25897,7 +25898,7 @@ const styles = {
 
 .exam-print-signatures .exam-authorized-box > span {
     position: absolute !important;
-    top: 28mm !important;
+    top: 36mm !important;
     left: 0 !important;
     display: block !important;
     width: 100% !important;
