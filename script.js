@@ -25733,66 +25733,81 @@ async function downloadExamFormPDF() {
             font-weight: 500 !important;
         }
 
-        /* GUIDELINES */
+     
+        /* GUIDELINES — BIGGER FONT + BETTER SPACING */
         .exam-print-section ol,
         .exam-print-section ul {
-            margin: 0.5mm 0 !important;
-            padding-left: 5mm !important;
+            margin: 1.5mm 0 !important;
+            padding-left: 6mm !important;
         }
 
         .exam-print-section li {
-            margin: 0.3mm 0 !important;
+            margin: 0.8mm 0 !important;
             padding: 0 !important;
-            font-size: 10px !important;
-            line-height: 1.15 !important;
+            font-size: 12px !important;
+            line-height: 1.35 !important;
             break-inside: avoid !important;
             page-break-inside: avoid !important;
         }
 
-        /* FEE CRITERIA */
+        /* GUIDELINES AND SECTION HEADINGS */
+        .exam-print-section h3 {
+            margin: 0 0 1.5mm !important;
+            padding: 1.5mm 2mm !important;
+            background: #edf3ff !important;
+            border-left: 3px solid #1747c8 !important;
+            color: #1747c8 !important;
+            font-size: 12px !important;
+            line-height: 1.2 !important;
+        }
+
+        /* FEE PAYMENT ELIGIBILITY CRITERIA */
         .exam-fee-criteria {
             display: block !important;
             width: 100% !important;
             max-width: 100% !important;
-            margin: 1mm 0 !important;
-            padding: 1mm 1.5mm !important;
+            margin: 2mm 0 !important;
+            padding: 2mm 2.5mm !important;
             background: #f5f8ff !important;
             border: 1px solid #b9cdec !important;
             border-left: 3px solid #1455c0 !important;
             color: #24344d !important;
             font-size: 11px !important;
-            line-height: 1.15 !important;
+            line-height: 1.3 !important;
         }
 
         .exam-fee-criteria h3 {
-            margin: 0 0 0.5mm !important;
-            padding: 0 0 0.5mm !important;
+            margin: 0 0 1.5mm !important;
+            padding: 0 0 1mm !important;
             background: transparent !important;
             color: #1249a8 !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
+            line-height: 1.2 !important;
         }
 
         .exam-fee-criteria .fee-criteria-note {
-            margin: 0.5mm 0 !important;
-            padding: 0.5mm 1mm !important;
+            margin: 1mm 0 !important;
+            padding: 1mm 1.5mm !important;
             background: #ffffff !important;
             border: 1px solid #dce8f8 !important;
             color: #334155 !important;
-            font-size: 9px !important;
-            line-height: 1.15 !important;
+            font-size: 10px !important;
+            line-height: 1.3 !important;
         }
 
         .exam-fee-criteria .fee-criteria-list {
-            margin: 0.5mm 0 !important;
-            padding-left: 5mm !important;
+            margin: 1mm 0 !important;
+            padding-left: 6mm !important;
         }
 
         .exam-fee-criteria .fee-criteria-list li {
-            margin: 0.25mm 0 !important;
-            font-size: 9px !important;
-            line-height: 1.15 !important;
+            margin: 0.8mm 0 !important;
+            font-size: 11px !important;
+            line-height: 1.3 !important;
             break-inside: avoid !important;
+            page-break-inside: avoid !important;
         }
+
 
         /* SIGNATURE AREA */
         .exam-print-signatures {
