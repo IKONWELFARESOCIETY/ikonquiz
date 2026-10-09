@@ -25475,9 +25475,9 @@ async function downloadExamFormPDF() {
 const styles = {
     display: "block",
     visibility: "visible",
-    width: "48mm",
-    maxWidth: "48mm",
-    height: "20mm",
+    width: "65mm",
+    maxWidth: "65mm",
+    height: "25mm",
     objectFit: "contain",
     objectPosition: "center",
     margin: "0 auto"
@@ -25868,19 +25868,18 @@ const styles = {
 
 .exam-print-signatures .exam-issued-by-image {
     position: absolute !important;
-    top: -1mm !important;
+    top: -2mm !important;
     left: 50% !important;
     display: block !important;
-    width: 55mm !important;
-    max-width: 55mm !important;
-    height: 22mm !important;
+    width: 65mm !important;
+    max-width: 65mm !important;
+    height: 25mm !important;
     margin: 0 !important;
     padding: 0 !important;
     object-fit: contain !important;
     object-position: center !important;
     transform: translateX(-50%) !important;
 }
-
 
       .exam-print-signatures .exam-authorized-box > strong {
     position: absolute !important;
