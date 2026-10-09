@@ -25868,7 +25868,7 @@ const styles = {
 
 .exam-print-signatures .exam-issued-by-image {
     position: absolute !important;
-    top: -2mm !important;
+    top: 4mm !important;
     left: 50% !important;
     display: block !important;
     width: 65mm !important;
