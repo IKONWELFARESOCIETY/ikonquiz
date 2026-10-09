@@ -25236,197 +25236,72 @@ if (
     );
 }
 // =====================================================
-// IKON EXAM FORM PDF
-// FINAL A4 ONE-PAGE PROFESSIONAL PRINT
-// Bigger Text + Proper Margins + Vertical Spacing
-// Stamp Overlap Fixed
+// IKON EXAM FORM — DOWNLOAD / PRINT ONLY
+// A4 + BIG STAMP + PHOTO + FULL WIDTH TABLE
 // =====================================================
 
 async function downloadExamFormPDF() {
 
-    // =====================================================
-    // 1. VALIDATE STUDENT DATA
-    // =====================================================
-
     if (!examFormStudentData) {
-
-        alert(
-            "Please search student details first."
-        );
-
+        alert("Please search student details first.");
         return;
     }
 
-
-    // =====================================================
-    // 2. PDF ONLY AFTER FORM SUBMISSION
-    // =====================================================
-
-    const formNo =
-        String(
-            examFormStudentData.formNo || ""
-        ).trim();
-
+    const formNo = String(
+        examFormStudentData.formNo || ""
+    ).trim();
 
     if (!formNo) {
-
         alert(
             "Please submit your Exam Form first. PDF download is locked."
         );
-
         return;
     }
 
+    const paperSelect = document.getElementById(
+        "examFormPaperSelect"
+    );
 
-    // =====================================================
-    // 3. GET SELECTED PAPER
-    // =====================================================
-
-    const paperSelect =
-        document.getElementById(
-            "examFormPaperSelect"
-        );
-
-
-    const selectedPaper =
-        paperSelect
-            ? String(
-                paperSelect.value || ""
-            ).trim()
-            : "";
-
+    const selectedPaper = paperSelect
+        ? String(paperSelect.value || "").trim()
+        : "";
 
     if (!selectedPaper) {
-
-        alert(
-            "Please select an examination paper."
-        );
-
+        alert("Please select an examination paper.");
         return;
     }
 
-
-    // =====================================================
-    // 4. GET EXISTING PRINT TEMPLATE
-    // =====================================================
-
-    const sourceArea =
-        document.getElementById(
-            "examFormPrintArea"
-        );
-
+    const sourceArea = document.getElementById(
+        "examFormPrintArea"
+    );
 
     if (!sourceArea) {
-
-        alert(
-            "Exam Form print template not found."
-        );
-
+        alert("Exam Form print template not found.");
         return;
     }
 
+    const printClone = sourceArea.cloneNode(true);
+    printClone.id = "examFormPrintArea";
 
-    // =====================================================
-    // 5. CLONE PRINT TEMPLATE
-    // =====================================================
+    Object.assign(printClone.style, {
+        display: "block",
+        visibility: "visible",
+        position: "relative",
+        width: "100%",
+        maxWidth: "100%",
+        boxSizing: "border-box",
+        margin: "0",
+        padding: "2.5mm"
+    });
 
-    const printClone =
-        sourceArea.cloneNode(true);
+    // -----------------------------------------
+    // STUDENT DETAILS
+    // -----------------------------------------
 
-
-    /*
-       IMPORTANT:
-
-       Do NOT use fixed 734px width here.
-
-       A4 width will be controlled by @page
-       and .exam-form-print CSS.
-    */
-
-    printClone.id =
-        "examFormPrintArea";
-
-
-    printClone.style.setProperty(
-        "display",
-        "block",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "visibility",
-        "visible",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "position",
-        "relative",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "max-width",
-        "100%",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "box-sizing",
-        "border-box",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "margin",
-        "0",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "padding",
-        "0",
-        "important"
-    );
-
-
-    printClone.style.setProperty(
-        "top",
-        "0",
-        "important"
-    );
-
-
-    // =====================================================
-    // 6. SET PRINT VALUES
-    // =====================================================
-
-    function setPrintValue(
-        id,
-        value
-    ) {
-
-        const element =
-            printClone.querySelector(
-                "#" + id
-            );
-
+    function setPrintValue(id, value) {
+        const element = printClone.querySelector("#" + id);
 
         if (element) {
-
             element.textContent =
                 value !== undefined &&
                 value !== null &&
@@ -25436,1332 +25311,690 @@ async function downloadExamFormPDF() {
         }
     }
 
-
-    setPrintValue(
-        "printExamFormNo",
-        formNo
-    );
-
-
-    setPrintValue(
-        "printExamRegNo",
-        examFormStudentData.regNo
-    );
-
-
-    setPrintValue(
-        "printExamStudentName",
-        examFormStudentData.name
-    );
-
-
-    setPrintValue(
-        "printExamCourse",
-        examFormStudentData.course
-    );
-
-
-    setPrintValue(
-        "printExamPaper",
-        selectedPaper
-    );
-
-
-    setPrintValue(
-        "printExamBillDate",
-        examFormStudentData.billDate
-    );
-
-
+    setPrintValue("printExamFormNo", formNo);
+    setPrintValue("printExamRegNo", examFormStudentData.regNo);
+    setPrintValue("printExamStudentName", examFormStudentData.name);
+    setPrintValue("printExamCourse", examFormStudentData.course);
+    setPrintValue("printExamPaper", selectedPaper);
+    setPrintValue("printExamBillDate", examFormStudentData.billDate);
     setPrintValue(
         "printExamSubmitDate",
         examFormStudentData.submittedOn || "—"
     );
-
-
-    setPrintValue(
-        "printExamBillNo",
-        examFormStudentData.billNo
-    );
-
-
+    setPrintValue("printExamBillNo", examFormStudentData.billNo);
     setPrintValue(
         "printExamBillAmount",
         examFormStudentData.billAmount
     );
 
+    // -----------------------------------------
+    // PHOTO: HEADER KE RIGHT SIDE
+    // -----------------------------------------
 
-    // =====================================================
-    // 7. MOVE LOGO ABOVE INSTITUTE NAME
-    // =====================================================
+    const header = printClone.querySelector(
+        ".exam-print-header"
+    );
 
-    const printHeader =
-        printClone.querySelector(
-            ".exam-print-header"
+    const logo = printClone.querySelector(
+        ".exam-print-logo"
+    );
+
+    const photoWrap = printClone.querySelector(
+        ".exam-print-student-photo-wrap"
+    );
+
+    const photo = printClone.querySelector(
+        ".exam-print-student-photo, #examFormStudentPhoto"
+    );
+
+    if (header) {
+        header.style.setProperty(
+            "position", "relative", "important"
         );
 
-
-    const logo =
-        printClone.querySelector(
-            ".exam-print-logo"
+        header.style.setProperty(
+            "min-height", "40mm", "important"
         );
 
+        if (photoWrap) {
+            header.appendChild(photoWrap);
 
-    const instituteName =
-        printHeader
-            ? printHeader.querySelector("h1")
-            : null;
+            const photoWrapStyles = {
+                position: "absolute",
+                top: "5mm",
+                right: "2mm",
+                width: "28mm",
+                minHeight: "34mm",
+                display: "block",
+                visibility: "visible",
+                textAlign: "center",
+                zIndex: "5"
+            };
 
+            Object.entries(photoWrapStyles).forEach(
+                ([key, value]) => {
+                    photoWrap.style.setProperty(
+                        key.replace(/[A-Z]/g, m => "-" + m.toLowerCase()),
+                        value,
+                        "important"
+                    );
+                }
+            );
+        }
+    }
 
-    if (
-        printHeader &&
-        logo &&
-        instituteName
-    ) {
+    if (photo) {
+        photo.loading = "eager";
 
+        const photoStyles = {
+            display: "inline-block",
+            visibility: "visible",
+            width: "28mm",
+            height: "34mm",
+            maxWidth: "28mm",
+            objectFit: "cover",
+            objectPosition: "center",
+            border: "1px solid #64748b",
+            background: "#ffffff"
+        };
+
+        Object.entries(photoStyles).forEach(
+            ([key, value]) => {
+                photo.style.setProperty(
+                    key.replace(/[A-Z]/g, m => "-" + m.toLowerCase()),
+                    value,
+                    "important"
+                );
+            }
+        );
+    }
+
+    if (header && logo) {
         logo.remove();
-
-        instituteName.textContent =
-            instituteName.textContent.trim();
-
-
-        printHeader.insertBefore(
-            logo,
-            instituteName
-        );
+        header.insertBefore(logo, header.firstChild);
     }
 
+    // -----------------------------------------
+    // IMAGE SOURCES
+    // -----------------------------------------
 
-    // =====================================================
-    // 8. SYNCHRONIZE IMAGE SOURCES
-    // =====================================================
+    const originalImages = Array.from(
+        sourceArea.querySelectorAll("img")
+    );
 
-    const sourceImages =
-        Array.from(
-            sourceArea.querySelectorAll("img")
-        );
+    const copiedImages = Array.from(
+        printClone.querySelectorAll("img")
+    );
 
+    copiedImages.forEach((img, index) => {
+        const original = originalImages[index];
 
-    const clonedImages =
-        Array.from(
-            printClone.querySelectorAll("img")
-        );
+        img.removeAttribute("srcset");
+        img.removeAttribute("sizes");
+        img.loading = "eager";
+        img.decoding = "sync";
 
+        if (original) {
+            const src =
+                original.currentSrc ||
+                original.getAttribute("src") ||
+                original.src ||
+                original.getAttribute("data-src") ||
+                original.getAttribute("data-original");
 
-    clonedImages.forEach(
-        function (
-            img,
-            index
+            if (src) img.src = src;
+        }
+
+        const rawSrc =
+            img.getAttribute("src") ||
+            img.getAttribute("data-src");
+
+        if (
+            rawSrc &&
+            !/^(data:|blob:|https?:\/\/)/i.test(rawSrc)
         ) {
-
-            const originalImg =
-                sourceImages[index];
-
-
-            img.removeAttribute(
-                "srcset"
-            );
-
-
-            img.removeAttribute(
-                "sizes"
-            );
-
-
-            img.loading =
-                "eager";
-
-
-            img.decoding =
-                "sync";
-
-
-            if (originalImg) {
-
-                const originalSrc =
-                    originalImg.currentSrc ||
-                    originalImg.getAttribute(
-                        "src"
-                    ) ||
-                    originalImg.src ||
-                    originalImg.getAttribute(
-                        "data-src"
-                    ) ||
-                    originalImg.getAttribute(
-                        "data-original"
-                    );
-
-
-                if (originalSrc) {
-
-                    img.src =
-                        originalSrc;
-                }
-            }
-
-
-            const rawSrc =
-                img.getAttribute("src") ||
-                img.getAttribute("data-src") ||
-                img.getAttribute("data-original");
-
-
-            if (
-                rawSrc &&
-                !rawSrc.startsWith("data:") &&
-                !rawSrc.startsWith("blob:") &&
-                !/^https?:\/\//i.test(
-                    rawSrc
-                )
-            ) {
-
-                try {
-
-                    img.src =
-                        new URL(
-                            rawSrc,
-                            window.location.href
-                        ).href;
-
-                }
-                catch (error) {
-
-                    console.warn(
-                        "Could not resolve print image URL:",
-                        rawSrc
-                    );
-                }
+            try {
+                img.src = new URL(
+                    rawSrc,
+                    window.location.href
+                ).href;
+            } catch (error) {
+                console.warn("Print image URL error:", error);
             }
         }
-    );
+    });
 
+    // -----------------------------------------
+    // BIGGER STAMP
+    // -----------------------------------------
 
-    // =====================================================
-    // 9. STUDENT PHOTO
-    // =====================================================
+    printClone.querySelectorAll(
+        ".exam-issued-by-image"
+    ).forEach(stamp => {
+        const styles = {
+            display: "block",
+            visibility: "visible",
+            width: "40mm",
+            maxWidth: "40mm",
+            height: "16mm",
+            objectFit: "contain",
+            objectPosition: "center",
+            margin: "0 auto"
+        };
 
-    const studentPhoto =
-        printClone.querySelector(
-            ".exam-print-student-photo, #examFormStudentPhoto"
-        );
-
-
-    if (studentPhoto) {
-
-        studentPhoto.loading =
-            "eager";
-
-
-        studentPhoto.style.setProperty(
-            "display",
-            "inline-block",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "width",
-            "28mm",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "height",
-            "34mm",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "max-width",
-            "28mm",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "object-fit",
-            "cover",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "object-position",
-            "center",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "border",
-            "1px solid #64748b",
-            "important"
-        );
-
-
-        studentPhoto.style.setProperty(
-            "background",
-            "#ffffff",
-            "important"
-        );
-    }
-
-
-    const studentPhotoWrap =
-        printClone.querySelector(
-            ".exam-print-student-photo-wrap"
-        );
-
-
-    if (studentPhotoWrap) {
-
-        studentPhotoWrap.style.setProperty(
-            "display",
-            "block",
-            "important"
-        );
-
-
-        studentPhotoWrap.style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-        );
-
-
-        studentPhotoWrap.style.setProperty(
-            "text-align",
-            "right",
-            "important"
-        );
-
-
-        studentPhotoWrap.style.setProperty(
-            "min-height",
-            "35mm",
-            "important"
-        );
-    }
-
-
-    // =====================================================
-    // 10. ISSUED BY STAMP
-    // =====================================================
-
-    const issuedByImages =
-        printClone.querySelectorAll(
-            ".exam-issued-by-image"
-        );
-
-
-    issuedByImages.forEach(
-        function (stamp) {
-
+        Object.entries(styles).forEach(([key, value]) => {
             stamp.style.setProperty(
-                "display",
-                "block",
+                key.replace(/[A-Z]/g, m => "-" + m.toLowerCase()),
+                value,
                 "important"
             );
+        });
+    });
 
+    // -----------------------------------------
+    // WATERMARK
+    // -----------------------------------------
 
-            stamp.style.setProperty(
-                "visibility",
-                "visible",
-                "important"
-            );
-
-
-            /*
-               IMPORTANT:
-
-               Smaller controlled size so
-               stamp does NOT overlap signature line.
-            */
-
-            stamp.style.setProperty(
-                "width",
-                "34mm",
-                "important"
-            );
-
-
-            stamp.style.setProperty(
-                "max-width",
-                "34mm",
-                "important"
-            );
-
-
-            stamp.style.setProperty(
-                "height",
-                "13mm",
-                "important"
-            );
-
-
-            stamp.style.setProperty(
-                "object-fit",
-                "contain",
-                "important"
-            );
-
-
-            stamp.style.setProperty(
-                "object-position",
-                "center",
-                "important"
-            );
-
-
-            stamp.style.setProperty(
-                "margin",
-                "0 auto",
-                "important"
-            );
-        }
-    );
-
-
-    // =====================================================
-    // 11. WATERMARK
-    // =====================================================
-
-    const watermark =
-        document.createElement(
-            "img"
-        );
-
-
-    watermark.className =
-        "exam-print-watermark";
-
-
-    watermark.alt =
-        "";
-
-
-    watermark.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
+    const watermark = document.createElement("img");
+    watermark.className = "exam-print-watermark";
+    watermark.alt = "";
+    watermark.setAttribute("aria-hidden", "true");
     watermark.src =
         "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/ikon.jpg";
-
 
     printClone.insertBefore(
         watermark,
         printClone.firstChild
     );
 
+    // -----------------------------------------
+    // OPEN PRINT WINDOW
+    // -----------------------------------------
 
-    // =====================================================
-    // 12. OPEN PRINT WINDOW
-    // =====================================================
-
-    const printWindow =
-        window.open(
-            "",
-            "_blank",
-            "width=1000,height=800"
-        );
-
+    const printWindow = window.open(
+        "",
+        "_blank",
+        "width=1000,height=800"
+    );
 
     if (!printWindow) {
-
         alert(
             "Please allow pop-ups for this website to download the Exam Form."
         );
-
         return;
     }
 
-
-    // =====================================================
-    // 13. FINAL A4 PRINT CSS
-    // =====================================================
-
-   const printStyles = `
-
-    * {
-        box-sizing: border-box !important;
-    }
-
-    /* ==============================
-       A4 — FIXED
-    ============================== */
-
-    @page {
-        size: A4 portrait;
-        margin: 7mm 9mm;
-    }
-
-    html,
-    body {
-        width: 100% !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #ffffff !important;
-        color: #172033 !important;
-        font-family: Arial, Helvetica, sans-serif !important;
-
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-    body {
-        overflow: visible !important;
-    }
-
-
-    /* ==============================
-       MAIN FORM
-       COMPACT ONE-PAGE A4
-    ============================== */
-
-    .exam-form-print {
-        display: block !important;
-        position: relative !important;
-        isolation: isolate !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-
-        height: auto !important;
-        min-height: 0 !important;
-
-        margin: 0 !important;
-
-        /*
-           Small internal padding only.
-           A4 outer margin is controlled by @page.
-        */
-        padding: 2.5mm !important;
-
-        overflow: visible !important;
-
-        border: 1px solid #9fb3d1 !important;
-
-        background: #ffffff !important;
-        color: #172033 !important;
-
-        font-size: 10px !important;
-        line-height: 1.28 !important;
-
-        box-shadow: none !important;
-    }
-
-
-    /* ==============================
-       FORM NUMBER
-    ============================== */
-
-    .exam-print-form-no {
-        display: block !important;
-        width: 100% !important;
-
-        margin: 0 0 1mm !important;
-        padding: 0 !important;
-
-        text-align: right !important;
-
-        font-size: 9px !important;
-        line-height: 1.15 !important;
-    }
-
-    .exam-print-form-no strong {
-        display: inline-block !important;
-
-        min-width: 38mm !important;
-
-        padding: 1mm 1.5mm !important;
-
-        border: 1px solid #8094b3 !important;
-        border-radius: 1mm !important;
-
-        background: #f7faff !important;
-
-        text-align: center !important;
-
-        font-size: 9px !important;
-        font-weight: 700 !important;
-    }
-
-
-    /* ==============================
-       HEADER
-    ============================== */
-
-    .exam-print-header {
-        display: block !important;
-        width: 100% !important;
-
-        margin: 0 0 1.5mm !important;
-        padding: 0 0 1.5mm !important;
-
-        text-align: center !important;
-
-        border-bottom: 1.5px solid #1747c8 !important;
-    }
-
-    .exam-print-logo {
-        display: block !important;
-
-        width: 43mm !important;
-        height: 15mm !important;
-        max-width: 43mm !important;
-
-        margin: 0 auto 0.5mm !important;
-        padding: 0 !important;
-
-        object-fit: contain !important;
-        object-position: center !important;
-    }
-
-    .exam-print-header h1 {
-        display: block !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        color: #1747c8 !important;
-
-        font-size: 17px !important;
-        font-weight: 800 !important;
-
-        line-height: 1.1 !important;
-
-        text-align: center !important;
-    }
-
-    .exam-print-tagline {
-        margin: 0.5mm 0 !important;
-        padding: 0 !important;
-
-        color: #475569 !important;
-
-        font-size: 8.5px !important;
-        line-height: 1.15 !important;
-
-        text-align: center !important;
-    }
-
-    .exam-print-line {
-        display: none !important;
-    }
-
-    .exam-print-header h2 {
-        margin: 0.8mm 0 0 !important;
-        padding: 0 !important;
-
-        color: #1747c8 !important;
-
-        font-size: 12px !important;
-        font-weight: 700 !important;
-
-        line-height: 1.15 !important;
-
-        text-align: center !important;
-    }
-
-
-    /* ==============================
-       WATERMARK
-    ============================== */
-
-    .exam-print-watermark {
-        position: absolute !important;
-
-        z-index: 0 !important;
-
-        top: 50% !important;
-        left: 50% !important;
-
-        display: block !important;
-
-        width: 82mm !important;
-        height: 82mm !important;
-
-        max-width: none !important;
-
-        object-fit: contain !important;
-
-        opacity: 0.05 !important;
-
-        transform: translate(-50%, -50%) !important;
-
-        pointer-events: none !important;
-    }
-
-    .exam-form-print > :not(.exam-print-watermark) {
-        position: relative !important;
-        z-index: 1 !important;
-    }
-
-
-    /* ==============================
-       SECTIONS
-    ============================== */
-
-    .exam-print-section {
-        display: block !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-
-        margin: 1.5mm 0 0 !important;
-        padding: 0 !important;
-
-        break-inside: auto !important;
-        page-break-inside: auto !important;
-    }
-
-    .exam-print-section h3 {
-        display: block !important;
-
-        margin: 0 0 1mm !important;
-
-        padding: 1mm 1.8mm !important;
-
-        background: #edf3ff !important;
-
-        border-left: 3px solid #1747c8 !important;
-
-        color: #1747c8 !important;
-
-        font-size: 10px !important;
-        font-weight: 700 !important;
-
-        line-height: 1.15 !important;
-    }
-
-
-    /* ==============================
-       PHOTO
-    ============================== */
-
-    .exam-print-student-photo-wrap {
-        display: block !important;
-
-        width: 100% !important;
-
-        min-height: 31mm !important;
-
-        margin: 0 0 1mm !important;
-        padding: 0 !important;
-
-        text-align: right !important;
-    }
-
-    .exam-print-student-photo {
-        display: inline-block !important;
-
-        width: 26mm !important;
-        height: 31mm !important;
-
-        max-width: 26mm !important;
-
-        object-fit: cover !important;
-        object-position: center !important;
-
-        border: 1px solid #64748b !important;
-
-        padding: 1px !important;
-
-        background: #ffffff !important;
-    }
-
-
-    /* ==============================
-       TABLE
-    ============================== */
-
-    .exam-print-table {
-        display: table !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        border-collapse: collapse !important;
-
-        table-layout: fixed !important;
-
-        font-size: 16px !important;
-    }
-
-    .exam-print-table tr {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-    .exam-print-table th,
-    .exam-print-table td {
-        border: 1px solid #aebbd0 !important;
-
-        padding: 1.4mm 2mm !important;
-
-        color: #172033 !important;
-
-        font-size: 16px !important;
-
-        line-height: 1.2 !important;
-
-        text-align: left !important;
-
-        vertical-align: middle !important;
-
-        overflow-wrap: anywhere !important;
-    }
-
-    .exam-print-table th {
-        width: 34% !important;
-
-        background: #f4f7fc !important;
-
-        font-weight: 700 !important;
-    }
-
-    .exam-print-table td {
-        font-weight: 500 !important;
-    }
-
-
-    /* ==============================
-       GUIDELINES
-    ============================== */
-
-    .exam-print-section ol,
-    .exam-print-section ul {
-        margin: 0.8mm 0 !important;
-        padding-left: 5mm !important;
-    }
-
-    .exam-print-section li {
-        margin: 0.45mm 0 !important;
-        padding: 0 !important;
-
-        font-size: 13px !important;
-        line-height: 1.22 !important;
-
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-
-    /* ==============================
-       FEE CRITERIA
-    ============================== */
-
-    .exam-fee-criteria {
-        display: block !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-
-        margin: 1.5mm 0 !important;
-
-        padding: 1.5mm 2mm !important;
-
-        background: #f5f8ff !important;
-
-        border: 1px solid #b9cdec !important;
-
-        border-left: 3px solid #1455c0 !important;
-
-        border-radius: 1mm !important;
-
-        color: #24344d !important;
-
-        font-size: 15px !important;
-        line-height: 1.2 !important;
-    }
-
-    .exam-fee-criteria h3 {
-        margin: 0 0 0.8mm !important;
-
-        padding: 0 0 0.8mm !important;
-
-        border-bottom: 1px solid #c5d8f0 !important;
-
-        background: transparent !important;
-
-        color: #1249a8 !important;
-
-        font-size: 15px !important;
-        line-height: 1.15 !important;
-    }
-
-    .exam-fee-criteria .fee-criteria-note {
-        margin: 0.7mm 0 !important;
-
-        padding: 0.8mm 1mm !important;
-
-        background: #ffffff !important;
-
-        border: 1px solid #dce8f8 !important;
-
-        color: #334155 !important;
-
-        font-size:12px !important;
-
-        line-height: 1.2 !important;
-    }
-
-    .exam-fee-criteria .fee-criteria-list {
-        margin: 0.7mm 0 !important;
-        padding-left: 5mm !important;
-    }
-
-    .exam-fee-criteria .fee-criteria-list li {
-        margin: 0.35mm 0 !important;
-        padding: 0 !important;
-
-        color: #26364d !important;
-
-        font-size: 12px !important;
-
-        line-height: 1.2 !important;
-
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-
-    /* ==============================
-       SIGNATURE AREA
-       COMPACT
-    ============================== */
-
-    .exam-print-signatures {
-        display: flex !important;
-
-        flex-direction: row !important;
-
-        justify-content: space-between !important;
-
-        align-items: flex-start !important;
-
-        gap: 10mm !important;
-
-        width: 100% !important;
-
-        margin: 2.5mm 0 0 !important;
-
-        padding: 0 !important;
-
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-    .exam-print-signatures > .exam-sign-box {
-        position: relative !important;
-
-        display: block !important;
-
-        flex: 1 1 0 !important;
-
-        width: 50% !important;
-
-        min-width: 0 !important;
-
-        height: 23mm !important;
-        min-height: 23mm !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        text-align: center !important;
-    }
-
-
-    /* Signature line */
-
-    .exam-print-signatures >
-    .exam-sign-box >
-    .exam-sign-space {
-
-        position: absolute !important;
-
-        top: 14.5mm !important;
-
-        left: 0 !important;
-
-        display: block !important;
-
-        width: 100% !important;
-
-        height: 0 !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        border: 0 !important;
-
-        border-bottom: 1px solid #334155 !important;
-    }
-
-
-    /* Signature text */
-
-    .exam-print-signatures >
-    .exam-sign-box > p {
-
-        position: absolute !important;
-
-        top: 15.5mm !important;
-
-        left: 0 !important;
-
-        display: block !important;
-
-        width: 100% !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        color: #172033 !important;
-
-        font-size: 8.5px !important;
-
-        line-height: 1.15 !important;
-
-        text-align: center !important;
-    }
-
-
-    /* ==============================
-       STAMP
-       ABOVE SIGNATURE LINE
-    ============================== */
-
-    .exam-print-signatures
-    .exam-issued-by-image {
-
-        position: absolute !important;
-
-        top: 0 !important;
-
-        left: 50% !important;
-
-        display: block !important;
-
-        width: 30mm !important;
-
-        max-width: 30mm !important;
-
-        height: 11mm !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        object-fit: contain !important;
-
-        object-position: center !important;
-
-        transform: translateX(-50%) !important;
-    }
-
-
-    .exam-print-signatures
-    .exam-authorized-box > strong {
-
-        position: absolute !important;
-
-        top: 17mm !important;
-
-        left: 0 !important;
-
-        display: block !important;
-
-        width: 100% !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        color: #172033 !important;
-
-        font-size: 8.5px !important;
-
-        line-height: 1.1 !important;
-
-        text-align: center !important;
-    }
-
-
-    .exam-print-signatures
-    .exam-authorized-box > span {
-
-        position: absolute !important;
-
-        top: 19mm !important;
-
-        left: 0 !important;
-
-        display: block !important;
-
-        width: 100% !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        color: #475569 !important;
-
-        font-size: 7.5px !important;
-
-        line-height: 1.1 !important;
-
-        text-align: center !important;
-    }
-
-
-    /* ==============================
-       FOOTER
-    ============================== */
-
-    .exam-print-footer {
-
-        width: 100% !important;
-
-        margin: 1.5mm 0 0 !important;
-
-        padding: 1mm 0 0 !important;
-
-        border-top: 1px solid #cbd2df !important;
-
-        color: #555555 !important;
-
-        font-size: 7.5px !important;
-
-        line-height: 1.15 !important;
-
-        text-align: center !important;
-
-        break-inside: avoid !important;
-
-        page-break-inside: avoid !important;
-    }
-
-    .exam-print-footer p {
-
-        margin: 0.3mm 0 !important;
-
-        font-size: 7.5px !important;
-
-        line-height: 1.15 !important;
-    }
-
-
-    /* ==============================
-       PRINT
-    ============================== */
-
-    @media print {
+    // -----------------------------------------
+    // A4 PRINT CSS
+    // -----------------------------------------
+
+    const printStyles = `
+        * {
+            box-sizing: border-box !important;
+        }
 
         @page {
             size: A4 portrait;
-            margin: 7mm 9mm;
+            margin: 6mm 8mm;
         }
 
-        html,
-        body {
+        html, body {
             width: 100% !important;
-
             margin: 0 !important;
             padding: 0 !important;
-
-            overflow: visible !important;
+            background: #ffffff !important;
+            color: #172033 !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .exam-form-print {
-
+            position: relative !important;
+            isolation: isolate !important;
+            display: block !important;
             width: 100% !important;
-
             max-width: 100% !important;
-
+            min-width: 0 !important;
             height: auto !important;
-
             min-height: 0 !important;
-
             margin: 0 !important;
-
-            padding: 2.5mm !important;
-
+            padding: 2mm !important;
             overflow: visible !important;
-
-            -webkit-print-color-adjust:
-                exact !important;
-
-            print-color-adjust:
-                exact !important;
+            border: 1px solid #9fb3d1 !important;
+            background: #ffffff !important;
+            font-size: 10px !important;
+            line-height: 1.15 !important;
+            box-shadow: none !important;
         }
 
+        /* FORM NUMBER */
+        .exam-print-form-no {
+            width: 100% !important;
+            margin: 0 0 1mm !important;
+            text-align: right !important;
+            font-size: 12px !important;
+        }
+
+        .exam-print-form-no strong {
+            display: inline-block !important;
+            min-width: 52mm !important;
+            padding: 1.5mm 2mm !important;
+            border: 1px solid #8094b3 !important;
+            background: #f7faff !important;
+            text-align: center !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+        }
+
+        /* HEADER */
+        .exam-print-header {
+            position: relative !important;
+            display: block !important;
+            width: 100% !important;
+            min-height: 40mm !important;
+            margin: 0 0 1.5mm !important;
+            padding: 0 0 1.5mm !important;
+            text-align: center !important;
+            border-bottom: 1.5px solid #1747c8 !important;
+        }
+
+        .exam-print-logo {
+            display: block !important;
+            width: 43mm !important;
+            height: 15mm !important;
+            max-width: 43mm !important;
+            margin: 0 auto 0.5mm !important;
+            object-fit: contain !important;
+            object-position: center !important;
+        }
+
+        .exam-print-header h1 {
+            margin: 0 !important;
+            color: #1747c8 !important;
+            font-size: 17px !important;
+            font-weight: 800 !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+        }
+
+        .exam-print-tagline {
+            margin: 0.5mm 0 !important;
+            color: #475569 !important;
+            font-size: 8.5px !important;
+            text-align: center !important;
+        }
+
+        .exam-print-header h2 {
+            margin: 0.8mm 0 0 !important;
+            color: #1747c8 !important;
+            font-size: 12px !important;
+            text-align: center !important;
+        }
+
+        /* WATERMARK */
         .exam-print-watermark {
-
+            position: absolute !important;
+            z-index: 0 !important;
+            top: 50% !important;
+            left: 50% !important;
+            width: 82mm !important;
+            height: 82mm !important;
+            max-width: none !important;
+            object-fit: contain !important;
             opacity: 0.05 !important;
-
-            -webkit-print-color-adjust:
-                exact !important;
-
-            print-color-adjust:
-                exact !important;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: none !important;
         }
-    }
-`;
 
+        .exam-form-print > :not(.exam-print-watermark) {
+            position: relative !important;
+            z-index: 1 !important;
+        }
 
-    // =====================================================
-    // 14. WRITE PRINT DOCUMENT
-    // =====================================================
+        /* SECTIONS */
+        .exam-print-section {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 1mm 0 0 !important;
+            padding: 0 !important;
+        }
+
+        .exam-print-section h3 {
+            margin: 0 0 1mm !important;
+            padding: 1mm 1.5mm !important;
+            background: #edf3ff !important;
+            border-left: 3px solid #1747c8 !important;
+            color: #1747c8 !important;
+            font-size: 10px !important;
+            line-height: 1.1 !important;
+        }
+
+        /* PHOTO */
+        .exam-print-student-photo-wrap {
+            position: absolute !important;
+            top: 5mm !important;
+            right: 2mm !important;
+            display: block !important;
+            width: 28mm !important;
+            min-height: 34mm !important;
+            text-align: center !important;
+            z-index: 5 !important;
+        }
+
+        .exam-print-student-photo {
+            display: inline-block !important;
+            width: 28mm !important;
+            height: 34mm !important;
+            max-width: 28mm !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            border: 1px solid #64748b !important;
+            background: #ffffff !important;
+        }
+
+        /* FULL WIDTH DETAILS TABLE */
+        .exam-print-table {
+            display: table !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            font-size: 13px !important;
+        }
+
+        .exam-print-table tr {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .exam-print-table th,
+        .exam-print-table td {
+            border: 1px solid #aebbd0 !important;
+            padding: 1mm 1.5mm !important;
+            color: #172033 !important;
+            font-size: 13px !important;
+            line-height: 1.15 !important;
+            text-align: left !important;
+            vertical-align: middle !important;
+            overflow-wrap: anywhere !important;
+        }
+
+        .exam-print-table th {
+            width: 34% !important;
+            background: #f4f7fc !important;
+            font-weight: 700 !important;
+        }
+
+        .exam-print-table td {
+            font-weight: 500 !important;
+        }
+
+        /* GUIDELINES */
+        .exam-print-section ol,
+        .exam-print-section ul {
+            margin: 0.5mm 0 !important;
+            padding-left: 5mm !important;
+        }
+
+        .exam-print-section li {
+            margin: 0.3mm 0 !important;
+            padding: 0 !important;
+            font-size: 10px !important;
+            line-height: 1.15 !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        /* FEE CRITERIA */
+        .exam-fee-criteria {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 1mm 0 !important;
+            padding: 1mm 1.5mm !important;
+            background: #f5f8ff !important;
+            border: 1px solid #b9cdec !important;
+            border-left: 3px solid #1455c0 !important;
+            color: #24344d !important;
+            font-size: 11px !important;
+            line-height: 1.15 !important;
+        }
+
+        .exam-fee-criteria h3 {
+            margin: 0 0 0.5mm !important;
+            padding: 0 0 0.5mm !important;
+            background: transparent !important;
+            color: #1249a8 !important;
+            font-size: 11px !important;
+        }
+
+        .exam-fee-criteria .fee-criteria-note {
+            margin: 0.5mm 0 !important;
+            padding: 0.5mm 1mm !important;
+            background: #ffffff !important;
+            border: 1px solid #dce8f8 !important;
+            color: #334155 !important;
+            font-size: 9px !important;
+            line-height: 1.15 !important;
+        }
+
+        .exam-fee-criteria .fee-criteria-list {
+            margin: 0.5mm 0 !important;
+            padding-left: 5mm !important;
+        }
+
+        .exam-fee-criteria .fee-criteria-list li {
+            margin: 0.25mm 0 !important;
+            font-size: 9px !important;
+            line-height: 1.15 !important;
+            break-inside: avoid !important;
+        }
+
+        /* SIGNATURE AREA */
+        .exam-print-signatures {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            gap: 8mm !important;
+            width: 100% !important;
+            margin: 1.5mm 0 0 !important;
+            padding: 0 !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .exam-print-signatures > .exam-sign-box {
+            position: relative !important;
+            display: block !important;
+            flex: 1 1 0 !important;
+            width: 50% !important;
+            min-width: 0 !important;
+            height: 27mm !important;
+            min-height: 27mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center !important;
+        }
+
+        .exam-print-signatures > .exam-sign-box > .exam-sign-space {
+            position: absolute !important;
+            top: 18mm !important;
+            left: 0 !important;
+            display: block !important;
+            width: 100% !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-bottom: 1px solid #334155 !important;
+        }
+
+        .exam-print-signatures > .exam-sign-box > p {
+            position: absolute !important;
+            top: 19mm !important;
+            left: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #172033 !important;
+            font-size: 8.5px !important;
+            line-height: 1.15 !important;
+            text-align: center !important;
+        }
+
+        /* BIG STAMP ABOVE SIGNATURE LINE */
+        .exam-print-signatures .exam-issued-by-image {
+            position: absolute !important;
+            top: 0 !important;
+            left: 50% !important;
+            display: block !important;
+            width: 38mm !important;
+            max-width: 38mm !important;
+            height: 14mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            transform: translateX(-50%) !important;
+        }
+
+        .exam-print-signatures .exam-authorized-box > strong {
+            position: absolute !important;
+            top: 21mm !important;
+            left: 0 !important;
+            display: block !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #172033 !important;
+            font-size: 8.5px !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+        }
+
+        .exam-print-signatures .exam-authorized-box > span {
+            position: absolute !important;
+            top: 23mm !important;
+            left: 0 !important;
+            display: block !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #475569 !important;
+            font-size: 7.5px !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+        }
+
+        /* FOOTER */
+        .exam-print-footer {
+            width: 100% !important;
+            margin: 1mm 0 0 !important;
+            padding: 1mm 0 0 !important;
+            border-top: 1px solid #cbd2df !important;
+            color: #555 !important;
+            font-size: 7.5px !important;
+            line-height: 1.1 !important;
+            text-align: center !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .exam-print-footer p {
+            margin: 0.3mm 0 !important;
+            font-size: 7.5px !important;
+            line-height: 1.1 !important;
+        }
+
+        @media print {
+            html, body {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            .exam-form-print {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 2mm !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    `;
+
+    // -----------------------------------------
+    // WRITE PRINT DOCUMENT
+    // -----------------------------------------
 
     printWindow.document.open();
 
-
     printWindow.document.write(`
-
         <!DOCTYPE html>
-
         <html lang="en">
-
         <head>
-
             <meta charset="UTF-8">
-
             <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1.0"
             >
-
-            <title>
-                IKON Exam Form - ${formNo}
-            </title>
-
-            <style>
-
-                ${printStyles}
-
-            </style>
-
+            <title>IKON Exam Form - ${formNo}</title>
+            <style>${printStyles}</style>
         </head>
-
-
         <body>
-
             ${printClone.outerHTML}
-
         </body>
-
         </html>
-
     `);
-
 
     printWindow.document.close();
 
-
-    // =====================================================
-    // 15. WAIT FOR ALL IMAGES
-    // =====================================================
+    // -----------------------------------------
+    // WAIT FOR IMAGES THEN PRINT
+    // -----------------------------------------
 
     function startPrintWhenReady() {
-
-        const images =
-            Array.from(
-                printWindow.document.images
-            );
-
-
-        const imagePromises =
-            images.map(
-                function (img) {
-
-                    if (img.complete) {
-
-                        return Promise.resolve();
-                    }
-
-
-                    return new Promise(
-                        function (resolve) {
-
-                            img.onload =
-                                resolve;
-
-
-                            img.onerror =
-                                resolve;
-
-
-                            printWindow.setTimeout(
-                                resolve,
-                                5000
-                            );
-                        }
-                    );
-                }
-            );
-
-
-        Promise.all(
-            imagePromises
-        ).then(
-            function () {
-
-                printWindow.focus();
-
-
-                printWindow.setTimeout(
-                    function () {
-
-                        printWindow.print();
-
-                    },
-                    700
-                );
-            }
+        const images = Array.from(
+            printWindow.document.images
         );
+
+        const imagePromises = images.map(img => {
+            if (img.complete) {
+                return Promise.resolve();
+            }
+
+            return new Promise(resolve => {
+                img.onload = resolve;
+                img.onerror = resolve;
+                printWindow.setTimeout(resolve, 5000);
+            });
+        });
+
+        Promise.all(imagePromises).then(() => {
+            printWindow.focus();
+
+            printWindow.setTimeout(() => {
+                printWindow.print();
+            }, 700);
+        });
     }
 
-
-    // =====================================================
-    // 16. START PRINT
-    // =====================================================
-
-    if (
-        printWindow.document.readyState ===
-        "complete"
-    ) {
-
+    if (printWindow.document.readyState === "complete") {
         startPrintWhenReady();
-
+    } else {
+        printWindow.onload = startPrintWhenReady;
     }
-    else {
-
-        printWindow.onload =
-            startPrintWhenReady;
-    }
-
 }
-
 function updateExamFormPreview() {
     const previewSection = document.getElementById("examFormPreviewSection");
 
