@@ -25825,44 +25825,44 @@ const styles = {
             page-break-inside: avoid !important;
         }
 
-        .exam-print-signatures > .exam-sign-box {
-            position: relative !important;
-            display: block !important;
-            flex: 1 1 0 !important;
-            width: 50% !important;
-            min-width: 0 !important;
-            height: 27mm !important;
-            min-height: 27mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            text-align: center !important;
-        }
+      .exam-print-signatures > .exam-sign-box {
+    position: relative !important;
+    display: block !important;
+    flex: 1 1 0 !important;
+    width: 50% !important;
+    min-width: 0 !important;
+    height: 32mm !important;
+    min-height: 32mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
 
-        .exam-print-signatures > .exam-sign-box > .exam-sign-space {
-            position: absolute !important;
-            top: 18mm !important;
-            left: 0 !important;
-            display: block !important;
-            width: 100% !important;
-            height: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-bottom: 1px solid #334155 !important;
-        }
+       .exam-print-signatures > .exam-sign-box > .exam-sign-space {
+    position: absolute !important;
+    top: 23mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #334155 !important;
+}
 
-        .exam-print-signatures > .exam-sign-box > p {
-            position: absolute !important;
-            top: 19mm !important;
-            left: 0 !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #172033 !important;
-            font-size: 8.5px !important;
-            line-height: 1.15 !important;
-            text-align: center !important;
-        }
+.exam-print-signatures > .exam-sign-box > p {
+    position: absolute !important;
+    top: 24mm !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #172033 !important;
+    font-size: 8.5px !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+}
 
       
 .exam-print-signatures .exam-issued-by-image {
@@ -25881,34 +25881,33 @@ const styles = {
 }
 
 
-        .exam-print-signatures .exam-authorized-box > strong {
-            position: absolute !important;
-            top: 21mm !important;
-            left: 0 !important;
-            display: block !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #172033 !important;
-            font-size: 8.5px !important;
-            line-height: 1.1 !important;
-            text-align: center !important;
-        }
+      .exam-print-signatures .exam-authorized-box > strong {
+    position: absolute !important;
+    top: 26mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #172033 !important;
+    font-size: 8.5px !important;
+    line-height: 1.1 !important;
+    text-align: center !important;
+}
 
-        .exam-print-signatures .exam-authorized-box > span {
-            position: absolute !important;
-            top: 23mm !important;
-            left: 0 !important;
-            display: block !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #475569 !important;
-            font-size: 7.5px !important;
-            line-height: 1.1 !important;
-            text-align: center !important;
-        }
-
+.exam-print-signatures .exam-authorized-box > span {
+    position: absolute !important;
+    top: 28mm !important;
+    left: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #475569 !important;
+    font-size: 7.5px !important;
+    line-height: 1.1 !important;
+    text-align: center !important;
+}
         /* FOOTER */
         .exam-print-footer {
             width: 100% !important;
