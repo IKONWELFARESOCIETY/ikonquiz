@@ -5703,13 +5703,13 @@ function loadStudentResultsByDate(
                             "tr"
                         );
 
-                    // Display Total marks with maximum 2 decimal places.
+                    // Display Total marks as a rounded whole number (no decimals).
                     const displayTotal =
                         r.totalMarks === "" || r.totalMarks == null
                             ? ""
                             : isNaN(Number(r.totalMarks))
                                 ? r.totalMarks
-                                : Number(Number(r.totalMarks).toFixed(2));
+                                : Math.round(Number(r.totalMarks));
 
 
                     tr.innerHTML = `
