@@ -27875,21 +27875,21 @@ async function generateBulkMarksheetZIP(){
         // HELPER: WAIT FOR IMAGES
         //============================================
 
-        function waitForImage(img){
+      function waitForImage(img){
 
-            return new Promise(function(resolve){
+    return new Promise(function(resolve){
 
-                if(!img || img.complete){
-                    resolve();
-                    return;
-                }
-
-                img.onload = resolve;
-                img.onerror = resolve;
-
-            });
-
+        if(!img || img.complete){
+            resolve();
+            return;
         }
+
+        img.addEventListener("load", resolve, { once: true });
+        img.addEventListener("error", resolve, { once: true });
+
+    });
+
+}
 
         //============================================
         // HELPER: POPULATE MARKSHEET
@@ -27975,7 +27975,38 @@ async function generateBulkMarksheetZIP(){
                 //====================================
                 // STUDENT DETAILS
                 //====================================
+                //====================================
+// SIGNATURE & CENTRE MANAGER STAMP FIX
+// MATCH INDIVIDUAL PDF DESIGN
+//====================================
 
+const signImg = clonePage.querySelector(".mkSignImage");
+
+if (signImg) {
+    signImg.removeAttribute("width");
+    signImg.removeAttribute("height");
+
+    signImg.style.setProperty("width", "170px", "important");
+    signImg.style.setProperty("height", "auto", "important");
+    signImg.style.setProperty("max-height", "90px", "important");
+    signImg.style.setProperty("object-fit", "contain", "important");
+    signImg.style.setProperty("display", "block", "important");
+    signImg.style.setProperty("margin", "0 auto 8px auto", "important");
+}
+
+const issuedImg = clonePage.querySelector(".mkIssuedImage");
+
+if (issuedImg) {
+    issuedImg.removeAttribute("width");
+    issuedImg.removeAttribute("height");
+
+    issuedImg.style.setProperty("width", "165px", "important");
+    issuedImg.style.setProperty("height", "auto", "important");
+    issuedImg.style.setProperty("max-height", "120px", "important");
+    issuedImg.style.setProperty("object-fit", "contain", "important");
+    issuedImg.style.setProperty("display", "block", "important");
+    issuedImg.style.setProperty("margin", "0 auto 8px auto", "important");
+}
                 const fields = {
 
                     mkMarksheetNo: student.marksheetNo,
@@ -28110,7 +28141,7 @@ applyMarksheetResultStyle(
 
                 const canvas = await html2canvas(marksheet, {
 
-                    scale: 2,
+                    scale: 3,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: "#ffffff",
