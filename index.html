@@ -1777,24 +1777,31 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
             <div class="dateWiseModalActions">
 
-                <button
-                    type="button"
-                    class="secondary"
-                    onclick="closeDateWiseResultPDF()"
-                >
-                    Cancel
-                </button>
+    <button
+        type="button"
+        class="secondary"
+        onclick="closeDateWiseResultPDF()">
+        Cancel
+    </button>
 
-                <button
-                    type="button"
-                    class="primary"
-                    id="generateDateWisePDFBtn"
-                    onclick="generateSelectedDatePDF()"
-                >
-                    📄 Generate PDF
-                </button>
+    <button
+        type="button"
+        class="primary"
+        id="generateDateWisePDFBtn"
+        onclick="generateSelectedDatePDF()">
+        Generate Result PDF
+    </button>
 
-            </div>
+    <button
+        type="button"
+        class="primary"
+        id="bulkMarksheetZIPBtn"
+        onclick="generateBulkMarksheetZIP()"
+        style="background:#087443;">
+      Bulk Marksheet ZIP
+    </button>
+
+</div>
 
         </div>
 
@@ -4411,6 +4418,7 @@ After successfully submitting one paper, please refresh the website (F5) before 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
       <!-- =====================================================
      PROFESSIONAL ADMIN ANSWER REVIEW PAGE
 ===================================================== -->
