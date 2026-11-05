@@ -3659,19 +3659,77 @@ MARKSHEET NO TABLE
 
 }
 
+
+/*=====================================
+   MARKS TABLE - BOLDER & CLEARER
+   A4 SAFE DESIGN
+=====================================*/
+
 .mkMarksTable th{
 
     background:#0b4f9c;
-
     color:#fff;
 
-    padding:7px;
+    padding:6px 4px;
 
-    font-size:13px;
+    font-size:14px;
+    font-weight:800;
+
+    line-height:1.15;
 
     border:1px solid #000;
 
 }
+
+.mkMarksTable td{
+
+    border:1px solid #555;
+
+    padding:5px 4px;
+
+    font-size:16px;
+    font-weight:700;
+
+    line-height:1.15;
+
+    text-align:center;
+
+    color:#111;
+
+}
+
+.mkMarksTable td:nth-child(2){
+
+    text-align:center;
+    padding-left:6px;
+
+}
+
+.mkGrandTotal td{
+
+    background:#eef6ff;
+
+    font-weight:800;
+
+    font-size:15px;
+
+    text-align:center;
+
+    padding:5px 4px;
+
+}
+
+/*=====================================
+   FAIL GRADE - RED COLOR
+=====================================*/
+
+.mk-fail{
+
+    color:#dc2626 !important;
+    font-weight:900 !important;
+
+}
+
 
 .mkMarksTable td{
 
