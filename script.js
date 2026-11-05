@@ -5755,7 +5755,9 @@ function loadStudentResultsByDate(
                         </td>
 
                         <td>
-                            ${r.totalMarks || ""}
+                         const displayTotal = Number(
+    Number(r.totalMarks || 0).toFixed(2)
+);
                         </td>
 
                         <td>
