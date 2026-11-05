@@ -27734,3 +27734,589 @@ function showExamFormStatusError(){
         };
 
 })();
+
+//====================================================
+// IKON BULK MARKSHEET PDF ZIP GENERATOR
+// Uses existing marksheet HTML design
+//====================================================
+
+async function generateBulkMarksheetZIP(){
+
+    // ADMIN SECURITY
+    if(isAdminMode !== true || !adminToken){
+        alert("Admin verification required.");
+        return;
+    }
+
+    // SELECTED DATE
+    const dateInput = document.getElementById(
+        "dateWiseResultPDFInput"
+    );
+
+    const selectedDate = dateInput
+        ? dateInput.value
+        : "";
+
+    // SELECTED PAPER
+    const paperInput = document.getElementById(
+        "dateWiseResultPaperInput"
+    );
+
+    const selectedPaper = paperInput
+        ? paperInput.value.trim()
+        : "";
+
+    if(!selectedDate){
+        alert("Please select an examination date.");
+        return;
+    }
+
+    if(!selectedPaper){
+        alert("Please select a paper.");
+        return;
+    }
+
+    // REQUIRED LIBRARIES
+    if(
+        typeof JSZip === "undefined" ||
+        !window.jspdf ||
+        typeof html2canvas === "undefined"
+    ){
+        alert("PDF or ZIP library is not loaded.");
+        return;
+    }
+
+    const button = document.getElementById(
+        "bulkMarksheetZIPBtn"
+    );
+
+    const originalButtonText = button
+        ? button.innerHTML
+        : "";
+
+    if(button){
+        button.disabled = true;
+        button.innerHTML = "⏳ Loading student records...";
+    }
+
+    try{
+
+        //============================================
+        // FETCH BULK MARKSHEET DATA
+        //============================================
+
+        const url =
+            SCRIPT_URL +
+            "?action=bulkMarksheets" +
+            "&adminToken=" +
+            encodeURIComponent(adminToken) +
+            "&examDate=" +
+            encodeURIComponent(selectedDate) +
+            "&paper=" +
+            encodeURIComponent(selectedPaper) +
+            "&_=" +
+            Date.now();
+
+        const response = await fetch(url);
+
+        if(!response.ok){
+            throw new Error("Server error: " + response.status);
+        }
+
+        const data = await response.json();
+
+        if(data.status === "UNAUTHORIZED"){
+            isAdminMode = false;
+            adminToken = "";
+            throw new Error("Admin session expired. Please verify again.");
+        }
+
+        if(data.status !== "SUCCESS"){
+            throw new Error(
+                data.message || "Unable to load marksheets."
+            );
+        }
+
+        const students = Array.isArray(data.results)
+            ? data.results
+            : [];
+
+        if(students.length === 0){
+            alert("No marksheets found for selected date and paper.");
+            return;
+        }
+
+        //============================================
+        // CHECK EXISTING MARKSHEET DESIGN
+        //============================================
+
+        const originalPage = document.getElementById(
+            "marksheetPage"
+        );
+
+        if(!originalPage){
+            throw new Error("Existing marksheet design not found.");
+        }
+
+        const { jsPDF } = window.jspdf;
+
+        const zip = new JSZip();
+
+        const folder = zip.folder("IKON_Bulk_Marksheets");
+
+        let completed = 0;
+        let failed = [];
+
+        //============================================
+        // HELPER: WAIT FOR IMAGES
+        //============================================
+
+        function waitForImage(img){
+
+            return new Promise(function(resolve){
+
+                if(!img || img.complete){
+                    resolve();
+                    return;
+                }
+
+                img.onload = resolve;
+                img.onerror = resolve;
+
+            });
+
+        }
+
+        //============================================
+        // HELPER: POPULATE MARKSHEET
+        //============================================
+
+        function setMarksheetValue(root, id, value){
+
+            const element = root.querySelector("#" + id);
+
+            if(element){
+                element.textContent =
+                    value === null || value === undefined
+                    ? ""
+                    : String(value);
+            }
+
+        }
+
+        //============================================
+        // GENERATE EACH STUDENT PDF
+        //============================================
+
+        for(let i = 0; i < students.length; i++){
+
+            const student = students[i];
+
+            try{
+
+                if(button){
+                    button.innerHTML =
+                        "⏳ Creating PDF " +
+                        (i + 1) +
+                        " / " +
+                        students.length;
+                }
+
+                // CLONE COMPLETE EXISTING MARKSHEET PAGE
+                const clonePage = originalPage.cloneNode(true);
+
+                clonePage.classList.remove("hidden");
+
+                clonePage.style.setProperty(
+                    "display",
+                    "block",
+                    "important"
+                );
+
+                clonePage.style.position = "relative";
+
+                clonePage.style.visibility = "visible";
+
+                // HIDE ACTION BUTTONS
+                const actionArea = clonePage.querySelector(
+                    ".mkPage"
+                );
+
+                if(actionArea){
+                    actionArea.style.display = "none";
+                }
+
+                const marksheet = clonePage.querySelector(
+                    ".marksheet"
+                );
+
+                if(!marksheet){
+                    throw new Error("Marksheet template missing.");
+                }
+
+                // OFFSCREEN RENDERING
+                const wrapper = document.createElement("div");
+
+                wrapper.style.position = "fixed";
+                wrapper.style.left = "-12000px";
+                wrapper.style.top = "0";
+                wrapper.style.background = "#ffffff";
+                wrapper.style.width = "max-content";
+                wrapper.style.zIndex = "-1";
+
+                wrapper.appendChild(clonePage);
+
+                document.body.appendChild(wrapper);
+
+                //====================================
+                // STUDENT DETAILS
+                //====================================
+
+                const fields = {
+
+                    mkMarksheetNo: student.marksheetNo,
+                    mkRegNo: student.regNo,
+                    mkStudentName: student.studentName,
+                    mkCourse: student.course,
+                    mkPaperName: student.paperName,
+
+                    mkResultDate: student.resultDate,
+                    mkIssueDate: student.issueDate,
+                    mkExamDate: student.examDate,
+                    mkExamCode: student.examCode,
+
+                    mkTheory: student.theory,
+                    mkPractical: student.practical,
+                    mkViva: student.viva,
+                    mkNotes: student.notes,
+                    mkBehaviour: student.behaviour,
+                    mkProject: student.project,
+
+                    mkTotal: student.totalMarks,
+                    mkPercentage: student.percentage,
+                    mkGrade: student.grade,
+                    mkResult: student.result
+
+                };
+
+                Object.keys(fields).forEach(function(id){
+
+                    setMarksheetValue(
+                        marksheet,
+                        id,
+                        fields[id]
+                    );
+
+                });
+
+                //====================================
+                // STUDENT PHOTO
+                //====================================
+
+                const photo = marksheet.querySelector(
+                    "#mkStudentPhoto"
+                );
+
+                if(photo){
+
+                    photo.onerror = function(){
+
+                        this.onerror = null;
+                        this.src = "no-photo.jpeg";
+
+                    };
+
+                    photo.src =
+                        String(student.regNo || "").trim() +
+                        ".jpeg";
+
+                }
+
+                //====================================
+                // QR CODE
+                //====================================
+
+                const qrImage = marksheet.querySelector(
+                    "#mkQRCode"
+                );
+
+                if(qrImage && typeof QRCode !== "undefined"){
+
+                    const qrHolder = document.createElement("div");
+
+                    const verifyURL =
+                        window.location.origin +
+                        window.location.pathname +
+                        "?verifyQR=" +
+                        encodeURIComponent(student.regNo || "") +
+                        "&paper=" +
+                        encodeURIComponent(student.paperName || "");
+
+                    new QRCode(qrHolder, {
+
+                        text: verifyURL,
+                        width: 150,
+                        height: 150,
+                        correctLevel: QRCode.CorrectLevel.H
+
+                    });
+
+                    const qrCanvas = qrHolder.querySelector("canvas");
+                    const qrGeneratedImage = qrHolder.querySelector("img");
+
+                    if(qrCanvas){
+
+                        qrImage.src = qrCanvas.toDataURL("image/png");
+
+                    }
+                    else if(qrGeneratedImage){
+
+                        qrImage.src = qrGeneratedImage.src;
+
+                    }
+
+                }
+
+                //====================================
+                // WAIT FOR IMAGES
+                //====================================
+
+                await Promise.all(
+
+                    Array.from(
+                        marksheet.querySelectorAll("img")
+                    ).map(waitForImage)
+
+                );
+
+                // Give browser time to apply cloned styles
+                await new Promise(function(resolve){
+                    requestAnimationFrame(function(){
+                        requestAnimationFrame(resolve);
+                    });
+                });
+
+                //====================================
+                // CONVERT MARKSHEET TO CANVAS
+                //====================================
+
+                const canvas = await html2canvas(marksheet, {
+
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: "#ffffff",
+                    scrollX: 0,
+                    scrollY: 0,
+                    imageTimeout: 15000,
+                    logging: false
+
+                });
+
+                //====================================
+                // CREATE INDIVIDUAL PDF
+                //====================================
+
+                const pdf = new jsPDF({
+
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4",
+                    compress: true
+
+                });
+
+                const pageWidth = 210;
+                const pageHeight = 297;
+                const margin = 8;
+
+                const availableWidth =
+                    pageWidth - (margin * 2);
+
+                const availableHeight =
+                    pageHeight - (margin * 2);
+
+                let imageWidth = availableWidth;
+
+                let imageHeight =
+                    (canvas.height * imageWidth) / canvas.width;
+
+                // FIT MARKSHEET ON ONE A4 PAGE
+                if(imageHeight > availableHeight){
+
+                    const ratio =
+                        availableHeight / imageHeight;
+
+                    imageWidth *= ratio;
+                    imageHeight *= ratio;
+
+                }
+
+                const x =
+                    (pageWidth - imageWidth) / 2;
+
+                const y =
+                    margin;
+
+                const imageData = canvas.toDataURL(
+                    "image/jpeg",
+                    0.95
+                );
+
+                pdf.addImage(
+
+                    imageData,
+                    "JPEG",
+                    x,
+                    y,
+                    imageWidth,
+                    imageHeight,
+                    "",
+                    "FAST"
+
+                );
+
+                //====================================
+                // FILE NAME
+                //====================================
+
+                const safeReg = String(
+                    student.regNo || "Student"
+                ).replace(/[\\/:*?"<>|]+/g, "_");
+
+                const safeName = String(
+                    student.studentName || "Student"
+                ).replace(/[\\/:*?"<>|]+/g, "_");
+
+                const fileName =
+                    safeReg + "_" +
+                    safeName + ".pdf";
+
+                folder.file(
+                    fileName,
+                    pdf.output("blob")
+                );
+
+                completed++;
+
+                // CLEAN UP
+                wrapper.remove();
+
+            }
+            catch(studentError){
+
+                console.error(
+                    "Bulk marksheet error:",
+                    student.regNo,
+                    studentError
+                );
+
+                failed.push(
+                    String(student.regNo || "Unknown") +
+                    " - " +
+                    String(student.studentName || "") +
+                    " - " +
+                    studentError.message
+                );
+
+                const oldWrapper = document.querySelector(
+                    "body > div[style*='-12000px']"
+                );
+
+                if(oldWrapper){
+                    oldWrapper.remove();
+                }
+
+            }
+
+        }
+
+        //============================================
+        // NO SUCCESSFUL PDF
+        //============================================
+
+        if(completed === 0){
+            throw new Error(
+                "No PDF could be generated. Please check the browser console."
+            );
+        }
+
+        //============================================
+        // ADD ERROR REPORT IF REQUIRED
+        //============================================
+
+        if(failed.length > 0){
+
+            folder.file(
+                "Failed_Records.txt",
+                failed.join("\n")
+            );
+
+        }
+
+        //============================================
+        // GENERATE ZIP
+        //============================================
+
+        if(button){
+            button.innerHTML = "📦 Preparing ZIP...";
+        }
+
+        const zipBlob = await zip.generateAsync({
+
+            type: "blob",
+            compression: "DEFLATE",
+            compressionOptions: {
+                level: 5
+            }
+
+        });
+
+        //============================================
+        // DOWNLOAD ZIP
+        //============================================
+
+        const safePaper = selectedPaper.replace(
+            /[\\/:*?"<>|]+/g,
+            "_"
+        );
+
+        const zipFileName =
+            "IKON_Marksheets_" +
+            selectedDate +
+            "_" +
+            safePaper +
+            ".zip";
+
+        saveAs(zipBlob, zipFileName);
+
+        alert(
+            "Bulk Marksheet ZIP created successfully.\n\n" +
+            "Total Records: " + students.length +
+            "\nPDF Created: " + completed +
+            "\nFailed: " + failed.length
+        );
+
+    }
+    catch(error){
+
+        console.error("Bulk ZIP Error:", error);
+
+        alert(
+            error.message ||
+            "Unable to create Bulk Marksheet ZIP."
+        );
+
+    }
+    finally{
+
+        if(button){
+
+            button.disabled = false;
+            button.innerHTML = originalButtonText;
+
+        }
+
+    }
+
+}
