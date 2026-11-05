@@ -22802,3 +22802,73 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
     }
 
 }
+
+
+
+/* =========================================================
+   IKON MARKSHEET FINAL OVERRIDES
+   FAIL RED + CLEARER TABLE TEXT (A4 SAFE)
+   Keep this block at the VERY END of css.css
+========================================================= */
+
+/* More readable marks table; compact vertical spacing preserves A4 fit */
+.marksheet .mkMarksTable th {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    padding: 5px 3px !important;
+    line-height: 1.12 !important;
+}
+
+.marksheet .mkMarksTable td {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    padding: 4px 3px !important;
+    line-height: 1.12 !important;
+}
+
+.marksheet .mkMarksTable .mkGrandTotal td,
+.marksheet .mkGrandTotal td {
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    padding: 4px 3px !important;
+}
+
+/* ID selectors are deliberately more specific than the existing #mkGrade/#mkResult rules */
+.marksheet #mkGrade.mk-fail,
+#marksheetPage .marksheet #mkGrade.mk-fail {
+    color: #dc2626 !important;
+    font-weight: 900 !important;
+}
+
+.marksheet #mkResult.mk-fail,
+#marksheetPage .marksheet #mkResult.mk-fail {
+    color: #dc2626 !important;
+    font-weight: 900 !important;
+}
+
+/* Explicit PASS colors */
+.marksheet #mkGrade.mk-pass,
+#marksheetPage .marksheet #mkGrade.mk-pass {
+    color: #1e3a8a !important;
+}
+
+.marksheet #mkResult.mk-pass,
+#marksheetPage .marksheet #mkResult.mk-pass {
+    color: #198754 !important;
+}
+
+/* Preserve colors in browser print/PDF rendering */
+@media print {
+    .marksheet #mkGrade.mk-fail,
+    .marksheet #mkResult.mk-fail {
+        color: #dc2626 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .marksheet .mkMarksTable th,
+    .marksheet .mkMarksTable td {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
