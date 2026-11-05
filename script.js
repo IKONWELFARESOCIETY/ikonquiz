@@ -8740,8 +8740,14 @@ function fillMarksheet(m){
         document.getElementById("mkTotal");
 
     if(mkTotal){
-        mkTotal.textContent =
-            m.totalMarks || "";
+        const marksheetTotal =
+            m.totalMarks === "" || m.totalMarks == null
+                ? ""
+                : isNaN(Number(m.totalMarks))
+                    ? m.totalMarks
+                    : Math.round(Number(m.totalMarks));
+
+        mkTotal.textContent = marksheetTotal;
     }
 
 
@@ -9626,7 +9632,12 @@ function checkQRVerification(){
         document.getElementById("qrStudentName").textContent=data.studentName;
         document.getElementById("qrCourse").textContent=data.course;
         document.getElementById("qrPaper").textContent=data.paperName;
-        document.getElementById("qrTotal").textContent=data.totalMarks;
+        document.getElementById("qrTotal").textContent =
+            data.totalMarks === "" || data.totalMarks == null
+                ? ""
+                : isNaN(Number(data.totalMarks))
+                    ? data.totalMarks
+                    : Math.round(Number(data.totalMarks));
         document.getElementById("qrPercentage").textContent=data.percentage;
         document.getElementById("qrGrade").textContent=data.grade;
         document.getElementById("qrResult").textContent=data.result;
