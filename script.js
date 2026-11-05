@@ -5703,6 +5703,14 @@ function loadStudentResultsByDate(
                             "tr"
                         );
 
+                    // Display Total marks with maximum 2 decimal places.
+                    const displayTotal =
+                        r.totalMarks === "" || r.totalMarks == null
+                            ? ""
+                            : isNaN(Number(r.totalMarks))
+                                ? r.totalMarks
+                                : Number(Number(r.totalMarks).toFixed(2));
+
 
                     tr.innerHTML = `
 
@@ -5755,9 +5763,7 @@ function loadStudentResultsByDate(
                         </td>
 
                         <td>
-                         const displayTotal = Number(
-    Number(r.totalMarks || 0).toFixed(2)
-);
+                            ${displayTotal}
                         </td>
 
                         <td>
@@ -7553,8 +7559,6 @@ function loadAdminResults(){
                         r.result ||
                         r.grade ||
                         "";
-
-
                     //========================================
                     // ROW
                     //========================================
