@@ -8765,7 +8765,11 @@ function fillMarksheet(m){
             m.result || "";
     }
 
-
+applyMarksheetResultStyle(
+    document.querySelector("#marksheetPage .marksheet"),
+    m.grade,
+    m.result
+);
     //================================================
     // STUDENT IMAGE
     //================================================
@@ -28008,7 +28012,11 @@ async function generateBulkMarksheetZIP(){
                     );
 
                 });
-
+applyMarksheetResultStyle(
+    marksheet,
+    student.grade,
+    student.result
+);
                 //====================================
                 // STUDENT PHOTO
                 //====================================
@@ -28316,6 +28324,49 @@ async function generateBulkMarksheetZIP(){
             button.innerHTML = originalButtonText;
 
         }
+
+    }
+
+}
+
+//====================================================
+// MARKSHEET RESULT COLOR
+// FAIL = RED
+//====================================================
+
+function applyMarksheetResultStyle(root, grade, result){
+
+    if(!root) return;
+
+    const gradeText = String(grade || "")
+        .trim()
+        .toUpperCase();
+
+    const resultText = String(result || "")
+        .trim()
+        .toUpperCase();
+
+    const isFail =
+        gradeText === "F" ||
+        gradeText.includes("FAIL") ||
+        resultText === "FAIL" ||
+        resultText.includes("FAIL");
+
+    const gradeElement = root.querySelector("#mkGrade");
+    const resultElement = root.querySelector("#mkResult");
+
+    if(gradeElement){
+
+        gradeElement.classList.toggle("mk-fail", isFail);
+
+    }
+
+    if(resultElement){
+
+        resultElement.classList.toggle(
+            "mk-fail",
+            resultText.includes("FAIL")
+        );
 
     }
 
