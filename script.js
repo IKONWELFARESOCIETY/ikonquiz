@@ -28676,4 +28676,3 @@ function applyMarksheetResultStyle(root, grade, result){
     };
 
 })();
-
