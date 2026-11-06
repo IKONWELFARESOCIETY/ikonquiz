@@ -26634,22 +26634,22 @@ if (entrySection) {
             if(!data || data.status !== "SUCCESS") return;
 
             if(!data.resultLive){
-                showResultControlPage("resultComingSoonPage");
+                window.showResultControlPage("resultComingSoonPage");
                 return;
             }
 
             if(data.topperMode){
                 renderTopperAnnouncement(data);
-                showResultControlPage("topperAnnouncementPage");
+                window.showResultControlPage("topperAnnouncementPage");
                 return;
             }
 
             // B21 switched to NO: restore the existing verification page.
-            hideResultControlPages();
+            window.hideResultControlPages();
             if(typeof originalOpenResultVerifyPage === "function"){
                 originalOpenResultVerifyPage();
             }else{
-                showResultControlPage("resultVerifyPage");
+                window.showResultControlPage("resultVerifyPage");
             }
         })
         .catch(function(error){
@@ -28465,6 +28465,10 @@ function applyMarksheetResultStyle(root, grade, result){
         page.style.setProperty("z-index","99999","important");
         window.scrollTo({top:0, behavior:"instant"});
     }
+
+    // Share navigation helpers with the earlier announcement auto-refresh IIFE.
+    window.hideResultControlPages = hideResultControlPages;
+    window.showResultControlPage = showResultControlPage;
 
     function safePhotoUrl(value){
         const raw = String(value || "").trim();
