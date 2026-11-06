@@ -28569,9 +28569,9 @@ function applyMarksheetResultStyle(root, grade, result){
         const registrationNo = String(topper.regNo || "").trim();
         const photoUrl = registrationNo
             ? safePhotoUrl(
-                "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/" +
-                encodeURIComponent(registrationNo) +
-                ".jpeg"
+                topper.photoUrl ||
+                ("https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/" +
+                encodeURIComponent(registrationNo) + ".jpeg")
             )
             : "";
         if(photoUrl){
