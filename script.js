@@ -28665,6 +28665,7 @@ function applyMarksheetResultStyle(root, grade, result){
         ikonTopperRevealIndex = 0;
         const container = document.getElementById("topperCards");
         if(container) container.innerHTML = "";
+        window.ikonTopperCardsSignature = "";
         const button = document.getElementById("revealNextTopperBtn");
         const hint = document.getElementById("topperRevealHint");
         if(button){
@@ -28705,13 +28706,27 @@ function applyMarksheetResultStyle(root, grade, result){
             ikonTopperRevealQueue = available;
         }
 
-        // Rebuild only cards that have already been revealed.
-        container.innerHTML = "";
-        for(let i=0; i<ikonTopperRevealIndex; i++){
-            const stage = ikonTopperRevealQueue[i];
-            if(stage && toppers[stage.index]){
-                addTopperCard(container, toppers[stage.index], stage.rank, stage.medal);
+        // Keep existing DOM/images intact when the published data and reveal
+        // state have not changed. This prevents photos blinking on each poll.
+        const cardSignature = JSON.stringify({
+            ranks: newRanks,
+            revealIndex: ikonTopperRevealIndex,
+            visible: ikonTopperRevealQueue.slice(0, ikonTopperRevealIndex).map(function(stage){
+                const student = toppers[stage.index] || {};
+                return [stage.rank, student.regNo, student.studentName,
+                    student.course, student.percentage, student.photoUrl || ""];
+            })
+        });
+
+        if(window.ikonTopperCardsSignature !== cardSignature){
+            container.innerHTML = "";
+            for(let i=0; i<ikonTopperRevealIndex; i++){
+                const stage = ikonTopperRevealQueue[i];
+                if(stage && toppers[stage.index]){
+                    addTopperCard(container, toppers[stage.index], stage.rank, stage.medal);
+                }
             }
+            window.ikonTopperCardsSignature = cardSignature;
         }
 
         message.style.display = available.length === 0 ? "block" : "none";
