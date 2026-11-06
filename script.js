@@ -26640,6 +26640,9 @@ if (entrySection) {
 
             if(data.topperMode){
                 renderTopperAnnouncement(data);
+                if(typeof window.updateTopperAdminControls === "function"){
+                    window.updateTopperAdminControls(data);
+                }
                 window.showResultControlPage("topperAnnouncementPage");
                 return;
             }
@@ -28542,12 +28545,6 @@ function applyMarksheetResultStyle(root, grade, result){
         container.innerHTML = "";
         message.style.display = "none";
 
-        if(!data.topperVisible){
-            message.textContent = "Topper announcement will be published shortly. Please stay tuned.";
-            message.style.display = "block";
-            return;
-        }
-
         const toppers = Array.isArray(data.toppers) ? data.toppers : [];
         const stages = [
             {index:2, visible:!!data.publish3rd, rank:"3RD", medal:"🥉"},
@@ -28566,7 +28563,69 @@ function applyMarksheetResultStyle(root, grade, result){
             message.textContent = "The topper announcement will begin shortly.";
             message.style.display = "block";
         }
+        updateTopperAdminControls(data);
     }
+
+    function updateTopperAdminControls(data){
+        const panel = document.getElementById("topperAdminControls");
+        if(!panel) return;
+        const enabled = !!(data && data.adminControlsEnabled) &&
+            typeof isAdminMode !== "undefined" && isAdminMode === true &&
+            typeof adminToken !== "undefined" && !!adminToken;
+        panel.style.display = enabled ? "block" : "none";
+        if(!enabled) return;
+        const states = [
+            ["publish3rdTopperBtn", !!data.publish3rd, "Publish 3rd Place", "3rd Place Published ✓"],
+            ["publish2ndTopperBtn", !!data.publish2nd, "Publish 2nd Place", "2nd Place Published ✓"],
+            ["publish1stTopperBtn", !!data.publish1st, "Publish 1st Place", "1st Place Published ✓"]
+        ];
+        states.forEach(function(item){
+            const button = document.getElementById(item[0]);
+            if(!button) return;
+            button.textContent = item[1] ? item[3] : item[2];
+            button.disabled = item[1];
+            button.style.opacity = item[1] ? ".65" : "1";
+            button.style.cursor = item[1] ? "default" : "pointer";
+        });
+    }
+
+    window.updateTopperAdminControls = updateTopperAdminControls;
+
+    window.publishTopperRank = async function(rank){
+        if(typeof isAdminMode === "undefined" || isAdminMode !== true || !adminToken){
+            alert("Please verify Admin first. Your existing Admin session is required.");
+            return;
+        }
+        const buttonId = rank === "3" ? "publish3rdTopperBtn" : rank === "2" ? "publish2ndTopperBtn" : "publish1stTopperBtn";
+        const button = document.getElementById(buttonId);
+        if(button) button.disabled = true;
+        try{
+            const url = SCRIPT_URL + "?action=publishTopper&rank=" + encodeURIComponent(rank) +
+                "&adminToken=" + encodeURIComponent(adminToken) + "&_=" + Date.now();
+            const response = await fetch(url, {cache:"no-store"});
+            if(!response.ok) throw new Error("Server error: " + response.status);
+            const result = await response.json();
+            if(result.status === "UNAUTHORIZED"){
+                isAdminMode = false;
+                adminToken = "";
+                throw new Error(result.message || "Admin session expired. Verify again.");
+            }
+            if(result.status !== "SUCCESS") throw new Error(result.message || "Unable to publish topper.");
+            const status = document.getElementById("topperAdminStatus");
+            if(status) status.textContent = result.message;
+            const refresh = await fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"});
+            const data = await refresh.json();
+            if(data && data.status === "SUCCESS"){
+                renderTopperAnnouncement(data);
+                updateTopperAdminControls(data);
+            }
+            alert(result.message);
+        }catch(error){
+            alert(error.message || "Topper publish failed.");
+        }finally{
+            if(button) button.disabled = false;
+        }
+    };
 
     window.openResultVerifyPage = function(event){
         if(event){
