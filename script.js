@@ -26625,18 +26625,22 @@ if (entrySection) {
     function configureResultLiveActions(data){
         const topperButton = document.getElementById("openTopperListFromLive");
         const studentButton = document.getElementById("openStudentResultFromLive");
-        if(topperButton) topperButton.style.display = data && data.topperMode ? "inline-flex" : "none";
-        if(studentButton) studentButton.style.display = data && !data.topperMode ? "inline-flex" : "none";
+        // B21=YES overrides B20: show only the original student verification route.
+        const verificationOnly = !!(data && data.verificationOnly);
+        const showTopperButton = !!(data && data.topperButtonEnabled) && !verificationOnly;
+        if(topperButton) topperButton.style.display = showTopperButton ? "inline-flex" : "none";
+        if(studentButton) studentButton.style.display = verificationOnly ? "inline-flex" : "none";
     }
 
     window.openPublishedTopperList = function(){
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
         .then(function(r){ return r.json(); })
         .then(function(data){
-            if(!data || data.status !== "SUCCESS" || !data.resultLive || !data.topperMode){
+            if(!data || data.status !== "SUCCESS" || !data.resultLive || !data.topperMode || data.verificationOnly){
                 alert("Topper list is not available right now.");
                 return;
             }
+            window.resetTopperRevealSequence();
             renderTopperAnnouncement(data);
             window.showResultControlPage("topperAnnouncementPage");
         })
@@ -26645,8 +26649,8 @@ if (entrySection) {
 
     window.openOriginalStudentResult = function(){
         window.hideResultControlPages();
-        if(typeof originalOpenResultVerifyPage === "function"){
-            originalOpenResultVerifyPage();
+        if(typeof window.openLegacyResultVerifyPage === "function"){
+            window.openLegacyResultVerifyPage();
         }else{
             window.showResultControlPage("resultVerifyPage");
         }
@@ -28470,13 +28474,15 @@ function applyMarksheetResultStyle(root, grade, result){
 (function(){
 
     const originalOpenResultVerifyPage = window.openResultVerifyPage;
+    // Expose the untouched legacy verification-page opener for the live-reveal CTA.
+    window.openLegacyResultVerifyPage = originalOpenResultVerifyPage;
 
     const resultControlPages = [
         "loginPage", "examTypePage", "theoryPage", "practicalPage",
         "examFormPage", "mockTestModal", "mockTestPage",
         "hallTicketVerifyPage", "hallTicketPage", "studentResultPage",
         "marksheetPage", "leaderboardPage", "resultVerifyPage",
-        "resultComingSoonPage", "topperAnnouncementPage"
+        "resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage"
     ];
 
     function hideResultControlPages(){
@@ -28588,34 +28594,108 @@ function applyMarksheetResultStyle(root, grade, result){
         container.appendChild(card);
     }
 
+    let ikonTopperRevealQueue = [];
+    let ikonTopperRevealIndex = 0;
+
+    window.resetTopperRevealSequence = function(){
+        ikonTopperRevealQueue = [];
+        ikonTopperRevealIndex = 0;
+        const container = document.getElementById("topperCards");
+        if(container) container.innerHTML = "";
+        const button = document.getElementById("revealNextTopperBtn");
+        const hint = document.getElementById("topperRevealHint");
+        if(button){
+            button.disabled = false;
+            button.style.display = "inline-flex";
+            button.textContent = "REVEAL 3RD PLACE";
+        }
+        if(hint) hint.textContent = "The winners will be revealed one by one.";
+    };
+
     function renderTopperAnnouncement(data){
+        window.ikonLatestTopperData = data;
         const container = document.getElementById("topperCards");
         const message = document.getElementById("topperAnnouncementMessage");
         if(!container || !message) return;
 
-        container.innerHTML = "";
-        message.style.display = "none";
-
         const toppers = Array.isArray(data.toppers) ? data.toppers : [];
-        const stages = [
+        const allStages = [
             {index:2, visible:!!data.publish3rd, rank:"3RD", medal:"🥉"},
             {index:1, visible:!!data.publish2nd, rank:"2ND", medal:"🥈"},
             {index:0, visible:!!data.publish1st, rank:"1ST", medal:"🥇"}
         ];
-
-        let shown = 0;
-        stages.forEach(function(stage){
-            if(!stage.visible || !toppers[stage.index]) return;
-            addTopperCard(container, toppers[stage.index], stage.rank, stage.medal);
-            shown++;
+        const available = allStages.filter(function(stage){
+            return stage.visible && !!toppers[stage.index];
         });
 
-        if(shown === 0){
+        // Keep the queue stable on 10-second background refresh.
+        const oldRanks = ikonTopperRevealQueue.map(function(stage){ return stage.rank; }).join(",");
+        const newRanks = available.map(function(stage){ return stage.rank; }).join(",");
+        if(oldRanks !== newRanks){
+            const alreadyRevealed = ikonTopperRevealQueue.slice(0, ikonTopperRevealIndex)
+                .map(function(stage){ return stage.rank; });
+            ikonTopperRevealQueue = available;
+            ikonTopperRevealIndex = alreadyRevealed.filter(function(rank){
+                return newRanks.split(",").indexOf(rank) !== -1;
+            }).length;
+        }else{
+            ikonTopperRevealQueue = available;
+        }
+
+        // Rebuild only cards that have already been revealed.
+        container.innerHTML = "";
+        for(let i=0; i<ikonTopperRevealIndex; i++){
+            const stage = ikonTopperRevealQueue[i];
+            if(stage && toppers[stage.index]){
+                addTopperCard(container, toppers[stage.index], stage.rank, stage.medal);
+            }
+        }
+
+        message.style.display = available.length === 0 ? "block" : "none";
+        if(available.length === 0){
             message.textContent = "The topper announcement will begin shortly.";
-            message.style.display = "block";
+        }
+
+        const button = document.getElementById("revealNextTopperBtn");
+        const hint = document.getElementById("topperRevealHint");
+        const next = ikonTopperRevealQueue[ikonTopperRevealIndex];
+        if(button){
+            button.style.display = available.length ? "inline-flex" : "none";
+            button.disabled = !next;
+            button.textContent = next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED";
+        }
+        if(hint){
+            hint.textContent = next
+                ? ("Next announcement: " + next.rank + " PLACE")
+                : (available.length ? "All announced toppers are now revealed." : "Winners will appear here when published.");
         }
         updateTopperAdminControls(data);
     }
+
+    window.revealNextTopper = function(){
+        if(ikonTopperRevealIndex >= ikonTopperRevealQueue.length) return;
+        const stage = ikonTopperRevealQueue[ikonTopperRevealIndex];
+        const data = window.ikonLatestTopperData;
+        if(!data || !data.toppers || !data.toppers[stage.index]) return;
+
+        const container = document.getElementById("topperCards");
+        if(!container) return;
+        addTopperCard(container, data.toppers[stage.index], stage.rank, stage.medal);
+        ikonTopperRevealIndex++;
+
+        const button = document.getElementById("revealNextTopperBtn");
+        const hint = document.getElementById("topperRevealHint");
+        const next = ikonTopperRevealQueue[ikonTopperRevealIndex];
+        if(button){
+            button.disabled = !next;
+            button.textContent = next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED";
+        }
+        if(hint){
+            hint.textContent = next
+                ? ("Next announcement: " + next.rank + " PLACE")
+                : "All announced toppers are now revealed. Congratulations to our achievers!";
+        }
+    };
 
     function updateTopperAdminControls(data){
         const panel = document.getElementById("topperAdminControls");
