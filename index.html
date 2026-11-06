@@ -947,21 +947,21 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 .ikon-live-content{position:relative;z-index:2;width:min(760px,88%);padding:44px 16px 48px}
 .ikon-live-kicker{color:#f4ca75;font:800 12px/1.4 Arial,sans-serif;letter-spacing:.28em;text-transform:uppercase}
 .ikon-live-countdown{height:150px;display:flex;align-items:center;justify-content:center;position:relative;margin:12px auto 8px}
-.ikon-live-count{position:absolute;font:900 clamp(100px,17vw,164px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;transform:scale(.55);animation:ikonCountPulse 3.3s ease-in-out forwards}
+.ikon-live-count{position:absolute;font:900 clamp(100px,17vw,164px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;transform:scale(.55);animation:ikonCountPulse 1s ease-in-out forwards}
 .ikon-live-count:nth-child(1){animation-delay:0s}
 .ikon-live-count:nth-child(2){animation-delay:1s}
 .ikon-live-count:nth-child(3){animation-delay:2s}
-@keyframes ikonCountPulse{0%{opacity:0;transform:scale(.55)}12%,68%{opacity:1;transform:scale(1)}88%,100%{opacity:0;transform:scale(1.22)}}
+@keyframes ikonCountPulse{0%{opacity:0;transform:scale(.55)}15%,72%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
 .ikon-live-subline{color:#d6e2f4;font:600 clamp(14px,2vw,18px)/1.6 Arial,sans-serif;letter-spacing:.08em}
 .ikon-curtain-frame{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;border-radius:inherit}
 .ikon-curtain{position:absolute;top:0;bottom:0;width:51%;background:repeating-linear-gradient(90deg,#530d19 0,#7d1525 12%,#a32636 22%,#5d0c1b 34%,#8e1b2b 48%,#4c0a18 62%);box-shadow:inset 0 0 50px rgba(0,0,0,.48),0 0 35px rgba(0,0,0,.32)}
-.ikon-curtain.left{left:0;border-right:5px solid #d9a84e;transform-origin:left center;animation:ikonCurtainLeft 1.65s cubic-bezier(.72,0,.2,1) 3.15s forwards}
-.ikon-curtain.right{right:0;border-left:5px solid #d9a84e;transform-origin:right center;animation:ikonCurtainRight 1.65s cubic-bezier(.72,0,.2,1) 3.15s forwards}
+.ikon-curtain.left{left:0;border-right:5px solid #d9a84e;transform-origin:left center;animation:ikonCurtainLeft 1.65s cubic-bezier(.72,0,.2,1) 3s forwards}
+.ikon-curtain.right{right:0;border-left:5px solid #d9a84e;transform-origin:right center;animation:ikonCurtainRight 1.65s cubic-bezier(.72,0,.2,1) 3s forwards}
 .ikon-curtain:after{content:"";position:absolute;top:0;bottom:0;width:20px;background:linear-gradient(90deg,rgba(255,221,148,.25),transparent);right:12%}
 .ikon-curtain.left:after{right:12%}.ikon-curtain.right:after{left:12%;right:auto;transform:scaleX(-1)}
 @keyframes ikonCurtainLeft{to{transform:perspective(900px) rotateY(-78deg) translateX(-105%);opacity:.15}}
 @keyframes ikonCurtainRight{to{transform:perspective(900px) rotateY(78deg) translateX(105%);opacity:.15}}
-.ikon-live-reveal{opacity:0;transform:translateY(18px) scale(.96);animation:ikonLiveTextReveal .9s ease-out 4.15s forwards}
+.ikon-live-reveal{opacity:0;transform:translateY(18px) scale(.96);animation:ikonLiveTextReveal .9s ease-out 4.65s forwards}
 @keyframes ikonLiveTextReveal{to{opacity:1;transform:translateY(0) scale(1)}}
 .ikon-live-trophy{font-size:clamp(42px,7vw,68px);filter:drop-shadow(0 0 16px rgba(255,197,87,.4));margin-bottom:12px}
 .ikon-live-title{margin:0;color:#fff;font:900 clamp(38px,7vw,76px)/1.02 Arial,sans-serif;letter-spacing:-.045em;text-transform:uppercase;text-shadow:0 5px 25px rgba(0,0,0,.4)}
@@ -1009,6 +1009,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         <h1 style="margin:0;color:#b8860b;font-size:clamp(27px,5vw,42px);">IKON INSTITUTE TOPPERS</h1>
         <p style="margin:10px 0 24px;color:#526078;font-size:16px;">Celebrating the outstanding achievers</p>
         <div id="topperCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;text-align:left;"></div>
+        <div id="topperRevealControls" style="margin:26px auto 10px;text-align:center;">
+            <p id="topperRevealHint" style="color:#526078;font-weight:600;margin:0 0 12px;">The winners will be revealed one by one.</p>
+            <button type="button" id="revealNextTopperBtn" onclick="revealNextTopper()" style="padding:14px 28px;border:0;border-radius:12px;background:linear-gradient(135deg,#ffe5a5,#d69b35);color:#10213b;font-weight:900;font-size:15px;letter-spacing:.04em;cursor:pointer;box-shadow:0 10px 25px rgba(15,23,42,.16);">REVEAL 3RD PLACE</button>
+        </div>
         <div id="topperAnnouncementMessage" style="margin:22px auto;padding:18px;border-radius:12px;background:#f4f6fa;color:#39465e;max-width:700px;display:none;"></div>
         <div id="topperAdminControls" style="display:none;max-width:760px;margin:26px auto 0;padding:18px;background:#101b36;border:1px solid #d6ad4b;border-radius:16px;color:#fff;text-align:center;">
             <div style="font-weight:800;letter-spacing:1px;color:#f6c453;margin-bottom:12px;">ADMIN TOPPER PUBLISH CONTROLS</div>
@@ -1017,7 +1021,7 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
                 <button type="button" id="publish2ndTopperBtn" onclick="publishTopperRank('2')" style="padding:11px 16px;border:0;border-radius:9px;background:#aab3c2;color:#172033;font-weight:700;cursor:pointer;">Publish 2nd Place</button>
                 <button type="button" id="publish1stTopperBtn" onclick="publishTopperRank('1')" style="padding:11px 16px;border:0;border-radius:9px;background:#d6ad4b;color:#172033;font-weight:700;cursor:pointer;">Publish 1st Place</button>
             </div>
-            <div id="topperAdminStatus" style="font-size:12px;color:#dbeafe;margin-top:10px;">Buttons are available only while B21 is YES and the Admin session is active.</div>
+            <div id="topperAdminStatus" style="font-size:12px;color:#dbeafe;margin-top:10px;">Buttons are available only during a verified Admin session.</div>
         </div>
     </div>
 </div>
