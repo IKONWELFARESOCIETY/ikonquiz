@@ -26631,6 +26631,7 @@ if (entrySection) {
         if(topperButton) topperButton.style.display = showTopperButton ? "inline-flex" : "none";
         if(studentButton) studentButton.style.display = verificationOnly ? "inline-flex" : "none";
     }
+    window.configureResultLiveActions = configureResultLiveActions;
 
     window.openPublishedTopperList = function(){
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
@@ -26641,18 +26642,24 @@ if (entrySection) {
                 return;
             }
             window.resetTopperRevealSequence();
-            renderTopperAnnouncement(data);
+            if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
             window.showResultControlPage("topperAnnouncementPage");
         })
         .catch(function(){ alert("Unable to load topper list. Please try again."); });
     };
 
     window.openOriginalStudentResult = function(){
-        window.hideResultControlPages();
-        if(typeof window.openLegacyResultVerifyPage === "function"){
-            window.openLegacyResultVerifyPage();
-        }else{
+        if(typeof window.showResultControlPage === "function"){
             window.showResultControlPage("resultVerifyPage");
+        }else{
+            const page = document.getElementById("resultVerifyPage");
+            if(page){
+                page.classList.remove("hidden");
+                page.style.setProperty("display","block","important");
+                page.style.setProperty("visibility","visible","important");
+                page.style.setProperty("opacity","1","important");
+                page.style.setProperty("pointer-events","auto","important");
+            }
         }
     };
 
@@ -26672,6 +26679,12 @@ if (entrySection) {
                 return;
             }
 
+            // B21 YES overrides the topper and live-announcement pages.
+            if(data.verificationOnly){
+                window.openOriginalStudentResult();
+                return;
+            }
+
             // If the visitor has opened the topper podium, keep that page
             // visible during polling and only refresh its published cards.
             const topperPage = document.getElementById("topperAnnouncementPage");
@@ -26680,7 +26693,7 @@ if (entrySection) {
                 topperPage.style.display !== "none";
 
             if(topperPageIsVisible && data.topperMode){
-                renderTopperAnnouncement(data);
+                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
                 if(typeof window.updateTopperAdminControls === "function"){
                     window.updateTopperAdminControls(data);
                 }
@@ -26689,10 +26702,10 @@ if (entrySection) {
 
             // B19 YES: show the countdown + curtain reveal first.
             // The reveal page remains stable during background polling.
-            configureResultLiveActions(data);
+            window.configureResultLiveActions(data);
             window.showResultControlPage("resultLiveRevealPage");
             if(data.topperMode){
-                renderTopperAnnouncement(data);
+                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
                 if(typeof window.updateTopperAdminControls === "function"){
                     window.updateTopperAdminControls(data);
                 }
@@ -28671,6 +28684,7 @@ function applyMarksheetResultStyle(root, grade, result){
         }
         updateTopperAdminControls(data);
     }
+    window.renderTopperAnnouncement = renderTopperAnnouncement;
 
     window.revealNextTopper = function(){
         if(ikonTopperRevealIndex >= ikonTopperRevealQueue.length) return;
@@ -28785,8 +28799,14 @@ function applyMarksheetResultStyle(root, grade, result){
                 return;
             }
 
+            // B21 YES -> directly restore the original verification flow.
+            if(data.verificationOnly){
+                window.openOriginalStudentResult();
+                return;
+            }
+
             // B19 YES -> countdown, curtain opening, then RESULT IS LIVE.
-            configureResultLiveActions(data);
+            window.configureResultLiveActions(data);
             showResultControlPage("resultLiveRevealPage");
             if(data.topperMode){
                 renderTopperAnnouncement(data);
