@@ -28556,55 +28556,105 @@ function applyMarksheetResultStyle(root, grade, result){
     }
 
     function addTopperCard(container, topper, rank, medal){
-        const card = document.createElement("div");
-        card.style.cssText = "background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px 16px;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,.08);";
+        const rankNumber = String(rank || "").replace(/\D/g, "") || "3";
+        const card = document.createElement("article");
+        card.className = "ikon-winner-card rank-" + rankNumber;
+
+        if(rankNumber === "1"){
+            const crown = document.createElement("div");
+            crown.className = "ikon-winner-crown";
+            crown.textContent = "👑";
+            card.appendChild(crown);
+        }
 
         const rankLabel = document.createElement("div");
-        rankLabel.textContent = medal + " " + rank + " PLACE";
-        rankLabel.style.cssText = "font-weight:800;letter-spacing:1px;color:#9a6b08;font-size:18px;margin-bottom:14px;";
+        rankLabel.className = "ikon-winner-rank";
+        rankLabel.textContent = medal + "  " + rank + " PLACE";
         card.appendChild(rankLabel);
 
-        // Student photo is already stored in the IKON GitHub repository.
-        // File name = Registration Number + .jpeg (repository root).
+        const photoWrap = document.createElement("div");
+        photoWrap.className = "ikon-winner-photo-wrap";
         const registrationNo = String(topper.regNo || "").trim();
         const photoUrl = registrationNo
-            ? safePhotoUrl(
-                topper.photoUrl ||
+            ? safePhotoUrl(topper.photoUrl ||
                 ("https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/" +
-                encodeURIComponent(registrationNo) + ".jpeg")
-            )
+                encodeURIComponent(registrationNo) + ".jpeg"))
             : "";
+
         if(photoUrl){
             const image = document.createElement("img");
+            image.className = "ikon-winner-photo";
             image.src = photoUrl;
             image.alt = topper.studentName || "Topper Photo";
             image.loading = "lazy";
-            image.style.cssText = "width:116px;height:116px;object-fit:cover;border-radius:50%;border:4px solid #f1d58a;margin:0 auto 14px;display:block;background:#f3f4f6;";
-            image.onerror = function(){ this.style.display="none"; };
-            card.appendChild(image);
+            image.onerror = function(){
+                this.onerror = null;
+                this.style.display = "none";
+                photoWrap.textContent = "👤";
+                photoWrap.style.display = "grid";
+                photoWrap.style.placeItems = "center";
+                photoWrap.style.fontSize = "64px";
+                photoWrap.style.color = "#91a0b6";
+            };
+            photoWrap.appendChild(image);
         }else{
-            const placeholder = document.createElement("div");
-            placeholder.textContent = "👤";
-            placeholder.style.cssText = "width:116px;height:116px;line-height:116px;font-size:54px;border-radius:50%;background:#f3f4f6;margin:0 auto 14px;";
-            card.appendChild(placeholder);
+            photoWrap.textContent = "👤";
+            photoWrap.style.display = "grid";
+            photoWrap.style.placeItems = "center";
+            photoWrap.style.fontSize = "64px";
+            photoWrap.style.color = "#91a0b6";
         }
+        card.appendChild(photoWrap);
 
-        const name = document.createElement("h3");
+        const name = document.createElement("h2");
+        name.className = "ikon-winner-name";
         name.textContent = topper.studentName || "Student Name";
-        name.style.cssText = "font-size:20px;margin:4px 0 8px;color:#172033;";
         card.appendChild(name);
 
         const course = document.createElement("p");
-        course.textContent = topper.course || "";
-        course.style.cssText = "margin:0 0 10px;color:#64748b;font-size:14px;";
+        course.className = "ikon-winner-course";
+        course.textContent = topper.course || "Course";
         card.appendChild(course);
 
+        const reg = document.createElement("p");
+        reg.className = "ikon-winner-reg";
+        reg.textContent = "REGISTRATION NO. ";
+        const regValue = document.createElement("strong");
+        regValue.textContent = registrationNo || "—";
+        reg.appendChild(regValue);
+        card.appendChild(reg);
+
         const percentage = document.createElement("div");
+        percentage.className = "ikon-winner-score";
         percentage.textContent = Number(topper.percentage || 0).toFixed(2).replace(/\.00$/,'') + "%";
-        percentage.style.cssText = "font-size:27px;font-weight:800;color:#0f766e;";
         card.appendChild(percentage);
 
+        const foot = document.createElement("div");
+        foot.className = "ikon-podium-foot";
+        foot.textContent = rankNumber === "1" ? "CHAMPION" :
+            (rankNumber === "2" ? "RUNNER-UP" : "SECOND RUNNER-UP");
+        card.appendChild(foot);
         container.appendChild(card);
+    }
+
+    function setTopperRevealButton(label, disabled){
+        const button = document.getElementById("revealNextTopperBtn");
+        if(!button) return;
+        const labelNode = button.querySelector(".ikon-reveal-btn-label");
+        if(labelNode) labelNode.textContent = label;
+        else button.textContent = label;
+        if(typeof disabled === "boolean") button.disabled = disabled;
+    }
+
+    function updateTopperRevealSteps(){
+        const steps = document.querySelectorAll(".ikon-reveal-step");
+        steps.forEach(function(step){
+            const rank = step.getAttribute("data-reveal-step");
+            const position = ikonTopperRevealQueue.findIndex(function(item){ return item.rank.startsWith(rank); });
+            const current = ikonTopperRevealQueue[ikonTopperRevealIndex];
+            step.classList.toggle("is-done", position >= 0 && position < ikonTopperRevealIndex);
+            step.classList.toggle("is-current", !!current && current.rank.startsWith(rank));
+        });
     }
 
     let ikonTopperRevealQueue = [];
@@ -28620,7 +28670,7 @@ function applyMarksheetResultStyle(root, grade, result){
         if(button){
             button.disabled = false;
             button.style.display = "inline-flex";
-            button.textContent = "REVEAL 3RD PLACE";
+            setTopperRevealButton("REVEAL 3RD PLACE", false);
         }
         if(hint) hint.textContent = "The winners will be revealed one by one.";
     };
@@ -28675,7 +28725,7 @@ function applyMarksheetResultStyle(root, grade, result){
         if(button){
             button.style.display = available.length ? "inline-flex" : "none";
             button.disabled = !next;
-            button.textContent = next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED";
+            setTopperRevealButton(next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED", !next);
         }
         if(hint){
             hint.textContent = next
@@ -28683,6 +28733,7 @@ function applyMarksheetResultStyle(root, grade, result){
                 : (available.length ? "All announced toppers are now revealed." : "Winners will appear here when published.");
         }
         updateTopperAdminControls(data);
+        updateTopperRevealSteps();
     }
     window.renderTopperAnnouncement = renderTopperAnnouncement;
 
@@ -28702,13 +28753,14 @@ function applyMarksheetResultStyle(root, grade, result){
         const next = ikonTopperRevealQueue[ikonTopperRevealIndex];
         if(button){
             button.disabled = !next;
-            button.textContent = next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED";
+            setTopperRevealButton(next ? ("REVEAL " + next.rank + " PLACE") : "ALL TOPPERS REVEALED", !next);
         }
         if(hint){
             hint.textContent = next
                 ? ("Next announcement: " + next.rank + " PLACE")
                 : "All announced toppers are now revealed. Congratulations to our achievers!";
         }
+        updateTopperRevealSteps();
     };
 
     function updateTopperAdminControls(data){
