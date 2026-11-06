@@ -26615,12 +26615,42 @@ if (entrySection) {
     // If B21 is changed to NO while students are on the topper page,
     // the old verification page is restored automatically (within 10 seconds).
     function isAnnouncementPageActive(){
-        return ["resultComingSoonPage", "topperAnnouncementPage"].some(function(id){
+        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage"].some(function(id){
             const page = document.getElementById(id);
             return !!page && !page.classList.contains("hidden") &&
                 page.style.display !== "none";
         });
     }
+
+    function configureResultLiveActions(data){
+        const topperButton = document.getElementById("openTopperListFromLive");
+        const studentButton = document.getElementById("openStudentResultFromLive");
+        if(topperButton) topperButton.style.display = data && data.topperMode ? "inline-flex" : "none";
+        if(studentButton) studentButton.style.display = data && !data.topperMode ? "inline-flex" : "none";
+    }
+
+    window.openPublishedTopperList = function(){
+        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+            if(!data || data.status !== "SUCCESS" || !data.resultLive || !data.topperMode){
+                alert("Topper list is not available right now.");
+                return;
+            }
+            renderTopperAnnouncement(data);
+            window.showResultControlPage("topperAnnouncementPage");
+        })
+        .catch(function(){ alert("Unable to load topper list. Please try again."); });
+    };
+
+    window.openOriginalStudentResult = function(){
+        window.hideResultControlPages();
+        if(typeof originalOpenResultVerifyPage === "function"){
+            originalOpenResultVerifyPage();
+        }else{
+            window.showResultControlPage("resultVerifyPage");
+        }
+    };
 
     function refreshAnnouncementState(){
         if(!isAnnouncementPageActive()) return;
@@ -26638,21 +26668,30 @@ if (entrySection) {
                 return;
             }
 
+            // If the visitor has opened the topper podium, keep that page
+            // visible during polling and only refresh its published cards.
+            const topperPage = document.getElementById("topperAnnouncementPage");
+            const topperPageIsVisible = topperPage &&
+                !topperPage.classList.contains("hidden") &&
+                topperPage.style.display !== "none";
+
+            if(topperPageIsVisible && data.topperMode){
+                renderTopperAnnouncement(data);
+                if(typeof window.updateTopperAdminControls === "function"){
+                    window.updateTopperAdminControls(data);
+                }
+                return;
+            }
+
+            // B19 YES: show the countdown + curtain reveal first.
+            // The reveal page remains stable during background polling.
+            configureResultLiveActions(data);
+            window.showResultControlPage("resultLiveRevealPage");
             if(data.topperMode){
                 renderTopperAnnouncement(data);
                 if(typeof window.updateTopperAdminControls === "function"){
                     window.updateTopperAdminControls(data);
                 }
-                window.showResultControlPage("topperAnnouncementPage");
-                return;
-            }
-
-            // B21 switched to NO: restore the existing verification page.
-            window.hideResultControlPages();
-            if(typeof originalOpenResultVerifyPage === "function"){
-                originalOpenResultVerifyPage();
-            }else{
-                window.showResultControlPage("resultVerifyPage");
             }
         })
         .catch(function(error){
@@ -28453,12 +28492,22 @@ function applyMarksheetResultStyle(root, grade, result){
     }
 
     function showResultControlPage(id){
-        hideResultControlPages();
         const page = document.getElementById(id);
         if(!page){
             alert("Result announcement page not found: " + id);
             return;
         }
+
+        // The status checker polls every 10 seconds. Do not reset an
+        // announcement page that is already visible, or the browser jumps.
+        const alreadyVisible =
+            !page.classList.contains("hidden") &&
+            page.style.display !== "none" &&
+            page.style.visibility !== "hidden";
+
+        if(alreadyVisible) return;
+
+        hideResultControlPages();
         page.classList.remove("hidden");
         page.style.setProperty("display","block","important");
         page.style.setProperty("visibility","visible","important");
@@ -28466,6 +28515,8 @@ function applyMarksheetResultStyle(root, grade, result){
         page.style.setProperty("pointer-events","auto","important");
         page.style.setProperty("position","relative","important");
         page.style.setProperty("z-index","99999","important");
+
+        // Scroll only when switching to another result page, not on polling.
         window.scrollTo({top:0, behavior:"instant"});
     }
 
@@ -28648,25 +28699,18 @@ function applyMarksheetResultStyle(root, grade, result){
                 throw new Error((data && data.message) || "Unable to read result settings.");
             }
 
-            // Priority 1: result not live -> Coming Soon page.
+            // B19 NO -> premium animated waiting page.
             if(!data.resultLive){
                 showResultControlPage("resultComingSoonPage");
                 return;
             }
 
-            // Priority 2: topper mode ON -> announcement page.
+            // B19 YES -> countdown, curtain opening, then RESULT IS LIVE.
+            configureResultLiveActions(data);
+            showResultControlPage("resultLiveRevealPage");
             if(data.topperMode){
                 renderTopperAnnouncement(data);
-                showResultControlPage("topperAnnouncementPage");
-                return;
-            }
-
-            // B21 = NO -> return to the original verification page.
-            hideResultControlPages();
-            if(typeof originalOpenResultVerifyPage === "function"){
-                originalOpenResultVerifyPage(event);
-            }else{
-                showResultControlPage("resultVerifyPage");
+                updateTopperAdminControls(data);
             }
         })
         .catch(function(error){
