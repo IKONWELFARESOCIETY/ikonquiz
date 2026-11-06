@@ -1003,27 +1003,255 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
   </section>
 </div>
 
+<style>
+/* IKON premium winners ceremony */
+#topperAnnouncementPage{min-height:100vh;padding:clamp(18px,3vw,42px) 12px 56px;box-sizing:border-box;background:radial-gradient(ellipse at 50% 0%,rgba(226,183,91,.20),transparent 42%),linear-gradient(180deg,#f8faff 0%,#edf2fa 55%,#e8eef7 100%);overflow:hidden}
+.ikon-award-shell{max-width:1180px;margin:0 auto;position:relative}
+.ikon-award-header{text-align:center;padding:12px 12px 28px}
+.ikon-award-emblem{width:74px;height:74px;margin:0 auto 12px;display:grid;place-items:center;border-radius:24px;background:linear-gradient(145deg,#fff7dd,#e8bd62);box-shadow:0 12px 30px rgba(166,119,35,.22),inset 0 2px 5px rgba(255,255,255,.9);font-size:40px;transform:rotate(-4deg)}
+.ikon-award-eyebrow{font-size:11px;font-weight:900;letter-spacing:.28em;color:#98702a;text-transform:uppercase}
+.ikon-award-title{margin:9px 0 8px;font-size:clamp(30px,5vw,48px);line-height:1.05;font-weight:950;letter-spacing:-.045em;background:linear-gradient(100deg,#775018,#d2a13d 45%,#80581c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ikon-award-subtitle{margin:0;color:#65738b;font-size:15px;font-weight:600}
+.ikon-award-divider{width:92px;height:4px;margin:19px auto 0;border-radius:8px;background:linear-gradient(90deg,transparent,#d8ad55,transparent)}
+.ikon-podium-stage{position:relative;padding:30px 18px 0;border-radius:30px;background:radial-gradient(ellipse at 50% 25%,rgba(255,255,255,.98),rgba(244,247,252,.94) 58%,rgba(231,237,247,.96));border:1px solid rgba(205,177,116,.48);box-shadow:0 24px 65px rgba(20,39,72,.12),inset 0 1px rgba(255,255,255,.95);overflow:hidden}
+.ikon-podium-stage:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(125deg,transparent 0 90px,rgba(186,145,62,.035) 91px 92px);pointer-events:none}
+.ikon-podium-stage:after{content:"";position:absolute;left:10%;right:10%;bottom:16px;height:2px;background:linear-gradient(90deg,transparent,rgba(199,157,69,.5),transparent)}
+#topperCards{position:relative;z-index:1;display:grid!important;grid-template-columns:1fr 1.08fr 1fr;grid-template-areas:"second first third";align-items:end;gap:clamp(12px,2vw,24px);max-width:1040px;margin:0 auto;text-align:center!important}
+.ikon-winner-card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;padding:24px 18px 0;border-radius:25px 25px 12px 12px;border:1px solid rgba(211,190,146,.72);background:linear-gradient(155deg,#fff 0%,#fbfcff 62%,#f1f4f9 100%);box-shadow:0 15px 36px rgba(27,44,72,.11),inset 0 1px 0 #fff;animation:ikonWinnerRise .75s cubic-bezier(.2,.8,.2,1) both;overflow:visible}
+.ikon-winner-card.rank-1{grid-area:first;min-height:480px;padding-top:29px;border:2px solid #d6ad52;background:linear-gradient(155deg,#fffdf5,#fff 48%,#fff5d9);box-shadow:0 22px 55px rgba(164,120,36,.2),0 0 0 7px rgba(220,184,105,.09),inset 0 1px #fff}
+.ikon-winner-card.rank-2{grid-area:second;min-height:420px}
+.ikon-winner-card.rank-3{grid-area:third;min-height:390px}
+.ikon-winner-card.rank-1:before{content:"";position:absolute;inset:-1px;border-radius:25px;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.8),transparent 28%,transparent 70%,rgba(232,196,113,.3));}
+.ikon-winner-crown{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:42px;filter:drop-shadow(0 5px 7px rgba(156,111,29,.24));}
+.ikon-winner-rank{font-size:13px;font-weight:950;letter-spacing:.15em;color:#89611f;text-transform:uppercase;margin:6px 0 18px}
+.ikon-winner-card.rank-1 .ikon-winner-rank{color:#a87517;font-size:15px}
+.ikon-winner-photo-wrap{width:clamp(132px,15vw,174px);height:clamp(132px,15vw,174px);padding:6px;border-radius:50%;background:linear-gradient(145deg,#fff0b9,#c38b2d,#ffe6a0);box-shadow:0 10px 26px rgba(151,109,37,.2);margin:0 auto 19px;position:relative}
+.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:clamp(158px,18vw,205px);height:clamp(158px,18vw,205px);padding:7px}
+.ikon-winner-photo{width:100%;height:100%;display:block;object-fit:cover;object-position:center;border-radius:50%;border:3px solid #fff;background:#e8edf5}
+.ikon-winner-name{font-size:clamp(18px,2vw,23px);line-height:1.2;font-weight:950;color:#17243a;margin:0 0 9px;overflow-wrap:anywhere}
+.ikon-winner-card.rank-1 .ikon-winner-name{font-size:clamp(21px,2.4vw,27px);color:#17233a}
+.ikon-winner-course{font-size:13px;font-weight:750;color:#718097;letter-spacing:.08em;text-transform:uppercase;margin:0 0 14px}
+.ikon-winner-reg{font-size:12px;color:#6b7890;margin:0 0 17px}
+.ikon-winner-reg strong{color:#33445e;letter-spacing:.04em}
+.ikon-winner-score{font-size:clamp(27px,3vw,34px);font-weight:1000;line-height:1;color:#087e75;letter-spacing:-.04em;margin:0 0 23px;text-shadow:0 2px 0 rgba(255,255,255,.8)}
+.ikon-winner-card.rank-1 .ikon-winner-score{font-size:clamp(34px,4vw,43px);color:#a87517}
+.ikon-podium-foot{height:42px;width:calc(100% + 36px);margin-top:auto;margin-left:-18px;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;letter-spacing:.14em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.18);background:linear-gradient(100deg,#9b7537,#c6a15c,#8e672e);box-shadow:inset 0 1px rgba(255,255,255,.3)}
+.rank-1 .ikon-podium-foot{height:66px;font-size:15px;background:linear-gradient(100deg,#9b6c16,#e0bb60,#a47720)}
+.rank-2 .ikon-podium-foot{background:linear-gradient(100deg,#66758b,#b3bdcb,#68788f)}
+.rank-3 .ikon-podium-foot{background:linear-gradient(100deg,#875332,#c48a61,#875332)}
+.ikon-winner-empty{grid-column:1/-1;padding:44px 15px;text-align:center;color:#66748b;font-weight:700}
+#topperRevealControls{position:relative;z-index:2;margin:28px auto 12px!important;text-align:center}
+#topperRevealHint{font-size:14px;color:#53637d!important;font-weight:750!important;margin:0 0 14px!important}
+#revealNextTopperBtn{min-width:230px;padding:16px 30px!important;border:1px solid #d5aa50!important;border-radius:14px!important;background:linear-gradient(135deg,#ffe9ae,#d8a640 55%,#bd8428)!important;color:#17243a!important;font-size:14px!important;font-weight:950!important;letter-spacing:.1em!important;box-shadow:0 12px 28px rgba(160,117,38,.25),inset 0 1px rgba(255,255,255,.85)!important;transition:transform .2s,box-shadow .2s}
+#revealNextTopperBtn:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(160,117,38,.32)!important}
+#revealNextTopperBtn:disabled{opacity:.72;cursor:default;transform:none}
+#topperAnnouncementMessage{background:#fff8e8!important;border:1px solid #ead7a9;color:#725522!important;box-shadow:0 8px 24px rgba(20,39,72,.06)}
+@keyframes ikonWinnerRise{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){#topperAnnouncementPage{padding:16px 8px 36px}.ikon-award-header{padding-bottom:20px}.ikon-podium-stage{padding:28px 10px 0;border-radius:20px}#topperCards{grid-template-columns:1fr!important;grid-template-areas:"first" "second" "third";max-width:460px;gap:18px}.ikon-winner-card.rank-1,.ikon-winner-card.rank-2,.ikon-winner-card.rank-3{min-height:0;padding-top:24px}.ikon-winner-card.rank-1{grid-area:first}.ikon-winner-card.rank-2{grid-area:second}.ikon-winner-card.rank-3{grid-area:third}.ikon-winner-photo-wrap{width:150px;height:150px}.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:178px;height:178px}.ikon-podium-foot,.rank-1 .ikon-podium-foot{height:42px}}
+@media(prefers-reduced-motion:reduce){.ikon-winner-card{animation:none}}
+
+/* ===== IKON GRAND AWARD CEREMONY - PREMIUM V2 ===== */
+#topperAnnouncementPage{
+  position:relative;
+  isolation:isolate;
+  background:
+    radial-gradient(ellipse at 50% -10%,rgba(255,226,160,.42),transparent 38%),
+    radial-gradient(ellipse at 0% 45%,rgba(67,105,163,.11),transparent 32%),
+    radial-gradient(ellipse at 100% 55%,rgba(184,139,57,.12),transparent 30%),
+    linear-gradient(180deg,#f8faff 0%,#edf2fa 52%,#e5ebf5 100%);
+}
+#topperAnnouncementPage:before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.38;
+  background-image:radial-gradient(#c39b50 1px,transparent 1px);
+  background-size:27px 27px;
+  mask-image:linear-gradient(to bottom,black,transparent 72%);
+}
+.ikon-award-shell{max-width:1260px}
+.ikon-award-header{padding-top:20px;padding-bottom:32px}
+.ikon-award-emblem{
+  width:86px;height:86px;border-radius:28px;font-size:46px;
+  background:linear-gradient(145deg,#fffdf3 0%,#f6dfaa 42%,#d5a64b 100%);
+  box-shadow:0 18px 38px rgba(139,99,28,.22),inset 0 2px 0 #fff;
+  border:1px solid rgba(173,126,42,.32);
+}
+.ikon-award-eyebrow{font-size:11px;letter-spacing:.34em}
+.ikon-award-title{
+  font-size:clamp(34px,5.4vw,56px);
+  text-shadow:0 4px 20px rgba(173,130,49,.12);
+}
+.ikon-award-subtitle{font-size:16px;letter-spacing:.015em}
+.ikon-award-divider{width:132px;height:4px;margin-top:22px}
+.ikon-podium-stage{
+  padding:30px clamp(14px,3vw,36px) 28px;
+  border-radius:34px;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.99),rgba(246,248,252,.97) 52%,rgba(229,236,246,.98));
+  border:1px solid rgba(200,166,95,.55);
+  box-shadow:0 30px 85px rgba(19,38,69,.15),0 5px 18px rgba(19,38,69,.05),inset 0 1px 0 #fff;
+}
+.ikon-podium-stage:before{opacity:.75;background:repeating-linear-gradient(135deg,transparent 0 100px,rgba(184,142,59,.045) 101px 103px)}
+.ikon-ceremony-ribbon{display:flex;align-items:center;justify-content:center;gap:16px;position:relative;z-index:1;margin:0 auto 9px}
+.ikon-ribbon-line{height:1px;width:min(14vw,120px);background:linear-gradient(90deg,transparent,#c69a45)}
+.ikon-ribbon-line:last-child{transform:rotate(180deg)}
+.ikon-ribbon-label{font-size:10px;letter-spacing:.24em;font-weight:950;color:#9a712b;text-align:center}
+.ikon-ceremony-caption{position:relative;z-index:1;text-align:center;color:#758198;font-size:13px;font-weight:600;margin:0 auto 25px}
+#topperCards{max-width:1100px;gap:clamp(14px,2.2vw,28px)}
+.ikon-winner-card{
+  border-radius:28px 28px 14px 14px;
+  border-color:rgba(195,176,137,.65);
+  box-shadow:0 20px 44px rgba(27,44,72,.12),inset 0 1px 0 #fff;
+  background:linear-gradient(155deg,#fff 0%,#fcfdff 56%,#edf2f8 100%);
+}
+.ikon-winner-card.rank-1{
+  min-height:520px;
+  border:2px solid #d9b45f;
+  background:linear-gradient(155deg,#fffef8 0%,#fff 44%,#fff3d5 100%);
+  box-shadow:0 28px 65px rgba(158,116,36,.22),0 0 0 9px rgba(221,184,99,.10),inset 0 1px #fff;
+}
+.ikon-winner-card.rank-2{min-height:450px}
+.ikon-winner-card.rank-3{min-height:420px}
+.ikon-winner-card.rank-1:after{
+  content:"";position:absolute;inset:7px;border:1px solid rgba(205,164,76,.24);
+  border-radius:21px 21px 8px 8px;pointer-events:none;
+}
+.ikon-winner-crown{font-size:48px;top:-32px}
+.ikon-winner-rank{font-size:14px;letter-spacing:.19em;margin:9px 0 20px}
+.ikon-winner-photo-wrap{
+  width:clamp(150px,16vw,190px);height:clamp(150px,16vw,190px);
+  padding:7px;background:linear-gradient(145deg,#fff8dc,#d6a94f 48%,#fff0b6);
+  box-shadow:0 13px 30px rgba(151,109,37,.22),0 0 0 5px rgba(213,171,85,.09);
+}
+.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:clamp(178px,19vw,224px);height:clamp(178px,19vw,224px)}
+.ikon-winner-photo{border:4px solid #fff}
+.ikon-winner-name{font-size:clamp(20px,2.2vw,26px);margin-bottom:11px}
+.ikon-winner-card.rank-1 .ikon-winner-name{font-size:clamp(23px,2.6vw,30px)}
+.ikon-winner-course{font-size:14px;letter-spacing:.12em;margin-bottom:12px}
+.ikon-winner-reg{font-size:13px;margin-bottom:18px}
+.ikon-winner-score{font-size:clamp(31px,3.4vw,39px);margin-bottom:25px}
+.ikon-winner-card.rank-1 .ikon-winner-score{font-size:clamp(39px,4.4vw,48px)}
+.ikon-podium-foot{height:50px;letter-spacing:.19em}
+.rank-1 .ikon-podium-foot{height:76px;font-size:17px;letter-spacing:.22em}
+.rank-2 .ikon-podium-foot{background:linear-gradient(100deg,#586a84,#c3ccd8 50%,#667990)}
+.rank-3 .ikon-podium-foot{background:linear-gradient(100deg,#78452b,#d49a6c 50%,#874e30)}
+/* Grand reveal panel and all three stage markers */
+#topperRevealControls{max-width:760px;margin:32px auto 12px!important}
+.ikon-reveal-panel{
+  position:relative;padding:24px clamp(16px,3vw,34px) 20px;border-radius:24px;
+  border:1px solid rgba(201,165,88,.48);
+  background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(247,249,253,.98) 58%,rgba(255,247,225,.92));
+  box-shadow:0 18px 42px rgba(27,44,72,.10),inset 0 1px 0 #fff;
+  overflow:hidden;
+}
+.ikon-reveal-panel:before{
+  content:"";position:absolute;left:0;top:0;right:0;height:4px;
+  background:linear-gradient(90deg,#a87825,#f0d18a,#b9852e,#f0d18a,#a87825);
+}
+.ikon-reveal-heading{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.ikon-reveal-kicker{font-size:11px;font-weight:1000;letter-spacing:.25em;color:#a1762c}
+.ikon-reveal-subtitle{font-size:13px;font-weight:600;color:#77849a}
+.ikon-reveal-steps{display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.5vw,16px);margin:0 auto 19px;max-width:570px}
+.ikon-reveal-step{
+  min-width:0;display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:999px;
+  border:1px solid #e0e5ed;background:#f5f7fb;color:#8994a7;
+  font-size:10px;font-weight:950;letter-spacing:.08em;white-space:nowrap;
+  transition:all .25s ease;
+}
+.ikon-step-medal{font-size:17px;filter:grayscale(.75);opacity:.65}
+.ikon-reveal-step.is-current{border-color:#d9b35e;background:#fff6df;color:#8b621b;box-shadow:0 5px 16px rgba(173,130,49,.12)}
+.ikon-reveal-step.is-current .ikon-step-medal,.ikon-reveal-step.is-done .ikon-step-medal{filter:none;opacity:1}
+.ikon-reveal-step.is-done{border-color:#b9d9cf;background:#edf8f4;color:#187a68}
+.ikon-step-connector{height:2px;width:clamp(12px,3vw,30px);background:linear-gradient(90deg,#d8dfe9,#c5a45e);flex:0 0 auto}
+#topperRevealHint{font-size:14px;color:#53637d!important;font-weight:750!important;margin:0 0 17px!important}
+#revealNextTopperBtn{
+  display:inline-flex;align-items:center;justify-content:center;gap:18px;
+  min-width:min(100%,310px);padding:17px 24px!important;border:1px solid #c99b43!important;
+  border-radius:15px!important;
+  background:linear-gradient(115deg,#fff0bf 0%,#e7bd65 38%,#c48a2d 100%)!important;
+  color:#17243a!important;font-size:13px!important;font-weight:1000!important;
+  letter-spacing:.13em!important;
+  box-shadow:0 13px 26px rgba(157,112,33,.24),inset 0 1px 0 rgba(255,255,255,.95)!important;
+  transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;
+}
+#revealNextTopperBtn:hover{transform:translateY(-3px) scale(1.015);filter:saturate(1.08);box-shadow:0 18px 32px rgba(157,112,33,.3)!important}
+#revealNextTopperBtn:active{transform:translateY(0) scale(.99)}
+#revealNextTopperBtn:disabled{opacity:.8;cursor:default;filter:grayscale(.12);transform:none}
+.ikon-reveal-btn-icon{font-size:19px;color:#fff;text-shadow:0 1px 3px rgba(83,54,8,.35)}
+.ikon-reveal-btn-label{flex:1}
+.ikon-reveal-btn-arrow{font-size:22px;font-weight:500}
+.ikon-reveal-footnote{font-size:10px;font-weight:850;letter-spacing:.17em;color:#9aa4b4;margin-top:16px;text-transform:uppercase}
+#topperAnnouncementMessage{border-radius:16px!important;padding:20px!important}
+@media(max-width:760px){
+  .ikon-award-header{padding-top:10px}
+  .ikon-podium-stage{padding:24px 10px 22px;border-radius:24px}
+  .ikon-ceremony-caption{font-size:12px;line-height:1.5;margin-bottom:20px}
+  #topperCards{grid-template-columns:1fr!important;grid-template-areas:"first" "second" "third";max-width:480px;gap:20px}
+  .ikon-winner-card.rank-1,.ikon-winner-card.rank-2,.ikon-winner-card.rank-3{min-height:0;padding:25px 18px 0}
+  .ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:190px;height:190px}
+  .ikon-winner-photo-wrap{width:165px;height:165px}
+  .ikon-winner-card.rank-1 .ikon-winner-name{font-size:25px}
+  .ikon-winner-card.rank-1 .ikon-winner-score{font-size:42px}
+  .ikon-reveal-panel{padding:22px 12px 18px}
+  .ikon-reveal-steps{gap:4px}
+  .ikon-reveal-step{padding:8px 7px;gap:4px;font-size:9px;letter-spacing:.02em}
+  .ikon-step-medal{font-size:14px}
+  .ikon-step-connector{width:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ikon-reveal-step,#revealNextTopperBtn{transition:none}
+}
+
+</style>
 <div id="topperAnnouncementPage" class="hidden">
-    <div style="max-width:1050px;margin:28px auto;padding:24px 16px;text-align:center;">
-        <div style="font-size:42px;margin-bottom:8px;">🏆</div>
-        <h1 style="margin:0;color:#b8860b;font-size:clamp(27px,5vw,42px);">IKON INSTITUTE TOPPERS</h1>
-        <p style="margin:10px 0 24px;color:#526078;font-size:16px;">Celebrating the outstanding achievers</p>
-        <div id="topperCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;text-align:left;"></div>
-        <div id="topperRevealControls" style="margin:26px auto 10px;text-align:center;">
-            <p id="topperRevealHint" style="color:#526078;font-weight:600;margin:0 0 12px;">The winners will be revealed one by one.</p>
-            <button type="button" id="revealNextTopperBtn" onclick="revealNextTopper()" style="padding:14px 28px;border:0;border-radius:12px;background:linear-gradient(135deg,#ffe5a5,#d69b35);color:#10213b;font-weight:900;font-size:15px;letter-spacing:.04em;cursor:pointer;box-shadow:0 10px 25px rgba(15,23,42,.16);">REVEAL 3RD PLACE</button>
+  <main class="ikon-award-shell">
+    <header class="ikon-award-header">
+      <div class="ikon-award-emblem">🏆</div>
+      <div class="ikon-award-eyebrow">A SYMBOL OF SUCCESS · AWARD CEREMONY</div>
+      <h1 class="ikon-award-title">IKON INSTITUTE TOPPERS</h1>
+      <p class="ikon-award-subtitle">Honouring dedication. Celebrating excellence.</p>
+      <div class="ikon-award-divider"></div>
+    </header>
+    <section class="ikon-podium-stage">
+      <div class="ikon-ceremony-ribbon">
+        <span class="ikon-ribbon-line"></span>
+        <span class="ikon-ribbon-label">THE HONOUR ROLL · TOP 3 ACHIEVERS</span>
+        <span class="ikon-ribbon-line"></span>
+      </div>
+      <div class="ikon-ceremony-caption">Three journeys. Three remarkable achievements. One stage of excellence.</div>
+      <div id="topperCards"></div>
+      <div id="topperRevealControls">
+        <div class="ikon-reveal-panel">
+          <div class="ikon-reveal-heading">
+            <span class="ikon-reveal-kicker">THE GRAND REVEAL</span>
+            <span class="ikon-reveal-subtitle">Celebrate every achievement</span>
+          </div>
+          <div class="ikon-reveal-steps" aria-label="Topper reveal progress">
+            <div class="ikon-reveal-step" data-reveal-step="3"><span class="ikon-step-medal">🥉</span><span>3RD PLACE</span></div>
+            <span class="ikon-step-connector"></span>
+            <div class="ikon-reveal-step" data-reveal-step="2"><span class="ikon-step-medal">🥈</span><span>2ND PLACE</span></div>
+            <span class="ikon-step-connector"></span>
+            <div class="ikon-reveal-step" data-reveal-step="1"><span class="ikon-step-medal">🥇</span><span>1ST PLACE</span></div>
+          </div>
+          <p id="topperRevealHint">The winners will be revealed one by one.</p>
+          <button type="button" id="revealNextTopperBtn" onclick="revealNextTopper()">
+            <span class="ikon-reveal-btn-icon">✦</span>
+            <span class="ikon-reveal-btn-label">REVEAL 3RD PLACE</span>
+            <span class="ikon-reveal-btn-arrow">→</span>
+          </button>
+          <div class="ikon-reveal-footnote">A moment of pride · IKON Institute</div>
         </div>
-        <div id="topperAnnouncementMessage" style="margin:22px auto;padding:18px;border-radius:12px;background:#f4f6fa;color:#39465e;max-width:700px;display:none;"></div>
-        <div id="topperAdminControls" style="display:none;max-width:760px;margin:26px auto 0;padding:18px;background:#101b36;border:1px solid #d6ad4b;border-radius:16px;color:#fff;text-align:center;">
-            <div style="font-weight:800;letter-spacing:1px;color:#f6c453;margin-bottom:12px;">ADMIN TOPPER PUBLISH CONTROLS</div>
-            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
-                <button type="button" id="publish3rdTopperBtn" onclick="publishTopperRank('3')" style="padding:11px 16px;border:0;border-radius:9px;background:#b87945;color:#fff;font-weight:700;cursor:pointer;">Publish 3rd Place</button>
-                <button type="button" id="publish2ndTopperBtn" onclick="publishTopperRank('2')" style="padding:11px 16px;border:0;border-radius:9px;background:#aab3c2;color:#172033;font-weight:700;cursor:pointer;">Publish 2nd Place</button>
-                <button type="button" id="publish1stTopperBtn" onclick="publishTopperRank('1')" style="padding:11px 16px;border:0;border-radius:9px;background:#d6ad4b;color:#172033;font-weight:700;cursor:pointer;">Publish 1st Place</button>
-            </div>
-            <div id="topperAdminStatus" style="font-size:12px;color:#dbeafe;margin-top:10px;">Buttons are available only during a verified Admin session.</div>
+      </div>
+      <div id="topperAnnouncementMessage" style="margin:22px auto;padding:18px;border-radius:12px;max-width:700px;display:none;"></div>
+      <div id="topperAdminControls" style="display:none;max-width:760px;margin:26px auto 0;padding:18px;background:#101b36;border:1px solid #d6ad4b;border-radius:16px;color:#fff;text-align:center;">
+        <div style="font-weight:800;letter-spacing:1px;color:#f6c453;margin-bottom:12px;">ADMIN TOPPER PUBLISH CONTROLS</div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+          <button type="button" id="publish3rdTopperBtn" onclick="publishTopperRank('3')" style="padding:11px 16px;border:0;border-radius:9px;background:#b87945;color:#fff;font-weight:700;cursor:pointer;">Publish 3rd Place</button>
+          <button type="button" id="publish2ndTopperBtn" onclick="publishTopperRank('2')" style="padding:11px 16px;border:0;border-radius:9px;background:#aab3c2;color:#172033;font-weight:700;cursor:pointer;">Publish 2nd Place</button>
+          <button type="button" id="publish1stTopperBtn" onclick="publishTopperRank('1')" style="padding:11px 16px;border:0;border-radius:9px;background:#d6ad4b;color:#172033;font-weight:700;cursor:pointer;">Publish 1st Place</button>
         </div>
-    </div>
+        <div id="topperAdminStatus" style="font-size:12px;color:#dbeafe;margin-top:10px;">Buttons are available only during a verified Admin session.</div>
+      </div>
+    </section>
+  </main>
 </div>
       
     <!-- ==================================================
