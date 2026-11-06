@@ -5478,6 +5478,26 @@ function clearStudentResultTable(){
 
 
 //====================================================
+// FORMAT RESULT LIST TOTAL AS A WHOLE NUMBER
+//====================================================
+
+function formatResultListTotal(value){
+
+    if(value === null || value === undefined || String(value).trim() === ""){
+        return "";
+    }
+
+    const numericValue = Number(String(value).replace(/,/g, "").trim());
+
+    if(!Number.isFinite(numericValue)){
+        return String(value).trim();
+    }
+
+    return String(Math.round(numericValue));
+}
+
+
+//====================================================
 // LOAD RESULTS FOR SELECTED DATE
 //====================================================
 
@@ -5755,7 +5775,7 @@ function loadStudentResultsByDate(
                         </td>
 
                         <td>
-                            ${r.totalMarks || ""}
+                            ${formatResultListTotal(r.totalMarks)}
                         </td>
 
                         <td>
