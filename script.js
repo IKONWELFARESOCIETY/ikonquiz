@@ -5703,14 +5703,6 @@ function loadStudentResultsByDate(
                             "tr"
                         );
 
-                    // Display Total marks as a rounded whole number (no decimals).
-                    const displayTotal =
-                        r.totalMarks === "" || r.totalMarks == null
-                            ? ""
-                            : isNaN(Number(r.totalMarks))
-                                ? r.totalMarks
-                                : Math.round(Number(r.totalMarks));
-
 
                     tr.innerHTML = `
 
@@ -5763,7 +5755,7 @@ function loadStudentResultsByDate(
                         </td>
 
                         <td>
-                            ${displayTotal}
+                            ${r.totalMarks || ""}
                         </td>
 
                         <td>
@@ -7559,6 +7551,8 @@ function loadAdminResults(){
                         r.result ||
                         r.grade ||
                         "";
+
+
                     //========================================
                     // ROW
                     //========================================
@@ -8740,14 +8734,8 @@ function fillMarksheet(m){
         document.getElementById("mkTotal");
 
     if(mkTotal){
-        const marksheetTotal =
-            m.totalMarks === "" || m.totalMarks == null
-                ? ""
-                : isNaN(Number(m.totalMarks))
-                    ? m.totalMarks
-                    : Math.round(Number(m.totalMarks));
-
-        mkTotal.textContent = marksheetTotal;
+        mkTotal.textContent =
+            m.totalMarks || "";
     }
 
 
@@ -9632,12 +9620,7 @@ function checkQRVerification(){
         document.getElementById("qrStudentName").textContent=data.studentName;
         document.getElementById("qrCourse").textContent=data.course;
         document.getElementById("qrPaper").textContent=data.paperName;
-        document.getElementById("qrTotal").textContent =
-            data.totalMarks === "" || data.totalMarks == null
-                ? ""
-                : isNaN(Number(data.totalMarks))
-                    ? data.totalMarks
-                    : Math.round(Number(data.totalMarks));
+        document.getElementById("qrTotal").textContent=data.totalMarks;
         document.getElementById("qrPercentage").textContent=data.percentage;
         document.getElementById("qrGrade").textContent=data.grade;
         document.getElementById("qrResult").textContent=data.result;
@@ -26628,6 +26611,54 @@ if (entrySection) {
 
     };
 
+    // Keep the announcement page synchronized with Google Sheets.
+    // If B21 is changed to NO while students are on the topper page,
+    // the old verification page is restored automatically (within 10 seconds).
+    function isAnnouncementPageActive(){
+        return ["resultComingSoonPage", "topperAnnouncementPage"].some(function(id){
+            const page = document.getElementById(id);
+            return !!page && !page.classList.contains("hidden") &&
+                page.style.display !== "none";
+        });
+    }
+
+    function refreshAnnouncementState(){
+        if(!isAnnouncementPageActive()) return;
+
+        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
+        .then(function(response){
+            if(!response.ok) throw new Error("Server Error: " + response.status);
+            return response.json();
+        })
+        .then(function(data){
+            if(!data || data.status !== "SUCCESS") return;
+
+            if(!data.resultLive){
+                showResultControlPage("resultComingSoonPage");
+                return;
+            }
+
+            if(data.topperMode){
+                renderTopperAnnouncement(data);
+                showResultControlPage("topperAnnouncementPage");
+                return;
+            }
+
+            // B21 switched to NO: restore the existing verification page.
+            hideResultControlPages();
+            if(typeof originalOpenResultVerifyPage === "function"){
+                originalOpenResultVerifyPage();
+            }else{
+                showResultControlPage("resultVerifyPage");
+            }
+        })
+        .catch(function(error){
+            console.warn("Announcement auto-refresh:", error);
+        });
+    }
+
+    window.setInterval(refreshAnnouncementState, 10000);
+
 })();
 /* =========================================================
    FINAL NAVIGATION CONTROLLER
@@ -27892,21 +27923,21 @@ async function generateBulkMarksheetZIP(){
         // HELPER: WAIT FOR IMAGES
         //============================================
 
-      function waitForImage(img){
+        function waitForImage(img){
 
-    return new Promise(function(resolve){
+            return new Promise(function(resolve){
 
-        if(!img || img.complete){
-            resolve();
-            return;
+                if(!img || img.complete){
+                    resolve();
+                    return;
+                }
+
+                img.onload = resolve;
+                img.onerror = resolve;
+
+            });
+
         }
-
-        img.addEventListener("load", resolve, { once: true });
-        img.addEventListener("error", resolve, { once: true });
-
-    });
-
-}
 
         //============================================
         // HELPER: POPULATE MARKSHEET
@@ -27992,38 +28023,7 @@ async function generateBulkMarksheetZIP(){
                 //====================================
                 // STUDENT DETAILS
                 //====================================
-                //====================================
-// SIGNATURE & CENTRE MANAGER STAMP FIX
-// MATCH INDIVIDUAL PDF DESIGN
-//====================================
 
-const signImg = clonePage.querySelector(".mkSignImage");
-
-if (signImg) {
-    signImg.removeAttribute("width");
-    signImg.removeAttribute("height");
-
-    signImg.style.setProperty("width", "170px", "important");
-    signImg.style.setProperty("height", "auto", "important");
-    signImg.style.setProperty("max-height", "90px", "important");
-    signImg.style.setProperty("object-fit", "contain", "important");
-    signImg.style.setProperty("display", "block", "important");
-    signImg.style.setProperty("margin", "0 auto 8px auto", "important");
-}
-
-const issuedImg = clonePage.querySelector(".mkIssuedImage");
-
-if (issuedImg) {
-    issuedImg.removeAttribute("width");
-    issuedImg.removeAttribute("height");
-
-    issuedImg.style.setProperty("width", "165px", "important");
-    issuedImg.style.setProperty("height", "auto", "important");
-    issuedImg.style.setProperty("max-height", "120px", "important");
-    issuedImg.style.setProperty("object-fit", "contain", "important");
-    issuedImg.style.setProperty("display", "block", "important");
-    issuedImg.style.setProperty("margin", "0 auto 8px auto", "important");
-}
                 const fields = {
 
                     mkMarksheetNo: student.marksheetNo,
@@ -28158,7 +28158,7 @@ applyMarksheetResultStyle(
 
                 const canvas = await html2canvas(marksheet, {
 
-                    scale: 3,
+                    scale: 2,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: "#ffffff",
@@ -28419,3 +28419,198 @@ function applyMarksheetResultStyle(root, grade, result){
     }
 
 }
+
+//============================================================
+// IKON RESULT ANNOUNCEMENT CONTROLLER
+// Added after existing functions so original result / marksheet
+// functions remain unchanged.
+//============================================================
+(function(){
+
+    const originalOpenResultVerifyPage = window.openResultVerifyPage;
+
+    const resultControlPages = [
+        "loginPage", "examTypePage", "theoryPage", "practicalPage",
+        "examFormPage", "mockTestModal", "mockTestPage",
+        "hallTicketVerifyPage", "hallTicketPage", "studentResultPage",
+        "marksheetPage", "leaderboardPage", "resultVerifyPage",
+        "resultComingSoonPage", "topperAnnouncementPage"
+    ];
+
+    function hideResultControlPages(){
+        resultControlPages.forEach(function(id){
+            const el = document.getElementById(id);
+            if(!el) return;
+            el.classList.add("hidden");
+            el.style.setProperty("display","none","important");
+            el.style.setProperty("visibility","hidden","important");
+            el.style.setProperty("opacity","0","important");
+            el.style.setProperty("pointer-events","none","important");
+        });
+    }
+
+    function showResultControlPage(id){
+        hideResultControlPages();
+        const page = document.getElementById(id);
+        if(!page){
+            alert("Result announcement page not found: " + id);
+            return;
+        }
+        page.classList.remove("hidden");
+        page.style.setProperty("display","block","important");
+        page.style.setProperty("visibility","visible","important");
+        page.style.setProperty("opacity","1","important");
+        page.style.setProperty("pointer-events","auto","important");
+        page.style.setProperty("position","relative","important");
+        page.style.setProperty("z-index","99999","important");
+        window.scrollTo({top:0, behavior:"instant"});
+    }
+
+    function safePhotoUrl(value){
+        const raw = String(value || "").trim();
+        if(!raw) return "";
+        try{
+            const url = new URL(raw, window.location.href);
+            if(url.protocol !== "https:" && url.protocol !== "http:") return "";
+            return url.href;
+        }catch(e){
+            return "";
+        }
+    }
+
+    function addTopperCard(container, topper, rank, medal){
+        const card = document.createElement("div");
+        card.style.cssText = "background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px 16px;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,.08);";
+
+        const rankLabel = document.createElement("div");
+        rankLabel.textContent = medal + " " + rank + " PLACE";
+        rankLabel.style.cssText = "font-weight:800;letter-spacing:1px;color:#9a6b08;font-size:18px;margin-bottom:14px;";
+        card.appendChild(rankLabel);
+
+        // Student photo is already stored in the IKON GitHub repository.
+        // File name = Registration Number + .jpeg (repository root).
+        const registrationNo = String(topper.regNo || "").trim();
+        const photoUrl = registrationNo
+            ? safePhotoUrl(
+                "https://raw.githubusercontent.com/IKONWELFARESOCIETY/ikonquiz/main/" +
+                encodeURIComponent(registrationNo) +
+                ".jpeg"
+            )
+            : "";
+        if(photoUrl){
+            const image = document.createElement("img");
+            image.src = photoUrl;
+            image.alt = topper.studentName || "Topper Photo";
+            image.loading = "lazy";
+            image.style.cssText = "width:116px;height:116px;object-fit:cover;border-radius:50%;border:4px solid #f1d58a;margin:0 auto 14px;display:block;background:#f3f4f6;";
+            image.onerror = function(){ this.style.display="none"; };
+            card.appendChild(image);
+        }else{
+            const placeholder = document.createElement("div");
+            placeholder.textContent = "👤";
+            placeholder.style.cssText = "width:116px;height:116px;line-height:116px;font-size:54px;border-radius:50%;background:#f3f4f6;margin:0 auto 14px;";
+            card.appendChild(placeholder);
+        }
+
+        const name = document.createElement("h3");
+        name.textContent = topper.studentName || "Student Name";
+        name.style.cssText = "font-size:20px;margin:4px 0 8px;color:#172033;";
+        card.appendChild(name);
+
+        const course = document.createElement("p");
+        course.textContent = topper.course || "";
+        course.style.cssText = "margin:0 0 10px;color:#64748b;font-size:14px;";
+        card.appendChild(course);
+
+        const percentage = document.createElement("div");
+        percentage.textContent = Number(topper.percentage || 0).toFixed(2).replace(/\.00$/,'') + "%";
+        percentage.style.cssText = "font-size:27px;font-weight:800;color:#0f766e;";
+        card.appendChild(percentage);
+
+        container.appendChild(card);
+    }
+
+    function renderTopperAnnouncement(data){
+        const container = document.getElementById("topperCards");
+        const message = document.getElementById("topperAnnouncementMessage");
+        if(!container || !message) return;
+
+        container.innerHTML = "";
+        message.style.display = "none";
+
+        if(!data.topperVisible){
+            message.textContent = "Topper announcement will be published shortly. Please stay tuned.";
+            message.style.display = "block";
+            return;
+        }
+
+        const toppers = Array.isArray(data.toppers) ? data.toppers : [];
+        const stages = [
+            {index:2, visible:!!data.publish3rd, rank:"3RD", medal:"🥉"},
+            {index:1, visible:!!data.publish2nd, rank:"2ND", medal:"🥈"},
+            {index:0, visible:!!data.publish1st, rank:"1ST", medal:"🥇"}
+        ];
+
+        let shown = 0;
+        stages.forEach(function(stage){
+            if(!stage.visible || !toppers[stage.index]) return;
+            addTopperCard(container, toppers[stage.index], stage.rank, stage.medal);
+            shown++;
+        });
+
+        if(shown === 0){
+            message.textContent = "The topper announcement will begin shortly.";
+            message.style.display = "block";
+        }
+    }
+
+    window.openResultVerifyPage = function(event){
+        if(event){
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
+            alert("Result settings connection is not configured.");
+            return;
+        }
+
+        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
+        .then(function(response){
+            if(!response.ok) throw new Error("Server Error: " + response.status);
+            return response.json();
+        })
+        .then(function(data){
+            if(!data || data.status !== "SUCCESS"){
+                throw new Error((data && data.message) || "Unable to read result settings.");
+            }
+
+            // Priority 1: result not live -> Coming Soon page.
+            if(!data.resultLive){
+                showResultControlPage("resultComingSoonPage");
+                return;
+            }
+
+            // Priority 2: topper mode ON -> announcement page.
+            if(data.topperMode){
+                renderTopperAnnouncement(data);
+                showResultControlPage("topperAnnouncementPage");
+                return;
+            }
+
+            // B21 = NO -> return to the original verification page.
+            hideResultControlPages();
+            if(typeof originalOpenResultVerifyPage === "function"){
+                originalOpenResultVerifyPage(event);
+            }else{
+                showResultControlPage("resultVerifyPage");
+            }
+        })
+        .catch(function(error){
+            console.error("Result publication settings error:", error);
+            alert("Result settings load nahi ho payi. Internet connection check karke dobara try karein.\n" + error.message);
+        });
+    };
+
+})();
+
