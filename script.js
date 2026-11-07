@@ -26680,11 +26680,11 @@ if (entrySection) {
         ikonResultCurtainInProgress = true;
         window.showResultControlPage("resultLiveRevealPage");
 
-        const stage = document.querySelector("#resultLiveRevealPage .ikon-live-stage");
+        const countdown = document.querySelector("#resultLiveRevealPage .ikon-live-countdown");
         const left = document.querySelector("#resultLiveRevealPage .ikon-curtain.left");
         const right = document.querySelector("#resultLiveRevealPage .ikon-curtain.right");
 
-        // Restart the 6-second curtain only once per page visit.
+        // Phase 1: open both curtains slowly over 10 seconds.
         [left,right].forEach(function(el){
             if(!el) return;
             el.style.animation = "none";
@@ -26692,7 +26692,23 @@ if (entrySection) {
             el.style.animation = "";
         });
 
-        window.setTimeout(finishResultCurtain, 6000);
+        // Phase 2: after the curtains finish opening, run a 5-to-1 countdown.
+        if(countdown){
+            countdown.classList.remove("is-active");
+            const numbers = countdown.querySelectorAll(".ikon-live-count");
+            numbers.forEach(function(number){ number.style.animation = "none"; });
+        }
+
+        window.setTimeout(function(){
+            if(countdown){
+                const numbers = countdown.querySelectorAll(".ikon-live-count");
+                numbers.forEach(function(number){
+                    number.style.animation = "";
+                });
+                countdown.classList.add("is-active");
+            }
+            window.setTimeout(finishResultCurtain, 5000);
+        }, 10000);
     }
 
     function refreshAnnouncementState(){
