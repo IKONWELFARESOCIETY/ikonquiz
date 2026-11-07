@@ -30,6 +30,7 @@ let pdfAdminAccess = false;
 //====================================================
 // QUESTION DATA
 //====================================================
+
 let questions = [];
 let answers = [];
 let currentQuestion = 0;
@@ -38,6 +39,7 @@ let currentQuestion = 0;
 //====================================================
 
 let practicalDuration = 30;
+
 let practicalTotalTime = practicalDuration * 60;
 
 let practicalTimer = null;
@@ -26654,10 +26656,101 @@ if (entrySection) {
         return id;
     }
 
+
+    function runIkonPartyPopper(durationMs){
+        const duration = durationMs || 10000;
+        const old = document.getElementById("ikonPartyPopperCanvas");
+        if(old) old.remove();
+
+        const canvas = document.createElement("canvas");
+        canvas.id = "ikonPartyPopperCanvas";
+        canvas.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:1000000";
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext("2d");
+        let w=0,h=0,raf=0;
+        const particles=[];
+        const colors=["#f5c451","#e63946","#2563eb","#16a34a","#a855f7","#fb923c","#ffffff"];
+        function resize(){
+            const dpr=Math.min(window.devicePixelRatio||1,2);
+            w=window.innerWidth; h=window.innerHeight;
+            canvas.width=Math.floor(w*dpr); canvas.height=Math.floor(h*dpr);
+            ctx.setTransform(dpr,0,0,dpr,0,0);
+        }
+        resize();
+        const resizeHandler=()=>resize();
+        window.addEventListener("resize",resizeHandler);
+        const started=performance.now();
+        let lastBurst=0;
+        function burst(){
+            const originX=Math.random()<.5?w*.08:w*.92;
+            const originY=h*.72;
+            for(let i=0;i<75;i++){
+                const angle=(-Math.PI/2)+(Math.random()-.5)*1.65;
+                const speed=3+Math.random()*7;
+                particles.push({
+                    x:originX,y:originY,
+                    vx:Math.cos(angle)*speed*(originX<w/2?1:-1),
+                    vy:Math.sin(angle)*speed,
+                    g:.12+Math.random()*.09,
+                    size:3+Math.random()*5,
+                    rot:Math.random()*6.28,
+                    vr:(Math.random()-.5)*.25,
+                    color:colors[Math.floor(Math.random()*colors.length)],
+                    life:100+Math.random()*45
+                });
+            }
+        }
+        function frame(now){
+            ctx.clearRect(0,0,w,h);
+            if(now-started<duration && now-lastBurst>650){
+                burst(); lastBurst=now;
+            }
+            for(let i=particles.length-1;i>=0;i--){
+                const p=particles[i];
+                p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.rot+=p.vr; p.life--;
+                ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+                ctx.fillStyle=p.color; ctx.globalAlpha=Math.min(1,p.life/25);
+                ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*1.6);
+                ctx.restore();
+                if(p.life<=0 || p.y>h+30) particles.splice(i,1);
+            }
+            if(now-started<duration || particles.length){
+                raf=requestAnimationFrame(frame);
+            }else{
+                cancelAnimationFrame(raf);
+                window.removeEventListener("resize",resizeHandler);
+                canvas.remove();
+            }
+        }
+        burst();
+        raf=requestAnimationFrame(frame);
+    }
+
     function openPublicResultTable(){
         window.showResultControlPage("studentResultPage");
+
+        // Hide the examination-date selector: public announcement always shows
+        // every published record for 16 October 2026.
+        const dateBox = document.getElementById("studentExamDateBox");
+        if(dateBox) dateBox.style.setProperty("display","none","important");
+
         if(typeof window.verifyResultStudent === "function"){
             window.verifyResultStudent(true);
+
+            // The API expects ISO date format (yyyy-MM-dd).
+            // This loads all published records for 16-10-2026 automatically.
+            window.setTimeout(function(){
+                if(typeof window.loadStudentResultsByDate === "function"){
+                    window.loadStudentResultsByDate("2026-10-16");
+                    window.setTimeout(function(){
+                        if(typeof runIkonPartyPopper === "function"){
+                            runIkonPartyPopper(10000);
+                        }
+                    }, 900);
+                }else{
+                    console.error("Student result date loader is unavailable.");
+                }
+            }, 150);
         }else{
             console.error("Public result loader is not available.");
             alert("Result list loader could not be found. Please refresh and try again.");
