@@ -26856,6 +26856,14 @@ if (entrySection) {
                         el.classList.remove("is-current");
                         el.style.visibility = "hidden";
                     });
+                    // Clear the inline reset styles so the 10-second CSS curtain
+                    // keyframes can run. The curtain layer becomes visible only now.
+                    [left, right].forEach(function(el){
+                        if(!el) return;
+                        el.style.animation = "";
+                        el.style.transform = "";
+                        el.style.opacity = "";
+                    });
                     page.classList.add("is-curtain-opening");
 
                     // PHASE 3: wait for full 10-second curtain animation, then show table.
