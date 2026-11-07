@@ -26639,24 +26639,43 @@ if (entrySection) {
 
     let ikonResultCurtainInProgress = false;
     let ikonResultCurtainCompleted = false;
+    let ikonResultCurtainRunId = 0;
+    let ikonResultCurtainTimerIds = [];
+
+    function clearResultCurtainTimers(){
+        ikonResultCurtainTimerIds.forEach(function(id){ window.clearTimeout(id); });
+        ikonResultCurtainTimerIds = [];
+    }
+
+    function scheduleResultCurtain(fn, delay, runId){
+        const id = window.setTimeout(function(){
+            if(runId !== ikonResultCurtainRunId) return;
+            fn();
+        }, delay);
+        ikonResultCurtainTimerIds.push(id);
+        return id;
+    }
 
     function openPublicResultTable(){
         window.showResultControlPage("studentResultPage");
         if(typeof window.verifyResultStudent === "function"){
+            // true = public result list; bypass the legacy student verification gate.
             window.verifyResultStudent(true);
         }else{
             console.error("Public result loader is not available.");
         }
     }
 
-    function finishResultCurtain(){
-        if(ikonResultCurtainCompleted) return;
+    function finishResultCurtain(runId){
+        if(runId !== ikonResultCurtainRunId || ikonResultCurtainCompleted) return;
         ikonResultCurtainCompleted = true;
         ikonResultCurtainInProgress = false;
+        clearResultCurtainTimers();
 
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
         .then(function(r){ return r.json(); })
         .then(function(data){
+            if(runId !== ikonResultCurtainRunId) return;
             if(!data || data.status !== "SUCCESS" || !data.resultLive){
                 window.showResultControlPage("resultComingSoonPage");
                 return;
@@ -26671,45 +26690,77 @@ if (entrySection) {
         })
         .catch(function(error){
             console.error("Unable to finish result curtain flow:", error);
-            openPublicResultTable();
+            if(runId === ikonResultCurtainRunId) openPublicResultTable();
         });
     }
 
     function startResultCurtain(){
+        // One entry = one curtain opening + one sequential countdown.
         if(ikonResultCurtainInProgress || ikonResultCurtainCompleted) return;
         ikonResultCurtainInProgress = true;
+        const runId = ++ikonResultCurtainRunId;
+        clearResultCurtainTimers();
+
+        const page = document.getElementById("resultLiveRevealPage");
+        if(!page) return;
         window.showResultControlPage("resultLiveRevealPage");
 
-        const countdown = document.querySelector("#resultLiveRevealPage .ikon-live-countdown");
-        const left = document.querySelector("#resultLiveRevealPage .ikon-curtain.left");
-        const right = document.querySelector("#resultLiveRevealPage .ikon-curtain.right");
+        const countdown = page.querySelector(".ikon-live-countdown");
+        const numbers = countdown ? Array.from(countdown.querySelectorAll(".ikon-live-count")) : [];
+        const left = page.querySelector(".ikon-curtain.left");
+        const right = page.querySelector(".ikon-curtain.right");
 
-        // Phase 1: open both curtains slowly over 10 seconds.
-        [left,right].forEach(function(el){
+        // Reset visual state before the single curtain animation starts.
+        page.classList.remove("is-curtain-opening");
+        [left, right].forEach(function(el){
             if(!el) return;
             el.style.animation = "none";
-            void el.offsetWidth;
-            el.style.animation = "";
+            el.style.transform = "translateX(0) rotateY(0)";
+            el.style.opacity = "1";
         });
+        numbers.forEach(function(el){
+            el.classList.remove("is-current");
+            el.style.animation = "none";
+            el.style.opacity = "0";
+            el.style.visibility = "hidden";
+        });
+        if(countdown) countdown.classList.remove("is-active");
 
-        // Phase 2: after the curtains finish opening, run a 5-to-1 countdown.
-        if(countdown){
-            countdown.classList.remove("is-active");
-            const numbers = countdown.querySelectorAll(".ikon-live-count");
-            numbers.forEach(function(number){ number.style.animation = "none"; });
-        }
+        // Start one 10-second curtain opening. There is no CSS auto-run.
+        void page.offsetWidth;
+        page.classList.add("is-curtain-opening");
 
-        window.setTimeout(function(){
-            if(countdown){
-                const numbers = countdown.querySelectorAll(".ikon-live-count");
-                numbers.forEach(function(number){
-                    number.style.animation = "";
+        // After curtain fully opens, show 5,4,3,2,1 in separate one-second slots.
+        scheduleResultCurtain(function(){
+            let value = 5;
+            function showNextNumber(){
+                if(runId !== ikonResultCurtainRunId) return;
+                numbers.forEach(function(el){
+                    el.classList.remove("is-current");
+                    el.style.animation = "none";
+                    el.style.opacity = "0";
+                    el.style.visibility = "hidden";
                 });
-                countdown.classList.add("is-active");
+                if(countdown) countdown.classList.add("is-active");
+                const current = numbers.find(function(el){ return el.textContent.trim() === String(value); });
+                if(current){
+                    current.classList.add("is-current");
+                    current.style.visibility = "visible";
+                    current.style.animation = "ikonCountPulse .82s cubic-bezier(.2,.75,.25,1) both";
+                }
+                if(value === 1){
+                    scheduleResultCurtain(function(){ finishResultCurtain(runId); }, 1000, runId);
+                }else{
+                    value -= 1;
+                    scheduleResultCurtain(showNextNumber, 1000, runId);
+                }
             }
-            window.setTimeout(finishResultCurtain, 5000);
-        }, 10000);
+            showNextNumber();
+        }, 10000, runId);
     }
+
+    // Export only the guarded entry point for the later navigation controller.
+    window.startResultCurtainFlow = startResultCurtain;
 
     function refreshAnnouncementState(){
         if(!isAnnouncementPageActive()) return;
@@ -26723,8 +26774,12 @@ if (entrySection) {
             if(!data || data.status !== "SUCCESS") return;
 
             if(!data.resultLive){
+                ikonResultCurtainRunId++;
+                clearResultCurtainTimers();
                 ikonResultCurtainInProgress = false;
                 ikonResultCurtainCompleted = false;
+                const revealPage = document.getElementById("resultLiveRevealPage");
+                if(revealPage) revealPage.classList.remove("is-curtain-opening");
                 window.showResultControlPage("resultComingSoonPage");
                 return;
             }
@@ -28943,24 +28998,18 @@ function applyMarksheetResultStyle(root, grade, result){
                 throw new Error((data && data.message) || "Unable to read result settings.");
             }
 
-            // B19 NO -> premium animated waiting page.
+            // B19 NO -> premium waiting page.
             if(!data.resultLive){
                 showResultControlPage("resultComingSoonPage");
                 return;
             }
 
-            // B21 YES -> directly restore the original verification flow.
-            if(data.verificationOnly){
-                window.openOriginalStudentResult();
-                return;
-            }
-
-            // B19 YES -> countdown, curtain opening, then RESULT IS LIVE.
-            window.configureResultLiveActions(data);
-            showResultControlPage("resultLiveRevealPage");
-            if(data.topperMode){
-                renderTopperAnnouncement(data);
-                updateTopperAdminControls(data);
+            // Always use the one guarded curtain/countdown sequence.
+            // It routes to the public result table or topper page after completion.
+            if(typeof window.startResultCurtainFlow === "function"){
+                window.startResultCurtainFlow();
+            }else{
+                console.error("Result curtain controller is unavailable.");
             }
         })
         .catch(function(error){
