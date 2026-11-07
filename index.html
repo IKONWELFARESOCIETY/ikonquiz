@@ -1038,6 +1038,13 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 /* Countdown-first curtain sequence */
 #resultLiveRevealPage .ikon-live-subline{color:#f4dfb1;font-weight:800;letter-spacing:.06em}
 #resultLiveRevealPage .ikon-curtain{will-change:transform,opacity}
+
+/* HARD FIX: keep countdown number above the ring and visible regardless of motion preferences */
+#resultLiveRevealPage .ikon-live-content{position:relative;z-index:10}
+#resultLiveRevealPage .ikon-live-countdown{position:relative;z-index:11}
+#resultLiveRevealPage .ikon-live-count{z-index:12;color:#ffe1a0!important;-webkit-text-fill-color:#ffe1a0!important;font-size:clamp(100px,17vw,150px)!important;font-weight:900!important;line-height:1!important;text-shadow:0 0 18px rgba(255,196,91,.7),0 10px 34px rgba(0,0,0,.55)!important}
+#resultLiveRevealPage .ikon-curtain-frame{z-index:20;visibility:hidden}
+#resultLiveRevealPage.is-curtain-opening .ikon-curtain-frame{visibility:visible}
 </style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
