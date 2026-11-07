@@ -1016,11 +1016,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 .ikon-live-stage:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,196,91,.12),transparent 34%),repeating-linear-gradient(115deg,transparent 0 80px,rgba(255,255,255,.018) 81px 82px);pointer-events:none}
 .ikon-live-content{position:relative;z-index:2;width:min(760px,88%);padding:44px 16px 48px}
 .ikon-live-kicker{color:#f4ca75;font:800 12px/1.4 Arial,sans-serif;letter-spacing:.28em;text-transform:uppercase}
-.ikon-live-countdown{height:150px;display:flex;align-items:center;justify-content:center;position:relative;margin:12px auto 8px}
-.ikon-live-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 clamp(100px,17vw,164px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;transform:scale(.72);visibility:hidden}
-.ikon-live-count.is-current{visibility:visible}
-.ikon-live-countdown.is-active .ikon-live-count{animation:ikonCountPulse .82s cubic-bezier(.2,.75,.25,1) both}
-@keyframes ikonCountPulse{0%{opacity:0;transform:scale(.55)}15%,72%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
+.ikon-live-countdown{height:190px;width:190px;display:flex;align-items:center;justify-content:center;position:relative;margin:24px auto 18px;border-radius:50%;border:1px solid rgba(255,218,147,.65);background:radial-gradient(circle,rgba(255,221,157,.18),rgba(255,255,255,.035) 62%,transparent 70%);box-shadow:0 0 0 12px rgba(255,211,132,.045),0 0 50px rgba(255,188,76,.14),inset 0 0 30px rgba(255,255,255,.07)}
+.ikon-live-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 clamp(100px,17vw,150px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:scale(.72)}
+.ikon-live-count.is-current{visibility:visible;animation:ikonCountPulse .86s cubic-bezier(.2,.75,.25,1) both}
+@keyframes ikonCountPulse{0%{opacity:0;transform:scale(.58);filter:blur(7px)}18%{opacity:1;transform:scale(1.04);filter:blur(0)}72%{opacity:1;transform:scale(1);filter:blur(0)}100%{opacity:0;transform:scale(1.12);filter:blur(2px)}}
 .ikon-live-subline{color:#d6e2f4;font:600 clamp(14px,2vw,18px)/1.6 Arial,sans-serif;letter-spacing:.08em}
 .ikon-curtain-frame{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;border-radius:inherit}
 .ikon-curtain{position:absolute;top:0;bottom:0;width:51%;background:repeating-linear-gradient(90deg,#530d19 0,#7d1525 12%,#a32636 22%,#5d0c1b 34%,#8e1b2b 48%,#4c0a18 62%);box-shadow:inset 0 0 50px rgba(0,0,0,.48),0 0 35px rgba(0,0,0,.32)}
@@ -1030,20 +1029,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 #resultLiveRevealPage.is-curtain-opening .ikon-curtain.right{animation:ikonCurtainRight 10s cubic-bezier(.22,.61,.36,1) forwards}
 .ikon-curtain:after{content:"";position:absolute;top:0;bottom:0;width:20px;background:linear-gradient(90deg,rgba(255,221,148,.25),transparent);right:12%}
 .ikon-curtain.left:after{right:12%}.ikon-curtain.right:after{left:12%;right:auto;transform:scaleX(-1)}
-@keyframes ikonCurtainLeft{to{transform:perspective(900px) rotateY(-78deg) translateX(-105%);opacity:.15}}
-@keyframes ikonCurtainRight{to{transform:perspective(900px) rotateY(78deg) translateX(105%);opacity:.15}}
-.ikon-live-reveal{opacity:0;transform:translateY(18px) scale(.96);animation:ikonLiveTextReveal .9s ease-out 4.65s forwards}
-@keyframes ikonLiveTextReveal{to{opacity:1;transform:translateY(0) scale(1)}}
-.ikon-live-trophy{font-size:clamp(42px,7vw,68px);filter:drop-shadow(0 0 16px rgba(255,197,87,.4));margin-bottom:12px}
-.ikon-live-title{margin:0;color:#fff;font:900 clamp(38px,7vw,76px)/1.02 Arial,sans-serif;letter-spacing:-.045em;text-transform:uppercase;text-shadow:0 5px 25px rgba(0,0,0,.4)}
-.ikon-live-title span{display:block;color:#f7c967;text-shadow:0 0 25px rgba(255,193,76,.35)}
-.ikon-live-message{margin:22px auto 0;color:#e0e9f7;font:500 clamp(16px,2vw,21px)/1.6 Arial,sans-serif}
-.ikon-live-date{display:inline-block;margin-top:22px;padding:10px 20px;border:1px solid rgba(244,199,108,.55);border-radius:999px;color:#ffe2a0;background:rgba(255,255,255,.06);font:800 14px Arial,sans-serif;letter-spacing:.06em}
-.ikon-live-action{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:28px 8px 0;padding:15px 25px;border:1px solid #ffe0a0;border-radius:12px;background:linear-gradient(135deg,#ffe5a5,#d69b35);color:#10213b;font:900 15px Arial,sans-serif;letter-spacing:.04em;text-decoration:none;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s}
-.ikon-live-action:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.32)}
-.ikon-live-footnote{margin-top:20px;color:#aebfd7;font:700 10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase}
-@media(max-width:600px){#resultLiveRevealPage{padding:12px 6px 24px;min-height:calc(100vh - 150px)}.ikon-live-stage{min-height:560px;border-radius:18px}.ikon-live-content{width:92%;padding:34px 8px}.ikon-live-countdown{height:125px}.ikon-live-message{margin-top:16px}.ikon-live-action{width:min(90%,300px);box-sizing:border-box}}
-@media(prefers-reduced-motion:reduce){.ikon-live-count{animation:none!important}.ikon-curtain{animation:none!important}.ikon-live-reveal{animation:none!important;opacity:1;transform:none}}
+@keyframes ikonCurtainLeft{0%{transform:translateX(0) rotateY(0);opacity:1}100%{transform:perspective(900px) rotateY(-78deg) translateX(-105%);opacity:.12}}
+@keyframes ikonCurtainRight{0%{transform:translateX(0) rotateY(0);opacity:1}100%{transform:perspective(900px) rotateY(78deg) translateX(105%);opacity:.12}}
+@media(max-width:600px){#resultLiveRevealPage{padding:12px 6px 24px;min-height:calc(100vh - 150px)}.ikon-live-stage{min-height:560px;border-radius:18px}.ikon-live-content{width:92%;padding:34px 8px}.ikon-live-countdown{height:160px;width:160px}}
+@media(prefers-reduced-motion:reduce){.ikon-live-count.is-current{animation:none!important;opacity:1;transform:none}.ikon-curtain{animation:none!important}}
 </style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
@@ -1057,17 +1046,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
         <span class="ikon-live-count">1</span>
       </div>
       <div class="ikon-live-subline">The moment you have been waiting for...</div>
-      <div class="ikon-live-reveal">
-        <div class="ikon-live-trophy">🏆</div>
-        <h1 class="ikon-live-title">RESULT <span>IS LIVE!</span></h1>
-        <p class="ikon-live-message">Your hard work deserves its moment. The wait is over!<br><strong>Topper list will be announced shortly.</strong></p>
-        <div class="ikon-live-date">OFFICIAL RESULT ANNOUNCEMENT</div>
-        <div>
-          <button type="button" id="openTopperListFromLive" class="ikon-live-action" style="display:none" onclick="openPublishedTopperList()">🏆 VIEW TOPPER LIST</button>
-          <button type="button" id="openStudentResultFromLive" class="ikon-live-action" style="display:none" onclick="openOriginalStudentResult()">📄 VIEW STUDENT RESULT</button>
-        </div>
-        <div class="ikon-live-footnote">Celebrate your effort · Believe in your journey</div>
-      </div>
     </div>
     <div class="ikon-curtain-frame" aria-hidden="true">
       <div class="ikon-curtain left"></div>
