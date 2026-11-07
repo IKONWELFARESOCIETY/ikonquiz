@@ -1327,7 +1327,14 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 }
 #resultLiveRevealPage .ikon-live-kicker span{color:#fff;opacity:.7}
 #resultLiveRevealPage .ikon-live-countdown{
-  height:150px;width:100%;position:relative;display:flex;align-items:center;justify-content:center;margin:15px auto 6px;
+  /* Keep the countdown ring perfectly circular; do not stretch it to the content width. */
+  width:190px!important;height:190px!important;min-width:190px;min-height:190px;
+  max-width:190px;max-height:190px;flex:0 0 190px;aspect-ratio:1/1;
+  box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;
+  margin:15px auto 6px;border-radius:50%!important;
+  border:1px solid rgba(255,218,147,.75);
+  background:radial-gradient(circle,rgba(255,221,157,.18),rgba(255,255,255,.035) 62%,transparent 70%);
+  box-shadow:0 0 0 12px rgba(255,211,132,.045),0 0 50px rgba(255,188,76,.14),inset 0 0 30px rgba(255,255,255,.07);
 }
 #resultLiveRevealPage .ikon-live-count{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -1414,6 +1421,10 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
   #resultLiveRevealPage.is-result-live-announcing .ikon-live-trophy,
   #resultLiveRevealPage.is-result-live-announcing .ikon-live-title span{animation:none!important}
   #resultLiveRevealPage .ikon-live-reveal{opacity:1;visibility:visible;transform:none}
+}
+
+@media(max-width:600px){
+  #resultLiveRevealPage .ikon-live-countdown{width:160px!important;height:160px!important;min-width:160px;min-height:160px;max-width:160px;max-height:160px;flex:0 0 160px;aspect-ratio:1/1}
 }
 </style>
 <div id="resultLiveRevealPage" class="hidden">
