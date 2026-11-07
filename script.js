@@ -26824,6 +26824,20 @@ if (entrySection) {
         const right = page.querySelector(".ikon-curtain.right");
 
         // Reset all visual elements to the closed-curtain / hidden-count state.
+        const resetLiveContent = page.querySelector(".ikon-live-content");
+        if(resetLiveContent){
+            resetLiveContent.style.removeProperty("display");
+            resetLiveContent.style.removeProperty("visibility");
+            resetLiveContent.style.removeProperty("opacity");
+        }
+        const resetLiveStage = page.querySelector(".ikon-live-stage");
+        if(resetLiveStage){
+            resetLiveStage.style.removeProperty("background");
+            resetLiveStage.style.removeProperty("border-color");
+            resetLiveStage.style.removeProperty("box-shadow");
+        }
+        page.style.removeProperty("padding");
+        page.style.removeProperty("background");
         page.classList.remove("is-curtain-opening");
         const initialCurtainFrame = page.querySelector(".ikon-curtain-frame");
         if(initialCurtainFrame){
@@ -26872,7 +26886,20 @@ if (entrySection) {
 
             if(value === 1){
                 scheduleResultCurtain(function(){
-                    // Countdown finished: hide its number, then reveal and open curtains.
+                    // Countdown finished: remove the complete timer design immediately.
+                    // The curtain frame remains and becomes the only visible layer.
+                    const liveContent = page.querySelector(".ikon-live-content");
+                    if(liveContent){
+                        liveContent.style.setProperty("display","none","important");
+                        liveContent.style.setProperty("visibility","hidden","important");
+                        liveContent.style.setProperty("opacity","0","important");
+                    }
+                    const liveStage = page.querySelector(".ikon-live-stage");
+                    if(liveStage){
+                        liveStage.style.setProperty("background","transparent","important");
+                        liveStage.style.setProperty("border-color","transparent","important");
+                        liveStage.style.setProperty("box-shadow","none","important");
+                    }
                     numbers.forEach(function(el){
                         el.classList.remove("is-current");
                         el.style.setProperty("display","none","important");
