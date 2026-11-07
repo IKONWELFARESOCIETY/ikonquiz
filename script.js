@@ -26659,10 +26659,10 @@ if (entrySection) {
     function openPublicResultTable(){
         window.showResultControlPage("studentResultPage");
         if(typeof window.verifyResultStudent === "function"){
-            // true = public result list; bypass the legacy student verification gate.
             window.verifyResultStudent(true);
         }else{
             console.error("Public result loader is not available.");
+            alert("Result list loader could not be found. Please refresh and try again.");
         }
     }
 
@@ -26672,37 +26672,49 @@ if (entrySection) {
         ikonResultCurtainInProgress = false;
         clearResultCurtainTimers();
 
+        // After countdown and full curtain opening, read latest publication mode.
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
-        .then(function(r){ return r.json(); })
+        .then(function(r){
+            if(!r.ok) throw new Error("Result settings server error: " + r.status);
+            return r.json();
+        })
         .then(function(data){
             if(runId !== ikonResultCurtainRunId) return;
             if(!data || data.status !== "SUCCESS" || !data.resultLive){
                 window.showResultControlPage("resultComingSoonPage");
                 return;
             }
-            if(data.topperMode){
-                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
-                window.showResultControlPage("topperAnnouncementPage");
-                if(typeof window.updateTopperAdminControls === "function") window.updateTopperAdminControls(data);
-            }else{
-                openPublicResultTable();
-            }
+            // The user requested the public result table after curtain opening.
+            // B20 topper navigation remains available through the dedicated View Topper action.
+            openPublicResultTable();
         })
         .catch(function(error){
-            console.error("Unable to finish result curtain flow:", error);
-            if(runId === ikonResultCurtainRunId) openPublicResultTable();
+            console.error("Could not load publication status after curtain:", error);
+            if(runId === ikonResultCurtainRunId){
+                // Do not leave the student on a blank overlay when the result is already live.
+                openPublicResultTable();
+            }
         });
     }
 
     function startResultCurtain(){
-        // One entry = one curtain opening + one sequential countdown.
-        if(ikonResultCurtainInProgress || ikonResultCurtainCompleted) return;
+        if(ikonResultCurtainInProgress) return;
+        if(ikonResultCurtainCompleted){
+            openPublicResultTable();
+            return;
+        }
+
         ikonResultCurtainInProgress = true;
         const runId = ++ikonResultCurtainRunId;
         clearResultCurtainTimers();
 
         const page = document.getElementById("resultLiveRevealPage");
-        if(!page) return;
+        if(!page){
+            ikonResultCurtainInProgress = false;
+            openPublicResultTable();
+            return;
+        }
+
         window.showResultControlPage("resultLiveRevealPage");
 
         const countdown = page.querySelector(".ikon-live-countdown");
@@ -26710,7 +26722,7 @@ if (entrySection) {
         const left = page.querySelector(".ikon-curtain.left");
         const right = page.querySelector(".ikon-curtain.right");
 
-        // Reset visual state before the single curtain animation starts.
+        // Reset all visual elements to the closed-curtain / hidden-count state.
         page.classList.remove("is-curtain-opening");
         [left, right].forEach(function(el){
             if(!el) return;
@@ -26724,46 +26736,58 @@ if (entrySection) {
             el.style.opacity = "0";
             el.style.visibility = "hidden";
         });
-        if(countdown) countdown.classList.remove("is-active");
 
-        // Start one 10-second curtain opening. There is no CSS auto-run.
         void page.offsetWidth;
-        page.classList.add("is-curtain-opening");
 
-        // After curtain fully opens, show 5,4,3,2,1 in separate one-second slots.
-        scheduleResultCurtain(function(){
-            let value = 5;
-            function showNextNumber(){
-                if(runId !== ikonResultCurtainRunId) return;
-                numbers.forEach(function(el){
-                    el.classList.remove("is-current");
-                    el.style.animation = "none";
-                    el.style.opacity = "0";
-                    el.style.visibility = "hidden";
-                });
-                if(countdown) countdown.classList.add("is-active");
-                const current = numbers.find(function(el){ return el.textContent.trim() === String(value); });
-                if(current){
-                    current.classList.add("is-current");
-                    current.style.visibility = "visible";
-                    current.style.animation = "ikonCountPulse .82s cubic-bezier(.2,.75,.25,1) both";
-                }
-                if(value === 1){
-                    scheduleResultCurtain(function(){ finishResultCurtain(runId); }, 1000, runId);
-                }else{
-                    value -= 1;
-                    scheduleResultCurtain(showNextNumber, 1000, runId);
-                }
+        // PHASE 1: countdown first — 5, 4, 3, 2, 1, one at a time.
+        let value = 5;
+        function showNextNumber(){
+            if(runId !== ikonResultCurtainRunId) return;
+            numbers.forEach(function(el){
+                el.classList.remove("is-current");
+                el.style.animation = "none";
+                el.style.opacity = "0";
+                el.style.visibility = "hidden";
+            });
+
+            const current = numbers.find(function(el){
+                return el.textContent.trim() === String(value);
+            });
+            if(current){
+                current.style.visibility = "visible";
+                current.classList.add("is-current");
             }
-            showNextNumber();
-        }, 10000, runId);
+
+            if(value === 1){
+                scheduleResultCurtain(function(){
+                    // PHASE 2: countdown is complete; now open both curtains once.
+                    numbers.forEach(function(el){
+                        el.classList.remove("is-current");
+                        el.style.visibility = "hidden";
+                    });
+                    page.classList.add("is-curtain-opening");
+
+                    // PHASE 3: wait for full 10-second curtain animation, then show table.
+                    scheduleResultCurtain(function(){
+                        finishResultCurtain(runId);
+                    }, 10000, runId);
+                }, 1000, runId);
+            }else{
+                value -= 1;
+                scheduleResultCurtain(showNextNumber, 1000, runId);
+            }
+        }
+        showNextNumber();
     }
 
-    // Export only the guarded entry point for the later navigation controller.
     window.startResultCurtainFlow = startResultCurtain;
 
     function refreshAnnouncementState(){
         if(!isAnnouncementPageActive()) return;
+
+        const revealOverlay = document.getElementById("resultLiveRevealPage");
+        if(ikonResultCurtainInProgress && revealOverlay &&
+           !revealOverlay.classList.contains("hidden")) return;
 
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
         .then(function(response){
@@ -28998,18 +29022,17 @@ function applyMarksheetResultStyle(root, grade, result){
                 throw new Error((data && data.message) || "Unable to read result settings.");
             }
 
-            // B19 NO -> premium waiting page.
             if(!data.resultLive){
+                // B19 NO: keep the existing waiting page.
                 showResultControlPage("resultComingSoonPage");
                 return;
             }
 
-            // Always use the one guarded curtain/countdown sequence.
-            // It routes to the public result table or topper page after completion.
+            // B19 YES: countdown first, curtain second, public table last.
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
-                console.error("Result curtain controller is unavailable.");
+                throw new Error("Result reveal controller is unavailable.");
             }
         })
         .catch(function(error){
