@@ -1455,6 +1455,30 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
   #resultLiveRevealPage .ikon-live-count{font-size:150px!important;}
 }
 </style>
+
+<style>
+/* FINAL OVERRIDE: lock the countdown ring to the geometric center of the navy stage. */
+#resultLiveRevealPage .ikon-live-stage{position:relative!important;overflow:hidden!important;}
+#resultLiveRevealPage .ikon-live-content{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important;display:block!important;}
+#resultLiveRevealPage .ikon-live-kicker{position:absolute!important;top:34px!important;left:12px!important;right:12px!important;text-align:center!important;}
+#resultLiveRevealPage .ikon-live-countdown{
+  position:absolute!important;top:50%!important;left:50%!important;
+  transform:translate(-50%,-50%)!important;margin:0!important;
+  width:300px!important;height:300px!important;min-width:300px!important;min-height:300px!important;
+  max-width:300px!important;max-height:300px!important;flex:none!important;
+  aspect-ratio:1/1!important;border-radius:50%!important;
+}
+#resultLiveRevealPage .ikon-live-count{font-size:210px!important;line-height:1!important;}
+#resultLiveRevealPage .ikon-live-subline{
+  position:absolute!important;top:calc(50% + 178px)!important;left:12px!important;right:12px!important;
+  margin:0!important;text-align:center!important;
+}
+@media(max-width:650px){
+  #resultLiveRevealPage .ikon-live-countdown{width:250px!important;height:250px!important;min-width:250px!important;min-height:250px!important;max-width:250px!important;max-height:250px!important;}
+  #resultLiveRevealPage .ikon-live-count{font-size:175px!important;}
+  #resultLiveRevealPage .ikon-live-subline{top:calc(50% + 150px)!important;font-size:11px!important;letter-spacing:.12em!important;}
+}
+</style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
     <div class="ikon-live-content">
