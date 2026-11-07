@@ -81,9 +81,6 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
 </style>
 
-/* Public result announcement: fixed exam date, no date selector */
-#studentResultPage #studentExamDateBox{display:none!important}
-
 </head>
 <body>
 <div class="container">
@@ -1025,7 +1022,8 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 .ikon-live-count.is-current{visibility:visible;animation:ikonCountPulse .86s cubic-bezier(.2,.75,.25,1) both}
 @keyframes ikonCountPulse{0%{opacity:0;transform:scale(.58);filter:blur(7px)}18%{opacity:1;transform:scale(1.04);filter:blur(0)}72%{opacity:1;transform:scale(1);filter:blur(0)}100%{opacity:0;transform:scale(1.12);filter:blur(2px)}}
 .ikon-live-subline{color:#d6e2f4;font:600 clamp(14px,2vw,18px)/1.6 Arial,sans-serif;letter-spacing:.08em}
-.ikon-curtain-frame{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;border-radius:inherit}
+.ikon-curtain-frame{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;border-radius:inherit;visibility:hidden}
+#resultLiveRevealPage.is-curtain-opening .ikon-curtain-frame{visibility:visible}
 .ikon-curtain{position:absolute;top:0;bottom:0;width:51%;background:repeating-linear-gradient(90deg,#530d19 0,#7d1525 12%,#a32636 22%,#5d0c1b 34%,#8e1b2b 48%,#4c0a18 62%);box-shadow:inset 0 0 50px rgba(0,0,0,.48),0 0 35px rgba(0,0,0,.32)}
 .ikon-curtain.left{left:0;border-right:5px solid #d9a84e;transform-origin:left center}
 .ikon-curtain.right{right:0;border-left:5px solid #d9a84e;transform-origin:right center}
@@ -1037,6 +1035,9 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 @keyframes ikonCurtainRight{0%{transform:translateX(0) rotateY(0);opacity:1}100%{transform:perspective(900px) rotateY(78deg) translateX(105%);opacity:.12}}
 @media(max-width:600px){#resultLiveRevealPage{padding:12px 6px 24px;min-height:calc(100vh - 150px)}.ikon-live-stage{min-height:560px;border-radius:18px}.ikon-live-content{width:92%;padding:34px 8px}.ikon-live-countdown{height:160px;width:160px}}
 @media(prefers-reduced-motion:reduce){.ikon-live-count.is-current{animation:none!important;opacity:1;transform:none}.ikon-curtain{animation:none!important}}
+/* Countdown-first curtain sequence */
+#resultLiveRevealPage .ikon-live-subline{color:#f4dfb1;font-weight:800;letter-spacing:.06em}
+#resultLiveRevealPage .ikon-curtain{will-change:transform,opacity}
 </style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
@@ -5383,11 +5384,3 @@ After successfully submitting one paper, please refresh the website (F5) before 
 </body>
 
 </html>
-<style>
-/* Premium sequence: 10-second curtain opening, followed by a 5-second countdown. */
-#resultLiveRevealPage .ikon-live-reveal{display:block!important;visibility:visible}
-#resultLiveRevealPage .ikon-live-countdown{margin-top:24px}
-#resultLiveRevealPage .ikon-live-subline{color:#f4dfb1;font-weight:800;letter-spacing:.06em}
-#resultLiveRevealPage .ikon-live-stage{overflow:hidden}
-#resultLiveRevealPage .ikon-curtain{will-change:transform,opacity}
-</style>
