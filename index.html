@@ -1426,6 +1426,28 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 @media(max-width:600px){
   #resultLiveRevealPage .ikon-live-countdown{width:160px!important;height:160px!important;min-width:160px;min-height:160px;max-width:160px;max-height:160px;flex:0 0 160px;aspect-ratio:1/1}
 }
+/* FINAL COUNTDOWN LAYOUT: larger ring and vertically centered in the reveal stage */
+#resultLiveRevealPage .ikon-live-stage{display:flex;align-items:center;justify-content:center;}
+#resultLiveRevealPage .ikon-live-content{
+  min-height:640px;min-height:clamp(560px,72vh,760px);
+  justify-content:center;align-items:center;margin:auto;
+}
+#resultLiveRevealPage .ikon-live-countdown{
+  width:260px!important;height:260px!important;min-width:260px!important;min-height:260px!important;
+  max-width:260px!important;max-height:260px!important;flex:0 0 260px!important;
+  aspect-ratio:1/1!important;margin:24px auto 18px!important;border-radius:50%!important;
+}
+#resultLiveRevealPage .ikon-live-count{
+  font-size:clamp(140px,18vw,190px)!important;line-height:1!important;
+}
+@media(max-width:650px){
+  #resultLiveRevealPage .ikon-live-content{min-height:560px;padding:24px 10px;}
+  #resultLiveRevealPage .ikon-live-countdown{
+    width:210px!important;height:210px!important;min-width:210px!important;min-height:210px!important;
+    max-width:210px!important;max-height:210px!important;flex:0 0 210px!important;
+  }
+  #resultLiveRevealPage .ikon-live-count{font-size:150px!important;}
+}
 </style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
