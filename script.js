@@ -37,11 +37,13 @@ let currentQuestion = 0;
 //====================================================
 // PRACTICAL TIMER
 //====================================================
+
 let practicalDuration = 30;
 
 let practicalTotalTime = practicalDuration * 60;
 
 let practicalTimer = null;
+
 //====================================================
 // EXAM STATE
 //====================================================
