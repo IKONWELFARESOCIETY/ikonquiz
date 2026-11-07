@@ -30,7 +30,6 @@ let pdfAdminAccess = false;
 //====================================================
 // QUESTION DATA
 //====================================================
-
 let questions = [];
 let answers = [];
 let currentQuestion = 0;
@@ -39,7 +38,6 @@ let currentQuestion = 0;
 //====================================================
 
 let practicalDuration = 30;
-
 let practicalTotalTime = practicalDuration * 60;
 
 let practicalTimer = null;
