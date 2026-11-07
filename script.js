@@ -5009,71 +5009,42 @@ console.log(
 // FINAL CLICK FIX
 //====================================================
 
-window.verifyResultStudent = function () {
+window.verifyResultStudent = function (skipVerificationCode) {
 
     console.log(
         "VERIFY RESULT BUTTON CLICKED"
     );
 
-    const input =
-        document.getElementById(
-            "resultStudentID"
-        );
+    if (!skipVerificationCode) {
+        const input =
+            document.getElementById(
+                "resultStudentID"
+            );
 
-    if (!input) {
+        if (!input) {
+            console.error("resultStudentID not found");
+            alert("Verification field not found.");
+            return;
+        }
 
-        console.error(
-            "resultStudentID not found"
-        );
+        const code = String(input.value || "").trim();
 
-        alert(
-            "Verification field not found."
-        );
+        if (code === "") {
+            alert("Please Enter Verification Code");
+            input.focus();
+            return;
+        }
 
-        return;
+        if (code !== "16112001") {
+            alert("Invalid Verification Code");
+            input.focus();
+            return;
+        }
+
+        console.log("Verification Code Accepted");
+    } else {
+        console.log("Public result publication: verification code bypassed by publication setting.");
     }
-
-    const code =
-        String(
-            input.value || ""
-        ).trim();
-
-
-    //===============================================
-    // EMPTY CODE
-    //===============================================
-
-    if (code === "") {
-
-        alert(
-            "Please Enter Verification Code"
-        );
-
-        input.focus();
-
-        return;
-    }
-
-
-    //===============================================
-    // VERIFY CODE
-    //===============================================
-
-    if (code !== "16112001") {
-
-        alert(
-            "Invalid Verification Code"
-        );
-
-        input.focus();
-
-        return;
-    }
-
-
-    console.log(
-        "Verification Code Accepted"
-    );
 
 
     //===============================================
@@ -5478,26 +5449,6 @@ function clearStudentResultTable(){
 
 
 //====================================================
-// FORMAT RESULT LIST TOTAL AS A WHOLE NUMBER
-//====================================================
-
-function formatResultListTotal(value){
-
-    if(value === null || value === undefined || String(value).trim() === ""){
-        return "";
-    }
-
-    const numericValue = Number(String(value).replace(/,/g, "").trim());
-
-    if(!Number.isFinite(numericValue)){
-        return String(value).trim();
-    }
-
-    return String(Math.round(numericValue));
-}
-
-
-//====================================================
 // LOAD RESULTS FOR SELECTED DATE
 //====================================================
 
@@ -5775,7 +5726,7 @@ function loadStudentResultsByDate(
                         </td>
 
                         <td>
-                            ${formatResultListTotal(r.totalMarks)}
+                            ${(r.totalMarks === null || r.totalMarks === undefined || String(r.totalMarks).trim() === "" || !Number.isFinite(Number(String(r.totalMarks).replace(/,/g, "").trim()))) ? (r.totalMarks || "") : Math.round(Number(String(r.totalMarks).replace(/,/g, "").trim()))}
                         </td>
 
                         <td>
@@ -26635,7 +26586,7 @@ if (entrySection) {
     // If B21 is changed to NO while students are on the topper page,
     // the old verification page is restored automatically (within 10 seconds).
     function isAnnouncementPageActive(){
-        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage"].some(function(id){
+        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage", "studentResultPage"].some(function(id){
             const page = document.getElementById(id);
             return !!page && !page.classList.contains("hidden") &&
                 page.style.display !== "none";
@@ -26643,13 +26594,12 @@ if (entrySection) {
     }
 
     function configureResultLiveActions(data){
+        // The public result table is now the default B19=YES destination.
+        // B20=YES switches to the Topper page; no student verification page is used here.
         const topperButton = document.getElementById("openTopperListFromLive");
         const studentButton = document.getElementById("openStudentResultFromLive");
-        // B21=YES overrides B20: show only the original student verification route.
-        const verificationOnly = !!(data && data.verificationOnly);
-        const showTopperButton = !!(data && data.topperButtonEnabled) && !verificationOnly;
-        if(topperButton) topperButton.style.display = showTopperButton ? "inline-flex" : "none";
-        if(studentButton) studentButton.style.display = verificationOnly ? "inline-flex" : "none";
+        if(topperButton) topperButton.style.display = "none";
+        if(studentButton) studentButton.style.display = "none";
     }
     window.configureResultLiveActions = configureResultLiveActions;
 
@@ -26668,6 +26618,10 @@ if (entrySection) {
         .catch(function(){ alert("Unable to load topper list. Please try again."); });
     };
 
+    window.openPublicStudentResult = function(){
+        openPublicResultTable();
+    };
+
     window.openOriginalStudentResult = function(){
         if(typeof window.showResultControlPage === "function"){
             window.showResultControlPage("resultVerifyPage");
@@ -26683,6 +26637,64 @@ if (entrySection) {
         }
     };
 
+    let ikonResultCurtainInProgress = false;
+    let ikonResultCurtainCompleted = false;
+
+    function openPublicResultTable(){
+        window.showResultControlPage("studentResultPage");
+        if(typeof window.verifyResultStudent === "function"){
+            window.verifyResultStudent(true);
+        }else{
+            console.error("Public result loader is not available.");
+        }
+    }
+
+    function finishResultCurtain(){
+        if(ikonResultCurtainCompleted) return;
+        ikonResultCurtainCompleted = true;
+        ikonResultCurtainInProgress = false;
+
+        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+            if(!data || data.status !== "SUCCESS" || !data.resultLive){
+                window.showResultControlPage("resultComingSoonPage");
+                return;
+            }
+            if(data.topperMode){
+                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
+                window.showResultControlPage("topperAnnouncementPage");
+                if(typeof window.updateTopperAdminControls === "function") window.updateTopperAdminControls(data);
+            }else{
+                openPublicResultTable();
+            }
+        })
+        .catch(function(error){
+            console.error("Unable to finish result curtain flow:", error);
+            openPublicResultTable();
+        });
+    }
+
+    function startResultCurtain(){
+        if(ikonResultCurtainInProgress || ikonResultCurtainCompleted) return;
+        ikonResultCurtainInProgress = true;
+        window.showResultControlPage("resultLiveRevealPage");
+
+        const stage = document.querySelector("#resultLiveRevealPage .ikon-live-stage");
+        const left = document.querySelector("#resultLiveRevealPage .ikon-curtain.left");
+        const right = document.querySelector("#resultLiveRevealPage .ikon-curtain.right");
+
+        // Restart the 6-second curtain only once per page visit.
+        [left,right].forEach(function(el){
+            if(!el) return;
+            el.style.animation = "none";
+            void el.offsetWidth;
+            el.style.animation = "";
+        });
+
+        window.setTimeout(finishResultCurtain, 6000);
+    }
+
     function refreshAnnouncementState(){
         if(!isAnnouncementPageActive()) return;
 
@@ -26695,46 +26707,81 @@ if (entrySection) {
             if(!data || data.status !== "SUCCESS") return;
 
             if(!data.resultLive){
+                ikonResultCurtainInProgress = false;
+                ikonResultCurtainCompleted = false;
                 window.showResultControlPage("resultComingSoonPage");
                 return;
             }
 
-            // B21 YES overrides the topper and live-announcement pages.
-            if(data.verificationOnly){
-                window.openOriginalStudentResult();
-                return;
-            }
+            // If the result list is already visible, B20=YES changes it to the topper page.
+            const resultPage = document.getElementById("studentResultPage");
+            const resultPageIsVisible = resultPage &&
+                !resultPage.classList.contains("hidden") &&
+                resultPage.style.display !== "none";
 
-            // If the visitor has opened the topper podium, keep that page
-            // visible during polling and only refresh its published cards.
             const topperPage = document.getElementById("topperAnnouncementPage");
             const topperPageIsVisible = topperPage &&
                 !topperPage.classList.contains("hidden") &&
                 topperPage.style.display !== "none";
 
-            if(topperPageIsVisible && data.topperMode){
-                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
-                if(typeof window.updateTopperAdminControls === "function"){
-                    window.updateTopperAdminControls(data);
+            if(ikonResultCurtainInProgress) return;
+
+            if(ikonResultCurtainCompleted){
+                if(data.topperMode){
+                    if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
+                    window.showResultControlPage("topperAnnouncementPage");
+                    if(typeof window.updateTopperAdminControls === "function") window.updateTopperAdminControls(data);
+                }else if(topperPageIsVisible || !resultPageIsVisible){
+                    openPublicResultTable();
                 }
                 return;
             }
 
-            // B19 YES: show the countdown + curtain reveal first.
-            // The reveal page remains stable during background polling.
-            window.configureResultLiveActions(data);
-            window.showResultControlPage("resultLiveRevealPage");
-            if(data.topperMode){
-                if(typeof window.renderTopperAnnouncement === "function") window.renderTopperAnnouncement(data);
-                if(typeof window.updateTopperAdminControls === "function"){
-                    window.updateTopperAdminControls(data);
-                }
-            }
+            // B19 has just switched ON: play the curtain first, then route by B20.
+            startResultCurtain();
         })
         .catch(function(error){
             console.warn("Announcement auto-refresh:", error);
         });
     }
+
+    // View Result now enters the publication flow first instead of opening
+    // the legacy verification form directly.
+    window.openResultVerifyPage = function(event){
+        if(event){
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
+        .then(function(response){
+            if(!response.ok) throw new Error("Server Error: " + response.status);
+            return response.json();
+        })
+        .then(function(data){
+            if(!data || data.status !== "SUCCESS"){
+                throw new Error("Unable to read result publication settings.");
+            }
+
+            ikonResultCurtainInProgress = false;
+            ikonResultCurtainCompleted = false;
+
+            if(!data.resultLive){
+                window.showResultControlPage("resultComingSoonPage");
+                return;
+            }
+
+            startResultCurtain();
+        })
+        .catch(function(error){
+            console.error("Result publication entry error:", error);
+            // Fail safely to the original verification route if publication
+            // settings cannot be reached; do not silently expose unpublished data.
+            if(typeof window.openLegacyResultVerifyPage === "function"){
+                window.openLegacyResultVerifyPage(event);
+            }
+        });
+    };
 
     window.setInterval(refreshAnnouncementState, 10000);
 
