@@ -26727,6 +26727,16 @@ if (entrySection) {
     }
 
     function openPublicResultTable(){
+        // Remove the countdown/curtain screen completely before showing results.
+        const revealPage = document.getElementById("resultLiveRevealPage");
+        if(revealPage){
+            revealPage.classList.remove("is-curtain-opening");
+            revealPage.classList.add("hidden");
+            revealPage.style.setProperty("display","none","important");
+            revealPage.style.setProperty("visibility","hidden","important");
+            revealPage.style.setProperty("opacity","0","important");
+            revealPage.style.setProperty("pointer-events","none","important");
+        }
         window.showResultControlPage("studentResultPage");
 
         // Hide the examination-date selector: public announcement always shows
@@ -26815,6 +26825,10 @@ if (entrySection) {
 
         // Reset all visual elements to the closed-curtain / hidden-count state.
         page.classList.remove("is-curtain-opening");
+        const initialCurtainFrame = page.querySelector(".ikon-curtain-frame");
+        if(initialCurtainFrame){
+            initialCurtainFrame.style.setProperty("visibility","hidden","important");
+        }
         [left, right].forEach(function(el){
             if(!el) return;
             el.style.animation = "none";
@@ -26865,16 +26879,45 @@ if (entrySection) {
                         el.style.setProperty("visibility","hidden","important");
                         el.style.setProperty("opacity","0","important");
                     });
-                    [left, right].forEach(function(el){
-                        if(!el) return;
-                        el.style.animation = "";
-                        el.style.transform = "";
-                        el.style.opacity = "";
-                    });
+                    // Show curtains only after the 5-second countdown.
                     page.classList.add("is-curtain-opening");
+                    const curtainFrame = page.querySelector(".ikon-curtain-frame");
+                    if(curtainFrame){
+                        curtainFrame.style.setProperty("visibility","visible","important");
+                        curtainFrame.style.setProperty("z-index","20","important");
+                    }
 
-                    // Wait for the full 10-second curtain opening.
+                    // Animate with Web Animations API so reduced-motion CSS or
+                    // competing stylesheet rules cannot cancel the 10-second opening.
+                    const animations = [];
+                    if(left && typeof left.animate === "function"){
+                        animations.push(left.animate(
+                            [
+                                { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
+                                { transform:"perspective(900px) translateX(-105%) rotateY(-78deg)", opacity:0.12 }
+                            ],
+                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                        ));
+                    }
+                    if(right && typeof right.animate === "function"){
+                        animations.push(right.animate(
+                            [
+                                { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
+                                { transform:"perspective(900px) translateX(105%) rotateY(78deg)", opacity:0.12 }
+                            ],
+                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                        ));
+                    }
+
+                    // Always finish and remove the announcement overlay after 10 seconds.
                     scheduleResultCurtain(function(){
+                        animations.forEach(function(animation){
+                            try{ animation.cancel(); }catch(e){}
+                        });
+                        if(curtainFrame){
+                            curtainFrame.style.setProperty("visibility","hidden","important");
+                        }
+                        page.classList.remove("is-curtain-opening");
                         finishResultCurtain(runId);
                     }, 10000, runId);
                 }, 1000, runId);
