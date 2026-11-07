@@ -79,6 +79,199 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
   #studentResultPage .result-list-box{padding:8px!important}
 }
 
+
+
+/* ===== IKON TOPPER REVEAL · SIGNATURE AWARD PRESENTATION ===== */
+#topperAnnouncementPage{
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(225,190,111,.20),transparent 34%),
+    linear-gradient(180deg,#f7f8fc 0%,#edf1f7 48%,#e8edf5 100%) !important;
+}
+#topperAnnouncementPage:after{
+  content:"";position:absolute;z-index:-1;top:0;left:0;right:0;height:520px;
+  background:radial-gradient(ellipse at 50% -12%,rgba(255,226,166,.38),transparent 68%);
+  pointer-events:none;
+}
+.ikon-award-shell{max-width:1320px!important;padding-left:clamp(12px,2vw,28px)!important;padding-right:clamp(12px,2vw,28px)!important}
+.ikon-award-header{padding-top:34px!important;padding-bottom:38px!important}
+.ikon-award-emblem{
+  width:92px!important;height:92px!important;border-radius:28px!important;font-size:48px!important;
+  border:1px solid rgba(177,132,48,.48)!important;
+  background:linear-gradient(145deg,#fffdf5 0%,#f8e7bd 48%,#d4a447 100%)!important;
+  box-shadow:0 18px 42px rgba(104,75,25,.19),inset 0 2px 0 #fff!important;
+}
+.ikon-award-eyebrow{color:#9a712d!important;font-size:11px!important;letter-spacing:.34em!important;font-weight:950!important}
+.ikon-award-title{
+  color:#152744!important;background:linear-gradient(100deg,#253a5c 0%,#a87927 48%,#263b5d 100%);
+  -webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;
+  font-size:clamp(34px,5vw,58px)!important;letter-spacing:-.035em!important;font-weight:1000!important;
+}
+.ikon-award-subtitle{color:#64738a!important;font-size:16px!important;font-weight:650!important}
+.ikon-award-divider{height:4px!important;width:150px!important;border-radius:99px!important;background:linear-gradient(90deg,transparent,#c79b48,#f0d99e,#c79b48,transparent)!important}
+.ikon-podium-stage{
+  position:relative!important;isolation:isolate!important;overflow:hidden!important;
+  padding:clamp(24px,3.5vw,46px) clamp(12px,3vw,38px) 34px!important;
+  border-radius:34px!important;border:1px solid rgba(214,181,112,.72)!important;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(72,102,146,.42),transparent 46%),
+    radial-gradient(ellipse at 12% 55%,rgba(190,146,65,.12),transparent 30%),
+    radial-gradient(ellipse at 88% 55%,rgba(190,146,65,.12),transparent 30%),
+    linear-gradient(145deg,#0c1b32 0%,#142947 48%,#0a172b 100%)!important;
+  box-shadow:0 32px 82px rgba(15,32,57,.24),0 7px 22px rgba(15,32,57,.10),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+.ikon-podium-stage:before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.42;
+  background:repeating-linear-gradient(118deg,transparent 0 105px,rgba(238,205,139,.075) 106px 107px);
+}
+.ikon-podium-stage:after{
+  content:"";position:absolute;z-index:-1;left:8%;right:8%;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(242,211,151,.8),transparent);
+}
+.ikon-ceremony-ribbon{margin-bottom:12px!important}
+.ikon-ribbon-line{background:linear-gradient(90deg,transparent,#d6b46e)!important}
+.ikon-ribbon-line:last-child{background:linear-gradient(90deg,transparent,#d6b46e)!important}
+.ikon-ribbon-label{color:#f0d59b!important;font-size:10px!important;letter-spacing:.27em!important}
+.ikon-ceremony-caption{color:#b9c6d9!important;margin-bottom:34px!important;font-size:13px!important;letter-spacing:.025em!important}
+#topperCards{
+  max-width:1120px!important;gap:clamp(12px,2.1vw,28px)!important;
+  align-items:end!important;padding:12px 4px 0!important;
+}
+.ikon-winner-card{
+  position:relative!important;isolation:isolate!important;overflow:visible!important;
+  border:1px solid rgba(218,202,166,.9)!important;border-radius:24px 24px 15px 15px!important;
+  background:linear-gradient(155deg,#fffefa 0%,#fff 50%,#f1f4f8 100%)!important;
+  box-shadow:0 22px 48px rgba(0,0,0,.24),inset 0 1px 0 #fff!important;
+  padding:30px 20px 0!important;min-height:430px!important;
+  animation:ikonTopperCardEntrance .85s cubic-bezier(.16,1,.3,1) both!important;
+}
+.ikon-winner-card:before{
+  content:"";position:absolute;inset:7px;border:1px solid rgba(191,155,85,.22);
+  border-radius:18px 18px 10px 10px;pointer-events:none;z-index:-1;
+}
+.ikon-winner-card.rank-1{
+  min-height:500px!important;padding-top:35px!important;
+  border:2px solid #e1bd70!important;
+  background:linear-gradient(155deg,#fffdf4 0%,#fff 43%,#fff0c9 100%)!important;
+  box-shadow:0 28px 65px rgba(0,0,0,.30),0 0 0 7px rgba(224,187,104,.14),0 0 42px rgba(230,192,107,.15),inset 0 1px 0 #fff!important;
+}
+.ikon-winner-card.rank-2{min-height:455px!important}
+.ikon-winner-card.rank-3{min-height:430px!important}
+.ikon-winner-card.rank-1:after{
+  content:"";position:absolute;top:-2px;left:18%;right:18%;height:4px;border-radius:99px;
+  background:linear-gradient(90deg,transparent,#f6df9f,#b7832d,#f6df9f,transparent);
+}
+.ikon-winner-crown{top:-37px!important;font-size:54px!important;filter:drop-shadow(0 7px 9px rgba(0,0,0,.28))!important;z-index:3}
+.ikon-winner-rank{
+  color:#8c682b!important;font-size:12px!important;letter-spacing:.2em!important;font-weight:1000!important;
+  margin:8px 0 19px!important;
+}
+.ikon-winner-card.rank-1 .ikon-winner-rank{color:#a5741e!important;font-size:14px!important}
+.ikon-winner-photo-wrap,.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{
+  width:clamp(150px,15vw,184px)!important;height:clamp(184px,18vw,224px)!important;
+  padding:6px!important;border-radius:17px!important;margin:0 auto 20px!important;
+  background:linear-gradient(145deg,#fff4ce,#d1a34b 48%,#fff0b5)!important;
+  box-shadow:0 14px 28px rgba(83,61,24,.19),0 0 0 5px rgba(205,166,87,.10)!important;
+}
+.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:clamp(174px,17vw,210px)!important;height:clamp(210px,21vw,258px)!important;border-radius:19px!important}
+.ikon-winner-photo,.ikon-winner-card.rank-1 .ikon-winner-photo{border:3px solid #fff!important;border-radius:12px!important;object-fit:cover!important;object-position:center 22%!important}
+.ikon-winner-name{
+  color:#142641!important;font-size:clamp(19px,1.8vw,24px)!important;line-height:1.2!important;
+  font-weight:1000!important;letter-spacing:-.025em!important;min-height:2.35em!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;margin:0 0 9px!important;
+}
+.ikon-winner-card.rank-1 .ikon-winner-name{font-size:clamp(23px,2.2vw,29px)!important;color:#172b49!important}
+.ikon-winner-course{font-size:13px!important;line-height:1.35!important;font-weight:900!important;color:#596b83!important;letter-spacing:.10em!important;margin:0 0 12px!important}
+.ikon-winner-reg{font-size:11px!important;line-height:1.45!important;font-weight:850!important;color:#748198!important;margin:0 0 18px!important;letter-spacing:.04em!important}
+.ikon-winner-reg strong{font-size:13px!important;font-weight:1000!important;color:#273b59!important;letter-spacing:.06em!important}
+.ikon-winner-score{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  align-self:center!important;min-width:126px!important;padding:11px 20px!important;margin:0 0 23px!important;
+  border-radius:13px!important;border:1px solid rgba(20,126,112,.18)!important;
+  background:linear-gradient(145deg,#e8f7f3,#f8fffd)!important;
+  color:#087d70!important;font-size:clamp(29px,3vw,37px)!important;font-weight:1000!important;
+  letter-spacing:-.045em!important;text-shadow:none!important;box-shadow:inset 0 1px 0 #fff,0 5px 13px rgba(8,125,112,.07)!important;
+}
+.ikon-winner-card.rank-1 .ikon-winner-score{
+  min-width:150px!important;padding:13px 23px!important;font-size:clamp(36px,3.8vw,46px)!important;
+  color:#9a6815!important;border-color:rgba(193,145,48,.25)!important;
+  background:linear-gradient(145deg,#fff1c9,#fffaf0)!important;
+  box-shadow:inset 0 1px 0 #fff,0 7px 18px rgba(164,119,36,.10)!important;
+}
+.ikon-podium-foot{
+  height:48px!important;width:calc(100% + 40px)!important;margin-left:-20px!important;
+  border-radius:0 0 14px 14px!important;font-size:11px!important;letter-spacing:.17em!important;
+  background:linear-gradient(100deg,#354b69,#71839b,#354b69)!important;
+}
+.rank-1 .ikon-podium-foot{height:62px!important;font-size:14px!important;background:linear-gradient(100deg,#946719,#e0bd69 48%,#986d1d)!important}
+.rank-2 .ikon-podium-foot{background:linear-gradient(100deg,#5b6c83,#aeb9c8,#5b6c83)!important}
+.rank-3 .ikon-podium-foot{background:linear-gradient(100deg,#805237,#c28b60,#805237)!important}
+#topperRevealControls{max-width:780px!important;margin:34px auto 8px!important}
+.ikon-reveal-panel{
+  position:relative!important;overflow:hidden!important;padding:25px clamp(14px,3vw,30px) 22px!important;
+  border-radius:23px!important;border:1px solid rgba(222,190,122,.62)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035))!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.12)!important;
+  backdrop-filter:blur(12px)!important;
+}
+.ikon-reveal-heading{margin-bottom:18px!important}
+.ikon-reveal-kicker{color:#f1d69d!important;font-size:11px!important;letter-spacing:.28em!important;font-weight:1000!important}
+.ikon-reveal-subtitle{color:#bdc9d9!important;font-size:13px!important}
+.ikon-reveal-steps{gap:9px!important;margin:0 auto 19px!important}
+.ikon-reveal-step{
+  min-height:46px!important;padding:10px 14px!important;border-radius:12px!important;
+  border:1px solid rgba(219,197,153,.28)!important;background:rgba(255,255,255,.07)!important;
+  color:#dbe4f0!important;font-size:10px!important;font-weight:950!important;letter-spacing:.08em!important;
+}
+.ikon-reveal-step .ikon-step-medal{font-size:19px!important;opacity:1!important}
+.ikon-reveal-step.is-current{border-color:#e4bd6b!important;background:linear-gradient(145deg,rgba(224,186,104,.25),rgba(255,255,255,.08))!important;color:#ffe7b4!important;box-shadow:0 0 0 3px rgba(224,186,104,.10),0 7px 20px rgba(0,0,0,.12)!important}
+.ikon-reveal-step.is-done{border-color:rgba(112,205,169,.48)!important;background:rgba(42,151,111,.16)!important;color:#b7f0d7!important}
+.ikon-step-connector{background:linear-gradient(90deg,rgba(215,184,119,.15),rgba(215,184,119,.7),rgba(215,184,119,.15))!important}
+#topperRevealHint{color:#c8d4e3!important;font-size:13px!important;font-weight:750!important;margin:0 0 17px!important}
+#revealNextTopperBtn{
+  min-width:min(300px,90%)!important;min-height:54px!important;padding:15px 23px!important;
+  border:1px solid #f2d28c!important;border-radius:14px!important;
+  background:linear-gradient(105deg,#f8e5b7 0%,#d9ad58 52%,#b7802e 100%)!important;
+  color:#172945!important;font-size:13px!important;font-weight:1000!important;letter-spacing:.12em!important;
+  box-shadow:0 13px 28px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.9)!important;
+  transition:filter .2s,box-shadow .2s!important;
+}
+#revealNextTopperBtn:hover{filter:brightness(1.07)!important;box-shadow:0 17px 34px rgba(0,0,0,.27),inset 0 1px 0 #fff!important}
+#revealNextTopperBtn:disabled{opacity:.68!important;filter:saturate(.6)!important}
+.ikon-reveal-footnote{color:#91a4bd!important;letter-spacing:.2em!important;font-size:9px!important}
+#topperAnnouncementMessage{background:rgba(255,255,255,.10)!important;color:#f5e5c4!important;border:1px solid rgba(225,192,127,.35)!important;box-shadow:none!important}
+#topperAdminControls{box-shadow:0 15px 36px rgba(0,0,0,.2)!important}
+@keyframes ikonTopperCardEntrance{
+  0%{opacity:0;transform:translateY(34px) scale(.94);filter:blur(5px)}
+  65%{opacity:1;filter:blur(0)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@media(max-width:760px){
+  .ikon-award-header{padding-top:22px!important;padding-bottom:25px!important}
+  .ikon-award-emblem{width:74px!important;height:74px!important;font-size:39px!important;border-radius:22px!important}
+  .ikon-award-eyebrow{font-size:9px!important;letter-spacing:.22em!important}
+  .ikon-award-title{font-size:clamp(29px,8vw,42px)!important}
+  .ikon-podium-stage{padding:24px 12px 22px!important;border-radius:23px!important}
+  .ikon-ceremony-caption{font-size:11px!important;margin-bottom:24px!important}
+  #topperCards{grid-template-columns:1fr!important;grid-template-areas:"first" "second" "third"!important;max-width:430px!important;gap:23px!important;padding:8px 5px 0!important}
+  .ikon-winner-card,.ikon-winner-card.rank-1,.ikon-winner-card.rank-2,.ikon-winner-card.rank-3{min-height:0!important;padding:27px 18px 0!important}
+  .ikon-winner-card.rank-1{grid-area:first!important}
+  .ikon-winner-card.rank-2{grid-area:second!important}
+  .ikon-winner-card.rank-3{grid-area:third!important}
+  .ikon-winner-photo-wrap,.ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:178px!important;height:218px!important}
+  .ikon-winner-card.rank-1 .ikon-winner-photo-wrap{width:205px!important;height:250px!important}
+  .ikon-winner-name,.ikon-winner-card.rank-1 .ikon-winner-name{min-height:0!important;font-size:23px!important}
+  .ikon-winner-course{font-size:12px!important}
+  .ikon-winner-reg{font-size:10px!important}
+  .ikon-winner-score,.ikon-winner-card.rank-1 .ikon-winner-score{font-size:34px!important}
+  .ikon-reveal-panel{padding:21px 12px 18px!important;border-radius:18px!important}
+  .ikon-reveal-steps{gap:5px!important}
+  .ikon-reveal-step{padding:8px 6px!important;min-height:42px!important;font-size:8px!important;letter-spacing:.02em!important}
+  .ikon-reveal-step .ikon-step-medal{font-size:16px!important}
+  .ikon-step-connector{width:8px!important;flex:0 0 8px!important}
+}
+@media(prefers-reduced-motion:reduce){.ikon-winner-card{animation:none!important}}
+
 </style>
 
 </head>
