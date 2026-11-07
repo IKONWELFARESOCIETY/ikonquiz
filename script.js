@@ -27000,6 +27000,27 @@ if (entrySection) {
                 return;
             }
 
+            // B21=YES has highest priority: stop every live reveal/topper route
+            // and restore the original student verification page only.
+            if(data.verificationOnly === true || data.showResultVerificationOnly === true){
+                ikonResultCurtainRunId++;
+                clearResultCurtainTimers();
+                ikonResultCurtainInProgress = false;
+                ikonResultCurtainCompleted = false;
+                const revealPage = document.getElementById("resultLiveRevealPage");
+                if(revealPage){
+                    revealPage.classList.remove("is-curtain-opening");
+                    revealPage.classList.add("hidden");
+                    revealPage.style.setProperty("display","none","important");
+                }
+                if(typeof window.openLegacyResultVerifyPage === "function"){
+                    window.openLegacyResultVerifyPage();
+                }else{
+                    window.showResultControlPage("resultVerifyPage");
+                }
+                return;
+            }
+
             // If the result list is already visible, B20=YES changes it to the topper page.
             const resultPage = document.getElementById("studentResultPage");
             const resultPageIsVisible = resultPage &&
@@ -29243,7 +29264,19 @@ function applyMarksheetResultStyle(root, grade, result){
                 return;
             }
 
-            // B19 YES: countdown first, curtain second, public table last.
+            // B21 YES: use the old verification page. Student enters 16112001
+            // there, and the untouched verifyResultStudent() opens the result list.
+            // Do not show countdown, curtain, public live list, or topper reveal.
+            if(data.verificationOnly === true || data.showResultVerificationOnly === true){
+                if(typeof window.openLegacyResultVerifyPage === "function"){
+                    window.openLegacyResultVerifyPage(event);
+                }else{
+                    showResultControlPage("resultVerifyPage");
+                }
+                return;
+            }
+
+            // B21 NO: normal B19 live reveal flow (countdown -> curtain -> result table/topper).
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
