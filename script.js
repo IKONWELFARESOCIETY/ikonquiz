@@ -26767,13 +26767,67 @@ if (entrySection) {
         }
     }
 
+    function showResultLiveAnnouncement(runId){
+        if(runId !== ikonResultCurtainRunId) return;
+        const page = document.getElementById("resultLiveRevealPage");
+        if(!page){
+            ikonResultCurtainInProgress = false;
+            ikonResultCurtainCompleted = true;
+            openPublicResultTable();
+            return;
+        }
+
+        // The curtain is already fully open. Reveal the announcement as a separate,
+        // full-screen moment before the public result table is loaded.
+        page.classList.remove("is-curtain-opening");
+        page.classList.add("is-result-live-announcing");
+        const frame = page.querySelector(".ikon-curtain-frame");
+        if(frame) frame.style.setProperty("visibility","hidden","important");
+
+        const content = page.querySelector(".ikon-live-content");
+        if(content){
+            content.style.removeProperty("display");
+            content.style.setProperty("visibility","visible","important");
+            content.style.setProperty("opacity","1","important");
+        }
+        const countdown = page.querySelector(".ikon-live-countdown");
+        if(countdown) countdown.style.setProperty("display","none","important");
+        const subline = page.querySelector(".ikon-live-subline");
+        if(subline) subline.style.setProperty("display","none","important");
+        const stage = page.querySelector(".ikon-live-stage");
+        if(stage){
+            stage.style.removeProperty("background");
+            stage.style.removeProperty("border-color");
+            stage.style.removeProperty("box-shadow");
+        }
+        // Restart the entrance animation reliably on every result announcement.
+        const reveal = page.querySelector(".ikon-live-reveal");
+        if(reveal){
+            reveal.style.animation = "none";
+            void reveal.offsetWidth;
+            reveal.style.removeProperty("animation");
+        }
+        const trophy = page.querySelector(".ikon-live-trophy");
+        if(trophy){
+            trophy.style.animation = "none";
+            void trophy.offsetWidth;
+            trophy.style.removeProperty("animation");
+        }
+
+        // Give the large announcement enough time to be seen before showing results.
+        scheduleResultCurtain(function(){
+            if(runId !== ikonResultCurtainRunId) return;
+            ikonResultCurtainInProgress = false;
+            ikonResultCurtainCompleted = true;
+            openPublicResultTable();
+        }, 5200, runId);
+    }
+
     function finishResultCurtain(runId){
         if(runId !== ikonResultCurtainRunId || ikonResultCurtainCompleted) return;
-        ikonResultCurtainCompleted = true;
-        ikonResultCurtainInProgress = false;
         clearResultCurtainTimers();
 
-        // After countdown and full curtain opening, read latest publication mode.
+        // After countdown and full curtain opening, confirm publication is still ON.
         fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
         .then(function(r){
             if(!r.ok) throw new Error("Result settings server error: " + r.status);
@@ -26782,18 +26836,17 @@ if (entrySection) {
         .then(function(data){
             if(runId !== ikonResultCurtainRunId) return;
             if(!data || data.status !== "SUCCESS" || !data.resultLive){
+                ikonResultCurtainInProgress = false;
                 window.showResultControlPage("resultComingSoonPage");
                 return;
             }
-            // The user requested the public result table after curtain opening.
-            // B20 topper navigation remains available through the dedicated View Topper action.
-            openPublicResultTable();
+            showResultLiveAnnouncement(runId);
         })
         .catch(function(error){
             console.error("Could not load publication status after curtain:", error);
             if(runId === ikonResultCurtainRunId){
-                // Do not leave the student on a blank overlay when the result is already live.
-                openPublicResultTable();
+                // Keep the result announcement sequence intact if the settings request fails.
+                showResultLiveAnnouncement(runId);
             }
         });
     }
@@ -26997,27 +27050,6 @@ if (entrySection) {
                 const revealPage = document.getElementById("resultLiveRevealPage");
                 if(revealPage) revealPage.classList.remove("is-curtain-opening");
                 window.showResultControlPage("resultComingSoonPage");
-                return;
-            }
-
-            // B21=YES has highest priority: stop every live reveal/topper route
-            // and restore the original student verification page only.
-            if(data.verificationOnly === true || data.showResultVerificationOnly === true){
-                ikonResultCurtainRunId++;
-                clearResultCurtainTimers();
-                ikonResultCurtainInProgress = false;
-                ikonResultCurtainCompleted = false;
-                const revealPage = document.getElementById("resultLiveRevealPage");
-                if(revealPage){
-                    revealPage.classList.remove("is-curtain-opening");
-                    revealPage.classList.add("hidden");
-                    revealPage.style.setProperty("display","none","important");
-                }
-                if(typeof window.openLegacyResultVerifyPage === "function"){
-                    window.openLegacyResultVerifyPage();
-                }else{
-                    window.showResultControlPage("resultVerifyPage");
-                }
                 return;
             }
 
@@ -29264,19 +29296,7 @@ function applyMarksheetResultStyle(root, grade, result){
                 return;
             }
 
-            // B21 YES: use the old verification page. Student enters 16112001
-            // there, and the untouched verifyResultStudent() opens the result list.
-            // Do not show countdown, curtain, public live list, or topper reveal.
-            if(data.verificationOnly === true || data.showResultVerificationOnly === true){
-                if(typeof window.openLegacyResultVerifyPage === "function"){
-                    window.openLegacyResultVerifyPage(event);
-                }else{
-                    showResultControlPage("resultVerifyPage");
-                }
-                return;
-            }
-
-            // B21 NO: normal B19 live reveal flow (countdown -> curtain -> result table/topper).
+            // B19 YES: countdown first, curtain second, public table last.
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
