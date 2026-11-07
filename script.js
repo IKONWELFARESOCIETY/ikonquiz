@@ -26845,6 +26845,9 @@ if (entrySection) {
                 return el.textContent.trim() === String(value);
             });
             if(current){
+                // Remove inline animation:none so the CSS pulse animation can run.
+                current.style.animation = "";
+                current.style.opacity = "";
                 current.style.visibility = "visible";
                 current.classList.add("is-current");
             }
