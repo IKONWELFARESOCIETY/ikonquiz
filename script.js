@@ -26798,6 +26798,21 @@ if (entrySection) {
         });
     }
 
+    // Spoken countdown (uses the browser's built-in speech engine; no external audio files).
+    function speakIkonCountdown(value){
+        try{
+            if(!window.speechSynthesis || typeof SpeechSynthesisUtterance === "undefined") return;
+            window.speechSynthesis.cancel();
+            const words = {5:"Five",4:"Four",3:"Three",2:"Two",1:"One"};
+            const utterance = new SpeechSynthesisUtterance(words[value] || String(value));
+            utterance.lang = "en-IN";
+            utterance.rate = 0.88;
+            utterance.pitch = 1.08;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        }catch(error){ console.warn("Countdown voice unavailable:", error); }
+    }
+
     function startResultCurtain(){
         if(ikonResultCurtainInProgress) return;
         if(ikonResultCurtainCompleted){
@@ -26876,6 +26891,7 @@ if (entrySection) {
                 return el.textContent.trim() === String(value);
             });
             if(current){
+                speakIkonCountdown(value);
                 current.style.setProperty("display","flex","important");
                 current.style.setProperty("opacity","1","important");
                 current.style.setProperty("visibility","visible","important");
@@ -28901,7 +28917,6 @@ function applyMarksheetResultStyle(root, grade, result){
         if(rankNumber === "1"){
             const crown = document.createElement("div");
             crown.className = "ikon-winner-crown";
-            crown.textContent = "👑";
             card.appendChild(crown);
         }
 
@@ -28963,8 +28978,10 @@ function applyMarksheetResultStyle(root, grade, result){
         card.appendChild(reg);
 
         const percentage = document.createElement("div");
-        percentage.className = "ikon-winner-score";
-        percentage.textContent = Number(topper.percentage || 0).toFixed(2).replace(/\.00$/,'') + "%";
+        percentage.className = "ikon-winner-score ikon-score-counting";
+        const scoreTarget = Number(topper.percentage || 0);
+        percentage.textContent = "0%";
+        percentage.setAttribute("aria-label", scoreTarget.toFixed(2) + " percent");
         card.appendChild(percentage);
 
         const foot = document.createElement("div");
@@ -28973,6 +28990,28 @@ function applyMarksheetResultStyle(root, grade, result){
             (rankNumber === "2" ? "RUNNER-UP" : "SECOND RUNNER-UP");
         card.appendChild(foot);
         container.appendChild(card);
+
+        // Count the percentage up as the winner card arrives.
+        const scoreStart = performance.now();
+        const scoreDuration = rankNumber === "1" ? 1900 : 1350;
+        function animateScore(now){
+            const progress = Math.min(1, (now - scoreStart) / scoreDuration);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = scoreTarget * eased;
+            percentage.textContent = value.toFixed(2).replace(/\.00$/, "") + "%";
+            if(progress < 1) requestAnimationFrame(animateScore);
+            else percentage.textContent = scoreTarget.toFixed(2).replace(/\.00$/, "") + "%";
+        }
+        requestAnimationFrame(animateScore);
+
+        if(rankNumber === "1"){
+            // Short celebratory burst only for the champion reveal.
+            const burst = document.createElement("div");
+            burst.className = "ikon-champion-burst";
+            burst.setAttribute("aria-hidden", "true");
+            card.appendChild(burst);
+            window.setTimeout(function(){ if(burst.parentNode) burst.remove(); }, 2400);
+        }
     }
 
     function setTopperRevealButton(label, disabled){
