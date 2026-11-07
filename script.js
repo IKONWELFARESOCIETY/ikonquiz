@@ -26834,33 +26834,37 @@ if (entrySection) {
         let value = 5;
         function showNextNumber(){
             if(runId !== ikonResultCurtainRunId) return;
+
+            // Countdown is a direct, visible DOM state; it does not depend on CSS animation.
             numbers.forEach(function(el){
                 el.classList.remove("is-current");
+                el.style.setProperty("display","none","important");
+                el.style.setProperty("opacity","0","important");
+                el.style.setProperty("visibility","hidden","important");
                 el.style.animation = "none";
-                el.style.opacity = "0";
-                el.style.visibility = "hidden";
             });
 
             const current = numbers.find(function(el){
                 return el.textContent.trim() === String(value);
             });
             if(current){
-                // Remove inline animation:none so the CSS pulse animation can run.
-                current.style.animation = "";
-                current.style.opacity = "";
-                current.style.visibility = "visible";
+                current.style.setProperty("display","flex","important");
+                current.style.setProperty("opacity","1","important");
+                current.style.setProperty("visibility","visible","important");
+                current.style.setProperty("z-index","12","important");
+                current.style.animation = "none";
                 current.classList.add("is-current");
             }
 
             if(value === 1){
                 scheduleResultCurtain(function(){
-                    // PHASE 2: countdown is complete; now open both curtains once.
+                    // Countdown finished: hide its number, then reveal and open curtains.
                     numbers.forEach(function(el){
                         el.classList.remove("is-current");
-                        el.style.visibility = "hidden";
+                        el.style.setProperty("display","none","important");
+                        el.style.setProperty("visibility","hidden","important");
+                        el.style.setProperty("opacity","0","important");
                     });
-                    // Clear the inline reset styles so the 10-second CSS curtain
-                    // keyframes can run. The curtain layer becomes visible only now.
                     [left, right].forEach(function(el){
                         if(!el) return;
                         el.style.animation = "";
@@ -26869,7 +26873,7 @@ if (entrySection) {
                     });
                     page.classList.add("is-curtain-opening");
 
-                    // PHASE 3: wait for full 10-second curtain animation, then show table.
+                    // Wait for the full 10-second curtain opening.
                     scheduleResultCurtain(function(){
                         finishResultCurtain(runId);
                     }, 10000, runId);
