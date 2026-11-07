@@ -26780,6 +26780,8 @@ if (entrySection) {
         // The curtain is already fully open. Reveal the announcement as a separate,
         // full-screen moment before the public result table is loaded.
         page.classList.remove("is-curtain-opening");
+        page.classList.remove("is-result-live-announcing");
+        void page.offsetWidth;
         page.classList.add("is-result-live-announcing");
         const frame = page.querySelector(".ikon-curtain-frame");
         if(frame) frame.style.setProperty("visibility","hidden","important");
