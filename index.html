@@ -1017,19 +1017,17 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 .ikon-live-content{position:relative;z-index:2;width:min(760px,88%);padding:44px 16px 48px}
 .ikon-live-kicker{color:#f4ca75;font:800 12px/1.4 Arial,sans-serif;letter-spacing:.28em;text-transform:uppercase}
 .ikon-live-countdown{height:150px;display:flex;align-items:center;justify-content:center;position:relative;margin:12px auto 8px}
-.ikon-live-count{position:absolute;font:900 clamp(100px,17vw,164px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;transform:scale(.55)}
-.ikon-live-countdown.is-active .ikon-live-count{animation:ikonCountPulse 1s ease-in-out forwards}
-.ikon-live-count:nth-child(1){animation-delay:0s}
-.ikon-live-count:nth-child(2){animation-delay:1s}
-.ikon-live-count:nth-child(3){animation-delay:2s}
-.ikon-live-count:nth-child(4){animation-delay:3s}
-.ikon-live-count:nth-child(5){animation-delay:4s}
+.ikon-live-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 clamp(100px,17vw,164px)/1 Arial,sans-serif;letter-spacing:-.08em;color:#ffe1a0;text-shadow:0 0 18px rgba(255,196,91,.48),0 10px 34px rgba(0,0,0,.35);opacity:0;transform:scale(.72);visibility:hidden}
+.ikon-live-count.is-current{visibility:visible}
+.ikon-live-countdown.is-active .ikon-live-count{animation:ikonCountPulse .82s cubic-bezier(.2,.75,.25,1) both}
 @keyframes ikonCountPulse{0%{opacity:0;transform:scale(.55)}15%,72%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.18)}}
 .ikon-live-subline{color:#d6e2f4;font:600 clamp(14px,2vw,18px)/1.6 Arial,sans-serif;letter-spacing:.08em}
 .ikon-curtain-frame{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;border-radius:inherit}
 .ikon-curtain{position:absolute;top:0;bottom:0;width:51%;background:repeating-linear-gradient(90deg,#530d19 0,#7d1525 12%,#a32636 22%,#5d0c1b 34%,#8e1b2b 48%,#4c0a18 62%);box-shadow:inset 0 0 50px rgba(0,0,0,.48),0 0 35px rgba(0,0,0,.32)}
-.ikon-curtain.left{left:0;border-right:5px solid #d9a84e;transform-origin:left center;animation:ikonCurtainLeft 10s cubic-bezier(.22,.61,.36,1) 0s forwards}
-.ikon-curtain.right{right:0;border-left:5px solid #d9a84e;transform-origin:right center;animation:ikonCurtainRight 10s cubic-bezier(.22,.61,.36,1) 0s forwards}
+.ikon-curtain.left{left:0;border-right:5px solid #d9a84e;transform-origin:left center}
+.ikon-curtain.right{right:0;border-left:5px solid #d9a84e;transform-origin:right center}
+#resultLiveRevealPage.is-curtain-opening .ikon-curtain.left{animation:ikonCurtainLeft 10s cubic-bezier(.22,.61,.36,1) forwards}
+#resultLiveRevealPage.is-curtain-opening .ikon-curtain.right{animation:ikonCurtainRight 10s cubic-bezier(.22,.61,.36,1) forwards}
 .ikon-curtain:after{content:"";position:absolute;top:0;bottom:0;width:20px;background:linear-gradient(90deg,rgba(255,221,148,.25),transparent);right:12%}
 .ikon-curtain.left:after{right:12%}.ikon-curtain.right:after{left:12%;right:auto;transform:scaleX(-1)}
 @keyframes ikonCurtainLeft{to{transform:perspective(900px) rotateY(-78deg) translateX(-105%);opacity:.15}}
@@ -1045,7 +1043,7 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 .ikon-live-action:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.32)}
 .ikon-live-footnote{margin-top:20px;color:#aebfd7;font:700 10px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase}
 @media(max-width:600px){#resultLiveRevealPage{padding:12px 6px 24px;min-height:calc(100vh - 150px)}.ikon-live-stage{min-height:560px;border-radius:18px}.ikon-live-content{width:92%;padding:34px 8px}.ikon-live-countdown{height:125px}.ikon-live-message{margin-top:16px}.ikon-live-action{width:min(90%,300px);box-sizing:border-box}}
-@media(prefers-reduced-motion:reduce){.ikon-live-count,.ikon-curtain,.ikon-live-reveal{animation:none!important;opacity:1;transform:none}.ikon-curtain{display:none}}
+@media(prefers-reduced-motion:reduce){.ikon-live-count{animation:none!important}.ikon-curtain{animation:none!important}.ikon-live-reveal{animation:none!important;opacity:1;transform:none}}
 </style>
 <div id="resultLiveRevealPage" class="hidden">
   <section class="ikon-live-stage" aria-live="polite">
@@ -5405,7 +5403,7 @@ After successfully submitting one paper, please refresh the website (F5) before 
 </html>
 <style>
 /* Premium sequence: 10-second curtain opening, followed by a 5-second countdown. */
-#resultLiveRevealPage .ikon-live-reveal{display:none!important}
+#resultLiveRevealPage .ikon-live-reveal{display:block!important;visibility:visible}
 #resultLiveRevealPage .ikon-live-countdown{margin-top:24px}
 #resultLiveRevealPage .ikon-live-subline{color:#f4dfb1;font-weight:800;letter-spacing:.06em}
 #resultLiveRevealPage .ikon-live-stage{overflow:hidden}
