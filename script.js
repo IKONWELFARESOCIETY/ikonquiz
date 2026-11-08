@@ -26766,14 +26766,14 @@ if (entrySection) {
             }
             // Opening triumphant chord.
             [261.63,329.63,392.00,523.25,659.25].forEach(function(f,i){
-                tone(f,start+i*0.018,1.65,i<3?0.075:0.055,"triangle");
+                tone(f,start+i*0.018,1.65,i<3?0.22:0.17,"triangle");
             });
             // Repeating bright success chimes, synchronized with the result celebration.
             let beat=0;
             for(let at=start+0.75;at<end;at+=1.05){
                 const chord=chords[beat%chords.length];
-                chord.forEach(function(f,i){ tone(f,at+i*0.055,0.72,0.055,"sine"); });
-                tone(chord[2]*2,at+0.10,0.48,0.026,"sine");
+                chord.forEach(function(f,i){ tone(f,at+i*0.055,0.72,0.16,"sine"); });
+                tone(chord[2]*2,at+0.10,0.48,0.09,"sine");
                 beat++;
             }
         }catch(error){ console.warn("Result fanfare playback failed:",error); }
@@ -26883,33 +26883,13 @@ if (entrySection) {
         if(runId !== ikonResultCurtainRunId || ikonResultCurtainCompleted) return;
         clearResultCurtainTimers();
 
-        // After countdown and full curtain opening, confirm publication is still ON.
-        fetch(SCRIPT_URL + "?action=resultPublication&_=" + Date.now(), {cache:"no-store"})
-        .then(function(r){
-            if(!r.ok) throw new Error("Result settings server error: " + r.status);
-            return r.json();
-        })
-        .then(function(data){
+        // The curtain is already fully open here. Do NOT fetch publication settings again:
+        // that network round-trip was adding several seconds before RESULT IS LIVE.
+        // Show RESULT IS LIVE exactly 1 second after the curtain-open animation completes.
+        scheduleResultCurtain(function(){
             if(runId !== ikonResultCurtainRunId) return;
-            if(!data || data.status !== "SUCCESS" || !data.resultLive){
-                ikonResultCurtainInProgress = false;
-                window.showResultControlPage("resultComingSoonPage");
-                return;
-            }
-            // Curtain has fully opened. Hold for 2 seconds before showing RESULT IS LIVE.
-            scheduleResultCurtain(function(){
-                showResultLiveAnnouncement(runId);
-            }, 1000, runId);
-        })
-        .catch(function(error){
-            console.error("Could not load publication status after curtain:", error);
-            if(runId === ikonResultCurtainRunId){
-                // Keep the sequence intact if the settings request fails.
-                scheduleResultCurtain(function(){
-                    showResultLiveAnnouncement(runId);
-                }, 1000, runId);
-            }
-        });
+            showResultLiveAnnouncement(runId);
+        }, 1000, runId);
     }
 
     // Spoken countdown (uses the browser's built-in speech engine; no external audio files).
