@@ -26739,9 +26739,17 @@ if (entrySection) {
         }catch(error){ console.warn("Skyshot audio unavailable:", error); }
     }
 
-    // Expose the audio preparation helper for the later global navigation controller.
-    // The helper remains internally scoped; this is the only public entry point needed.
-    window.prepareIkonSkyshotAudio = prepareIkonSkyshotAudio;
+    // Public bridge: the result-navigation handler is defined in another scope.
+    window.prepareIkonSkyshotAudio = function(){
+        try{
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if(!AudioCtx) return;
+            if(!ikonSkyshotAudioContext) ikonSkyshotAudioContext = new AudioCtx();
+            if(ikonSkyshotAudioContext.state === "suspended"){
+                ikonSkyshotAudioContext.resume().catch(function(){});
+            }
+        }catch(error){ console.warn("Result audio initialization unavailable:", error); }
+    };
 
     // Synthesized fireworks/skyshot: repeated launch whistles and bright crackle bursts.
     function playIkonSkyshotSound(durationMs){
