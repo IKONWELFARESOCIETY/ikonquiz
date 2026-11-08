@@ -29257,36 +29257,80 @@ function applyMarksheetResultStyle(root, grade, result){
     }
     window.renderTopperAnnouncement = renderTopperAnnouncement;
 
-    // Short, distinct rank-wise topper sounds (not the result-table fanfare).
+    // Individual soothing intro signatures for each topper rank. These are
+    // intentionally separate from the result-table fanfare.
     function playIkonTopperRankSound(rank){
         try{
             prepareIkonResultAudio();
             const ctx = ikonResultAudioContext;
             if(!ctx) return;
             if(ctx.state === "suspended") ctx.resume().catch(function(){});
+
             const key = String(rank || "").toUpperCase();
-            const patterns = {
-                "3RD": [{f:392.00,t:0,d:0.24},{f:523.25,t:0.22,d:0.42}],
-                "2ND": [{f:523.25,t:0,d:0.20},{f:659.25,t:0.18,d:0.20},{f:783.99,t:0.36,d:0.46}],
-                "1ST": [{f:659.25,t:0,d:0.16},{f:783.99,t:0.14,d:0.16},{f:987.77,t:0.28,d:0.18},{f:1318.51,t:0.44,d:0.62}]
+            const start = ctx.currentTime + 0.06;
+            const master = ctx.createGain();
+            master.gain.setValueAtTime(0.82, start);
+            master.connect(ctx.destination);
+
+            // Each rank has its own melody and tone character:
+            // 3rd = warm, gentle two-note bell; 2nd = airy rising glass notes;
+            // 1st = fuller, brighter ceremonial intro.
+            const styles = {
+                "3RD": {type:"sine", notes:[
+                    {f:392.00,t:0.00,d:0.82,v:0.23},
+                    {f:523.25,t:0.34,d:1.05,v:0.27},
+                    {f:783.99,t:0.38,d:0.78,v:0.075}
+                ], pad:[196.00,261.63]},
+                "2ND": {type:"triangle", notes:[
+                    {f:440.00,t:0.00,d:0.62,v:0.19},
+                    {f:554.37,t:0.24,d:0.72,v:0.22},
+                    {f:659.25,t:0.50,d:0.82,v:0.24},
+                    {f:880.00,t:0.76,d:0.92,v:0.18}
+                ], pad:[220.00,329.63]},
+                "1ST": {type:"sine", notes:[
+                    {f:523.25,t:0.00,d:0.60,v:0.20},
+                    {f:659.25,t:0.20,d:0.70,v:0.22},
+                    {f:783.99,t:0.42,d:0.82,v:0.24},
+                    {f:1046.50,t:0.68,d:1.18,v:0.26}
+                ], pad:[261.63,392.00,523.25]}
             };
-            const notes = patterns[key] || patterns["3RD"];
-            const start = ctx.currentTime + 0.04;
-            notes.forEach(function(note){
+            const style = styles[key.startsWith("3RD") ? "3RD" : key.startsWith("2ND") ? "2ND" : "1ST"];
+
+            function playTone(freq, at, length, volume, type, detune){
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 const filter = ctx.createBiquadFilter();
-                osc.type = "sine";
-                osc.frequency.setValueAtTime(note.f, start + note.t);
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, at);
+                if(detune) osc.detune.setValueAtTime(detune, at);
                 filter.type = "lowpass";
-                filter.frequency.setValueAtTime(3200, start + note.t);
-                gain.gain.setValueAtTime(0.0001, start + note.t);
-                gain.gain.exponentialRampToValueAtTime(0.19, start + note.t + 0.025);
-                gain.gain.exponentialRampToValueAtTime(0.0001, start + note.t + note.d);
-                osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-                osc.start(start + note.t);
-                osc.stop(start + note.t + note.d + 0.02);
+                filter.frequency.setValueAtTime(type === "triangle" ? 3600 : 3000, at);
+                gain.gain.setValueAtTime(0.0001, at);
+                gain.gain.exponentialRampToValueAtTime(volume, at + 0.045);
+                gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, volume * 0.42), at + length * 0.55);
+                gain.gain.exponentialRampToValueAtTime(0.0001, at + length);
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(master);
+                osc.start(at);
+                osc.stop(at + length + 0.025);
+            }
+
+            // Soft sustained harmony gives the notes a calm intro feel.
+            style.pad.forEach(function(freq, i){
+                playTone(freq, start + 0.02, 1.65, 0.055, "sine", i ? 4 : -4);
             });
+            style.notes.forEach(function(note){
+                playTone(note.f, start + note.t, note.d, note.v, style.type, 0);
+                // A very quiet octave shimmer adds presence without harshness.
+                if(key.startsWith("1ST") || key.startsWith("2ND")){
+                    playTone(note.f * 2, start + note.t + 0.015, note.d * 0.72, note.v * 0.16, "sine", 0);
+                }
+            });
+            master.gain.setValueAtTime(0.82, start + 0.02);
+            master.gain.setValueAtTime(0.82, start + 1.35);
+            master.gain.exponentialRampToValueAtTime(0.0001, start + 2.15);
+            setTimeout(function(){ try{ master.disconnect(); }catch(e){} }, 2600);
         }catch(error){ console.warn("Topper rank sound playback failed:", error); }
     }
 
