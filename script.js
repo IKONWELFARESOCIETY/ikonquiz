@@ -26586,7 +26586,7 @@ if (entrySection) {
     // If B21 is changed to NO while students are on the topper page,
     // the old verification page is restored automatically (within 10 seconds).
     function isAnnouncementPageActive(){
-        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage", "studentResultPage"].some(function(id){
+        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage", "studentResultPage", "resultVerifyPage"].some(function(id){
             const page = document.getElementById(id);
             return !!page && !page.classList.contains("hidden") &&
                 page.style.display !== "none";
@@ -26822,7 +26822,7 @@ if (entrySection) {
             ikonResultCurtainInProgress = false;
             ikonResultCurtainCompleted = true;
             openPublicResultTable();
-        }, 5200, runId);
+        }, 2000, runId);
     }
 
     function finishResultCurtain(runId){
@@ -27055,6 +27055,21 @@ if (entrySection) {
                 return;
             }
 
+            // B21=YES has priority: bypass countdown, curtain, topper and public list.
+            // Keep the original verification page and its 16112001 code flow.
+            if(data.verificationOnly){
+                ikonResultCurtainRunId++;
+                clearResultCurtainTimers();
+                ikonResultCurtainInProgress = false;
+                ikonResultCurtainCompleted = false;
+                const revealPage = document.getElementById("resultLiveRevealPage");
+                if(revealPage){
+                    revealPage.classList.remove("is-curtain-opening","is-result-live-announcing");
+                }
+                window.showResultControlPage("resultVerifyPage");
+                return;
+            }
+
             // If the result list is already visible, B20=YES changes it to the topper page.
             const resultPage = document.getElementById("studentResultPage");
             const resultPageIsVisible = resultPage &&
@@ -27113,6 +27128,14 @@ if (entrySection) {
                 return;
             }
 
+            // B21=YES: show the legacy verification page directly.
+            // Student enters 16112001 there, then continues to result list/marksheet.
+            if(data.verificationOnly){
+                window.showResultControlPage("resultVerifyPage");
+                return;
+            }
+
+            // B21=NO: retain the existing countdown + curtain + RESULT IS LIVE flow.
             startResultCurtain();
         })
         .catch(function(error){
