@@ -26586,7 +26586,7 @@ if (entrySection) {
     // If B21 is changed to NO while students are on the topper page,
     // the old verification page is restored automatically (within 10 seconds).
     function isAnnouncementPageActive(){
-        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage", "studentResultPage", "resultVerifyPage"].some(function(id){
+        return ["resultComingSoonPage", "resultLiveRevealPage", "topperAnnouncementPage", "studentResultPage", "marksheetPage", "resultVerifyPage"].some(function(id){
             const page = document.getElementById(id);
             return !!page && !page.classList.contains("hidden") &&
                 page.style.display !== "none";
@@ -26778,6 +26778,55 @@ if (entrySection) {
             }
         }catch(error){ console.warn("Result fanfare playback failed:",error); }
     }
+
+    // Separate topper-reveal applause. The public result-table fanfare above
+    // is intentionally untouched. Each rank gets its own clap rhythm for 6 sec.
+    function playIkonTopperClap(rank){
+        try{
+            prepareIkonResultAudio();
+            const ctx = ikonResultAudioContext;
+            if(!ctx) return;
+            if(ctx.state === "suspended") ctx.resume().catch(function(){});
+
+            const rankText = String(rank || "").toUpperCase();
+            const patterns = {
+                "3RD": [0, 115, 255, 430, 570, 760, 930, 1110, 1290, 1480, 1670, 1870, 2070, 2280, 2490, 2700, 2910, 3130, 3360, 3590, 3820, 4050, 4280, 4510, 4740, 4970, 5200, 5430, 5660],
+                "2ND": [0, 75, 155, 390, 470, 550, 800, 880, 960, 1210, 1290, 1370, 1630, 1710, 1790, 2050, 2130, 2210, 2480, 2560, 2640, 2910, 2990, 3070, 3340, 3420, 3500, 3780, 3860, 3940, 4220, 4300, 4380, 4660, 4740, 4820, 5100, 5180, 5260, 5540, 5620],
+                "1ST": [0, 65, 125, 190, 255, 325, 400, 475, 550, 630, 710, 790, 875, 960, 1045, 1130, 1220, 1310, 1400, 1490, 1580, 1670, 1760, 1850, 1940, 2030, 2120, 2210, 2300, 2390, 2480, 2570, 2660, 2750, 2840, 2930, 3020, 3110, 3200, 3290, 3380, 3470, 3560, 3650, 3740, 3830, 3920, 4010, 4100, 4190, 4280, 4370, 4460, 4550, 4640, 4730, 4820, 4910, 5000, 5090, 5180, 5270, 5360, 5450, 5540, 5630]
+            };
+            const times = patterns[rankText] || patterns["3RD"];
+            const sampleRate = ctx.sampleRate;
+            const noiseBuffer = ctx.createBuffer(1, Math.floor(sampleRate * 0.105), sampleRate);
+            const channel = noiseBuffer.getChannelData(0);
+            for(let i=0; i<channel.length; i++){
+                channel[i] = (Math.random() * 2 - 1) * (1 - i / channel.length);
+            }
+
+            const start = ctx.currentTime + 0.045;
+            times.forEach(function(ms, index){
+                const at = start + ms / 1000;
+                const source = ctx.createBufferSource();
+                const filter = ctx.createBiquadFilter();
+                const gain = ctx.createGain();
+                source.buffer = noiseBuffer;
+                filter.type = "bandpass";
+                filter.frequency.setValueAtTime(rankText === "1ST" ? 2050 : 2350, at);
+                filter.Q.setValueAtTime(0.85, at);
+                gain.gain.setValueAtTime(0.0001, at);
+                const strength = rankText === "1ST" ? 0.58 : (rankText === "2ND" ? 0.48 : 0.42);
+                gain.gain.exponentialRampToValueAtTime(strength, at + 0.006);
+                gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.105);
+                source.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                source.start(at);
+                source.stop(at + 0.11);
+            });
+        }catch(error){
+            console.warn("Topper applause playback failed:", error);
+        }
+    }
+    window.playIkonTopperClap = playIkonTopperClap;
 
     function openPublicResultTable(){
         // Remove the countdown/curtain screen completely before showing results.
@@ -27094,9 +27143,20 @@ if (entrySection) {
                 return;
             }
 
-            // B21=YES has priority: bypass countdown, curtain, topper and public list.
-            // Keep the original verification page and its 16112001 code flow.
+            // B21=YES: keep the legacy verification page as the entry point,
+            // but never pull a student back after the result list/marksheet is open.
             if(data.verificationOnly){
+                const resultPage = document.getElementById("studentResultPage");
+                const marksheetPage = document.getElementById("marksheetPage");
+                const resultPageIsVisible = !!resultPage &&
+                    !resultPage.classList.contains("hidden") &&
+                    resultPage.style.display !== "none";
+                const marksheetPageIsVisible = !!marksheetPage &&
+                    !marksheetPage.classList.contains("hidden") &&
+                    marksheetPage.style.display !== "none";
+
+                if(resultPageIsVisible || marksheetPageIsVisible) return;
+
                 ikonResultCurtainRunId++;
                 clearResultCurtainTimers();
                 ikonResultCurtainInProgress = false;
@@ -29255,6 +29315,11 @@ function applyMarksheetResultStyle(root, grade, result){
         const container = document.getElementById("topperCards");
         if(!container) return;
         addTopperCard(container, data.toppers[stage.index], stage.rank, stage.medal);
+        // A distinct applause pattern plays for each revealed rank.
+        // Keep the result-table fanfare exclusive to the public result list.
+        if(typeof window.playIkonTopperClap === "function"){
+            window.playIkonTopperClap(stage.rank);
+        }
         ikonTopperRevealIndex++;
 
         const button = document.getElementById("revealNextTopperBtn");
