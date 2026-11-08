@@ -26737,7 +26737,7 @@ if (entrySection) {
         }catch(error){ console.warn("Result audio initialization unavailable:", error); }
     }
     // Public bridge for the final navigation controller.
-    window.prepareIkonSkyshotAudio = prepareIkonResultAudio;
+    window.prepareIkonResultAudio = prepareIkonResultAudio;
 
     function playIkonResultFanfare(durationMs){
         const duration = Math.max(2500, durationMs || 10000);
@@ -26899,7 +26899,7 @@ if (entrySection) {
             // Curtain has fully opened. Hold for 2 seconds before showing RESULT IS LIVE.
             scheduleResultCurtain(function(){
                 showResultLiveAnnouncement(runId);
-            }, 2000, runId);
+            }, 1000, runId);
         })
         .catch(function(error){
             console.error("Could not load publication status after curtain:", error);
@@ -26907,7 +26907,7 @@ if (entrySection) {
                 // Keep the sequence intact if the settings request fails.
                 scheduleResultCurtain(function(){
                     showResultLiveAnnouncement(runId);
-                }, 2000, runId);
+                }, 1000, runId);
             }
         });
     }
@@ -29360,7 +29360,7 @@ function applyMarksheetResultStyle(root, grade, result){
         }
 
         // Prime the browser audio engine directly inside the user's click gesture.
-        if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
+        if(typeof window.prepareIkonResultAudio === "function") window.prepareIkonResultAudio();
 
         if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
             alert("Result settings connection is not configured.");
@@ -29401,7 +29401,7 @@ function applyMarksheetResultStyle(root, grade, result){
             }
 
             // B21 NO: countdown first, curtain, RESULT IS LIVE, then public table.
-            if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
+            if(typeof window.prepareIkonResultAudio === "function") window.prepareIkonResultAudio();
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
