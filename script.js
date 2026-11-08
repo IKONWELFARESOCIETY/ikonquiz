@@ -26739,11 +26739,15 @@ if (entrySection) {
         }catch(error){ console.warn("Skyshot audio unavailable:", error); }
     }
 
+    // Expose only the audio-unlock helper for the final View Result click handler.
+    // The audio context itself remains private to this result-publication controller.
+    window.prepareIkonSkyshotAudio = prepareIkonSkyshotAudio;
+
     // Synthesized fireworks/skyshot: repeated launch whistles and bright crackle bursts.
     function playIkonSkyshotSound(durationMs){
         const duration = Math.max(1000, durationMs || 10000);
         try{
-            prepareIkonSkyshotAudio();
+            if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
             const ctx = ikonSkyshotAudioContext;
             if(!ctx) return;
             if(ctx.state === "suspended") ctx.resume().catch(function(){});
@@ -29375,7 +29379,7 @@ function applyMarksheetResultStyle(root, grade, result){
         }
 
         // Prime the browser audio engine directly inside the user's click gesture.
-        prepareIkonSkyshotAudio();
+        if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
 
         if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
             alert("Result settings connection is not configured.");
@@ -29416,7 +29420,7 @@ function applyMarksheetResultStyle(root, grade, result){
             }
 
             // B21 NO: countdown first, curtain, RESULT IS LIVE, then public table.
-            prepareIkonSkyshotAudio();
+            if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
