@@ -26726,6 +26726,74 @@ if (entrySection) {
         raf=requestAnimationFrame(frame);
     }
 
+    // Prepare audio during the user's View Result click so browsers allow playback later.
+    let ikonSkyshotAudioContext = null;
+    function prepareIkonSkyshotAudio(){
+        try{
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if(!AudioCtx) return;
+            if(!ikonSkyshotAudioContext) ikonSkyshotAudioContext = new AudioCtx();
+            if(ikonSkyshotAudioContext.state === "suspended"){
+                ikonSkyshotAudioContext.resume().catch(function(){});
+            }
+        }catch(error){ console.warn("Skyshot audio unavailable:", error); }
+    }
+
+    // Synthesized fireworks/skyshot: repeated launch whistles and bright crackle bursts.
+    function playIkonSkyshotSound(durationMs){
+        const duration = Math.max(1000, durationMs || 10000);
+        try{
+            prepareIkonSkyshotAudio();
+            const ctx = ikonSkyshotAudioContext;
+            if(!ctx) return;
+            if(ctx.state === "suspended") ctx.resume().catch(function(){});
+            const start = ctx.currentTime + 0.05;
+            const end = start + duration / 1000;
+
+            function launch(at){
+                if(at >= end) return;
+                // Rising rocket whistle.
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+                osc.type = "sawtooth";
+                osc.frequency.setValueAtTime(170, at);
+                osc.frequency.exponentialRampToValueAtTime(1050, at + 0.48);
+                filter.type = "lowpass";
+                filter.frequency.setValueAtTime(700, at);
+                filter.frequency.exponentialRampToValueAtTime(4200, at + 0.48);
+                gain.gain.setValueAtTime(0.0001, at);
+                gain.gain.exponentialRampToValueAtTime(0.10, at + 0.12);
+                gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.52);
+                osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+                osc.start(at); osc.stop(at + 0.54);
+
+                // Crackling burst made from short filtered noise grains.
+                const burstAt = at + 0.50;
+                for(let i=0;i<18;i++){
+                    const grainAt = burstAt + Math.random()*0.42;
+                    const length = 0.035 + Math.random()*0.07;
+                    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate*length), ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for(let j=0;j<data.length;j++) data[j] = (Math.random()*2-1) * (1-j/data.length);
+                    const source = ctx.createBufferSource();
+                    const noiseFilter = ctx.createBiquadFilter();
+                    const noiseGain = ctx.createGain();
+                    source.buffer = buffer;
+                    noiseFilter.type = "highpass";
+                    noiseFilter.frequency.value = 1300 + Math.random()*4200;
+                    noiseGain.gain.setValueAtTime(0.0001, grainAt);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.055, grainAt+0.008);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.0001, grainAt+length);
+                    source.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(ctx.destination);
+                    source.start(grainAt);
+                }
+            }
+
+            for(let t=start; t<end; t+=1.05) launch(t);
+        }catch(error){ console.warn("Skyshot playback failed:", error); }
+    }
+
     function openPublicResultTable(){
         // Remove the countdown/curtain screen completely before showing results.
         const revealPage = document.getElementById("resultLiveRevealPage");
@@ -26755,6 +26823,7 @@ if (entrySection) {
                     window.setTimeout(function(){
                         if(typeof runIkonPartyPopper === "function"){
                             runIkonPartyPopper(10000);
+                            playIkonSkyshotSound(10000);
                         }
                     }, 900);
                 }else{
@@ -26842,13 +26911,18 @@ if (entrySection) {
                 window.showResultControlPage("resultComingSoonPage");
                 return;
             }
-            showResultLiveAnnouncement(runId);
+            // Curtain has fully opened. Hold for 2 seconds before showing RESULT IS LIVE.
+            scheduleResultCurtain(function(){
+                showResultLiveAnnouncement(runId);
+            }, 2000, runId);
         })
         .catch(function(error){
             console.error("Could not load publication status after curtain:", error);
             if(runId === ikonResultCurtainRunId){
-                // Keep the result announcement sequence intact if the settings request fails.
-                showResultLiveAnnouncement(runId);
+                // Keep the sequence intact if the settings request fails.
+                scheduleResultCurtain(function(){
+                    showResultLiveAnnouncement(runId);
+                }, 2000, runId);
             }
         });
     }
@@ -29300,6 +29374,9 @@ function applyMarksheetResultStyle(root, grade, result){
             event.stopPropagation();
         }
 
+        // Prime the browser audio engine directly inside the user's click gesture.
+        prepareIkonSkyshotAudio();
+
         if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
             alert("Result settings connection is not configured.");
             return;
@@ -29321,7 +29398,25 @@ function applyMarksheetResultStyle(root, grade, result){
                 return;
             }
 
-            // B19 YES: countdown first, curtain second, public table last.
+            // B21 YES has priority: show the original verification form only.
+            // Student must enter 16112001 before the normal result list/marksheet flow.
+            if(data.verificationOnly === true || String(data.verificationOnly).toUpperCase() === "YES"){
+                if(typeof window.showResultControlPage === "function"){
+                    window.showResultControlPage("resultVerifyPage");
+                }else{
+                    const verificationPage = document.getElementById("resultVerifyPage");
+                    if(verificationPage){
+                        verificationPage.classList.remove("hidden");
+                        verificationPage.style.setProperty("display","block","important");
+                        verificationPage.style.setProperty("visibility","visible","important");
+                        verificationPage.style.setProperty("opacity","1","important");
+                    }
+                }
+                return;
+            }
+
+            // B21 NO: countdown first, curtain, RESULT IS LIVE, then public table.
+            prepareIkonSkyshotAudio();
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
