@@ -26726,84 +26726,57 @@ if (entrySection) {
         raf=requestAnimationFrame(frame);
     }
 
-    // Prepare audio during the user's View Result click so browsers allow playback later.
-    let ikonSkyshotAudioContext = null;
-    function prepareIkonSkyshotAudio(){
+    // Result-reveal audio: warm cinematic success fanfare with bright chimes.
+    let ikonResultAudioContext = null;
+    function prepareIkonResultAudio(){
         try{
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
             if(!AudioCtx) return;
-            if(!ikonSkyshotAudioContext) ikonSkyshotAudioContext = new AudioCtx();
-            if(ikonSkyshotAudioContext.state === "suspended"){
-                ikonSkyshotAudioContext.resume().catch(function(){});
-            }
-        }catch(error){ console.warn("Skyshot audio unavailable:", error); }
-    }
-
-    // Public bridge: the result-navigation handler is defined in another scope.
-    window.prepareIkonSkyshotAudio = function(){
-        try{
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if(!AudioCtx) return;
-            if(!ikonSkyshotAudioContext) ikonSkyshotAudioContext = new AudioCtx();
-            if(ikonSkyshotAudioContext.state === "suspended"){
-                ikonSkyshotAudioContext.resume().catch(function(){});
-            }
+            if(!ikonResultAudioContext) ikonResultAudioContext = new AudioCtx();
+            if(ikonResultAudioContext.state === "suspended") ikonResultAudioContext.resume().catch(function(){});
         }catch(error){ console.warn("Result audio initialization unavailable:", error); }
-    };
+    }
+    // Public bridge for the final navigation controller.
+    window.prepareIkonSkyshotAudio = prepareIkonResultAudio;
 
-    // Synthesized fireworks/skyshot: repeated launch whistles and bright crackle bursts.
-    function playIkonSkyshotSound(durationMs){
-        const duration = Math.max(1000, durationMs || 10000);
+    function playIkonResultFanfare(durationMs){
+        const duration = Math.max(2500, durationMs || 10000);
         try{
-            window.prepareIkonSkyshotAudio();
-            const ctx = ikonSkyshotAudioContext;
+            prepareIkonResultAudio();
+            const ctx = ikonResultAudioContext;
             if(!ctx) return;
             if(ctx.state === "suspended") ctx.resume().catch(function(){});
-            const start = ctx.currentTime + 0.05;
+            const start = ctx.currentTime + 0.08;
             const end = start + duration / 1000;
-
-            function launch(at){
-                if(at >= end) return;
-                // Rising rocket whistle.
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                osc.type = "sawtooth";
-                osc.frequency.setValueAtTime(170, at);
-                osc.frequency.exponentialRampToValueAtTime(1050, at + 0.48);
-                filter.type = "lowpass";
-                filter.frequency.setValueAtTime(700, at);
-                filter.frequency.exponentialRampToValueAtTime(4200, at + 0.48);
-                gain.gain.setValueAtTime(0.0001, at);
-                gain.gain.exponentialRampToValueAtTime(0.10, at + 0.12);
-                gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.52);
+            const chords = [
+                [523.25,659.25,783.99],
+                [587.33,739.99,880.00],
+                [659.25,783.99,987.77]
+            ];
+            function tone(freq, at, length, volume, type){
+                const osc=ctx.createOscillator(), gain=ctx.createGain(), filter=ctx.createBiquadFilter();
+                osc.type=type||"sine";
+                osc.frequency.setValueAtTime(freq,at);
+                filter.type="lowpass"; filter.frequency.setValueAtTime(2800,at);
+                gain.gain.setValueAtTime(0.0001,at);
+                gain.gain.exponentialRampToValueAtTime(volume,at+0.035);
+                gain.gain.exponentialRampToValueAtTime(0.0001,at+length);
                 osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-                osc.start(at); osc.stop(at + 0.54);
-
-                // Crackling burst made from short filtered noise grains.
-                const burstAt = at + 0.50;
-                for(let i=0;i<18;i++){
-                    const grainAt = burstAt + Math.random()*0.42;
-                    const length = 0.035 + Math.random()*0.07;
-                    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate*length), ctx.sampleRate);
-                    const data = buffer.getChannelData(0);
-                    for(let j=0;j<data.length;j++) data[j] = (Math.random()*2-1) * (1-j/data.length);
-                    const source = ctx.createBufferSource();
-                    const noiseFilter = ctx.createBiquadFilter();
-                    const noiseGain = ctx.createGain();
-                    source.buffer = buffer;
-                    noiseFilter.type = "highpass";
-                    noiseFilter.frequency.value = 1300 + Math.random()*4200;
-                    noiseGain.gain.setValueAtTime(0.0001, grainAt);
-                    noiseGain.gain.exponentialRampToValueAtTime(0.055, grainAt+0.008);
-                    noiseGain.gain.exponentialRampToValueAtTime(0.0001, grainAt+length);
-                    source.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(ctx.destination);
-                    source.start(grainAt);
-                }
+                osc.start(at); osc.stop(at+length+0.02);
             }
-
-            for(let t=start; t<end; t+=1.05) launch(t);
-        }catch(error){ console.warn("Skyshot playback failed:", error); }
+            // Opening triumphant chord.
+            [261.63,329.63,392.00,523.25,659.25].forEach(function(f,i){
+                tone(f,start+i*0.018,1.65,i<3?0.075:0.055,"triangle");
+            });
+            // Repeating bright success chimes, synchronized with the result celebration.
+            let beat=0;
+            for(let at=start+0.75;at<end;at+=1.05){
+                const chord=chords[beat%chords.length];
+                chord.forEach(function(f,i){ tone(f,at+i*0.055,0.72,0.055,"sine"); });
+                tone(chord[2]*2,at+0.10,0.48,0.026,"sine");
+                beat++;
+            }
+        }catch(error){ console.warn("Result fanfare playback failed:",error); }
     }
 
     function openPublicResultTable(){
@@ -26835,7 +26808,7 @@ if (entrySection) {
                     window.setTimeout(function(){
                         if(typeof runIkonPartyPopper === "function"){
                             runIkonPartyPopper(10000);
-                            playIkonSkyshotSound(10000);
+                            playIkonResultFanfare(10000);
                         }
                     }, 900);
                 }else{
@@ -27080,7 +27053,7 @@ if (entrySection) {
                                 { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
                                 { transform:"perspective(900px) translateX(-105%) rotateY(-78deg)", opacity:0.12 }
                             ],
-                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                            { duration:4000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
                         ));
                     }
                     if(right && typeof right.animate === "function"){
@@ -27089,7 +27062,7 @@ if (entrySection) {
                                 { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
                                 { transform:"perspective(900px) translateX(105%) rotateY(78deg)", opacity:0.12 }
                             ],
-                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                            { duration:4000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
                         ));
                     }
 
@@ -27103,7 +27076,7 @@ if (entrySection) {
                         }
                         page.classList.remove("is-curtain-opening");
                         finishResultCurtain(runId);
-                    }, 10000, runId);
+                    }, 4000, runId);
                 }, 1000, runId);
             }else{
                 value -= 1;
@@ -29387,7 +29360,7 @@ function applyMarksheetResultStyle(root, grade, result){
         }
 
         // Prime the browser audio engine directly inside the user's click gesture.
-        window.prepareIkonSkyshotAudio();
+        if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
 
         if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
             alert("Result settings connection is not configured.");
@@ -29428,7 +29401,7 @@ function applyMarksheetResultStyle(root, grade, result){
             }
 
             // B21 NO: countdown first, curtain, RESULT IS LIVE, then public table.
-            window.prepareIkonSkyshotAudio();
+            if(typeof window.prepareIkonSkyshotAudio === "function") window.prepareIkonSkyshotAudio();
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
