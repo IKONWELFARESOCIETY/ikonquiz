@@ -26739,87 +26739,63 @@ if (entrySection) {
         }catch(error){ console.warn("Skyshot audio unavailable:", error); }
     }
 
-    // Result reveal fanfare: warm cinematic brass + drum roll + bright chime.
-    // Audio is synthesized locally; no external sound file or network request.
-    function playIkonResultFanfare(durationMs){
-        const duration = Math.max(3000, durationMs || 10000);
+    // Expose the audio preparation helper for the later global navigation controller.
+    // The helper remains internally scoped; this is the only public entry point needed.
+    window.prepareIkonSkyshotAudio = prepareIkonSkyshotAudio;
+
+    // Synthesized fireworks/skyshot: repeated launch whistles and bright crackle bursts.
+    function playIkonSkyshotSound(durationMs){
+        const duration = Math.max(1000, durationMs || 10000);
         try{
-            prepareIkonSkyshotAudio();
+            window.prepareIkonSkyshotAudio();
             const ctx = ikonSkyshotAudioContext;
             if(!ctx) return;
             if(ctx.state === "suspended") ctx.resume().catch(function(){});
+            const start = ctx.currentTime + 0.05;
+            const end = start + duration / 1000;
 
-            const master = ctx.createGain();
-            const compressor = ctx.createDynamicsCompressor();
-            compressor.threshold.setValueAtTime(-18, ctx.currentTime);
-            compressor.knee.setValueAtTime(18, ctx.currentTime);
-            compressor.ratio.setValueAtTime(5, ctx.currentTime);
-            compressor.attack.setValueAtTime(0.008, ctx.currentTime);
-            compressor.release.setValueAtTime(0.22, ctx.currentTime);
-            master.gain.setValueAtTime(0.0001, ctx.currentTime);
-            master.gain.exponentialRampToValueAtTime(0.72, ctx.currentTime + 0.18);
-            master.gain.setValueAtTime(0.72, ctx.currentTime + duration/1000 - 0.7);
-            master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration/1000);
-            master.connect(compressor);
-            compressor.connect(ctx.destination);
-
-            const base = ctx.currentTime + 0.04;
-            // Three-note triumphant brass fanfare, repeated gently for the 10-sec reveal.
-            const chords = [
-                [392.00,493.88,587.33],
-                [440.00,554.37,659.25],
-                [493.88,587.33,783.99],
-                [587.33,739.99,880.00]
-            ];
-            function brassNote(freq, at, length, peak){
+            function launch(at){
+                if(at >= end) return;
+                // Rising rocket whistle.
                 const osc = ctx.createOscillator();
-                const overtone = ctx.createOscillator();
-                const mix = ctx.createGain();
-                const env = ctx.createGain();
+                const gain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
                 osc.type = "sawtooth";
-                overtone.type = "triangle";
-                osc.frequency.setValueAtTime(freq, at);
-                overtone.frequency.setValueAtTime(freq*2.01, at);
-                mix.gain.value = 0.24;
-                env.gain.setValueAtTime(0.0001, at);
-                env.gain.exponentialRampToValueAtTime(peak, at+0.055);
-                env.gain.setValueAtTime(peak*0.82, at+length*0.65);
-                env.gain.exponentialRampToValueAtTime(0.0001, at+length);
-                osc.connect(mix); overtone.connect(mix); mix.connect(env); env.connect(master);
-                osc.start(at); overtone.start(at);
-                osc.stop(at+length+0.02); overtone.stop(at+length+0.02);
+                osc.frequency.setValueAtTime(170, at);
+                osc.frequency.exponentialRampToValueAtTime(1050, at + 0.48);
+                filter.type = "lowpass";
+                filter.frequency.setValueAtTime(700, at);
+                filter.frequency.exponentialRampToValueAtTime(4200, at + 0.48);
+                gain.gain.setValueAtTime(0.0001, at);
+                gain.gain.exponentialRampToValueAtTime(0.10, at + 0.12);
+                gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.52);
+                osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+                osc.start(at); osc.stop(at + 0.54);
+
+                // Crackling burst made from short filtered noise grains.
+                const burstAt = at + 0.50;
+                for(let i=0;i<18;i++){
+                    const grainAt = burstAt + Math.random()*0.42;
+                    const length = 0.035 + Math.random()*0.07;
+                    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate*length), ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for(let j=0;j<data.length;j++) data[j] = (Math.random()*2-1) * (1-j/data.length);
+                    const source = ctx.createBufferSource();
+                    const noiseFilter = ctx.createBiquadFilter();
+                    const noiseGain = ctx.createGain();
+                    source.buffer = buffer;
+                    noiseFilter.type = "highpass";
+                    noiseFilter.frequency.value = 1300 + Math.random()*4200;
+                    noiseGain.gain.setValueAtTime(0.0001, grainAt);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.055, grainAt+0.008);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.0001, grainAt+length);
+                    source.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(ctx.destination);
+                    source.start(grainAt);
+                }
             }
-            function drumHit(at, peak){
-                const length=0.32;
-                const buffer=ctx.createBuffer(1, Math.floor(ctx.sampleRate*length), ctx.sampleRate);
-                const data=buffer.getChannelData(0);
-                for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*(1-i/data.length);
-                const src=ctx.createBufferSource(); src.buffer=buffer;
-                const filter=ctx.createBiquadFilter(); filter.type="lowpass"; filter.frequency.setValueAtTime(180,at);
-                const gain=ctx.createGain(); gain.gain.setValueAtTime(0.0001,at);
-                gain.gain.exponentialRampToValueAtTime(peak,at+0.012);
-                gain.gain.exponentialRampToValueAtTime(0.0001,at+length);
-                src.connect(filter); filter.connect(gain); gain.connect(master); src.start(at);
-            }
-            function sparkle(at){
-                const osc=ctx.createOscillator(); const gain=ctx.createGain();
-                osc.type="sine"; osc.frequency.setValueAtTime(1174.66,at);
-                osc.frequency.exponentialRampToValueAtTime(1760,at+0.22);
-                gain.gain.setValueAtTime(0.0001,at);
-                gain.gain.exponentialRampToValueAtTime(0.16,at+0.025);
-                gain.gain.exponentialRampToValueAtTime(0.0001,at+0.42);
-                osc.connect(gain); gain.connect(master); osc.start(at); osc.stop(at+0.44);
-            }
-            const end=base+duration/1000;
-            let step=0;
-            for(let at=base; at<end-0.5; at+=1.25){
-                const chord=chords[step%chords.length];
-                chord.forEach(function(freq,i){ brassNote(freq,at+i*0.018,0.82,0.105); });
-                drumHit(at,0.22);
-                sparkle(at+0.48);
-                step++;
-            }
-        }catch(error){ console.warn("Result fanfare playback failed:", error); }
+
+            for(let t=start; t<end; t+=1.05) launch(t);
+        }catch(error){ console.warn("Skyshot playback failed:", error); }
     }
 
     function openPublicResultTable(){
@@ -26851,7 +26827,7 @@ if (entrySection) {
                     window.setTimeout(function(){
                         if(typeof runIkonPartyPopper === "function"){
                             runIkonPartyPopper(10000);
-                            playIkonResultFanfare(10000);
+                            playIkonSkyshotSound(10000);
                         }
                     }, 900);
                 }else{
@@ -27088,7 +27064,7 @@ if (entrySection) {
                     }
 
                     // Animate with Web Animations API so reduced-motion CSS or
-                    // competing stylesheet rules cannot cancel the 5-second opening.
+                    // competing stylesheet rules cannot cancel the 10-second opening.
                     const animations = [];
                     if(left && typeof left.animate === "function"){
                         animations.push(left.animate(
@@ -27096,7 +27072,7 @@ if (entrySection) {
                                 { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
                                 { transform:"perspective(900px) translateX(-105%) rotateY(-78deg)", opacity:0.12 }
                             ],
-                            { duration:5000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
                         ));
                     }
                     if(right && typeof right.animate === "function"){
@@ -27105,11 +27081,11 @@ if (entrySection) {
                                 { transform:"perspective(900px) translateX(0) rotateY(0deg)", opacity:1 },
                                 { transform:"perspective(900px) translateX(105%) rotateY(78deg)", opacity:0.12 }
                             ],
-                            { duration:5000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
+                            { duration:10000, easing:"cubic-bezier(.22,.61,.36,1)", fill:"forwards" }
                         ));
                     }
 
-                    // Finish and remove the curtain overlay after the 5-second opening.
+                    // Always finish and remove the announcement overlay after 10 seconds.
                     scheduleResultCurtain(function(){
                         animations.forEach(function(animation){
                             try{ animation.cancel(); }catch(e){}
@@ -27119,7 +27095,7 @@ if (entrySection) {
                         }
                         page.classList.remove("is-curtain-opening");
                         finishResultCurtain(runId);
-                    }, 5000, runId);
+                    }, 10000, runId);
                 }, 1000, runId);
             }else{
                 value -= 1;
@@ -29403,7 +29379,7 @@ function applyMarksheetResultStyle(root, grade, result){
         }
 
         // Prime the browser audio engine directly inside the user's click gesture.
-        prepareIkonSkyshotAudio();
+        window.prepareIkonSkyshotAudio();
 
         if(typeof SCRIPT_URL === "undefined" || !SCRIPT_URL){
             alert("Result settings connection is not configured.");
@@ -29444,7 +29420,7 @@ function applyMarksheetResultStyle(root, grade, result){
             }
 
             // B21 NO: countdown first, curtain, RESULT IS LIVE, then public table.
-            prepareIkonSkyshotAudio();
+            window.prepareIkonSkyshotAudio();
             if(typeof window.startResultCurtainFlow === "function"){
                 window.startResultCurtainFlow();
             }else{
