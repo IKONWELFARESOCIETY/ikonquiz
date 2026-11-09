@@ -6740,12 +6740,14 @@ function backToResultList(){
     resultNavigationToken++;
 
 
-    // Hide Marksheet
-    document
-        .getElementById(
-            "marksheetPage"
-        )
-        ?.classList.add("hidden");
+    // Hide Marksheet and clear inline display overrides from fillMarksheet().
+    const marksheetPage = document.getElementById("marksheetPage");
+    if(marksheetPage){
+        marksheetPage.classList.add("hidden");
+        marksheetPage.style.setProperty("display","none","important");
+        marksheetPage.style.setProperty("visibility","hidden","important");
+        marksheetPage.style.setProperty("pointer-events","none","important");
+    }
 
 
     // Hide Leaderboard
@@ -6756,12 +6758,14 @@ function backToResultList(){
         ?.classList.add("hidden");
 
 
-    // Show Result List
-    document
-        .getElementById(
-            "studentResultPage"
-        )
-        ?.classList.remove("hidden");
+    // Show Result List and remove inline hiding applied when marksheet opened.
+    const studentResultPage = document.getElementById("studentResultPage");
+    if(studentResultPage){
+        studentResultPage.classList.remove("hidden");
+        studentResultPage.style.removeProperty("display");
+        studentResultPage.style.removeProperty("visibility");
+        studentResultPage.style.removeProperty("pointer-events");
+    }
 
 
     // Keep selected date
@@ -9501,46 +9505,45 @@ document.addEventListener("keydown",function(e){
 
 function backToResultVerify(){
 
-    // Student Result List Hide
-    const resultPage =
-        document.getElementById("studentResultPage");
+    // When returning from a marksheet, go back to the result table
+    // and preserve the already selected examination date.
+    if(
+        typeof selectedStudentResultDate !== "undefined" &&
+        selectedStudentResultDate
+    ){
+        backToResultList();
+        return;
+    }
 
+    // Legacy fallback: no date has been selected, so return to verification.
+    const resultPage = document.getElementById("studentResultPage");
     if(resultPage){
-
         resultPage.classList.add("hidden");
-
+        resultPage.style.setProperty("display","none","important");
     }
 
-    // Result Verify Page Show
-    const verifyPage =
-        document.getElementById("resultVerifyPage");
+    const marksheetPage = document.getElementById("marksheetPage");
+    if(marksheetPage){
+        marksheetPage.classList.add("hidden");
+        marksheetPage.style.setProperty("display","none","important");
+    }
 
+    const verifyPage = document.getElementById("resultVerifyPage");
     if(verifyPage){
-
         verifyPage.classList.remove("hidden");
-
+        verifyPage.style.removeProperty("display");
+        verifyPage.style.removeProperty("visibility");
+        verifyPage.style.removeProperty("pointer-events");
     }
 
-    // Search Box Clear
-    const search =
-        document.getElementById("searchResult");
-
+    const search = document.getElementById("searchResult");
     if(search){
-
-        search.value="";
-
+        search.value = "";
     }
 
-    // Table Clear
-    const table =
-        document.getElementById("resultTableBody");
-
-    if(table){
-
-        table.innerHTML="";
-
+    if(typeof clearStudentResultTable === "function"){
+        clearStudentResultTable();
     }
-
 }
 
 function checkQRVerification(){
