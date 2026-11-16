@@ -8409,7 +8409,14 @@ function openMarksheet(studentID, paper, examDate){
 
         if(data.status !== "SUCCESS"){
 
-            if(
+            if(data.status === "MARKSHEET_BLOCKED"){
+
+                alert(
+                    "Your marksheet cannot be displayed. Please contact IKON Management."
+                );
+
+            }
+            else if(
                 data.status ===
                 "MARKSHEET_NOT_FOUND"
             ){
