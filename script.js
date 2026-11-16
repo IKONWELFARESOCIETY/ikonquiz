@@ -8412,6 +8412,7 @@ function openMarksheet(studentID, paper, examDate){
             if(data.status === "MARKSHEET_BLOCKED"){
 
                 alert(
+                    data.message ||
                     "Your marksheet cannot be displayed. Please contact IKON Management."
                 );
 
