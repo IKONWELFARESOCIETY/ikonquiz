@@ -3638,6 +3638,26 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
             </button>
 
+            <!-- ASSIGNMENT MANAGEMENT -->
+            <button
+                type="button"
+                class="assignmentPortalBtn"
+                onclick="openIKONAssignmentPage()">
+
+                <div class="examIcon">
+                    📚
+                </div>
+
+                <h3>
+                    Assignments
+                </h3>
+
+                <span>
+                    View and Submit Your Assignments
+                </span>
+
+            </button>
+
         </div>
 
         <!--================ BACK =================-->
@@ -3657,6 +3677,63 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     </div>
 
 </div>
+
+<!-- ==================================================
+             IKON STUDENT ASSIGNMENT PAGE
+================================================== -->
+<div id="ikonAssignmentPage" class="hidden" style="display:none !important;">
+
+    <section class="ikon-assignment-shell">
+        <div class="ikon-assignment-heading">
+            <div class="ikon-assignment-icon">📚</div>
+            <div>
+                <p class="ikon-assignment-kicker">IKON INSTITUTE</p>
+                <h2>My Assignments</h2>
+                <p class="ikon-assignment-subtitle">View tasks, submission deadlines and faculty feedback.</p>
+            </div>
+        </div>
+
+        <div class="ikon-assignment-student">
+            <div><span>Student</span><strong id="ikonAssignmentStudentName">--</strong></div>
+            <div><span>Registration No.</span><strong id="ikonAssignmentRegNo">--</strong></div>
+            <div><span>Course</span><strong id="ikonAssignmentCourse">--</strong></div>
+        </div>
+
+        <div class="ikon-assignment-stats">
+            <div class="ikon-assignment-stat">
+                <strong id="ikonAssignmentTotal">--</strong>
+                <span>Total Assignments</span>
+            </div>
+            <div class="ikon-assignment-stat">
+                <strong id="ikonAssignmentPending">--</strong>
+                <span>Pending</span>
+            </div>
+            <div class="ikon-assignment-stat">
+                <strong id="ikonAssignmentSubmitted">--</strong>
+                <span>Submitted</span>
+            </div>
+        </div>
+
+        <div class="ikon-assignment-list-head">
+            <div>
+                <h3>Assigned Work</h3>
+                <p>Your published assignments will appear here.</p>
+            </div>
+            <button type="button" class="ikon-assignment-refresh" onclick="loadIKONStudentAssignments()">↻ Refresh</button>
+        </div>
+
+        <div id="ikonAssignmentMessage" class="ikon-assignment-message" role="status">
+            Loading your assignments...
+        </div>
+        <div id="ikonAssignmentList" class="ikon-assignment-list"></div>
+
+        <div class="ikon-assignment-actions">
+            <button type="button" class="ikon-assignment-back" onclick="backToIKONExamOptions()">← Back to Portal</button>
+        </div>
+    </section>
+
+</div>
+
       <div id="theoryPaperPage" class="hidden">
 
     <div class="examTypeContainer">
