@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+
+
 //====================================================
 // IKON ONLINE TEST SYSTEM
 // script.js
@@ -1019,8 +1029,18 @@ async function startTest(){
             // CHECK AVAILABLE EXAMS
             //============================================
 
-            // Assignment access remains available even if the student
-            // has no pending theory/practical examination papers.
+            if(
+                theoryPapers.length === 0 &&
+                practicalPapers.length === 0
+            ){
+
+                alert(
+                    "All assigned examinations have already been completed."
+                );
+
+                return;
+
+            }
 
 
             //============================================
@@ -1043,11 +1063,10 @@ async function startTest(){
             "ALL_SUBMITTED"
         ){
 
-            // Exam papers are complete, but the student can still use
-            // the Assignment module from the same authenticated portal.
-            theoryPapers = [];
-            practicalPapers = [];
-            openExamTypePage();
+            alert(
+                "All assigned examinations have already been completed."
+            );
+
             return;
 
         }
@@ -1197,14 +1216,6 @@ function openExamTypePage(){
             "none",
             "important"
         );
-    }
-
-    const assignmentPage =
-        document.getElementById("ikonAssignmentPage");
-
-    if(assignmentPage){
-        assignmentPage.classList.add("hidden");
-        assignmentPage.style.setProperty("display", "none", "important");
     }
 
 
@@ -4198,8 +4209,7 @@ function goLogin() {
         "studentResultPage",
         "resultVerifyPage",
         "mockTestPage",
-        "mockTestModal",
-        "ikonAssignmentPage"
+        "mockTestModal"
     ];
 
 
@@ -29499,420 +29509,4 @@ function applyMarksheetResultStyle(root, grade, result){
 
 
 
-//====================================================
-// IKON ASSIGNMENT MODULE - LIVE API + STUDENT SUBMISSION
-//====================================================
-
-const IKON_ASSIGNMENT_API_URL = "https://script.google.com/macros/s/AKfycbwgzgGI2RmYh00z8z1u_9I5Mmx4JQkg9MEQWjhxtPeh76mwpC7tFZzlcu9cD9CqdDbC/exec";
-
-let ikonStudentAssignments = [];
-let ikonAssignmentBridgeFrame = null;
-let ikonAssignmentBridgeReady = false;
-let ikonAssignmentRequestCounter = 0;
-const ikonAssignmentPendingRequests = new Map();
-
-function ensureIKONAssignmentBridge(){
-    if(ikonAssignmentBridgeFrame && ikonAssignmentBridgeFrame.isConnected){
-        return ikonAssignmentBridgeFrame;
-    }
-
-    ikonAssignmentBridgeReady = false;
-    const frame = document.createElement("iframe");
-    frame.id = "ikonAssignmentBridgeFrame";
-    frame.title = "IKON Assignment Connection";
-    frame.src = IKON_ASSIGNMENT_API_URL + "?action=bridge";
-    frame.setAttribute("aria-hidden", "true");
-    frame.style.cssText = "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-10px;bottom:-10px;border:0;";
-    document.body.appendChild(frame);
-    ikonAssignmentBridgeFrame = frame;
-    return frame;
-}
-
-window.addEventListener("message", function(event){
-    const data = event.data || {};
-    if(data.source !== "IKON_ASSIGNMENT_BRIDGE") return;
-
-    if(data.type === "READY"){
-        ikonAssignmentBridgeReady = true;
-        return;
-    }
-
-    if(data.type === "RESPONSE" && data.requestId){
-        const pending = ikonAssignmentPendingRequests.get(data.requestId);
-        if(!pending) return;
-        clearTimeout(pending.timeout);
-        ikonAssignmentPendingRequests.delete(data.requestId);
-        pending.resolve(data.result || {status:"ERROR", message:"Empty server response."});
-    }
-});
-
-function ikonAssignmentApiCall(action, payload){
-    return new Promise((resolve, reject) => {
-        if(!IKON_ASSIGNMENT_API_URL){
-            reject(new Error("Assignment API URL is not configured."));
-            return;
-        }
-
-        const frame = ensureIKONAssignmentBridge();
-        const requestId = "ikon_assignment_" + (++ikonAssignmentRequestCounter) + "_" + Date.now();
-
-        const sendRequest = () => {
-            const timeout = setTimeout(() => {
-                ikonAssignmentPendingRequests.delete(requestId);
-                reject(new Error("Assignment server timeout. Check Web App deployment and Bridge response."));
-            }, 45000);
-
-            ikonAssignmentPendingRequests.set(requestId, {resolve, reject, timeout});
-            frame.contentWindow.postMessage({
-                source: "IKON_ASSIGNMENT_PORTAL",
-                type: "REQUEST",
-                requestId: requestId,
-                action: action,
-                payload: payload || {}
-            }, "*");
-        };
-
-        if(ikonAssignmentBridgeReady){
-            sendRequest();
-        } else {
-            let attempts = 0;
-            const wait = setInterval(() => {
-                attempts++;
-                if(ikonAssignmentBridgeReady){
-                    clearInterval(wait);
-                    sendRequest();
-                } else if(attempts >= 100){
-                    clearInterval(wait);
-                    reject(new Error("Assignment Bridge did not load. Confirm deployment URL and access set to Anyone."));
-                }
-            }, 200);
-        }
-    });
-}
-
-function openIKONAssignmentPage(){
-    const examPage = document.getElementById("examTypePage");
-    const assignmentPage = document.getElementById("ikonAssignmentPage");
-
-    if(!assignmentPage){
-        alert("Assignment page is missing from index.html.");
-        return;
-    }
-
-    if(examPage){
-        examPage.classList.add("hidden");
-        examPage.style.setProperty("display", "none", "important");
-    }
-
-    assignmentPage.classList.remove("hidden");
-    assignmentPage.style.removeProperty("display");
-
-    const name = document.getElementById("ikonAssignmentStudentName");
-    const reg = document.getElementById("ikonAssignmentRegNo");
-    const course = document.getElementById("ikonAssignmentCourse");
-
-    if(name) name.textContent = studentName || "--";
-    if(reg) reg.textContent = regNo || "--";
-    if(course) course.textContent = courseName || "--";
-
-    ensureIKONAssignmentBridge();
-    window.scrollTo({top: 0, behavior: "smooth"});
-    loadIKONStudentAssignments();
-}
-
-function backToIKONExamOptions(){
-    const assignmentPage = document.getElementById("ikonAssignmentPage");
-    const examPage = document.getElementById("examTypePage");
-
-    if(assignmentPage){
-        assignmentPage.classList.add("hidden");
-        assignmentPage.style.setProperty("display", "none", "important");
-    }
-    if(examPage){
-        examPage.classList.remove("hidden");
-        examPage.style.removeProperty("display");
-    }
-    window.scrollTo({top: 0, behavior: "smooth"});
-}
-
-async function loadIKONStudentAssignments(){
-    const message = document.getElementById("ikonAssignmentMessage");
-    const list = document.getElementById("ikonAssignmentList");
-    if(!message || !list) return;
-
-    list.innerHTML = "";
-    message.className = "ikon-assignment-message";
-    message.textContent = "Loading your assignments...";
-
-    const total = document.getElementById("ikonAssignmentTotal");
-    const pending = document.getElementById("ikonAssignmentPending");
-    const submitted = document.getElementById("ikonAssignmentSubmitted");
-    if(total) total.textContent = "--";
-    if(pending) pending.textContent = "--";
-    if(submitted) submitted.textContent = "--";
-
-    if(!regNo || !studentName){
-        message.textContent = "Student login details are missing. Please login again.";
-        message.classList.add("is-error");
-        return;
-    }
-
-    try{
-        const data = await ikonAssignmentApiCall("studentAssignments", {
-            regNo: regNo,
-            studentName: studentName
-        });
-
-        if(data.status !== "SUCCESS" || !Array.isArray(data.assignments)){
-            throw new Error(data.message || "Invalid assignment server response.");
-        }
-
-        ikonStudentAssignments = data.assignments;
-        if(total) total.textContent = data.total ?? ikonStudentAssignments.length;
-        if(pending) pending.textContent = data.pending ?? 0;
-        if(submitted) submitted.textContent = data.submitted ?? 0;
-
-        renderIKONStudentAssignments();
-
-        if(!ikonStudentAssignments.length){
-            message.textContent = "Abhi aapke course/batch ke liye koi published assignment available nahi hai.";
-            message.classList.add("is-info");
-        } else {
-            message.textContent = "Your assignments are up to date.";
-            message.classList.add("is-success");
-        }
-    }catch(error){
-        console.error("IKON Assignment Load Error:", error);
-        message.textContent = "Assignments load nahi ho paaye. " + error.message;
-        message.classList.add("is-error");
-    }
-}
-
-function renderIKONStudentAssignments(){
-    const list = document.getElementById("ikonAssignmentList");
-    if(!list) return;
-    list.innerHTML = "";
-
-    ikonStudentAssignments.forEach(item => {
-        const card = document.createElement("article");
-        card.className = "ikon-assignment-card";
-
-        const top = document.createElement("div");
-        top.className = "ikon-assignment-card-top";
-
-        const title = document.createElement("h4");
-        title.textContent = item.title || item.assignmentTitle || "Untitled Assignment";
-
-        const status = document.createElement("span");
-        status.className = "ikon-assignment-status";
-        status.textContent = item.studentStatus || "Pending";
-        top.append(title, status);
-
-        const meta = document.createElement("div");
-        meta.className = "ikon-assignment-meta";
-
-        [
-            ["Type", item.type || "—"],
-            ["Topic", item.topicName || "—"],
-            ["Total Marks", item.totalMarks ?? "—"],
-            ["Deadline", item.deadline || "—"]
-        ].forEach(([label, value]) => {
-            const cell = document.createElement("div");
-            const small = document.createElement("span");
-            const strong = document.createElement("strong");
-            small.textContent = label;
-            strong.textContent = String(value);
-            cell.append(small, strong);
-            meta.appendChild(cell);
-        });
-
-        const id = document.createElement("small");
-        id.className = "ikon-assignment-id";
-        id.textContent = "Assignment ID: " + (item.assignmentId || "—");
-
-        const actions = document.createElement("div");
-        actions.className = "ikon-assignment-card-actions";
-
-        const detailsButton = document.createElement("button");
-        detailsButton.type = "button";
-        detailsButton.className = "ikon-assignment-open";
-        detailsButton.textContent = "View Details / Submit";
-        detailsButton.addEventListener("click", () => openIKONAssignmentDetails(item.assignmentId));
-
-        actions.appendChild(detailsButton);
-        card.append(top, meta, id, actions);
-        list.appendChild(card);
-    });
-}
-
-async function openIKONAssignmentDetails(assignmentId){
-    const message = document.getElementById("ikonAssignmentMessage");
-    try{
-        if(message){
-            message.textContent = "Loading assignment details...";
-            message.className = "ikon-assignment-message";
-        }
-
-        const result = await ikonAssignmentApiCall("assignmentDetails", {
-            regNo: regNo,
-            studentName: studentName,
-            assignmentId: assignmentId
-        });
-        if(result.status !== "SUCCESS" || !result.assignment){
-            throw new Error(result.message || "Unable to load assignment details.");
-        }
-        showIKONAssignmentSubmitDialog(result.assignment);
-        if(message) message.textContent = "Assignment details loaded.";
-    }catch(error){
-        if(message){
-            message.textContent = error.message;
-            message.className = "ikon-assignment-message is-error";
-        } else {
-            alert(error.message);
-        }
-    }
-}
-
-function showIKONAssignmentSubmitDialog(assignment){
-    const old = document.getElementById("ikonAssignmentSubmitModal");
-    if(old) old.remove();
-
-    const modal = document.createElement("div");
-    modal.id = "ikonAssignmentSubmitModal";
-    modal.className = "ikon-assignment-modal";
-
-    const panel = document.createElement("div");
-    panel.className = "ikon-assignment-modal-panel";
-
-    const heading = document.createElement("div");
-    heading.className = "ikon-assignment-modal-heading";
-    const h3 = document.createElement("h3");
-    h3.textContent = assignment.title || "Assignment Details";
-    const close = document.createElement("button");
-    close.type = "button";
-    close.className = "ikon-assignment-modal-close";
-    close.textContent = "×";
-    close.addEventListener("click", () => modal.remove());
-    heading.append(h3, close);
-
-    const description = document.createElement("p");
-    description.textContent = assignment.description || "No description provided.";
-    const instructions = document.createElement("div");
-    instructions.className = "ikon-assignment-instructions";
-    instructions.textContent = assignment.instructions || "No additional instructions.";
-
-    const details = document.createElement("div");
-    details.className = "ikon-assignment-detail-grid";
-    [
-        ["Course", assignment.course],
-        ["Topic", assignment.topicName],
-        ["Total Marks", assignment.totalMarks],
-        ["Deadline", assignment.deadline],
-        ["Allowed File Types", assignment.allowedFileTypes],
-        ["Max File Size", (assignment.maxFileSizeMB || 10) + " MB"],
-        ["Max Files", assignment.maxFileCount || 1]
-    ].forEach(([label, value]) => {
-        const item = document.createElement("div");
-        const labelEl = document.createElement("small");
-        const valueEl = document.createElement("strong");
-        labelEl.textContent = label;
-        valueEl.textContent = value === undefined || value === null || value === "" ? "—" : String(value);
-        item.append(labelEl, valueEl);
-        details.appendChild(item);
-    });
-
-    const reference = document.createElement("a");
-    reference.className = "ikon-assignment-reference";
-    reference.textContent = assignment.referenceFileName ? "Open Reference: " + assignment.referenceFileName : "No reference file";
-    if(assignment.referenceFileUrl){
-        reference.href = assignment.referenceFileUrl;
-        reference.target = "_blank";
-        reference.rel = "noopener";
-    } else {
-        reference.removeAttribute("href");
-    }
-
-    const noteLabel = document.createElement("label");
-    noteLabel.textContent = "Submission Note (optional)";
-    const note = document.createElement("textarea");
-    note.id = "ikonAssignmentSubmissionNote";
-    note.placeholder = "Write a short note for your faculty...";
-    note.rows = 3;
-
-    const fileLabel = document.createElement("label");
-    fileLabel.textContent = "Choose Assignment File(s)";
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.multiple = Number(assignment.maxFileCount || 1) > 1;
-    fileInput.accept = assignment.allowedFileTypes
-        ? assignment.allowedFileTypes.split(",").map(x => "." + x.trim().replace(/^\./,"")).join(",")
-        : "";
-    fileInput.id = "ikonAssignmentFiles";
-
-    const help = document.createElement("small");
-    help.className = "ikon-assignment-upload-help";
-    help.textContent = "Maximum " + (assignment.maxFileCount || 1) + " file(s), " + (assignment.maxFileSizeMB || 10) + " MB each.";
-
-    const submit = document.createElement("button");
-    submit.type = "button";
-    submit.className = "ikon-assignment-submit";
-    submit.textContent = "Submit Assignment";
-    submit.addEventListener("click", async () => {
-        if(!fileInput.files || !fileInput.files.length){
-            alert("Please select at least one file.");
-            return;
-        }
-        if(fileInput.files.length > Number(assignment.maxFileCount || 1)){
-            alert("Maximum allowed files: " + (assignment.maxFileCount || 1));
-            return;
-        }
-
-        submit.disabled = true;
-        submit.textContent = "Uploading...";
-
-        try{
-            const files = await Promise.all(Array.from(fileInput.files).map(file => fileToIKONBase64_(file)));
-            const result = await ikonAssignmentApiCall("submitAssignment", {
-                regNo: regNo,
-                studentName: studentName,
-                assignmentId: assignment.assignmentId,
-                submissionNote: note.value,
-                files: files
-            });
-            if(result.status !== "SUCCESS"){
-                throw new Error(result.message || "Submission failed.");
-            }
-            modal.remove();
-            alert("Assignment submitted successfully. Submission ID: " + result.submissionId);
-            await loadIKONStudentAssignments();
-        }catch(error){
-            alert(error.message);
-            submit.disabled = false;
-            submit.textContent = "Submit Assignment";
-        }
-    });
-
-    panel.append(heading, description, instructions, details, reference, noteLabel, note, fileLabel, fileInput, help, submit);
-    modal.appendChild(panel);
-    modal.addEventListener("click", event => {
-        if(event.target === modal) modal.remove();
-    });
-    document.body.appendChild(modal);
-}
-
-function fileToIKONBase64_(file){
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const result = String(reader.result || "");
-            resolve({
-                name: file.name,
-                mimeType: file.type || "application/octet-stream",
-                base64: result.split(",")[1] || ""
-            });
-        };
-        reader.onerror = () => reject(new Error("Could not read file: " + file.name));
-        reader.readAsDataURL(file);
-    });
-}
 
