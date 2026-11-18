@@ -29496,37 +29496,3 @@ function applyMarksheetResultStyle(root, grade, result){
     };
 
 })();
-
-/* ======================================================
-   IKON WEEKLY CHALLENGE ADD-ON - ISOLATED MODULE
-   Does not replace or modify existing exam functions.
-====================================================== */
-const IKON_QUEST_API = "https://script.google.com/macros/s/AKfycbyJfWf5-hWNYvtCohHV-_PljYpeSfsc66eceo1lF3OTXUXphedDcb5-mbZDTpmoW7sL/exec";
-let ikonQuestData = null, ikonQuestAnswers = {};
-function ikonQuestOpen(){
-  const examType=document.getElementById('examTypePage'); if(examType) examType.classList.add('hidden');
-  const page=document.getElementById('ikonQuestPage'); if(page) page.classList.remove('hidden');
-  document.getElementById('ikonQuestLoading').classList.remove('hidden');
-  document.getElementById('ikonQuestCard').classList.add('hidden');
-  document.getElementById('ikonQuestDone').classList.add('hidden');
-  if(IKON_QUEST_API.includes('REPLACE_WITH')){document.getElementById('ikonQuestLoading').textContent='Weekly Challenge backend URL has not been configured yet.';return;}
-  fetch(IKON_QUEST_API+'?action=getQuest&regNo='+encodeURIComponent(regNo)+'&name='+encodeURIComponent(studentName)+'&course='+encodeURIComponent(courseName)+'&paper='+encodeURIComponent(paperName))
-    .then(r=>r.json()).then(d=>{document.getElementById('ikonQuestLoading').classList.add('hidden');if(!d.quest){document.getElementById('ikonQuestLoading').textContent=d.message||'No challenge assigned currently.';return;} ikonQuestData=d.quest; ikonQuestRender(d.quest);})
-    .catch(()=>{document.getElementById('ikonQuestLoading').textContent='Unable to load challenge. Please try again.';});
-}
-function ikonQuestRender(q){
-  document.getElementById('ikonQuestCard').classList.remove('hidden');document.getElementById('ikonQuestTitle').textContent=q.topic||q.title||'Weekly Challenge';
-  document.getElementById('ikonQuestMeta').textContent=[q.course,q.paper,q.topic].filter(Boolean).join(' • ');
-  document.getElementById('ikonQuestInstructions').textContent=q.instructions||'';document.getElementById('ikonQuestTask').textContent=q.task||q.description||'Complete the practical task.';
-  const game=document.getElementById('ikonQuestGame');game.innerHTML='';ikonQuestAnswers={};
-  (q.questions||[]).forEach((x,i)=>{const box=document.createElement('div');box.className='ikonGameQ';box.innerHTML='<p>'+ (i+1)+'. '+ikonQuestEsc(x.question)+'</p>';['A','B','C','D'].forEach(letter=>{if(x[letter]){const label=document.createElement('label');label.innerHTML='<input type="radio" name="ikonq'+i+'" value="'+letter+'"> '+ikonQuestEsc(x[letter]);label.querySelector('input').addEventListener('change',()=>ikonQuestAnswers[i]=letter);box.appendChild(label);}});game.appendChild(box);});
-}
-function ikonQuestEsc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function ikonQuestBack(){document.getElementById('ikonQuestPage').classList.add('hidden');document.getElementById('examTypePage').classList.remove('hidden');}
-async function ikonQuestSubmit(){
- const f=document.getElementById('ikonQuestFile').files[0];if(!f){alert('Please upload your practical work file.');return;}
- const btn=document.getElementById('ikonQuestSubmit');btn.disabled=true;btn.textContent='Uploading…';
- const payload={action:'submitQuest',regNo,name:studentName,course:courseName,paper:paperName,questId:ikonQuestData.questId||ikonQuestData.id||'',topic:ikonQuestData.topic||'',answers:ikonQuestAnswers,filename:f.name,mimeType:f.type||'application/octet-stream',fileBase64:''};
- try{payload.fileBase64=await ikonQuestFileBase64(f);const r=await fetch(IKON_QUEST_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});const d=await r.json();if(!d.success)throw new Error(d.message||'Submission failed');document.getElementById('ikonQuestCard').classList.add('hidden');const done=document.getElementById('ikonQuestDone');done.classList.remove('hidden');done.innerHTML='<div class="ikonQuestResult"><h2>Challenge Submitted! 🎉</h2><p>Game Score: '+d.gameScore+' / '+d.maxGameScore+'</p><p>Total XP: '+d.xp+'</p><p>Your practical file has been saved.</p></div>'; }catch(e){alert(e.message||'Upload failed.');btn.disabled=false;btn.textContent='SUBMIT CHALLENGE';}
-}
-function ikonQuestFileBase64(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=reject;reader.readAsDataURL(file);});}
