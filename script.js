@@ -29501,29 +29501,36 @@ function applyMarksheetResultStyle(root, grade, result){
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
-    const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
-    ids.forEach(function(id){
+    // Hide all normal portal screens and switch the body into full-page mode.
+    const pageIds = [
+        'loginPage','waitingPage','instructionPage','testPage','successPage',
+        'studentResultPage','resultVerifyPage','resultComingSoonPage',
+        'topperAnnouncementPage','examFormPage','mockTestPage'
+    ];
+    pageIds.forEach(function(id){
         const el = document.getElementById(id);
-        if(el) el.style.display = 'none';
+        if(el){ el.style.setProperty('display','none','important'); }
     });
-
     const portal = document.getElementById('assignmentPortal');
-    if(!portal){
-        alert('Assignment Portal HTML not found.');
-        return;
-    }
-
-    portal.style.display = 'block';
-    portal.style.visibility = 'visible';
-    window.scrollTo({top:0, behavior:'smooth'});
+    if(!portal){ alert('Assignment Portal HTML not found.'); return; }
+    document.body.classList.add('assignment-mode');
+    portal.style.setProperty('display','block','important');
+    portal.style.setProperty('visibility','visible','important');
+    window.scrollTo({top:0,behavior:'smooth'});
 };
 
 window.closeAssignmentPortal = function(){
+    document.body.classList.remove('assignment-mode');
     const portal = document.getElementById('assignmentPortal');
-    if(portal) portal.style.display = 'none';
-
+    if(portal) portal.style.setProperty('display','none','important');
+    // Return to the normal login screen, without touching the other portal flows.
     const login = document.getElementById('loginPage');
-    if(login) login.style.display = 'block';
+    if(login){
+        login.classList.remove('hidden');
+        login.style.removeProperty('display');
+        login.style.setProperty('display','flex','important');
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
 };
 
 window.loadAssignmentsForStudent = function(){
