@@ -22874,3 +22874,42 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
 }
 /* Assignment portal isolated styling */
 #assignmentPortal input[type=file]{display:block;margin:12px 0;max-width:100%}#assignmentPortal button{margin:10px 5px;padding:11px 16px;border-radius:10px;cursor:pointer}
+
+/* ===== ASSIGNMENT PORTAL FULL-PAGE SWITCH ===== */
+body.assignment-mode{
+  display:block!important;
+  min-height:100vh!important;
+  padding:0!important;
+  margin:0!important;
+  background:#f1f5fb!important;
+}
+body.assignment-mode .container{
+  width:100%!important;max-width:none!important;min-height:100vh!important;
+  margin:0!important;border-radius:0!important;overflow:visible!important;
+}
+body.assignment-mode .header,
+body.assignment-mode .content{display:none!important}
+body.assignment-mode #assignmentPortal{
+  display:block!important;visibility:visible!important;opacity:1!important;
+  width:100%!important;max-width:100%!important;min-height:100vh!important;
+  margin:0!important;padding:clamp(20px,4vw,48px)!important;
+  box-sizing:border-box!important;border-radius:0!important;
+  background:linear-gradient(135deg,#eef5ff,#f8fbff)!important;
+  box-shadow:none!important;
+}
+body.assignment-mode #assignmentPortal h2{
+  margin:22px auto 30px!important;text-align:center!important;
+  color:#1e3a8a!important;font-size:clamp(26px,3vw,36px)!important;
+}
+body.assignment-mode #assignmentPortal #assignmentLoginPanel,
+body.assignment-mode #assignmentPortal #assignmentStudentInfo,
+body.assignment-mode #assignmentPortal #assignmentList{
+  width:min(100%,1000px)!important;margin:20px auto!important;
+}
+body.assignment-mode #assignmentPortal input[type=text]{
+  width:100%!important;max-width:100%!important;padding:14px!important;
+  border:1px solid #cbd5e1!important;border-radius:10px!important;
+}
+@media(max-width:600px){
+  body.assignment-mode #assignmentPortal{padding:16px!important}
+}
