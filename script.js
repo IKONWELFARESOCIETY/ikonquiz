@@ -29501,58 +29501,29 @@ function applyMarksheetResultStyle(root, grade, result){
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
-    // Hide the entire main exam portal shell, not just the login element.
-    const mainShell = document.querySelector('body > .container') || document.querySelector('.container');
-    if(mainShell){
-        mainShell.setAttribute('data-assignment-hidden','1');
-        mainShell.style.setProperty('display','none','important');
-    }
-    const portal = document.getElementById('assignmentPortal');
-    if(!portal){ alert('Assignment Portal HTML not found.'); return; }
-    document.body.classList.add('assignment-mode');
-    portal.style.setProperty('display','block','important');
-    portal.style.setProperty('visibility','visible','important');
-    portal.style.setProperty('opacity','1','important');
-    window.scrollTo(0,0);
-};
-
-window.openAssignmentPortal = function(){
-    // Hide the complete main exam portal shell (including the left banner/login layout).
-    const mainShell = document.querySelector('body > .container') || document.querySelector('.container');
-    if(mainShell){
-        mainShell.setAttribute('data-assignment-hidden','1');
-        mainShell.style.setProperty('display','none','important');
-    }
     const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
     ids.forEach(function(id){
         const el = document.getElementById(id);
-        if(el) el.style.setProperty('display','none','important');
+        if(el) el.style.display = 'none';
     });
+
     const portal = document.getElementById('assignmentPortal');
     if(!portal){
-        if(mainShell){mainShell.style.removeProperty('display');mainShell.removeAttribute('data-assignment-hidden');}
         alert('Assignment Portal HTML not found.');
         return;
     }
-    document.body.classList.add('assignment-mode');
-    portal.style.setProperty('display','block','important');
-    portal.style.setProperty('visibility','visible','important');
-    portal.style.setProperty('opacity','1','important');
-    window.scrollTo(0,0);
+
+    portal.style.display = 'block';
+    portal.style.visibility = 'visible';
+    window.scrollTo({top:0, behavior:'smooth'});
 };
 
 window.closeAssignmentPortal = function(){
     const portal = document.getElementById('assignmentPortal');
-    if(portal) portal.style.setProperty('display','none','important');
-    document.body.classList.remove('assignment-mode');
-    const mainShell = document.querySelector('[data-assignment-hidden="1"]');
-    if(mainShell){
-        mainShell.style.removeProperty('display');
-        mainShell.removeAttribute('data-assignment-hidden');
-    }
+    if(portal) portal.style.display = 'none';
+
     const login = document.getElementById('loginPage');
-    if(login){ login.style.removeProperty('display'); }
-    window.scrollTo(0,0);
+    if(login) login.style.display = 'block';
 };
 
 window.loadAssignmentsForStudent = function(){
@@ -29560,41 +29531,52 @@ window.loadAssignmentsForStudent = function(){
     const reg = (input && input.value ? input.value : '').trim().toUpperCase();
     const status = document.getElementById('assignmentStatus');
     if(!reg){ if(status) status.textContent='Registration Number enter karein.'; return; }
-    if(status) status.textContent='Loading your missions...';
-    fetch(SCRIPT_URL + '?action=assignmentList&regNo=' + encodeURIComponent(reg) + '&_=' + Date.now(), {cache:'no-store'})
-      .then(function(response){ if(!response.ok) throw new Error('Server error: '+response.status); return response.json(); })
-      .then(function(data){
-        if(!data.success){ if(status) status.textContent=data.message||'Student record not found.'; return; }
-        const loginPanel=document.getElementById('assignmentLoginPanel'); if(loginPanel) loginPanel.style.display='none';
+    if(status) status.textContent='Loading missions...';
+    fetch(SCRIPT_URL+'?action=assignmentList&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'})
+      .then(r=>{if(!r.ok)throw new Error('Server error: '+r.status);return r.json();})
+      .then(data=>{
+        if(!data.success)throw new Error(data.message||'Student record not found.');
+        const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
         const info=document.getElementById('assignmentStudentInfo');
-        const list=document.getElementById('assignmentList');
-        if(!list){ if(status) status.textContent='Assignment list container not found.'; return; }
-        const assignments=Array.isArray(data.assignments)?data.assignments:[];
-        const completed=assignments.filter(a=>String(a.status||'').toUpperCase()==='SUBMITTED').length;
-        const pending=Math.max(0,assignments.length-completed);
         if(info){
+          const xp=data.xp||{totalXP:0,level:1,nextLevelXP:500,completed:0};
           info.innerHTML='';
-          const wrap=document.createElement('div'); wrap.className='assign-student-hero';
-          wrap.innerHTML='<div class="assign-hero-icon">🎓</div><div class="assign-hero-main"><div class="assign-eyebrow">MISSION CONTROL</div><h2></h2><p class="assign-course"></p></div><div class="assign-stats"><div><strong class="assign-total"></strong><span>Total Missions</span></div><div><strong class="assign-done"></strong><span>Completed</span></div><div><strong class="assign-pending"></strong><span>Pending</span></div></div>';
-          wrap.querySelector('h2').textContent=data.name||'Student'; wrap.querySelector('.assign-course').textContent='REG NO: '+(data.regNo||reg)+' • '+(data.course||'Course');
-          wrap.querySelector('.assign-total').textContent=assignments.length; wrap.querySelector('.assign-done').textContent=completed; wrap.querySelector('.assign-pending').textContent=pending;
-          const progress=document.createElement('div'); progress.className='assign-progress-wrap'; progress.innerHTML='<div class="assign-progress-label"><span>MISSION PROGRESS</span><strong>'+completed+' / '+assignments.length+'</strong></div><div class="assign-progress"><span></span></div>';
-          progress.querySelector('span').style.width=(assignments.length?completed/assignments.length*100:0)+'%'; wrap.appendChild(progress); info.appendChild(wrap);
+          const h=document.createElement('h3');h.textContent='🎮 '+(data.name||'')+' · '+(data.regNo||reg);
+          const p=document.createElement('p');p.textContent='Course: '+(data.course||'');
+          const stats=document.createElement('div');stats.className='ikon-assignment-xp-card';
+          stats.innerHTML='<strong>⭐ '+Number(xp.totalXP||0)+' XP</strong><span>LEVEL '+Number(xp.level||1)+'</span><small>'+Number(xp.completed||0)+' missions approved · '+Number(xp.nextLevelXP||500)+' XP to next level</small><div class="ikon-xp-track"><i style="width:'+Math.min(100,(Number(xp.totalXP||0)%500)/5)+'%"></i></div>';
+          info.appendChild(h);info.appendChild(p);info.appendChild(stats);
         }
+        const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
         list.innerHTML='';
-        if(!assignments.length){ list.innerHTML='<div class="assign-empty"><div>🌟</div><h3>All clear!</h3><p>Abhi koi mission assign nahi kiya gaya.</p></div>'; if(status)status.textContent=''; return; }
-        assignments.forEach(function(a,index){
-          const submitted=String(a.status||'PENDING').toUpperCase()==='SUBMITTED';
-          const paper=String(a.paper||'Assignment');
-          const icon=paper.toUpperCase().includes('EXCEL')?'📊':paper.toUpperCase().includes('POWER BI')?'📈':paper.toUpperCase().includes('TALLY')?'💰':paper.toUpperCase().includes('HTML')?'🌐':paper.toUpperCase().includes('PPT')?'🎤':paper.toUpperCase().includes('WORD')?'📝':'🎯';
-          const card=document.createElement('article'); card.className='assign-mission-card '+(submitted?'is-submitted':'');
-          card.innerHTML='<div class="assign-card-top"><div class="assign-icon">'+icon+'</div><div class="assign-card-meta"><span class="assign-mission-number">MISSION '+String(index+1).padStart(2,'0')+'</span><span class="assign-status '+(submitted?'submitted':'pending')+'">'+(submitted?'✓ SUBMITTED':'● PENDING')+'</span></div></div><h3 class="assign-card-title"></h3><div class="assign-topic"></div><div class="assign-task"></div><div class="assign-card-divider"></div><div class="assign-upload-label">📎 Your mission file</div><div class="assign-file-zone"><div class="assign-file-emoji">📁</div><p>Choose your completed file</p><small>PDF · Word · Excel · PowerPoint · Image · PBIX (Max 20 MB)</small><input type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix" id="file_'+a.id+'" /></div><button class="assign-submit-btn" type="button">'+(submitted?'✓ Mission submitted':'🚀 Submit Mission')+'</button><div class="assignmentUploadMsg assign-feedback"></div>';
-          card.querySelector('.assign-card-title').textContent=paper+' Challenge'; card.querySelector('.assign-topic').textContent=a.topic||'Practice Challenge'; card.querySelector('.assign-task').textContent=a.task||'Complete the assigned task and upload your file.';
-          const fileInput=card.querySelector('input[type=file]'); fileInput.addEventListener('change',function(){const zone=card.querySelector('.assign-file-zone');zone.classList.toggle('has-file',!!fileInput.files[0]);if(fileInput.files[0])zone.querySelector('p').textContent=fileInput.files[0].name;});
-          const button=card.querySelector('.assign-submit-btn'); button.disabled=submitted; button.onclick=function(){window.submitIkonAssignment(a.id,reg,button);}; list.appendChild(card);
+        const assignments=Array.isArray(data.assignments)?data.assignments:[];
+        if(!assignments.length){list.textContent='Abhi koi mission assign nahi hua hai.';if(status)status.textContent='';return;}
+        assignments.forEach(a=>{
+          const card=document.createElement('article');card.className='ikon-mission-card';
+          const top=document.createElement('div');top.className='ikon-mission-top';
+          const title=document.createElement('h3');title.textContent=(a.paper||'')+' · '+(a.topic||'Mission');
+          const badge=document.createElement('span');badge.className='ikon-mission-status';badge.textContent=a.status||'PENDING';
+          top.appendChild(title);top.appendChild(badge);
+          const task=document.createElement('p');task.textContent=a.task||'';
+          const meta=document.createElement('div');meta.className='ikon-mission-meta';
+          meta.textContent='🎯 '+(a.xpPoints||100)+' XP on approval  ·  '+(a.difficulty||'Beginner')+(a.deadline?'  ·  Due: '+a.deadline:'');
+          card.appendChild(top);card.appendChild(task);card.appendChild(meta);
+          if(a.instructions){const ins=document.createElement('p');ins.textContent='Instructions: '+a.instructions;card.appendChild(ins);}
+          if(a.referenceLink){const link=document.createElement('a');link.href=a.referenceLink;link.target='_blank';link.rel='noopener';link.textContent='Open reference material ↗';card.appendChild(link);}
+          if(a.feedback){const fb=document.createElement('p');fb.className='ikon-mission-feedback';fb.textContent='Admin feedback: '+a.feedback;card.appendChild(fb);}
+          if(['PENDING','CORRECTION REQUIRED','REJECTED'].indexOf(a.status||'PENDING')>=0){
+            const label=document.createElement('label');label.textContent='Upload your assignment file';
+            const file=document.createElement('input');file.type='file';file.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';file.id='file_'+a.id;
+            const btn=document.createElement('button');btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit Assignment':'Submit Mission';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
+            const msg=document.createElement('div');msg.className='assignmentUploadMsg';
+            card.appendChild(label);card.appendChild(file);card.appendChild(btn);card.appendChild(msg);
+          } else {
+            const awarded=document.createElement('p');awarded.className='ikon-mission-award';awarded.textContent=a.status==='APPROVED'?'🏆 Approved · '+(a.awardedXP||0)+' XP earned':'⏳ Your work is waiting for admin review';card.appendChild(awarded);
+          }
+          list.appendChild(card);
         });
         if(status)status.textContent='';
-      }).catch(function(error){if(status)status.textContent='Could not load assignments: '+error.message;});
+      }).catch(err=>{if(status)status.textContent='Could not load assignments: '+err.message;});
 };
 
 window.submitIkonAssignment = function(assignmentId, reg, button){
@@ -29603,7 +29585,7 @@ window.submitIkonAssignment = function(assignmentId, reg, button){
     const card = button ? button.parentElement : null;
     const message = card ? card.querySelector('.assignmentUploadMsg') : null;
     const allowed = /\\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i;
-    const maxBytes = 20 * 1024 * 1024;
+    const maxBytes = 8 * 1024 * 1024;
 
     if(!file){
         if(message) message.textContent = 'File select karein.';
@@ -29611,7 +29593,7 @@ window.submitIkonAssignment = function(assignmentId, reg, button){
     }
 
     if(file.size > maxBytes){
-        if(message) message.textContent = 'File 20 MB se chhoti honi chahiye.';
+        if(message) message.textContent = 'File 8 MB se chhoti honi chahiye.';
         return;
     }
 
@@ -29644,7 +29626,8 @@ window.submitIkonAssignment = function(assignmentId, reg, button){
             try{ result = JSON.parse(text); }
             catch(error){ result = {success:false, message:text || 'Invalid server response.'}; }
 
-            if(message) { message.textContent = result.message || (result.success ? 'Mission completed successfully! 🎉' : 'Submission failed.'); if(result.success) message.classList.add('success'); }
+            if(message) message.textContent = result.message || (result.success ? 'Submitted successfully.' : 'Submission failed.');
+            if(result.success){ setTimeout(function(){ window.loadAssignmentsForStudent(); }, 900); }
             if(button){
                 if(result.success){
                     button.textContent = 'Submitted';
@@ -29673,3 +29656,67 @@ window.openAssignmentPortal = window.openAssignmentPortal;
 window.closeAssignmentPortal = window.closeAssignmentPortal;
 window.loadAssignmentsForStudent = window.loadAssignmentsForStudent;
 window.submitIkonAssignment = window.submitIkonAssignment;
+
+
+//====================================================
+// IKON ASSIGNMENT ADMIN + XP + LEADERBOARD
+// Admin access: 5 quick taps on the IKON logo.
+// Server endpoints validate the existing Settings!B15 token.
+//====================================================
+(function(){
+  var adminToken='';
+  function el(id){return document.getElementById(id);}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  window.openIkonAssignmentAdminLogin=function(){var x=el('ikonAssignmentAdminLogin');if(x)x.style.display='flex';};
+  window.closeIkonAssignmentAdminLogin=function(){var x=el('ikonAssignmentAdminLogin');if(x)x.style.display='none';};
+  window.loginIkonAssignmentAdmin=function(){
+    var pass=el('ikonAssignmentAdminPassword'),msg=el('ikonAssignmentAdminMessage');
+    if(!pass||!pass.value.trim()){if(msg)msg.textContent='Admin password enter karein.';return;}
+    fetch(SCRIPT_URL+'?action=verifyAdmin&code='+encodeURIComponent(pass.value.trim())+'&_='+Date.now(),{cache:'no-store'})
+      .then(r=>r.json()).then(d=>{
+        if(d.status!=='SUCCESS')throw new Error(d.message||'Admin login failed.');
+        adminToken=d.token;pass.value='';window.closeIkonAssignmentAdminLogin();
+        var panel=el('ikonAssignmentAdminPanel');if(panel)panel.style.display='block';
+        window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();
+      }).catch(e=>{if(msg)msg.textContent=e.message;});
+  };
+  window.logoutIkonAssignmentAdmin=function(){adminToken='';var p=el('ikonAssignmentAdminPanel');if(p)p.style.display='none';};
+  window.loadIkonAssignmentReviews=function(){
+    var box=el('ikonAdminReviewList');if(!box)return;box.textContent='Loading submissions...';
+    fetch(SCRIPT_URL+'?action=assignmentAdminList&token='+encodeURIComponent(adminToken)+'&_='+Date.now(),{cache:'no-store'})
+      .then(r=>r.json()).then(d=>{
+        if(!d.success)throw new Error(d.message||'Review list unavailable.');
+        if(!d.submissions.length){box.textContent='No assignment submissions yet.';return;}
+        box.innerHTML=d.submissions.map(function(x){
+          var max=Number(x['MAX XP']||0),awarded=Number(x['AWARDED XP']||0),status=x['REVIEW STATUS']||'PENDING';
+          return '<article class="ikon-admin-review-card"><div class="ikon-admin-review-head"><div><b>'+esc(x.NAME)+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x.TOPIC)+'</b></p><p>'+esc(x['FILE NAME'])+'</p><a target="_blank" rel="noopener" href="'+esc(x['FILE URL'])+'">Open submitted file ↗</a><div class="ikon-admin-review-fields"><label>Max XP<input value="'+max+'" readonly></label><label>Award XP<input id="ikonAwardXP'+x.row+'" type="number" min="0" max="'+max+'" value="'+awarded+'"></label><label>Decision<select id="ikonDecision'+x.row+'"><option value="APPROVED">Approve</option><option value="REVISION">Request correction</option><option value="REJECTED">Reject</option></select></label><label>Feedback<textarea id="ikonFeedback'+x.row+'">'+esc(x.FEEDBACK||'')+'</textarea></label><button type="button" onclick="saveIkonAssignmentReview('+x.row+','+max+')">Save Review</button></div></article>';
+        }).join('');
+      }).catch(e=>{box.textContent=e.message;});
+  };
+  window.saveIkonAssignmentReview=function(row,max){
+    var award=Number(el('ikonAwardXP'+row).value||0),decision=el('ikonDecision'+row).value;
+    if(award<0||award>max){alert('Award XP maximum XP se zyada nahi ho sakta.');return;}
+    if(decision!=='APPROVED'&&award!==0){alert('Correction/Reject ke liye XP 0 rakhein.');return;}
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'adminReviewAssignment',token:adminToken,row:row,decision:decision,awardedXP:award,feedback:el('ikonFeedback'+row).value,admin:'IKON Admin'})})
+      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Review save failed.');alert('Review saved. Student total XP: '+d.totalXP);window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();})
+      .catch(e=>alert(e.message));
+  };
+  window.loadIkonAssignmentLeaderboard=function(){
+    var box=el('ikonLeaderboardTable');if(!box)return;box.textContent='Loading leaderboard...';
+    var course=el('ikonLeaderboardCourse')?el('ikonLeaderboardCourse').value:'ALL';
+    var limit=el('ikonLeaderboardLimit')?el('ikonLeaderboardLimit').value:'';
+    fetch(SCRIPT_URL+'?action=assignmentLeaderboard&course='+encodeURIComponent(course)+'&limit='+encodeURIComponent(limit)+'&_='+Date.now(),{cache:'no-store'})
+      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Leaderboard unavailable.');
+        box.innerHTML='<table class="ikon-lb-table"><thead><tr><th>Rank</th><th>Student</th><th>Course</th><th>XP</th><th>Level</th><th>Missions</th></tr></thead><tbody>'+d.leaderboard.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'<small>'+esc(x.regNo)+'</small></td><td>'+esc(x.course)+'</td><td>'+x.xp+'</td><td>'+x.level+'</td><td>'+x.completed+'</td></tr>').join('')+'</tbody></table>';
+      }).catch(e=>{box.textContent=e.message;});
+  };
+  window.downloadIkonLeaderboardPDF=function(){
+    var area=el('ikonLeaderboardPrintArea');if(!area||!el('ikonLeaderboardTable').querySelector('table')){alert('Pehle leaderboard load karein.');return;}
+    var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
+    w.document.write('<!doctype html><html><head><title>IKON Student Leaderboard</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>STUDENT SKILL QUEST LEADERBOARD</h2>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var logo=el('ikonLogo');if(!logo)return;var taps=0,timer=null;
+    logo.addEventListener('click',function(){taps++;clearTimeout(timer);timer=setTimeout(function(){taps=0;},1800);if(taps>=5){taps=0;window.openIkonAssignmentAdminLogin();}});
+  });
+})();
