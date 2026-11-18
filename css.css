@@ -22872,7 +22872,15 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         print-color-adjust: exact !important;
     }
 }
-
-
-
-
+/* ================= IKON WEEKLY CHALLENGE ADD-ON ONLY ================= */
+.ikonQuestBtn{width:100%;max-width:360px;margin:18px auto;padding:24px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#6d28d9,#2563eb);box-shadow:0 15px 32px rgba(79,70,229,.22);display:block;text-align:center}
+.ikonQuestBtn h3{margin:8px 0}.ikonQuestBtn span{font-size:13px}
+#ikonQuestPage{width:100%;padding:10px 0}#ikonQuestPage.hidden{display:none!important}
+.ikonQuestShell{max-width:850px;margin:0 auto;background:#fff;border:1px solid #dbeafe;border-radius:24px;padding:clamp(18px,4vw,36px);box-shadow:0 18px 55px rgba(15,23,42,.10)}
+.ikonQuestBack{background:#e2e8f0;color:#1e293b;padding:10px 16px;margin-bottom:16px}.ikonQuestHead{text-align:center;padding:18px 0 25px}.ikonQuestHead>div{font-size:42px}.ikonQuestHead h2{color:#1d4ed8;margin:12px 0}.ikonQuestHead p{color:#64748b}
+#ikonQuestTitle{font-size:24px;color:#1e3a8a;margin-bottom:12px}.ikonQuestMeta{display:inline-block;padding:8px 12px;background:#eff6ff;border-radius:12px;color:#1d4ed8;margin-bottom:18px;font-weight:700}#ikonQuestInstructions{line-height:1.7;color:#334155;margin:12px 0}
+.ikonQuestTask{background:#f8fafc;border:1px solid #e2e8f0;padding:18px;border-radius:16px;margin:16px 0;white-space:pre-wrap}.ikonQuestUploadLabel{display:block;font-weight:800;margin:18px 0 8px}.ikonQuestHint{font-size:12px;color:#64748b;margin:8px 0 20px}
+#ikonQuestFile{width:100%;padding:14px;border:1px dashed #94a3b8;border-radius:14px;background:#f8fafc}#ikonQuestSubmit{margin-top:18px}#ikonQuestGame{margin-top:18px}
+.ikonGameQ{border:1px solid #e2e8f0;border-radius:15px;padding:15px;margin:12px 0}.ikonGameQ p{font-weight:700;margin-bottom:10px}.ikonGameQ label{display:block;padding:8px;cursor:pointer}
+.ikonQuestResult{padding:20px;background:#ecfdf5;border-radius:16px;text-align:center;color:#166534}
+@media(max-width:600px){.ikonQuestShell{padding:16px;border-radius:18px}.ikonQuestHead h2{font-size:22px}}
