@@ -29517,21 +29517,28 @@ window.openAssignmentPortal = function(){
 };
 
 window.openAssignmentPortal = function(){
+    // Hide the complete main exam portal shell (including the left banner/login layout).
+    const mainShell = document.querySelector('body > .container') || document.querySelector('.container');
+    if(mainShell){
+        mainShell.setAttribute('data-assignment-hidden','1');
+        mainShell.style.setProperty('display','none','important');
+    }
     const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
     ids.forEach(function(id){
         const el = document.getElementById(id);
-        if(el) el.style.display = 'none';
+        if(el) el.style.setProperty('display','none','important');
     });
-
     const portal = document.getElementById('assignmentPortal');
     if(!portal){
+        if(mainShell){mainShell.style.removeProperty('display');mainShell.removeAttribute('data-assignment-hidden');}
         alert('Assignment Portal HTML not found.');
         return;
     }
-
-    portal.style.display = 'block';
-    portal.style.visibility = 'visible';
-    window.scrollTo({top:0, behavior:'smooth'});
+    document.body.classList.add('assignment-mode');
+    portal.style.setProperty('display','block','important');
+    portal.style.setProperty('visibility','visible','important');
+    portal.style.setProperty('opacity','1','important');
+    window.scrollTo(0,0);
 };
 
 window.closeAssignmentPortal = function(){
