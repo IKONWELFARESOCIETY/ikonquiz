@@ -29560,13 +29560,10 @@ window.loadAssignmentsForStudent = function(){
         const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
         const info=document.getElementById('assignmentStudentInfo');
         if(info){
-          const xp=data.xp||{totalXP:0,level:1,nextLevelXP:500,completed:0};
           info.innerHTML='';
-          const h=document.createElement('h3');h.textContent='🎮 '+(data.name||'')+' · '+(data.regNo||reg);
+          const h=document.createElement('h3');h.textContent=(data.name||'')+' · '+(data.regNo||reg);
           const p=document.createElement('p');p.textContent='Course: '+(data.course||'');
-          const stats=document.createElement('div');stats.className='ikon-assignment-xp-card';
-          stats.innerHTML='<strong>⭐ '+Number(xp.totalXP||0)+' XP</strong><span>LEVEL '+Number(xp.level||1)+'</span><small>'+Number(xp.completed||0)+' missions approved · '+Number(xp.nextLevelXP||500)+' XP to next level</small><div class="ikon-xp-track"><i style="width:'+Math.min(100,(Number(xp.totalXP||0)%500)/5)+'%"></i></div>';
-          info.appendChild(h);info.appendChild(p);info.appendChild(stats);
+          info.appendChild(h);info.appendChild(p);
         }
         const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
         list.innerHTML='';
@@ -29580,7 +29577,7 @@ window.loadAssignmentsForStudent = function(){
           top.appendChild(title);top.appendChild(badge);
           const task=document.createElement('p');task.textContent=a.task||'';
           const meta=document.createElement('div');meta.className='ikon-mission-meta';
-          meta.textContent='🎯 '+(a.xpPoints||100)+' XP on approval  ·  '+(a.difficulty||'Beginner')+(a.deadline?'  ·  Due: '+a.deadline:'');
+          meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+(a.deadline?'  ·  Due: '+a.deadline:'');
           card.appendChild(top);card.appendChild(task);card.appendChild(meta);
           if(a.instructions){const ins=document.createElement('p');ins.textContent='Instructions: '+a.instructions;card.appendChild(ins);}
           if(a.referenceLink){const link=document.createElement('a');link.href=a.referenceLink;link.target='_blank';link.rel='noopener';link.textContent='Open reference material ↗';card.appendChild(link);}
@@ -29592,7 +29589,7 @@ window.loadAssignmentsForStudent = function(){
             const msg=document.createElement('div');msg.className='assignmentUploadMsg';
             card.appendChild(label);card.appendChild(file);card.appendChild(btn);card.appendChild(msg);
           } else {
-            const awarded=document.createElement('p');awarded.className='ikon-mission-award';awarded.textContent=a.status==='APPROVED'?'🏆 Approved · '+(a.awardedXP||0)+' XP earned':'⏳ Your work is waiting for admin review';card.appendChild(awarded);
+            const awarded=document.createElement('p');awarded.className='ikon-mission-award';awarded.textContent=a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0):'Your work is waiting for admin review';card.appendChild(awarded);
           }
           list.appendChild(card);
         });
@@ -29680,7 +29677,7 @@ window.submitIkonAssignment = window.submitIkonAssignment;
 
 
 //====================================================
-// IKON ASSIGNMENT ADMIN + XP + LEADERBOARD
+// IKON ASSIGNMENT ADMIN + MARKS + PAPER-WISE REPORTS
 // Admin access: 5 quick taps on the IKON logo.
 // Server endpoints validate the existing Settings!B15 token.
 //====================================================
@@ -29705,34 +29702,62 @@ window.submitIkonAssignment = window.submitIkonAssignment;
       }).catch(e=>{if(msg)msg.textContent=e.message;});
   };
   window.logoutIkonAssignmentAdmin=function(){adminToken='';var p=el('ikonAssignmentAdminPanel');if(p)p.style.display='none';document.body.style.overflow='';};
+  var assignmentSubmissions=[];
   window.loadIkonAssignmentReviews=function(){
     var box=el('ikonAdminReviewList');if(!box)return;box.textContent='Loading submissions...';
     fetch(SCRIPT_URL+'?action=assignmentAdminList&token='+encodeURIComponent(adminToken)+'&_='+Date.now(),{cache:'no-store'})
       .then(r=>r.json()).then(d=>{
         if(!d.success)throw new Error(d.message||'Review list unavailable.');
-        if(!d.submissions.length){box.textContent='No assignment submissions yet.';return;}
-        box.innerHTML=d.submissions.map(function(x){
-          var max=Number(x['MAX XP']||0),awarded=Number(x['AWARDED XP']||0),status=x['REVIEW STATUS']||'PENDING';
-          return '<article class="ikon-admin-review-card"><div class="ikon-admin-review-head"><div><b>'+esc(x.NAME)+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x.TOPIC)+'</b></p><p>'+esc(x['FILE NAME'])+'</p><a target="_blank" rel="noopener" href="'+esc(x['FILE URL'])+'">Open submitted file ↗</a><div class="ikon-admin-review-fields"><label>Max XP<input value="'+max+'" readonly></label><label>Award XP<input id="ikonAwardXP'+x.row+'" type="number" min="0" max="'+max+'" value="'+awarded+'"></label><label>Decision<select id="ikonDecision'+x.row+'"><option value="APPROVED">Approve</option><option value="REVISION">Request correction</option><option value="REJECTED">Reject</option></select></label><label>Feedback<textarea id="ikonFeedback'+x.row+'">'+esc(x.FEEDBACK||'')+'</textarea></label><button type="button" onclick="saveIkonAssignmentReview('+x.row+','+max+')">Save Review</button></div></article>';
-        }).join('');
+        assignmentSubmissions=d.submissions||[];
+        var filter=el('ikonAdminPaperFilter');
+        if(filter){var current=filter.value||'ALL';filter.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');filter.value=(d.papers||[]).includes(current)?current:'ALL';}
+        window.renderIkonAssignmentReviews();
+        var paperSelect=el('ikonLeaderboardPaper');
+        if(paperSelect){var selected=paperSelect.value||'ALL';paperSelect.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');paperSelect.value=(d.papers||[]).includes(selected)?selected:'ALL';}
       }).catch(e=>{box.textContent=e.message;});
   };
+  window.renderIkonAssignmentReviews=function(){
+    var box=el('ikonAdminReviewList');if(!box)return;
+    var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
+    var rows=assignmentSubmissions.filter(x=>paper==='ALL'||String(x.PAPER||'')===paper);
+    if(!rows.length){box.textContent='Is paper ke liye koi submission nahi hai.';return;}
+    box.innerHTML=rows.map(function(x){
+      var max=Number(x['MAX MARKS']||0),obtained=Number(x['OBTAINED MARKS']||0),status=x['REVIEW STATUS']||'PENDING';
+      return '<article class="ikon-admin-review-card"><div class="ikon-admin-review-head"><div><b>'+esc(x.NAME)+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x.TOPIC)+'</b></p><p>'+esc(x['FILE NAME'])+'</p><a target="_blank" rel="noopener" href="'+esc(x['FILE URL'])+'">Open submitted file ↗</a><div class="ikon-admin-review-fields"><label>Maximum Marks<input value="'+max+'" readonly></label><label>Obtained Marks<input id="ikonObtainedMarks'+x.row+'" type="number" min="0" max="'+max+'" value="'+obtained+'"></label><label>Decision<select id="ikonDecision'+x.row+'"><option value="APPROVED" '+(status==='APPROVED'?'selected':'')+'>Approve</option><option value="REVISION" '+(status==='REVISION'?'selected':'')+'>Request correction</option><option value="REJECTED" '+(status==='REJECTED'?'selected':'')+'>Reject</option></select></label><label>Feedback<textarea id="ikonFeedback'+x.row+'">'+esc(x.FEEDBACK||'')+'</textarea></label><button type="button" onclick="saveIkonAssignmentReview('+x.row+','+max+')">Save Review</button></div></article>';
+    }).join('');
+  };
   window.saveIkonAssignmentReview=function(row,max){
-    var award=Number(el('ikonAwardXP'+row).value||0),decision=el('ikonDecision'+row).value;
-    if(award<0||award>max){alert('Award XP maximum XP se zyada nahi ho sakta.');return;}
-    if(decision!=='APPROVED'&&award!==0){alert('Correction/Reject ke liye XP 0 rakhein.');return;}
-    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'adminReviewAssignment',token:adminToken,row:row,decision:decision,awardedXP:award,feedback:el('ikonFeedback'+row).value,admin:'IKON Admin'})})
-      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Review save failed.');alert('Review saved. Student total XP: '+d.totalXP);window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();})
+    var obtained=Number(el('ikonObtainedMarks'+row).value),decision=el('ikonDecision'+row).value;
+    if(decision==='APPROVED'&&(!Number.isFinite(obtained)||obtained<0||obtained>max)){alert('Obtained Marks 0 se '+max+' ke beech hone chahiye.');return;}
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'adminReviewAssignment',token:adminToken,row:row,decision:decision,obtainedMarks:obtained,feedback:el('ikonFeedback'+row).value,admin:'IKON Admin'})})
+      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Review save failed.');alert('Review saved. Marks: '+(d.obtainedMarks==null?'—':d.obtainedMarks)+' / '+d.maxMarks);window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();})
       .catch(e=>alert(e.message));
   };
   window.loadIkonAssignmentLeaderboard=function(){
     var box=el('ikonLeaderboardTable');if(!box)return;box.textContent='Loading leaderboard...';
-    var course=el('ikonLeaderboardCourse')?el('ikonLeaderboardCourse').value:'ALL';
+    var paper=el('ikonLeaderboardPaper')?el('ikonLeaderboardPaper').value:'ALL';
     var limit=el('ikonLeaderboardLimit')?el('ikonLeaderboardLimit').value:'';
-    fetch(SCRIPT_URL+'?action=assignmentLeaderboard&course='+encodeURIComponent(course)+'&limit='+encodeURIComponent(limit)+'&_='+Date.now(),{cache:'no-store'})
+    fetch(SCRIPT_URL+'?action=assignmentLeaderboard&paper='+encodeURIComponent(paper)+'&limit='+encodeURIComponent(limit)+'&_='+Date.now(),{cache:'no-store'})
       .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Leaderboard unavailable.');
-        box.innerHTML='<table class="ikon-lb-table"><thead><tr><th>Rank</th><th>Student</th><th>Course</th><th>XP</th><th>Level</th><th>Missions</th></tr></thead><tbody>'+d.leaderboard.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'<small>'+esc(x.regNo)+'</small></td><td>'+esc(x.course)+'</td><td>'+x.xp+'</td><td>'+x.level+'</td><td>'+x.completed+'</td></tr>').join('')+'</tbody></table>';
+        box.innerHTML='<table class="ikon-lb-table"><thead><tr><th>Rank</th><th>Student</th><th>Course</th><th>Obtained</th><th>Maximum</th><th>Percentage</th><th>Assignments</th></tr></thead><tbody>'+d.leaderboard.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'<small>'+esc(x.regNo)+'</small></td><td>'+esc(x.course)+'</td><td>'+x.totalMarks+'</td><td>'+x.maxMarks+'</td><td>'+x.percentage+'%</td><td>'+x.completed+'</td></tr>').join('')+'</tbody></table>';
       }).catch(e=>{box.textContent=e.message;});
+  };
+  window.downloadIkonSubmissionPaperPDF=function(){
+    var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
+    var rows=assignmentSubmissions.filter(x=>paper==='ALL'||String(x.PAPER||'')===paper);
+    if(!rows.length){alert('Selected paper ke liye submission record nahi hai.');return;}
+    var title=paper==='ALL'?'All Papers':'Paper: '+paper;
+    var body='<table><thead><tr><th>Student</th><th>Reg No</th><th>Course</th><th>Paper</th><th>Topic</th><th>Maximum</th><th>Obtained</th><th>Status</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.NAME)+'</td><td>'+esc(x['REG NO'])+'</td><td>'+esc(x.COURSE)+'</td><td>'+esc(x.PAPER)+'</td><td>'+esc(x.TOPIC)+'</td><td>'+Number(x['MAX MARKS']||0)+'</td><td>'+Number(x['OBTAINED MARKS']||0)+'</td><td>'+esc(x['REVIEW STATUS']||'PENDING')+'</td></tr>').join('')+'</tbody></table>';
+    var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
+    w.document.write('<!doctype html><html><head><title>IKON Assignment Submissions - '+esc(title)+'</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:12px}th{background:#eaf1ff}</style></head><body><h1>IKON INSTITUTE</h1><h2>ASSIGNMENT SUBMISSION REPORT</h2><h3>'+esc(title)+'</h3>'+body+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
+  };
+  window.downloadIkonPaperPDF=function(){
+    var area=el('ikonLeaderboardPrintArea'),table=el('ikonLeaderboardTable');
+    if(!area||!table||!table.querySelector('table')){alert('Pehle paper select karke report load karein.');return;}
+    var paper=el('ikonLeaderboardPaper')?el('ikonLeaderboardPaper').value:'ALL';
+    var title=paper==='ALL'?'All Papers':'Paper: '+paper;
+    var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
+    w.document.write('<!doctype html><html><head><title>IKON Assignment Marks - '+esc(title)+'</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>ASSIGNMENT MARKS REPORT</h2><h3>'+esc(title)+'</h3>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
   };
   window.downloadIkonLeaderboardPDF=function(){
     var area=el('ikonLeaderboardPrintArea');if(!area||!el('ikonLeaderboardTable').querySelector('table')){alert('Pehle leaderboard load karein.');return;}
