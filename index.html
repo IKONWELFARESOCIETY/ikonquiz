@@ -3640,7 +3640,12 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
 
         </div>
 
-        <!--================ BACK =================-->
+        <!-- IKON WEEKLY CHALLENGE - isolated add-on -->
+        <button type="button" class="ikonQuestBtn" onclick="ikonQuestOpen()">
+          <div class="examIcon">🎯</div><h3>Weekly Challenge</h3><span>Practical Mission + Quick Game</span>
+        </button>
+
+<!--================ BACK =================-->
 
         <div style="text-align:center;margin-top:25px;">
 
@@ -5170,6 +5175,23 @@ After successfully submitting one paper, please refresh the website (F5) before 
 
 
 
+<!-- IKON WEEKLY CHALLENGE ADD-ON PAGE (isolated) -->
+<div id="ikonQuestPage" class="hidden">
+  <div class="ikonQuestShell">
+    <button type="button" class="ikonQuestBack" onclick="ikonQuestBack()">← Back</button>
+    <header class="ikonQuestHead"><div>🎯</div><h2>IKON WEEKLY CHALLENGE</h2><p>Learn • Practice • Challenge</p></header>
+    <div id="ikonQuestLoading">Loading your challenge…</div>
+    <div id="ikonQuestCard" class="hidden">
+      <h3 id="ikonQuestTitle"></h3><div class="ikonQuestMeta" id="ikonQuestMeta"></div>
+      <p id="ikonQuestInstructions"></p><div id="ikonQuestTask" class="ikonQuestTask"></div>
+      <label class="ikonQuestUploadLabel">Upload your practical work</label>
+      <input id="ikonQuestFile" type="file" accept=".doc,.docx,.xls,.xlsx,.pbix,.html,.css,.js,.c,.zip,.pdf,.png,.jpg,.jpeg,.webp"/>
+      <div class="ikonQuestHint">Word, Excel, Power BI, HTML, C, PDF, image or ZIP (depending on task).</div>
+      <div id="ikonQuestGame"></div><button id="ikonQuestSubmit" class="primary" onclick="ikonQuestSubmit()">SUBMIT CHALLENGE</button>
+    </div><div id="ikonQuestDone" class="hidden"></div>
+  </div>
+</div>
+
 <!-- ==================================================
                     JAVASCRIPT
 ================================================== -->
@@ -5869,7 +5891,3 @@ After successfully submitting one paper, please refresh the website (F5) before 
 </body>
 
 </html>
-
-
-
-
