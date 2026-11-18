@@ -29501,129 +29501,71 @@ function applyMarksheetResultStyle(root, grade, result){
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
-    // Hide all normal portal screens and switch the body into full-page mode.
-    const pageIds = [
-        'loginPage','waitingPage','instructionPage','testPage','successPage',
-        'studentResultPage','resultVerifyPage','resultComingSoonPage',
-        'topperAnnouncementPage','examFormPage','mockTestPage'
-    ];
-    pageIds.forEach(function(id){
+    const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
+    ids.forEach(function(id){
         const el = document.getElementById(id);
-        if(el){ el.style.setProperty('display','none','important'); }
+        if(el) el.style.display = 'none';
     });
+
     const portal = document.getElementById('assignmentPortal');
-    if(!portal){ alert('Assignment Portal HTML not found.'); return; }
-    document.body.classList.add('assignment-mode');
-    portal.style.setProperty('display','block','important');
-    portal.style.setProperty('visibility','visible','important');
-    window.scrollTo({top:0,behavior:'smooth'});
+    if(!portal){
+        alert('Assignment Portal HTML not found.');
+        return;
+    }
+
+    portal.style.display = 'block';
+    portal.style.visibility = 'visible';
+    window.scrollTo({top:0, behavior:'smooth'});
 };
 
 window.closeAssignmentPortal = function(){
-    document.body.classList.remove('assignment-mode');
     const portal = document.getElementById('assignmentPortal');
-    if(portal) portal.style.setProperty('display','none','important');
-    // Return to the normal login screen, without touching the other portal flows.
+    if(portal) portal.style.display = 'none';
+
     const login = document.getElementById('loginPage');
-    if(login){
-        login.classList.remove('hidden');
-        login.style.removeProperty('display');
-        login.style.setProperty('display','flex','important');
-    }
-    window.scrollTo({top:0,behavior:'smooth'});
+    if(login) login.style.display = 'block';
 };
 
 window.loadAssignmentsForStudent = function(){
     const input = document.getElementById('assignmentRegNo');
     const reg = (input && input.value ? input.value : '').trim().toUpperCase();
     const status = document.getElementById('assignmentStatus');
-
-    if(!reg){
-        if(status) status.textContent = 'Registration Number enter karein.';
-        return;
-    }
-
-    if(status) status.textContent = 'Loading assignments...';
-
+    if(!reg){ if(status) status.textContent='Registration Number enter karein.'; return; }
+    if(status) status.textContent='Loading your missions...';
     fetch(SCRIPT_URL + '?action=assignmentList&regNo=' + encodeURIComponent(reg) + '&_=' + Date.now(), {cache:'no-store'})
-        .then(function(response){
-            if(!response.ok) throw new Error('Server error: ' + response.status);
-            return response.json();
-        })
-        .then(function(data){
-            if(!data.success){
-                if(status) status.textContent = data.message || 'Student record not found.';
-                return;
-            }
-
-            const loginPanel = document.getElementById('assignmentLoginPanel');
-            if(loginPanel) loginPanel.style.display = 'none';
-
-            const info = document.getElementById('assignmentStudentInfo');
-            if(info){
-                info.textContent = '';
-                const heading = document.createElement('h3');
-                heading.textContent = (data.name || '') + ' - ' + (data.regNo || reg);
-                const course = document.createElement('p');
-                course.textContent = 'Course: ' + (data.course || '');
-                info.appendChild(heading);
-                info.appendChild(course);
-            }
-
-            const list = document.getElementById('assignmentList');
-            if(!list){
-                if(status) status.textContent = 'Assignment list container not found.';
-                return;
-            }
-
-            list.innerHTML = '';
-            const assignments = Array.isArray(data.assignments) ? data.assignments : [];
-
-            if(assignments.length === 0){
-                list.textContent = 'No assignments currently assigned.';
-                if(status) status.textContent = '';
-                return;
-            }
-
-            assignments.forEach(function(assignment){
-                const card = document.createElement('div');
-                card.style.cssText = 'border:1px solid #dbe3ef;border-radius:14px;padding:16px;margin:12px 0;';
-
-                const title = document.createElement('h3');
-                title.textContent = (assignment.paper || '') + ' - ' + (assignment.topic || 'Assignment');
-                const task = document.createElement('p');
-                task.textContent = assignment.task || '';
-                task.style.whiteSpace = 'pre-wrap';
-                const state = document.createElement('p');
-                state.textContent = 'Status: ' + (assignment.status || 'PENDING');
-                const label = document.createElement('label');
-                label.textContent = 'Upload assignment file';
-                const inputFile = document.createElement('input');
-                inputFile.type = 'file';
-                inputFile.accept = '.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';
-                inputFile.id = 'file_' + assignment.id;
-                const button = document.createElement('button');
-                button.className = 'primary';
-                button.textContent = 'Submit';
-                button.onclick = function(){ window.submitIkonAssignment(assignment.id, reg, button); };
-                const message = document.createElement('div');
-                message.className = 'assignmentUploadMsg';
-
-                card.appendChild(title);
-                card.appendChild(task);
-                card.appendChild(state);
-                card.appendChild(label);
-                card.appendChild(inputFile);
-                card.appendChild(button);
-                card.appendChild(message);
-                list.appendChild(card);
-            });
-
-            if(status) status.textContent = '';
-        })
-        .catch(function(error){
-            if(status) status.textContent = 'Could not load assignments: ' + error.message;
+      .then(function(response){ if(!response.ok) throw new Error('Server error: '+response.status); return response.json(); })
+      .then(function(data){
+        if(!data.success){ if(status) status.textContent=data.message||'Student record not found.'; return; }
+        const loginPanel=document.getElementById('assignmentLoginPanel'); if(loginPanel) loginPanel.style.display='none';
+        const info=document.getElementById('assignmentStudentInfo');
+        const list=document.getElementById('assignmentList');
+        if(!list){ if(status) status.textContent='Assignment list container not found.'; return; }
+        const assignments=Array.isArray(data.assignments)?data.assignments:[];
+        const completed=assignments.filter(a=>String(a.status||'').toUpperCase()==='SUBMITTED').length;
+        const pending=Math.max(0,assignments.length-completed);
+        if(info){
+          info.innerHTML='';
+          const wrap=document.createElement('div'); wrap.className='assign-student-hero';
+          wrap.innerHTML='<div class="assign-hero-icon">🎓</div><div class="assign-hero-main"><div class="assign-eyebrow">MISSION CONTROL</div><h2></h2><p class="assign-course"></p></div><div class="assign-stats"><div><strong class="assign-total"></strong><span>Total Missions</span></div><div><strong class="assign-done"></strong><span>Completed</span></div><div><strong class="assign-pending"></strong><span>Pending</span></div></div>';
+          wrap.querySelector('h2').textContent=data.name||'Student'; wrap.querySelector('.assign-course').textContent='REG NO: '+(data.regNo||reg)+' • '+(data.course||'Course');
+          wrap.querySelector('.assign-total').textContent=assignments.length; wrap.querySelector('.assign-done').textContent=completed; wrap.querySelector('.assign-pending').textContent=pending;
+          const progress=document.createElement('div'); progress.className='assign-progress-wrap'; progress.innerHTML='<div class="assign-progress-label"><span>MISSION PROGRESS</span><strong>'+completed+' / '+assignments.length+'</strong></div><div class="assign-progress"><span></span></div>';
+          progress.querySelector('span').style.width=(assignments.length?completed/assignments.length*100:0)+'%'; wrap.appendChild(progress); info.appendChild(wrap);
+        }
+        list.innerHTML='';
+        if(!assignments.length){ list.innerHTML='<div class="assign-empty"><div>🌟</div><h3>All clear!</h3><p>Abhi koi mission assign nahi kiya gaya.</p></div>'; if(status)status.textContent=''; return; }
+        assignments.forEach(function(a,index){
+          const submitted=String(a.status||'PENDING').toUpperCase()==='SUBMITTED';
+          const paper=String(a.paper||'Assignment');
+          const icon=paper.toUpperCase().includes('EXCEL')?'📊':paper.toUpperCase().includes('POWER BI')?'📈':paper.toUpperCase().includes('TALLY')?'💰':paper.toUpperCase().includes('HTML')?'🌐':paper.toUpperCase().includes('PPT')?'🎤':paper.toUpperCase().includes('WORD')?'📝':'🎯';
+          const card=document.createElement('article'); card.className='assign-mission-card '+(submitted?'is-submitted':'');
+          card.innerHTML='<div class="assign-card-top"><div class="assign-icon">'+icon+'</div><div class="assign-card-meta"><span class="assign-mission-number">MISSION '+String(index+1).padStart(2,'0')+'</span><span class="assign-status '+(submitted?'submitted':'pending')+'">'+(submitted?'✓ SUBMITTED':'● PENDING')+'</span></div></div><h3 class="assign-card-title"></h3><div class="assign-topic"></div><div class="assign-task"></div><div class="assign-card-divider"></div><div class="assign-upload-label">📎 Your mission file</div><div class="assign-file-zone"><div class="assign-file-emoji">📁</div><p>Choose your completed file</p><small>PDF · Word · Excel · PowerPoint · Image · PBIX (Max 20 MB)</small><input type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix" id="file_'+a.id+'" /></div><button class="assign-submit-btn" type="button">'+(submitted?'✓ Mission submitted':'🚀 Submit Mission')+'</button><div class="assignmentUploadMsg assign-feedback"></div>';
+          card.querySelector('.assign-card-title').textContent=paper+' Challenge'; card.querySelector('.assign-topic').textContent=a.topic||'Practice Challenge'; card.querySelector('.assign-task').textContent=a.task||'Complete the assigned task and upload your file.';
+          const fileInput=card.querySelector('input[type=file]'); fileInput.addEventListener('change',function(){const zone=card.querySelector('.assign-file-zone');zone.classList.toggle('has-file',!!fileInput.files[0]);if(fileInput.files[0])zone.querySelector('p').textContent=fileInput.files[0].name;});
+          const button=card.querySelector('.assign-submit-btn'); button.disabled=submitted; button.onclick=function(){window.submitIkonAssignment(a.id,reg,button);}; list.appendChild(card);
         });
+        if(status)status.textContent='';
+      }).catch(function(error){if(status)status.textContent='Could not load assignments: '+error.message;});
 };
 
 window.submitIkonAssignment = function(assignmentId, reg, button){
@@ -29673,7 +29615,7 @@ window.submitIkonAssignment = function(assignmentId, reg, button){
             try{ result = JSON.parse(text); }
             catch(error){ result = {success:false, message:text || 'Invalid server response.'}; }
 
-            if(message) message.textContent = result.message || (result.success ? 'Submitted successfully.' : 'Submission failed.');
+            if(message) { message.textContent = result.message || (result.success ? 'Mission completed successfully! 🎉' : 'Submission failed.'); if(result.success) message.classList.add('success'); }
             if(button){
                 if(result.success){
                     button.textContent = 'Submitted';
