@@ -29497,4 +29497,201 @@ function applyMarksheetResultStyle(root, grade, result){
 
 })();
 
-//====================================================\n// IKON ASSIGNMENT PORTAL (ADDED MODULE)\n//====================================================\nfunction openAssignmentPortal(){\n const ids=['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];\n ids.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});\n const p=document.getElementById('assignmentPortal');if(p)p.style.display='block';\n window.scrollTo({top:0,behavior:'smooth'});\n}\nfunction closeAssignmentPortal(){const p=document.getElementById('assignmentPortal');if(p)p.style.display='none';const l=document.getElementById('loginPage');if(l)l.style.display='block';}\nfunction loadAssignmentsForStudent(){\n const reg=(document.getElementById('assignmentRegNo').value||'').trim().toUpperCase();\n const status=document.getElementById('assignmentStatus'); if(!reg){status.textContent='Registration Number enter karein.';return;}\n status.textContent='Loading assignments…';\n fetch(SCRIPT_URL+'?action=assignmentList&regNo='+encodeURIComponent(reg))\n .then(r=>r.json()).then(d=>{\n if(!d.success){status.textContent=d.message||'Student record not found.';return;}\n document.getElementById('assignmentLoginPanel').style.display='none';\n document.getElementById('assignmentStudentInfo').innerHTML='<h3>'+escAssign(d.name)+' · '+escAssign(d.regNo)+'</h3><p>Course: '+escAssign(d.course)+'</p>';\n const list=document.getElementById('assignmentList');list.innerHTML='';\n if(!d.assignments.length){list.innerHTML='<p>No assignments currently assigned.</p>';status.textContent='';return;}\n d.assignments.forEach(a=>{const card=document.createElement('div');card.style.cssText='border:1px solid #dbe3ef;border-radius:14px;padding:16px;margin:12px 0';\n card.innerHTML='<h3>'+escAssign(a.paper)+' · '+escAssign(a.topic)+'</h3><p style="white-space:pre-wrap">'+escAssign(a.task)+'</p><p><b>Status:</b> '+escAssign(a.status||'PENDING')+'</p><label>Upload PDF or Image</label><input type="file" accept=".pdf,.jpg,.jpeg,.png,image/*" id="file_'+a.id+'"><button class="primary" onclick="submitIkonAssignment(\''+a.id+'\',\''+reg+'\',this)">Submit</button><div class="assignmentUploadMsg"></div>';list.appendChild(card);});status.textContent='';\n }).catch(e=>status.textContent='Could not load assignments: '+e.message);\n}\nfunction escAssign(s){return String(s||'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}\nfunction submitIkonAssignment(id,reg,btn){\n const inp=document.getElementById('file_'+id),file=inp&&inp.files[0],msg=btn.parentElement.querySelector('.assignmentUploadMsg');\n if(!file){msg.textContent='File select karein.';return;} if(file.size>8*1024*1024){msg.textContent='File 8 MB se chhoti honi chahiye.';return;}\n if(!/\.(pdf|jpg|jpeg|png)$/i.test(file.name)){msg.textContent='PDF/JPG/JPEG/PNG file allowed.';return;}\n btn.disabled=true;msg.textContent='Uploading…';const reader=new FileReader();reader.onload=()=>{const base64=reader.result.split(',')[1];\n fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'uploadAssignment',regNo:reg,assignmentId:id,fileName:file.name,mimeType:file.type,base64:base64})})\n .then(r=>r.text()).then(t=>{let d;try{d=JSON.parse(t)}catch{d={success:false,message:t}};msg.textContent=d.message|| (d.success?'Submitted successfully.':'Submission failed.');if(d.success)btn.textContent='Submitted';else btn.disabled=false;}).catch(e=>{msg.textContent='Upload error: '+e.message;btn.disabled=false;});};reader.onerror=()=>{msg.textContent='File read error.';btn.disabled=false;};reader.readAsDataURL(file);\n}\n
+//====================================================
+// IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
+//====================================================
+window.openAssignmentPortal = function(){
+    const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
+    ids.forEach(function(id){
+        const el = document.getElementById(id);
+        if(el) el.style.display = 'none';
+    });
+
+    const portal = document.getElementById('assignmentPortal');
+    if(!portal){
+        alert('Assignment Portal HTML not found.');
+        return;
+    }
+
+    portal.style.display = 'block';
+    portal.style.visibility = 'visible';
+    window.scrollTo({top:0, behavior:'smooth'});
+};
+
+window.closeAssignmentPortal = function(){
+    const portal = document.getElementById('assignmentPortal');
+    if(portal) portal.style.display = 'none';
+
+    const login = document.getElementById('loginPage');
+    if(login) login.style.display = 'block';
+};
+
+window.loadAssignmentsForStudent = function(){
+    const input = document.getElementById('assignmentRegNo');
+    const reg = (input && input.value ? input.value : '').trim().toUpperCase();
+    const status = document.getElementById('assignmentStatus');
+
+    if(!reg){
+        if(status) status.textContent = 'Registration Number enter karein.';
+        return;
+    }
+
+    if(status) status.textContent = 'Loading assignments...';
+
+    fetch(SCRIPT_URL + '?action=assignmentList&regNo=' + encodeURIComponent(reg) + '&_=' + Date.now(), {cache:'no-store'})
+        .then(function(response){
+            if(!response.ok) throw new Error('Server error: ' + response.status);
+            return response.json();
+        })
+        .then(function(data){
+            if(!data.success){
+                if(status) status.textContent = data.message || 'Student record not found.';
+                return;
+            }
+
+            const loginPanel = document.getElementById('assignmentLoginPanel');
+            if(loginPanel) loginPanel.style.display = 'none';
+
+            const info = document.getElementById('assignmentStudentInfo');
+            if(info){
+                info.textContent = '';
+                const heading = document.createElement('h3');
+                heading.textContent = (data.name || '') + ' - ' + (data.regNo || reg);
+                const course = document.createElement('p');
+                course.textContent = 'Course: ' + (data.course || '');
+                info.appendChild(heading);
+                info.appendChild(course);
+            }
+
+            const list = document.getElementById('assignmentList');
+            if(!list){
+                if(status) status.textContent = 'Assignment list container not found.';
+                return;
+            }
+
+            list.innerHTML = '';
+            const assignments = Array.isArray(data.assignments) ? data.assignments : [];
+
+            if(assignments.length === 0){
+                list.textContent = 'No assignments currently assigned.';
+                if(status) status.textContent = '';
+                return;
+            }
+
+            assignments.forEach(function(assignment){
+                const card = document.createElement('div');
+                card.style.cssText = 'border:1px solid #dbe3ef;border-radius:14px;padding:16px;margin:12px 0;';
+
+                const title = document.createElement('h3');
+                title.textContent = (assignment.paper || '') + ' - ' + (assignment.topic || 'Assignment');
+                const task = document.createElement('p');
+                task.textContent = assignment.task || '';
+                task.style.whiteSpace = 'pre-wrap';
+                const state = document.createElement('p');
+                state.textContent = 'Status: ' + (assignment.status || 'PENDING');
+                const label = document.createElement('label');
+                label.textContent = 'Upload assignment file';
+                const inputFile = document.createElement('input');
+                inputFile.type = 'file';
+                inputFile.accept = '.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';
+                inputFile.id = 'file_' + assignment.id;
+                const button = document.createElement('button');
+                button.className = 'primary';
+                button.textContent = 'Submit';
+                button.onclick = function(){ window.submitIkonAssignment(assignment.id, reg, button); };
+                const message = document.createElement('div');
+                message.className = 'assignmentUploadMsg';
+
+                card.appendChild(title);
+                card.appendChild(task);
+                card.appendChild(state);
+                card.appendChild(label);
+                card.appendChild(inputFile);
+                card.appendChild(button);
+                card.appendChild(message);
+                list.appendChild(card);
+            });
+
+            if(status) status.textContent = '';
+        })
+        .catch(function(error){
+            if(status) status.textContent = 'Could not load assignments: ' + error.message;
+        });
+};
+
+window.submitIkonAssignment = function(assignmentId, reg, button){
+    const input = document.getElementById('file_' + assignmentId);
+    const file = input && input.files ? input.files[0] : null;
+    const card = button ? button.parentElement : null;
+    const message = card ? card.querySelector('.assignmentUploadMsg') : null;
+    const allowed = /\\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i;
+    const maxBytes = 20 * 1024 * 1024;
+
+    if(!file){
+        if(message) message.textContent = 'File select karein.';
+        return;
+    }
+
+    if(file.size > maxBytes){
+        if(message) message.textContent = 'File 20 MB se chhoti honi chahiye.';
+        return;
+    }
+
+    if(!allowed.test(file.name)){
+        if(message) message.textContent = 'PDF, image, Word, Excel, PowerPoint aur PBIX file allowed hain.';
+        return;
+    }
+
+    if(button) button.disabled = true;
+    if(message) message.textContent = 'Uploading...';
+
+    const reader = new FileReader();
+    reader.onload = function(){
+        const base64 = String(reader.result || '').split(',')[1];
+        fetch(SCRIPT_URL, {
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body:JSON.stringify({
+                action:'uploadAssignment',
+                regNo:reg,
+                assignmentId:assignmentId,
+                fileName:file.name,
+                mimeType:file.type || 'application/octet-stream',
+                base64:base64
+            })
+        })
+        .then(function(response){ return response.text(); })
+        .then(function(text){
+            let result;
+            try{ result = JSON.parse(text); }
+            catch(error){ result = {success:false, message:text || 'Invalid server response.'}; }
+
+            if(message) message.textContent = result.message || (result.success ? 'Submitted successfully.' : 'Submission failed.');
+            if(button){
+                if(result.success){
+                    button.textContent = 'Submitted';
+                    button.disabled = true;
+                }else{
+                    button.disabled = false;
+                }
+            }
+        })
+        .catch(function(error){
+            if(message) message.textContent = 'Upload error: ' + error.message;
+            if(button) button.disabled = false;
+        });
+    };
+
+    reader.onerror = function(){
+        if(message) message.textContent = 'File read error.';
+        if(button) button.disabled = false;
+    };
+
+    reader.readAsDataURL(file);
+};
+
+// Expose all handlers used by inline HTML click handlers.
+window.openAssignmentPortal = window.openAssignmentPortal;
+window.closeAssignmentPortal = window.closeAssignmentPortal;
+window.loadAssignmentsForStudent = window.loadAssignmentsForStudent;
+window.submitIkonAssignment = window.submitIkonAssignment;
