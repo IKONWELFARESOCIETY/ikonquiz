@@ -29605,7 +29605,7 @@ window.submitIkonAssignment = function(assignmentId, reg, button){
     const file = input && input.files ? input.files[0] : null;
     const card = button ? button.parentElement : null;
     const message = card ? card.querySelector('.assignmentUploadMsg') : null;
-    const allowed = /\\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i;
+    const allowed = /\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i;
     const maxBytes = 8 * 1024 * 1024;
 
     if(!file){
