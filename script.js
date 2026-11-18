@@ -29501,7 +29501,7 @@ function applyMarksheetResultStyle(root, grade, result){
    IKON WEEKLY CHALLENGE ADD-ON - ISOLATED MODULE
    Does not replace or modify existing exam functions.
 ====================================================== */
-const IKON_QUEST_API = "REPLACE_WITH_WEEKLY_CHALLENGE_APPS_SCRIPT_WEB_APP_URL";
+const IKON_QUEST_API = "https://script.google.com/macros/s/AKfycbyJfWf5-hWNYvtCohHV-_PljYpeSfsc66eceo1lF3OTXUXphedDcb5-mbZDTpmoW7sL/exec";
 let ikonQuestData = null, ikonQuestAnswers = {};
 function ikonQuestOpen(){
   const examType=document.getElementById('examTypePage'); if(examType) examType.classList.add('hidden');
