@@ -29697,11 +29697,14 @@ window.submitIkonAssignment = window.submitIkonAssignment;
       .then(r=>r.json()).then(d=>{
         if(d.status!=='SUCCESS')throw new Error(d.message||'Admin login failed.');
         adminToken=d.token;pass.value='';window.closeIkonAssignmentAdminLogin();
-        var panel=el('ikonAssignmentAdminPanel');if(panel)panel.style.display='block';
+        /* Assignment Admin runs as a full-screen isolated workspace. */
+        var legacyVerify=el('adminVerifyPage');if(legacyVerify)legacyVerify.classList.add('hidden');
+        var panel=el('ikonAssignmentAdminPanel');if(panel){panel.style.display='block';panel.scrollTop=0;}
+        document.body.style.overflow='hidden';
         window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();
       }).catch(e=>{if(msg)msg.textContent=e.message;});
   };
-  window.logoutIkonAssignmentAdmin=function(){adminToken='';var p=el('ikonAssignmentAdminPanel');if(p)p.style.display='none';};
+  window.logoutIkonAssignmentAdmin=function(){adminToken='';var p=el('ikonAssignmentAdminPanel');if(p)p.style.display='none';document.body.style.overflow='';};
   window.loadIkonAssignmentReviews=function(){
     var box=el('ikonAdminReviewList');if(!box)return;box.textContent='Loading submissions...';
     fetch(SCRIPT_URL+'?action=assignmentAdminList&token='+encodeURIComponent(adminToken)+'&_='+Date.now(),{cache:'no-store'})
