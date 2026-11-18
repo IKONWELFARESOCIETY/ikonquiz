@@ -22872,3 +22872,5 @@ body.print-hall-ticket #hallTicketPage .hallPhotoBox img{
         print-color-adjust: exact !important;
     }
 }
+/* Assignment portal isolated styling */
+#assignmentPortal input[type=file]{display:block;margin:12px 0;max-width:100%}#assignmentPortal button{margin:10px 5px;padding:11px 16px;border-radius:10px;cursor:pointer}
