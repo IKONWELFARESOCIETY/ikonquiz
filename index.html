@@ -404,6 +404,8 @@ content="2AERPUx5KW7XJhm7Hh3g1vVLXC5nzXZoMIcmWN2VGlQ">
     onclick="openMockTestModal(event)">
     Mock Test
 </button>
+
+<button type="button" class="secondary" id="assignmentHomeBtn" onclick="openAssignmentPortal()">📚 Assignment</button>
     </div>
 </div>
 
@@ -5173,6 +5175,13 @@ After successfully submitting one paper, please refresh the website (F5) before 
 <!-- ==================================================
                     JAVASCRIPT
 ================================================== -->
+
+
+<!-- IKON ASSIGNMENT PORTAL (isolated addition) -->
+<div id="assignmentPortal" style="display:none;max-width:900px;margin:25px auto;padding:20px;background:#fff;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.12);">
+<button onclick="closeAssignmentPortal()" class="secondary">← Back</button><h2 style="text-align:center">Assignment Portal</h2>
+<div id="assignmentLoginPanel"><label>Registration Number</label><input id="assignmentRegNo" type="text" placeholder="Enter Registration Number"><button class="primary" onclick="loadAssignmentsForStudent()">Continue</button></div>
+<div id="assignmentStudentInfo"></div><div id="assignmentList"></div><div id="assignmentStatus" style="margin-top:15px"></div></div>
 
 <script src="script.js"></script>
 
