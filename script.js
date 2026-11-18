@@ -29501,6 +29501,22 @@ function applyMarksheetResultStyle(root, grade, result){
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
+    // Hide the entire main exam portal shell, not just the login element.
+    const mainShell = document.querySelector('body > .container') || document.querySelector('.container');
+    if(mainShell){
+        mainShell.setAttribute('data-assignment-hidden','1');
+        mainShell.style.setProperty('display','none','important');
+    }
+    const portal = document.getElementById('assignmentPortal');
+    if(!portal){ alert('Assignment Portal HTML not found.'); return; }
+    document.body.classList.add('assignment-mode');
+    portal.style.setProperty('display','block','important');
+    portal.style.setProperty('visibility','visible','important');
+    portal.style.setProperty('opacity','1','important');
+    window.scrollTo(0,0);
+};
+
+window.openAssignmentPortal = function(){
     const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
     ids.forEach(function(id){
         const el = document.getElementById(id);
@@ -29520,10 +29536,16 @@ window.openAssignmentPortal = function(){
 
 window.closeAssignmentPortal = function(){
     const portal = document.getElementById('assignmentPortal');
-    if(portal) portal.style.display = 'none';
-
+    if(portal) portal.style.setProperty('display','none','important');
+    document.body.classList.remove('assignment-mode');
+    const mainShell = document.querySelector('[data-assignment-hidden="1"]');
+    if(mainShell){
+        mainShell.style.removeProperty('display');
+        mainShell.removeAttribute('data-assignment-hidden');
+    }
     const login = document.getElementById('loginPage');
-    if(login) login.style.display = 'block';
+    if(login){ login.style.removeProperty('display'); }
+    window.scrollTo(0,0);
 };
 
 window.loadAssignmentsForStudent = function(){
