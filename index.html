@@ -6143,15 +6143,16 @@ After successfully submitting one paper, please refresh the website (F5) before 
     <h2>🛡️ IKON Assignment Admin</h2>
     <div><button type="button" class="secondary" onclick="loadIkonAssignmentReviews()">Refresh</button> <button type="button" class="secondary" onclick="logoutIkonAssignmentAdmin()">Logout</button></div>
   </div>
-  <h3>📥 Student Submissions — Review & XP Award</h3>
+  <h3>📥 Student Submissions — Marks Review</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><select id="ikonAdminPaperFilter" onchange="renderIkonAssignmentReviews()"><option value="ALL">All Papers</option></select><button type="button" class="secondary" onclick="downloadIkonSubmissionPaperPDF()">Download Selected Paper PDF</button></div>
   <div id="ikonAdminReviewList">Admin login required.</div>
   <hr>
-  <h3>🏆 Student Skill Quest Leaderboard</h3>
+  <h3>📊 Paper-wise Assignment Marks Report</h3>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0">
-    <select id="ikonLeaderboardCourse" onchange="loadIkonAssignmentLeaderboard()"><option value="ALL">All Courses</option></select>
+    <select id="ikonLeaderboardPaper" onchange="loadIkonAssignmentLeaderboard()"><option value="ALL">All Papers</option></select>
     <select id="ikonLeaderboardLimit" onchange="loadIkonAssignmentLeaderboard()"><option value="">All Students</option><option value="10">Top 10</option><option value="20">Top 20</option></select>
     <button type="button" class="primary" onclick="loadIkonAssignmentLeaderboard()">Load Leaderboard</button>
-    <button type="button" class="secondary" onclick="downloadIkonLeaderboardPDF()">Download PDF</button>
+    <button type="button" class="secondary" onclick="downloadIkonPaperPDF()">Download Paper PDF</button>
   </div>
   <div id="ikonLeaderboardPrintArea"><div id="ikonLeaderboardTable"></div></div>
 </div>
