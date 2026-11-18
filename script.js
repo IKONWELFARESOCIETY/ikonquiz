@@ -29501,20 +29501,34 @@ function applyMarksheetResultStyle(root, grade, result){
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
-    const ids = ['loginPage','studentResultPage','resultVerifyPage','topperAnnouncementPage'];
-    ids.forEach(function(id){
-        const el = document.getElementById(id);
-        if(el) el.style.display = 'none';
-    });
-
     const portal = document.getElementById('assignmentPortal');
     if(!portal){
         alert('Assignment Portal HTML not found.');
         return;
     }
 
+    // Hide the complete exam/login layout (header, branding and login card).
+    // Assignment Portal is outside .container in index.html, so it remains visible.
+    const mainContainer = document.querySelector('body > .container');
+    if(mainContainer){
+        if(typeof mainContainer.dataset.assignmentPreviousDisplay === 'undefined'){
+            mainContainer.dataset.assignmentPreviousDisplay = mainContainer.style.display || '';
+        }
+        mainContainer.style.display = 'none';
+    }
+
+    // Show Assignment Portal as a standalone full-page screen.
     portal.style.display = 'block';
     portal.style.visibility = 'visible';
+    portal.style.width = '100%';
+    portal.style.maxWidth = 'none';
+    portal.style.minHeight = '100vh';
+    portal.style.boxSizing = 'border-box';
+    portal.style.margin = '0';
+    portal.style.padding = '24px clamp(14px, 3vw, 40px)';
+    portal.style.borderRadius = '0';
+    portal.style.boxShadow = 'none';
+    document.body.style.background = '#f4f7fc';
     window.scrollTo({top:0, behavior:'smooth'});
 };
 
@@ -29522,8 +29536,15 @@ window.closeAssignmentPortal = function(){
     const portal = document.getElementById('assignmentPortal');
     if(portal) portal.style.display = 'none';
 
-    const login = document.getElementById('loginPage');
-    if(login) login.style.display = 'block';
+    const mainContainer = document.querySelector('body > .container');
+    if(mainContainer){
+        const previousDisplay = mainContainer.dataset.assignmentPreviousDisplay;
+        mainContainer.style.display = previousDisplay || '';
+        delete mainContainer.dataset.assignmentPreviousDisplay;
+    }
+
+    document.body.style.background = '';
+    window.scrollTo({top:0, behavior:'smooth'});
 };
 
 window.loadAssignmentsForStudent = function(){
