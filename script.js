@@ -29596,7 +29596,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const title=document.createElement('h3');title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
-  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper)&&Number(a.level)===3);
+  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
   const steps=document.createElement('p');steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
   const l1=document.createElement('div');l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
   l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
@@ -29609,7 +29609,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   else renderIkonPuzzle(ch,reg,l2);
   card.appendChild(l2);
   const l3=document.createElement('div');l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
-  l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>3 practical tasks · Har task ki file alag upload karein. Admin review ke baad marks aur feedback milega.</p>';
+  l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
