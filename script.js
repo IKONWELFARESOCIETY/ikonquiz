@@ -29739,8 +29739,13 @@ function renderIkonPracticalTask(a,reg,box,index){
 
   // Pending/correction tasks must show an upload control even when an older
   // assignmentList response omits the optional canUpload property.
-  const uploadAllowed = a.canUpload === true ||
-    (a.canUpload == null && (status === 'PENDING' || status === 'CORRECTION REQUIRED'));
+  // A task rendered inside the unlocked Level 3 panel is eligible for upload
+  // whenever it has not yet been submitted, regardless of a stale/incorrect
+  // canUpload=false flag returned by an older Apps Script deployment.
+  // Correction-required/rejected tasks may also be resubmitted.
+  const uploadAllowed = status === 'PENDING' ||
+    status === 'CORRECTION REQUIRED' || status === 'REJECTED' ||
+    a.canUpload === true;
 
   if(uploadAllowed){
     const input=document.createElement('input');
