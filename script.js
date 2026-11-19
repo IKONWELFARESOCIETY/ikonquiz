@@ -29574,8 +29574,15 @@ window.loadAssignmentsForStudent = function(){
 };
 
 function ikonAssignmentPost(payload){
-  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-    .then(r=>r.text()).then(t=>{let d;try{d=JSON.parse(t);}catch(e){throw new Error(t||'Invalid server response');}if(!d.success)throw new Error(d.message||'Request failed');return d;});
+  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),redirect:'follow'})
+    .then(async r=>{
+      const t=await r.text();
+      let d;
+      try{d=JSON.parse(t);}catch(e){throw new Error('Server ne JSON response nahi diya. Apps Script deployment URL/version check karein. Response: '+String(t||'').slice(0,180));}
+      if(!r.ok)throw new Error('Server error '+r.status+': '+(d.message||'Request failed'));
+      if(!d || d.success!==true)throw new Error((d&&d.message)||'Upload request failed.');
+      return d;
+    });
 }
 function ikonAssignmentPaperKey(value){
   return String(value||'').toUpperCase().replace(/MICROSOFT/g,'').replace(/^MS\s*/,'').replace(/[^A-Z0-9]/g,'').trim();
@@ -29589,7 +29596,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const title=document.createElement('h3');title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
-  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId).trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper)&&Number(a.level)===3);
+  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper)&&Number(a.level)===3);
   const steps=document.createElement('p');steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
   const l1=document.createElement('div');l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
   l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
@@ -29608,7 +29615,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
   // Unlock Level 4 only when the server confirms all three distinct practical uploads.
-  const level3Done=practical.length===3 && practical.every(a=>a.uploaded===true || ['UNDER REVIEW','APPROVED','CORRECTION REQUIRED','REJECTED'].includes(String(a.status||'').toUpperCase()));
+  const level3Done=practical.length===3 && new Set(practical.map(a=>String(a.id||'').trim())).size===3 && practical.every(a=>a.uploaded===true);
   const l4=document.createElement('div');l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.innerHTML='<h4>LEVEL 4 – Brain Battle Arena</h4><p>Match Pairs · Arrange the Steps · Spot the Error · Speed Round</p>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
@@ -29771,11 +29778,17 @@ window.submitIkonAssignment = function(assignmentId,reg,button,fileInput){
   if(file.size>8*1024*1024){if(msg)msg.textContent='File 8 MB se chhoti honi chahiye.';return;}
   if(!/\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i.test(file.name)){if(msg)msg.textContent='Allowed file format select karein.';return;}
   if(button)button.disabled=true;if(msg)msg.textContent='Uploading...';
-  const reader=new FileReader();reader.onload=function(){const base64=String(reader.result||'').split(',')[1];
+  const reader=new FileReader();
+  reader.onload=function(){
+    const dataUrl=String(reader.result||'');
+    const base64=dataUrl.indexOf(',')>=0?dataUrl.slice(dataUrl.indexOf(',')+1):'';
+    if(!base64){if(msg)msg.textContent='File data read nahi ho paya.';if(button)button.disabled=false;return;}
     ikonAssignmentPost({action:'uploadAssignment',regNo:reg,assignmentId:assignmentId,fileName:file.name,mimeType:file.type||'application/octet-stream',base64:base64})
-      .then(d=>{if(msg)msg.textContent=d.message||'Uploaded successfully.';setTimeout(()=>window.loadAssignmentsForStudent(),900);})
-      .catch(e=>{if(msg)msg.textContent=e.message;if(button)button.disabled=false;});
-  };reader.onerror=function(){if(msg)msg.textContent='File read error.';if(button)button.disabled=false;};reader.readAsDataURL(file);
+      .then(d=>{if(msg)msg.textContent=d.message||'Uploaded successfully.';setTimeout(()=>window.loadAssignmentsForStudent(),700);})
+      .catch(e=>{if(msg)msg.textContent='Upload failed: '+e.message;if(button)button.disabled=false;});
+  };
+  reader.onerror=function(){if(msg)msg.textContent='File read error. Dobara file select karein.';if(button)button.disabled=false;};
+  reader.readAsDataURL(file);
 };
 
 // Expose all handlers used by inline HTML click handlers.
