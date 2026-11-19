@@ -5235,6 +5235,62 @@ After successfully submitting one paper, please refresh the website (F5) before 
 #assignmentStatus{padding:10px 13px;border-radius:10px;color:#9a4d15;font-size:13px;font-weight:750}
 @media(max-width:760px){#assignmentPortal{width:calc(100% - 20px)!important;margin:12px auto!important;padding:17px!important;border-radius:20px!important}#assignmentList{grid-template-columns:1fr;gap:13px}.ikon-level-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}.ikon-level-tile{padding:11px!important;min-height:125px}.ikon-level-tile b{font-size:14px!important}.ikon-level-tile span{font-size:11px!important}}
 @media(max-width:430px){.ikon-level-grid{grid-template-columns:1fr!important}.ikon-level-tile{min-height:0}.ikon-mission-card{padding:16px!important}.ikon-mission-top h3{font-size:15px!important}}
+
+/* ===== IKON WEEKLY ASSIGNMENT EXPERIENCE · SCOPED VISUAL REFRESH ===== */
+#assignmentPortal{
+  width:min(1240px,calc(100% - 28px))!important;max-width:1240px!important;
+  margin:28px auto!important;padding:clamp(18px,3vw,38px)!important;
+  border:1px solid #d7e2f0!important;border-radius:30px!important;
+  background:radial-gradient(ellipse at 8% 0%,rgba(53,125,235,.13),transparent 34%),
+             radial-gradient(ellipse at 92% 12%,rgba(15,165,140,.08),transparent 30%),
+             linear-gradient(145deg,#fff 0%,#f7faff 55%,#eff5fc 100%)!important;
+  box-shadow:0 28px 80px rgba(20,48,88,.15)!important;color:#172b49!important;
+}
+#assignmentPortal:before{height:6px;background:linear-gradient(90deg,#12366d,#1766d2,#19a5b5,#1766d2,#12366d)}
+#assignmentPortal>button:first-child{width:auto!important;min-width:118px;padding:11px 17px!important;margin:0 0 16px!important;border:1px solid #d6e2f1!important;border-radius:12px!important;background:#fff!important;color:#25466f!important;font-size:13px!important;font-weight:850!important;box-shadow:0 5px 15px rgba(24,55,96,.07)!important}
+#assignmentPortal>h2{margin:8px 0 26px!important;text-align:left!important;color:#132f56!important;font-size:clamp(27px,3.4vw,40px)!important;letter-spacing:-1.2px!important;font-weight:950!important}
+#assignmentPortal>h2:after{content:"WEEKLY LEARNING CHALLENGE";display:block;margin-top:8px;color:#66809f;font-size:10px;letter-spacing:.23em;font-weight:900}
+#assignmentLoginPanel{max-width:560px!important;margin:34px auto 18px!important;padding:clamp(22px,4vw,34px)!important;border:1px solid #dbe6f3!important;border-radius:23px!important;background:rgba(255,255,255,.94)!important;box-shadow:0 16px 42px rgba(27,61,105,.09)!important}
+#assignmentLoginPanel label{font-size:13px!important;letter-spacing:.02em!important;color:#294563!important}
+#assignmentLoginPanel input{min-height:50px!important;font-size:15px!important;border:1.5px solid #d5e1ef!important;border-radius:13px!important;background:#fbfdff!important}
+#assignmentLoginPanel button{min-height:50px!important;border-radius:13px!important;background:linear-gradient(110deg,#123d7a,#1769d2 65%,#168fce)!important;letter-spacing:.02em}
+#assignmentStudentInfo{border-radius:18px!important;border-color:#d5e4f5!important;background:linear-gradient(110deg,#edf5ff,#fff)!important}
+#assignmentList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:20px!important;align-items:stretch!important}
+#assignmentList>.ikon-mission-card{grid-column:1/-1!important;margin:0!important;padding:clamp(17px,2.5vw,28px)!important;border:1px solid #d9e4f1!important;border-radius:25px!important;background:linear-gradient(145deg,#fff,#fbfdff)!important;box-shadow:0 15px 38px rgba(20,48,88,.075)!important;gap:15px!important;overflow:hidden!important}
+#assignmentList>.ikon-mission-card>h3{margin:0!important;padding:4px 0 16px!important;border-bottom:1px solid #e5edf6!important;color:#173b69!important;font-size:clamp(19px,2vw,25px)!important;font-weight:950!important;letter-spacing:-.45px!important}
+#assignmentList>.ikon-mission-card>p{margin:0!important;padding:11px 14px!important;border-radius:12px!important;background:#f3f7fc!important;color:#526b88!important;font-size:12px!important;line-height:1.65!important;font-weight:750!important}
+#assignmentList>.ikon-mission-card>div{min-width:0!important;margin:0!important;padding:20px!important;border:1px solid #e0e9f3!important;border-radius:19px!important;box-shadow:0 7px 20px rgba(26,54,91,.045)!important}
+#assignmentList>.ikon-mission-card>div:nth-of-type(1){background:linear-gradient(145deg,#f0f6ff,#fff 78%)!important;border-top:3px solid #347ce0!important}
+#assignmentList>.ikon-mission-card>div:nth-of-type(2){background:linear-gradient(145deg,#effaf7,#fff 78%)!important;border-top:3px solid #20a58a!important}
+#assignmentList>.ikon-mission-card>div:nth-of-type(3){background:linear-gradient(145deg,#fff8ed,#fff 78%)!important;border-top:3px solid #d99a38!important}
+#assignmentPortal h4{margin:0 0 8px!important;color:#1c416e!important;font-size:16px!important;font-weight:950!important}
+#assignmentPortal p{line-height:1.65}
+#assignmentPortal input[type=radio]{width:17px;height:17px;accent-color:#1769d2;vertical-align:middle;margin-right:7px}
+#assignmentList form>div{padding:14px 12px!important;border-bottom:1px solid #e5edf5!important}
+#assignmentList form>div>p{margin:0 0 10px!important;color:#203b5d!important;font-size:14px!important;font-weight:850!important;line-height:1.55!important}
+#assignmentList form label{display:flex!important;align-items:center!important;gap:7px!important;margin:7px 0!important;padding:10px 12px!important;border:1px solid #e2eaf3!important;border-radius:11px!important;background:#fff!important;color:#405773!important;font-size:13px!important;line-height:1.45!important;transition:.18s}
+#assignmentList form label:hover{border-color:#9bbce8!important;background:#f4f8ff!important}
+#assignmentList .primary,#assignmentPortal .ikon-mission-card button{min-height:45px!important;padding:12px 18px!important;border-radius:12px!important;background:linear-gradient(110deg,#164c9a,#1875df)!important;color:#fff!important;font-size:13px!important;font-weight:900!important;box-shadow:0 8px 18px rgba(22,92,181,.17)!important}
+#assignmentList [style*="grid-template-columns:repeat(12"]{max-width:540px!important;width:100%!important;margin:16px auto!important;padding:12px!important;border:1px solid #d6e5ed!important;border-radius:16px!important;background:#eaf5f3!important;gap:4px!important}
+#assignmentList [data-r][data-c]{aspect-ratio:1/1!important;min-width:0!important;padding:0!important;border:1px solid #d4e2e8!important;border-radius:7px!important;background:#fff!important;color:#23445c!important;font-size:clamp(10px,1.3vw,15px)!important;font-weight:950!important;box-shadow:0 2px 4px rgba(25,60,75,.05)!important}
+#assignmentList [data-r][data-c]:hover{border-color:#1ba58b!important;background:#dff7ef!important}
+#assignmentList input[type=file]{display:block;width:100%;padding:12px!important;border:1px dashed #b9cce0!important;border-radius:12px!important;background:#f8fbff!important;color:#506783!important;font-size:12px!important}
+#assignmentStatus{margin-top:18px!important;padding:12px 15px!important;border:1px solid #f0dfbf!important;border-radius:12px!important;background:#fff9ed!important;color:#8c5b18!important;font-weight:800!important}
+@media(max-width:760px){
+ #assignmentPortal{width:calc(100% - 16px)!important;margin:10px auto!important;padding:16px!important;border-radius:21px!important}
+ #assignmentPortal>h2{text-align:center!important;margin:10px 0 20px!important}
+ #assignmentList{grid-template-columns:1fr!important;gap:14px!important}
+ #assignmentList>.ikon-mission-card{padding:15px!important;border-radius:19px!important}
+ #assignmentList>.ikon-mission-card>div{padding:14px!important}
+ #assignmentList [style*="grid-template-columns:repeat(12"]{padding:7px!important;gap:2px!important}
+ #assignmentList [data-r][data-c]{border-radius:4px!important;font-size:11px!important}
+}
+@media(prefers-reduced-motion:no-preference){
+ #assignmentList>.ikon-mission-card{animation:ikonAssignmentRise .45s ease both}
+ #assignmentList>.ikon-mission-card>div{transition:box-shadow .2s,transform .2s}
+ #assignmentList>.ikon-mission-card>div:hover{box-shadow:0 12px 25px rgba(25,60,100,.08)!important}
+}
+@keyframes ikonAssignmentRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 
 <script src="script.js"></script>
