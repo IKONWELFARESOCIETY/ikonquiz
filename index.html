@@ -6124,6 +6124,9 @@ After successfully submitting one paper, please refresh the website (F5) before 
 .ikon-lb-table{width:100%;border-collapse:collapse;background:#fff}.ikon-lb-table th,.ikon-lb-table td{padding:10px;border-bottom:1px solid #e4eaf2;text-align:left}.ikon-lb-table th{background:#eaf1ff}
 @media(max-width:650px){.ikon-admin-review-fields{grid-template-columns:1fr}#ikonAssignmentAdminPanel{padding:12px}}
 
+
+/* IKON 3-level assignment challenge */
+.ikon-level-overview{background:linear-gradient(135deg,#f7faff,#edf4ff);border:1px solid #dce7f8;border-radius:18px;padding:18px;margin:14px 0 22px}.ikon-level-overview>h3{margin:0 0 6px;color:#17345f}.ikon-level-overview>p{margin:0 0 14px;color:#5b6b83}.ikon-paper-progress{margin-top:16px}.ikon-paper-progress h4{margin:0 0 9px;color:#263b59}.ikon-level-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ikon-level-tile{display:flex;flex-direction:column;gap:5px;padding:13px;border-radius:13px;border:1px solid #d8e0ec;background:#fff;color:#344054;font-size:13px}.ikon-level-tile strong{font-size:14px}.ikon-level-tile b{font-size:15px}.ikon-level-tile small{color:#64748b}.ikon-level-tile.is-passed{border-color:#86c9a0;background:#effaf2}.ikon-level-tile.is-unlocked{border-color:#8bb5ed;background:#f2f7ff}.ikon-level-tile.is-locked{background:#f5f6f8;color:#788395}.ikon-assignment-level-tag{display:inline-block;margin:8px 0;padding:5px 10px;border-radius:999px;background:#eaf1ff;color:#244b86;font-size:12px;font-weight:700}.ikon-admin-review-card p{margin:7px 0}@media(max-width:650px){.ikon-level-grid{grid-template-columns:1fr}}
 </style>
 
 
@@ -6144,15 +6147,16 @@ After successfully submitting one paper, please refresh the website (F5) before 
     <div><button type="button" class="secondary" onclick="loadIkonAssignmentReviews()">Refresh</button> <button type="button" class="secondary" onclick="logoutIkonAssignmentAdmin()">Logout</button></div>
   </div>
   <h3>📥 Student Submissions — Marks Review</h3>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><select id="ikonAdminPaperFilter" onchange="renderIkonAssignmentReviews()"><option value="ALL">All Papers</option></select><button type="button" class="secondary" onclick="downloadIkonSubmissionPaperPDF()">Download Selected Paper PDF</button></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><select id="ikonAdminCourseFilter" onchange="renderIkonAssignmentReviews()"><option value="ALL">All Courses</option></select><select id="ikonAdminPaperFilter" onchange="renderIkonAssignmentReviews()"><option value="ALL">All Papers</option></select><select id="ikonAdminLevelFilter" onchange="renderIkonAssignmentReviews()"><option value="ALL">All Levels</option><option value="1">Level 1 · Beginner</option><option value="2">Level 2 · Intermediate</option><option value="3">Level 3 · Advanced</option></select><button type="button" class="secondary" onclick="downloadIkonSubmissionPaperPDF()">Download Filtered PDF</button></div>
   <div id="ikonAdminReviewList">Admin login required.</div>
   <hr>
-  <h3>📊 Paper-wise Assignment Marks Report</h3>
+  <h3>📊 3-Level Assignment Performance Report</h3>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0">
+    <select id="ikonLeaderboardCourse" onchange="loadIkonAssignmentLeaderboard()"><option value="ALL">All Courses</option></select>
     <select id="ikonLeaderboardPaper" onchange="loadIkonAssignmentLeaderboard()"><option value="ALL">All Papers</option></select>
     <select id="ikonLeaderboardLimit" onchange="loadIkonAssignmentLeaderboard()"><option value="">All Students</option><option value="10">Top 10</option><option value="20">Top 20</option></select>
-    <button type="button" class="primary" onclick="loadIkonAssignmentLeaderboard()">Load Leaderboard</button>
-    <button type="button" class="secondary" onclick="downloadIkonPaperPDF()">Download Paper PDF</button>
+    <button type="button" class="primary" onclick="loadIkonAssignmentLeaderboard()">Load Performance Report</button>
+    <button type="button" class="secondary" onclick="downloadIkonPaperPDF()">Download Performance PDF</button>
   </div>
   <div id="ikonLeaderboardPrintArea"><div id="ikonLeaderboardTable"></div></div>
 </div>
