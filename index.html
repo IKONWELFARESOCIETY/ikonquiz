@@ -5178,7 +5178,7 @@ After successfully submitting one paper, please refresh the website (F5) before 
 
 
 <!-- IKON ASSIGNMENT PORTAL (isolated addition) -->
-<div id="assignmentPortal" style="display:none;max-width:900px;margin:25px auto;padding:20px;background:#fff;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.12);">
+<div id="assignmentPortal" data-assignment-flow="five-level" style="display:none;max-width:900px;margin:25px auto;padding:20px;background:#fff;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.12);">
 <button onclick="closeAssignmentPortal()" class="secondary">← Back</button><h2 style="text-align:center">Assignment Portal</h2>
 <div id="assignmentLoginPanel"><label>Registration Number</label><input id="assignmentRegNo" type="text" placeholder="Enter Registration Number"><button class="primary" onclick="loadAssignmentsForStudent()">Continue</button></div>
 <div id="assignmentStudentInfo"></div><div id="assignmentList"></div><div id="assignmentStatus" style="margin-top:15px"></div></div>
@@ -5291,6 +5291,100 @@ After successfully submitting one paper, please refresh the website (F5) before 
  #assignmentList>.ikon-mission-card>div:hover{box-shadow:0 12px 25px rgba(25,60,100,.08)!important}
 }
 @keyframes ikonAssignmentRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+
+
+/* ===== IKON ASSIGNMENT: FIVE-LEVEL VISUAL SUPPORT (SCOPED ONLY) ===== */
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-grid{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile{
+  min-width:0!important;
+  min-height:148px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  gap:9px!important;
+  padding:16px 13px!important;
+  border-radius:17px!important;
+  background:linear-gradient(150deg,#fff,#f7faff)!important;
+  border:1px solid #dce7f4!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile:nth-child(4){
+  border-top:4px solid #8b5cf6!important;
+  background:linear-gradient(150deg,#f5f0ff,#fff 78%)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile:nth-child(5){
+  border-top:4px solid #d69a2d!important;
+  background:linear-gradient(150deg,#fff7e7,#fff 78%)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile.is-locked{
+  opacity:.78!important;
+  filter:saturate(.72);
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile.is-unlocked{
+  box-shadow:0 9px 24px rgba(35,91,160,.10)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile.is-passed{
+  box-shadow:0 9px 24px rgba(27,133,77,.09)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card{
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:clamp(17px,2.5vw,27px)!important;
+  border-radius:23px!important;
+  border:1px solid #dce7f3!important;
+  background:linear-gradient(145deg,#fff,#fbfdff)!important;
+  box-shadow:0 13px 32px rgba(24,55,96,.07)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card[data-level="4"],
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card.level-4{
+  border-top:4px solid #8b5cf6!important;
+  background:linear-gradient(145deg,#faf7ff,#fff 65%)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card[data-level="5"],
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card.level-5{
+  border-top:4px solid #d69a2d!important;
+  background:linear-gradient(145deg,#fffaf0,#fff 65%)!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile button,
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-mission-card button{
+  max-width:100%!important;
+  white-space:normal!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-battle-game,
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-final-challenge{
+  width:100%!important;
+  min-width:0!important;
+  padding:16px!important;
+  margin-top:12px!important;
+  border:1px solid #e0e8f3!important;
+  border-radius:16px!important;
+  background:#fff!important;
+}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-battle-game:nth-child(1){border-left:4px solid #347ce0!important}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-battle-game:nth-child(2){border-left:4px solid #20a58a!important}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-battle-game:nth-child(3){border-left:4px solid #d99a38!important}
+#assignmentPortal[data-assignment-flow="five-level"] .ikon-battle-game:nth-child(4){border-left:4px solid #8b5cf6!important}
+@media(max-width:900px){
+  #assignmentPortal[data-assignment-flow="five-level"] .ikon-level-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:600px){
+  #assignmentPortal[data-assignment-flow="five-level"] .ikon-level-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  #assignmentPortal[data-assignment-flow="five-level"] .ikon-level-tile{
+    min-height:132px!important;
+    padding:12px 10px!important;
+  }
+}
+
 </style>
 
 <script src="script.js"></script>
