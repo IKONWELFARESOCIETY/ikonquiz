@@ -29548,142 +29548,121 @@ window.closeAssignmentPortal = function(){
 };
 
 window.loadAssignmentsForStudent = function(){
-    const input = document.getElementById('assignmentRegNo');
-    const reg = (input && input.value ? input.value : '').trim().toUpperCase();
-    const status = document.getElementById('assignmentStatus');
-    if(!reg){ if(status) status.textContent='Registration Number enter karein.'; return; }
-    if(status) status.textContent='Loading missions...';
-    fetch(SCRIPT_URL+'?action=assignmentList&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'})
-      .then(r=>{if(!r.ok)throw new Error('Server error: '+r.status);return r.json();})
-      .then(data=>{
-        if(!data.success)throw new Error(data.message||'Student record not found.');
-        const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
-        const info=document.getElementById('assignmentStudentInfo');
-        if(info){
-          info.innerHTML='';
-          const h=document.createElement('h3');h.textContent=(data.name||'')+' · '+(data.regNo||reg);
-          const p=document.createElement('p');p.textContent='Course: '+(data.course||'');
-          info.appendChild(h);info.appendChild(p);
-        }
-        const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
-        list.innerHTML='';
-        const assignments=Array.isArray(data.assignments)?data.assignments:[];
-        const progress=data.levelProgress||{};
-        const papers=Object.keys(progress);
-        if(papers.length){
-          const overview=document.createElement('section');overview.className='ikon-level-overview';
-          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3>';
-            papers.forEach(paper => {
-            const group=document.createElement('div');group.className='ikon-paper-progress';
-            const heading=document.createElement('h4');heading.textContent='📘 '+paper;group.appendChild(heading);
-            const cards=document.createElement('div');cards.className='ikon-level-grid';
-            [1,2,3].forEach(n=>{const x=progress[paper][n]||{};const card=document.createElement('div');card.className='ikon-level-tile '+(x.passed?'is-passed':x.unlocked?'is-unlocked':'is-locked');const icon=x.passed?'✓':x.unlocked?'●':'🔒';card.innerHTML='<strong>'+icon+' Level '+n+'</strong><b>'+['','Beginner','Intermediate','Advanced'][n]+'</b><span>'+(x.uploaded||0)+' / '+(x.assigned||0)+' uploaded</span><span>'+Number(x.totalObtained||0)+' / '+Number(x.totalMax||0)+' marks</span><span>'+Number(x.percentage||0)+'% · '+(x.passed?'PASSED':x.unlocked?'UNLOCKED':'LOCKED')+'</span>'+(x.unlocked&&!x.passed?'':'');cards.appendChild(card);});
-            group.appendChild(cards);overview.appendChild(group);
-          });
-          list.appendChild(overview);
-        }
-        if(!assignments.length){const empty=document.createElement('p');empty.textContent='Abhi koi assignment assign nahi hua hai.';list.appendChild(empty);if(status)status.textContent='';return;}
-        assignments.forEach(a=>{
-          const card=document.createElement('article');card.className='ikon-mission-card';
-          const top=document.createElement('div');top.className='ikon-mission-top';
-          const title=document.createElement('h3');title.textContent=(a.paper||'')+' · '+(a.topic||'Mission');
-          const badge=document.createElement('span');badge.className='ikon-mission-status';badge.textContent=a.status||'PENDING';
-          top.appendChild(title);top.appendChild(badge);
-          const task=document.createElement('p');task.textContent=a.task||'';
-          const levelTag=document.createElement('div');levelTag.className='ikon-assignment-level-tag';levelTag.textContent='LEVEL '+a.level+' · '+(a.levelTitle||'Beginner');
-          const meta=document.createElement('div');meta.className='ikon-mission-meta';
-          meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+' · Pass Target: 35%'+(a.deadline?'  ·  Due: '+a.deadline:'');
-          card.appendChild(top);card.appendChild(levelTag);card.appendChild(task);card.appendChild(meta);
-          if(a.instructions){const ins=document.createElement('p');ins.textContent='Instructions: '+a.instructions;card.appendChild(ins);}
-          if(a.referenceLink){const link=document.createElement('a');link.href=a.referenceLink;link.target='_blank';link.rel='noopener';link.textContent='Open reference material ↗';card.appendChild(link);}
-          if(a.feedback){const fb=document.createElement('p');fb.className='ikon-mission-feedback';fb.textContent='Admin feedback: '+a.feedback;card.appendChild(fb);}
-          if(a.canUpload){
-            const label=document.createElement('label');label.textContent='Upload your assignment file';
-            const file=document.createElement('input');file.type='file';file.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';file.id='file_'+a.id;
-            const btn=document.createElement('button');btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit Assignment':a.status==='APPROVED'?'Improve & Resubmit':'Submit Assignment';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
-            const msg=document.createElement('div');msg.className='assignmentUploadMsg';
-            card.appendChild(label);card.appendChild(file);card.appendChild(btn);card.appendChild(msg);
-          } else {
-            const awarded=document.createElement('p');awarded.className='ikon-mission-award';
-            awarded.textContent=!a.levelUnlocked?'🔒 This level is locked. Pehle previous level ke sabhi tasks upload karein.':a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0)+(a.levelPassed?' · Level Passed':' · Level review in progress'):'Your work is waiting for admin review';
-            card.appendChild(awarded);
-          }
-          list.appendChild(card);
-        });
-        if(status)status.textContent='';
-      }).catch(err=>{if(status)status.textContent='Could not load assignments: '+err.message;});
+    const input=document.getElementById('assignmentRegNo');
+    const reg=(input&&input.value?input.value:'').trim().toUpperCase();
+    const status=document.getElementById('assignmentStatus');
+    if(!reg){if(status)status.textContent='Registration Number enter karein.';return;}
+    if(status)status.textContent='Loading weekly challenges...';
+    const base=SCRIPT_URL;
+    Promise.all([
+      fetch(base+'?action=assignmentList&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Server error '+r.status);return r.json();}),
+      fetch(base+'?action=assignmentChallenge&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Server error '+r.status);return r.json();})
+    ]).then(([data,challengeData])=>{
+      if(!data.success)throw new Error(data.message||'Student record not found.');
+      if(!challengeData.success)throw new Error(challengeData.message||'Weekly challenge load nahi hua.');
+      const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
+      const info=document.getElementById('assignmentStudentInfo');
+      if(info){info.innerHTML='';const h=document.createElement('h3');h.textContent=(data.name||'')+' · '+(data.regNo||reg);const p=document.createElement('p');p.textContent='Course: '+(data.course||'');info.append(h,p);}
+      const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
+      list.innerHTML='';
+      const challenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
+      const practical=Array.isArray(data.assignments)?data.assignments:[];
+      if(!challenges.length){const p=document.createElement('p');p.textContent='Abhi koi weekly challenge available nahi hai.';list.appendChild(p);}
+      challenges.forEach(ch=>renderIkonWeeklyChallenge(ch,practical,reg,list));
+      if(status)status.textContent='';
+    }).catch(err=>{if(status)status.textContent='Could not load assignments: '+err.message;});
 };
 
-window.submitIkonAssignment = function(assignmentId, reg, button){
-    const input = document.getElementById('file_' + assignmentId);
-    const file = input && input.files ? input.files[0] : null;
-    const card = button ? button.parentElement : null;
-    const message = card ? card.querySelector('.assignmentUploadMsg') : null;
-    const allowed = /\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i;
-    const maxBytes = 8 * 1024 * 1024;
+function ikonAssignmentPost(payload){
+  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(r=>r.text()).then(t=>{let d;try{d=JSON.parse(t);}catch(e){throw new Error(t||'Invalid server response');}if(!d.success)throw new Error(d.message||'Request failed');return d;});
+}
+function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
+  const card=document.createElement('section');card.className='ikon-mission-card';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
+  const title=document.createElement('h3');title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
+  const p1=ch.progress||{};
+  const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
+  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId).trim().toUpperCase()&&String(a.paper||'').trim().toUpperCase()===String(ch.paper||'').trim().toUpperCase());
+  const steps=document.createElement('p');steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
+  const l1=document.createElement('div');l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
+  l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
+  if(mcqDone){const done=document.createElement('b');done.textContent='Completed · Score '+p1.level1Score+' / '+p1.level1Total;l1.appendChild(done);}else renderIkonMcqForm(ch,reg,l1);
+  card.appendChild(l1);
+  const l2=document.createElement('div');l2.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
+  l2.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
+  if(!mcqDone){const lock=document.createElement('p');lock.textContent='🔒 Level 1 complete karne ke baad unlock hoga.';l2.appendChild(lock);}
+  else if(puzzleDone){const done=document.createElement('b');done.textContent='All words found · Level 3 unlocked';l2.appendChild(done);}
+  else renderIkonPuzzle(ch,reg,l2);
+  card.appendChild(l2);
+  const l3=document.createElement('div');l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
+  l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>3 practical tasks · Har task ki file alag upload karein. Admin review ke baad marks aur feedback milega.</p>';
+  if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
+  else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
+  else practical.forEach(a=>renderIkonPracticalTask(a,reg,l3));
+  card.appendChild(l3);container.appendChild(card);
+}
+function renderIkonMcqForm(ch,reg,box){
+  const form=document.createElement('form');form.onsubmit=e=>e.preventDefault();
+  (ch.mcq||[]).forEach((q,i)=>{
+    const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5eaf2';
+    const qtitle=document.createElement('p');qtitle.textContent=(i+1)+'. '+q.question+(q.topic?' ('+q.topic+')':'');wrap.appendChild(qtitle);
+    ['A','B','C','D'].forEach((letter,j)=>{const label=document.createElement('label');label.style.cssText='display:block;margin:6px 0;cursor:pointer';const radio=document.createElement('input');radio.type='radio';radio.name='q_'+q.questionNo;radio.value=letter;radio.required=true;label.append(radio,document.createTextNode(' '+letter+'. '+(q.options||[])[j]));wrap.appendChild(label);});form.appendChild(wrap);
+  });
+  const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent='Submit Level 1';btn.onclick=()=>{
+    const answers={};(ch.mcq||[]).forEach(q=>{const x=form.querySelector('input[name="q_'+CSS.escape(String(q.questionNo))+'"]:checked');if(x)answers[q.questionNo]=x.value;});
+    if(Object.keys(answers).length!==(ch.mcq||[]).length){alert('Sabhi 20 questions attempt karein.');return;}
+    btn.disabled=true;btn.textContent='Checking...';
+    ikonAssignmentPost({action:'submitAssignmentMCQ',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
+      .then(d=>{alert('Level 1 complete! Score: '+d.score+'/'+d.total+'. Level 2 unlocked.');window.loadAssignmentsForStudent();})
+      .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
+  };form.appendChild(btn);box.appendChild(form);
+}
+function renderIkonPuzzle(ch,reg,box){
+  const found=(ch.progress&&ch.progress.level2Words)||[];
+  const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
+  if(!next)return;
+  const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
+  const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
+  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  let start=null,last=null,dragging=false,selected=[];
+  const cells=[];
+  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:7px 1px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;font-weight:700;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
+  function paint(){cells.forEach(c=>{const k=c.dataset.r+','+c.dataset.c;c.style.background=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c))?'#bfdbfe':'#fff';});}
+  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
+  function onDown(e){const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};last=start;selected=[start];dragging=true;paint();}
+  function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;last={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=makePath(start,last);paint();}
+  function onUp(){if(!dragging)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+    const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
+    feedback.textContent='Checking selection...';fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';selected.forEach(p=>{const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);if(c)c.style.background='#bbf7d0';});setTimeout(()=>window.loadAssignmentsForStudent(),700);}else{feedback.textContent='✗ Try Again';selected=[];paint();}}).catch(e=>feedback.textContent=e.message);
+  }
+  grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
+  const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
+}
+function renderIkonPracticalTask(a,reg,box){
+  const item=document.createElement('div');item.style.cssText='padding:12px;margin:10px 0;border:1px solid #eadfc9;border-radius:10px;background:#fff';
+  const h=document.createElement('b');h.textContent=(a.topic||'Practical Task')+' · '+a.status;item.appendChild(h);
+  const task=document.createElement('p');task.textContent=a.task||'';item.appendChild(task);
+  const meta=document.createElement('p');meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+(a.deadline?' · Deadline: '+a.deadline:'');item.appendChild(meta);
+  if(a.instructions){const ins=document.createElement('p');ins.textContent=a.instructions;item.appendChild(ins);}
+  if(a.feedback){const fb=document.createElement('p');fb.textContent='Admin Feedback: '+a.feedback;item.appendChild(fb);}
+  if(a.canUpload){const input=document.createElement('input');input.type='file';input.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';input.id='file_'+a.id;const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit':'Upload Practical';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);const msg=document.createElement('div');msg.className='assignmentUploadMsg';item.append(input,btn,msg);}
+  else{const st=document.createElement('p');st.textContent=a.status==='APPROVED'?'Marks: '+a.obtainedMarks+' / '+a.maxMarks:'Submission: '+a.status;item.appendChild(st);}
+  box.appendChild(item);
+}
 
-    if(!file){
-        if(message) message.textContent = 'File select karein.';
-        return;
-    }
-
-    if(file.size > maxBytes){
-        if(message) message.textContent = 'File 8 MB se chhoti honi chahiye.';
-        return;
-    }
-
-    if(!allowed.test(file.name)){
-        if(message) message.textContent = 'PDF, image, Word, Excel, PowerPoint aur PBIX file allowed hain.';
-        return;
-    }
-
-    if(button) button.disabled = true;
-    if(message) message.textContent = 'Uploading...';
-
-    const reader = new FileReader();
-    reader.onload = function(){
-        const base64 = String(reader.result || '').split(',')[1];
-        fetch(SCRIPT_URL, {
-            method:'POST',
-            headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body:JSON.stringify({
-                action:'uploadAssignment',
-                regNo:reg,
-                assignmentId:assignmentId,
-                fileName:file.name,
-                mimeType:file.type || 'application/octet-stream',
-                base64:base64
-            })
-        })
-        .then(function(response){ return response.text(); })
-        .then(function(text){
-            let result;
-            try{ result = JSON.parse(text); }
-            catch(error){ result = {success:false, message:text || 'Invalid server response.'}; }
-
-            if(message) message.textContent = result.message || (result.success ? 'Submitted successfully.' : 'Submission failed.');
-            if(result.success){ setTimeout(function(){ window.loadAssignmentsForStudent(); }, 900); }
-            if(button){
-                if(result.success){
-                    button.textContent = 'Submitted';
-                    button.disabled = true;
-                }else{
-                    button.disabled = false;
-                }
-            }
-        })
-        .catch(function(error){
-            if(message) message.textContent = 'Upload error: ' + error.message;
-            if(button) button.disabled = false;
-        });
-    };
-
-    reader.onerror = function(){
-        if(message) message.textContent = 'File read error.';
-        if(button) button.disabled = false;
-    };
-
-    reader.readAsDataURL(file);
+window.submitIkonAssignment = function(assignmentId,reg,button){
+  const input=document.getElementById('file_'+assignmentId),file=input&&input.files?input.files[0]:null;
+  const card=button?button.parentElement:null,msg=card?card.querySelector('.assignmentUploadMsg'):null;
+  if(!file){if(msg)msg.textContent='File select karein.';return;}
+  if(file.size>8*1024*1024){if(msg)msg.textContent='File 8 MB se chhoti honi chahiye.';return;}
+  if(!/\.(pdf|jpg|jpeg|png|doc|docx|xls|xlsx|ppt|pptx|pbix)$/i.test(file.name)){if(msg)msg.textContent='Allowed file format select karein.';return;}
+  if(button)button.disabled=true;if(msg)msg.textContent='Uploading...';
+  const reader=new FileReader();reader.onload=function(){const base64=String(reader.result||'').split(',')[1];
+    ikonAssignmentPost({action:'uploadAssignment',regNo:reg,assignmentId:assignmentId,fileName:file.name,mimeType:file.type||'application/octet-stream',base64:base64})
+      .then(d=>{if(msg)msg.textContent=d.message||'Uploaded successfully.';setTimeout(()=>window.loadAssignmentsForStudent(),900);})
+      .catch(e=>{if(msg)msg.textContent=e.message;if(button)button.disabled=false;});
+  };reader.onerror=function(){if(msg)msg.textContent='File read error.';if(button)button.disabled=false;};reader.readAsDataURL(file);
 };
 
 // Expose all handlers used by inline HTML click handlers.
