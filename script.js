@@ -29585,7 +29585,9 @@ function ikonAssignmentPost(payload){
     });
 }
 function ikonAssignmentPaperKey(value){
-  return String(value||'').toUpperCase().replace(/MICROSOFT/g,'').replace(/^MS\s*/,'').replace(/[^A-Z0-9]/g,'').trim();
+  const key=String(value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(['WORD','MSWORD','MICROSOFTWORD','OFFICE','MSOFFICE','MICROSOFTOFFICE'].includes(key))return 'MSOFFICE';
+  return key;
 }
 function ikonAssignmentSamePaper(a,b){
   const x=ikonAssignmentPaperKey(a),y=ikonAssignmentPaperKey(b);
@@ -29632,11 +29634,21 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 function loadIkonGameLevel(ch,reg,level,box){
   const action=level===4?'assignmentBrainBattle':'assignmentUltimate';
   const url=SCRIPT_URL+'?action='+action+'&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
-  const loading=document.createElement('p');loading.textContent='Loading challenge...';box.appendChild(loading);
-  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
-    loading.remove();if(!d.success)throw new Error(d.message||'Challenge load nahi hua.');
-    renderIkonGameForm(ch,reg,level,d.items||[],box);
-  }).catch(e=>{loading.textContent=e.message;});
+  const loading=document.createElement('p');loading.textContent='Loading challenge...';loading.style.cssText='padding:10px;color:#334155;font-weight:600';box.appendChild(loading);
+  fetch(url,{cache:'no-store'}).then(async r=>{
+    const raw=await r.text();let d;
+    try{d=JSON.parse(raw);}catch(err){throw new Error('Apps Script ne JSON response nahi diya. Deployment/version check karein. '+raw.slice(0,180));}
+    if(!r.ok)throw new Error('Server HTTP '+r.status+': '+(d.message||'Request failed'));
+    if(!d || d.success!==true)throw new Error((d&&d.message)||'Challenge load nahi hua.');
+    return d;
+  }).then(d=>{
+    loading.remove();
+    if(!Array.isArray(d.items)||!d.items.length)throw new Error('Brain Battle sheet mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
+    renderIkonGameForm(ch,reg,level,d.items,box);
+  }).catch(e=>{
+    loading.textContent='Level '+level+' load error: '+(e&&e.message?e.message:String(e));
+    loading.style.cssText='padding:10px;margin-top:8px;border-radius:8px;background:#fff1f2;color:#991b1b;font-weight:700;white-space:normal';
+  });
 }
 function renderIkonGameForm(ch,reg,level,items,box){
   if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
