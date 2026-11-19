@@ -29572,12 +29572,12 @@ window.loadAssignmentsForStudent = function(){
         const papers=Object.keys(progress);
         if(papers.length){
           const overview=document.createElement('section');overview.className='ikon-level-overview';
-          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3><p>Har level pass karne ke liye minimum 35% marks zaroori hain. Next level admin review ke baad unlock hoga.</p>';
+          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3><p>Ek level ke sabhi tasks upload karte hi next level unlock ho jayega. Admin shaam ko teeno levels review karke marks dega. Passing: 35%.</p>';
           papers.forEach(paper=>{
             const group=document.createElement('div');group.className='ikon-paper-progress';
             const heading=document.createElement('h4');heading.textContent='📘 '+paper;group.appendChild(heading);
             const cards=document.createElement('div');cards.className='ikon-level-grid';
-            [1,2,3].forEach(n=>{const x=progress[paper][n]||{};const card=document.createElement('div');card.className='ikon-level-tile '+(x.passed?'is-passed':x.unlocked?'is-unlocked':'is-locked');const icon=x.passed?'✓':x.unlocked?'●':'🔒';card.innerHTML='<strong>'+icon+' Level '+n+'</strong><b>'+['','Beginner','Intermediate','Advanced'][n]+'</b><span>'+(x.assigned||0)+' task(s)</span><span>'+Number(x.totalObtained||0)+' / '+Number(x.totalMax||0)+' marks</span><span>'+Number(x.percentage||0)+'% · '+(x.passed?'PASSED':x.unlocked?'UNLOCKED':'LOCKED')+'</span>'+(x.unlocked&&!x.passed?'<small>Pass target: 35%</small>':'');cards.appendChild(card);});
+            [1,2,3].forEach(n=>{const x=progress[paper][n]||{};const card=document.createElement('div');card.className='ikon-level-tile '+(x.passed?'is-passed':x.unlocked?'is-unlocked':'is-locked');const icon=x.passed?'✓':x.unlocked?'●':'🔒';card.innerHTML='<strong>'+icon+' Level '+n+'</strong><b>'+['','Beginner','Intermediate','Advanced'][n]+'</b><span>'+(x.uploaded||0)+' / '+(x.assigned||0)+' uploaded</span><span>'+Number(x.totalObtained||0)+' / '+Number(x.totalMax||0)+' marks</span><span>'+Number(x.percentage||0)+'% · '+(x.passed?'PASSED':x.unlocked?'UNLOCKED':'LOCKED')+'</span>'+(x.unlocked&&!x.passed?'<small>Admin review in evening · Pass target: 35%</small>':'');cards.appendChild(card);});
             group.appendChild(cards);overview.appendChild(group);
           });
           list.appendChild(overview);
@@ -29605,7 +29605,7 @@ window.loadAssignmentsForStudent = function(){
             card.appendChild(label);card.appendChild(file);card.appendChild(btn);card.appendChild(msg);
           } else {
             const awarded=document.createElement('p');awarded.className='ikon-mission-award';
-            awarded.textContent=!a.levelUnlocked?'🔒 This level is locked. Previous level mein minimum 35% marks hasil karein.':a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0)+(a.levelPassed?' · Level Passed':' · Level review in progress'):'Your work is waiting for admin review';
+            awarded.textContent=!a.levelUnlocked?'🔒 This level is locked. Pehle previous level ke sabhi tasks upload karein.':a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0)+(a.levelPassed?' · Level Passed':' · Level review in progress'):'Your work is waiting for admin review';
             card.appendChild(awarded);
           }
           list.appendChild(card);
