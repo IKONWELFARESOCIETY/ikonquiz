@@ -29572,7 +29572,8 @@ window.loadAssignmentsForStudent = function(){
         const papers=Object.keys(progress);
         if(papers.length){
           const overview=document.createElement('section');overview.className='ikon-level-overview';
-          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3>
+          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3>';
+            papers.forEach(paper => {
             const group=document.createElement('div');group.className='ikon-paper-progress';
             const heading=document.createElement('h4');heading.textContent='📘 '+paper;group.appendChild(heading);
             const cards=document.createElement('div');cards.className='ikon-level-grid';
