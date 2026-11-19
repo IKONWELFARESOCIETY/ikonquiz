@@ -29568,7 +29568,21 @@ window.loadAssignmentsForStudent = function(){
         const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
         list.innerHTML='';
         const assignments=Array.isArray(data.assignments)?data.assignments:[];
-        if(!assignments.length){list.textContent='Abhi koi mission assign nahi hua hai.';if(status)status.textContent='';return;}
+        const progress=data.levelProgress||{};
+        const papers=Object.keys(progress);
+        if(papers.length){
+          const overview=document.createElement('section');overview.className='ikon-level-overview';
+          overview.innerHTML='<h3>🏆 Your 3-Level Challenge Journey</h3><p>Har level pass karne ke liye minimum 35% marks zaroori hain. Next level admin review ke baad unlock hoga.</p>';
+          papers.forEach(paper=>{
+            const group=document.createElement('div');group.className='ikon-paper-progress';
+            const heading=document.createElement('h4');heading.textContent='📘 '+paper;group.appendChild(heading);
+            const cards=document.createElement('div');cards.className='ikon-level-grid';
+            [1,2,3].forEach(n=>{const x=progress[paper][n]||{};const card=document.createElement('div');card.className='ikon-level-tile '+(x.passed?'is-passed':x.unlocked?'is-unlocked':'is-locked');const icon=x.passed?'✓':x.unlocked?'●':'🔒';card.innerHTML='<strong>'+icon+' Level '+n+'</strong><b>'+['','Beginner','Intermediate','Advanced'][n]+'</b><span>'+(x.assigned||0)+' task(s)</span><span>'+Number(x.totalObtained||0)+' / '+Number(x.totalMax||0)+' marks</span><span>'+Number(x.percentage||0)+'% · '+(x.passed?'PASSED':x.unlocked?'UNLOCKED':'LOCKED')+'</span>'+(x.unlocked&&!x.passed?'<small>Pass target: 35%</small>':'');cards.appendChild(card);});
+            group.appendChild(cards);overview.appendChild(group);
+          });
+          list.appendChild(overview);
+        }
+        if(!assignments.length){const empty=document.createElement('p');empty.textContent='Abhi koi assignment assign nahi hua hai.';list.appendChild(empty);if(status)status.textContent='';return;}
         assignments.forEach(a=>{
           const card=document.createElement('article');card.className='ikon-mission-card';
           const top=document.createElement('div');top.className='ikon-mission-top';
@@ -29576,20 +29590,23 @@ window.loadAssignmentsForStudent = function(){
           const badge=document.createElement('span');badge.className='ikon-mission-status';badge.textContent=a.status||'PENDING';
           top.appendChild(title);top.appendChild(badge);
           const task=document.createElement('p');task.textContent=a.task||'';
+          const levelTag=document.createElement('div');levelTag.className='ikon-assignment-level-tag';levelTag.textContent='LEVEL '+a.level+' · '+(a.levelTitle||'Beginner');
           const meta=document.createElement('div');meta.className='ikon-mission-meta';
-          meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+(a.deadline?'  ·  Due: '+a.deadline:'');
-          card.appendChild(top);card.appendChild(task);card.appendChild(meta);
+          meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+' · Pass Target: 35%'+(a.deadline?'  ·  Due: '+a.deadline:'');
+          card.appendChild(top);card.appendChild(levelTag);card.appendChild(task);card.appendChild(meta);
           if(a.instructions){const ins=document.createElement('p');ins.textContent='Instructions: '+a.instructions;card.appendChild(ins);}
           if(a.referenceLink){const link=document.createElement('a');link.href=a.referenceLink;link.target='_blank';link.rel='noopener';link.textContent='Open reference material ↗';card.appendChild(link);}
           if(a.feedback){const fb=document.createElement('p');fb.className='ikon-mission-feedback';fb.textContent='Admin feedback: '+a.feedback;card.appendChild(fb);}
-          if(['PENDING','CORRECTION REQUIRED','REJECTED'].indexOf(a.status||'PENDING')>=0){
+          if(a.canUpload){
             const label=document.createElement('label');label.textContent='Upload your assignment file';
             const file=document.createElement('input');file.type='file';file.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';file.id='file_'+a.id;
-            const btn=document.createElement('button');btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit Assignment':'Submit Mission';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
+            const btn=document.createElement('button');btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit Assignment':a.status==='APPROVED'?'Improve & Resubmit':'Submit Assignment';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
             const msg=document.createElement('div');msg.className='assignmentUploadMsg';
             card.appendChild(label);card.appendChild(file);card.appendChild(btn);card.appendChild(msg);
           } else {
-            const awarded=document.createElement('p');awarded.className='ikon-mission-award';awarded.textContent=a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0):'Your work is waiting for admin review';card.appendChild(awarded);
+            const awarded=document.createElement('p');awarded.className='ikon-mission-award';
+            awarded.textContent=!a.levelUnlocked?'🔒 This level is locked. Previous level mein minimum 35% marks hasil karein.':a.status==='APPROVED'?'Marks: '+Number(a.obtainedMarks||0)+' / '+Number(a.maxMarks||0)+(a.levelPassed?' · Level Passed':' · Level review in progress'):'Your work is waiting for admin review';
+            card.appendChild(awarded);
           }
           list.appendChild(card);
         });
@@ -29711,19 +29728,23 @@ window.submitIkonAssignment = window.submitIkonAssignment;
         assignmentSubmissions=d.submissions||[];
         var filter=el('ikonAdminPaperFilter');
         if(filter){var current=filter.value||'ALL';filter.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');filter.value=(d.papers||[]).includes(current)?current:'ALL';}
+        var courseFilter=el('ikonAdminCourseFilter');if(courseFilter){var oldCourse=courseFilter.value||'ALL';var courses=Array.from(new Set(assignmentSubmissions.map(x=>String(x.COURSE||'').trim()).filter(Boolean))).sort();courseFilter.innerHTML='<option value="ALL">All Courses</option>'+courses.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');courseFilter.value=courses.includes(oldCourse)?oldCourse:'ALL';}
         window.renderIkonAssignmentReviews();
         var paperSelect=el('ikonLeaderboardPaper');
         if(paperSelect){var selected=paperSelect.value||'ALL';paperSelect.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');paperSelect.value=(d.papers||[]).includes(selected)?selected:'ALL';}
+        var reportCourse=el('ikonLeaderboardCourse');if(reportCourse){var old=reportCourse.value||'ALL';reportCourse.innerHTML='<option value="ALL">All Courses</option>'+(d.courses||[]).map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');reportCourse.value=(d.courses||[]).includes(old)?old:'ALL';}
       }).catch(e=>{box.textContent=e.message;});
   };
   window.renderIkonAssignmentReviews=function(){
     var box=el('ikonAdminReviewList');if(!box)return;
     var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
-    var rows=assignmentSubmissions.filter(x=>paper==='ALL'||String(x.PAPER||'')===paper);
+    var course=el('ikonAdminCourseFilter')?el('ikonAdminCourseFilter').value:'ALL';
+    var level=el('ikonAdminLevelFilter')?el('ikonAdminLevelFilter').value:'ALL';
+    var rows=assignmentSubmissions.filter(x=>(paper==='ALL'||String(x.PAPER||'')===paper)&&(course==='ALL'||String(x.COURSE||'')===course)&&(level==='ALL'||String(x.LEVEL||1)===level));
     if(!rows.length){box.textContent='Is paper ke liye koi submission nahi hai.';return;}
     box.innerHTML=rows.map(function(x){
       var max=Number(x['MAX MARKS']||0),obtained=Number(x['OBTAINED MARKS']||0),status=x['REVIEW STATUS']||'PENDING';
-      return '<article class="ikon-admin-review-card"><div class="ikon-admin-review-head"><div><b>'+esc(x.NAME)+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x.TOPIC)+'</b></p><p>'+esc(x['FILE NAME'])+'</p><a target="_blank" rel="noopener" href="'+esc(x['FILE URL'])+'">Open submitted file ↗</a><div class="ikon-admin-review-fields"><label>Maximum Marks<input value="'+max+'" readonly></label><label>Obtained Marks<input id="ikonObtainedMarks'+x.row+'" type="number" min="0" max="'+max+'" value="'+obtained+'"></label><label>Decision<select id="ikonDecision'+x.row+'"><option value="APPROVED" '+(status==='APPROVED'?'selected':'')+'>Approve</option><option value="REVISION" '+(status==='REVISION'?'selected':'')+'>Request correction</option><option value="REJECTED" '+(status==='REJECTED'?'selected':'')+'>Reject</option></select></label><label>Feedback<textarea id="ikonFeedback'+x.row+'">'+esc(x.FEEDBACK||'')+'</textarea></label><button type="button" onclick="saveIkonAssignmentReview('+x.row+','+max+')">Save Review</button></div></article>';
+      return '<article class="ikon-admin-review-card"><div class="ikon-admin-review-head"><div><b>'+esc(x.NAME)+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x.TOPIC)+'</b></p><p><b>Level '+Number(x.LEVEL||1)+' · '+esc(x['LEVEL TITLE']||'Beginner')+'</b></p><p>'+esc(x['FILE NAME'])+'</p><a target="_blank" rel="noopener" href="'+esc(x['FILE URL'])+'">Open submitted file ↗</a><div class="ikon-admin-review-fields"><label>Maximum Marks<input value="'+max+'" readonly></label><label>Obtained Marks<input id="ikonObtainedMarks'+x.row+'" type="number" min="0" max="'+max+'" value="'+obtained+'"></label><label>Decision<select id="ikonDecision'+x.row+'"><option value="APPROVED" '+(status==='APPROVED'?'selected':'')+'>Approve</option><option value="REVISION" '+(status==='REVISION'?'selected':'')+'>Request correction</option><option value="REJECTED" '+(status==='REJECTED'?'selected':'')+'>Reject</option></select></label><label>Feedback<textarea id="ikonFeedback'+x.row+'">'+esc(x.FEEDBACK||'')+'</textarea></label><button type="button" onclick="saveIkonAssignmentReview('+x.row+','+max+')">Save Review</button></div></article>';
     }).join('');
   };
   window.saveIkonAssignmentReview=function(row,max){
@@ -29736,18 +29757,21 @@ window.submitIkonAssignment = window.submitIkonAssignment;
   window.loadIkonAssignmentLeaderboard=function(){
     var box=el('ikonLeaderboardTable');if(!box)return;box.textContent='Loading leaderboard...';
     var paper=el('ikonLeaderboardPaper')?el('ikonLeaderboardPaper').value:'ALL';
+    var course=el('ikonLeaderboardCourse')?el('ikonLeaderboardCourse').value:'ALL';
     var limit=el('ikonLeaderboardLimit')?el('ikonLeaderboardLimit').value:'';
-    fetch(SCRIPT_URL+'?action=assignmentLeaderboard&paper='+encodeURIComponent(paper)+'&limit='+encodeURIComponent(limit)+'&_='+Date.now(),{cache:'no-store'})
+    fetch(SCRIPT_URL+'?action=assignmentLeaderboard&paper='+encodeURIComponent(paper)+'&course='+encodeURIComponent(course)+'&limit='+encodeURIComponent(limit)+'&_='+Date.now(),{cache:'no-store'})
       .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Leaderboard unavailable.');
         box.innerHTML='<table class="ikon-lb-table"><thead><tr><th>Rank</th><th>Student</th><th>Course</th><th>Obtained</th><th>Maximum</th><th>Percentage</th><th>Assignments</th></tr></thead><tbody>'+d.leaderboard.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'<small>'+esc(x.regNo)+'</small></td><td>'+esc(x.course)+'</td><td>'+x.totalMarks+'</td><td>'+x.maxMarks+'</td><td>'+x.percentage+'%</td><td>'+x.completed+'</td></tr>').join('')+'</tbody></table>';
       }).catch(e=>{box.textContent=e.message;});
   };
   window.downloadIkonSubmissionPaperPDF=function(){
     var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
-    var rows=assignmentSubmissions.filter(x=>paper==='ALL'||String(x.PAPER||'')===paper);
+    var course=el('ikonAdminCourseFilter')?el('ikonAdminCourseFilter').value:'ALL';
+    var level=el('ikonAdminLevelFilter')?el('ikonAdminLevelFilter').value:'ALL';
+    var rows=assignmentSubmissions.filter(x=>(paper==='ALL'||String(x.PAPER||'')===paper)&&(course==='ALL'||String(x.COURSE||'')===course)&&(level==='ALL'||String(x.LEVEL||1)===level));
     if(!rows.length){alert('Selected paper ke liye submission record nahi hai.');return;}
-    var title=paper==='ALL'?'All Papers':'Paper: '+paper;
-    var body='<table><thead><tr><th>Student</th><th>Reg No</th><th>Course</th><th>Paper</th><th>Topic</th><th>Maximum</th><th>Obtained</th><th>Status</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.NAME)+'</td><td>'+esc(x['REG NO'])+'</td><td>'+esc(x.COURSE)+'</td><td>'+esc(x.PAPER)+'</td><td>'+esc(x.TOPIC)+'</td><td>'+Number(x['MAX MARKS']||0)+'</td><td>'+Number(x['OBTAINED MARKS']||0)+'</td><td>'+esc(x['REVIEW STATUS']||'PENDING')+'</td></tr>').join('')+'</tbody></table>';
+    var title=(paper==='ALL'?'All Papers':'Paper: '+paper)+(course==='ALL'?'':' · Course: '+course)+(level==='ALL'?'':' · Level '+level);
+    var body='<table><thead><tr><th>Student</th><th>Reg No</th><th>Course</th><th>Paper</th><th>Topic</th><th>Level</th><th>Maximum</th><th>Obtained</th><th>Status</th></tr></thead><tbody>'+rows.map(x=>'<tr><td>'+esc(x.NAME)+'</td><td>'+esc(x['REG NO'])+'</td><td>'+esc(x.COURSE)+'</td><td>'+esc(x.PAPER)+'</td><td>'+esc(x.TOPIC)+'</td><td>'+Number(x.LEVEL||1)+' · '+esc(x['LEVEL TITLE']||'Beginner')+'</td><td>'+Number(x['MAX MARKS']||0)+'</td><td>'+Number(x['OBTAINED MARKS']||0)+'</td><td>'+esc(x['REVIEW STATUS']||'PENDING')+'</td></tr>').join('')+'</tbody></table>';
     var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
     w.document.write('<!doctype html><html><head><title>IKON Assignment Submissions - '+esc(title)+'</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:12px}th{background:#eaf1ff}</style></head><body><h1>IKON INSTITUTE</h1><h2>ASSIGNMENT SUBMISSION REPORT</h2><h3>'+esc(title)+'</h3>'+body+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
   };
@@ -29755,14 +29779,15 @@ window.submitIkonAssignment = window.submitIkonAssignment;
     var area=el('ikonLeaderboardPrintArea'),table=el('ikonLeaderboardTable');
     if(!area||!table||!table.querySelector('table')){alert('Pehle paper select karke report load karein.');return;}
     var paper=el('ikonLeaderboardPaper')?el('ikonLeaderboardPaper').value:'ALL';
-    var title=paper==='ALL'?'All Papers':'Paper: '+paper;
+    var course=el('ikonLeaderboardCourse')?el('ikonLeaderboardCourse').value:'ALL';
+    var title=(paper==='ALL'?'All Papers':'Paper: '+paper)+(course==='ALL'?'':' · Course: '+course);
     var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
-    w.document.write('<!doctype html><html><head><title>IKON Assignment Marks - '+esc(title)+'</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>ASSIGNMENT MARKS REPORT</h2><h3>'+esc(title)+'</h3>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
+    w.document.write('<!doctype html><html><head><title>IKON Assignment Marks - '+esc(title)+'</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>3-LEVEL ASSIGNMENT PERFORMANCE REPORT</h2><h3>'+esc(title)+'</h3>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
   };
   window.downloadIkonLeaderboardPDF=function(){
     var area=el('ikonLeaderboardPrintArea');if(!area||!el('ikonLeaderboardTable').querySelector('table')){alert('Pehle leaderboard load karein.');return;}
     var w=window.open('','_blank');if(!w){alert('PDF print window blocked. Please allow popups.');return;}
-    w.document.write('<!doctype html><html><head><title>IKON Student Leaderboard</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>STUDENT SKILL QUEST LEADERBOARD</h2>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
+    w.document.write('<!doctype html><html><head><title>IKON Student Leaderboard</title><style>body{font-family:Arial;padding:24px;color:#17233b}h1,h2{text-align:center}table{width:100%;border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}th{background:#eaf1ff}small{display:block;color:#64748b;font-size:10px}</style></head><body><h1>IKON INSTITUTE</h1><h2>3-LEVEL ASSIGNMENT PERFORMANCE</h2>'+area.innerHTML+'<p>Generated: '+new Date().toLocaleString()+'</p><script>window.onload=function(){window.print();};<\/script></body></html>');w.document.close();
   };
   document.addEventListener('DOMContentLoaded',function(){
     var logo=el('ikonLogo');if(!logo)return;var taps=0,timer=null;
