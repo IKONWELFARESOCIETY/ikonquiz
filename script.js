@@ -29606,7 +29606,50 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach(a=>renderIkonPracticalTask(a,reg,l3));
-  card.appendChild(l3);container.appendChild(card);
+  card.appendChild(l3);
+  const level3Done=practical.length===3 && practical.every(a=>String(a.status||'PENDING').toUpperCase()!=='PENDING');
+  const l4=document.createElement('div');l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
+  l4.innerHTML='<h4>LEVEL 4 – Brain Battle Arena</h4><p>Match Pairs · Arrange the Steps · Spot the Error · Speed Round</p>';
+  if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke teeno practical tasks upload karein. Admin approval ka wait zaroori nahi hai.';l4.appendChild(lock);}
+  else loadIkonGameLevel(ch,reg,4,l4);
+  card.appendChild(l4);
+  const l5=document.createElement('div');l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
+  l5.innerHTML='<h4>LEVEL 5 – Ultimate Champion</h4><p>Final mixed challenge · Score and final rank</p>';
+  if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion completed!';l5.appendChild(done);}
+  else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
+  else loadIkonGameLevel(ch,reg,5,l5);
+  card.appendChild(l5);container.appendChild(card);
+}
+function loadIkonGameLevel(ch,reg,level,box){
+  const action=level===4?'assignmentBrainBattle':'assignmentUltimate';
+  const url=SCRIPT_URL+'?action='+action+'&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
+  const loading=document.createElement('p');loading.textContent='Loading challenge...';box.appendChild(loading);
+  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    loading.remove();if(!d.success)throw new Error(d.message||'Challenge load nahi hua.');
+    renderIkonGameForm(ch,reg,level,d.items||[],box);
+  }).catch(e=>{loading.textContent=e.message;});
+}
+function renderIkonGameForm(ch,reg,level,items,box){
+  if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
+  const form=document.createElement('div'),answers={};
+  items.forEach((item,index)=>{
+    const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5e7eb';
+    const title=document.createElement('p');title.textContent=(index+1)+'. ['+item.gameType.replace(/_/g,' ')+'] '+item.question;wrap.appendChild(title);
+    const select=document.createElement('select');select.style.cssText='width:100%;max-width:520px;padding:10px;border:1px solid #cbd5e1;border-radius:8px';
+    const blank=document.createElement('option');blank.value='';blank.textContent='Select answer';select.appendChild(blank);
+    (item.options||[]).filter(x=>String(x||'').trim()!=='').forEach(opt=>{const o=document.createElement('option');o.value=String(opt);o.textContent=String(opt);select.appendChild(o);});
+    select.addEventListener('change',()=>{answers[item.itemId]=select.value;});wrap.append(title,select);form.appendChild(wrap);
+  });
+  const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';
+  btn.onclick=()=>{
+    if(items.some(x=>!String(answers[x.itemId]||'').trim())){alert('Sabhi questions ka answer select karein.');return;}
+    btn.disabled=true;btn.textContent='Checking...';
+    ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
+      .then(d=>{alert((level===4?'Brain Battle':'Ultimate Champion')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();})
+      .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';});
+  };
+  form.appendChild(btn);box.appendChild(form);
 }
 function renderIkonMcqForm(ch,reg,box){
   const form=document.createElement('form');form.onsubmit=e=>e.preventDefault();
