@@ -29605,9 +29605,10 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>3 practical tasks · Har task ki file alag upload karein. Admin review ke baad marks aur feedback milega.</p>';
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
-  else practical.forEach(a=>renderIkonPracticalTask(a,reg,l3));
+  else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
-  const level3Done=practical.length===3 && practical.every(a=>String(a.status||'PENDING').toUpperCase()!=='PENDING');
+  // Unlock Level 4 only when the server confirms all three distinct practical uploads.
+  const level3Done=practical.length===3 && practical.every(a=>a.uploaded===true || ['UNDER REVIEW','APPROVED','CORRECTION REQUIRED','REJECTED'].includes(String(a.status||'').toUpperCase()));
   const l4=document.createElement('div');l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.innerHTML='<h4>LEVEL 4 – Brain Battle Arena</h4><p>Match Pairs · Arrange the Steps · Spot the Error · Speed Round</p>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
@@ -29702,7 +29703,7 @@ function renderIkonPuzzle(ch,reg,box){
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
   const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
 }
-function renderIkonPracticalTask(a,reg,box){
+function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
   item.style.cssText='padding:12px;margin:10px 0;border:1px solid #eadfc9;border-radius:10px;background:#fff';
   const status=String(a.status||'PENDING').trim().toUpperCase();
@@ -29738,7 +29739,8 @@ function renderIkonPracticalTask(a,reg,box){
     const input=document.createElement('input');
     input.type='file';
     input.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';
-    input.id='file_'+a.id;
+    // Each card owns its input reference; repeated/blank legacy IDs cannot collide.
+    input.id='ikonPracticalFile_'+String(a.id||'task').replace(/[^a-zA-Z0-9_-]/g,'_')+'_'+String(index==null?0:index)+'_'+Math.random().toString(36).slice(2,8);
     input.style.cssText='display:block;width:100%;margin:10px 0;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff';
 
     const btn=document.createElement('button');
@@ -29746,7 +29748,7 @@ function renderIkonPracticalTask(a,reg,box){
     btn.className='primary';
     btn.textContent=status==='CORRECTION REQUIRED'?'Resubmit Practical':'Upload Practical';
     btn.style.cssText='display:inline-block;margin:4px 0;padding:10px 16px;cursor:pointer';
-    btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
+    btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn,input);
 
     const msg=document.createElement('div');
     msg.className='assignmentUploadMsg';
@@ -29762,8 +29764,8 @@ function renderIkonPracticalTask(a,reg,box){
   box.appendChild(item);
 }
 
-window.submitIkonAssignment = function(assignmentId,reg,button){
-  const input=document.getElementById('file_'+assignmentId),file=input&&input.files?input.files[0]:null;
+window.submitIkonAssignment = function(assignmentId,reg,button,fileInput){
+  const input=fileInput || document.getElementById('file_'+assignmentId),file=input&&input.files?input.files[0]:null;
   const card=button?button.parentElement:null,msg=card?card.querySelector('.assignmentUploadMsg'):null;
   if(!file){if(msg)msg.textContent='File select karein.';return;}
   if(file.size>8*1024*1024){if(msg)msg.textContent='File 8 MB se chhoti honi chahiye.';return;}
