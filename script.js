@@ -29577,12 +29577,19 @@ function ikonAssignmentPost(payload){
   return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
     .then(r=>r.text()).then(t=>{let d;try{d=JSON.parse(t);}catch(e){throw new Error(t||'Invalid server response');}if(!d.success)throw new Error(d.message||'Request failed');return d;});
 }
+function ikonAssignmentPaperKey(value){
+  return String(value||'').toUpperCase().replace(/MICROSOFT/g,'').replace(/^MS\s*/,'').replace(/[^A-Z0-9]/g,'').trim();
+}
+function ikonAssignmentSamePaper(a,b){
+  const x=ikonAssignmentPaperKey(a),y=ikonAssignmentPaperKey(b);
+  return !!x&&!!y&&(x===y||x.endsWith(y)||y.endsWith(x));
+}
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const card=document.createElement('section');card.className='ikon-mission-card';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
-  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId).trim().toUpperCase()&&String(a.paper||'').trim().toUpperCase()===String(ch.paper||'').trim().toUpperCase());
+  const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId).trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper)&&Number(a.level)===3);
   const steps=document.createElement('p');steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
   const l1=document.createElement('div');l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
   l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
@@ -29624,17 +29631,30 @@ function renderIkonPuzzle(ch,reg,box){
   const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
   const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
-  let start=null,last=null,dragging=false,selected=[];
+  let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
   (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:7px 1px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;font-weight:700;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
-  function paint(){cells.forEach(c=>{const k=c.dataset.r+','+c.dataset.c;c.style.background=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c))?'#bfdbfe':'#fff';});}
+  function paint(){cells.forEach(c=>{c.style.background=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c))?'#bfdbfe':'#fff';});}
   function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
-  function onDown(e){const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};last=start;selected=[start];dragging=true;paint();}
-  function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;last={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=makePath(start,last);paint();}
-  function onUp(){if(!dragging)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+  function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
+  function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
+  function onUp(){if(!dragging||checking)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+    checking=true;grid.style.pointerEvents='none';feedback.textContent='Checking...';
     const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
-    feedback.textContent='Checking selection...';fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';selected.forEach(p=>{const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);if(c)c.style.background='#bbf7d0';});setTimeout(()=>window.loadAssignmentsForStudent(),700);}else{feedback.textContent='✗ Try Again';selected=[];paint();}}).catch(e=>feedback.textContent=e.message);
+    fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){
+      feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';
+      selected.forEach(p=>{const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);if(c)c.style.background='#bbf7d0';});
+      // Update local progress immediately; do not refetch the whole portal after every word.
+      if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
+      if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)ch.progress.level2Words.push(String(next.questionNo));
+      if(d.completed||d.level3Unlocked){ch.level3Unlocked=true;feedback.textContent='✓ Level 2 complete! Level 3 unlocked.';return;}
+      const card=box.closest('.ikon-mission-card');
+      if(card){const fresh=document.createElement('div');fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
+        renderIkonPuzzle(ch,reg,fresh);const old=Array.from(card.children).find(el=>el.querySelector&&el.querySelector('h4')&&el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);if(old)old.replaceWith(fresh);
+      }
+    }else{feedback.textContent='✗ Try Again';selected=[];paint();}}
+    ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
   const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
