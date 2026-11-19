@@ -29567,11 +29567,73 @@ window.loadAssignmentsForStudent = function(){
       list.innerHTML='';
       const challenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
       const practical=Array.isArray(data.assignments)?data.assignments:[];
-      if(!challenges.length){const p=document.createElement('p');p.textContent='Abhi koi weekly challenge available nahi hai.';list.appendChild(p);}
-      challenges.forEach(ch=>renderIkonWeeklyChallenge(ch,practical,reg,list));
+      const allLevelsCompleted = challenges.length > 0 &&
+        challenges.every(ch => !!(ch.progress && ch.progress.level5Complete));
+      if(allLevelsCompleted){
+        renderIkonAllLevelsCongrats(data.name||'', list);
+      } else if(!challenges.length){
+        const p=document.createElement('p');p.textContent='Abhi koi weekly challenge available nahi hai.';list.appendChild(p);
+      } else {
+        challenges.forEach(ch=>renderIkonWeeklyChallenge(ch,practical,reg,list));
+      }
       if(status)status.textContent='';
     }).catch(err=>{if(status)status.textContent='Could not load assignments: '+err.message;});
 };
+
+function renderIkonAllLevelsCongrats(studentName, container){
+  container.innerHTML = '';
+  const screen = document.createElement('section');
+  screen.setAttribute('role','status');
+  screen.setAttribute('aria-live','polite');
+  screen.style.cssText = [
+    'position:fixed','inset:0','z-index:999999','display:flex',
+    'align-items:center','justify-content:center','overflow:hidden',
+    'padding:24px','box-sizing:border-box',
+    'background:radial-gradient(circle at 50% 35%,#263d78 0%,#101a3a 48%,#080e20 100%)',
+    'color:#fff','text-align:center'
+  ].join(';');
+
+  const confetti = document.createElement('div');
+  confetti.setAttribute('aria-hidden','true');
+  confetti.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none';
+  const colors = ['#facc15','#60a5fa','#f472b6','#34d399','#fb923c','#c4b5fd'];
+  for(let i=0;i<64;i++){
+    const bit=document.createElement('i');
+    const left=(i*37)%100;
+    const delay=(i%17)*-0.7;
+    const duration=4+(i%5);
+    bit.style.cssText=[
+      'position:absolute','top:-12px','left:'+left+'%',
+      'width:'+(6+(i%5))+'px','height:'+(9+(i%7))+'px',
+      'background:'+colors[i%colors.length],
+      'border-radius:'+(i%2?'50%':'2px'),
+      'opacity:.9','transform:rotate('+(i*29%180)+'deg)',
+      'animation:ikonCongratsFall '+duration+'s '+delay+'s linear infinite'
+    ].join(';');
+    confetti.appendChild(bit);
+  }
+
+  const style=document.createElement('style');
+  style.textContent='@keyframes ikonCongratsFall{0%{transform:translateY(-20px) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.85}}@keyframes ikonCongratsPop{0%{transform:scale(.75);opacity:0}100%{transform:scale(1);opacity:1}}';
+  const content=document.createElement('div');
+  content.style.cssText='position:relative;z-index:2;width:min(680px,100%);padding:clamp(28px,6vw,58px) 22px;border:1px solid rgba(255,255,255,.2);border-radius:28px;background:rgba(255,255,255,.09);box-shadow:0 24px 80px rgba(0,0,0,.35);backdrop-filter:blur(8px);animation:ikonCongratsPop .65s ease-out both';
+
+  const trophy=document.createElement('div');
+  trophy.textContent='🏆';
+  trophy.style.cssText='font-size:clamp(64px,12vw,100px);line-height:1.2;margin-bottom:16px;filter:drop-shadow(0 8px 18px rgba(250,204,21,.3))';
+  const heading=document.createElement('h1');
+  heading.textContent='CONGRATULATIONS!';
+  heading.style.cssText='margin:0 0 14px;font-size:clamp(30px,6vw,54px);font-weight:900;letter-spacing:1px;line-height:1.1;color:#fde68a';
+  const message=document.createElement('p');
+  message.textContent='You have successfully completed all levels!';
+  message.style.cssText='margin:0;font-size:clamp(16px,2.5vw,22px);line-height:1.6;color:#f8fafc';
+  const sub=document.createElement('p');
+  sub.textContent='IKON ULTIMATE CHAMPION';
+  sub.style.cssText='margin:22px 0 0;font-size:13px;font-weight:800;letter-spacing:3px;color:#bfdbfe';
+  content.append(trophy,heading,message,sub);
+  screen.append(style,confetti,content);
+  container.appendChild(screen);
+}
 
 function ikonAssignmentPost(payload){
   return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),redirect:'follow'})
