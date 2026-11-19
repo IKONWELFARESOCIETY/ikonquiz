@@ -29655,24 +29655,36 @@ function ikonAssignmentSamePaper(a,b){
   const x=ikonAssignmentPaperKey(a),y=ikonAssignmentPaperKey(b);
   return !!x&&!!y&&(x===y||x.endsWith(y)||y.endsWith(x));
 }
+function level3DoneForDesign(practical){
+  return Array.isArray(practical) && practical.length===3 &&
+    new Set(practical.map(a=>String(a.id||'').trim())).size===3 &&
+    practical.every(a=>a.uploaded===true);
+}
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
-  const card=document.createElement('section');card.className='ikon-mission-card';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
-  const title=document.createElement('h3');title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
+  const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
+  const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
-  const steps=document.createElement('p');steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
-  const l1=document.createElement('div');l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
+  const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
+  const progressWrap=document.createElement('div');progressWrap.className='ikon-weekly-progress';
+  const progressLabel=document.createElement('div');progressLabel.className='ikon-weekly-progress-label';
+  const doneCount=(mcqDone?1:0)+(puzzleDone?1:0)+(level3DoneForDesign(practical)?1:0)+(p1.level4Complete?1:0)+(p1.level5Complete?1:0);
+  progressLabel.innerHTML='<span>Challenge progress</span><strong>'+doneCount+' / 5 levels</strong>';
+  const track=document.createElement('div');track.className='ikon-weekly-progress-track';
+  const fill=document.createElement('span');fill.style.width=(doneCount*20)+'%';track.appendChild(fill);
+  progressWrap.append(progressLabel,track);card.appendChild(progressWrap);
+  const l1=document.createElement('div');l1.className='ikon-level-panel ikon-level-1';l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
   l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
   if(mcqDone){const done=document.createElement('b');done.textContent='Completed · Score '+p1.level1Score+' / '+p1.level1Total;l1.appendChild(done);}else renderIkonMcqForm(ch,reg,l1);
   card.appendChild(l1);
-  const l2=document.createElement('div');l2.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
+  const l2=document.createElement('div');l2.className='ikon-level-panel ikon-level-2';l2.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
   l2.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
   if(!mcqDone){const lock=document.createElement('p');lock.textContent='🔒 Level 1 complete karne ke baad unlock hoga.';l2.appendChild(lock);}
   else if(puzzleDone){const done=document.createElement('b');done.textContent='All words found · Level 3 unlocked';l2.appendChild(done);}
   else renderIkonPuzzle(ch,reg,l2);
   card.appendChild(l2);
-  const l3=document.createElement('div');l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
+  const l3=document.createElement('div');l3.className='ikon-level-panel ikon-level-3';l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
   l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
@@ -29680,13 +29692,13 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   card.appendChild(l3);
   // Unlock Level 4 only when the server confirms all three distinct practical uploads.
   const level3Done=practical.length===3 && new Set(practical.map(a=>String(a.id||'').trim())).size===3 && practical.every(a=>a.uploaded===true);
-  const l4=document.createElement('div');l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
+  const l4=document.createElement('div');l4.className='ikon-level-panel ikon-level-4';l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.innerHTML='<h4>LEVEL 4 – Brain Battle Arena</h4><p>Match Pairs · Arrange the Steps · Spot the Error · Speed Round</p>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
   else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke teeno practical tasks upload karein. Admin approval ka wait zaroori nahi hai.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
-  const l5=document.createElement('div');l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
+  const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
   l5.innerHTML='<h4>LEVEL 5 – Ultimate Champion</h4><p>Final mixed challenge · Score and final rank</p>';
   if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion completed!';l5.appendChild(done);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
@@ -29716,14 +29728,14 @@ function renderIkonGameForm(ch,reg,level,items,box){
   if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
   const form=document.createElement('div'),answers={};
   items.forEach((item,index)=>{
-    const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5e7eb';
+    const wrap=document.createElement('div');wrap.className='ikon-game-question';wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5e7eb';
     const title=document.createElement('p');title.textContent=(index+1)+'. ['+item.gameType.replace(/_/g,' ')+'] '+item.question;wrap.appendChild(title);
     const select=document.createElement('select');select.style.cssText='width:100%;max-width:520px;padding:10px;border:1px solid #cbd5e1;border-radius:8px';
     const blank=document.createElement('option');blank.value='';blank.textContent='Select answer';select.appendChild(blank);
     (item.options||[]).filter(x=>String(x||'').trim()!=='').forEach(opt=>{const o=document.createElement('option');o.value=String(opt);o.textContent=String(opt);select.appendChild(o);});
     select.addEventListener('change',()=>{answers[item.itemId]=select.value;});wrap.append(title,select);form.appendChild(wrap);
   });
-  const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';
+  const btn=document.createElement('button');btn.type='button';btn.className='primary ikon-game-submit-btn';btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';
   btn.onclick=()=>{
     if(items.some(x=>!String(answers[x.itemId]||'').trim())){alert('Sabhi questions ka answer select karein.');return;}
     btn.disabled=true;btn.textContent='Checking...';
@@ -29734,9 +29746,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
   form.appendChild(btn);box.appendChild(form);
 }
 function renderIkonMcqForm(ch,reg,box){
-  const form=document.createElement('form');form.onsubmit=e=>e.preventDefault();
+  const form=document.createElement('form');form.className='ikon-mcq-form';form.onsubmit=e=>e.preventDefault();
   (ch.mcq||[]).forEach((q,i)=>{
-    const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5eaf2';
+    const wrap=document.createElement('div');wrap.className='ikon-mcq-question';wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5eaf2';
     const qtitle=document.createElement('p');qtitle.textContent=(i+1)+'. '+q.question+(q.topic?' ('+q.topic+')':'');wrap.appendChild(qtitle);
     ['A','B','C','D'].forEach((letter,j)=>{const label=document.createElement('label');label.style.cssText='display:block;margin:6px 0;cursor:pointer';const radio=document.createElement('input');radio.type='radio';radio.name='q_'+q.questionNo;radio.value=letter;radio.required=true;label.append(radio,document.createTextNode(' '+letter+'. '+(q.options||[])[j]));wrap.appendChild(label);});form.appendChild(wrap);
   });
@@ -29755,7 +29767,7 @@ function renderIkonPuzzle(ch,reg,box){
   if(!next)return;
   const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
   (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:7px 1px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;font-weight:700;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
@@ -29786,6 +29798,7 @@ function renderIkonPuzzle(ch,reg,box){
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
+  item.className='ikon-practical-task-card';
   item.style.cssText='padding:12px;margin:10px 0;border:1px solid #eadfc9;border-radius:10px;background:#fff';
   const status=String(a.status||'PENDING').trim().toUpperCase();
   const h=document.createElement('b');
@@ -29823,6 +29836,7 @@ function renderIkonPracticalTask(a,reg,box,index){
 
   if(uploadAllowed){
     const input=document.createElement('input');
+    input.className='ikon-practical-file-input';
     input.type='file';
     input.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';
     // Each card owns its input reference; repeated/blank legacy IDs cannot collide.
@@ -29831,7 +29845,7 @@ function renderIkonPracticalTask(a,reg,box,index){
 
     const btn=document.createElement('button');
     btn.type='button';
-    btn.className='primary';
+    btn.className='primary ikon-practical-upload-btn';
     btn.textContent=status==='CORRECTION REQUIRED'?'Resubmit Practical':'Upload Practical';
     btn.style.cssText='display:inline-block;margin:4px 0;padding:10px 16px;cursor:pointer';
     btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn,input);
