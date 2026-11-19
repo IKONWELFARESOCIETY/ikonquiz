@@ -29703,14 +29703,62 @@ function renderIkonPuzzle(ch,reg,box){
   const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box){
-  const item=document.createElement('div');item.style.cssText='padding:12px;margin:10px 0;border:1px solid #eadfc9;border-radius:10px;background:#fff';
-  const h=document.createElement('b');h.textContent=(a.topic||'Practical Task')+' · '+a.status;item.appendChild(h);
-  const task=document.createElement('p');task.textContent=a.task||'';item.appendChild(task);
-  const meta=document.createElement('p');meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+(a.deadline?' · Deadline: '+a.deadline:'');item.appendChild(meta);
-  if(a.instructions){const ins=document.createElement('p');ins.textContent=a.instructions;item.appendChild(ins);}
-  if(a.feedback){const fb=document.createElement('p');fb.textContent='Admin Feedback: '+a.feedback;item.appendChild(fb);}
-  if(a.canUpload){const input=document.createElement('input');input.type='file';input.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';input.id='file_'+a.id;const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent=a.status==='CORRECTION REQUIRED'?'Resubmit':'Upload Practical';btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);const msg=document.createElement('div');msg.className='assignmentUploadMsg';item.append(input,btn,msg);}
-  else{const st=document.createElement('p');st.textContent=a.status==='APPROVED'?'Marks: '+a.obtainedMarks+' / '+a.maxMarks:'Submission: '+a.status;item.appendChild(st);}
+  const item=document.createElement('div');
+  item.style.cssText='padding:12px;margin:10px 0;border:1px solid #eadfc9;border-radius:10px;background:#fff';
+  const status=String(a.status||'PENDING').trim().toUpperCase();
+  const h=document.createElement('b');
+  h.textContent=(a.topic||'Practical Task')+' · '+status;
+  item.appendChild(h);
+
+  const task=document.createElement('p');
+  task.textContent=a.task||'';
+  item.appendChild(task);
+
+  const meta=document.createElement('p');
+  meta.textContent='Maximum Marks: '+Number(a.maxMarks||0)+(a.deadline?' · Deadline: '+a.deadline:'');
+  item.appendChild(meta);
+
+  if(a.instructions){
+    const ins=document.createElement('p');
+    ins.textContent=a.instructions;
+    item.appendChild(ins);
+  }
+  if(a.feedback){
+    const fb=document.createElement('p');
+    fb.textContent='Admin Feedback: '+a.feedback;
+    item.appendChild(fb);
+  }
+
+  // Pending/correction tasks must show an upload control even when an older
+  // assignmentList response omits the optional canUpload property.
+  const uploadAllowed = a.canUpload === true ||
+    (a.canUpload == null && (status === 'PENDING' || status === 'CORRECTION REQUIRED'));
+
+  if(uploadAllowed){
+    const input=document.createElement('input');
+    input.type='file';
+    input.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pbix';
+    input.id='file_'+a.id;
+    input.style.cssText='display:block;width:100%;margin:10px 0;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff';
+
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='primary';
+    btn.textContent=status==='CORRECTION REQUIRED'?'Resubmit Practical':'Upload Practical';
+    btn.style.cssText='display:inline-block;margin:4px 0;padding:10px 16px;cursor:pointer';
+    btn.onclick=()=>window.submitIkonAssignment(a.id,reg,btn);
+
+    const msg=document.createElement('div');
+    msg.className='assignmentUploadMsg';
+    msg.style.cssText='margin-top:8px;font-size:13px;color:#334155';
+    item.append(input,btn,msg);
+  } else {
+    const st=document.createElement('p');
+    st.textContent=status==='APPROVED'
+      ? 'Marks: '+a.obtainedMarks+' / '+a.maxMarks
+      : 'Submission: '+status;
+    item.appendChild(st);
+  }
   box.appendChild(item);
 }
 
