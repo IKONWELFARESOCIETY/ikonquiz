@@ -29693,13 +29693,15 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   // Unlock Level 4 only when the server confirms all three distinct practical uploads.
   const level3Done=practical.length===3 && new Set(practical.map(a=>String(a.id||'').trim())).size===3 && practical.every(a=>a.uploaded===true);
   const l4=document.createElement('div');l4.className='ikon-level-panel ikon-level-4';l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
-  l4.innerHTML='<h4>LEVEL 4 – Brain Battle Arena</h4><p>Match Pairs · Arrange the Steps · Spot the Error · Speed Round</p>';
+  l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
+  l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 04 · THE STRATEGY ARENA</small><h4>BRAIN BATTLE</h4><p>Four rounds. One mission. Beat the arena.</p></div><span class="ikon-level-game-stamp">BATTLE</span></div>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
   else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke teeno practical tasks upload karein. Admin approval ka wait zaroori nahi hai.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
-  l5.innerHTML='<h4>LEVEL 5 – Ultimate Champion</h4><p>Final mixed challenge · Score and final rank</p>';
+  l5.classList.add('ikon-level-game-hub','ikon-level-game-final');
+  l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">👑</span><div><small>LEVEL 05 · THE FINAL TRIAL</small><h4>ULTIMATE CHAMPION</h4><p>Your final test. Complete every round to finish.</p></div><span class="ikon-level-game-stamp">FINAL</span></div>';
   if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion completed!';l5.appendChild(done);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
@@ -29726,24 +29728,69 @@ function loadIkonGameLevel(ch,reg,level,box){
 }
 function renderIkonGameForm(ch,reg,level,items,box){
   if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
-  const form=document.createElement('div'),answers={};
+  const isFinal=level===5, form=document.createElement('div');
+  form.className=isFinal?'ikon-game-console ikon-game-console-final':'ikon-game-console ikon-game-console-battle';
+  const hero=document.createElement('div');hero.className='ikon-game-hero';
+  const emblem=document.createElement('div');emblem.className='ikon-game-emblem';emblem.textContent=isFinal?'👑':'⚡';
+  const heroText=document.createElement('div');
+  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'FINAL ROUND':'BRAIN BATTLE · ARENA';
+  const heading=document.createElement('h5');heading.textContent=isFinal?'ULTIMATE CHAMPION':'BRAIN BATTLE ARENA';
+  const intro=document.createElement('p');intro.textContent=isFinal?'Final challenge. Choose the best answer to claim the title.':'Four game modes. Think fast, choose carefully, and clear the arena.';
+  heroText.append(eyebrow,heading,intro);hero.append(emblem,heroText);form.appendChild(hero);
+  const progress=document.createElement('div');progress.className='ikon-game-progress';
+  const progressText=document.createElement('div');progressText.className='ikon-game-progress-text';
+  const progressLabel=document.createElement('span');progressLabel.textContent='YOUR ANSWERS';
+  const progressCount=document.createElement('strong');progressCount.textContent='0 / '+items.length+' selected';
+  progressText.append(progressLabel,progressCount);
+  const progressTrack=document.createElement('div');progressTrack.className='ikon-game-progress-track';
+  const progressFill=document.createElement('span');progressTrack.appendChild(progressFill);
+  progress.append(progressText,progressTrack);form.appendChild(progress);
+  const answers={};
+  function updateProgress(){
+    const count=Object.keys(answers).filter(k=>String(answers[k]||'').trim()).length;
+    progressCount.textContent=count+' / '+items.length+' selected';
+    progressFill.style.width=(count/items.length*100)+'%';
+  }
   items.forEach((item,index)=>{
-    const wrap=document.createElement('div');wrap.className='ikon-game-question';wrap.style.cssText='padding:10px 0;border-bottom:1px solid #e5e7eb';
-    const title=document.createElement('p');title.textContent=(index+1)+'. ['+item.gameType.replace(/_/g,' ')+'] '+item.question;wrap.appendChild(title);
-    const select=document.createElement('select');select.style.cssText='width:100%;max-width:520px;padding:10px;border:1px solid #cbd5e1;border-radius:8px';
-    const blank=document.createElement('option');blank.value='';blank.textContent='Select answer';select.appendChild(blank);
-    (item.options||[]).filter(x=>String(x||'').trim()!=='').forEach(opt=>{const o=document.createElement('option');o.value=String(opt);o.textContent=String(opt);select.appendChild(o);});
-    select.addEventListener('change',()=>{answers[item.itemId]=select.value;});wrap.append(title,select);form.appendChild(wrap);
+    const card=document.createElement('section');card.className='ikon-game-round-card';
+    const top=document.createElement('div');top.className='ikon-game-round-top';
+    const number=document.createElement('span');number.className='ikon-game-round-number';number.textContent=String(index+1).padStart(2,'0');
+    const type=document.createElement('span');type.className='ikon-game-mode-tag';type.textContent=String(item.gameType||'CHALLENGE').replace(/_/g,' ');
+    const points=document.createElement('span');points.className='ikon-game-points';points.textContent='+'+(Number(item.marks)||1)+' PTS';
+    top.append(number,type,points);
+    const question=document.createElement('h6');question.className='ikon-game-round-question';question.textContent=item.question||'Challenge question';
+    const choices=document.createElement('div');choices.className='ikon-game-choice-grid';
+    (item.options||[]).filter(x=>String(x||'').trim()!=='').forEach((opt,optIndex)=>{
+      const choice=document.createElement('button');choice.type='button';choice.className='ikon-game-choice';
+      const key=document.createElement('span');key.className='ikon-game-choice-key';key.textContent=String.fromCharCode(65+optIndex);
+      const value=document.createElement('span');value.className='ikon-game-choice-value';value.textContent=String(opt);
+      const tick=document.createElement('span');tick.className='ikon-game-choice-tick';tick.textContent='✓';
+      choice.append(key,value,tick);choice.setAttribute('aria-pressed','false');
+      choice.addEventListener('click',()=>{
+        answers[item.itemId]=String(opt);
+        choices.querySelectorAll('.ikon-game-choice').forEach(b=>{b.classList.remove('is-selected');b.setAttribute('aria-pressed','false');});
+        choice.classList.add('is-selected');choice.setAttribute('aria-pressed','true');
+        card.classList.remove('needs-answer');updateProgress();
+      });
+      choices.appendChild(choice);
+    });
+    card.append(top,question,choices);form.appendChild(card);
   });
-  const btn=document.createElement('button');btn.type='button';btn.className='primary ikon-game-submit-btn';btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';
-  btn.onclick=()=>{
-    if(items.some(x=>!String(answers[x.itemId]||'').trim())){alert('Sabhi questions ka answer select karein.');return;}
-    btn.disabled=true;btn.textContent='Checking...';
+  const submit=document.createElement('button');submit.type='button';submit.className='ikon-game-launch-btn';
+  submit.innerHTML=isFinal?'<span>🏆</span> FINISH FINAL CHALLENGE':'<span>⚔️</span> SUBMIT BRAIN BATTLE';
+  submit.onclick=()=>{
+    const firstMissing=items.findIndex(x=>!String(answers[x.itemId]||'').trim());
+    if(firstMissing>=0){
+      const missingCard=form.querySelectorAll('.ikon-game-round-card')[firstMissing];
+      if(missingCard){missingCard.scrollIntoView({behavior:'smooth',block:'center'});missingCard.classList.add('needs-answer');}
+      alert('Har round ka ek answer select karein.');return;
+    }
+    submit.disabled=true;submit.textContent='CHECKING YOUR ANSWERS...';
     ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{alert((level===4?'Brain Battle':'Ultimate Champion')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();})
-      .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent=level===4?'Submit Brain Battle':'Submit Ultimate Champion';});
+      .catch(e=>{alert(e.message);submit.disabled=false;submit.innerHTML=isFinal?'<span>🏆</span> FINISH FINAL CHALLENGE':'<span>⚔️</span> SUBMIT BRAIN BATTLE';});
   };
-  form.appendChild(btn);box.appendChild(form);
+  form.appendChild(submit);box.appendChild(form);
 }
 function renderIkonMcqForm(ch,reg,box){
   const form=document.createElement('form');form.className='ikon-mcq-form';form.onsubmit=e=>e.preventDefault();
@@ -29768,11 +29815,25 @@ function renderIkonPuzzle(ch,reg,box){
   const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
   const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
+  const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
+  const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
+  selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:7px 1px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;font-weight:700;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
-  function paint(){cells.forEach(c=>{c.style.background=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c))?'#bfdbfe':'#fff';});}
+  function paint(){
+    cells.forEach(c=>{
+      const active=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c));
+      c.classList.toggle('is-word-selected',active);c.style.background=active?'#2457d6':'#fff';
+      c.style.color=active?'#fff':'#243b5b';c.style.border=active?'2px solid #163eaa':'1px solid #d5deec';
+      c.style.boxShadow=active?'0 5px 13px rgba(36,87,214,.35)':'0 1px 2px rgba(20,40,70,.04)';
+      c.style.transform=active?'scale(1.07)':'scale(1)';c.style.zIndex=active?'2':'1';
+    });
+    const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+    selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
+  }
   function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
   function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
   function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
