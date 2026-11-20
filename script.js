@@ -29886,6 +29886,31 @@ function renderIkonGameForm(ch,reg,level,items,box){
     `;
     document.head.appendChild(readable);
   }
+  if(!document.getElementById('ikon-level4-refresh-style')){
+    const style=document.createElement('style');style.id='ikon-level4-refresh-style';
+    style.textContent=`
+      .ikon-playable-battle .ikon-playable-stage{border-radius:16px!important;overflow:hidden}
+      .ikon-playable-battle .ikon-sequence-builder{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;margin-top:16px!important;align-items:stretch}
+      .ikon-playable-battle .ikon-sequence-card{position:relative;min-width:0!important;padding:18px!important;border:1px solid #526fa8!important;border-radius:16px!important;background:linear-gradient(145deg,#263e68,#172847)!important;box-shadow:0 12px 24px #07142b66;gap:13px!important;overflow:hidden}
+      .ikon-playable-battle .ikon-sequence-card:before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(#60a5fa,#a78bfa)}
+      .ikon-playable-battle .ikon-sequence-card strong{font-size:13px!important;letter-spacing:.7px}
+      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-preview{display:flex;flex-direction:column;gap:8px;min-height:116px;padding:12px;border:1px solid #ffffff18;border-radius:12px;background:#0c1b34aa;color:#eaf2ff}
+      .ikon-playable-battle .ikon-sequence-step{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45}
+      .ikon-playable-battle .ikon-sequence-step b{display:inline-flex;align-items:center;justify-content:center;flex:0 0 23px;height:23px;border-radius:50%;background:#315b99;color:#fff;font-size:11px}
+      .ikon-playable-battle .ikon-sequence-card button{min-height:46px!important;border-radius:10px!important;font-size:12px!important;letter-spacing:.35px}
+      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-inspect{background:linear-gradient(90deg,#2357a2,#277fe0)!important;border:1px solid #75a9ee!important;color:#fff!important}
+      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-select{background:linear-gradient(90deg,#087e83,#0d9488)!important;border:1px solid #5eead4!important;color:#fff!important}
+      .ikon-playable-battle .ikon-sequence-card.is-inspected{border-color:#5eead4!important;box-shadow:0 0 0 2px #5eead422,0 12px 24px #07142b66}
+      .ikon-playable-battle .ikon-error-detective{padding:14px;border:1px solid #536fa5;border-radius:16px;background:linear-gradient(145deg,#172b4c,#101e37);box-shadow:0 12px 24px #07142b55}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-grid{grid-template-columns:1fr!important;gap:10px!important}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile{min-height:0!important;display:grid!important;grid-template-columns:105px minmax(0,1fr) 120px!important;align-items:center!important;gap:12px!important;padding:13px 15px!important;border-radius:12px!important;background:linear-gradient(90deg,#203b62,#172b49)!important}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-statement{font-size:14px!important;line-height:1.5!important}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile-action{text-align:right}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile.is-targeted{background:linear-gradient(90deg,#6b263f,#3b203e)!important}
+      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-confirm{min-height:48px}
+      @media(max-width:680px){.ikon-playable-battle .ikon-sequence-builder{grid-template-columns:1fr!important;gap:12px!important}.ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile{grid-template-columns:1fr!important;gap:8px!important}.ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile-action{text-align:left}}
+    `;document.head.appendChild(style);
+  }
   const answers={};
   const typeOf=x=>String(x.gameType||'MCQ').trim().toUpperCase();
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
@@ -30147,44 +30172,41 @@ function renderIkonGameForm(ch,reg,level,items,box){
   // LEVEL 4 STAGE 2: Workflow investigation. Student inspects the four
   // candidate workflows, then selects the one that correctly completes the task.
   function makeSequenceBuilder(item,card){
-    const wrap=document.createElement('div');
-    wrap.className='ikon-sequence-builder';
-    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
-    const hint=document.createElement('p');
-    hint.className='ikon-memory-hint';
-    hint.textContent='Har workflow ko INSPECT karein. Steps ka order samjhein, phir sahi workflow select karein.';
+    const wrap=document.createElement('div');wrap.className='ikon-sequence-builder';
+    const hint=document.createElement('p');hint.className='ikon-memory-hint';
+    hint.textContent='Har workflow ek possible process hai. Inspect karke steps dekhein, compare karein aur correct process choose karein.';
     card.appendChild(hint);
     const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
-    const inspected=new Set();
-    const selectButtons=[];
+    const inspected=new Set(),selectButtons=[];
     values.forEach((value,index)=>{
-      const panel=document.createElement('div');
-      panel.className='ikon-sequence-card';
-      panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
-      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
-      const name=document.createElement('strong');name.textContent='WORKFLOW '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
-      const state=document.createElement('span');state.textContent='NOT INSPECTED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';
-      head.append(name,state);
-      const preview=document.createElement('div');preview.textContent='Sequence hidden — inspect to view the process.';preview.style.cssText='font-size:12px;line-height:1.55;color:#dbeafe;min-height:52px;display:flex;align-items:center';
-      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT WORKFLOW';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
-      const choose=document.createElement('button');choose.type='button';choose.className='ikon-playable-option';choose.textContent='SELECT THIS WORKFLOW';choose.disabled=true;choose.setAttribute('aria-pressed','false');choose.style.cssText='border:0;border-radius:8px;padding:10px;background:#1768bd;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
-      selectButtons.push(choose);
+      const panel=document.createElement('div');panel.className='ikon-sequence-card';
+      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px';
+      const name=document.createElement('strong');name.textContent='ROUTE '+String.fromCharCode(65+index);name.style.cssText='font-size:12px;color:#dbeafe;letter-spacing:.7px';
+      const state=document.createElement('span');state.textContent='SEALED';state.style.cssText='font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:.5px';head.append(name,state);
+      const preview=document.createElement('div');preview.className='ikon-sequence-preview';
+      const cover=document.createElement('div');cover.textContent='🔒 Workflow steps locked';cover.style.cssText='font-size:13px;font-weight:800;color:#cbd5e1;display:flex;align-items:center;min-height:88px';preview.appendChild(cover);
+      const inspect=document.createElement('button');inspect.type='button';inspect.className='ikon-sequence-inspect';inspect.textContent='🔍 REVEAL STEPS';
+      const choose=document.createElement('button');choose.type='button';choose.className='ikon-playable-option ikon-sequence-select';choose.textContent='CHOOSE THIS ROUTE';choose.disabled=true;choose.style.opacity='.4';choose.setAttribute('aria-pressed','false');selectButtons.push(choose);
       inspect.addEventListener('click',()=>{
-        preview.textContent=value.split(/\s*>\s*/).map((step,i)=>`${i+1}. ${step.trim()}`).join('   →   ');
-        preview.style.alignItems='flex-start';
-        state.textContent='INSPECTED';state.style.color='#86efac';
-        inspect.textContent='WORKFLOW INSPECTED';inspect.disabled=true;inspect.style.opacity='.65';
-        inspected.add(index);
-        const allInspected=inspected.size===values.length;
-        selectButtons.forEach(btn=>{btn.disabled=!allInspected;btn.style.opacity=allInspected?'1':'.45';});
-        hint.textContent=allInspected?'All workflows inspected. Ab compare karke correct workflow select karein.':`${inspected.size}/${values.length} workflows inspected. Baaki workflows bhi inspect karein.`;
+        preview.replaceChildren();
+        value.split(/\s*>\s*/).map(x=>x.trim()).filter(Boolean).forEach((step,i)=>{
+          const row=document.createElement('div');row.className='ikon-sequence-step';
+          const num=document.createElement('b');num.textContent=String(i+1);
+          const text=document.createElement('span');text.textContent=step;row.append(num,text);preview.appendChild(row);
+        });
+        if(!preview.children.length){const t=document.createElement('span');t.textContent=value;preview.appendChild(t);}
+        panel.classList.add('is-inspected');state.textContent='REVEALED';state.style.color='#5eead4';
+        inspect.textContent='✓ STEPS REVEALED';inspect.disabled=true;inspected.add(index);
+        const all=inspected.size===values.length;
+        selectButtons.forEach(b=>{b.disabled=!all;b.style.opacity=all?'1':'.4';});
+        hint.textContent=all?'All routes unlocked. Compare the step order and choose the correct route.':`${inspected.size}/${values.length} routes revealed — reveal the remaining routes to unlock your decision.`;
       });
       choose.addEventListener('click',()=>{
         if(inspected.size!==values.length)return;
         setAnswer(item,value,card,choose);
-        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
-        choose.textContent='✓ WORKFLOW SELECTED';
-        hint.textContent='Workflow selected. Agar zaroorat ho to doosra workflow select karke apna decision badal sakte hain.';
+        selectButtons.forEach(b=>{b.classList.remove('is-picked');b.textContent='CHOOSE THIS ROUTE';});
+        choose.classList.add('is-picked');choose.textContent='✓ ROUTE SELECTED';
+        hint.textContent='Route locked in. Aap final submit se pehle apna selection change kar sakte hain.';
       });
       panel.append(head,preview,inspect,choose);wrap.appendChild(panel);
     });
@@ -30200,62 +30222,53 @@ function renderIkonGameForm(ch,reg,level,items,box){
   function makeErrorDetective(item,card){
     const wrap=document.createElement('div');wrap.className='ikon-error-detective ikon-bug-hunter';
     const hint=document.createElement('p');hint.className='ikon-memory-hint';
-    hint.textContent='Bug scanner ready hai. Statements ko dekhein aur jis mein galti ho us card ko FLAG karein.';
-    const status=document.createElement('div');status.className='ikon-bug-status';status.textContent='🟢 SCANNER READY · 0 BUGS FLAGGED';
+    hint.textContent='Incident console active hai. Logs ko scan karein, suspicious entry select karein aur final bug report submit karein.';
+    const status=document.createElement('div');status.className='ikon-bug-status';status.textContent='🟢 LIVE SYSTEM · WAITING FOR INVESTIGATION';
     const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
     const grid=document.createElement('div');grid.className='ikon-bug-grid';
-    let selectedValue='';let confirmed=false;
-    const cards=[];
+    let selectedValue='';
+    const rows=[];
     values.forEach((value,index)=>{
       const tile=document.createElement('button');tile.type='button';tile.className='ikon-bug-tile';tile.setAttribute('aria-pressed','false');
-      const top=document.createElement('span');top.className='ikon-bug-tile-top';
-      const id=document.createElement('b');id.textContent='SYSTEM LOG '+String.fromCharCode(65+index);
-      const tag=document.createElement('i');tag.textContent='UNSCANNED';top.append(id,tag);
+      const id=document.createElement('b');id.className='ikon-bug-log-id';id.textContent='LOG '+String(index+1).padStart(2,'0');
       const body=document.createElement('span');body.className='ikon-bug-statement';body.textContent=value;
-      const action=document.createElement('span');action.className='ikon-bug-tile-action';action.textContent='TAP TO FLAG THIS BUG';
-      tile.append(top,body,action);
+      const tag=document.createElement('span');tag.className='ikon-bug-tile-action';tag.textContent='SELECT LOG  →';
+      tile.append(id,body,tag);
       tile.addEventListener('click',()=>{
-        selectedValue=value;confirmed=false;delete answers[item.itemId];updateProgress();
-        cards.forEach((entry,i)=>{
-          const active=i===index;entry.tile.classList.toggle('is-targeted',active);entry.tile.classList.toggle('is-muted',!active);
-          entry.tile.setAttribute('aria-pressed',active?'true':'false');
-          entry.tag.textContent=active?'⚠ BUG SUSPECT':'SCANNED';
-          entry.action.textContent=active?'BUG TARGETED':'REVIEWED';
-        });
-        status.textContent='🔴 BUG TARGETED · LOG '+String.fromCharCode(65+index);
-        hint.textContent='Is statement ko suspicious mark kiya gaya hai. Confirm karne se pehle doosra card bhi choose kar sakte hain.';
-        confirm.disabled=false;confirm.classList.add('is-ready');confirm.textContent='CONFIRM BUG REPORT';
+        selectedValue=value;
+        rows.forEach((r,i)=>{const active=i===index;r.tile.classList.toggle('is-targeted',active);r.tile.classList.toggle('is-muted',!active);r.tile.setAttribute('aria-pressed',active?'true':'false');r.tag.textContent=active?'⚠ SUSPECT SELECTED':'REVIEW LOG';});
+        status.textContent='🔴 INVESTIGATING · LOG '+String(index+1).padStart(2,'0')+' SELECTED';
+        hint.textContent='Aapne ek suspicious log select kiya hai. Confirm karne se pehle kisi doosre log ko bhi select kar sakte hain.';
+        confirm.disabled=false;confirm.textContent='🚩 SUBMIT INCIDENT REPORT';confirm.classList.add('is-ready');
       });
-      grid.appendChild(tile);cards.push({tile,tag,action});
+      grid.appendChild(tile);rows.push({tile,tag});
     });
-    const confirm=document.createElement('button');confirm.type='button';confirm.className='ikon-bug-confirm';confirm.disabled=true;confirm.textContent='SELECT A SUSPECT FIRST';
+    const confirm=document.createElement('button');confirm.type='button';confirm.className='ikon-bug-confirm';confirm.disabled=true;confirm.textContent='SELECT A LOG TO INVESTIGATE';
     confirm.addEventListener('click',()=>{
       if(!selectedValue)return;
-      confirmed=true;setAnswer(item,selectedValue,card,confirm);
-      confirm.textContent='✓ BUG REPORT LOCKED';confirm.classList.add('is-confirmed');
-      status.textContent='✅ BUG REPORT SUBMITTED';
-      hint.textContent='Bug report lock ho gaya. Agar final submit se pehle answer badalna ho to doosra log flag karke confirm karein.';
+      setAnswer(item,selectedValue,card,confirm);
+      confirm.textContent='✓ INCIDENT REPORT SUBMITTED';confirm.classList.add('is-confirmed');
+      status.textContent='✅ INCIDENT ISOLATED · REPORT LOCKED';
+      hint.textContent='Report submitted. Aap kisi aur log ko select karke final submit se pehle answer update kar sakte hain.';
     });
     if(!document.getElementById('ikon-bug-hunter-style')){
       const style=document.createElement('style');style.id='ikon-bug-hunter-style';
       style.textContent=`
         .ikon-bug-hunter{display:flex;flex-direction:column;gap:12px;margin-top:12px}
-        .ikon-bug-hunter .ikon-bug-status{padding:10px 12px;border:1px solid #5275a9;border-radius:10px;background:#10213e;color:#c7f9e9;font-size:12px;font-weight:900;letter-spacing:.35px}
-        .ikon-bug-hunter .ikon-bug-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-        .ikon-bug-hunter .ikon-bug-tile{min-width:0;min-height:130px;padding:14px;border:1px solid #5875aa;border-radius:13px;background:linear-gradient(145deg,#243c63,#182a49);color:#f8fafc;text-align:left;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,opacity .18s;box-shadow:0 7px 16px #08152b55}
-        .ikon-bug-hunter .ikon-bug-tile:hover{transform:translateY(-2px);border-color:#93c5fd}
-        .ikon-bug-hunter .ikon-bug-tile-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#bfdbfe;font-size:10px;letter-spacing:.45px}
-        .ikon-bug-hunter .ikon-bug-tile-top i{font-style:normal;color:#fbbf24;font-size:9px;font-weight:900}
-        .ikon-bug-hunter .ikon-bug-statement{font-size:14px;line-height:1.55;overflow-wrap:anywhere;flex:1}
-        .ikon-bug-hunter .ikon-bug-tile-action{font-size:10px;font-weight:900;color:#93c5fd;letter-spacing:.45px}
-        .ikon-bug-hunter .ikon-bug-tile.is-targeted{border:2px solid #fb7185;background:linear-gradient(145deg,#6b263f,#3b203e);box-shadow:0 0 0 3px #fb718533,0 0 22px #fb718544;animation:ikonBugPulse .55s ease}
-        .ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-top i,.ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-action{color:#fecdd3}
-        .ikon-bug-hunter .ikon-bug-tile.is-muted{opacity:.62}
-        .ikon-bug-hunter .ikon-bug-confirm{width:100%;padding:13px;border:1px solid #64748b;border-radius:10px;background:#334155;color:#cbd5e1;font-size:12px;font-weight:900;letter-spacing:.4px;cursor:not-allowed}
+        .ikon-bug-hunter .ikon-bug-status{padding:12px 14px;border:1px solid #5275a9;border-radius:11px;background:linear-gradient(90deg,#10213e,#1d355b);color:#c7f9e9;font-size:12px;font-weight:900;letter-spacing:.4px}
+        .ikon-bug-hunter .ikon-bug-grid{display:grid;grid-template-columns:1fr;gap:10px}
+        .ikon-bug-hunter .ikon-bug-tile{min-width:0;padding:14px 16px;border:1px solid #5875aa;border-radius:12px;background:linear-gradient(100deg,#243f68,#172b49);color:#f8fafc;text-align:left;display:grid;grid-template-columns:100px minmax(0,1fr) 115px;align-items:center;gap:14px;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,opacity .18s;box-shadow:0 6px 14px #08152b44}
+        .ikon-bug-hunter .ikon-bug-tile:hover{transform:translateX(3px);border-color:#93c5fd}
+        .ikon-bug-hunter .ikon-bug-log-id{font-size:11px;letter-spacing:.6px;color:#93c5fd}
+        .ikon-bug-hunter .ikon-bug-statement{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+        .ikon-bug-hunter .ikon-bug-tile-action{text-align:right;font-size:10px;font-weight:900;color:#93c5fd;letter-spacing:.35px}
+        .ikon-bug-hunter .ikon-bug-tile.is-targeted{border:2px solid #fb7185;background:linear-gradient(100deg,#6b263f,#3b203e);box-shadow:0 0 0 3px #fb718533,0 0 20px #fb718533}
+        .ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-log-id,.ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-action{color:#fecdd3}
+        .ikon-bug-hunter .ikon-bug-tile.is-muted{opacity:.65}
+        .ikon-bug-hunter .ikon-bug-confirm{width:100%;padding:14px;border:1px solid #64748b;border-radius:10px;background:#334155;color:#cbd5e1;font-size:12px;font-weight:900;cursor:not-allowed}
         .ikon-bug-hunter .ikon-bug-confirm.is-ready{background:linear-gradient(90deg,#b45309,#dc2626);border-color:#fda4af;color:#fff;cursor:pointer}
         .ikon-bug-hunter .ikon-bug-confirm.is-confirmed{background:linear-gradient(90deg,#047857,#0f766e);border-color:#5eead4;color:#fff}
-        @keyframes ikonBugPulse{0%{transform:scale(.98)}45%{transform:scale(1.025)}100%{transform:scale(1)}}
-        @media(max-width:560px){.ikon-bug-hunter .ikon-bug-grid{grid-template-columns:1fr;gap:11px}.ikon-bug-hunter .ikon-bug-tile{min-height:105px}}
+        @media(max-width:620px){.ikon-bug-hunter .ikon-bug-tile{grid-template-columns:1fr;gap:7px}.ikon-bug-hunter .ikon-bug-tile-action{text-align:left}}
       `;document.head.appendChild(style);
     }
     wrap.append(status,grid,confirm);return wrap;
@@ -30465,12 +30478,30 @@ function renderIkonLevel3Matching(ch,reg,box){
         return;
       }
 
+      state.textContent='Select an item on the left, then its matching item on the right.';
+      state.className='ikon-match-state is-ready';
       const leftItems=Array.isArray(d.leftOptions)?d.leftOptions:[];
       const rightItems=Array.isArray(d.rightQuestions)?d.rightQuestions:[];
       if(leftItems.length!==4||rightItems.length!==4){
         throw new Error('Matching sheet mein exactly 4 complete pairs hone chahiye.');
       }
 
+      if(!document.getElementById('ikon-level3-match-layout-fix')){
+        const style=document.createElement('style');style.id='ikon-level3-match-layout-fix';
+        style.textContent=`
+          .ikon-level3-match-panel .ikon-match-board{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;column-gap:clamp(28px,7vw,100px)!important;row-gap:12px!important;align-items:start!important;position:relative!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;padding:12px 4px!important;overflow:visible!important}
+          .ikon-level3-match-panel .ikon-match-column{display:flex!important;flex-direction:column!important;gap:18px!important;min-width:0!important;width:100%!important;max-width:none!important;position:relative!important;z-index:1!important}
+          .ikon-level3-match-panel .ikon-match-column:first-child{grid-column:1!important;grid-row:1!important}
+          .ikon-level3-match-panel .ikon-match-column:last-child{grid-column:2!important;grid-row:1!important;justify-self:stretch!important;margin-left:0!important}
+          .ikon-level3-match-panel .ikon-match-column h5{margin:0 0 2px!important;font-size:11px!important;letter-spacing:1px!important;text-align:left!important;color:#9db9e8!important}
+          .ikon-level3-match-panel .ikon-match-node{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;min-width:0!important;min-height:58px!important;box-sizing:border-box!important;padding:14px 18px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:left!important;border-radius:13px!important;font-size:14px!important;line-height:1.45!important;box-shadow:0 7px 16px #08152b25!important}
+          .ikon-level3-match-panel .ikon-match-lines{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:visible!important;pointer-events:none!important;z-index:2!important}
+          .ikon-level3-match-panel .ikon-match-controls{display:flex!important;gap:12px!important;margin-top:16px!important}
+          .ikon-level3-match-panel .ikon-match-controls button{flex:1 1 0!important;min-height:46px!important;border-radius:10px!important}
+          .ikon-level3-match-panel .ikon-match-result{min-height:22px!important;font-weight:700!important}
+          @media(max-width:620px){.ikon-level3-match-panel .ikon-match-board{column-gap:12px!important;padding:8px 0!important}.ikon-level3-match-panel .ikon-match-column{gap:12px!important}.ikon-level3-match-panel .ikon-match-node{min-height:66px!important;padding:10px 8px!important;font-size:12px!important}.ikon-level3-match-panel .ikon-match-controls{flex-direction:column!important}}
+        `;document.head.appendChild(style);
+      }
       const board=document.createElement('div');
       board.className='ikon-match-board';
 
