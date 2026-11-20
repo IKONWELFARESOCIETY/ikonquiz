@@ -29686,6 +29686,9 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   card.appendChild(l2);
   const l3=document.createElement('div');l3.className='ikon-level-panel ikon-level-3';l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
   l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
+  // Premium Part 2: connect four options on the left to questions on the right.
+  renderIkonLevel3Matching(ch,reg,l3);
+
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
@@ -29863,16 +29866,22 @@ function renderIkonGameForm(ch,reg,level,items,box){
     });
 
     if(stage.id==='speed'){
-      const clock=document.createElement('div');clock.className='ikon-speed-clock';
-      const clockLabel=document.createElement('span');clockLabel.textContent='SPEED ROUND CLOCK';
+      const clock=document.createElement('div');clock.className='ikon-speed-clock is-idle';
+      const clockLabel=document.createElement('span');clockLabel.textContent='STATUS: READY · RAPID FIRE';
       const clockValue=document.createElement('strong');clockValue.textContent='45s';
-      clock.append(clockLabel,clockValue);section.insertBefore(clock,section.children[1]);
-      let remaining=45;
-      const timer=setInterval(()=>{
-        remaining--;clockValue.textContent=remaining+'s';
-        if(remaining<=10)clock.classList.add('is-urgent');
-        if(remaining<=0){clearInterval(timer);clock.classList.add('is-finished');clockValue.textContent='TIME!';}
-      },1000);
+      const startClock=document.createElement('button');startClock.type='button';startClock.className='ikon-speed-start';startClock.textContent='START RAPID FIRE';
+      clock.append(clockLabel,clockValue,startClock);section.insertBefore(clock,section.children[1]);
+      let remaining=45, timer=null, speedStarted=false;
+      startClock.addEventListener('click',()=>{
+        if(speedStarted)return;
+        speedStarted=true;clock.classList.remove('is-idle');clock.classList.add('is-running');
+        clockLabel.textContent='STATUS: RAPID FIRE ACTIVE';startClock.disabled=true;startClock.textContent='RAPID FIRE LIVE';
+        timer=setInterval(()=>{
+          remaining--;clockValue.textContent=remaining+'s';
+          if(remaining<=10)clock.classList.add('is-urgent');
+          if(remaining<=0){clearInterval(timer);clock.classList.remove('is-running');clock.classList.add('is-finished');clockLabel.textContent='STATUS: TIME UP';clockValue.textContent='TIME!';}
+        },1000);
+      });
     }
     root.appendChild(section);
   });
@@ -29892,6 +29901,41 @@ function renderIkonGameForm(ch,reg,level,items,box){
       .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'🏆 COMPLETE THE CHAMPIONSHIP':'⚔️ SUBMIT BRAIN BATTLE';});
   });
   root.appendChild(submit);box.appendChild(root);
+}
+
+function renderIkonLevel3Matching(ch,reg,box){
+  const panel=document.createElement('section');panel.className='ikon-level3-match-panel';
+  const head=document.createElement('div');head.className='ikon-level3-match-head';
+  head.innerHTML='<span class="ikon-level3-match-kicker">LEVEL 3 · PART 2</span><h4>CONNECT THE MATCHES</h4><p>Left side ke option ko right side ke correct question se mouse se line kheench kar jodiye.</p>';
+  panel.appendChild(head);
+  const state=document.createElement('div');state.className='ikon-match-state';state.textContent='Loading matching activity...';panel.appendChild(state);box.appendChild(panel);
+  const url=SCRIPT_URL+'?action=level3Matching&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
+  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    if(!d.success)throw new Error(d.message||'Matching load failed');
+    if(d.completed){state.className='ikon-match-state is-done';state.textContent='✓ Part 2 completed — all four connections were submitted.';return;}
+    const items=d.items||[];
+    if(items.length!==4)throw new Error('Sheet mein exactly 4 matching pairs hone chahiye.');
+    const shuffled=items.slice().sort(()=>Math.random()-.5);
+    const board=document.createElement('div');board.className='ikon-match-board';
+    const left=document.createElement('div');left.className='ikon-match-column';
+    const right=document.createElement('div');right.className='ikon-match-column';
+    const leftTitle=document.createElement('h5');leftTitle.textContent='OPTIONS';const rightTitle=document.createElement('h5');rightTitle.textContent='QUESTIONS';
+    left.appendChild(leftTitle);right.appendChild(rightTitle);
+    const leftNodes=[],rightNodes=[],connections={};let active=null;
+    items.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.left;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectLeft(n));left.appendChild(n);leftNodes.push(n);});
+    shuffled.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.right;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectRight(n));right.appendChild(n);rightNodes.push(n);});
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('ikon-match-lines');board.append(left,svg,right);panel.appendChild(board);
+    const controls=document.createElement('div');controls.className='ikon-match-controls';
+    const reset=document.createElement('button');reset.type='button';reset.textContent='RESET LINES';reset.className='ikon-match-reset';
+    const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT MATCHING';submit.className='ikon-match-submit';
+    const result=document.createElement('p');result.className='ikon-match-result';controls.append(reset,submit);panel.append(controls,result);
+    function selectLeft(n){active=n;leftNodes.forEach(x=>x.classList.toggle('is-active',x===n));result.textContent='Now select the matching question on the right.';}
+    function selectRight(n){if(!active){result.textContent='Pehle left side ka option select karein.';return;}const key=active.dataset.id;Object.keys(connections).forEach(k=>{if(connections[k]===n.dataset.id)delete connections[k];});connections[key]=n.dataset.id;active.classList.add('is-connected');n.classList.add('is-connected');active.classList.remove('is-active');active=null;paintLines();result.textContent=Object.keys(connections).length+'/4 connections made.';}
+    function paintLines(){svg.replaceChildren();const br=board.getBoundingClientRect();Object.keys(connections).forEach(k=>{const a=leftNodes.find(x=>x.dataset.id===k),b=rightNodes.find(x=>x.dataset.id===connections[k]);if(!a||!b)return;const ar=a.getBoundingClientRect(),rr=b.getBoundingClientRect();const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',`M ${ar.right-br.left} ${ar.top+ar.height/2-br.top} C ${ar.right-br.left+35} ${ar.top+ar.height/2-br.top}, ${rr.left-br.left-35} ${rr.top+rr.height/2-br.top}, ${rr.left-br.left} ${rr.top+rr.height/2-br.top}`);line.setAttribute('class','ikon-match-line');svg.appendChild(line);});}
+    reset.onclick=()=>{Object.keys(connections).forEach(k=>delete connections[k]);leftNodes.concat(rightNodes).forEach(n=>n.classList.remove('is-connected','is-active'));active=null;paintLines();result.textContent='All connections cleared.';};
+    submit.onclick=()=>{if(Object.keys(connections).length!==4){result.textContent='Please connect all four pairs first.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3Matching',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,matches:connections}).then(d=>{state.className='ikon-match-state is-done';state.textContent='✓ Matching completed · '+d.correct+'/4 correct';result.textContent='Part 2 successfully submitted.';submit.textContent='COMPLETED';}).catch(e=>{result.textContent=e.message;submit.disabled=false;submit.textContent='SUBMIT MATCHING';});};
+    window.addEventListener('resize',paintLines);setTimeout(paintLines,80);
+  }).catch(e=>{state.className='ikon-match-state is-error';state.textContent='Matching activity error: '+e.message;});
 }
 function renderIkonMcqForm(ch,reg,box){
   const form=document.createElement('form');form.className='ikon-mcq-form';form.onsubmit=e=>e.preventDefault();
