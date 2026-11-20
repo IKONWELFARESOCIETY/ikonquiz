@@ -56,9 +56,13 @@ let submitReason = "Manual Submit";
 //====================================================
 // SECURITY
 //====================================================
+
 let focusWarnings = 0;
+
 const MAX_FOCUS_WARNING = 3;
+
 let focusLock = false;
+
 //====================================================
 // RESULT ACCESS MODE
 //====================================================
@@ -29881,31 +29885,49 @@ function renderIkonGameForm(ch,reg,level,items,box){
       tiles.push({button:tile,faceUp,faceDown});
     });
 
-    async function swapTwoCards(){
+    async function shuffleCardsOnce(){
+      // Capture every card's current on-screen position.
       const before=new Map(tiles.map(t=>[t.button,t.button.getBoundingClientRect()]));
       const order=Array.from(grid.children);
-      const first=Math.floor(Math.random()*order.length);
-      const second=(first+1+Math.floor(Math.random()*(order.length-1)))%order.length;
-      [order[first],order[second]]=[order[second],order[first]];
-      grid.replaceChildren(...order);
-      // FLIP movement: animate from old screen position to the new screen position.
-      const animations=[];
-      order.forEach(button=>{
-        const oldRect=before.get(button),newRect=button.getBoundingClientRect();
+
+      // Rotate the four cards by one slot (left or right).
+      // This guarantees a visibly different arrangement on every shuffle.
+      const direction=Math.random()<0.5?1:order.length-1;
+      const nextOrder=direction===1
+        ? order.slice(1).concat(order[0])
+        : [order[order.length-1]].concat(order.slice(0,-1));
+
+      // Put cards in their new grid positions first.
+      grid.replaceChildren(...nextOrder);
+
+      // FLIP animation using inline styles (more reliable than Web Animations
+      // when site-wide button styles override transforms).
+      nextOrder.forEach(button=>{
+        const oldRect=before.get(button);
+        const newRect=button.getBoundingClientRect();
         if(!oldRect)return;
-        const dx=oldRect.left-newRect.left,dy=oldRect.top-newRect.top;
-        if(Math.abs(dx)<1&&Math.abs(dy)<1)return;
-        if(typeof button.animate==='function'){
-          const anim=button.animate(
-            [{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'translate(0px,0px)'}],
-            {duration:900,easing:'cubic-bezier(.22,.61,.36,1)',fill:'none'}
-          );
-          animations.push(anim.finished.catch(()=>{}));
-        }
+
+        const dx=oldRect.left-newRect.left;
+        const dy=oldRect.top-newRect.top;
+
+        button.style.setProperty('transition','none','important');
+        button.style.setProperty('transform','translate('+dx+'px,'+dy+'px)','important');
       });
-      // Fallback wait also keeps shuffle slow when Web Animations are unavailable.
-      if(animations.length)await Promise.all(animations);
-      else await wait(900);
+
+      // Force the browser to apply the starting transform before animating.
+      void grid.offsetHeight;
+
+      nextOrder.forEach(button=>{
+        button.style.setProperty('transition','transform 1050ms cubic-bezier(.2,.75,.25,1)','important');
+        button.style.setProperty('transform','translate(0px,0px)','important');
+      });
+
+      // Wait until the visible movement has completed, then clean inline styles.
+      await wait(1100);
+      nextOrder.forEach(button=>{
+        button.style.removeProperty('transition');
+        button.style.removeProperty('transform');
+      });
     }
 
     startBtn.addEventListener('click',async()=>{
@@ -29928,8 +29950,8 @@ function renderIkonGameForm(ch,reg,level,items,box){
       for(let turn=1;turn<=3;turn++){
         if(!shell.isConnected)return;
         countText.textContent='SHUFFLE '+turn+' / 3';
-        await swapTwoCards();
-        await wait(320);
+        await shuffleCardsOnce();
+        await wait(450);
       }
       if(!shell.isConnected)return;
       phase='choose';
