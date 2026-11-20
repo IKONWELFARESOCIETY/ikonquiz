@@ -23313,18 +23313,77 @@ body.assignment-mode #assignmentPortal>button:first-child{width:100%;margin:0 0 
   #ikonAssignmentAdminPanel .ikon-admin-review-card{padding:14px!important}
 }
 
+/* Level 2 selection visibility */
+#assignmentList .ikon-puzzle-selection-bar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;margin:15px 0 12px!important;padding:15px 18px!important;border:1px solid #c9d8f2!important;border-radius:14px!important;background:linear-gradient(110deg,#f1f6ff,#fff)!important}
+#assignmentList .ikon-puzzle-selection-bar span{color:#61748f!important;font-size:12px!important;font-weight:950!important;letter-spacing:.12em!important}
+#assignmentList .ikon-puzzle-selection-bar strong{min-width:120px!important;text-align:right!important;color:#1d4ed8!important;font-size:20px!important;font-weight:950!important;letter-spacing:.1em!important}
+#assignmentList .ikon-puzzle-selection-bar.has-selection{border:2px solid #285bd5!important;background:#eaf1ff!important;box-shadow:0 6px 18px rgba(37,84,190,.12)!important}
+#assignmentList .ikon-puzzle-grid{display:grid!important;grid-template-columns:repeat(12,minmax(30px,1fr))!important;gap:6px!important;max-width:650px!important;margin:16px auto!important;padding:14px!important;border:1px solid #dce6f3!important;border-radius:18px!important;background:linear-gradient(145deg,#f2f6fc,#fff)!important}
+#assignmentList .ikon-puzzle-grid button{min-width:0!important;aspect-ratio:1!important;padding:0!important;border-radius:9px!important;font-size:clamp(14px,1.5vw,19px)!important;font-weight:950!important;cursor:crosshair!important;transition:background .08s,border .08s,transform .08s,box-shadow .08s!important;user-select:none!important;-webkit-user-select:none!important}
+#assignmentList .ikon-puzzle-grid button.is-word-selected{color:#fff!important;background:#2457d6!important;border:2px solid #163eaa!important;box-shadow:0 5px 13px rgba(36,87,214,.35)!important}
+#assignmentList .ikon-puzzle-feedback{font-size:16px!important;font-weight:900!important}
 
-/* Remove the decorative student profile icon from Assignment Portal */
-#assignmentStudentInfo:before{
-  content:none!important;
-  display:none!important;
-  background:none!important;
-}
-#assignmentStudentInfo{
-  padding-left:30px!important;
-}
-@media(max-width:760px){
-  #assignmentStudentInfo{
-    padding-left:15px!important;
-  }
+/* Level 4/5: immersive arena / final trial */
+#assignmentList .ikon-level-game-hub{position:relative!important;overflow:hidden!important;padding:0!important;border:0!important;border-radius:24px!important;box-shadow:0 18px 42px rgba(20,35,80,.13)!important}
+#assignmentList .ikon-level-game-hub:before{display:none!important}
+#assignmentList .ikon-level-game-battle{color:#f8fbff!important;background:radial-gradient(circle at 90% 0%,rgba(87,119,255,.35),transparent 32%),linear-gradient(135deg,#101a3d 0%,#1d2c62 55%,#31276b 100%)!important}
+#assignmentList .ikon-level-game-final{color:#fff8e8!important;background:radial-gradient(circle at 90% 0%,rgba(255,208,94,.32),transparent 30%),linear-gradient(135deg,#3b1d39 0%,#71334d 52%,#a45c35 100%)!important}
+#assignmentList .ikon-level-game-heading{display:flex!important;align-items:center!important;gap:20px!important;padding:clamp(22px,3vw,36px)!important;min-height:125px!important}
+#assignmentList .ikon-level-game-icon{display:grid!important;place-items:center!important;flex:0 0 70px!important;width:70px!important;height:70px!important;border-radius:22px!important;background:rgba(255,255,255,.13)!important;border:1px solid rgba(255,255,255,.2)!important;font-size:36px!important}
+#assignmentList .ikon-level-game-heading small{display:block!important;margin-bottom:7px!important;color:#aebdfd!important;font-size:11px!important;font-weight:950!important;letter-spacing:.19em!important}
+#assignmentList .ikon-level-game-final .ikon-level-game-heading small{color:#ffdc9b!important}
+#assignmentList .ikon-level-game-heading h4{margin:0 0 5px!important;color:#fff!important;font-size:clamp(24px,3vw,34px)!important;font-weight:1000!important}
+#assignmentList .ikon-level-game-heading p{margin:0!important;color:rgba(245,248,255,.78)!important;font-size:15px!important}
+#assignmentList .ikon-level-game-stamp{margin-left:auto!important;padding:9px 13px!important;border:1px solid rgba(255,255,255,.3)!important;border-radius:99px!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:11px!important;font-weight:950!important;letter-spacing:.13em!important}
+#assignmentList .ikon-level-game-final .ikon-level-game-stamp{border-color:rgba(255,220,155,.5)!important;color:#ffe0a7!important}
+#assignmentList .ikon-level-game-hub>p,#assignmentList .ikon-level-game-hub>b{margin:0 22px 22px!important}
+#assignmentList .ikon-level-game-hub>p{padding:13px 16px!important;border-radius:13px!important;background:rgba(255,255,255,.1)!important;color:#f2f5ff!important;font-size:15px!important;font-weight:750!important}
+#assignmentList .ikon-game-console{margin:0!important;padding:clamp(18px,3vw,30px)!important;border-top:1px solid rgba(255,255,255,.15)!important}
+#assignmentList .ikon-game-console-battle{background:linear-gradient(180deg,rgba(11,19,48,.25),rgba(9,15,38,.72))!important}
+#assignmentList .ikon-game-console-final{background:linear-gradient(180deg,rgba(50,20,37,.22),rgba(39,16,32,.72))!important}
+#assignmentList .ikon-game-hero{display:flex!important;align-items:center!important;gap:16px!important;margin-bottom:22px!important}
+#assignmentList .ikon-game-emblem{display:grid!important;place-items:center!important;width:55px!important;height:55px!important;border-radius:17px!important;background:rgba(255,255,255,.12)!important;font-size:29px!important}
+#assignmentList .ikon-game-hero small{color:#aebdfd!important;font-size:10px!important;font-weight:950!important;letter-spacing:.18em!important}
+#assignmentList .ikon-game-console-final .ikon-game-hero small{color:#ffdc9b!important}
+#assignmentList .ikon-game-hero h5{margin:4px 0!important;color:#fff!important;font-size:23px!important;font-weight:1000!important}
+#assignmentList .ikon-game-hero p{margin:0!important;color:rgba(255,255,255,.72)!important;font-size:14px!important}
+#assignmentList .ikon-game-progress{margin:0 0 22px!important;padding:14px 16px!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:14px!important;background:rgba(255,255,255,.08)!important}
+#assignmentList .ikon-game-progress-text{display:flex!important;justify-content:space-between!important;gap:12px!important;margin-bottom:10px!important}
+#assignmentList .ikon-game-progress-text span{color:rgba(255,255,255,.72)!important;font-size:11px!important;font-weight:950!important;letter-spacing:.12em!important}
+#assignmentList .ikon-game-progress-text strong{color:#fff!important;font-size:13px!important;font-weight:950!important}
+#assignmentList .ikon-game-progress-track{height:9px!important;border-radius:99px!important;background:rgba(255,255,255,.16)!important;overflow:hidden!important}
+#assignmentList .ikon-game-progress-track span{display:block;height:100%!important;width:0;border-radius:99px!important;background:linear-gradient(90deg,#69d7ff,#a78bfa)!important;transition:width .2s!important}
+#assignmentList .ikon-game-console-final .ikon-game-progress-track span{background:linear-gradient(90deg,#ffd166,#fff0b3)!important}
+#assignmentList .ikon-game-round-card{margin:14px 0!important;padding:19px!important;border:1px solid rgba(255,255,255,.17)!important;border-radius:17px!important;background:rgba(255,255,255,.09)!important;box-shadow:0 8px 22px rgba(0,0,0,.1)!important}
+#assignmentList .ikon-game-round-card.needs-answer{border:2px solid #fca5a5!important;animation:ikonNeedAnswer .35s ease}
+@keyframes ikonNeedAnswer{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#assignmentList .ikon-game-round-top{display:flex!important;align-items:center!important;gap:9px!important;margin-bottom:14px!important}
+#assignmentList .ikon-game-round-number{display:grid!important;place-items:center!important;width:35px!important;height:35px!important;border-radius:11px!important;background:rgba(255,255,255,.15)!important;color:#fff!important;font-size:13px!important;font-weight:1000!important}
+#assignmentList .ikon-game-mode-tag{padding:7px 10px!important;border:1px solid rgba(170,190,255,.32)!important;border-radius:99px!important;background:rgba(93,119,255,.18)!important;color:#dbe5ff!important;font-size:10px!important;font-weight:950!important;letter-spacing:.08em!important}
+#assignmentList .ikon-game-points{margin-left:auto!important;color:#ffdc9b!important;font-size:11px!important;font-weight:950!important}
+#assignmentList .ikon-game-round-question{margin:0 0 17px!important;color:#fff!important;font-size:18px!important;font-weight:900!important;line-height:1.55!important}
+#assignmentList .ikon-game-choice-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#assignmentList .ikon-game-choice{display:flex!important;align-items:center!important;gap:11px!important;min-height:58px!important;padding:12px 14px!important;border:1px solid rgba(255,255,255,.19)!important;border-radius:13px!important;background:rgba(255,255,255,.08)!important;color:#fff!important;text-align:left!important;white-space:normal!important;cursor:pointer!important;transition:transform .16s,border .16s,background .16s!important}
+#assignmentList .ikon-game-choice:hover{transform:translateY(-2px)!important;background:rgba(255,255,255,.15)!important;border-color:rgba(255,255,255,.5)!important}
+#assignmentList .ikon-game-choice-key{display:grid!important;place-items:center!important;flex:0 0 30px!important;width:30px!important;height:30px!important;border-radius:9px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font-size:12px!important;font-weight:1000!important}
+#assignmentList .ikon-game-choice-value{flex:1!important;color:#fff!important;font-size:14px!important;font-weight:750!important;line-height:1.45!important}
+#assignmentList .ikon-game-choice-tick{opacity:0!important;color:#fff!important;font-size:18px!important;font-weight:1000!important}
+#assignmentList .ikon-game-choice.is-selected{border:2px solid #a5f3fc!important;background:linear-gradient(100deg,rgba(37,99,235,.72),rgba(124,58,237,.58))!important;box-shadow:0 0 0 3px rgba(165,243,252,.12),0 8px 20px rgba(0,0,0,.14)!important}
+#assignmentList .ikon-game-choice.is-selected .ikon-game-choice-key{background:#fff!important;color:#214db2!important}
+#assignmentList .ikon-game-choice.is-selected .ikon-game-choice-tick{opacity:1!important}
+#assignmentList .ikon-game-console-final .ikon-game-choice.is-selected{border-color:#ffe3a3!important;background:linear-gradient(100deg,rgba(180,83,9,.72),rgba(146,64,14,.6))!important;box-shadow:0 0 0 3px rgba(255,227,163,.13)!important}
+#assignmentList .ikon-game-launch-btn{display:flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;width:100%!important;min-height:60px!important;margin:23px 0 0!important;padding:16px 20px!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:15px!important;background:linear-gradient(100deg,#2563eb,#7c3aed)!important;color:#fff!important;font-size:15px!important;font-weight:1000!important;letter-spacing:.08em!important;box-shadow:0 12px 28px rgba(0,0,0,.22)!important}
+#assignmentList .ikon-game-console-final .ikon-game-launch-btn{background:linear-gradient(100deg,#d97706,#b45309)!important;color:#fff!important}
+#assignmentList .ikon-game-launch-btn:disabled{opacity:.7!important}
+@media(max-width:700px){
+#assignmentList .ikon-level-game-heading{gap:13px!important;padding:20px 16px!important;min-height:unset!important}
+#assignmentList .ikon-level-game-icon{flex-basis:48px!important;width:48px!important;height:48px!important;border-radius:15px!important;font-size:25px!important}
+#assignmentList .ikon-level-game-heading h4{font-size:22px!important}
+#assignmentList .ikon-level-game-heading p{font-size:12px!important}
+#assignmentList .ikon-level-game-stamp{display:none!important}
+#assignmentList .ikon-game-choice-grid{grid-template-columns:minmax(0,1fr)!important}
+#assignmentList .ikon-game-round-question{font-size:16px!important}
+#assignmentList .ikon-puzzle-grid{grid-template-columns:repeat(12,minmax(0,1fr))!important;gap:4px!important;padding:9px!important}
+#assignmentList .ikon-puzzle-grid button{font-size:13px!important;border-radius:6px!important}
+#assignmentList .ikon-puzzle-selection-bar strong{font-size:16px!important}
 }
