@@ -29655,11 +29655,32 @@ function ikonAssignmentSamePaper(a,b){
   const x=ikonAssignmentPaperKey(a),y=ikonAssignmentPaperKey(b);
   return !!x&&!!y&&(x===y||x.endsWith(y)||y.endsWith(x));
 }
-function level3DoneForDesign(practical){
-  return Array.isArray(practical) && practical.length===3 &&
-    new Set(practical.map(a=>String(a.id||'').trim())).size===3 &&
-    practical.every(a=>a.uploaded===true);
+
+function isIkonPracticalUploaded(a) {
+  const status = String(a.status || '')
+    .trim()
+    .toUpperCase();
+
+  return a.uploaded === true ||
+    [
+      'UNDER REVIEW',
+      'PENDING REVIEW',
+      'APPROVED',
+      'REVISION',
+      'REJECTED',
+      'CORRECTION REQUIRED'
+    ].includes(status);
 }
+
+function level3DoneForDesign(practical) {
+  return Array.isArray(practical) &&
+    practical.length === 3 &&
+    new Set(
+      practical.map(a => String(a.id || '').trim())
+    ).size === 3 &&
+    practical.every(isIkonPracticalUploaded);
+}
+
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
@@ -29694,7 +29715,8 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
   // Unlock Level 4 only when the server confirms all three distinct practical uploads.
-  const level3Done=practical.length===3 && new Set(practical.map(a=>String(a.id||'').trim())).size===3 && practical.every(a=>a.uploaded===true);
+ 
+const level3Done = level3DoneForDesign(practical);
   const l4=document.createElement('div');l4.className='ikon-level-panel ikon-level-4';l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
   l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 04 · THE STRATEGY ARENA</small><h4>BRAIN BATTLE</h4><p>Four rounds. One mission. Beat the arena.</p></div><span class="ikon-level-game-stamp">BATTLE</span></div>';
