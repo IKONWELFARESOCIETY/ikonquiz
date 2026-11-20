@@ -29765,8 +29765,8 @@ function renderIkonGameForm(ch,reg,level,items,box){
     {id:'boss',title:'FINAL BOSS',sub:'Find the mistake and finish the mission.',icon:'👾',types:['SPOT_ERROR']}
   ]:[
     {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'steps',title:'ARRANGE THE STEPS',sub:'Study each sequence and select the correct order.',icon:'🧩',types:['ARRANGE_STEPS']},
-    {id:'spot',title:'SPOT THE ERROR',sub:'Inspect the options and identify the correct fix.',icon:'🔎',types:['SPOT_ERROR']},
+    {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
+    {id:'spot',title:'ERROR DETECTIVE',sub:'Inspect every evidence card, find the faulty statement and report it.',icon:'🕵️',types:['SPOT_ERROR']},
     {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
@@ -30001,6 +30001,93 @@ function renderIkonGameForm(ch,reg,level,items,box){
     return grid;
   }
 
+  // LEVEL 4 STAGE 2: Workflow investigation. Student inspects the four
+  // candidate workflows, then selects the one that correctly completes the task.
+  function makeSequenceBuilder(item,card){
+    const wrap=document.createElement('div');
+    wrap.className='ikon-sequence-builder';
+    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
+    const hint=document.createElement('p');
+    hint.className='ikon-memory-hint';
+    hint.textContent='Har workflow ko INSPECT karein. Steps ka order samjhein, phir sahi workflow select karein.';
+    card.appendChild(hint);
+    const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
+    const inspected=new Set();
+    const selectButtons=[];
+    values.forEach((value,index)=>{
+      const panel=document.createElement('div');
+      panel.className='ikon-sequence-card';
+      panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
+      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
+      const name=document.createElement('strong');name.textContent='WORKFLOW '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
+      const state=document.createElement('span');state.textContent='NOT INSPECTED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';
+      head.append(name,state);
+      const preview=document.createElement('div');preview.textContent='Sequence hidden — inspect to view the process.';preview.style.cssText='font-size:12px;line-height:1.55;color:#dbeafe;min-height:52px;display:flex;align-items:center';
+      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT WORKFLOW';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
+      const choose=document.createElement('button');choose.type='button';choose.className='ikon-playable-option';choose.textContent='SELECT THIS WORKFLOW';choose.disabled=true;choose.setAttribute('aria-pressed','false');choose.style.cssText='border:0;border-radius:8px;padding:10px;background:#1768bd;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
+      selectButtons.push(choose);
+      inspect.addEventListener('click',()=>{
+        preview.textContent=value.split(/\s*>\s*/).map((step,i)=>`${i+1}. ${step.trim()}`).join('   →   ');
+        preview.style.alignItems='flex-start';
+        state.textContent='INSPECTED';state.style.color='#86efac';
+        inspect.textContent='WORKFLOW INSPECTED';inspect.disabled=true;inspect.style.opacity='.65';
+        inspected.add(index);
+        const allInspected=inspected.size===values.length;
+        selectButtons.forEach(btn=>{btn.disabled=!allInspected;btn.style.opacity=allInspected?'1':'.45';});
+        hint.textContent=allInspected?'All workflows inspected. Ab compare karke correct workflow select karein.':`${inspected.size}/${values.length} workflows inspected. Baaki workflows bhi inspect karein.`;
+      });
+      choose.addEventListener('click',()=>{
+        if(inspected.size!==values.length)return;
+        setAnswer(item,value,card,choose);
+        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
+        choose.textContent='✓ WORKFLOW SELECTED';
+        hint.textContent='Workflow selected. Agar zaroorat ho to doosra workflow select karke apna decision badal sakte hain.';
+      });
+      panel.append(head,preview,inspect,choose);wrap.appendChild(panel);
+    });
+    return wrap;
+  }
+
+  // LEVEL 4 STAGE 3: Evidence investigation. Each statement is covered
+  // until inspected; all four must be inspected before the student reports
+  // the statement containing the error. The submitted answer remains the
+  // original option text so the existing Apps Script scoring contract stays intact.
+  function makeErrorDetective(item,card){
+    const wrap=document.createElement('div');wrap.className='ikon-error-detective';
+    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
+    const hint=document.createElement('p');hint.className='ikon-memory-hint';
+    hint.textContent='Evidence cards ko ek-ek karke inspect karein. Sabhi statements dekhne ke baad galat statement report karein.';
+    card.appendChild(hint);
+    const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
+    const inspected=new Set();
+    const buttons=[];
+    values.forEach((value,index)=>{
+      const panel=document.createElement('div');panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
+      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
+      const name=document.createElement('strong');name.textContent='EVIDENCE '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
+      const state=document.createElement('span');state.textContent='SEALED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';head.append(name,state);
+      const statement=document.createElement('div');statement.textContent='Statement hidden. Inspect this evidence.';statement.style.cssText='min-height:62px;display:flex;align-items:center;font-size:12px;line-height:1.5;color:#dbeafe;overflow-wrap:anywhere';
+      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT EVIDENCE';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
+      const report=document.createElement('button');report.type='button';report.className='ikon-playable-option';report.textContent='REPORT THIS ERROR';report.disabled=true;report.setAttribute('aria-pressed','false');report.style.cssText='border:0;border-radius:8px;padding:10px;background:#9a3412;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
+      inspect.addEventListener('click',()=>{
+        statement.textContent=value;state.textContent='INSPECTED';state.style.color='#86efac';
+        inspect.textContent='EVIDENCE OPENED';inspect.disabled=true;inspect.style.opacity='.65';
+        inspected.add(index);
+        report.disabled=inspected.size!==values.length;report.style.opacity=report.disabled?'.45':'1';
+        hint.textContent=inspected.size===values.length?'All evidence inspected. Ab jis statement mein error hai, us par REPORT THIS ERROR dabayein.':`${inspected.size}/${values.length} evidence inspected. Baaki cards bhi inspect karein.`;
+      });
+      report.addEventListener('click',()=>{
+        if(inspected.size!==values.length)return;
+        setAnswer(item,value,card,report);
+        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
+        report.textContent='✓ ERROR REPORTED';
+        hint.textContent='Your report is selected. You can inspect your choice and change it before submitting Brain Battle.';
+      });
+      panel.append(head,statement,inspect,report);wrap.appendChild(panel);buttons.push(report);
+    });
+    return wrap;
+  }
+
   activeStages.forEach((stage,stageIndex)=>{
     const section=document.createElement('section');section.className='ikon-playable-stage stage-'+stage.id;
     const head=document.createElement('div');head.className='ikon-playable-stage-head';
@@ -30023,22 +30110,12 @@ function renderIkonGameForm(ch,reg,level,items,box){
       let options;
       if(mode==='memory'){
         options=makeIkonMemoryShuffleOptions(item,card);
-      }else if(mode==='steps'){
-        options=document.createElement('div');options.className='ikon-playable-options ikon-arrange-options';
-        const order=(item.options||[]).filter(v=>String(v||'').trim()!=='').map((v,i)=>({value:String(v),key:String.fromCharCode(65+i)}));
-        order.forEach((entry)=>{
-          const token=document.createElement('button');token.type='button';token.draggable=true;token.className='ikon-playable-option ikon-arrange-token';
-          token.dataset.key=entry.key;
-          const grip=document.createElement('span');grip.className='ikon-arrange-grip';grip.textContent='☷';
-          const value=document.createElement('span');value.className='ikon-playable-option-text';value.textContent=entry.value;
-          token.append(grip,value);options.appendChild(token);
-          token.addEventListener('dragstart',e=>{token.classList.add('is-dragging');e.dataTransfer.setData('text/plain',entry.key);});
-          token.addEventListener('dragend',()=>{token.classList.remove('is-dragging');const seq=[...options.querySelectorAll('.ikon-arrange-token')].map(x=>x.dataset.key).join('>');answers[item.itemId]=seq;updateProgress();});
-          token.addEventListener('dragover',e=>{e.preventDefault();const dragging=options.querySelector('.is-dragging');if(dragging&&dragging!==token){const r=token.getBoundingClientRect();options.insertBefore(dragging,e.clientY<r.top+r.height/2?token:token.nextSibling);}});
-        });
-        const hint=document.createElement('p');hint.className='ikon-memory-hint';hint.textContent='Steps ko drag karke sahi order mein arrange karein.';
-        card.appendChild(hint);
+      }else if(mode==='steps' && level===4){
+        options=makeSequenceBuilder(item,card);
+      }else if(mode==='spot' && level===4){
+        options=makeErrorDetective(item,card);
       }else{
+        // Keep Level 5 and all other existing game modes unchanged.
         options=makeOptions(item,card,'choice');
       }
       card.appendChild(options);
