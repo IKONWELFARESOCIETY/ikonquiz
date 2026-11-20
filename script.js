@@ -29947,7 +29947,18 @@ function renderIkonPuzzle(ch,reg,box){
       // Update local progress immediately; do not refetch the whole portal after every word.
       if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
       if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)ch.progress.level2Words.push(String(next.questionNo));
-      if(d.completed||d.level3Unlocked){ch.level3Unlocked=true;feedback.textContent='✓ Level 2 complete! Level 3 unlocked.';return;}
+     if(d.completed||d.level3Unlocked){
+  ch.level3Unlocked=true;
+  feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
+
+  setTimeout(function(){
+    if(typeof window.loadAssignmentsForStudent==='function'){
+      window.loadAssignmentsForStudent();
+    }
+  },500);
+
+  return;
+}
       const card=box.closest('.ikon-mission-card');
       if(card){const fresh=document.createElement('div');fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
         renderIkonPuzzle(ch,reg,fresh);const old=Array.from(card.children).find(el=>el.querySelector&&el.querySelector('h4')&&el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);if(old)old.replaceWith(fresh);
