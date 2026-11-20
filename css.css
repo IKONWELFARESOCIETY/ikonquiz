@@ -23387,3 +23387,73 @@ body.assignment-mode #assignmentPortal>button:first-child{width:100%;margin:0 0 
 #assignmentList .ikon-puzzle-grid button{font-size:13px!important;border-radius:6px!important}
 #assignmentList .ikon-puzzle-selection-bar strong{font-size:16px!important}
 }
+
+
+/* Playable game flow: Level 4 mini-games and Level 5 mission stages */
+#assignmentList .ikon-playable-game{margin:0!important;padding:18px!important;color:#f7f9ff!important}
+#assignmentList .ikon-playable-battle{background:linear-gradient(155deg,#101a3d,#202e68 58%,#33266b)!important}
+#assignmentList .ikon-playable-final{background:linear-gradient(155deg,#351c3a,#71344e 55%,#9a542f)!important}
+#assignmentList .ikon-playable-hero{display:flex!important;align-items:center!important;gap:17px!important;padding:8px 4px 22px!important}
+#assignmentList .ikon-playable-hero-icon{display:grid!important;place-items:center!important;flex:0 0 64px!important;width:64px!important;height:64px!important;border:1px solid rgba(255,255,255,.22)!important;border-radius:19px!important;background:rgba(255,255,255,.12)!important;font-size:34px!important}
+#assignmentList .ikon-playable-hero small{color:#b9c7ff!important;font-size:10px!important;font-weight:950!important;letter-spacing:.18em!important}
+#assignmentList .ikon-playable-final .ikon-playable-hero small{color:#ffdfaa!important}
+#assignmentList .ikon-playable-hero h5{margin:5px 0!important;color:#fff!important;font-size:clamp(23px,3vw,32px)!important;font-weight:1000!important}
+#assignmentList .ikon-playable-hero p{margin:0!important;color:rgba(255,255,255,.75)!important;font-size:14px!important}
+#assignmentList .ikon-playable-status{margin:0 0 20px!important;padding:14px 16px!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:15px!important;background:rgba(255,255,255,.09)!important}
+#assignmentList .ikon-playable-status>span{color:rgba(255,255,255,.72)!important;font-size:10px!important;font-weight:950!important;letter-spacing:.14em!important}
+#assignmentList .ikon-playable-status>strong{float:right!important;color:#fff!important;font-size:13px!important;font-weight:950!important}
+#assignmentList .ikon-playable-meter{height:8px!important;margin-top:12px!important;overflow:hidden!important;border-radius:99px!important;background:rgba(255,255,255,.15)!important}
+#assignmentList .ikon-playable-meter i{display:block!important;width:0;height:100%!important;border-radius:99px!important;background:linear-gradient(90deg,#6ee7f9,#a78bfa)!important;transition:width .2s!important}
+#assignmentList .ikon-playable-stage{margin:17px 0!important;padding:17px!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:19px!important;background:rgba(255,255,255,.065)!important}
+#assignmentList .ikon-playable-stage-head{display:flex!important;align-items:center!important;gap:13px!important;margin-bottom:16px!important}
+#assignmentList .ikon-playable-stage-icon{display:grid!important;place-items:center!important;flex:0 0 47px!important;width:47px!important;height:47px!important;border-radius:14px!important;background:rgba(255,255,255,.13)!important;font-size:24px!important}
+#assignmentList .ikon-playable-stage-head small{color:#aebeff!important;font-size:10px!important;font-weight:950!important;letter-spacing:.13em!important}
+#assignmentList .ikon-playable-final .ikon-playable-stage-head small{color:#ffdda1!important}
+#assignmentList .ikon-playable-stage-head h6{margin:4px 0!important;color:#fff!important;font-size:19px!important;font-weight:1000!important}
+#assignmentList .ikon-playable-stage-head p{margin:0!important;color:rgba(255,255,255,.69)!important;font-size:13px!important}
+#assignmentList .ikon-playable-question{margin:12px 0!important;padding:16px!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:15px!important;background:rgba(8,14,39,.32)!important}
+#assignmentList .ikon-playable-question.needs-answer{border:2px solid #fda4af!important;animation:ikonGameNudge .3s ease}
+@keyframes ikonGameNudge{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+#assignmentList .ikon-playable-question-meta{display:flex!important;justify-content:space-between!important;gap:10px!important;margin-bottom:10px!important}
+#assignmentList .ikon-playable-question-meta span{color:#c5d1ff!important;font-size:10px!important;font-weight:950!important;letter-spacing:.1em!important}
+#assignmentList .ikon-playable-question-meta b{color:#ffdfa1!important;font-size:10px!important;font-weight:950!important}
+#assignmentList .ikon-playable-question>h6{margin:0 0 14px!important;color:#fff!important;font-size:16px!important;font-weight:900!important;line-height:1.55!important}
+#assignmentList .ikon-playable-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+#assignmentList .ikon-playable-option{display:flex!important;align-items:center!important;gap:10px!important;min-height:52px!important;padding:10px 12px!important;border:1px solid rgba(255,255,255,.2)!important;border-radius:12px!important;background:rgba(255,255,255,.08)!important;color:#fff!important;text-align:left!important;white-space:normal!important}
+#assignmentList .ikon-playable-option-letter{display:grid!important;place-items:center!important;flex:0 0 28px!important;width:28px!important;height:28px!important;border-radius:8px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font-size:11px!important;font-weight:950!important}
+#assignmentList .ikon-playable-option-text{flex:1!important;color:#fff!important;font-size:13px!important;font-weight:750!important;line-height:1.4!important}
+#assignmentList .ikon-playable-option-check{opacity:0!important;color:#fff!important;font-size:17px!important;font-weight:1000!important}
+#assignmentList .ikon-playable-option.is-picked{border:2px solid #a5f3fc!important;background:linear-gradient(100deg,rgba(37,99,235,.78),rgba(124,58,237,.64))!important;box-shadow:0 0 0 3px rgba(165,243,252,.1)!important}
+#assignmentList .ikon-playable-option.is-picked .ikon-playable-option-letter{background:#fff!important;color:#244da7!important}
+#assignmentList .ikon-playable-option.is-picked .ikon-playable-option-check{opacity:1!important}
+#assignmentList .ikon-playable-option.is-face-down{min-height:66px!important;justify-content:center!important;background:linear-gradient(140deg,#334b91,#5367b4)!important;border:1px solid rgba(255,255,255,.28)!important}
+#assignmentList .ikon-memory-back{font-size:27px!important;font-weight:1000!important;color:#fff!important}
+#assignmentList .ikon-playable-option.is-revealed{background:rgba(255,255,255,.15)!important}
+#assignmentList .ikon-memory-select{display:block!important;color:#a5f3fc!important;font-size:10px!important;font-weight:950!important}
+#assignmentList .ikon-memory-hint{margin:9px 0 0!important;color:#c8d4ff!important;font-size:11px!important}
+#assignmentList .ikon-memory-confirm{margin-top:11px!important;padding:11px 16px!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:10px!important;background:#3157bd!important;color:#fff!important;font-size:11px!important;font-weight:950!important}
+#assignmentList .ikon-memory-confirm.is-confirmed{background:#087b69!important}
+#assignmentList .ikon-speed-tag{display:inline-block!important;margin-bottom:9px!important;padding:6px 9px!important;border-radius:99px!important;background:rgba(245,158,11,.17)!important;color:#ffdf9a!important;font-size:10px!important;font-weight:950!important;letter-spacing:.1em!important}
+#assignmentList .ikon-speed-clock{display:flex!important;align-items:center!important;justify-content:space-between!important;margin:0 0 14px!important;padding:12px 15px!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:12px!important;background:rgba(255,255,255,.08)!important}
+#assignmentList .ikon-speed-clock span{color:#d6dcff!important;font-size:11px!important;font-weight:950!important;letter-spacing:.12em!important}
+#assignmentList .ikon-speed-clock strong{color:#fff!important;font-size:22px!important;font-weight:1000!important;font-variant-numeric:tabular-nums!important}
+#assignmentList .ikon-speed-clock.is-urgent strong{color:#ffbd72!important}
+#assignmentList .ikon-speed-clock.is-finished{border-color:#ffbd72!important}
+#assignmentList .ikon-playable-submit{display:block!important;width:100%!important;min-height:58px!important;margin:20px 0 0!important;padding:15px 20px!important;border:1px solid rgba(255,255,255,.3)!important;border-radius:14px!important;background:linear-gradient(100deg,#2563eb,#7c3aed)!important;color:#fff!important;font-size:14px!important;font-weight:1000!important;letter-spacing:.08em!important;box-shadow:0 12px 25px rgba(0,0,0,.2)!important}
+#assignmentList .ikon-playable-final .ikon-playable-submit{background:linear-gradient(100deg,#d97706,#b45309)!important}
+#assignmentList .ikon-playable-submit:disabled{opacity:.65!important}
+@media(max-width:700px){
+ #assignmentList .ikon-playable-game{padding:13px!important}
+ #assignmentList .ikon-playable-hero-icon{flex-basis:50px!important;width:50px!important;height:50px!important;font-size:26px!important}
+ #assignmentList .ikon-playable-stage{padding:12px!important}
+ #assignmentList .ikon-playable-options{grid-template-columns:1fr!important}
+ #assignmentList .ikon-playable-question>h6{font-size:15px!important}
+}
+
+/* Complete gameplay controls: draggable step order + memory selection */
+#assignmentList .ikon-arrange-options{display:flex!important;flex-direction:column!important;gap:8px!important}
+#assignmentList .ikon-arrange-token{cursor:grab!important;min-height:55px!important}
+#assignmentList .ikon-arrange-token:active{cursor:grabbing!important}
+#assignmentList .ikon-arrange-token.is-dragging{opacity:.45!important;border:2px dashed #a5f3fc!important}
+#assignmentList .ikon-arrange-grip{display:grid!important;place-items:center!important;flex:0 0 30px!important;width:30px!important;height:30px!important;border-radius:8px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font-size:19px!important}
+#assignmentList .ikon-memory-confirm:disabled{opacity:.45!important;cursor:not-allowed!important}
