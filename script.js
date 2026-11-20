@@ -29885,49 +29885,74 @@ function renderIkonGameForm(ch,reg,level,items,box){
       tiles.push({button:tile,faceUp,faceDown});
     });
 
-    async function shuffleCardsOnce(){
-      // Capture every card's current on-screen position.
-      const before=new Map(tiles.map(t=>[t.button,t.button.getBoundingClientRect()]));
+    // Swap only ONE adjacent pair at a time. The other two cards stay still.
+    // This makes the movement easy to follow and prevents the whole grid
+    // from moving together or visually blending into one another.
+    let lastSwapKey='';
+    async function swapTwoCards(firstIndex,secondIndex){
       const order=Array.from(grid.children);
+      const first=order[firstIndex];
+      const second=order[secondIndex];
+      if(!first || !second || first===second)return;
 
-      // Rotate the four cards by one slot (left or right).
-      // This guarantees a visibly different arrangement on every shuffle.
-      const direction=Math.random()<0.5?1:order.length-1;
-      const nextOrder=direction===1
-        ? order.slice(1).concat(order[0])
-        : [order[order.length-1]].concat(order.slice(0,-1));
+      const beforeFirst=first.getBoundingClientRect();
+      const beforeSecond=second.getBoundingClientRect();
 
-      // Put cards in their new grid positions first.
-      grid.replaceChildren(...nextOrder);
+      // Exchange only these two DOM positions; all other cards retain theirs.
+      const next=order.slice();
+      next[firstIndex]=second;
+      next[secondIndex]=first;
+      grid.replaceChildren(...next);
 
-      // FLIP animation using inline styles (more reliable than Web Animations
-      // when site-wide button styles override transforms).
-      nextOrder.forEach(button=>{
-        const oldRect=before.get(button);
-        const newRect=button.getBoundingClientRect();
-        if(!oldRect)return;
+      const afterFirst=first.getBoundingClientRect();
+      const afterSecond=second.getBoundingClientRect();
+      const firstDx=beforeFirst.left-afterFirst.left;
+      const firstDy=beforeFirst.top-afterFirst.top;
+      const secondDx=beforeSecond.left-afterSecond.left;
+      const secondDy=beforeSecond.top-afterSecond.top;
 
-        const dx=oldRect.left-newRect.left;
-        const dy=oldRect.top-newRect.top;
-
+      // Set the inverse positions without transition, then animate just
+      // the two cards involved in this swap.
+      [first,second].forEach(button=>{
         button.style.setProperty('transition','none','important');
-        button.style.setProperty('transform','translate('+dx+'px,'+dy+'px)','important');
       });
-
-      // Force the browser to apply the starting transform before animating.
+      first.style.setProperty('transform',`translate(${firstDx}px,${firstDy}px)`,'important');
+      second.style.setProperty('transform',`translate(${secondDx}px,${secondDy}px)`,'important');
       void grid.offsetHeight;
 
-      nextOrder.forEach(button=>{
-        button.style.setProperty('transition','transform 1050ms cubic-bezier(.2,.75,.25,1)','important');
+      [first,second].forEach(button=>{
+        button.style.setProperty('transition','transform 780ms cubic-bezier(.22,.72,.22,1)','important');
         button.style.setProperty('transform','translate(0px,0px)','important');
       });
 
-      // Wait until the visible movement has completed, then clean inline styles.
-      await wait(1100);
-      nextOrder.forEach(button=>{
+      await wait(820);
+      [first,second].forEach(button=>{
         button.style.removeProperty('transition');
         button.style.removeProperty('transform');
       });
+      await wait(180);
+    }
+
+    function chooseAdjacentSwap(){
+      // Adjacent grid neighbours only: horizontal and vertical swaps.
+      // No diagonal crossing, and no full-grid movement.
+      const pairs=[[0,1],[2,3],[0,2],[1,3]];
+      let available=pairs.filter(pair=>pair.join('-')!==lastSwapKey);
+      if(!available.length)available=pairs;
+      const selected=available[Math.floor(Math.random()*available.length)];
+      lastSwapKey=selected.join('-');
+      return selected;
+    }
+
+    async function shuffleCardsOnce(turn){
+      // Each visible shuffle round contains two separate, sequential
+      // neighbour swaps. Only the selected pair moves during each swap.
+      for(let move=1;move<=2;move++){
+        if(!shell.isConnected)return;
+        countText.textContent='SHUFFLE '+turn+' / 3 · MOVE '+move+' / 2';
+        const pair=chooseAdjacentSwap();
+        await swapTwoCards(pair[0],pair[1]);
+      }
     }
 
     startBtn.addEventListener('click',async()=>{
@@ -29950,8 +29975,8 @@ function renderIkonGameForm(ch,reg,level,items,box){
       for(let turn=1;turn<=3;turn++){
         if(!shell.isConnected)return;
         countText.textContent='SHUFFLE '+turn+' / 3';
-        await shuffleCardsOnce();
-        await wait(450);
+        await shuffleCardsOnce(turn);
+        await wait(300);
       }
       if(!shell.isConnected)return;
       phase='choose';
