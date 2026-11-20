@@ -29726,7 +29726,7 @@ const level3Done = level3DoneForDesign(practical);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
   l5.classList.add('ikon-level-game-hub','ikon-level-game-final');
-  l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">👑</span><div><small>LEVEL 05 · THE FINAL TRIAL</small><h4>BRAIN BLAST</h4><p>5 quick adaptive challenges. Complete the final trial.</p></div><span class="ikon-level-game-stamp">FINAL</span></div>';
+  l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 05 · ADAPTIVE MINI-GAMES</small><h4>BRAIN BLAST</h4><p>Random short challenges · Different interaction for every question type.</p></div><span class="ikon-level-game-stamp">NEW FINAL</span></div>';
   if(p1.level5Complete){const done=document.createElement('b');done.textContent='Brain Blast completed!';l5.appendChild(done);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
@@ -29744,9 +29744,14 @@ function loadIkonGameLevel(ch,reg,level,box){
     return d;
   }).then(d=>{
     loading.remove();
-    if(!Array.isArray(d.items)||!d.items.length)throw new Error('Brain Battle sheet mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
-    if(level===5) d.items.secondsPerQuestion=Number(d.secondsPerQuestion)||15;
-    renderIkonGameForm(ch,reg,level,d.items,box);
+    if(!Array.isArray(d.items)||!d.items.length)throw new Error((level===5?'Brain Blast':'Brain Battle')+' question bank mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
+    if(level===5){
+      // Dedicated final-game renderer: never fall back to the old Ultimate Champion/MCQ form.
+      d.items.secondsPerQuestion=Number(d.secondsPerQuestion)||15;
+      renderBrainBlastGame(ch,reg,d.items,box);
+    } else {
+      renderIkonGameForm(ch,reg,level,d.items,box);
+    }
   }).catch(e=>{
     loading.textContent='Level '+level+' load error: '+(e&&e.message?e.message:String(e));
     loading.style.cssText='padding:10px;margin-top:8px;border-radius:8px;background:#fff1f2;color:#991b1b;font-weight:700;white-space:normal';
@@ -29756,7 +29761,7 @@ function renderBrainBlastGame(ch,reg,items,box){
   const root=document.createElement('div');root.className='ikon-playable-game ikon-playable-final ikon-brain-blast';
   const style=document.createElement('style');style.textContent=`
     .ikon-brain-blast .bb-hero{display:flex;gap:14px;align-items:center;padding:16px;border-radius:14px;background:linear-gradient(120deg,#25204e,#56335f);color:#fff}
-    .ikon-brain-blast .bb-hero-icon{font-size:34px}.ikon-brain-blast .bb-hero h5{margin:0;font-size:23px}.ikon-brain-blast .bb-hero p{margin:5px 0 0;color:#dbeafe;font-size:13px}
+    .ikon-brain-blast .bb-hero-icon{font-size:34px}.ikon-brain-blast .bb-hero h5{margin:0;font-size:23px}.ikon-brain-blast .bb-hero p{margin:5px 0 0;color:#dbeafe;font-size:13px}.ikon-brain-blast .bb-version{margin-left:auto;flex:0 0 auto;padding:7px 10px;border:1px solid #a78bfa;border-radius:999px;color:#ede9fe;font-size:10px;font-weight:900;letter-spacing:.5px}
     .ikon-brain-blast .bb-progress{margin:14px 0;padding:12px;border:1px solid #506b9d;border-radius:12px;background:#172847;color:#fff}
     .ikon-brain-blast .bb-track{height:8px;border-radius:20px;background:#334766;overflow:hidden;margin-top:8px}.ikon-brain-blast .bb-track i{display:block;height:100%;width:0;background:#38bdf8}
     .ikon-brain-blast .bb-card{padding:16px;margin:12px 0;border:1px solid #5875aa;border-radius:14px;background:#1b2e50;color:#fff}
@@ -29769,15 +29774,15 @@ function renderBrainBlastGame(ch,reg,items,box){
     .ikon-brain-blast .bb-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.ikon-brain-blast .bb-small{font-size:12px;color:#c7d8ff}
     .ikon-brain-blast .bb-submit{width:100%;padding:14px;border:0;border-radius:10px;background:linear-gradient(90deg,#1d65b7,#2386e5);color:white;font-weight:900;cursor:pointer;margin-top:14px}
     .ikon-brain-blast .bb-clock{font-size:15px;font-weight:900;color:#fde68a;font-variant-numeric:tabular-nums}
-    .ikon-brain-blast .bb-match-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.ikon-brain-blast .bb-step-row{display:flex;gap:8px;align-items:center;margin:7px 0}.ikon-brain-blast .bb-step-row button{padding:8px;border:1px solid #718dbb;border-radius:8px;background:#2b4268;color:white}
+    .ikon-brain-blast .bb-match-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin:12px 0;align-items:stretch}.ikon-brain-blast .bb-match-row .bb-choice{display:flex;align-items:center;min-height:60px}.ikon-brain-blast .bb-match-row .bb-input{min-width:0}.ikon-brain-blast .bb-step-row{display:flex;gap:8px;align-items:center;margin:7px 0}.ikon-brain-blast .bb-step-row button{padding:8px;border:1px solid #718dbb;border-radius:8px;background:#2b4268;color:white}
     .ikon-brain-blast .bb-score{padding:18px;border:1px solid #5875aa;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#fff}.ikon-brain-blast .bb-score h3{margin:0 0 6px;font-size:22px}.ikon-brain-blast .bb-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
     .ikon-brain-blast .bb-tile{padding:12px 8px;border-radius:10px;background:#263b61;border:1px solid #526d9d;text-align:center}.ikon-brain-blast .bb-tile small{display:block;color:#c7d8ff;font-size:10px;font-weight:900}.ikon-brain-blast .bb-tile strong{display:block;font-size:22px;margin-top:5px}
     .ikon-brain-blast .bb-levels{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}.ikon-brain-blast .bb-levels td,.ikon-brain-blast .bb-levels th{padding:9px 7px;border-bottom:1px solid #ffffff22;text-align:left}.ikon-brain-blast .bb-levels th{color:#c7d8ff;font-size:10px}
     .ikon-brain-blast .bb-leader{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px}.ikon-brain-blast .bb-leader td,.ikon-brain-blast .bb-leader th{padding:9px 6px;border-bottom:1px solid #ffffff22;text-align:left}.ikon-brain-blast .bb-leader th{color:#c7d8ff;font-size:10px}.ikon-brain-blast .bb-leader tr.is-me{background:#0f766e55;font-weight:900}
     .ikon-brain-blast .bb-back{width:100%;margin-top:14px;padding:13px;border:0;border-radius:10px;background:#1d6ed1;color:#fff;font-weight:900;cursor:pointer}
-    @media(max-width:560px){.ikon-brain-blast .bb-options{grid-template-columns:1fr}.ikon-brain-blast .bb-score-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ikon-brain-blast .bb-tile strong{font-size:18px}.ikon-brain-blast .bb-card h6{font-size:17px}}
+    @media(max-width:560px){.ikon-brain-blast .bb-version{display:none}.ikon-brain-blast .bb-match-row{gap:10px}.ikon-brain-blast .bb-options{grid-template-columns:1fr}.ikon-brain-blast .bb-score-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ikon-brain-blast .bb-tile strong{font-size:18px}.ikon-brain-blast .bb-card h6{font-size:17px}}
   `;root.appendChild(style);
-  const hero=document.createElement('div');hero.className='bb-hero';hero.innerHTML='<div class="bb-hero-icon">⚡</div><div><small>LEVEL 5 · THE FINAL TRIAL</small><h5>BRAIN BLAST</h5><p>5 quick game styles · Think fast · Score points</p></div>';root.appendChild(hero);
+  const hero=document.createElement('div');hero.className='bb-hero';hero.innerHTML='<div class="bb-hero-icon">⚡</div><div><small>LEVEL 05 · NEW ADAPTIVE GAME ENGINE</small><h5>BRAIN BLAST</h5><p>Find · Match · Arrange · Fill · Spot the Bug · True/False</p></div><span class="bb-version">FINAL MODE</span>';root.appendChild(hero);
   const progress=document.createElement('div');progress.className='bb-progress';
   const progressLine=document.createElement('div');progressLine.style.cssText='display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:900';
   const countLabel=document.createElement('span');countLabel.textContent='0 / '+items.length+' COMPLETED';
@@ -29823,13 +29828,16 @@ function renderBrainBlastGame(ch,reg,items,box){
     const note=document.createElement('p');note.className='bb-small';note.textContent='Overall rank Level 1 se Level 5 tak ke combined marks ke basis par hai. Level 3 practical tasks ke marks admin approval ke baad include hote hain; pending review marks abhi count nahi hote.';panel.appendChild(note);
     const back=document.createElement('button');back.type='button';back.className='bb-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());panel.appendChild(back);root.appendChild(panel);
   }
-  function doSubmit(){if(finished)return;finished=true;if(timer)clearInterval(timer);submit.disabled=true;submit.textContent='CALCULATING COMBINED RESULT...';
+  function doSubmit(){if(finished)return;
+    const missing=items.filter(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId)||answers[x.itemId]===''||answers[x.itemId]==null);
+    if(missing.length && remaining>0){alert('Pehle sabhi Brain Blast challenges complete karein. Remaining: '+missing.length);return;}
+    finished=true;if(timer)clearInterval(timer);submit.disabled=true;submit.textContent='CALCULATING COMBINED RESULT...';
     items.forEach(x=>{if(!Object.prototype.hasOwnProperty.call(answers,x.itemId))answers[x.itemId]='';});
     ikonAssignmentPost({action:'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(showScore).catch(e=>{finished=false;submit.disabled=false;submit.textContent='⚡ SUBMIT BRAIN BLAST';alert(e.message);});
   }
   submit.addEventListener('click',doSubmit);
-  function tick(){remaining--;const mm=Math.floor(remaining/60),ss=remaining%60;clock.textContent='⏱ '+mm+':'+String(ss).padStart(2,'0');if(remaining<=0){clock.textContent='TIME UP';doSubmit();}}
+  function tick(){remaining--;const mm=Math.floor(remaining/60),ss=remaining%60;clock.textContent='⏱ '+mm+':'+String(ss).padStart(2,'0');if(remaining<=0){clock.textContent='TIME UP';remaining=0;finished=false;doSubmit();}}
   clock.textContent='⏱ '+Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');timer=setInterval(tick,1000);
   box.appendChild(root);
 }
@@ -29889,7 +29897,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
   ]:[
     {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
     {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
-    {id:'spot',title:'ERROR DETECTIVE',sub:'Inspect every evidence card, find the faulty statement and report it.',icon:'🕵️',types:['SPOT_ERROR']},
+    {id:'spot',title:'BUG HUNTER · FLAG THE FAULT',sub:'Scan the system logs, tap the suspicious statement and confirm your bug report.',icon:'🐞',types:['SPOT_ERROR']},
     {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
@@ -29931,9 +29939,14 @@ function renderIkonGameForm(ch,reg,level,items,box){
         .ikon-memory-shuffle-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:#182749;border:1px solid #415682}
         .ikon-memory-shuffle-phase{font-size:11px;letter-spacing:.7px;font-weight:800;color:#f1f5ff}
         .ikon-memory-shuffle-count{flex-shrink:0;font-size:13px;font-weight:900;color:#facc15;font-variant-numeric:tabular-nums}
-        .ikon-memory-shuffle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;position:relative;isolation:isolate}
-        .ikon-memory-shuffle-game .ikon-shuffle-tile{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:70px;width:100%;padding:12px 10px;border:1px solid #7591d1;border-radius:10px;background:#435eab;color:#fff;cursor:default;font-size:13px;font-weight:700;text-align:center;overflow-wrap:anywhere;touch-action:manipulation;transform:none}
-        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible{background:#36435f;border-color:#8da4da;color:#f8fafc}
+        .ikon-memory-shuffle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:26px;row-gap:18px;padding:8px 12px;position:relative;isolation:isolate}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:96px;width:100%;padding:0;border:0;border-radius:14px;background:transparent;color:#fff;cursor:default;font-size:14px;font-weight:700;text-align:center;overflow-wrap:anywhere;touch-action:manipulation;transform:none;perspective:1000px}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible{background:transparent;border-color:transparent;color:#f8fafc}
+        .ikon-memory-shuffle-game .ikon-memory-flip-inner{position:relative;display:block;width:100%;min-height:96px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.75,.25,1)}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible .ikon-memory-flip-inner{transform:rotateY(180deg)}
+        .ikon-memory-shuffle-game .ikon-memory-flip-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 12px;border:1px solid #829ee0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 8px 18px #050d1d55;overflow-wrap:anywhere}
+        .ikon-memory-shuffle-game .ikon-memory-flip-front{background:linear-gradient(145deg,#3659a0,#203b70);font-size:30px;font-weight:900;color:#dbeafe}
+        .ikon-memory-shuffle-game .ikon-memory-flip-back{transform:rotateY(180deg);background:linear-gradient(145deg,#1e526c,#203d68);font-size:14px;line-height:1.45;color:#fff}
         .ikon-memory-shuffle-game .ikon-shuffle-tile.is-pickable{cursor:pointer;border-color:#b5c7fa;box-shadow:0 0 0 1px rgba(147,197,253,.3)}
         .ikon-memory-shuffle-game .ikon-shuffle-tile.is-picked{background:#155e75;border-color:#67e8f9;box-shadow:0 0 0 2px rgba(103,232,249,.28)}
         .ikon-memory-shuffle-game .ikon-shuffle-tile:disabled{opacity:1}
@@ -29945,7 +29958,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
         .ikon-memory-shuffle-start:hover{background:#257feb}
         .ikon-memory-shuffle-start:focus-visible{outline:3px solid #fde68a;outline-offset:3px}
         .ikon-memory-shuffle-hint{margin:0;min-height:20px;color:#dbeafe;font-size:12px;line-height:1.5}
-        @media(max-width:520px){.ikon-memory-shuffle-grid{gap:8px}.ikon-memory-shuffle-game .ikon-shuffle-tile{padding:10px 7px;min-height:78px;font-size:11px}.ikon-memory-shuffle-guide{font-size:11px}}
+        @media(max-width:520px){.ikon-memory-shuffle-grid{column-gap:12px;row-gap:12px;padding:6px 2px}.ikon-memory-shuffle-game .ikon-shuffle-tile,.ikon-memory-shuffle-game .ikon-memory-flip-inner{min-height:88px}.ikon-memory-shuffle-game .ikon-memory-flip-face{padding:10px 7px;font-size:12px}.ikon-memory-shuffle-guide{font-size:12px}}
       `;
       document.head.appendChild(style);
     }
@@ -29983,14 +29996,21 @@ function renderIkonGameForm(ch,reg,level,items,box){
       tile.disabled=true;tile.setAttribute('aria-pressed','false');
       function faceUp(){
         tile.replaceChildren();
+        const inner=document.createElement('span');inner.className='ikon-memory-flip-inner';
+        const front=document.createElement('span');front.className='ikon-memory-flip-face ikon-memory-flip-front';front.textContent='?';
+        const back=document.createElement('span');back.className='ikon-memory-flip-face ikon-memory-flip-back';
         const letter=document.createElement('span');letter.className='ikon-memory-shuffle-letter';letter.textContent=entry.letter;
         const value=document.createElement('span');value.className='ikon-memory-shuffle-value';value.textContent=entry.value;
-        tile.append(letter,value);tile.classList.add('is-visible');
+        back.append(letter,value);inner.append(front,back);tile.appendChild(inner);
+        requestAnimationFrame(()=>tile.classList.add('is-visible'));
         tile.setAttribute('aria-label',entry.letter+': '+entry.value);
       }
       function faceDown(){
-        const back=document.createElement('span');back.className='ikon-memory-shuffle-back';back.textContent='?';
-        tile.replaceChildren(back);tile.classList.remove('is-visible');
+        tile.classList.remove('is-visible');tile.replaceChildren();
+        const inner=document.createElement('span');inner.className='ikon-memory-flip-inner';
+        const front=document.createElement('span');front.className='ikon-memory-flip-face ikon-memory-flip-front';front.textContent='?';
+        const back=document.createElement('span');back.className='ikon-memory-flip-face ikon-memory-flip-back';back.textContent='';
+        inner.append(front,back);tile.appendChild(inner);
         tile.setAttribute('aria-label','Hidden memory card');
       }
       faceDown();
@@ -30175,40 +30195,70 @@ function renderIkonGameForm(ch,reg,level,items,box){
   // until inspected; all four must be inspected before the student reports
   // the statement containing the error. The submitted answer remains the
   // original option text so the existing Apps Script scoring contract stays intact.
+  // LEVEL 4: BUG HUNTER. Student scans the visible evidence tiles and flags one faulty item.
+  // Answer remains the exact source option text, preserving the Apps Script scoring contract.
   function makeErrorDetective(item,card){
-    const wrap=document.createElement('div');wrap.className='ikon-error-detective';
-    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
+    const wrap=document.createElement('div');wrap.className='ikon-error-detective ikon-bug-hunter';
     const hint=document.createElement('p');hint.className='ikon-memory-hint';
-    hint.textContent='Evidence cards ko ek-ek karke inspect karein. Sabhi statements dekhne ke baad galat statement report karein.';
-    card.appendChild(hint);
+    hint.textContent='Bug scanner ready hai. Statements ko dekhein aur jis mein galti ho us card ko FLAG karein.';
+    const status=document.createElement('div');status.className='ikon-bug-status';status.textContent='🟢 SCANNER READY · 0 BUGS FLAGGED';
     const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
-    const inspected=new Set();
-    const buttons=[];
+    const grid=document.createElement('div');grid.className='ikon-bug-grid';
+    let selectedValue='';let confirmed=false;
+    const cards=[];
     values.forEach((value,index)=>{
-      const panel=document.createElement('div');panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
-      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
-      const name=document.createElement('strong');name.textContent='EVIDENCE '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
-      const state=document.createElement('span');state.textContent='SEALED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';head.append(name,state);
-      const statement=document.createElement('div');statement.textContent='Statement hidden. Inspect this evidence.';statement.style.cssText='min-height:62px;display:flex;align-items:center;font-size:12px;line-height:1.5;color:#dbeafe;overflow-wrap:anywhere';
-      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT EVIDENCE';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
-      const report=document.createElement('button');report.type='button';report.className='ikon-playable-option';report.textContent='REPORT THIS ERROR';report.disabled=true;report.setAttribute('aria-pressed','false');report.style.cssText='border:0;border-radius:8px;padding:10px;background:#9a3412;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
-      inspect.addEventListener('click',()=>{
-        statement.textContent=value;state.textContent='INSPECTED';state.style.color='#86efac';
-        inspect.textContent='EVIDENCE OPENED';inspect.disabled=true;inspect.style.opacity='.65';
-        inspected.add(index);
-        report.disabled=inspected.size!==values.length;report.style.opacity=report.disabled?'.45':'1';
-        hint.textContent=inspected.size===values.length?'All evidence inspected. Ab jis statement mein error hai, us par REPORT THIS ERROR dabayein.':`${inspected.size}/${values.length} evidence inspected. Baaki cards bhi inspect karein.`;
+      const tile=document.createElement('button');tile.type='button';tile.className='ikon-bug-tile';tile.setAttribute('aria-pressed','false');
+      const top=document.createElement('span');top.className='ikon-bug-tile-top';
+      const id=document.createElement('b');id.textContent='SYSTEM LOG '+String.fromCharCode(65+index);
+      const tag=document.createElement('i');tag.textContent='UNSCANNED';top.append(id,tag);
+      const body=document.createElement('span');body.className='ikon-bug-statement';body.textContent=value;
+      const action=document.createElement('span');action.className='ikon-bug-tile-action';action.textContent='TAP TO FLAG THIS BUG';
+      tile.append(top,body,action);
+      tile.addEventListener('click',()=>{
+        selectedValue=value;confirmed=false;delete answers[item.itemId];updateProgress();
+        cards.forEach((entry,i)=>{
+          const active=i===index;entry.tile.classList.toggle('is-targeted',active);entry.tile.classList.toggle('is-muted',!active);
+          entry.tile.setAttribute('aria-pressed',active?'true':'false');
+          entry.tag.textContent=active?'⚠ BUG SUSPECT':'SCANNED';
+          entry.action.textContent=active?'BUG TARGETED':'REVIEWED';
+        });
+        status.textContent='🔴 BUG TARGETED · LOG '+String.fromCharCode(65+index);
+        hint.textContent='Is statement ko suspicious mark kiya gaya hai. Confirm karne se pehle doosra card bhi choose kar sakte hain.';
+        confirm.disabled=false;confirm.classList.add('is-ready');confirm.textContent='CONFIRM BUG REPORT';
       });
-      report.addEventListener('click',()=>{
-        if(inspected.size!==values.length)return;
-        setAnswer(item,value,card,report);
-        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
-        report.textContent='✓ ERROR REPORTED';
-        hint.textContent='Your report is selected. You can inspect your choice and change it before submitting Brain Battle.';
-      });
-      panel.append(head,statement,inspect,report);wrap.appendChild(panel);buttons.push(report);
+      grid.appendChild(tile);cards.push({tile,tag,action});
     });
-    return wrap;
+    const confirm=document.createElement('button');confirm.type='button';confirm.className='ikon-bug-confirm';confirm.disabled=true;confirm.textContent='SELECT A SUSPECT FIRST';
+    confirm.addEventListener('click',()=>{
+      if(!selectedValue)return;
+      confirmed=true;setAnswer(item,selectedValue,card,confirm);
+      confirm.textContent='✓ BUG REPORT LOCKED';confirm.classList.add('is-confirmed');
+      status.textContent='✅ BUG REPORT SUBMITTED';
+      hint.textContent='Bug report lock ho gaya. Agar final submit se pehle answer badalna ho to doosra log flag karke confirm karein.';
+    });
+    if(!document.getElementById('ikon-bug-hunter-style')){
+      const style=document.createElement('style');style.id='ikon-bug-hunter-style';
+      style.textContent=`
+        .ikon-bug-hunter{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+        .ikon-bug-hunter .ikon-bug-status{padding:10px 12px;border:1px solid #5275a9;border-radius:10px;background:#10213e;color:#c7f9e9;font-size:12px;font-weight:900;letter-spacing:.35px}
+        .ikon-bug-hunter .ikon-bug-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+        .ikon-bug-hunter .ikon-bug-tile{min-width:0;min-height:130px;padding:14px;border:1px solid #5875aa;border-radius:13px;background:linear-gradient(145deg,#243c63,#182a49);color:#f8fafc;text-align:left;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,opacity .18s;box-shadow:0 7px 16px #08152b55}
+        .ikon-bug-hunter .ikon-bug-tile:hover{transform:translateY(-2px);border-color:#93c5fd}
+        .ikon-bug-hunter .ikon-bug-tile-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#bfdbfe;font-size:10px;letter-spacing:.45px}
+        .ikon-bug-hunter .ikon-bug-tile-top i{font-style:normal;color:#fbbf24;font-size:9px;font-weight:900}
+        .ikon-bug-hunter .ikon-bug-statement{font-size:14px;line-height:1.55;overflow-wrap:anywhere;flex:1}
+        .ikon-bug-hunter .ikon-bug-tile-action{font-size:10px;font-weight:900;color:#93c5fd;letter-spacing:.45px}
+        .ikon-bug-hunter .ikon-bug-tile.is-targeted{border:2px solid #fb7185;background:linear-gradient(145deg,#6b263f,#3b203e);box-shadow:0 0 0 3px #fb718533,0 0 22px #fb718544;animation:ikonBugPulse .55s ease}
+        .ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-top i,.ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-action{color:#fecdd3}
+        .ikon-bug-hunter .ikon-bug-tile.is-muted{opacity:.62}
+        .ikon-bug-hunter .ikon-bug-confirm{width:100%;padding:13px;border:1px solid #64748b;border-radius:10px;background:#334155;color:#cbd5e1;font-size:12px;font-weight:900;letter-spacing:.4px;cursor:not-allowed}
+        .ikon-bug-hunter .ikon-bug-confirm.is-ready{background:linear-gradient(90deg,#b45309,#dc2626);border-color:#fda4af;color:#fff;cursor:pointer}
+        .ikon-bug-hunter .ikon-bug-confirm.is-confirmed{background:linear-gradient(90deg,#047857,#0f766e);border-color:#5eead4;color:#fff}
+        @keyframes ikonBugPulse{0%{transform:scale(.98)}45%{transform:scale(1.025)}100%{transform:scale(1)}}
+        @media(max-width:560px){.ikon-bug-hunter .ikon-bug-grid{grid-template-columns:1fr;gap:11px}.ikon-bug-hunter .ikon-bug-tile{min-height:105px}}
+      `;document.head.appendChild(style);
+    }
+    wrap.append(status,grid,confirm);return wrap;
   }
 
   // LEVEL 5: Mission Briefing uses action-plan cards instead of the usual MCQ list.
