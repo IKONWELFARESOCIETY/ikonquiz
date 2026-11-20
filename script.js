@@ -29764,7 +29764,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     {id:'unlock',title:'UNLOCK THE CODE',sub:'Solve the quick challenges to unlock the final gate.',icon:'🔐',types:['MCQ','SPEED_ROUND']},
     {id:'boss',title:'FINAL BOSS',sub:'Find the mistake and finish the mission.',icon:'👾',types:['SPOT_ERROR']}
   ]:[
-    {id:'memory',title:'MEMORY MATCH',sub:'Flip the answer tiles and match each challenge.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
     {id:'steps',title:'ARRANGE THE STEPS',sub:'Study each sequence and select the correct order.',icon:'🧩',types:['ARRANGE_STEPS']},
     {id:'spot',title:'SPOT THE ERROR',sub:'Inspect the options and identify the correct fix.',icon:'🔎',types:['SPOT_ERROR']},
     {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
@@ -29796,37 +29796,165 @@ function renderIkonGameForm(ch,reg,level,items,box){
     if(selectedButton){selectedButton.classList.add('is-picked');selectedButton.setAttribute('aria-pressed','true');}
     updateProgress();
   }
+  // LEVEL 4 ONLY: Memory Shuffle Challenge.
+  // Existing sheet data, marks, other rounds, Level 5 and server API stay unchanged.
+  function makeIkonMemoryShuffleOptions(item,card){
+    if(!document.getElementById('ikon-memory-shuffle-styles')){
+      const style=document.createElement('style');
+      style.id='ikon-memory-shuffle-styles';
+      style.textContent=`
+        .ikon-memory-shuffle-game{margin-top:12px;display:flex;flex-direction:column;gap:12px}
+        .ikon-memory-shuffle-guide{font-size:12px;line-height:1.6;color:#c9d7f6;margin:0}
+        .ikon-memory-shuffle-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:#182749;border:1px solid #415682}
+        .ikon-memory-shuffle-phase{font-size:11px;letter-spacing:.7px;font-weight:800;color:#f1f5ff}
+        .ikon-memory-shuffle-count{flex-shrink:0;font-size:13px;font-weight:900;color:#facc15;font-variant-numeric:tabular-nums}
+        .ikon-memory-shuffle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;position:relative;isolation:isolate}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:70px;width:100%;padding:12px 10px;border:1px solid #7591d1;border-radius:10px;background:#435eab;color:#fff;cursor:default;font-size:13px;font-weight:700;text-align:center;overflow-wrap:anywhere;touch-action:manipulation;transform:none}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible{background:#36435f;border-color:#8da4da;color:#f8fafc}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-pickable{cursor:pointer;border-color:#b5c7fa;box-shadow:0 0 0 1px rgba(147,197,253,.3)}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-picked{background:#155e75;border-color:#67e8f9;box-shadow:0 0 0 2px rgba(103,232,249,.28)}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile:disabled{opacity:1}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile:focus-visible{outline:3px solid #fde68a;outline-offset:3px}
+        .ikon-memory-shuffle-letter{display:inline-flex;align-items:center;justify-content:center;flex:0 0 23px;height:23px;border-radius:6px;background:rgba(255,255,255,.18);font-size:12px}
+        .ikon-memory-shuffle-value{display:inline-block;min-width:0;line-height:1.4}
+        .ikon-memory-shuffle-back{font-size:28px;line-height:1.2;font-weight:900;color:#fff}
+        .ikon-memory-shuffle-start{border:0;border-radius:10px;padding:12px 16px;background:#1d6ed1;color:#fff;font-weight:900;cursor:pointer;width:100%;letter-spacing:.2px}
+        .ikon-memory-shuffle-start:hover{background:#257feb}
+        .ikon-memory-shuffle-start:focus-visible{outline:3px solid #fde68a;outline-offset:3px}
+        .ikon-memory-shuffle-hint{margin:0;min-height:20px;color:#dbeafe;font-size:12px;line-height:1.5}
+        @media(max-width:520px){.ikon-memory-shuffle-grid{gap:8px}.ikon-memory-shuffle-game .ikon-shuffle-tile{padding:10px 7px;min-height:78px;font-size:11px}.ikon-memory-shuffle-guide{font-size:11px}}
+      `;
+      document.head.appendChild(style);
+    }
+
+    const shell=document.createElement('div');shell.className='ikon-memory-shuffle-game';
+    const guide=document.createElement('p');guide.className='ikon-memory-shuffle-guide';
+    guide.textContent='Pehle 7 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
+    const bar=document.createElement('div');bar.className='ikon-memory-shuffle-bar';
+    const phaseText=document.createElement('strong');phaseText.className='ikon-memory-shuffle-phase';phaseText.textContent='READY TO MEMORIZE';
+    const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='7 SEC';
+    bar.append(phaseText,countText);
+    const grid=document.createElement('div');grid.className='ikon-memory-shuffle-grid';
+    const startBtn=document.createElement('button');startBtn.type='button';startBtn.className='ikon-memory-shuffle-start';
+    startBtn.textContent='START MEMORY CHALLENGE';
+    const hint=document.createElement('p');hint.className='ikon-memory-shuffle-hint';
+    hint.textContent='Ready hone par START dabayein. 7-second observation uske baad shuru hoga.';
+    shell.append(guide,bar,grid,startBtn,hint);
+
+    const entries=(item.options||[]).filter(v=>String(v||'').trim()!=='')
+      .map((value,index)=>({value:String(value),letter:String.fromCharCode(65+index)}));
+    if(entries.length!==4){
+      startBtn.disabled=true;startBtn.textContent='FOUR OPTIONS REQUIRED';
+      hint.textContent='Google Sheet mein is MATCH_PAIRS question ke exactly 4 options hone chahiye.';
+      return shell;
+    }
+
+    let phase='ready';
+    let locked=false;
+    const tiles=[];
+    const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+
+    entries.forEach(entry=>{
+      const tile=document.createElement('button');
+      tile.type='button';tile.className='ikon-playable-option ikon-shuffle-tile';
+      tile.disabled=true;tile.setAttribute('aria-pressed','false');
+      function faceUp(){
+        tile.replaceChildren();
+        const letter=document.createElement('span');letter.className='ikon-memory-shuffle-letter';letter.textContent=entry.letter;
+        const value=document.createElement('span');value.className='ikon-memory-shuffle-value';value.textContent=entry.value;
+        tile.append(letter,value);tile.classList.add('is-visible');
+        tile.setAttribute('aria-label',entry.letter+': '+entry.value);
+      }
+      function faceDown(){
+        const back=document.createElement('span');back.className='ikon-memory-shuffle-back';back.textContent='?';
+        tile.replaceChildren(back);tile.classList.remove('is-visible');
+        tile.setAttribute('aria-label','Hidden memory card');
+      }
+      faceDown();
+      tile.addEventListener('click',()=>{
+        if(phase!=='choose'||locked)return;
+        // One pick only: seeing the revealed answer cannot be used to try another card.
+        locked=true;phase='done';
+        faceUp();
+        setAnswer(item,entry.value,card,tile);
+        tiles.forEach(t=>{t.button.disabled=true;t.button.classList.remove('is-pickable');});
+        phaseText.textContent='ANSWER LOCKED';countText.textContent='✓ SELECTED';
+        hint.textContent='Selected answer: '+entry.value+'. Final score Brain Battle submit karne par check hoga.';
+      });
+      grid.appendChild(tile);
+      tiles.push({button:tile,faceUp,faceDown});
+    });
+
+    async function swapTwoCards(){
+      const before=new Map(tiles.map(t=>[t.button,t.button.getBoundingClientRect()]));
+      const order=Array.from(grid.children);
+      const first=Math.floor(Math.random()*order.length);
+      const second=(first+1+Math.floor(Math.random()*(order.length-1)))%order.length;
+      [order[first],order[second]]=[order[second],order[first]];
+      grid.replaceChildren(...order);
+      // FLIP movement: animate from old screen position to the new screen position.
+      const animations=[];
+      order.forEach(button=>{
+        const oldRect=before.get(button),newRect=button.getBoundingClientRect();
+        if(!oldRect)return;
+        const dx=oldRect.left-newRect.left,dy=oldRect.top-newRect.top;
+        if(Math.abs(dx)<1&&Math.abs(dy)<1)return;
+        if(typeof button.animate==='function'){
+          const anim=button.animate(
+            [{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'translate(0px,0px)'}],
+            {duration:900,easing:'cubic-bezier(.22,.61,.36,1)',fill:'none'}
+          );
+          animations.push(anim.finished.catch(()=>{}));
+        }
+      });
+      // Fallback wait also keeps shuffle slow when Web Animations are unavailable.
+      if(animations.length)await Promise.all(animations);
+      else await wait(900);
+    }
+
+    startBtn.addEventListener('click',async()=>{
+      if(phase!=='ready')return;
+      phase='observe';startBtn.hidden=true;
+      tiles.forEach(t=>t.faceUp());
+      phaseText.textContent='OBSERVE & REMEMBER';
+      hint.textContent='Options ki positions yaad karein. Cards 7 seconds baad hide ho jayenge.';
+      const deadline=Date.now()+7000;
+      function updateCountdown(){countText.textContent=Math.max(0,Math.ceil((deadline-Date.now())/1000))+'s';}
+      updateCountdown();
+      const ticker=setInterval(updateCountdown,100);
+      await wait(7000);
+      clearInterval(ticker);
+      if(!shell.isConnected)return;
+      phase='shuffle';
+      tiles.forEach(t=>t.faceDown());
+      phaseText.textContent='FOLLOW THE CARD MOVEMENT';
+      hint.textContent='Dhyan se dekhein: cards ki positions 3 baar change hongi.';
+      for(let turn=1;turn<=3;turn++){
+        if(!shell.isConnected)return;
+        countText.textContent='SHUFFLE '+turn+' / 3';
+        await swapTwoCards();
+        await wait(320);
+      }
+      if(!shell.isConnected)return;
+      phase='choose';
+      phaseText.textContent='NOW PICK FROM MEMORY';countText.textContent='YOUR TURN';
+      hint.textContent='Correct option jis card mein tha, us card par click karein. Sirf ek selection allowed hai.';
+      tiles.forEach(t=>{t.button.disabled=false;t.button.classList.add('is-pickable');});
+    });
+    return shell;
+  }
+
   function makeOptions(item,card,mode){
-    const grid=document.createElement('div');grid.className='ikon-playable-options '+(mode==='memory'?'is-memory':'');
+    const grid=document.createElement('div');grid.className='ikon-playable-options';
     (item.options||[]).filter(v=>String(v||'').trim()!=='').forEach((opt,i)=>{
       const b=document.createElement('button');b.type='button';b.className='ikon-playable-option';b.setAttribute('aria-pressed','false');
       const letter=document.createElement('span');letter.className='ikon-playable-option-letter';letter.textContent=String.fromCharCode(65+i);
-      const text=document.createElement('span');text.className='ikon-playable-option-text';text.textContent=String(opt);
+      const value=document.createElement('span');value.className='ikon-playable-option-text';value.textContent=String(opt);
       const check=document.createElement('span');check.className='ikon-playable-option-check';check.textContent='✓';
-      if(mode==='memory'){
-        b.classList.add('is-face-down');
-        const back=document.createElement('span');back.className='ikon-memory-back';back.textContent='?';
-        b.append(back);
-        b.addEventListener('click',()=>{
-          grid.querySelectorAll('.is-revealed').forEach(x=>{
-            if(x!==b){x.classList.remove('is-revealed');x.replaceChildren();const q=document.createElement('span');q.className='ikon-memory-back';q.textContent='?';x.appendChild(q);}
-          });
-          if(!b.classList.contains('is-revealed')){
-            b.classList.add('is-revealed');b.replaceChildren(letter,text,check);
-          }
-          const confirm=card.querySelector('.ikon-memory-confirm');
-          if(confirm){confirm.disabled=false;confirm.textContent='CONFIRM THIS MATCH';}
-        });
-      }else{
-        b.append(letter,text,check);
-        b.addEventListener('click',()=>setAnswer(item,opt,card,b));
-      }
+      b.append(letter,value,check);
+      b.addEventListener('click',()=>setAnswer(item,opt,card,b));
       grid.appendChild(b);
     });
-    if(mode==='memory'){
-      const hint=document.createElement('p');hint.className='ikon-memory-hint';hint.textContent='Tile par click karke reveal karein, phir “Select this match” par click karein.';
-      grid.after(hint);
-    }
     return grid;
   }
 
@@ -29850,7 +29978,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
       const q=document.createElement('h6');q.textContent=item.question||'Challenge';
       card.append(meta,q);
       let options;
-      if(mode==='steps'){
+      if(mode==='memory'){
+        options=makeIkonMemoryShuffleOptions(item,card);
+      }else if(mode==='steps'){
         options=document.createElement('div');options.className='ikon-playable-options ikon-arrange-options';
         const order=(item.options||[]).filter(v=>String(v||'').trim()!=='').map((v,i)=>({value:String(v),key:String.fromCharCode(65+i)}));
         order.forEach((entry)=>{
@@ -29866,21 +29996,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
         const hint=document.createElement('p');hint.className='ikon-memory-hint';hint.textContent='Steps ko drag karke sahi order mein arrange karein.';
         card.appendChild(hint);
       }else{
-        options=makeOptions(item,card,mode==='memory'?'memory':'choice');
+        options=makeOptions(item,card,'choice');
       }
       card.appendChild(options);
-      if(mode==='memory'){
-        const selectBtn=document.createElement('button');selectBtn.type='button';selectBtn.className='ikon-memory-confirm';selectBtn.textContent='CONFIRM MATCH';
-        selectBtn.addEventListener('click',()=>{
-          const chosen=options.querySelector('.is-revealed');
-          if(!chosen){alert('Pehle ek card reveal karein.');return;}
-          const value=chosen.querySelector('.ikon-playable-option-text');
-          if(!value){alert('Pehle card reveal karein.');return;}
-          setAnswer(item,value.textContent,card,chosen);
-          selectBtn.textContent='✓ MATCH SELECTED';selectBtn.classList.add('is-confirmed');
-        });
-        card.appendChild(selectBtn);
-      }
       if(mode==='speed'){
         const tag=document.createElement('div');tag.className='ikon-speed-tag';tag.textContent='⚡ RAPID FIRE';card.insertBefore(tag,meta);
       }
