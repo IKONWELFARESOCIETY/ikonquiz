@@ -29561,8 +29561,37 @@ window.loadAssignmentsForStudent = function(){
       if(!data.success)throw new Error(data.message||'Student record not found.');
       if(!challengeData.success)throw new Error(challengeData.message||'Weekly challenge load nahi hua.');
       const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
+      // Remove only the decorative person/avatar icon from the Assignment Portal student header.
+      // Keep the student name, registration number, course and existing layout unchanged.
+      if(!document.getElementById('ikonAssignmentStudentIconFix')){
+        const iconFix=document.createElement('style');
+        iconFix.id='ikonAssignmentStudentIconFix';
+        iconFix.textContent=`
+          #assignmentStudentInfo::before,
+          #assignmentStudentInfo::after,
+          #assignmentStudentInfo h3::before,
+          #assignmentStudentInfo h3::after,
+          #assignmentStudentInfo .student-avatar,
+          #assignmentStudentInfo .student-icon,
+          #assignmentStudentInfo .avatar,
+          #assignmentStudentInfo .fa-user,
+          #assignmentStudentInfo .lucide-user,
+          #assignmentStudentInfo [data-lucide="user"] {
+            content: none !important;
+            display: none !important;
+          }
+        `;
+        document.head.appendChild(iconFix);
+      }
       const info=document.getElementById('assignmentStudentInfo');
-      if(info){info.innerHTML='';const h=document.createElement('h3');h.textContent=(data.name||'')+' · '+(data.regNo||reg);const p=document.createElement('p');p.textContent='Course: '+(data.course||'');info.append(h,p);}
+      if(info){
+        info.innerHTML='';
+        const h=document.createElement('h3');
+        h.textContent=(data.name||'')+' · '+(data.regNo||reg);
+        const p=document.createElement('p');
+        p.textContent='Course: '+(data.course||'');
+        info.append(h,p);
+      }
       const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
       list.innerHTML='';
       const challenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
@@ -29687,7 +29716,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const p1=ch.progress||{};
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
-  const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':'20 MCQs')+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
+  const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':((ch.level1QuestionCount||0)+' MCQs'))+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
   const progressWrap=document.createElement('div');progressWrap.className='ikon-weekly-progress';
   const progressLabel=document.createElement('div');progressLabel.className='ikon-weekly-progress-label';
   const doneCount=(mcqDone?1:0)+(puzzleDone?1:0)+(level3DoneForDesign(practical)?1:0)+(p1.level4Complete?1:0)+(p1.level5Complete?1:0);
@@ -29696,7 +29725,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const fill=document.createElement('span');fill.style.width=(doneCount*20)+'%';track.appendChild(fill);
   progressWrap.append(progressLabel,track);card.appendChild(progressWrap);
   const l1=document.createElement('div');l1.className='ikon-level-panel ikon-level-1';l1.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f5f8ff';
-  l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>20 MCQs · Retry allowed · Automatic checking</p>';
+  l1.innerHTML='<h4>LEVEL 1 – Objective Arena</h4><p>'+(Number(ch.level1QuestionCount||0))+' MCQs · Retry allowed · Automatic checking</p>';
   if(mcqDone){const done=document.createElement('b');done.textContent='Completed · Score '+p1.level1Score+' / '+p1.level1Total;l1.appendChild(done);}else renderIkonMcqForm(ch,reg,l1);
   card.appendChild(l1);
   const l2=document.createElement('div');l2.className='ikon-level-panel ikon-level-2';l2.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
@@ -29710,7 +29739,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   // Premium Part 2: connect four options on the left to questions on the right.
   renderIkonLevel3Matching(ch,reg,l3);
 
-  if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke 20 MCQs aur Level 2 ke sabhi 15 words complete karein.';l3.appendChild(lock);}
+  if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
   else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
@@ -30360,7 +30389,7 @@ function renderIkonMcqForm(ch,reg,box){
   });
   const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent='Submit Level 1';btn.onclick=()=>{
     const answers={};(ch.mcq||[]).forEach(q=>{const x=form.querySelector('input[name="q_'+CSS.escape(String(q.questionNo))+'"]:checked');if(x)answers[q.questionNo]=x.value;});
-    if(Object.keys(answers).length!==(ch.mcq||[]).length){alert('Sabhi 20 questions attempt karein.');return;}
+    if(Object.keys(answers).length!==(ch.mcq||[]).length){alert('Sabhi '+(ch.mcq||[]).length+' questions attempt karein.');return;}
     btn.disabled=true;btn.textContent='Checking...';
     ikonAssignmentPost({action:'submitAssignmentMCQ',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{alert('Level 1 complete! Score: '+d.score+'/'+d.total+'. Level 2 unlocked.');window.loadAssignmentsForStudent();})
