@@ -29082,12 +29082,19 @@ function applyMarksheetResultStyle(root, grade, result){
             image.onerror = function(){
                 this.onerror = null;
                 this.style.display = "none";
-                photoWrap.replaceChildren();
-                photoWrap.style.display = "none";
+                photoWrap.textContent = "👤";
+                photoWrap.style.display = "grid";
+                photoWrap.style.placeItems = "center";
+                photoWrap.style.fontSize = "64px";
+                photoWrap.style.color = "#91a0b6";
             };
             photoWrap.appendChild(image);
         }else{
-            photoWrap.style.display = "none";
+            photoWrap.textContent = "👤";
+            photoWrap.style.display = "grid";
+            photoWrap.style.placeItems = "center";
+            photoWrap.style.fontSize = "64px";
+            photoWrap.style.color = "#91a0b6";
         }
         card.appendChild(photoWrap);
 
@@ -29719,8 +29726,8 @@ const level3Done = level3DoneForDesign(practical);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
   l5.classList.add('ikon-level-game-hub','ikon-level-game-final');
-  l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 05 · ADAPTIVE MINI-GAMES</small><h4>BRAIN BLAST</h4><p>Random short challenges · Different interaction for every question type.</p></div><span class="ikon-level-game-stamp">NEW FINAL</span></div>';
-  if(p1.level5Complete){const done=document.createElement('b');done.textContent='Brain Blast completed!';l5.appendChild(done);}
+  l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">👑</span><div><small>LEVEL 05 · THE FINAL TRIAL</small><h4>ULTIMATE CHAMPION</h4><p>Your final test. Complete every round to finish.</p></div><span class="ikon-level-game-stamp">FINAL</span></div>';
+  if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion completed!';l5.appendChild(done);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
   card.appendChild(l5);container.appendChild(card);
@@ -29737,111 +29744,16 @@ function loadIkonGameLevel(ch,reg,level,box){
     return d;
   }).then(d=>{
     loading.remove();
-    if(!Array.isArray(d.items)||!d.items.length)throw new Error((level===5?'Brain Blast':'Brain Battle')+' question bank mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
-    if(level===5){
-      // Dedicated final-game renderer: never fall back to the old Ultimate Champion/MCQ form.
-      d.items.secondsPerQuestion=Number(d.secondsPerQuestion)||15;
-      renderBrainBlastGame(ch,reg,d.items,box);
-    } else {
-      renderIkonGameForm(ch,reg,level,d.items,box);
-    }
+    if(!Array.isArray(d.items)||!d.items.length)throw new Error('Brain Battle sheet mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
+    renderIkonGameForm(ch,reg,level,d.items,box);
   }).catch(e=>{
     loading.textContent='Level '+level+' load error: '+(e&&e.message?e.message:String(e));
     loading.style.cssText='padding:10px;margin-top:8px;border-radius:8px;background:#fff1f2;color:#991b1b;font-weight:700;white-space:normal';
   });
 }
-function renderBrainBlastGame(ch,reg,items,box){
-  const root=document.createElement('div');root.className='ikon-playable-game ikon-playable-final ikon-brain-blast';
-  const style=document.createElement('style');style.textContent=`
-    .ikon-brain-blast .bb-hero{display:flex;gap:14px;align-items:center;padding:16px;border-radius:14px;background:linear-gradient(120deg,#25204e,#56335f);color:#fff}
-    .ikon-brain-blast .bb-hero-icon{font-size:34px}.ikon-brain-blast .bb-hero h5{margin:0;font-size:23px}.ikon-brain-blast .bb-hero p{margin:5px 0 0;color:#dbeafe;font-size:13px}.ikon-brain-blast .bb-version{margin-left:auto;flex:0 0 auto;padding:7px 10px;border:1px solid #a78bfa;border-radius:999px;color:#ede9fe;font-size:10px;font-weight:900;letter-spacing:.5px}
-    .ikon-brain-blast .bb-progress{margin:14px 0;padding:12px;border:1px solid #506b9d;border-radius:12px;background:#172847;color:#fff}
-    .ikon-brain-blast .bb-track{height:8px;border-radius:20px;background:#334766;overflow:hidden;margin-top:8px}.ikon-brain-blast .bb-track i{display:block;height:100%;width:0;background:#38bdf8}
-    .ikon-brain-blast .bb-card{padding:16px;margin:12px 0;border:1px solid #5875aa;border-radius:14px;background:#1b2e50;color:#fff}
-    .ikon-brain-blast .bb-meta{display:flex;justify-content:space-between;gap:8px;color:#c7d8ff;font-size:11px;font-weight:900;letter-spacing:.5px}
-    .ikon-brain-blast .bb-card h6{font-size:19px;line-height:1.5;margin:12px 0}
-    .ikon-brain-blast .bb-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-    .ikon-brain-blast button,.ikon-brain-blast input{font:inherit}.ikon-brain-blast .bb-choice{padding:12px;border:1px solid #718dbb;border-radius:10px;background:#2b4268;color:#fff;text-align:left;min-height:48px;cursor:pointer;overflow-wrap:anywhere}
-    .ikon-brain-blast .bb-choice.is-selected{background:#116b72;border-color:#5eead4;box-shadow:0 0 0 2px #5eead433}
-    .ikon-brain-blast .bb-input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #7893c3;border-radius:9px;background:#10213d;color:#fff}
-    .ikon-brain-blast .bb-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.ikon-brain-blast .bb-small{font-size:12px;color:#c7d8ff}
-    .ikon-brain-blast .bb-submit{width:100%;padding:14px;border:0;border-radius:10px;background:linear-gradient(90deg,#1d65b7,#2386e5);color:white;font-weight:900;cursor:pointer;margin-top:14px}
-    .ikon-brain-blast .bb-clock{font-size:15px;font-weight:900;color:#fde68a;font-variant-numeric:tabular-nums}
-    .ikon-brain-blast .bb-match-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin:12px 0;align-items:stretch}.ikon-brain-blast .bb-match-row .bb-choice{display:flex;align-items:center;min-height:60px}.ikon-brain-blast .bb-match-row .bb-input{min-width:0}.ikon-brain-blast .bb-step-row{display:flex;gap:8px;align-items:center;margin:7px 0}.ikon-brain-blast .bb-step-row button{padding:8px;border:1px solid #718dbb;border-radius:8px;background:#2b4268;color:white}
-    .ikon-brain-blast .bb-score{padding:18px;border:1px solid #5875aa;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#fff}.ikon-brain-blast .bb-score h3{margin:0 0 6px;font-size:22px}.ikon-brain-blast .bb-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
-    .ikon-brain-blast .bb-tile{padding:12px 8px;border-radius:10px;background:#263b61;border:1px solid #526d9d;text-align:center}.ikon-brain-blast .bb-tile small{display:block;color:#c7d8ff;font-size:10px;font-weight:900}.ikon-brain-blast .bb-tile strong{display:block;font-size:22px;margin-top:5px}
-    .ikon-brain-blast .bb-levels{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}.ikon-brain-blast .bb-levels td,.ikon-brain-blast .bb-levels th{padding:9px 7px;border-bottom:1px solid #ffffff22;text-align:left}.ikon-brain-blast .bb-levels th{color:#c7d8ff;font-size:10px}
-    .ikon-brain-blast .bb-leader{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px}.ikon-brain-blast .bb-leader td,.ikon-brain-blast .bb-leader th{padding:9px 6px;border-bottom:1px solid #ffffff22;text-align:left}.ikon-brain-blast .bb-leader th{color:#c7d8ff;font-size:10px}.ikon-brain-blast .bb-leader tr.is-me{background:#0f766e55;font-weight:900}
-    .ikon-brain-blast .bb-back{width:100%;margin-top:14px;padding:13px;border:0;border-radius:10px;background:#1d6ed1;color:#fff;font-weight:900;cursor:pointer}
-    @media(max-width:560px){.ikon-brain-blast .bb-version{display:none}.ikon-brain-blast .bb-match-row{gap:10px}.ikon-brain-blast .bb-options{grid-template-columns:1fr}.ikon-brain-blast .bb-score-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ikon-brain-blast .bb-tile strong{font-size:18px}.ikon-brain-blast .bb-card h6{font-size:17px}}
-  `;root.appendChild(style);
-  const hero=document.createElement('div');hero.className='bb-hero';hero.innerHTML='<div class="bb-hero-icon">⚡</div><div><small>LEVEL 05 · NEW ADAPTIVE GAME ENGINE</small><h5>BRAIN BLAST</h5><p>Find · Match · Arrange · Fill · Spot the Bug · True/False</p></div><span class="bb-version">FINAL MODE</span>';root.appendChild(hero);
-  const progress=document.createElement('div');progress.className='bb-progress';
-  const progressLine=document.createElement('div');progressLine.style.cssText='display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:900';
-  const countLabel=document.createElement('span');countLabel.textContent='0 / '+items.length+' COMPLETED';
-  const clock=document.createElement('span');clock.className='bb-clock';
-  progressLine.append(countLabel,clock);const track=document.createElement('div');track.className='bb-track';const fill=document.createElement('i');track.appendChild(fill);progress.append(progressLine,track);root.appendChild(progress);
-  const answers={};let activeIndex=0,seconds=Number(items.secondsPerQuestion)||15; // fallback for older responses
-  const totalSeconds=Math.max(1,items.length*seconds);let remaining=totalSeconds,finished=false,timer=null;
-  function update(){const n=Object.keys(answers).length;countLabel.textContent=n+' / '+items.length+' COMPLETED';fill.style.width=(n/items.length*100)+'%';}
-  function setAnswer(item,value,button){answers[item.itemId]=value;if(button){const group=button.parentElement;group.querySelectorAll('.bb-choice').forEach(b=>b.classList.remove('is-selected'));button.classList.add('is-selected');}update();}
-  function choiceGrid(card,item,values,onPick){const grid=document.createElement('div');grid.className='bb-options';values.filter(v=>String(v||'').trim()).forEach((v,i)=>{const b=document.createElement('button');b.type='button';b.className='bb-choice';b.textContent=String(v);b.addEventListener('click',()=>onPick(v,b));grid.appendChild(b);});card.appendChild(grid);}
-  items.forEach((item,index)=>{
-    const card=document.createElement('article');card.className='bb-card';
-    const meta=document.createElement('div');meta.className='bb-meta';const type=String(item.gameType||'FIND_IT').toUpperCase();
-    const typeNames={DEFINE_FEATURE:'✍️ DEFINE THE FEATURE'};
-    meta.innerHTML='<span>CHALLENGE '+String(index+1).padStart(2,'0')+' · '+(typeNames[type]||type)+'</span><span>+'+(Number(item.marks)||1)+' POINTS</span>';
-    const q=document.createElement('h6');q.textContent=item.question||'Complete this challenge';card.append(meta,q);
-    if(type==='DEFINE_FEATURE'){
-      const note=document.createElement('p');note.className='bb-small';note.textContent='Is software feature/tool ka kaam apne words mein samjhaiye. Definition mein iska purpose aur use likhein.';
-      const area=document.createElement('textarea');area.className='bb-input';area.rows=5;area.maxLength=1500;area.placeholder='Yahan apni definition likhein...';area.style.resize='vertical';area.addEventListener('input',()=>setAnswer(item,area.value));card.append(note,area);
-    }else if(type==='MATCH_IT'){
-      const left=(item.options||[]).slice(), right=(item.matchOptions||[]).slice().sort(()=>Math.random()-.5), selected={};
-      const note=document.createElement('p');note.className='bb-small';note.textContent='Har left item ke saamne uska matching right option select karein.';card.appendChild(note);
-      left.forEach((v,i)=>{const row=document.createElement('div');row.className='bb-match-row';const l=document.createElement('div');l.className='bb-choice';l.textContent=v;const sel=document.createElement('select');sel.className='bb-input';const blank=document.createElement('option');blank.value='';blank.textContent='Choose match';sel.appendChild(blank);right.forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;sel.appendChild(o);});sel.addEventListener('change',()=>{selected[v]=sel.value;setAnswer(item,JSON.stringify(selected));});row.append(l,sel);card.appendChild(row);});
-    }else if(type==='ARRANGE_IT'){
-      const order=(item.options||[]).slice();const list=document.createElement('div');
-      function draw(){list.replaceChildren();order.forEach((v,i)=>{const row=document.createElement('div');row.className='bb-step-row';const text=document.createElement('div');text.className='bb-choice';text.style.flex='1';text.textContent=(i+1)+'. '+v;const up=document.createElement('button');up.type='button';up.textContent='↑';up.disabled=i===0;up.addEventListener('click',()=>{[order[i-1],order[i]]=[order[i],order[i-1]];draw();});const down=document.createElement('button');down.type='button';down.textContent='↓';down.disabled=i===order.length-1;down.addEventListener('click',()=>{[order[i+1],order[i]]=[order[i],order[i+1]];draw();});row.append(text,up,down);list.appendChild(row);});setAnswer(item,JSON.stringify(order));}
-      card.appendChild(list);draw();
-    }else if(type==='FILL_IT'){
-      const input=document.createElement('input');input.className='bb-input';input.placeholder='Type your answer here';input.addEventListener('input',()=>setAnswer(item,input.value));card.appendChild(input);
-    }else if(type==='TRUE_FALSE'){
-      choiceGrid(card,item,['TRUE','FALSE'],(v,b)=>setAnswer(item,v,b));
-    }else{
-      choiceGrid(card,item,item.options||[],(v,b)=>setAnswer(item,v,b));
-    }
-    root.appendChild(card);
-  });
-  const submit=document.createElement('button');submit.type='button';submit.className='bb-submit';submit.textContent='⚡ SUBMIT BRAIN BLAST';root.appendChild(submit);
-  function showScore(result){finished=true;if(timer)clearInterval(timer);root.replaceChildren(style);
-    const data=result.combined||{}, levels=data.levels||{}, panel=document.createElement('section');panel.className='bb-score';
-    const title=document.createElement('h3');title.textContent='🏆 ULTIMATE CHAMPION · FINAL SCOREBOARD';const sub=document.createElement('p');sub.className='bb-small';sub.textContent='Paper: '+(ch.paper||'')+' · Challenge: '+(ch.challengeId||'');panel.append(title,sub);
-    const me=result.leaderboard&&result.leaderboard.me||{};const tiles=document.createElement('div');tiles.className='bb-score-grid';
-    [['OVERALL RANK',me.rank?'#'+me.rank:'—'],['COMBINED SCORE',(data.score||0)+' / '+(data.total||0)],['ACCURACY',(data.percentage||0)+'%']].forEach(pair=>{const t=document.createElement('div');t.className='bb-tile';const l=document.createElement('small');l.textContent=pair[0];const v=document.createElement('strong');v.textContent=String(pair[1]);t.append(l,v);tiles.appendChild(t);});panel.appendChild(tiles);
-    const h=document.createElement('h4');h.textContent='LEVEL-WISE MARKS';panel.appendChild(h);const table=document.createElement('table');table.className='bb-levels';const head=document.createElement('tr');['LEVEL','SCORE','STATUS'].forEach(x=>{const th=document.createElement('th');th.textContent=x;head.appendChild(th);});table.appendChild(head);
-    ['1','2','3','4','5'].forEach(k=>{const v=levels[k]||{score:0,total:0,complete:false};const tr=document.createElement('tr');[({1:'Level 1 · Quiz',2:'Level 2 · Puzzle',3:'Level 3 · Matching',4:'Level 4 · Brain Battle',5:'Level 5 · Brain Blast'})[k],(v.score||0)+' / '+(v.total||0),v.complete?'Completed':'Pending'].forEach(x=>{const td=document.createElement('td');td.textContent=String(x);tr.appendChild(td);});table.appendChild(tr);});panel.appendChild(table);
-    const lb=result.leaderboard||{}, rows=Array.isArray(lb.rows)?lb.rows.slice():[], current=lb.me||null;const lh=document.createElement('h4');lh.textContent='OVERALL LEADERBOARD';panel.appendChild(lh);const lt=document.createElement('table');lt.className='bb-leader';const lr=document.createElement('tr');['RANK','STUDENT','TOTAL MARKS','%'].forEach(x=>{const th=document.createElement('th');th.textContent=x;lr.appendChild(th);});lt.appendChild(lr);const shown=rows.slice(0,10);if(current&&current.rank&&!shown.some(x=>x.isCurrent))shown.push(current);shown.sort((a,b)=>Number(a.rank||9999)-Number(b.rank||9999));shown.forEach(x=>{const tr=document.createElement('tr');if(x.isCurrent)tr.className='is-me';[x.rank?'#'+x.rank:'—',x.name||'Student',(x.score||0)+' / '+(x.total||0),(x.percentage||0)+'%'].forEach(y=>{const td=document.createElement('td');td.textContent=String(y);tr.appendChild(td);});lt.appendChild(tr);});panel.appendChild(lt);
-    const note=document.createElement('p');note.className='bb-small';note.textContent='Overall rank Level 1 se Level 5 tak ke combined marks ke basis par hai. Level 3 practical tasks ke marks admin approval ke baad include hote hain; pending review marks abhi count nahi hote.';panel.appendChild(note);
-    const back=document.createElement('button');back.type='button';back.className='bb-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());panel.appendChild(back);root.appendChild(panel);
-  }
-  function doSubmit(){if(finished)return;
-    const missing=items.filter(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId)||answers[x.itemId]===''||answers[x.itemId]==null);
-    if(missing.length){alert('Pehle sabhi Brain Blast challenges complete karein. Remaining: '+missing.length);return;}
-    finished=true;if(timer)clearInterval(timer);submit.disabled=true;submit.textContent='CALCULATING COMBINED RESULT...';
-    items.forEach(x=>{if(!Object.prototype.hasOwnProperty.call(answers,x.itemId))answers[x.itemId]='';});
-    ikonAssignmentPost({action:'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
-      .then(showScore).catch(e=>{finished=false;submit.disabled=false;submit.textContent='⚡ SUBMIT BRAIN BLAST';alert(e.message);});
-  }
-  submit.addEventListener('click',doSubmit);
-  function tick(){remaining--;const mm=Math.floor(remaining/60),ss=remaining%60;clock.textContent='⏱ '+mm+':'+String(ss).padStart(2,'0');if(remaining<=0){clock.textContent='TIME UP';remaining=0;finished=false;doSubmit();}}
-  clock.textContent='✍️ WRITE YOUR DEFINITIONS · NO TIME LIMIT';
-  box.appendChild(root);
-}
-
 function renderIkonGameForm(ch,reg,level,items,box){
   if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
   const isFinal=level===5;
-  if(isFinal){renderBrainBlastGame(ch,reg,items,box);return;}
   const root=document.createElement('div');
   root.className=isFinal?'ikon-playable-game ikon-playable-final':'ikon-playable-game ikon-playable-battle';
   if(!document.getElementById('ikon-level-game-readable-text')){
@@ -29882,47 +29794,24 @@ function renderIkonGameForm(ch,reg,level,items,box){
     `;
     document.head.appendChild(readable);
   }
-  if(!document.getElementById('ikon-level4-refresh-style')){
-    const style=document.createElement('style');style.id='ikon-level4-refresh-style';
-    style.textContent=`
-      .ikon-playable-battle .ikon-playable-stage{border-radius:16px!important;overflow:hidden}
-      .ikon-playable-battle .ikon-sequence-builder{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;margin-top:16px!important;align-items:stretch}
-      .ikon-playable-battle .ikon-sequence-card{position:relative;min-width:0!important;padding:18px!important;border:1px solid #526fa8!important;border-radius:16px!important;background:linear-gradient(145deg,#263e68,#172847)!important;box-shadow:0 12px 24px #07142b66;gap:13px!important;overflow:hidden}
-      .ikon-playable-battle .ikon-sequence-card:before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(#60a5fa,#a78bfa)}
-      .ikon-playable-battle .ikon-sequence-card strong{font-size:13px!important;letter-spacing:.7px}
-      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-preview{display:flex;flex-direction:column;gap:8px;min-height:116px;padding:12px;border:1px solid #ffffff18;border-radius:12px;background:#0c1b34aa;color:#eaf2ff}
-      .ikon-playable-battle .ikon-sequence-step{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45}
-      .ikon-playable-battle .ikon-sequence-step b{display:inline-flex;align-items:center;justify-content:center;flex:0 0 23px;height:23px;border-radius:50%;background:#315b99;color:#fff;font-size:11px}
-      .ikon-playable-battle .ikon-sequence-card button{min-height:46px!important;border-radius:10px!important;font-size:12px!important;letter-spacing:.35px}
-      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-inspect{background:linear-gradient(90deg,#2357a2,#277fe0)!important;border:1px solid #75a9ee!important;color:#fff!important}
-      .ikon-playable-battle .ikon-sequence-card .ikon-sequence-select{background:linear-gradient(90deg,#087e83,#0d9488)!important;border:1px solid #5eead4!important;color:#fff!important}
-      .ikon-playable-battle .ikon-sequence-card.is-inspected{border-color:#5eead4!important;box-shadow:0 0 0 2px #5eead422,0 12px 24px #07142b66}
-      .ikon-playable-battle .ikon-error-detective{padding:14px;border:1px solid #536fa5;border-radius:16px;background:linear-gradient(145deg,#172b4c,#101e37);box-shadow:0 12px 24px #07142b55}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-grid{grid-template-columns:1fr!important;gap:10px!important}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile{min-height:0!important;display:grid!important;grid-template-columns:105px minmax(0,1fr) 120px!important;align-items:center!important;gap:12px!important;padding:13px 15px!important;border-radius:12px!important;background:linear-gradient(90deg,#203b62,#172b49)!important}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-statement{font-size:14px!important;line-height:1.5!important}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile-action{text-align:right}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile.is-targeted{background:linear-gradient(90deg,#6b263f,#3b203e)!important}
-      .ikon-playable-battle .ikon-bug-hunter .ikon-bug-confirm{min-height:48px}
-      @media(max-width:680px){.ikon-playable-battle .ikon-sequence-builder{grid-template-columns:1fr!important;gap:12px!important}.ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile{grid-template-columns:1fr!important;gap:8px!important}.ikon-playable-battle .ikon-bug-hunter .ikon-bug-tile-action{text-align:left}}
-    `;document.head.appendChild(style);
-  }
   const answers={};
   const typeOf=x=>String(x.gameType||'MCQ').trim().toUpperCase();
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
   const stages=isFinal?[
-    {id:'define',title:'DEFINE THE FEATURE',sub:'Software ke tab, option, tool ya feature ka purpose aur function apne words mein likhein.',icon:'✍️',types:['DEFINE_FEATURE']}
+    {id:'define',title:'DEFINE THE FEATURE',sub:'Har Excel function ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
   ]:[
-    {id:'memory',title:'STAGE 1 · FLIP & SHUFFLE',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'riddle',title:'STAGE 2 · WEEKLY RIDDLE',sub:'Pichhle week padhaye gaye topics par based riddle solve karein. Answer type karein.',icon:'🧩',types:['WEEKLY_RIDDLE']}
+    {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
+    {id:'spot',title:'ERROR DETECTIVE',sub:'Inspect every evidence card, find the faulty statement and report it.',icon:'🕵️',types:['SPOT_ERROR']},
+    {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
   const icon=document.createElement('div');icon.className='ikon-playable-hero-icon';icon.textContent=isFinal?'👑':'⚔️';
   const intro=document.createElement('div');
-  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'FINAL CHAMPIONSHIP':'TWO-STAGE BRAIN BATTLE';
+  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'THE FINAL CHAMPIONSHIP':'FOUR-MODE BRAIN ARENA';
   const title=document.createElement('h5');title.textContent=isFinal?'ULTIMATE CHAMPION':'BRAIN BATTLE ARENA';
-  const desc=document.createElement('p');desc.textContent=isFinal?'Write clear definitions of the software features. Your combined score and same-paper leaderboard appear after submission.':'Complete both stages: the original Flip & Shuffle game followed by Weekly Riddle.';
+  const desc=document.createElement('p');desc.textContent=isFinal?'Har question ka answer apne words mein type karein. Submission ke baad admin manually marks verify karega.':'Clear four different game modes. Every answer earns points.';
   intro.append(eyebrow,title,desc);top.append(icon,intro);root.appendChild(top);
 
   const status=document.createElement('div');status.className='ikon-playable-status';
@@ -29955,14 +29844,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
         .ikon-memory-shuffle-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:#182749;border:1px solid #415682}
         .ikon-memory-shuffle-phase{font-size:11px;letter-spacing:.7px;font-weight:800;color:#f1f5ff}
         .ikon-memory-shuffle-count{flex-shrink:0;font-size:13px;font-weight:900;color:#facc15;font-variant-numeric:tabular-nums}
-        .ikon-memory-shuffle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:26px;row-gap:18px;padding:8px 12px;position:relative;isolation:isolate}
-        .ikon-memory-shuffle-game .ikon-shuffle-tile{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:96px;width:100%;padding:0;border:0;border-radius:14px;background:transparent;color:#fff;cursor:default;font-size:14px;font-weight:700;text-align:center;overflow-wrap:anywhere;touch-action:manipulation;transform:none;perspective:1000px}
-        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible{background:transparent;border-color:transparent;color:#f8fafc}
-        .ikon-memory-shuffle-game .ikon-memory-flip-inner{position:relative;display:block;width:100%;min-height:96px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.75,.25,1)}
-        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible .ikon-memory-flip-inner{transform:rotateY(180deg)}
-        .ikon-memory-shuffle-game .ikon-memory-flip-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 12px;border:1px solid #829ee0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 8px 18px #050d1d55;overflow-wrap:anywhere}
-        .ikon-memory-shuffle-game .ikon-memory-flip-front{background:linear-gradient(145deg,#3659a0,#203b70);font-size:30px;font-weight:900;color:#dbeafe}
-        .ikon-memory-shuffle-game .ikon-memory-flip-back{transform:rotateY(180deg);background:linear-gradient(145deg,#1e526c,#203d68);font-size:14px;line-height:1.45;color:#fff}
+        .ikon-memory-shuffle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;position:relative;isolation:isolate}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:70px;width:100%;padding:12px 10px;border:1px solid #7591d1;border-radius:10px;background:#435eab;color:#fff;cursor:default;font-size:13px;font-weight:700;text-align:center;overflow-wrap:anywhere;touch-action:manipulation;transform:none}
+        .ikon-memory-shuffle-game .ikon-shuffle-tile.is-visible{background:#36435f;border-color:#8da4da;color:#f8fafc}
         .ikon-memory-shuffle-game .ikon-shuffle-tile.is-pickable{cursor:pointer;border-color:#b5c7fa;box-shadow:0 0 0 1px rgba(147,197,253,.3)}
         .ikon-memory-shuffle-game .ikon-shuffle-tile.is-picked{background:#155e75;border-color:#67e8f9;box-shadow:0 0 0 2px rgba(103,232,249,.28)}
         .ikon-memory-shuffle-game .ikon-shuffle-tile:disabled{opacity:1}
@@ -29974,7 +29858,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
         .ikon-memory-shuffle-start:hover{background:#257feb}
         .ikon-memory-shuffle-start:focus-visible{outline:3px solid #fde68a;outline-offset:3px}
         .ikon-memory-shuffle-hint{margin:0;min-height:20px;color:#dbeafe;font-size:12px;line-height:1.5}
-        @media(max-width:520px){.ikon-memory-shuffle-grid{column-gap:12px;row-gap:12px;padding:6px 2px}.ikon-memory-shuffle-game .ikon-shuffle-tile,.ikon-memory-shuffle-game .ikon-memory-flip-inner{min-height:88px}.ikon-memory-shuffle-game .ikon-memory-flip-face{padding:10px 7px;font-size:12px}.ikon-memory-shuffle-guide{font-size:12px}}
+        @media(max-width:520px){.ikon-memory-shuffle-grid{gap:8px}.ikon-memory-shuffle-game .ikon-shuffle-tile{padding:10px 7px;min-height:78px;font-size:11px}.ikon-memory-shuffle-guide{font-size:11px}}
       `;
       document.head.appendChild(style);
     }
@@ -30012,21 +29896,14 @@ function renderIkonGameForm(ch,reg,level,items,box){
       tile.disabled=true;tile.setAttribute('aria-pressed','false');
       function faceUp(){
         tile.replaceChildren();
-        const inner=document.createElement('span');inner.className='ikon-memory-flip-inner';
-        const front=document.createElement('span');front.className='ikon-memory-flip-face ikon-memory-flip-front';front.textContent='?';
-        const back=document.createElement('span');back.className='ikon-memory-flip-face ikon-memory-flip-back';
         const letter=document.createElement('span');letter.className='ikon-memory-shuffle-letter';letter.textContent=entry.letter;
         const value=document.createElement('span');value.className='ikon-memory-shuffle-value';value.textContent=entry.value;
-        back.append(letter,value);inner.append(front,back);tile.appendChild(inner);
-        requestAnimationFrame(()=>tile.classList.add('is-visible'));
+        tile.append(letter,value);tile.classList.add('is-visible');
         tile.setAttribute('aria-label',entry.letter+': '+entry.value);
       }
       function faceDown(){
-        tile.classList.remove('is-visible');tile.replaceChildren();
-        const inner=document.createElement('span');inner.className='ikon-memory-flip-inner';
-        const front=document.createElement('span');front.className='ikon-memory-flip-face ikon-memory-flip-front';front.textContent='?';
-        const back=document.createElement('span');back.className='ikon-memory-flip-face ikon-memory-flip-back';back.textContent='';
-        inner.append(front,back);tile.appendChild(inner);
+        const back=document.createElement('span');back.className='ikon-memory-shuffle-back';back.textContent='?';
+        tile.replaceChildren(back);tile.classList.remove('is-visible');
         tile.setAttribute('aria-label','Hidden memory card');
       }
       faceDown();
@@ -30160,44 +30037,57 @@ function renderIkonGameForm(ch,reg,level,items,box){
     return grid;
   }
 
+  function makeDefinitionInput(item,card){
+    const wrap=document.createElement('div');wrap.className='ikon-definition-answer';
+    wrap.style.cssText='display:flex;flex-direction:column;gap:8px;margin-top:12px';
+    const label=document.createElement('label');label.textContent='YOUR DEFINITION';label.style.cssText='font-weight:900;font-size:12px;color:#c7d8ff;letter-spacing:.5px';
+    const area=document.createElement('textarea');area.rows=4;area.maxLength=2500;area.placeholder='Apne words mein definition aur example likhein...';
+    area.style.cssText='width:100%;box-sizing:border-box;resize:vertical;min-height:110px;padding:12px;border:1px solid #6b83b5;border-radius:10px;background:#fff;color:#17233b;font:15px/1.5 Arial,sans-serif';
+    area.addEventListener('input',()=>{answers[item.itemId]=area.value;updateProgress();});
+    wrap.append(label,area);return wrap;
+  }
+
   // LEVEL 4 STAGE 2: Workflow investigation. Student inspects the four
   // candidate workflows, then selects the one that correctly completes the task.
   function makeSequenceBuilder(item,card){
-    const wrap=document.createElement('div');wrap.className='ikon-sequence-builder';
-    const hint=document.createElement('p');hint.className='ikon-memory-hint';
-    hint.textContent='Har workflow ek possible process hai. Inspect karke steps dekhein, compare karein aur correct process choose karein.';
+    const wrap=document.createElement('div');
+    wrap.className='ikon-sequence-builder';
+    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
+    const hint=document.createElement('p');
+    hint.className='ikon-memory-hint';
+    hint.textContent='Har workflow ko INSPECT karein. Steps ka order samjhein, phir sahi workflow select karein.';
     card.appendChild(hint);
     const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
-    const inspected=new Set(),selectButtons=[];
+    const inspected=new Set();
+    const selectButtons=[];
     values.forEach((value,index)=>{
-      const panel=document.createElement('div');panel.className='ikon-sequence-card';
-      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px';
-      const name=document.createElement('strong');name.textContent='ROUTE '+String.fromCharCode(65+index);name.style.cssText='font-size:12px;color:#dbeafe;letter-spacing:.7px';
-      const state=document.createElement('span');state.textContent='SEALED';state.style.cssText='font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:.5px';head.append(name,state);
-      const preview=document.createElement('div');preview.className='ikon-sequence-preview';
-      const cover=document.createElement('div');cover.textContent='🔒 Workflow steps locked';cover.style.cssText='font-size:13px;font-weight:800;color:#cbd5e1;display:flex;align-items:center;min-height:88px';preview.appendChild(cover);
-      const inspect=document.createElement('button');inspect.type='button';inspect.className='ikon-sequence-inspect';inspect.textContent='🔍 REVEAL STEPS';
-      const choose=document.createElement('button');choose.type='button';choose.className='ikon-playable-option ikon-sequence-select';choose.textContent='CHOOSE THIS ROUTE';choose.disabled=true;choose.style.opacity='.4';choose.setAttribute('aria-pressed','false');selectButtons.push(choose);
+      const panel=document.createElement('div');
+      panel.className='ikon-sequence-card';
+      panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
+      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
+      const name=document.createElement('strong');name.textContent='WORKFLOW '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
+      const state=document.createElement('span');state.textContent='NOT INSPECTED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';
+      head.append(name,state);
+      const preview=document.createElement('div');preview.textContent='Sequence hidden — inspect to view the process.';preview.style.cssText='font-size:12px;line-height:1.55;color:#dbeafe;min-height:52px;display:flex;align-items:center';
+      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT WORKFLOW';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
+      const choose=document.createElement('button');choose.type='button';choose.className='ikon-playable-option';choose.textContent='SELECT THIS WORKFLOW';choose.disabled=true;choose.setAttribute('aria-pressed','false');choose.style.cssText='border:0;border-radius:8px;padding:10px;background:#1768bd;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
+      selectButtons.push(choose);
       inspect.addEventListener('click',()=>{
-        preview.replaceChildren();
-        value.split(/\s*>\s*/).map(x=>x.trim()).filter(Boolean).forEach((step,i)=>{
-          const row=document.createElement('div');row.className='ikon-sequence-step';
-          const num=document.createElement('b');num.textContent=String(i+1);
-          const text=document.createElement('span');text.textContent=step;row.append(num,text);preview.appendChild(row);
-        });
-        if(!preview.children.length){const t=document.createElement('span');t.textContent=value;preview.appendChild(t);}
-        panel.classList.add('is-inspected');state.textContent='REVEALED';state.style.color='#5eead4';
-        inspect.textContent='✓ STEPS REVEALED';inspect.disabled=true;inspected.add(index);
-        const all=inspected.size===values.length;
-        selectButtons.forEach(b=>{b.disabled=!all;b.style.opacity=all?'1':'.4';});
-        hint.textContent=all?'All routes unlocked. Compare the step order and choose the correct route.':`${inspected.size}/${values.length} routes revealed — reveal the remaining routes to unlock your decision.`;
+        preview.textContent=value.split(/\s*>\s*/).map((step,i)=>`${i+1}. ${step.trim()}`).join('   →   ');
+        preview.style.alignItems='flex-start';
+        state.textContent='INSPECTED';state.style.color='#86efac';
+        inspect.textContent='WORKFLOW INSPECTED';inspect.disabled=true;inspect.style.opacity='.65';
+        inspected.add(index);
+        const allInspected=inspected.size===values.length;
+        selectButtons.forEach(btn=>{btn.disabled=!allInspected;btn.style.opacity=allInspected?'1':'.45';});
+        hint.textContent=allInspected?'All workflows inspected. Ab compare karke correct workflow select karein.':`${inspected.size}/${values.length} workflows inspected. Baaki workflows bhi inspect karein.`;
       });
       choose.addEventListener('click',()=>{
         if(inspected.size!==values.length)return;
         setAnswer(item,value,card,choose);
-        selectButtons.forEach(b=>{b.classList.remove('is-picked');b.textContent='CHOOSE THIS ROUTE';});
-        choose.classList.add('is-picked');choose.textContent='✓ ROUTE SELECTED';
-        hint.textContent='Route locked in. Aap final submit se pehle apna selection change kar sakte hain.';
+        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
+        choose.textContent='✓ WORKFLOW SELECTED';
+        hint.textContent='Workflow selected. Agar zaroorat ho to doosra workflow select karke apna decision badal sakte hain.';
       });
       panel.append(head,preview,inspect,choose);wrap.appendChild(panel);
     });
@@ -30208,61 +30098,40 @@ function renderIkonGameForm(ch,reg,level,items,box){
   // until inspected; all four must be inspected before the student reports
   // the statement containing the error. The submitted answer remains the
   // original option text so the existing Apps Script scoring contract stays intact.
-  // LEVEL 4: BUG HUNTER. Student scans the visible evidence tiles and flags one faulty item.
-  // Answer remains the exact source option text, preserving the Apps Script scoring contract.
   function makeErrorDetective(item,card){
-    const wrap=document.createElement('div');wrap.className='ikon-error-detective ikon-bug-hunter';
+    const wrap=document.createElement('div');wrap.className='ikon-error-detective';
+    wrap.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px';
     const hint=document.createElement('p');hint.className='ikon-memory-hint';
-    hint.textContent='Incident console active hai. Logs ko scan karein, suspicious entry select karein aur final bug report submit karein.';
-    const status=document.createElement('div');status.className='ikon-bug-status';status.textContent='🟢 LIVE SYSTEM · WAITING FOR INVESTIGATION';
+    hint.textContent='Evidence cards ko ek-ek karke inspect karein. Sabhi statements dekhne ke baad galat statement report karein.';
+    card.appendChild(hint);
     const values=(item.options||[]).filter(v=>String(v||'').trim()!=='').map(String);
-    const grid=document.createElement('div');grid.className='ikon-bug-grid';
-    let selectedValue='';
-    const rows=[];
+    const inspected=new Set();
+    const buttons=[];
     values.forEach((value,index)=>{
-      const tile=document.createElement('button');tile.type='button';tile.className='ikon-bug-tile';tile.setAttribute('aria-pressed','false');
-      const id=document.createElement('b');id.className='ikon-bug-log-id';id.textContent='LOG '+String(index+1).padStart(2,'0');
-      const body=document.createElement('span');body.className='ikon-bug-statement';body.textContent=value;
-      const tag=document.createElement('span');tag.className='ikon-bug-tile-action';tag.textContent='SELECT LOG  →';
-      tile.append(id,body,tag);
-      tile.addEventListener('click',()=>{
-        selectedValue=value;
-        rows.forEach((r,i)=>{const active=i===index;r.tile.classList.toggle('is-targeted',active);r.tile.classList.toggle('is-muted',!active);r.tile.setAttribute('aria-pressed',active?'true':'false');r.tag.textContent=active?'⚠ SUSPECT SELECTED':'REVIEW LOG';});
-        status.textContent='🔴 INVESTIGATING · LOG '+String(index+1).padStart(2,'0')+' SELECTED';
-        hint.textContent='Aapne ek suspicious log select kiya hai. Confirm karne se pehle kisi doosre log ko bhi select kar sakte hain.';
-        confirm.disabled=false;confirm.textContent='🚩 SUBMIT INCIDENT REPORT';confirm.classList.add('is-ready');
+      const panel=document.createElement('div');panel.style.cssText='min-width:0;padding:11px;border:1px solid #526b9e;border-radius:11px;background:#202f50;color:#f8fafc;display:flex;flex-direction:column;gap:9px';
+      const head=document.createElement('div');head.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:8px';
+      const name=document.createElement('strong');name.textContent='EVIDENCE '+String.fromCharCode(65+index);name.style.cssText='font-size:11px;letter-spacing:.5px;color:#c7d8ff';
+      const state=document.createElement('span');state.textContent='SEALED';state.style.cssText='font-size:9px;font-weight:800;color:#fbbf24';head.append(name,state);
+      const statement=document.createElement('div');statement.textContent='Statement hidden. Inspect this evidence.';statement.style.cssText='min-height:62px;display:flex;align-items:center;font-size:12px;line-height:1.5;color:#dbeafe;overflow-wrap:anywhere';
+      const inspect=document.createElement('button');inspect.type='button';inspect.textContent='INSPECT EVIDENCE';inspect.style.cssText='border:1px solid #6d8bc5;border-radius:8px;padding:9px;background:#304d82;color:#fff;font-size:10px;font-weight:900;cursor:pointer';
+      const report=document.createElement('button');report.type='button';report.className='ikon-playable-option';report.textContent='REPORT THIS ERROR';report.disabled=true;report.setAttribute('aria-pressed','false');report.style.cssText='border:0;border-radius:8px;padding:10px;background:#9a3412;color:#fff;font-size:10px;font-weight:900;cursor:pointer;opacity:.45';
+      inspect.addEventListener('click',()=>{
+        statement.textContent=value;state.textContent='INSPECTED';state.style.color='#86efac';
+        inspect.textContent='EVIDENCE OPENED';inspect.disabled=true;inspect.style.opacity='.65';
+        inspected.add(index);
+        report.disabled=inspected.size!==values.length;report.style.opacity=report.disabled?'.45':'1';
+        hint.textContent=inspected.size===values.length?'All evidence inspected. Ab jis statement mein error hai, us par REPORT THIS ERROR dabayein.':`${inspected.size}/${values.length} evidence inspected. Baaki cards bhi inspect karein.`;
       });
-      grid.appendChild(tile);rows.push({tile,tag});
+      report.addEventListener('click',()=>{
+        if(inspected.size!==values.length)return;
+        setAnswer(item,value,card,report);
+        wrap.querySelectorAll('.ikon-playable-option').forEach(btn=>{btn.disabled=false;btn.style.opacity='1';});
+        report.textContent='✓ ERROR REPORTED';
+        hint.textContent='Your report is selected. You can inspect your choice and change it before submitting Brain Battle.';
+      });
+      panel.append(head,statement,inspect,report);wrap.appendChild(panel);buttons.push(report);
     });
-    const confirm=document.createElement('button');confirm.type='button';confirm.className='ikon-bug-confirm';confirm.disabled=true;confirm.textContent='SELECT A LOG TO INVESTIGATE';
-    confirm.addEventListener('click',()=>{
-      if(!selectedValue)return;
-      setAnswer(item,selectedValue,card,confirm);
-      confirm.textContent='✓ INCIDENT REPORT SUBMITTED';confirm.classList.add('is-confirmed');
-      status.textContent='✅ INCIDENT ISOLATED · REPORT LOCKED';
-      hint.textContent='Report submitted. Aap kisi aur log ko select karke final submit se pehle answer update kar sakte hain.';
-    });
-    if(!document.getElementById('ikon-bug-hunter-style')){
-      const style=document.createElement('style');style.id='ikon-bug-hunter-style';
-      style.textContent=`
-        .ikon-bug-hunter{display:flex;flex-direction:column;gap:12px;margin-top:12px}
-        .ikon-bug-hunter .ikon-bug-status{padding:12px 14px;border:1px solid #5275a9;border-radius:11px;background:linear-gradient(90deg,#10213e,#1d355b);color:#c7f9e9;font-size:12px;font-weight:900;letter-spacing:.4px}
-        .ikon-bug-hunter .ikon-bug-grid{display:grid;grid-template-columns:1fr;gap:10px}
-        .ikon-bug-hunter .ikon-bug-tile{min-width:0;padding:14px 16px;border:1px solid #5875aa;border-radius:12px;background:linear-gradient(100deg,#243f68,#172b49);color:#f8fafc;text-align:left;display:grid;grid-template-columns:100px minmax(0,1fr) 115px;align-items:center;gap:14px;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,opacity .18s;box-shadow:0 6px 14px #08152b44}
-        .ikon-bug-hunter .ikon-bug-tile:hover{transform:translateX(3px);border-color:#93c5fd}
-        .ikon-bug-hunter .ikon-bug-log-id{font-size:11px;letter-spacing:.6px;color:#93c5fd}
-        .ikon-bug-hunter .ikon-bug-statement{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
-        .ikon-bug-hunter .ikon-bug-tile-action{text-align:right;font-size:10px;font-weight:900;color:#93c5fd;letter-spacing:.35px}
-        .ikon-bug-hunter .ikon-bug-tile.is-targeted{border:2px solid #fb7185;background:linear-gradient(100deg,#6b263f,#3b203e);box-shadow:0 0 0 3px #fb718533,0 0 20px #fb718533}
-        .ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-log-id,.ikon-bug-hunter .ikon-bug-tile.is-targeted .ikon-bug-tile-action{color:#fecdd3}
-        .ikon-bug-hunter .ikon-bug-tile.is-muted{opacity:.65}
-        .ikon-bug-hunter .ikon-bug-confirm{width:100%;padding:14px;border:1px solid #64748b;border-radius:10px;background:#334155;color:#cbd5e1;font-size:12px;font-weight:900;cursor:not-allowed}
-        .ikon-bug-hunter .ikon-bug-confirm.is-ready{background:linear-gradient(90deg,#b45309,#dc2626);border-color:#fda4af;color:#fff;cursor:pointer}
-        .ikon-bug-hunter .ikon-bug-confirm.is-confirmed{background:linear-gradient(90deg,#047857,#0f766e);border-color:#5eead4;color:#fff}
-        @media(max-width:620px){.ikon-bug-hunter .ikon-bug-tile{grid-template-columns:1fr;gap:7px}.ikon-bug-hunter .ikon-bug-tile-action{text-align:left}}
-      `;document.head.appendChild(style);
-    }
-    wrap.append(status,grid,confirm);return wrap;
+    return wrap;
   }
 
   // LEVEL 5: Mission Briefing uses action-plan cards instead of the usual MCQ list.
@@ -30368,7 +30237,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     copy.append(label,h,p);head.append(badge,copy);section.appendChild(head);
 
     stage.items.forEach((item,index)=>{
-      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='WEEKLY_RIDDLE'?'riddle':typeOf(item)==='DEFINE_FEATURE'?'define':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
+      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
       const card=document.createElement('article');card.className='ikon-playable-question';
       const meta=document.createElement('div');meta.className='ikon-playable-question-meta';
       const num=document.createElement('span');num.textContent='CHALLENGE '+String(index+1).padStart(2,'0');
@@ -30377,13 +30246,10 @@ function renderIkonGameForm(ch,reg,level,items,box){
       const q=document.createElement('h6');q.textContent=item.question||'Challenge';
       card.append(meta,q);
       let options;
-      if(mode==='memory'){
+      if(isFinal && typeOf(item)==='DEFINE_FEATURE'){
+        options=makeDefinitionInput(item,card);
+      }else if(mode==='memory'){
         options=makeIkonMemoryShuffleOptions(item,card);
-      }else if(mode==='riddle'){
-        const wrap=document.createElement('div');wrap.className='ikon-weekly-riddle-answer';
-        const hint=document.createElement('p');hint.textContent='Apna answer khud type karein. Spelling aur explanation jitni clear hogi utna behtar.';hint.style.cssText='font-size:13px;line-height:1.5;color:#cbdcf8';
-        const area=document.createElement('textarea');area.rows=3;area.maxLength=800;area.placeholder='Riddle ka answer yahan likhein...';area.style.cssText='width:100%;box-sizing:border-box;padding:13px;border:1px solid #7893c3;border-radius:10px;background:#10213d;color:#fff;font:inherit;resize:vertical';
-        area.addEventListener('input',()=>setAnswer(item,area.value,card));wrap.append(hint,area);options=wrap;
       }else if(mode==='steps' && level===4){
         options=makeSequenceBuilder(item,card);
       }else if(mode==='spot' && (level===4 || level===5)){
@@ -30424,256 +30290,66 @@ function renderIkonGameForm(ch,reg,level,items,box){
   });
 
   const submit=document.createElement('button');submit.type='button';submit.className='ikon-playable-submit';
-  submit.innerHTML=isFinal?'🏆 COMPLETE THE CHAMPIONSHIP':'⚔️ SUBMIT BRAIN BATTLE';
+  submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';
   submit.addEventListener('click',()=>{
-    const missing=items.findIndex(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId));
+    const missing=items.findIndex(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId)||(typeOf(x)==='DEFINE_FEATURE'&&!String(answers[x.itemId]||'').trim()));
     if(missing>=0){
       const cards=root.querySelectorAll('.ikon-playable-question');
       if(cards[missing]){cards[missing].classList.add('needs-answer');cards[missing].scrollIntoView({behavior:'smooth',block:'center'});}
       alert('Har challenge ka answer select karein.');return;
     }
-    submit.disabled=true;submit.textContent='VERIFYING YOUR RESULT...';
+    submit.disabled=true;submit.textContent=isFinal?'SUBMITTING FOR ADMIN REVIEW...':'VERIFYING YOUR RESULT...';
     ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{
-        if(level===5){renderUltimateScoreboard(d);return;}
+        if(level===5){
+          root.replaceChildren();
+          const pending=document.createElement('section');pending.className='ikon-final-scoreboard';
+          const title=document.createElement('h3');title.textContent='✓ DEFINITIONS SUBMITTED';
+          const note=document.createElement('p');note.textContent='Aapke answers save ho gaye hain. Admin manually definitions check karke marks dega. Review complete hone ke baad Level 5 result update hoga.';
+          pending.append(title,note);
+          const back=document.createElement('button');back.type='button';back.className='ikon-final-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());pending.appendChild(back);
+          root.appendChild(pending);return;
+        }
         alert('Brain Battle complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
       })
-      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'🏆 COMPLETE THE CHAMPIONSHIP':'⚔️ SUBMIT BRAIN BATTLE';});
+      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';});
   });
   root.appendChild(submit);box.appendChild(root);
 }
 
 function renderIkonLevel3Matching(ch,reg,box){
-  const panel=document.createElement('section');
-  panel.className='ikon-level3-match-panel';
-
-  const head=document.createElement('div');
-  head.className='ikon-level3-match-head';
-  head.innerHTML='<span class="ikon-level3-match-kicker">LEVEL 3 · PART 2</span><h4>CONNECT THE MATCHES</h4><p>Left side ka option select karein, phir right side ka correct question select karein.</p>';
+  const panel=document.createElement('section');panel.className='ikon-level3-match-panel';
+  const head=document.createElement('div');head.className='ikon-level3-match-head';
+  head.innerHTML='<span class="ikon-level3-match-kicker">LEVEL 3 · PART 2</span><h4>CONNECT THE MATCHES</h4><p>Left side ke option ko right side ke correct question se mouse se line kheench kar jodiye.</p>';
   panel.appendChild(head);
-
-  const state=document.createElement('div');
-  state.className='ikon-match-state';
-  state.textContent='Loading matching activity...';
-  panel.appendChild(state);
-  box.appendChild(panel);
-
+  const state=document.createElement('div');state.className='ikon-match-state';state.textContent='Loading matching activity...';panel.appendChild(state);box.appendChild(panel);
   const url=SCRIPT_URL+'?action=level3Matching&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
-
-  fetch(url,{cache:'no-store'})
-    .then(r=>{
-      if(!r.ok)throw new Error('Server error '+r.status);
-      return r.json();
-    })
-    .then(d=>{
-      if(!d.success)throw new Error(d.message||'Matching load failed');
-
-      if(d.completed){
-        state.className='ikon-match-state is-done';
-        state.textContent='✓ Part 2 completed — '+(d.correct||0)+'/4 correct.';
-        return;
-      }
-
-      state.textContent='Select an item on the left, then its matching item on the right.';
-      state.className='ikon-match-state is-ready';
-      const leftItems=Array.isArray(d.leftOptions)?d.leftOptions:[];
-      const rightItems=Array.isArray(d.rightQuestions)?d.rightQuestions:[];
-      if(leftItems.length!==4||rightItems.length!==4){
-        throw new Error('Matching sheet mein exactly 4 complete pairs hone chahiye.');
-      }
-
-      if(!document.getElementById('ikon-level3-match-layout-fix')){
-        const style=document.createElement('style');style.id='ikon-level3-match-layout-fix';
-        style.textContent=`
-          .ikon-level3-match-panel{width:100%;max-width:100%;box-sizing:border-box}
-          .ikon-level3-match-panel .ikon-match-board{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;column-gap:clamp(14px,3vw,42px)!important;align-items:start!important;position:relative!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;padding:14px 8px!important;overflow:visible!important}
-          .ikon-level3-match-panel .ikon-match-column{display:grid!important;grid-template-rows:34px repeat(4,minmax(88px,auto))!important;grid-auto-rows:minmax(88px,auto)!important;gap:12px!important;min-width:0!important;width:100%!important;position:relative!important;z-index:1!important}
-          .ikon-level3-match-panel .ikon-match-column:first-child{grid-column:1!important;grid-row:1!important}
-          .ikon-level3-match-panel .ikon-match-column:last-child{grid-column:2!important;grid-row:1!important}
-          .ikon-level3-match-panel .ikon-match-column h5{display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0 8px!important;font-size:11px!important;font-weight:900!important;letter-spacing:1.2px!important;text-align:center!important;color:#64748b!important}
-          .ikon-level3-match-panel .ikon-match-node{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;min-height:88px!important;height:100%!important;box-sizing:border-box!important;padding:13px 14px!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;text-align:center!important;border:1px solid #dbe4f0!important;border-radius:14px!important;background:#fff!important;color:#1e293b!important;font-size:14px!important;font-weight:700!important;line-height:1.4!important;box-shadow:0 3px 10px rgba(15,23,42,.06)!important;cursor:pointer!important;transition:border-color .15s,background .15s,box-shadow .15s,transform .15s!important}
-          .ikon-level3-match-panel .ikon-match-column:first-child .ikon-match-node{background:#f5f8ff!important;border-color:#d5e1ff!important}
-          .ikon-level3-match-panel .ikon-match-column:last-child .ikon-match-node{background:#f8fafc!important;border-color:#dbe4ee!important}
-          .ikon-level3-match-panel .ikon-match-node:hover{border-color:#7296df!important;box-shadow:0 5px 14px rgba(37,99,235,.12)!important;transform:translateY(-1px)!important}
-          .ikon-level3-match-panel .ikon-match-node.is-active{background:#dbeafe!important;border:2px solid #2563eb!important;color:#123b82!important;box-shadow:0 0 0 3px rgba(37,99,235,.12)!important}
-          .ikon-level3-match-panel .ikon-match-node.is-connected{background:#dcfce7!important;border:2px solid #16a34a!important;color:#14532d!important}
-          .ikon-level3-match-panel .ikon-match-lines{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:visible!important;pointer-events:none!important;z-index:2!important}
-          .ikon-level3-match-panel .ikon-match-line{fill:none!important;stroke:#2563eb!important;stroke-width:2.5!important;stroke-linecap:round!important;opacity:.75!important}
-          .ikon-level3-match-panel .ikon-match-controls{display:flex!important;gap:12px!important;margin-top:18px!important}
-          .ikon-level3-match-panel .ikon-match-controls button{flex:1 1 0!important;min-height:46px!important;border-radius:11px!important;font-weight:800!important}
-          .ikon-level3-match-panel .ikon-match-result{min-height:24px!important;margin:12px 0 0!important;font-weight:700!important;text-align:center!important}
-          @media(max-width:620px){
-            .ikon-level3-match-panel .ikon-match-board{column-gap:9px!important;padding:10px 0!important}
-            .ikon-level3-match-panel .ikon-match-column{grid-template-rows:32px repeat(4,minmax(104px,auto))!important;grid-auto-rows:minmax(104px,auto)!important;gap:9px!important}
-            .ikon-level3-match-panel .ikon-match-node{min-height:104px!important;padding:9px 7px!important;border-radius:11px!important;font-size:12px!important;line-height:1.35!important}
-            .ikon-level3-match-panel .ikon-match-column h5{font-size:10px!important;letter-spacing:.7px!important}
-            .ikon-level3-match-panel .ikon-match-controls{flex-direction:column!important}
-          }
-          @media(max-width:360px){.ikon-level3-match-panel .ikon-match-board{column-gap:6px!important}.ikon-level3-match-panel .ikon-match-node{padding:7px 5px!important;font-size:11px!important}}
-        `;document.head.appendChild(style);
-      }
-      const board=document.createElement('div');
-      board.className='ikon-match-board';
-
-      const left=document.createElement('div');
-      left.className='ikon-match-column';
-      const right=document.createElement('div');
-      right.className='ikon-match-column';
-
-      const leftTitle=document.createElement('h5');
-      leftTitle.textContent='OPTIONS';
-      const rightTitle=document.createElement('h5');
-      rightTitle.textContent='QUESTIONS';
-      left.appendChild(leftTitle);
-      right.appendChild(rightTitle);
-
-      const leftNodes=[];
-      const rightNodes=[];
-      const connections={};
-      let active=null;
-
-      leftItems.forEach(it=>{
-        const n=document.createElement('button');
-        n.type='button';
-        n.className='ikon-match-node';
-        n.textContent=it.text;
-        n.dataset.id=it.id;
-        n.addEventListener('click',()=>selectLeft(n));
-        left.appendChild(n);
-        leftNodes.push(n);
-      });
-
-      rightItems.forEach(it=>{
-        const n=document.createElement('button');
-        n.type='button';
-        n.className='ikon-match-node';
-        n.textContent=it.text;
-        n.dataset.id=it.id;
-        n.addEventListener('click',()=>selectRight(n));
-        right.appendChild(n);
-        rightNodes.push(n);
-      });
-
-      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-      svg.classList.add('ikon-match-lines');
-      board.append(left,svg,right);
-      panel.appendChild(board);
-
-      const controls=document.createElement('div');
-      controls.className='ikon-match-controls';
-
-      const reset=document.createElement('button');
-      reset.type='button';
-      reset.textContent='RESET LINES';
-      reset.className='ikon-match-reset';
-
-      const submit=document.createElement('button');
-      submit.type='button';
-      submit.textContent='SUBMIT MATCHING';
-      submit.className='ikon-match-submit';
-
-      const result=document.createElement('p');
-      result.className='ikon-match-result';
-      controls.append(reset,submit);
-      panel.append(controls,result);
-
-      function selectLeft(n){
-        active=n;
-        leftNodes.forEach(x=>x.classList.toggle('is-active',x===n));
-        result.textContent='Ab right side se matching question select karein.';
-      }
-
-      function selectRight(n){
-        if(!active){
-          result.textContent='Pehle left side ka option select karein.';
-          return;
-        }
-
-        const leftId=active.dataset.id;
-        const rightId=n.dataset.id;
-
-        // A left option and a right question can each be used only once.
-        if(connections[leftId]){
-          const oldRight=rightNodes.find(x=>x.dataset.id===connections[leftId]);
-          if(oldRight)oldRight.classList.remove('is-connected');
-          delete connections[leftId];
-        }
-        Object.keys(connections).forEach(k=>{
-          if(connections[k]===rightId){
-            delete connections[k];
-            const oldLeft=leftNodes.find(x=>x.dataset.id===k);
-            if(oldLeft)oldLeft.classList.remove('is-connected');
-          }
-        });
-
-        connections[leftId]=rightId;
-        active.classList.add('is-connected');
-        n.classList.add('is-connected');
-        active.classList.remove('is-active');
-        active=null;
-        paintLines();
-        result.textContent=Object.keys(connections).length+'/4 connections made.';
-      }
-
-      function paintLines(){
-        svg.replaceChildren();
-        const br=board.getBoundingClientRect();
-        Object.keys(connections).forEach(k=>{
-          const a=leftNodes.find(x=>x.dataset.id===k);
-          const b=rightNodes.find(x=>x.dataset.id===connections[k]);
-          if(!a||!b)return;
-          const ar=a.getBoundingClientRect();
-          const rr=b.getBoundingClientRect();
-          const line=document.createElementNS('http://www.w3.org/2000/svg','path');
-          line.setAttribute('d',`M ${ar.right-br.left} ${ar.top+ar.height/2-br.top} C ${ar.right-br.left+35} ${ar.top+ar.height/2-br.top}, ${rr.left-br.left-35} ${rr.top+rr.height/2-br.top}, ${rr.left-br.left} ${rr.top+rr.height/2-br.top}`);
-          line.setAttribute('class','ikon-match-line');
-          svg.appendChild(line);
-        });
-      }
-
-      reset.onclick=()=>{
-        Object.keys(connections).forEach(k=>delete connections[k]);
-        leftNodes.concat(rightNodes).forEach(n=>n.classList.remove('is-connected','is-active'));
-        active=null;
-        paintLines();
-        result.textContent='All connections cleared.';
-      };
-
-      submit.onclick=()=>{
-        if(Object.keys(connections).length!==4){
-          result.textContent='Please connect all four pairs first.';
-          return;
-        }
-        submit.disabled=true;
-        submit.textContent='CHECKING...';
-
-        ikonAssignmentPost({
-          action:'submitLevel3Matching',
-          regNo:reg,
-          paper:ch.paper,
-          challengeId:ch.challengeId,
-          matches:connections
-        })
-        .then(d=>{
-          state.className='ikon-match-state is-done';
-          state.textContent='✓ Matching completed · '+d.correct+'/4 correct';
-          result.textContent='Part 2 successfully submitted.';
-          submit.textContent='COMPLETED';
-        })
-        .catch(e=>{
-          result.textContent=e.message;
-          submit.disabled=false;
-          submit.textContent='SUBMIT MATCHING';
-        });
-      };
-
-      window.addEventListener('resize',paintLines);
-      setTimeout(paintLines,80);
-    })
-    .catch(e=>{
-      state.className='ikon-match-state is-error';
-      state.textContent='Matching activity error: '+e.message;
-    });
+  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    if(!d.success)throw new Error(d.message||'Matching load failed');
+    if(d.completed){state.className='ikon-match-state is-done';state.textContent='✓ Part 2 completed — all four connections were submitted.';return;}
+    const items=d.items||[];
+    if(items.length!==4)throw new Error('Sheet mein exactly 4 matching pairs hone chahiye.');
+    const shuffled=items.slice().sort(()=>Math.random()-.5);
+    const board=document.createElement('div');board.className='ikon-match-board';
+    const left=document.createElement('div');left.className='ikon-match-column';
+    const right=document.createElement('div');right.className='ikon-match-column';
+    const leftTitle=document.createElement('h5');leftTitle.textContent='OPTIONS';const rightTitle=document.createElement('h5');rightTitle.textContent='QUESTIONS';
+    left.appendChild(leftTitle);right.appendChild(rightTitle);
+    const leftNodes=[],rightNodes=[],connections={};let active=null;
+    items.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.left;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectLeft(n));left.appendChild(n);leftNodes.push(n);});
+    shuffled.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.right;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectRight(n));right.appendChild(n);rightNodes.push(n);});
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('ikon-match-lines');board.append(left,svg,right);panel.appendChild(board);
+    const controls=document.createElement('div');controls.className='ikon-match-controls';
+    const reset=document.createElement('button');reset.type='button';reset.textContent='RESET LINES';reset.className='ikon-match-reset';
+    const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT MATCHING';submit.className='ikon-match-submit';
+    const result=document.createElement('p');result.className='ikon-match-result';controls.append(reset,submit);panel.append(controls,result);
+    function selectLeft(n){active=n;leftNodes.forEach(x=>x.classList.toggle('is-active',x===n));result.textContent='Now select the matching question on the right.';}
+    function selectRight(n){if(!active){result.textContent='Pehle left side ka option select karein.';return;}const key=active.dataset.id;Object.keys(connections).forEach(k=>{if(connections[k]===n.dataset.id)delete connections[k];});connections[key]=n.dataset.id;active.classList.add('is-connected');n.classList.add('is-connected');active.classList.remove('is-active');active=null;paintLines();result.textContent=Object.keys(connections).length+'/4 connections made.';}
+    function paintLines(){svg.replaceChildren();const br=board.getBoundingClientRect();Object.keys(connections).forEach(k=>{const a=leftNodes.find(x=>x.dataset.id===k),b=rightNodes.find(x=>x.dataset.id===connections[k]);if(!a||!b)return;const ar=a.getBoundingClientRect(),rr=b.getBoundingClientRect();const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',`M ${ar.right-br.left} ${ar.top+ar.height/2-br.top} C ${ar.right-br.left+35} ${ar.top+ar.height/2-br.top}, ${rr.left-br.left-35} ${rr.top+rr.height/2-br.top}, ${rr.left-br.left} ${rr.top+rr.height/2-br.top}`);line.setAttribute('class','ikon-match-line');svg.appendChild(line);});}
+    reset.onclick=()=>{Object.keys(connections).forEach(k=>delete connections[k]);leftNodes.concat(rightNodes).forEach(n=>n.classList.remove('is-connected','is-active'));active=null;paintLines();result.textContent='All connections cleared.';};
+    submit.onclick=()=>{if(Object.keys(connections).length!==4){result.textContent='Please connect all four pairs first.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3Matching',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,matches:connections}).then(d=>{state.className='ikon-match-state is-done';state.textContent='✓ Matching completed · '+d.correct+'/4 correct';result.textContent='Part 2 successfully submitted.';submit.textContent='COMPLETED';}).catch(e=>{result.textContent=e.message;submit.disabled=false;submit.textContent='SUBMIT MATCHING';});};
+    window.addEventListener('resize',paintLines);setTimeout(paintLines,80);
+  }).catch(e=>{state.className='ikon-match-state is-error';state.textContent='Matching activity error: '+e.message;});
 }
 function renderIkonMcqForm(ch,reg,box){
   const form=document.createElement('form');form.className='ikon-mcq-form';form.onsubmit=e=>e.preventDefault();
@@ -30883,11 +30559,48 @@ window.submitIkonAssignment = window.submitIkonAssignment;
         if(filter){var current=filter.value||'ALL';filter.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');filter.value=(d.papers||[]).includes(current)?current:'ALL';}
         var courseFilter=el('ikonAdminCourseFilter');if(courseFilter){var oldCourse=courseFilter.value||'ALL';var courses=Array.from(new Set(assignmentSubmissions.map(x=>String(x.COURSE||'').trim()).filter(Boolean))).sort();courseFilter.innerHTML='<option value="ALL">All Courses</option>'+courses.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');courseFilter.value=courses.includes(oldCourse)?oldCourse:'ALL';}
         window.renderIkonAssignmentReviews();
+        window.loadIkonLevel5Reviews();
         var paperSelect=el('ikonLeaderboardPaper');
         if(paperSelect){var selected=paperSelect.value||'ALL';paperSelect.innerHTML='<option value="ALL">All Papers</option>'+(d.papers||[]).map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');paperSelect.value=(d.papers||[]).includes(selected)?selected:'ALL';}
         var reportCourse=el('ikonLeaderboardCourse');if(reportCourse){var old=reportCourse.value||'ALL';reportCourse.innerHTML='<option value="ALL">All Courses</option>'+(d.courses||[]).map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');reportCourse.value=(d.courses||[]).includes(old)?old:'ALL';}
       }).catch(e=>{box.textContent=e.message;});
   };
+  var level5Submissions=[];
+  function ensureLevel5AdminBox(){
+    var base=el('ikonAdminReviewList');if(!base)return null;
+    var box=el('ikonLevel5AdminReviewList');
+    if(!box){
+      var section=document.createElement('section');section.id='ikonLevel5AdminReviewSection';
+      section.style.cssText='margin:22px 0;padding:16px;border:1px solid #d8c8ff;border-radius:14px;background:#faf8ff';
+      var title=document.createElement('h3');title.textContent='LEVEL 5 · DEFINE THE FEATURE — MANUAL REVIEW';title.style.cssText='margin:0 0 6px;color:#39236d';
+      var sub=document.createElement('p');sub.textContent='Students ke typed definitions yahan milenge. Admin manually marks aur feedback enter kare.';sub.style.cssText='margin:0 0 12px;color:#475569';
+      box=document.createElement('div');box.id='ikonLevel5AdminReviewList';
+      section.append(title,sub,box);base.insertAdjacentElement('afterend',section);
+    }
+    return box;
+  }
+  window.loadIkonLevel5Reviews=function(){
+    var box=ensureLevel5AdminBox();if(!box)return;box.textContent='Loading Level 5 definitions...';
+    fetch(SCRIPT_URL+'?action=assignmentLevel5AdminList&token='+encodeURIComponent(adminToken)+'&_='+Date.now(),{cache:'no-store'})
+      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Level 5 review list unavailable.');level5Submissions=d.submissions||[];window.renderIkonLevel5Reviews();})
+      .catch(e=>{box.textContent=e.message;});
+  };
+  window.renderIkonLevel5Reviews=function(){
+    var box=ensureLevel5AdminBox();if(!box)return;
+    if(!level5Submissions.length){box.textContent='Abhi Level 5 ki koi definition submit nahi hui hai.';return;}
+    box.innerHTML=level5Submissions.map(function(x){
+      var status=String(x['REVIEW STATUS']||'PENDING').toUpperCase(),max=Number(x['MAXIMUM MARKS']||0),marks=x['ADMIN MARKS']===''?'':Number(x['ADMIN MARKS']);
+      return '<article class="ikon-admin-review-card" style="margin:12px 0;padding:14px;border:1px solid #ddd6fe;border-radius:12px;background:#fff"><div class="ikon-admin-review-head"><div><b>'+esc(x['STUDENT NAME'])+'</b><small>'+esc(x['REG NO'])+' · '+esc(x.COURSE)+'</small></div><span>'+esc(status)+'</span></div><p><b>'+esc(x.PAPER)+' · '+esc(x['CHALLENGE ID'])+' · '+esc(x['ITEM ID'])+'</b></p><p style="font-weight:700">'+esc(x.QUESTION)+'</p><div style="padding:12px;border-radius:8px;background:#f1f5f9;white-space:pre-wrap;overflow-wrap:anywhere">'+esc(x['STUDENT ANSWER'])+'</div><div class="ikon-admin-review-fields" style="margin-top:12px"><label>Maximum Marks<input value="'+max+'" readonly></label><label>Admin Marks<input id="ikonL5Marks'+x.row+'" type="number" min="0" max="'+max+'" value="'+marks+'"></label><label>Decision<select id="ikonL5Decision'+x.row+'"><option value="APPROVED" '+(status==='APPROVED'?'selected':'')+'>Approve</option><option value="REVISION" '+(status==='REVISION'?'selected':'')+'>Request correction</option><option value="REJECTED" '+(status==='REJECTED'?'selected':'')+'>Reject</option></select></label><label>Feedback<textarea id="ikonL5Feedback'+x.row+'">'+esc(x['ADMIN FEEDBACK']||'')+'</textarea></label><button type="button" onclick="saveIkonLevel5Review('+x.row+','+max+')">Save Level 5 Review</button></div></article>';
+    }).join('');
+  };
+  window.saveIkonLevel5Review=function(row,max){
+    var marks=Number(el('ikonL5Marks'+row).value),decision=el('ikonL5Decision'+row).value;
+    if(decision==='APPROVED'&&(!Number.isFinite(marks)||marks<0||marks>max)){alert('Marks 0 se '+max+' ke beech hone chahiye.');return;}
+    fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'adminReviewLevel5',token:adminToken,row:row,decision:decision,marks:marks,feedback:el('ikonL5Feedback'+row).value,admin:'IKON Admin'})})
+      .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Level 5 review save failed.');alert(d.completed?'Review saved. Level 5 complete: '+d.completion.score+'/'+d.completion.total:'Review saved.');window.loadIkonLevel5Reviews();window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();})
+      .catch(e=>alert(e.message));
+  };
+
   window.renderIkonAssignmentReviews=function(){
     var box=el('ikonAdminReviewList');if(!box)return;
     var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
