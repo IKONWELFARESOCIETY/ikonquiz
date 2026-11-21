@@ -29082,19 +29082,12 @@ function applyMarksheetResultStyle(root, grade, result){
             image.onerror = function(){
                 this.onerror = null;
                 this.style.display = "none";
-                photoWrap.textContent = "👤";
-                photoWrap.style.display = "grid";
-                photoWrap.style.placeItems = "center";
-                photoWrap.style.fontSize = "64px";
-                photoWrap.style.color = "#91a0b6";
+                photoWrap.replaceChildren();
+                photoWrap.style.display = "none";
             };
             photoWrap.appendChild(image);
         }else{
-            photoWrap.textContent = "👤";
-            photoWrap.style.display = "grid";
-            photoWrap.style.placeItems = "center";
-            photoWrap.style.fontSize = "64px";
-            photoWrap.style.color = "#91a0b6";
+            photoWrap.style.display = "none";
         }
         card.appendChild(photoWrap);
 
@@ -29796,10 +29789,13 @@ function renderBrainBlastGame(ch,reg,items,box){
   items.forEach((item,index)=>{
     const card=document.createElement('article');card.className='bb-card';
     const meta=document.createElement('div');meta.className='bb-meta';const type=String(item.gameType||'FIND_IT').toUpperCase();
-    const typeNames={FIND_IT:'🔎 FIND IT',MATCH_IT:'🔗 MATCH IT',ARRANGE_IT:'🧩 ARRANGE IT',FILL_IT:'⌨️ FILL IT',SPOT_ERROR:'🕵️ SPOT ERROR',TRUE_FALSE:'⚖️ TRUE / FALSE'};
+    const typeNames={DEFINE_FEATURE:'✍️ DEFINE THE FEATURE'};
     meta.innerHTML='<span>CHALLENGE '+String(index+1).padStart(2,'0')+' · '+(typeNames[type]||type)+'</span><span>+'+(Number(item.marks)||1)+' POINTS</span>';
     const q=document.createElement('h6');q.textContent=item.question||'Complete this challenge';card.append(meta,q);
-    if(type==='MATCH_IT'){
+    if(type==='DEFINE_FEATURE'){
+      const note=document.createElement('p');note.className='bb-small';note.textContent='Is software feature/tool ka kaam apne words mein samjhaiye. Definition mein iska purpose aur use likhein.';
+      const area=document.createElement('textarea');area.className='bb-input';area.rows=5;area.maxLength=1500;area.placeholder='Yahan apni definition likhein...';area.style.resize='vertical';area.addEventListener('input',()=>setAnswer(item,area.value));card.append(note,area);
+    }else if(type==='MATCH_IT'){
       const left=(item.options||[]).slice(), right=(item.matchOptions||[]).slice().sort(()=>Math.random()-.5), selected={};
       const note=document.createElement('p');note.className='bb-small';note.textContent='Har left item ke saamne uska matching right option select karein.';card.appendChild(note);
       left.forEach((v,i)=>{const row=document.createElement('div');row.className='bb-match-row';const l=document.createElement('div');l.className='bb-choice';l.textContent=v;const sel=document.createElement('select');sel.className='bb-input';const blank=document.createElement('option');blank.value='';blank.textContent='Choose match';sel.appendChild(blank);right.forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;sel.appendChild(o);});sel.addEventListener('change',()=>{selected[v]=sel.value;setAnswer(item,JSON.stringify(selected));});row.append(l,sel);card.appendChild(row);});
@@ -29830,7 +29826,7 @@ function renderBrainBlastGame(ch,reg,items,box){
   }
   function doSubmit(){if(finished)return;
     const missing=items.filter(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId)||answers[x.itemId]===''||answers[x.itemId]==null);
-    if(missing.length && remaining>0){alert('Pehle sabhi Brain Blast challenges complete karein. Remaining: '+missing.length);return;}
+    if(missing.length){alert('Pehle sabhi Brain Blast challenges complete karein. Remaining: '+missing.length);return;}
     finished=true;if(timer)clearInterval(timer);submit.disabled=true;submit.textContent='CALCULATING COMBINED RESULT...';
     items.forEach(x=>{if(!Object.prototype.hasOwnProperty.call(answers,x.itemId))answers[x.itemId]='';});
     ikonAssignmentPost({action:'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
@@ -29838,7 +29834,7 @@ function renderBrainBlastGame(ch,reg,items,box){
   }
   submit.addEventListener('click',doSubmit);
   function tick(){remaining--;const mm=Math.floor(remaining/60),ss=remaining%60;clock.textContent='⏱ '+mm+':'+String(ss).padStart(2,'0');if(remaining<=0){clock.textContent='TIME UP';remaining=0;finished=false;doSubmit();}}
-  clock.textContent='⏱ '+Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');timer=setInterval(tick,1000);
+  clock.textContent='✍️ WRITE YOUR DEFINITIONS · NO TIME LIMIT';
   box.appendChild(root);
 }
 
@@ -29915,23 +29911,18 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const typeOf=x=>String(x.gameType||'MCQ').trim().toUpperCase();
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
   const stages=isFinal?[
-    {id:'briefing',title:'MISSION BRIEFING',sub:'Study the situation and choose the best action plan.',icon:'🛰️',types:['SCENARIO']},
-    {id:'command',title:'COMMAND CONSOLE',sub:'Inspect the sealed command files, compare the actions and deploy the correct one.',icon:'🧭',types:['MCQ']},
-    {id:'speed',title:'TIME ATTACK',sub:'A focused rapid-fire round. Answer before the countdown ends.',icon:'⚡',types:['SPEED_ROUND']},
-    {id:'boss',title:'FINAL BOSS · ERROR HUNT',sub:'Investigate the evidence and report the faulty statement.',icon:'👾',types:['SPOT_ERROR']}
+    {id:'define',title:'DEFINE THE FEATURE',sub:'Software ke tab, option, tool ya feature ka purpose aur function apne words mein likhein.',icon:'✍️',types:['DEFINE_FEATURE']}
   ]:[
-    {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
-    {id:'spot',title:'BUG HUNTER · FLAG THE FAULT',sub:'Scan the system logs, tap the suspicious statement and confirm your bug report.',icon:'🐞',types:['SPOT_ERROR']},
-    {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
+    {id:'memory',title:'STAGE 1 · FLIP & SHUFFLE',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'riddle',title:'STAGE 2 · WEEKLY RIDDLE',sub:'Pichhle week padhaye gaye topics par based riddle solve karein. Answer type karein.',icon:'🧩',types:['WEEKLY_RIDDLE']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
   const icon=document.createElement('div');icon.className='ikon-playable-hero-icon';icon.textContent=isFinal?'👑':'⚔️';
   const intro=document.createElement('div');
-  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'THE FINAL CHAMPIONSHIP':'FOUR-MODE BRAIN ARENA';
+  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'FINAL CHAMPIONSHIP':'TWO-STAGE BRAIN BATTLE';
   const title=document.createElement('h5');title.textContent=isFinal?'ULTIMATE CHAMPION':'BRAIN BATTLE ARENA';
-  const desc=document.createElement('p');desc.textContent=isFinal?'Complete four different mission rounds. Your final score and same-paper leaderboard appear when every round is submitted.':'Clear four different game modes. Every answer earns points.';
+  const desc=document.createElement('p');desc.textContent=isFinal?'Write clear definitions of the software features. Your combined score and same-paper leaderboard appear after submission.':'Complete both stages: the original Flip & Shuffle game followed by Weekly Riddle.';
   intro.append(eyebrow,title,desc);top.append(icon,intro);root.appendChild(top);
 
   const status=document.createElement('div');status.className='ikon-playable-status';
@@ -30377,7 +30368,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     copy.append(label,h,p);head.append(badge,copy);section.appendChild(head);
 
     stage.items.forEach((item,index)=>{
-      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
+      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='WEEKLY_RIDDLE'?'riddle':typeOf(item)==='DEFINE_FEATURE'?'define':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
       const card=document.createElement('article');card.className='ikon-playable-question';
       const meta=document.createElement('div');meta.className='ikon-playable-question-meta';
       const num=document.createElement('span');num.textContent='CHALLENGE '+String(index+1).padStart(2,'0');
@@ -30388,6 +30379,11 @@ function renderIkonGameForm(ch,reg,level,items,box){
       let options;
       if(mode==='memory'){
         options=makeIkonMemoryShuffleOptions(item,card);
+      }else if(mode==='riddle'){
+        const wrap=document.createElement('div');wrap.className='ikon-weekly-riddle-answer';
+        const hint=document.createElement('p');hint.textContent='Apna answer khud type karein. Spelling aur explanation jitni clear hogi utna behtar.';hint.style.cssText='font-size:13px;line-height:1.5;color:#cbdcf8';
+        const area=document.createElement('textarea');area.rows=3;area.maxLength=800;area.placeholder='Riddle ka answer yahan likhein...';area.style.cssText='width:100%;box-sizing:border-box;padding:13px;border:1px solid #7893c3;border-radius:10px;background:#10213d;color:#fff;font:inherit;resize:vertical';
+        area.addEventListener('input',()=>setAnswer(item,area.value,card));wrap.append(hint,area);options=wrap;
       }else if(mode==='steps' && level===4){
         options=makeSequenceBuilder(item,card);
       }else if(mode==='spot' && (level===4 || level===5)){
@@ -30489,17 +30485,31 @@ function renderIkonLevel3Matching(ch,reg,box){
       if(!document.getElementById('ikon-level3-match-layout-fix')){
         const style=document.createElement('style');style.id='ikon-level3-match-layout-fix';
         style.textContent=`
-          .ikon-level3-match-panel .ikon-match-board{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;column-gap:clamp(28px,7vw,100px)!important;row-gap:12px!important;align-items:start!important;position:relative!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;padding:12px 4px!important;overflow:visible!important}
-          .ikon-level3-match-panel .ikon-match-column{display:flex!important;flex-direction:column!important;gap:18px!important;min-width:0!important;width:100%!important;max-width:none!important;position:relative!important;z-index:1!important}
+          .ikon-level3-match-panel{width:100%;max-width:100%;box-sizing:border-box}
+          .ikon-level3-match-panel .ikon-match-board{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;column-gap:clamp(14px,3vw,42px)!important;align-items:start!important;position:relative!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;padding:14px 8px!important;overflow:visible!important}
+          .ikon-level3-match-panel .ikon-match-column{display:grid!important;grid-template-rows:34px repeat(4,minmax(88px,auto))!important;grid-auto-rows:minmax(88px,auto)!important;gap:12px!important;min-width:0!important;width:100%!important;position:relative!important;z-index:1!important}
           .ikon-level3-match-panel .ikon-match-column:first-child{grid-column:1!important;grid-row:1!important}
-          .ikon-level3-match-panel .ikon-match-column:last-child{grid-column:2!important;grid-row:1!important;justify-self:stretch!important;margin-left:0!important}
-          .ikon-level3-match-panel .ikon-match-column h5{margin:0 0 2px!important;font-size:11px!important;letter-spacing:1px!important;text-align:left!important;color:#9db9e8!important}
-          .ikon-level3-match-panel .ikon-match-node{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;min-width:0!important;min-height:58px!important;box-sizing:border-box!important;padding:14px 18px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:left!important;border-radius:13px!important;font-size:14px!important;line-height:1.45!important;box-shadow:0 7px 16px #08152b25!important}
+          .ikon-level3-match-panel .ikon-match-column:last-child{grid-column:2!important;grid-row:1!important}
+          .ikon-level3-match-panel .ikon-match-column h5{display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0 8px!important;font-size:11px!important;font-weight:900!important;letter-spacing:1.2px!important;text-align:center!important;color:#64748b!important}
+          .ikon-level3-match-panel .ikon-match-node{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;min-height:88px!important;height:100%!important;box-sizing:border-box!important;padding:13px 14px!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;text-align:center!important;border:1px solid #dbe4f0!important;border-radius:14px!important;background:#fff!important;color:#1e293b!important;font-size:14px!important;font-weight:700!important;line-height:1.4!important;box-shadow:0 3px 10px rgba(15,23,42,.06)!important;cursor:pointer!important;transition:border-color .15s,background .15s,box-shadow .15s,transform .15s!important}
+          .ikon-level3-match-panel .ikon-match-column:first-child .ikon-match-node{background:#f5f8ff!important;border-color:#d5e1ff!important}
+          .ikon-level3-match-panel .ikon-match-column:last-child .ikon-match-node{background:#f8fafc!important;border-color:#dbe4ee!important}
+          .ikon-level3-match-panel .ikon-match-node:hover{border-color:#7296df!important;box-shadow:0 5px 14px rgba(37,99,235,.12)!important;transform:translateY(-1px)!important}
+          .ikon-level3-match-panel .ikon-match-node.is-active{background:#dbeafe!important;border:2px solid #2563eb!important;color:#123b82!important;box-shadow:0 0 0 3px rgba(37,99,235,.12)!important}
+          .ikon-level3-match-panel .ikon-match-node.is-connected{background:#dcfce7!important;border:2px solid #16a34a!important;color:#14532d!important}
           .ikon-level3-match-panel .ikon-match-lines{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:visible!important;pointer-events:none!important;z-index:2!important}
-          .ikon-level3-match-panel .ikon-match-controls{display:flex!important;gap:12px!important;margin-top:16px!important}
-          .ikon-level3-match-panel .ikon-match-controls button{flex:1 1 0!important;min-height:46px!important;border-radius:10px!important}
-          .ikon-level3-match-panel .ikon-match-result{min-height:22px!important;font-weight:700!important}
-          @media(max-width:620px){.ikon-level3-match-panel .ikon-match-board{column-gap:12px!important;padding:8px 0!important}.ikon-level3-match-panel .ikon-match-column{gap:12px!important}.ikon-level3-match-panel .ikon-match-node{min-height:66px!important;padding:10px 8px!important;font-size:12px!important}.ikon-level3-match-panel .ikon-match-controls{flex-direction:column!important}}
+          .ikon-level3-match-panel .ikon-match-line{fill:none!important;stroke:#2563eb!important;stroke-width:2.5!important;stroke-linecap:round!important;opacity:.75!important}
+          .ikon-level3-match-panel .ikon-match-controls{display:flex!important;gap:12px!important;margin-top:18px!important}
+          .ikon-level3-match-panel .ikon-match-controls button{flex:1 1 0!important;min-height:46px!important;border-radius:11px!important;font-weight:800!important}
+          .ikon-level3-match-panel .ikon-match-result{min-height:24px!important;margin:12px 0 0!important;font-weight:700!important;text-align:center!important}
+          @media(max-width:620px){
+            .ikon-level3-match-panel .ikon-match-board{column-gap:9px!important;padding:10px 0!important}
+            .ikon-level3-match-panel .ikon-match-column{grid-template-rows:32px repeat(4,minmax(104px,auto))!important;grid-auto-rows:minmax(104px,auto)!important;gap:9px!important}
+            .ikon-level3-match-panel .ikon-match-node{min-height:104px!important;padding:9px 7px!important;border-radius:11px!important;font-size:12px!important;line-height:1.35!important}
+            .ikon-level3-match-panel .ikon-match-column h5{font-size:10px!important;letter-spacing:.7px!important}
+            .ikon-level3-match-panel .ikon-match-controls{flex-direction:column!important}
+          }
+          @media(max-width:360px){.ikon-level3-match-panel .ikon-match-board{column-gap:6px!important}.ikon-level3-match-panel .ikon-match-node{padding:7px 5px!important;font-size:11px!important}}
         `;document.head.appendChild(style);
       }
       const board=document.createElement('div');
