@@ -30366,7 +30366,7 @@ function renderIkonLevel3Matching(ch,reg,box){
     left.appendChild(leftTitle);right.appendChild(rightTitle);
     const leftNodes=[],rightNodes=[],connections={};let active=null;
     items.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.left;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectLeft(n));left.appendChild(n);leftNodes.push(n);});
-    shuffled.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.right;n.dataset.id=it.matchId;n.addEventListener('click',()=>selectRight(n));right.appendChild(n);rightNodes.push(n);});
+    shuffled.forEach((it,i)=>{const n=document.createElement('button');n.type='button';n.className='ikon-match-node';n.textContent=it.right;n.dataset.id=it.rightId;n.addEventListener('click',()=>selectRight(n));right.appendChild(n);rightNodes.push(n);});
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('ikon-match-lines');board.append(left,svg,right);panel.appendChild(board);
     const controls=document.createElement('div');controls.className='ikon-match-controls';
     const reset=document.createElement('button');reset.type='button';reset.textContent='RESET LINES';reset.className='ikon-match-reset';
