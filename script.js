@@ -29780,10 +29780,31 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const challengeKey=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
   if(Array.from(container.querySelectorAll('.ikon-live-weekly-leaderboard')).some(el=>el.dataset.challengeKey===challengeKey)) return;
-  // Student-facing weekly challenge view is leaderboard-only. Level cards remain
-  // in the codebase for the existing admin/game workflows but are not rendered here.
-  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
-  return;
+  // Leaderboard is a final screen only. Until every student task is submitted,
+  // keep the original five-level question flow visible and do not render it.
+  const progressState=ch.progress||{};
+  const expectedWords=Number(ch.level2QuestionCount||15);
+  const puzzleCompleteForGate=(progressState.level2Words||[]).length>=expectedWords;
+  const practicalForChallenge=(allPractical||[]).filter(a=>
+    String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase() &&
+    ikonAssignmentSamePaper(a.paper,ch.paper)
+  );
+  const practicalDone=Array.isArray(practicalForChallenge) && practicalForChallenge.length===3 &&
+    new Set(practicalForChallenge.map(a=>String(a.id||'').trim())).size===3 &&
+    practicalForChallenge.every(isIkonPracticalUploaded);
+  const quickFixDone=!!progressState.level3Complete;
+  const level3CompleteForGate=quickFixDone && practicalDone;
+  const level5Submitted=!!(progressState.level5Complete||progressState.level5Pending);
+  const allLevelsSubmitted=!!progressState.level1Complete && puzzleCompleteForGate && level3CompleteForGate &&
+    !!progressState.level4Complete && level5Submitted;
+  if(allLevelsSubmitted){
+    // Remove the question-flow card if it was already rendered, then show the
+    // final leaderboard once. Practical and Level 5 marks remain excluded.
+    const oldCard=container.querySelector('.ikon-weekly-shell[data-challenge-key="'+challengeKey.replace(/"/g,'')+'"]');
+    if(oldCard) oldCard.remove();
+    renderIkonCompletedChallengeLeaderboard(ch,reg,container);
+    return;
+  }
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
@@ -29840,8 +29861,8 @@ const level3Done = level3DoneForDesign(practical,p1);
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
   card.appendChild(l5);
-  // Always show the Level 1–4 leaderboard independently of practical uploads and Level 5 review.
-  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
+  // Incomplete challenges show only the normal level/question flow.
+  // The leaderboard is shown only after Levels 1–5 and all practical uploads are submitted.
   container.appendChild(card);
 }
 function loadIkonGameLevel(ch,reg,level,box){
