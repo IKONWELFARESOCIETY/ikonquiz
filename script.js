@@ -29707,8 +29707,10 @@ function level3DoneForDesign(practical, progress) {
 }
 
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
-  if(container.querySelector('.ikon-live-weekly-leaderboard[data-challenge="'+String(ch.challengeId).replace(/"/g,'')+'"]')) return;
+  const key=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
+  if(Array.from(container.querySelectorAll('.ikon-live-weekly-leaderboard')).some(el=>el.dataset.challengeKey===key)) return;
   const panel=document.createElement('section');
+  panel.dataset.challengeKey=key;
   panel.className='ikon-final-scoreboard ikon-live-weekly-leaderboard';
   panel.dataset.challenge=String(ch.challengeId||'');
   panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc;width:100%;box-sizing:border-box';
@@ -29747,16 +29749,17 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
   }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
 }
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
+  const challengeKey=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
+  if(Array.from(container.querySelectorAll('.ikon-weekly-shell')).some(el=>el.dataset.challengeKey===challengeKey)) return;
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
  st.textContent='.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(19px,2.4vw,23px)!important;line-height:1.4!important}.ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:16px!important;line-height:1.6!important}.ikon-weekly-shell .ikon-mcq-question>p{font-size:18px!important;font-weight:800!important;line-height:1.55!important}.ikon-quickfix-form input{font-size:16px!important;min-height:48px!important}@media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:15px!important}.ikon-quickfix-form input{font-size:16px!important}}';document.head.appendChild(st);
 }
 
-  const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
+  const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.dataset.challengeKey=challengeKey;card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
-  renderIkonCompletedChallengeLeaderboard(ch,reg,card);
 
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
@@ -29803,7 +29806,10 @@ const level3Done = level3DoneForDesign(practical,p1);
   else if(p1.level5Pending){const pending=document.createElement('p');pending.textContent='✓ Definitions submitted · Admin review pending. Admin marks yahan baad mein update honge.';l5.appendChild(pending);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
-  card.appendChild(l5);container.appendChild(card);
+  card.appendChild(l5);
+  // Always show the Level 1–4 leaderboard independently of practical uploads and Level 5 review.
+  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
+  container.appendChild(card);
 }
 function loadIkonGameLevel(ch,reg,level,box){
   const action=level===4?'assignmentBrainBattle':'assignmentUltimate';
