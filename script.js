@@ -29832,15 +29832,16 @@ function renderIkonGameForm(ch,reg,level,items,box){
     {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
     {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
     {id:'spot',title:'ERROR DETECTIVE',sub:'Inspect every evidence card, find the faulty statement and report it.',icon:'🕵️',types:['SPOT_ERROR']},
-    {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']}
+    {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']},
+    {id:'riddle',title:'WEEKLY RIDDLE',sub:'Paheli ko dhyan se padhein aur apne words mein answer type karein.',icon:'🧩',types:['WEEKLY_RIDDLE']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
   const icon=document.createElement('div');icon.className='ikon-playable-hero-icon';icon.textContent=isFinal?'👑':'⚔️';
   const intro=document.createElement('div');
-  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'THE FINAL CHAMPIONSHIP':'FOUR-MODE BRAIN ARENA';
+  const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'THE FINAL CHAMPIONSHIP':'FIVE-ROUND BRAIN ARENA';
   const title=document.createElement('h5');title.textContent=isFinal?'ULTIMATE CHAMPION':'BRAIN BATTLE ARENA';
-  const desc=document.createElement('p');desc.textContent=isFinal?'Har question ka answer apne words mein type karein. Submission ke baad admin manually marks verify karega.':'Clear four different game modes. Every answer earns points.';
+  const desc=document.createElement('p');desc.textContent=isFinal?'Har question ka answer apne words mein type karein. Submission ke baad admin manually marks verify karega.':'Complete Flip & Shuffle, Sequence Builder, Error Detective, Speed Round and Weekly Riddle.';
   intro.append(eyebrow,title,desc);top.append(icon,intro);root.appendChild(top);
 
   const status=document.createElement('div');status.className='ikon-playable-status';
@@ -30163,6 +30164,30 @@ function renderIkonGameForm(ch,reg,level,items,box){
     return wrap;
   }
 
+  // LEVEL 4: Weekly Riddle answers are written responses checked by Apps Script
+  // against ACCEPTED ANSWERS / KEYWORDS in the Assignment Level 4 Riddles sheet.
+  function makeWeeklyRiddleInput(item,card){
+    const wrap=document.createElement('div');
+    wrap.className='ikon-weekly-riddle-answer';
+    wrap.style.cssText='display:flex;flex-direction:column;gap:8px;margin-top:12px';
+    const label=document.createElement('label');
+    label.textContent='YOUR RIDDLE ANSWER';
+    label.style.cssText='font-weight:900;font-size:12px;color:#c7d8ff;letter-spacing:.5px';
+    const area=document.createElement('textarea');
+    area.rows=3;area.maxLength=1500;
+    area.placeholder='Yahan apna answer type karein...';
+    area.style.cssText='width:100%;box-sizing:border-box;resize:vertical;min-height:88px;padding:12px;border:1px solid #6b83b5;border-radius:10px;background:#fff;color:#17233b;font:15px/1.5 Arial,sans-serif';
+    area.setAttribute('aria-label','Weekly riddle answer');
+    area.addEventListener('input',()=>{
+      const value=area.value.trim();
+      if(value){answers[item.itemId]=value;card.classList.remove('needs-answer');}
+      else{delete answers[item.itemId];}
+      updateProgress();
+    });
+    wrap.append(label,area);
+    return wrap;
+  }
+
   // LEVEL 5: Mission Briefing uses action-plan cards instead of the usual MCQ list.
   function makeFinalScenario(item,card){
     const wrap=document.createElement('div');wrap.className='ikon-final-action-grid';
@@ -30266,7 +30291,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     copy.append(label,h,p);head.append(badge,copy);section.appendChild(head);
 
     stage.items.forEach((item,index)=>{
-      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
+      const mode=typeOf(item)==='MATCH_PAIRS'?'memory':typeOf(item)==='WEEKLY_RIDDLE'?'riddle':typeOf(item)==='SPEED_ROUND'?'speed':typeOf(item)==='ARRANGE_STEPS'?'steps':typeOf(item)==='SPOT_ERROR'?'spot':typeOf(item)==='SCENARIO'?'scenario':'mcq';
       const card=document.createElement('article');card.className='ikon-playable-question';
       const meta=document.createElement('div');meta.className='ikon-playable-question-meta';
       const num=document.createElement('span');num.textContent='CHALLENGE '+String(index+1).padStart(2,'0');
@@ -30277,6 +30302,8 @@ function renderIkonGameForm(ch,reg,level,items,box){
       let options;
       if(isFinal && typeOf(item)==='DEFINE_FEATURE'){
         options=makeDefinitionInput(item,card);
+      }else if(mode==='riddle' && level===4){
+        options=makeWeeklyRiddleInput(item,card);
       }else if(mode==='memory'){
         options=makeIkonMemoryShuffleOptions(item,card);
       }else if(mode==='steps' && level===4){
@@ -30321,11 +30348,18 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const submit=document.createElement('button');submit.type='button';submit.className='ikon-playable-submit';
   submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';
   submit.addEventListener('click',()=>{
-    const missing=items.findIndex(x=>!Object.prototype.hasOwnProperty.call(answers,x.itemId)||(typeOf(x)==='DEFINE_FEATURE'&&!String(answers[x.itemId]||'').trim()));
-    if(missing>=0){
-      const cards=root.querySelectorAll('.ikon-playable-question');
-      if(cards[missing]){cards[missing].classList.add('needs-answer');cards[missing].scrollIntoView({behavior:'smooth',block:'center'});}
-      alert('Har challenge ka answer select karein.');return;
+    const missingItem=items.find(x=>{
+      const value=answers[x.itemId];
+      return !Object.prototype.hasOwnProperty.call(answers,x.itemId) || String(value==null?'':value).trim()==='';
+    });
+    if(missingItem){
+      const card=Array.from(root.querySelectorAll('.ikon-playable-question')).find(el=>{
+        const heading=el.querySelector('h6');
+        const question=String(heading&&heading.textContent||'');
+        return question===String(missingItem.question||'Challenge');
+      });
+      if(card){card.classList.add('needs-answer');card.scrollIntoView({behavior:'smooth',block:'center'});}
+      alert('Har challenge ka answer select ya type karein. Missing: '+(missingItem.question||missingItem.itemId));return;
     }
     submit.disabled=true;submit.textContent=isFinal?'SUBMITTING FOR ADMIN REVIEW...':'VERIFYING YOUR RESULT...';
     ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
