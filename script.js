@@ -29701,16 +29701,20 @@ function isIkonPracticalUploaded(a) {
     ].includes(status);
 }
 
-function level3DoneForDesign(practical) {
-  return Array.isArray(practical) &&
+function level3DoneForDesign(practical, progress) {
+  return !!(progress && progress.level3Complete) && Array.isArray(practical) &&
     practical.length === 3 &&
-    new Set(
-      practical.map(a => String(a.id || '').trim())
-    ).size === 3 &&
+    new Set(practical.map(a => String(a.id || '').trim())).size === 3 &&
     practical.every(isIkonPracticalUploaded);
 }
 
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
+
+if(!document.getElementById('ikon-weekly-readable-levels')){
+ const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
+ st.textContent='.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(19px,2.4vw,23px)!important;line-height:1.4!important}.ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:16px!important;line-height:1.6!important}.ikon-weekly-shell .ikon-mcq-question>p{font-size:18px!important;font-weight:800!important;line-height:1.55!important}.ikon-quickfix-form input{font-size:16px!important;min-height:48px!important}@media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:15px!important}.ikon-quickfix-form input{font-size:16px!important}}';document.head.appendChild(st);
+}
+
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
@@ -29719,7 +29723,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':((ch.level1QuestionCount||0)+' MCQs'))+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
   const progressWrap=document.createElement('div');progressWrap.className='ikon-weekly-progress';
   const progressLabel=document.createElement('div');progressLabel.className='ikon-weekly-progress-label';
-  const doneCount=(mcqDone?1:0)+(puzzleDone?1:0)+(level3DoneForDesign(practical)?1:0)+(p1.level4Complete?1:0)+(p1.level5Complete?1:0);
+  const doneCount=(mcqDone?1:0)+(puzzleDone?1:0)+(level3DoneForDesign(practical,p1)?1:0)+(p1.level4Complete?1:0)+(p1.level5Complete?1:0);
   progressLabel.innerHTML='<span>Challenge progress</span><strong>'+doneCount+' / 5 levels</strong>';
   const track=document.createElement('div');track.className='ikon-weekly-progress-track';
   const fill=document.createElement('span');fill.style.width=(doneCount*20)+'%';track.appendChild(fill);
@@ -29736,21 +29740,20 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   card.appendChild(l2);
   const l3=document.createElement('div');l3.className='ikon-level-panel ikon-level-3';l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
   l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
-  // Premium Part 2: connect four options on the left to questions on the right.
-  renderIkonLevel3Matching(ch,reg,l3);
-
+  // Quick Fix unlocks after Level 1 and Level 2; practical uploads remain below.
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
-  else if(!practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
+  else { renderIkonLevel3QuickFix(ch,reg,l3); }
+  if(ch.level3Unlocked && !practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
   // Unlock Level 4 only when the server confirms all three distinct practical uploads.
  
-const level3Done = level3DoneForDesign(practical);
+const level3Done = level3DoneForDesign(practical,p1);
   const l4=document.createElement('div');l4.className='ikon-level-panel ikon-level-4';l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
   l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 04 · THE STRATEGY ARENA</small><h4>BRAIN BATTLE</h4><p>Four rounds. One mission. Beat the arena.</p></div><span class="ikon-level-game-stamp">BATTLE</span></div>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
-  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke teeno practical tasks upload karein. Admin approval ka wait zaroori nahi hai.';l4.appendChild(lock);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 Quick Fix complete karein aur teeno practical tasks upload karein.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
@@ -30378,6 +30381,31 @@ function renderIkonGameForm(ch,reg,level,items,box){
       .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';});
   });
   root.appendChild(submit);box.appendChild(root);
+}
+
+function renderIkonLevel3QuickFix(ch,reg,box){
+  const panel=document.createElement('section');panel.className='ikon-level3-quickfix-panel';
+  panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #d9e4f2;border-radius:14px;background:#fff';
+  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#2563eb">LEVEL 3 · QUICK FIX</span><h4 style="font-size:22px;margin:5px 0 7px">⚡ QUICK FIX CHALLENGE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">Question ko dhyan se padhein aur correction / formula / shortcut seedha type karein. Koi MCQ options nahi hain.</p>';panel.appendChild(head);
+  const state=document.createElement('p');state.textContent='Loading Quick Fix questions...';state.style.cssText='font-weight:700;color:#475569';panel.appendChild(state);box.appendChild(panel);
+  const url=SCRIPT_URL+'?action=assignmentLevel3QuickFix&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
+  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    if(!d.success)throw new Error(d.message||'Quick Fix load failed');
+    if(d.completed){state.textContent='✓ Quick Fix completed · '+d.score+'/'+d.total;state.style.color='#047857';return;}
+    const items=d.items||[];if(!items.length)throw new Error('Is challenge ke Quick Fix questions nahi mile.');
+    state.textContent=items.length+' short questions · Type your answer below';
+    const form=document.createElement('div');form.className='ikon-quickfix-form';const fields=[];
+    items.forEach((it,i)=>{
+      const card=document.createElement('label');card.style.cssText='display:block;margin:12px 0;padding:13px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc';
+      const q=document.createElement('div');q.textContent=(i+1)+'. '+it.question;q.style.cssText='font-size:17px;line-height:1.55;font-weight:800;color:#172554;margin-bottom:10px;white-space:pre-wrap';
+      const input=document.createElement('input');input.type='text';input.autocomplete='off';input.placeholder='Type your correction / answer';input.style.cssText='width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #94a3b8;border-radius:9px;font-size:16px;min-height:48px;background:#fff;color:#0f172a';
+      card.append(q,input);form.appendChild(card);fields.push({id:it.itemId,input});
+    });
+    const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT QUICK FIX';submit.className='primary';submit.style.cssText='font-size:15px;padding:13px 20px;min-height:48px';
+    const result=document.createElement('p');result.style.cssText='font-size:14px;font-weight:700';
+    submit.onclick=()=>{const answers={};fields.forEach(f=>answers[f.id]=f.input.value.trim());if(fields.some(f=>!f.input.value.trim())){result.textContent='Please answer every question.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3QuickFix',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Quick Fix complete · '+x.score+'/'+x.total+' marks. Ab neeche teeno practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Quick Fix submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT QUICK FIX';});};
+    panel.append(form,submit,result);
+  }).catch(e=>{state.textContent='Quick Fix error: '+e.message;state.style.color='#b91c1c';});
 }
 
 function renderIkonLevel3Matching(ch,reg,box){
