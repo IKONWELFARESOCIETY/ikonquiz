@@ -29594,7 +29594,9 @@ window.loadAssignmentsForStudent = function(){
       }
       const list=document.getElementById('assignmentList');if(!list)throw new Error('Assignment list container not found.');
       list.innerHTML='';
-      const challenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
+      const rawChallenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
+      const seenChallengeKeys=new Set();
+      const challenges=rawChallenges.filter(ch=>{const key=String(ch.paper||'').toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(seenChallengeKeys.has(key))return false;seenChallengeKeys.add(key);return true;});
       const practical=Array.isArray(data.assignments)?data.assignments:[];
       if(!challenges.length){
         const p=document.createElement('p');p.textContent='Abhi koi weekly challenge available nahi hai.';list.appendChild(p);
@@ -29705,21 +29707,19 @@ function level3DoneForDesign(practical, progress) {
 }
 
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
+  if(container.querySelector('.ikon-live-weekly-leaderboard[data-challenge="'+String(ch.challengeId).replace(/"/g,'')+'"]')) return;
   const panel=document.createElement('section');
-  panel.className='ikon-final-scoreboard';
-  panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc';
+  panel.className='ikon-final-scoreboard ikon-live-weekly-leaderboard';
+  panel.dataset.challenge=String(ch.challengeId||'');
+  panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc;width:100%;box-sizing:border-box';
   const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · LIVE LEADERBOARD';
-  const sub=document.createElement('p');sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId;
+  const sub=document.createElement('p');sub.className='score-sub';sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId+' · Marks: Level 1 + 2 + 3 + 4';
   panel.append(title,sub);
-  const status=document.createElement('p');status.textContent='Loading final marks and rank...';panel.appendChild(status);
+  const status=document.createElement('p');status.textContent='Loading same-paper students, marks and ranks...';panel.appendChild(status);
   container.appendChild(panel);
   const url=SCRIPT_URL+'?action=assignmentFinalLeaderboard&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
     if(!d.success)throw new Error(d.message||'Leaderboard load nahi hua.');
-    if(!d.completed){
-      status.textContent=d.pendingReview?'✓ Level 5 submitted. Admin review ke baad final marks aur leaderboard yahin show honge.':'Final result abhi available nahi hai.';
-      return;
-    }
     status.remove();
     const me=d.leaderboard&&d.leaderboard.me||{};
     const tiles=document.createElement('div');tiles.className='ikon-final-score-tiles';
@@ -29732,20 +29732,20 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     panel.appendChild(tiles);
     const table=document.createElement('table');table.className='ikon-final-score-table';
     const thead=document.createElement('thead'),hr=document.createElement('tr');
-    ['RANK','STUDENT','TOTAL (L1–L4)','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
+    ['RANK','STUDENT NAME','LEVEL 1–4 MARKS','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
     thead.appendChild(hr);table.appendChild(thead);
     const tbody=document.createElement('tbody'),rows=d.leaderboard&&Array.isArray(d.leaderboard.rows)?d.leaderboard.rows:[];
     rows.forEach(row=>{
       const tr=document.createElement('tr');if(row.isCurrent)tr.className='is-me';
-      [row.rank?'#'+row.rank:'—',row.name||'Student',(row.score||0)+' / '+(row.total||0)+'  (L1 '+(row.level1Score||0)+', L2 '+(row.level2Score||0)+', L3 '+(row.level3Score||0)+', L4 '+(row.level4Score||0)+')',(row.percentage||0)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.appendChild(td);});
+      [row.rank?'#'+row.rank:'—',row.name||'Student',(row.score||0)+' / '+(row.total||0),(row.percentage||0)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.appendChild(td);});
       tbody.appendChild(tr);
     });
+    if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Is paper/challenge ke students abhi assign nahi hue.';tr.appendChild(td);tbody.appendChild(tr);}
     table.appendChild(tbody);panel.appendChild(table);
-    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper aur same Challenge ID ke students. Score mein Level 1, 2, 3 Quick Fix aur 4 ke marks hain. Practical upload aur Level 5 admin marks include nahi hain. Aapki row highlight hai.';
+    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total mein sirf Level 1, 2, 3 aur 4 ke calculated marks hain. Practical uploads aur Level 5 admin marks include nahi hain.';
     panel.appendChild(note);
   }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
 }
-
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
@@ -29756,9 +29756,8 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
-  // Always show the live same-paper leaderboard. It uses calculated marks
-  // from Levels 1-4 only; practical uploads and Level 5 admin marks are excluded.
-  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
+  renderIkonCompletedChallengeLeaderboard(ch,reg,card);
+
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
   const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':((ch.level1QuestionCount||0)+' MCQs'))+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
@@ -29800,7 +29799,8 @@ const level3Done = level3DoneForDesign(practical,p1);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
   l5.classList.add('ikon-level-game-hub','ikon-level-game-final');
   l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">👑</span><div><small>LEVEL 05 · THE FINAL TRIAL</small><h4>ULTIMATE CHAMPION</h4><p>Your final test. Complete every round to finish.</p></div><span class="ikon-level-game-stamp">FINAL</span></div>';
-  if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion completed!';l5.appendChild(done);}
+  if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion submitted / reviewed.';l5.appendChild(done);}
+  else if(p1.level5Pending){const pending=document.createElement('p');pending.textContent='✓ Definitions submitted · Admin review pending. Admin marks yahan baad mein update honge.';l5.appendChild(pending);}
   else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
   card.appendChild(l5);container.appendChild(card);
