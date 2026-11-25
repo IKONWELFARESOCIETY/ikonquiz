@@ -29596,11 +29596,7 @@ window.loadAssignmentsForStudent = function(){
       list.innerHTML='';
       const challenges=Array.isArray(challengeData.challenges)?challengeData.challenges:[];
       const practical=Array.isArray(data.assignments)?data.assignments:[];
-      const allLevelsCompleted = challenges.length > 0 &&
-        challenges.every(ch => !!(ch.progress && ch.progress.level5Complete));
-      if(allLevelsCompleted){
-        renderIkonAllLevelsCongrats(data.name||'', list);
-      } else if(!challenges.length){
+      if(!challenges.length){
         const p=document.createElement('p');p.textContent='Abhi koi weekly challenge available nahi hai.';list.appendChild(p);
       } else {
         challenges.forEach(ch=>renderIkonWeeklyChallenge(ch,practical,reg,list));
@@ -29708,6 +29704,48 @@ function level3DoneForDesign(practical, progress) {
     practical.every(isIkonPracticalUploaded);
 }
 
+function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
+  const panel=document.createElement('section');
+  panel.className='ikon-final-scoreboard';
+  panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc';
+  const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · FINAL LEADERBOARD';
+  const sub=document.createElement('p');sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId;
+  panel.append(title,sub);
+  const status=document.createElement('p');status.textContent='Loading final marks and rank...';panel.appendChild(status);
+  container.appendChild(panel);
+  const url=SCRIPT_URL+'?action=assignmentFinalLeaderboard&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
+  fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    if(!d.success)throw new Error(d.message||'Leaderboard load nahi hua.');
+    if(!d.completed){
+      status.textContent=d.pendingReview?'✓ Level 5 submitted. Admin review ke baad final marks aur leaderboard yahin show honge.':'Final result abhi available nahi hai.';
+      return;
+    }
+    status.remove();
+    const me=d.leaderboard&&d.leaderboard.me||{};
+    const tiles=document.createElement('div');tiles.className='ikon-final-score-tiles';
+    [['YOUR RANK',me.rank?'#'+me.rank:'—'],['YOUR MARKS',(d.score||0)+' / '+(d.total||0)],['PERCENTAGE',(d.percentage||0)+'%']].forEach(pair=>{
+      const tile=document.createElement('div');tile.className='ikon-final-score-tile';
+      const small=document.createElement('small');small.textContent=pair[0];
+      const strong=document.createElement('strong');strong.textContent=String(pair[1]);
+      tile.append(small,strong);tiles.appendChild(tile);
+    });
+    panel.appendChild(tiles);
+    const table=document.createElement('table');table.className='ikon-final-score-table';
+    const thead=document.createElement('thead'),hr=document.createElement('tr');
+    ['RANK','STUDENT','MARKS','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
+    thead.appendChild(hr);table.appendChild(thead);
+    const tbody=document.createElement('tbody'),rows=d.leaderboard&&Array.isArray(d.leaderboard.rows)?d.leaderboard.rows:[];
+    rows.forEach(row=>{
+      const tr=document.createElement('tr');if(row.isCurrent)tr.className='is-me';
+      [row.rank?'#'+row.rank:'—',row.name||'Student',(row.score||0)+' / '+(row.total||0),(row.percentage||0)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.appendChild(td);});
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);panel.appendChild(table);
+    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Leaderboard sirf isi PAPER aur isi CHALLENGE ID ke reviewed aur completed students ka hai. Aapki row highlight hai.';
+    panel.appendChild(note);
+  }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
+}
+
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
@@ -29718,6 +29756,14 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
+  if(p1.level5Complete){renderIkonCompletedChallengeLeaderboard(ch,reg,container);return;}
+  if(p1.level5Pending){
+    const pending=document.createElement('section');pending.className='ikon-final-scoreboard';
+    pending.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:#172b4d;color:#fff';
+    const h=document.createElement('h3');h.textContent='✓ LEVEL 5 SUBMITTED · REVIEW PENDING';
+    const p=document.createElement('p');p.textContent='Aapke definitions save ho gaye hain. Admin review ke baad final marks aur same-paper leaderboard isi screen par dikhega.';
+    pending.append(h,p);container.appendChild(pending);return;
+  }
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
   const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':((ch.level1QuestionCount||0)+' MCQs'))+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
