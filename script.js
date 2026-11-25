@@ -29709,11 +29709,31 @@ function level3DoneForDesign(practical, progress) {
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
   const key=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
   if(Array.from(container.querySelectorAll('.ikon-live-weekly-leaderboard')).some(el=>el.dataset.challengeKey===key)) return;
+  if(!document.getElementById('ikon-leaderboard-professional-style')){
+    const css=document.createElement('style');css.id='ikon-leaderboard-professional-style';
+    css.textContent=`
+      .ikon-live-weekly-leaderboard{display:block!important;float:none!important;grid-column:1/-1!important;width:100%!important;max-width:1120px!important;box-sizing:border-box!important;margin:22px auto!important;padding:clamp(18px,3vw,30px)!important;border-radius:20px!important;background:linear-gradient(135deg,#102344 0%,#1c3762 58%,#244b70 100%)!important;color:#f8fbff!important;box-shadow:0 18px 42px rgba(15,35,70,.18)!important;overflow:hidden}
+      .ikon-live-weekly-leaderboard h3{font-size:clamp(21px,3vw,29px)!important;line-height:1.2!important;margin:0 0 8px!important;font-weight:900!important;letter-spacing:.1px}
+      .ikon-live-weekly-leaderboard .score-sub{font-size:14px!important;color:#d7e6ff!important;margin:0 0 18px!important;line-height:1.5}
+      .ikon-live-weekly-leaderboard .ikon-final-score-tiles{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;margin:16px 0 20px!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-tile{background:rgba(255,255,255,.10)!important;border:1px solid rgba(219,234,254,.24)!important;border-radius:14px!important;padding:15px 12px!important;text-align:center!important;min-width:0}
+      .ikon-live-weekly-leaderboard .ikon-final-score-tile small{display:block!important;font-size:11px!important;letter-spacing:.7px!important;color:#c7dcff!important;font-weight:800!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-tile strong{display:block!important;font-size:clamp(21px,3vw,29px)!important;color:#fff!important;margin-top:6px!important;font-weight:900!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table{width:100%!important;border-collapse:separate!important;border-spacing:0!important;background:#fff!important;color:#142544!important;border-radius:13px!important;overflow:hidden!important;margin:0!important;font-size:14px!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table th{background:#e8f0fb!important;color:#203b63!important;font-size:11px!important;letter-spacing:.55px!important;text-align:left!important;padding:14px 13px!important;white-space:nowrap}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table td{padding:14px 13px!important;border-bottom:1px solid #e7edf5!important;color:#253650!important;font-size:14px!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table tr:last-child td{border-bottom:0!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table tr.is-me{background:#e7f8f2!important;font-weight:900!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-table tr.is-me td{color:#075b46!important}
+      .ikon-live-weekly-leaderboard .ikon-final-score-note{font-size:12px!important;line-height:1.6!important;color:#d4e3fa!important;margin:15px 0 0!important}
+      @media(max-width:600px){.ikon-live-weekly-leaderboard{padding:16px!important;margin:12px auto!important}.ikon-live-weekly-leaderboard .ikon-final-score-tiles{gap:7px!important}.ikon-live-weekly-leaderboard .ikon-final-score-tile{padding:12px 6px!important}.ikon-live-weekly-leaderboard .ikon-final-score-table th,.ikon-live-weekly-leaderboard .ikon-final-score-table td{padding:10px 8px!important;font-size:12px!important}.ikon-live-weekly-leaderboard .ikon-final-score-table{min-width:520px!important}.ikon-live-weekly-leaderboard .ikon-leaderboard-table-wrap{overflow-x:auto!important;border-radius:13px!important}}
+    `;document.head.appendChild(css);
+  }
   const panel=document.createElement('section');
   panel.dataset.challengeKey=key;
   panel.className='ikon-final-scoreboard ikon-live-weekly-leaderboard';
   panel.dataset.challenge=String(ch.challengeId||'');
-  panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc;width:100%;box-sizing:border-box';
+  panel.style.cssText='display:block;float:none;grid-column:1/-1;width:100%;max-width:1120px;margin:22px auto;padding:clamp(18px,3vw,30px);border-radius:20px;background:linear-gradient(135deg,#102344,#244b70);color:#f8fafc;box-sizing:border-box;box-shadow:0 18px 42px rgba(15,35,70,.18)';
   const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · LIVE LEADERBOARD';
   const sub=document.createElement('p');sub.className='score-sub';sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId+' · Marks: Level 1 + 2 + 3 + 4';
   panel.append(title,sub);
@@ -29732,6 +29752,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
       tile.append(small,strong);tiles.appendChild(tile);
     });
     panel.appendChild(tiles);
+    const tableWrap=document.createElement('div');tableWrap.className='ikon-leaderboard-table-wrap';
     const table=document.createElement('table');table.className='ikon-final-score-table';
     const thead=document.createElement('thead'),hr=document.createElement('tr');
     ['RANK','STUDENT NAME','LEVEL 1–4 MARKS','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
@@ -29743,14 +29764,18 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
       tbody.appendChild(tr);
     });
     if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Is paper/challenge ke students abhi assign nahi hue.';tr.appendChild(td);tbody.appendChild(tr);}
-    table.appendChild(tbody);panel.appendChild(table);
+    table.appendChild(tbody);tableWrap.appendChild(table);panel.appendChild(tableWrap);
     const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total mein sirf Level 1, 2, 3 aur 4 ke calculated marks hain. Practical uploads aur Level 5 admin marks include nahi hain.';
     panel.appendChild(note);
   }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
 }
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const challengeKey=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
-  if(Array.from(container.querySelectorAll('.ikon-weekly-shell')).some(el=>el.dataset.challengeKey===challengeKey)) return;
+  if(Array.from(container.querySelectorAll('.ikon-live-weekly-leaderboard')).some(el=>el.dataset.challengeKey===challengeKey)) return;
+  // Student-facing weekly challenge view is leaderboard-only. Level cards remain
+  // in the codebase for the existing admin/game workflows but are not rendered here.
+  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
+  return;
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
