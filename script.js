@@ -29741,8 +29741,16 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
   container.appendChild(panel);
   const url=SCRIPT_URL+'?action=assignmentFinalLeaderboard&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
-    if(!d.success)throw new Error(d.message||'Leaderboard load nahi hua.');
+    if(!d.success){
+      // No assigned weekly challenge means no leaderboard screen for this student.
+      panel.remove();
+      const msg=String(d.message||'');
+      if(/assign|challenge/i.test(msg)) return;
+      throw new Error(msg||'Leaderboard load nahi hua.');
+    }
     status.remove();
+    // Render only after backend confirms this registration has an assigned challenge.
+    if(!panel.isConnected) container.appendChild(panel);
     const me=d.leaderboard&&d.leaderboard.me||{};
     const tiles=document.createElement('div');tiles.className='ikon-final-score-tiles';
     [['YOUR RANK',me.rank?'#'+me.rank:'—'],['YOUR MARKS',(d.score||0)+' / '+(d.total||0)],['PERCENTAGE',(d.percentage||0)+'%']].forEach(pair=>{
@@ -29767,7 +29775,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     table.appendChild(tbody);tableWrap.appendChild(table);panel.appendChild(tableWrap);
     const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total mein sirf Level 1, 2, 3 aur 4 ke calculated marks hain. Practical uploads aur Level 5 admin marks include nahi hain.';
     panel.appendChild(note);
-  }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
+  }).catch(err=>{panel.remove();console.error('Weekly leaderboard:',err);});
 }
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const challengeKey=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
