@@ -29708,7 +29708,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
   const panel=document.createElement('section');
   panel.className='ikon-final-scoreboard';
   panel.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:linear-gradient(145deg,#142544,#202f50);color:#f8fafc';
-  const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · FINAL LEADERBOARD';
+  const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · LIVE LEADERBOARD';
   const sub=document.createElement('p');sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId;
   panel.append(title,sub);
   const status=document.createElement('p');status.textContent='Loading final marks and rank...';panel.appendChild(status);
@@ -29732,16 +29732,16 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     panel.appendChild(tiles);
     const table=document.createElement('table');table.className='ikon-final-score-table';
     const thead=document.createElement('thead'),hr=document.createElement('tr');
-    ['RANK','STUDENT','MARKS','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
+    ['RANK','STUDENT','TOTAL (L1–L4)','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
     thead.appendChild(hr);table.appendChild(thead);
     const tbody=document.createElement('tbody'),rows=d.leaderboard&&Array.isArray(d.leaderboard.rows)?d.leaderboard.rows:[];
     rows.forEach(row=>{
       const tr=document.createElement('tr');if(row.isCurrent)tr.className='is-me';
-      [row.rank?'#'+row.rank:'—',row.name||'Student',(row.score||0)+' / '+(row.total||0),(row.percentage||0)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.appendChild(td);});
+      [row.rank?'#'+row.rank:'—',row.name||'Student',(row.score||0)+' / '+(row.total||0)+'  (L1 '+(row.level1Score||0)+', L2 '+(row.level2Score||0)+', L3 '+(row.level3Score||0)+', L4 '+(row.level4Score||0)+')',(row.percentage||0)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.appendChild(td);});
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);panel.appendChild(table);
-    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Leaderboard sirf isi PAPER aur isi CHALLENGE ID ke reviewed aur completed students ka hai. Aapki row highlight hai.';
+    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper aur same Challenge ID ke students. Score mein Level 1, 2, 3 Quick Fix aur 4 ke marks hain. Practical upload aur Level 5 admin marks include nahi hain. Aapki row highlight hai.';
     panel.appendChild(note);
   }).catch(err=>{status.textContent='Leaderboard error: '+err.message;});
 }
@@ -29756,14 +29756,9 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
   const title=document.createElement('h3');title.className='ikon-weekly-title';title.textContent='🏆 '+ch.challengeId+' · '+ch.paper;card.appendChild(title);
   const p1=ch.progress||{};
-  if(p1.level5Complete){renderIkonCompletedChallengeLeaderboard(ch,reg,container);return;}
-  if(p1.level5Pending){
-    const pending=document.createElement('section');pending.className='ikon-final-scoreboard';
-    pending.style.cssText='margin:16px 0;padding:20px;border-radius:16px;background:#172b4d;color:#fff';
-    const h=document.createElement('h3');h.textContent='✓ LEVEL 5 SUBMITTED · REVIEW PENDING';
-    const p=document.createElement('p');p.textContent='Aapke definitions save ho gaye hain. Admin review ke baad final marks aur same-paper leaderboard isi screen par dikhega.';
-    pending.append(h,p);container.appendChild(pending);return;
-  }
+  // Always show the live same-paper leaderboard. It uses calculated marks
+  // from Levels 1-4 only; practical uploads and Level 5 admin marks are excluded.
+  renderIkonCompletedChallengeLeaderboard(ch,reg,container);
   const mcqDone=!!p1.level1Complete, puzzleDone=(p1.level2Words||[]).length>=Number(ch.level2QuestionCount||15);
   const practical=allPractical.filter(a=>String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase()&&ikonAssignmentSamePaper(a.paper,ch.paper));
   const steps=document.createElement('p');steps.className='ikon-weekly-summary';steps.textContent='Level 1: '+(mcqDone?'Completed':((ch.level1QuestionCount||0)+' MCQs'))+'  |  Level 2: '+(puzzleDone?'Completed':(p1.level2Words||[]).length+'/'+(ch.level2QuestionCount||15)+' words')+'  |  Level 3: '+(ch.level3Unlocked?'Unlocked':'Locked');card.appendChild(steps);
