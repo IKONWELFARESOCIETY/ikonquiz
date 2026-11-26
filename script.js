@@ -30739,8 +30739,6 @@ window.openAssignmentPortal = window.openAssignmentPortal;
 window.closeAssignmentPortal = window.closeAssignmentPortal;
 window.loadAssignmentsForStudent = window.loadAssignmentsForStudent;
 window.submitIkonAssignment = window.submitIkonAssignment;
-
-
 //====================================================
 // IKON ASSIGNMENT ADMIN + MARKS + PAPER-WISE REPORTS
 // Admin access: 5 quick taps on the IKON logo.
@@ -30819,7 +30817,6 @@ window.submitIkonAssignment = window.submitIkonAssignment;
       .then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Level 5 review save failed.');alert(d.completed?'Review saved. Level 5 complete: '+d.completion.score+'/'+d.completion.total:'Review saved.');window.loadIkonLevel5Reviews();window.loadIkonAssignmentReviews();window.loadIkonAssignmentLeaderboard();})
       .catch(e=>alert(e.message));
   };
-
   window.renderIkonAssignmentReviews=function(){
     var box=el('ikonAdminReviewList');if(!box)return;
     var paper=el('ikonAdminPaperFilter')?el('ikonAdminPaperFilter').value:'ALL';
