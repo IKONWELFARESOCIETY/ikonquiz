@@ -29792,11 +29792,11 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
     String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase() &&
     ikonAssignmentSamePaper(a.paper,ch.paper)
   );
-  // Only the number of practical tasks assigned in Assignment Record is required.
-  // Each assigned task must have an admin APPROVED status before final leaderboard.
+  // Leaderboard appears after every assigned practical file is submitted.
+  // Admin approval and marks can be completed later.
   const practicalDone=Array.isArray(practicalForChallenge) &&
     new Set(practicalForChallenge.map(a=>String(a.id||'').trim())).size===practicalForChallenge.length &&
-    practicalForChallenge.every(a=>String(a.status||'').trim().toUpperCase()==='APPROVED');
+    practicalForChallenge.every(a=>a.uploaded===true || ['PENDING','UNDER REVIEW','PENDING REVIEW','APPROVED'].includes(String(a.status||'').trim().toUpperCase()));
   const quickFixDone=!!progressState.level3Complete;
   const level3CompleteForGate=quickFixDone && practicalDone;
   const level5Submitted=!!(progressState.level5Complete||progressState.level5Pending);
@@ -29813,7 +29813,22 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
- st.textContent='.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(19px,2.4vw,23px)!important;line-height:1.4!important}.ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:16px!important;line-height:1.6!important}.ikon-weekly-shell .ikon-mcq-question>p{font-size:18px!important;font-weight:800!important;line-height:1.55!important}.ikon-quickfix-form input{font-size:16px!important;min-height:48px!important}@media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:15px!important}.ikon-quickfix-form input{font-size:16px!important}}';document.head.appendChild(st);
+ st.textContent=`
+ .ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(21px,2.8vw,26px)!important;line-height:1.35!important}
+ .ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-level-panel li,.ikon-weekly-shell .ikon-weekly-summary{font-size:18px!important;line-height:1.65!important}
+ .ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:18px!important;line-height:1.65!important}
+ .ikon-weekly-shell .ikon-mcq-question>p{font-size:20px!important;font-weight:850!important;line-height:1.55!important}
+ .ikon-weekly-shell .ikon-level-2>p:first-of-type{font-size:20px!important;line-height:1.65!important;font-weight:750!important}
+ .ikon-weekly-shell .ikon-puzzle-grid{max-width:680px!important;gap:5px!important}
+ .ikon-weekly-shell .ikon-puzzle-grid button{font-size:clamp(17px,2.4vw,22px)!important;min-height:42px!important;padding:9px 2px!important;line-height:1.15!important}
+ .ikon-weekly-shell .ikon-puzzle-selection-bar,.ikon-weekly-shell .ikon-puzzle-selection-bar strong,.ikon-weekly-shell .ikon-puzzle-selection-bar span{font-size:17px!important;line-height:1.5!important}
+ .ikon-weekly-shell .ikon-practical-task-card b,.ikon-weekly-shell .ikon-practical-task-card p{font-size:17px!important;line-height:1.6!important}
+ .ikon-weekly-shell button,.ikon-weekly-shell input,.ikon-weekly-shell select,.ikon-weekly-shell textarea{font-size:17px!important;line-height:1.45!important}
+ .ikon-playable-game .ikon-playable-question h6{font-size:clamp(19px,2.5vw,23px)!important;line-height:1.55!important;font-weight:850!important}
+ .ikon-playable-game .ikon-playable-option,.ikon-playable-game .ikon-playable-option-text{font-size:18px!important;line-height:1.55!important;min-height:58px!important}
+ .ikon-level4-paheli h3{font-size:27px!important}.ikon-level4-paheli p{font-size:18px!important;line-height:1.6!important}
+ @media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:16px!important}.ikon-weekly-shell .ikon-puzzle-grid{gap:3px!important}.ikon-weekly-shell .ikon-puzzle-grid button{font-size:17px!important;min-height:36px!important;padding:7px 1px!important}.ikon-weekly-shell .ikon-level-panel p{font-size:17px!important}}
+ `;document.head.appendChild(st);
 }
 
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.dataset.challengeKey=challengeKey;card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
@@ -30536,8 +30551,16 @@ function renderIkonGameForm(ch,reg,level,items,box){
           const title=document.createElement('h3');title.textContent='✓ DEFINITIONS SUBMITTED';
           const note=document.createElement('p');note.textContent='Aapke answers save ho gaye hain. Admin manually definitions check karke marks dega. Review complete hone ke baad Level 5 result update hoga.';
           pending.append(title,note);
-          const back=document.createElement('button');back.type='button';back.className='ikon-final-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());pending.appendChild(back);
-          root.appendChild(pending);return;
+          const note2=document.createElement('p');note2.textContent='Aapka Level 5 submission record ho gaya hai. Leaderboard ab khul raha hai; admin Define ke marks baad mein update karega.';
+          pending.appendChild(note2);
+          root.appendChild(pending);
+          // Refresh from Sheets so the new PENDING_REVIEW record is available
+          // to the final leaderboard gate immediately after submission.
+          setTimeout(()=>{
+            if(typeof window.loadAssignmentsForStudent==='function') window.loadAssignmentsForStudent();
+            else window.location.reload();
+          },350);
+          return;
         }
         alert((level===3?'Shuffle':'Brain Battle')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
       })
@@ -30643,7 +30666,7 @@ function renderIkonPuzzle(ch,reg,box){
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;min-height:42px;font-size:20px;line-height:1.15;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
   function paint(){
     cells.forEach(c=>{
