@@ -30559,7 +30559,7 @@ function renderIkonMcqForm(ch,reg,box){
       .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
   };form.appendChild(btn);box.appendChild(form);
 }
-const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V4-RANDOM-HORIZONTAL-VERTICAL';
+const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V6-POINTER-DRAG-ANSWER-VALIDATION';
 function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
@@ -30600,7 +30600,11 @@ function renderIkonPuzzle(ch,reg,box){
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
   gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='display:grid;place-items:center;min-width:0;width:100%;aspect-ratio:1;padding:0;border:1px solid #d5deec;border-radius:7px;background:#fff;font-weight:900;font-size:clamp(11px,1.6vw,16px);line-height:1;cursor:crosshair;touch-action:none;user-select:none';grid.appendChild(cell);cells.push(cell);}));
-  function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
+  function cellFromPoint(x,y){
+    const el=document.elementFromPoint(x,y);
+    const cell=el&&el.closest?el.closest('button[data-r]'):null;
+    return cell&&grid.contains(cell)?cell:null;
+  }
   function paint(){
     cells.forEach(c=>{
       const active=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c));
@@ -30612,10 +30616,44 @@ function renderIkonPuzzle(ch,reg,box){
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
   }
-  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
-  function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
-  function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
-  function onUp(){if(!dragging||checking)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+  function makePath(a,b){
+    const dr=b.r-a.r,dc=b.c-a.c;
+    if(dr!==0&&dc!==0)return [];
+    if(dr===0&&dc===0)return [a];
+    const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];
+    for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});
+    return out;
+  }
+  let activePointerId=null;
+  function onDown(e){
+    if(checking)return;
+    const cell=e.target.closest('button[data-r]');
+    if(!cell)return;
+    e.preventDefault();
+    activePointerId=e.pointerId;
+    start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};
+    selected=[start];dragging=true;paint();
+    document.addEventListener('pointermove',onMove,{passive:false});
+    document.addEventListener('pointerup',onUp,{passive:false});
+    document.addEventListener('pointercancel',onUp,{passive:false});
+  }
+  function onMove(e){
+    if(!dragging || (activePointerId!==null && e.pointerId!==activePointerId))return;
+    const cell=cellFromPoint(e.clientX,e.clientY);
+    if(!cell)return;
+    e.preventDefault();
+    selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});
+    paint();
+  }
+  function onUp(e){
+    if(!dragging||checking||(activePointerId!==null&&e&&e.pointerId!==activePointerId))return;
+    if(e&&e.preventDefault)e.preventDefault();
+    dragging=false;activePointerId=null;
+    document.removeEventListener('pointermove',onMove);
+    document.removeEventListener('pointerup',onUp);
+    document.removeEventListener('pointercancel',onUp);
+    if(!selected.length)return;
+    const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     checking=true;grid.style.pointerEvents='none';feedback.textContent='Checking...';
     const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
     fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){
