@@ -30565,7 +30565,7 @@ function renderIkonPuzzle(ch,reg,box){
   if(!next)return;
   const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat('+((next.grid&&next.grid[0])?String(next.grid[0]).length:15)+',minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
