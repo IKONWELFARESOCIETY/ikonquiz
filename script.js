@@ -30559,7 +30559,7 @@ function renderIkonMcqForm(ch,reg,box){
       .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
   };form.appendChild(btn);box.appendChild(form);
 }
-const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V6-POINTER-DRAG-ANSWER-VALIDATION';
+const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V7-TALLY-VERTICAL-TWO-CLICK';
 function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
@@ -30585,11 +30585,11 @@ function renderIkonPuzzle(ch,reg,box){
   grid.className='ikon-puzzle-grid';
   const gridRows=Array.isArray(next.grid)?next.grid.map(r=>String(r||'')):[];
   const gridWidth=gridRows.length?gridRows[0].length:0;
-  const gridValid=gridRows.length>=18 && gridWidth>=18 && gridRows.every(r=>r.length===gridWidth);
-  grid.style.cssText='display:grid;grid-template-columns:repeat('+Math.max(1,gridWidth)+',minmax(0,1fr));gap:3px;width:100%;max-width:720px;margin:12px auto;touch-action:none;user-select:none;overflow:visible';
+  const gridValid=gridRows.length>=10 && gridWidth>=10 && gridRows.every(r=>r.length===gridWidth);
+  grid.style.cssText='display:grid;grid-template-columns:repeat('+Math.max(1,gridWidth)+',minmax(22px,1fr));gap:3px;width:100%;max-width:720px;touch-action:none;user-select:none';
   box.appendChild(grid);
   if(!gridValid){
-    feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected grid minimum 18 x 18.';
+    feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected grid minimum 10 x 10.';
     feedback.style.color='#b42318';
     return;
   }
@@ -30597,25 +30597,31 @@ function renderIkonPuzzle(ch,reg,box){
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
-  let start=null,dragging=false,selected=[],checking=false;
+  let start=null,selected=[],checking=false;
   const cells=[];
-  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='display:grid;place-items:center;min-width:0;width:100%;aspect-ratio:1;padding:0;border:1px solid #d5deec;border-radius:7px;background:#fff;font-weight:900;font-size:clamp(11px,1.6vw,16px);line-height:1;cursor:crosshair;touch-action:none;user-select:none';grid.appendChild(cell);cells.push(cell);}));
-  function cellFromPoint(x,y){
-    const el=document.elementFromPoint(x,y);
-    const cell=el&&el.closest?el.closest('button[data-r]'):null;
-    return cell&&grid.contains(cell)?cell:null;
-  }
+  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{
+    const cell=document.createElement('button');
+    cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;
+    cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:manipulation;cursor:pointer;min-width:0';
+    cell.setAttribute('aria-label','Row '+(r+1)+' column '+(c+1)+' letter '+letter);
+    grid.appendChild(cell);cells.push(cell);
+  }));
+
   function paint(){
     cells.forEach(c=>{
       const active=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c));
-      c.classList.toggle('is-word-selected',active);c.style.background=active?'#2457d6':'#fff';
-      c.style.color=active?'#fff':'#243b5b';c.style.border=active?'2px solid #163eaa':'1px solid #d5deec';
-      c.style.boxShadow=active?'0 5px 13px rgba(36,87,214,.35)':'0 1px 2px rgba(20,40,70,.04)';
-      c.style.transform=active?'scale(1.07)':'scale(1)';c.style.zIndex=active?'2':'1';
+      c.classList.toggle('is-word-selected',active);
+      c.style.background=active?'#2457d6':'#fff';
+      c.style.color=active?'#fff':'#243b5b';
+      c.style.border=active?'2px solid #163eaa':'1px solid #d5deec';
+      c.style.boxShadow=active?'0 4px 10px rgba(36,87,214,.25)':'none';
+      c.style.transform='none';
     });
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
-    selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
+    selectionValue.textContent=word||'Select first letter';
+    selectionBar.classList.toggle('has-selection',!!word);
   }
+
   function makePath(a,b){
     const dr=b.r-a.r,dc=b.c-a.c;
     if(dr!==0&&dc!==0)return [];
@@ -30624,65 +30630,77 @@ function renderIkonPuzzle(ch,reg,box){
     for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});
     return out;
   }
-  let activePointerId=null;
-  function onDown(e){
-    if(checking)return;
-    const cell=e.target.closest('button[data-r]');
-    if(!cell)return;
-    e.preventDefault();
-    activePointerId=e.pointerId;
-    start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};
-    selected=[start];dragging=true;paint();
-    document.addEventListener('pointermove',onMove,{passive:false});
-    document.addEventListener('pointerup',onUp,{passive:false});
-    document.addEventListener('pointercancel',onUp,{passive:false});
-  }
-  function onMove(e){
-    if(!dragging || (activePointerId!==null && e.pointerId!==activePointerId))return;
-    const cell=cellFromPoint(e.clientX,e.clientY);
-    if(!cell)return;
-    e.preventDefault();
-    selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});
-    paint();
-  }
-  function onUp(e){
-    if(!dragging||checking||(activePointerId!==null&&e&&e.pointerId!==activePointerId))return;
-    if(e&&e.preventDefault)e.preventDefault();
-    dragging=false;activePointerId=null;
-    document.removeEventListener('pointermove',onMove);
-    document.removeEventListener('pointerup',onUp);
-    document.removeEventListener('pointercancel',onUp);
-    if(!selected.length)return;
+
+  function submitSelectedPath(){
+    if(checking||!selected.length)return;
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
-    checking=true;grid.style.pointerEvents='none';feedback.textContent='Checking...';
-    const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
-    fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){
-      feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';
-      selected.forEach(p=>{const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);if(c)c.style.background='#bbf7d0';});
-      // Update local progress immediately; do not refetch the whole portal after every word.
-      if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
-      if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)ch.progress.level2Words.push(String(next.questionNo));
-     if(d.completed||d.level3Unlocked){
-  ch.level3Unlocked=true;
-  feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
-
-  setTimeout(function(){
-    if(typeof window.loadAssignmentsForStudent==='function'){
-      window.loadAssignmentsForStudent();
+    if(word.length<2){
+      feedback.textContent='Ab answer ka last letter select karein.';
+      return;
     }
-  },500);
-
-  return;
-}
-      const card=box.closest('.ikon-mission-card');
-      if(card){const fresh=document.createElement('div');fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
-        renderIkonPuzzle(ch,reg,fresh);const old=Array.from(card.children).find(el=>el.querySelector&&el.querySelector('h4')&&el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);if(old)old.replaceWith(fresh);
+    checking=true;
+    cells.forEach(c=>c.disabled=true);
+    feedback.textContent='Checking...';
+    const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
+    fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+      if(!d.success)throw new Error(d.message||'Check failed');
+      if(d.correct){
+        feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';
+        selected.forEach(p=>{
+          const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);
+          if(c){c.style.background='#bbf7d0';c.style.color='#14532d';}
+        });
+        if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
+        if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)ch.progress.level2Words.push(String(next.questionNo));
+        if(d.completed||d.level3Unlocked){
+          ch.level3Unlocked=true;
+          feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
+          setTimeout(function(){
+            if(typeof window.loadAssignmentsForStudent==='function')window.loadAssignmentsForStudent();
+          },500);
+          return;
+        }
+        const card=box.closest('.ikon-mission-card');
+        if(card){
+          const fresh=document.createElement('div');
+          fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
+          fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer select karein.</p>';
+          renderIkonPuzzle(ch,reg,fresh);
+          const old=Array.from(card.children).find(el=>el.querySelector&&el.querySelector('h4')&&el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);
+          if(old)old.replaceWith(fresh);
+        }
+      }else{
+        feedback.textContent='✗ Wrong selection. Dobara first aur last letter select karein.';
+        start=null;selected=[];paint();
       }
-    }else{feedback.textContent='✗ Try Again';selected=[];paint();}}
-    ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
+    }).catch(e=>{
+      feedback.textContent=e.message;
+      start=null;selected=[];paint();
+    }).finally(()=>{
+      checking=false;
+      cells.forEach(c=>c.disabled=false);
+    });
   }
-  grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Bade answers top-to-bottom vertical line mein aur chhote answers left-to-right ya top-to-bottom chhupe hain. Kisi bhi end se seedhi line mein drag kar sakte hain.';box.appendChild(hint);
+
+  grid.addEventListener('click',function(e){
+    const cell=e.target.closest('button[data-r][data-c]');
+    if(!cell||checking)return;
+    const point={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};
+    if(!start){
+      start=point;selected=[point];paint();
+      feedback.textContent='Ab answer ke last letter par click karein (upar/neeche ya left/right).';
+      return;
+    }
+    const path=makePath(start,point);
+    if(!path.length){
+      start=point;selected=[point];paint();
+      feedback.textContent='Seedhi line mein select karein. Naya first letter set ho gaya.';
+      return;
+    }
+    selected=path;paint();
+    submitSelectedPath();
+  });
+  const hint=document.createElement('small');hint.textContent='Pehle answer ke first letter par click karein, phir last letter par click karein. TALLY answers top-to-bottom hain; baaki papers left-to-right. Vertical selection bhi supported hai.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
