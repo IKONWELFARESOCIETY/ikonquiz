@@ -29736,7 +29736,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
   panel.dataset.challenge=String(ch.challengeId||'');
   panel.style.cssText='display:block;float:none;grid-column:1/-1;width:100%;max-width:1120px;margin:22px auto;padding:clamp(18px,3vw,30px);border-radius:20px;background:linear-gradient(135deg,#102344,#244b70);color:#f8fafc;box-sizing:border-box;box-shadow:0 18px 42px rgba(15,35,70,.18)';
   const title=document.createElement('h3');title.textContent='🏆 WEEKLY CHALLENGE · LIVE LEADERBOARD';
-  const sub=document.createElement('p');sub.className='score-sub';sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId+' · Marks: Level 1 + 2 + 3 + 4';
+  const sub=document.createElement('p');sub.className='score-sub';sub.textContent='Paper: '+ch.paper+' · Challenge: '+ch.challengeId+' · Leaderboard: 45 Marks';
   panel.append(title,sub);
   const status=document.createElement('p');status.textContent='Loading same-paper students, marks and ranks...';panel.appendChild(status);
   container.appendChild(panel);
@@ -29764,7 +29764,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     const tableWrap=document.createElement('div');tableWrap.className='ikon-leaderboard-table-wrap';
     const table=document.createElement('table');table.className='ikon-final-score-table';
     const thead=document.createElement('thead'),hr=document.createElement('tr');
-    ['RANK','STUDENT NAME','LEVEL 1–4 MARKS','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
+    ['RANK','STUDENT NAME','MARKS / 45','PERCENTAGE'].forEach(x=>{const th=document.createElement('th');th.textContent=x;hr.appendChild(th);});
     thead.appendChild(hr);table.appendChild(thead);
     const tbody=document.createElement('tbody'),rows=d.leaderboard&&Array.isArray(d.leaderboard.rows)?d.leaderboard.rows:[];
     rows.forEach(row=>{
@@ -29774,7 +29774,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     });
     if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Is paper/challenge ke students abhi assign nahi hue.';tr.appendChild(td);tbody.appendChild(tr);}
     table.appendChild(tbody);tableWrap.appendChild(table);panel.appendChild(tableWrap);
-    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total mein sirf Level 1, 2, 3 aur 4 ke calculated marks hain. Practical uploads aur Level 5 admin marks include nahi hain.';
+    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total 45 marks mein se hai: MCQ 10, Word Find 10, Quick Fix 5, Shuffle 10 aur Error Find 10. Practical Upload (40) aur Define (15) ke admin marks include nahi hain.';
     panel.appendChild(note);
   }).catch(err=>{panel.remove();console.error('Weekly leaderboard:',err);});
 }
@@ -29934,13 +29934,10 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const typeOf=x=>String(x.gameType||'MCQ').trim().toUpperCase();
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
   const stages=isFinal?[
-    {id:'define',title:'DEFINE THE FEATURE',sub:'Har Excel function ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
+    {id:'define',title:'DEFINE THE FEATURE',sub:'Har feature ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
   ]:[
-    {id:'memory',title:'MEMORY MATCH',sub:'Study the cards for 7 seconds, follow 3 shuffles, then pick from memory.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'steps',title:'SEQUENCE BUILDER',sub:'Inspect four workflows and choose the process that completes the task correctly.',icon:'🧩',types:['ARRANGE_STEPS']},
-    {id:'spot',title:'ERROR DETECTIVE',sub:'Inspect every evidence card, find the faulty statement and report it.',icon:'🕵️',types:['SPOT_ERROR']},
-    {id:'speed',title:'SPEED ROUND',sub:'Rapid-fire round. Keep your pace and answer accurately.',icon:'⚡',types:['SPEED_ROUND']},
-    {id:'riddle',title:'WEEKLY RIDDLE',sub:'Paheli ko dhyan se padhein aur apne words mein answer type karein.',icon:'🧩',types:['WEEKLY_RIDDLE']}
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein. 5 questions × 2 marks.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein. 5 questions × 2 marks.',icon:'🕵️',types:['SPOT_ERROR']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
@@ -29948,7 +29945,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const intro=document.createElement('div');
   const eyebrow=document.createElement('small');eyebrow.textContent=isFinal?'THE FINAL CHAMPIONSHIP':'FIVE-ROUND BRAIN ARENA';
   const title=document.createElement('h5');title.textContent=isFinal?'ULTIMATE CHAMPION':'BRAIN BATTLE ARENA';
-  const desc=document.createElement('p');desc.textContent=isFinal?'Har question ka answer apne words mein type karein. Submission ke baad admin manually marks verify karega.':'Complete Flip & Shuffle, Sequence Builder, Error Detective, Speed Round and Weekly Riddle.';
+  const desc=document.createElement('p');desc.textContent=isFinal?'Har question ka answer apne words mein type karein. Submission ke baad admin manually marks verify karega.':'Complete Flip & Shuffle aur Error Find.';
   intro.append(eyebrow,title,desc);top.append(icon,intro);root.appendChild(top);
 
   const status=document.createElement('div');status.className='ikon-playable-status';
