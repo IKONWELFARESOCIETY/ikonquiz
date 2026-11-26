@@ -29933,8 +29933,13 @@ function renderIkonLevel4Paheli(ch,reg,items,box){
     submit.disabled=true;submit.textContent='SUBMITTING...';
     ikonAssignmentPost({action:'submitLevel4Riddles',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:selections})
       .then(d=>{
-        result.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';
+        result.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked. Assignments refresh karein.';
         result.style.color='#047857';status.textContent='Level 4 completed';submit.textContent='COMPLETED';
+        submit.disabled=true;
+        const refresh=document.createElement('button');refresh.type='button';refresh.textContent='OPEN LEVEL 5';
+        refresh.style.cssText='margin:10px 0 0 8px;padding:13px 20px;min-height:46px;border:0;border-radius:10px;background:#166534;color:#fff;font-weight:900;cursor:pointer';
+        refresh.addEventListener('click',()=>{if(typeof window.loadAssignmentsForStudent==='function')window.loadAssignmentsForStudent();else window.location.reload();});
+        result.insertAdjacentElement('afterend',refresh);
       }).catch(err=>{
         result.textContent=err.message||'Submission failed.';result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT PAHELI';
       });
