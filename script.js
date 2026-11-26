@@ -30586,7 +30586,7 @@ function renderIkonPuzzle(ch,reg,box){
   const gridRows=Array.isArray(next.grid)?next.grid.map(r=>String(r||'')):[];
   const gridWidth=gridRows.length?gridRows[0].length:0;
   const gridValid=gridRows.length>=18 && gridWidth>=18 && gridRows.every(r=>r.length===gridWidth);
-  grid.style.cssText='display:grid;grid-template-columns:repeat('+Math.max(1,gridWidth)+',minmax(22px,1fr));gap:3px;width:100%;max-width:720px;touch-action:none;user-select:none';
+  grid.style.cssText='display:grid;grid-template-columns:repeat('+Math.max(1,gridWidth)+',minmax(0,1fr));gap:3px;width:100%;max-width:720px;margin:12px auto;touch-action:none;user-select:none;overflow:visible';
   box.appendChild(grid);
   if(!gridValid){
     feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected grid minimum 18 x 18.';
@@ -30599,7 +30599,7 @@ function renderIkonPuzzle(ch,reg,box){
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='display:grid;place-items:center;min-width:0;width:100%;aspect-ratio:1;padding:0;border:1px solid #d5deec;border-radius:7px;background:#fff;font-weight:900;font-size:clamp(11px,1.6vw,16px);line-height:1;cursor:crosshair;touch-action:none;user-select:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
   function paint(){
     cells.forEach(c=>{
@@ -30644,7 +30644,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Answer left-to-right horizontal ya top-to-bottom vertical line mein chhupa hai. Letters par seedhi line mein drag karein.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Bade answers top-to-bottom vertical line mein aur chhote answers left-to-right ya top-to-bottom chhupe hain. Kisi bhi end se seedhi line mein drag kar sakte hain.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
