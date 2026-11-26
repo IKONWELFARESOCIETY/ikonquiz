@@ -29851,9 +29851,9 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
 const level3Done = level3DoneForDesign(practical,p1);
   const l4=document.createElement('div');l4.className='ikon-level-panel ikon-level-4';l4.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f4f1ff';
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
-  l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 04 · THE STRATEGY ARENA</small><h4>BRAIN BATTLE</h4><p>Four rounds. One mission. Beat the arena.</p></div><span class="ikon-level-game-stamp">BATTLE</span></div>';
-  if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
-  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 Quick Fix complete karein aur assigned sabhi practical tasks admin se APPROVED karwayein.';l4.appendChild(lock);}
+  l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">🧩</span><div><small>LEVEL 04 · PAHELI CHALLENGE</small><h4>PAHELI</h4><p>Question padhein aur A/B/C/D mein se sahi option click karein.</p></div><span class="ikon-level-game-stamp">PAHELI</span></div>';
+  if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Level 5 unlocked';l4.appendChild(done);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 complete karein aur assigned sabhi practical tasks admin se APPROVED karwayein.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
@@ -29861,7 +29861,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   l5.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">👑</span><div><small>LEVEL 05 · THE FINAL TRIAL</small><h4>ULTIMATE CHAMPION</h4><p>Your final test. Complete every round to finish.</p></div><span class="ikon-level-game-stamp">FINAL</span></div>';
   if(p1.level5Complete){const done=document.createElement('b');done.textContent='Ultimate Champion submitted / reviewed.';l5.appendChild(done);}
   else if(p1.level5Pending){const pending=document.createElement('p');pending.textContent='✓ Definitions submitted · Admin review pending. Admin marks yahan baad mein update honge.';l5.appendChild(pending);}
-  else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Brain Battle complete karein.';l5.appendChild(lock);}
+  else if(!p1.level4Complete){const lock=document.createElement('p');lock.textContent='🔒 Pehle Level 4 Paheli complete karein.';l5.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,5,l5);
   card.appendChild(l5);
   // Incomplete challenges show only the normal level/question flow.
@@ -29869,9 +29869,9 @@ const level3Done = level3DoneForDesign(practical,p1);
   container.appendChild(card);
 }
 function loadIkonGameLevel(ch,reg,level,box){
-  const action=level===4?'assignmentBrainBattle':'assignmentUltimate';
+  const action=level===4?'assignmentLevel4Riddles':'assignmentUltimate';
   const url=SCRIPT_URL+'?action='+action+'&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
-  const loading=document.createElement('p');loading.textContent='Loading challenge...';loading.style.cssText='padding:10px;color:#334155;font-weight:600';box.appendChild(loading);
+  const loading=document.createElement('p');loading.textContent='Loading '+(level===4?'Paheli':'challenge')+'...';loading.style.cssText='padding:10px;color:#334155;font-weight:600';box.appendChild(loading);
   fetch(url,{cache:'no-store'}).then(async r=>{
     const raw=await r.text();let d;
     try{d=JSON.parse(raw);}catch(err){throw new Error('Apps Script ne JSON response nahi diya. Deployment/version check karein. '+raw.slice(0,180));}
@@ -29880,13 +29880,63 @@ function loadIkonGameLevel(ch,reg,level,box){
     return d;
   }).then(d=>{
     loading.remove();
-    if(!Array.isArray(d.items)||!d.items.length)throw new Error('Brain Battle sheet mein matching questions nahi mile. Paper='+ch.paper+', Challenge='+ch.challengeId);
-    renderIkonGameForm(ch,reg,level,d.items,box);
+    if(d.completed){const done=document.createElement('p');done.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';done.style.cssText='padding:12px;color:#047857;font-weight:800';box.appendChild(done);return;}
+    if(!Array.isArray(d.items)||!d.items.length)throw new Error('Is challenge ke questions nahi mile.');
+    if(level===4)renderIkonLevel4Paheli(ch,reg,d.items,box);
+    else renderIkonGameForm(ch,reg,level,d.items,box);
   }).catch(e=>{
     loading.textContent='Level '+level+' load error: '+(e&&e.message?e.message:String(e));
     loading.style.cssText='padding:10px;margin-top:8px;border-radius:8px;background:#fff1f2;color:#991b1b;font-weight:700;white-space:normal';
   });
 }
+
+function renderIkonLevel4Paheli(ch,reg,items,box){
+  const root=document.createElement('section');
+  root.className='ikon-level4-paheli';
+  root.style.cssText='margin:12px 0;padding:16px;border:1px solid #ddd6fe;border-radius:16px;background:#fff';
+  const heading=document.createElement('div');
+  heading.innerHTML='<div style="font-size:12px;font-weight:900;letter-spacing:1px;color:#6d28d9">LEVEL 04 · PAHELI CHALLENGE</div><h3 style="font-size:23px;margin:5px 0 6px;color:#312e81">🧩 Solve the Paheli</h3><p style="font-size:15px;line-height:1.5;color:#475569;margin:0">Har question ke chaar options hain. Sahi jawab par click karein.</p>';
+  root.appendChild(heading);
+  const status=document.createElement('p');status.style.cssText='font-weight:700;color:#475569;margin:14px 0';status.textContent=items.length+' Paheli questions';root.appendChild(status);
+  const form=document.createElement('div');form.style.cssText='display:grid;gap:13px';
+  const selections={};
+  items.forEach((it,index)=>{
+    const card=document.createElement('div');card.style.cssText='padding:14px;border:1px solid #e2e8f0;border-radius:13px;background:#f8fafc';
+    const question=document.createElement('div');question.textContent=(index+1)+'. '+it.question;question.style.cssText='font-size:17px;line-height:1.55;font-weight:800;color:#172554;margin-bottom:12px;white-space:pre-wrap';card.appendChild(question);
+    const options=document.createElement('div');options.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px';
+    const letters=['A','B','C','D'];
+    it.options.forEach((value,optIndex)=>{
+      const letter=letters[optIndex];
+      const btn=document.createElement('button');btn.type='button';btn.textContent=letter+'. '+value;
+      btn.style.cssText='width:100%;min-height:49px;padding:11px 13px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1e293b;text-align:left;font-size:15px;font-weight:700;cursor:pointer;white-space:normal';
+      btn.setAttribute('aria-pressed','false');
+      btn.addEventListener('click',()=>{
+        selections[it.itemId]=letter;
+        Array.from(options.children).forEach(b=>{b.style.borderColor='#cbd5e1';b.style.background='#fff';b.style.color='#1e293b';b.setAttribute('aria-pressed','false');});
+        btn.style.borderColor='#7c3aed';btn.style.background='#ede9fe';btn.style.color='#4c1d95';btn.setAttribute('aria-pressed','true');
+        status.textContent='Selected '+Object.keys(selections).length+' / '+items.length;
+      });
+      options.appendChild(btn);
+    });
+    card.appendChild(options);form.appendChild(card);
+  });
+  root.appendChild(form);
+  const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT PAHELI';submit.style.cssText='margin-top:15px;padding:13px 22px;min-height:48px;border:0;border-radius:10px;background:#6d28d9;color:#fff;font-weight:900;font-size:15px;cursor:pointer';
+  const result=document.createElement('p');result.style.cssText='font-size:14px;font-weight:800;line-height:1.5';
+  submit.addEventListener('click',()=>{
+    if(Object.keys(selections).length!==items.length){result.textContent='Har Paheli ke liye ek option select karein.';result.style.color='#b91c1c';return;}
+    submit.disabled=true;submit.textContent='SUBMITTING...';
+    ikonAssignmentPost({action:'submitLevel4Riddles',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:selections})
+      .then(d=>{
+        result.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';
+        result.style.color='#047857';status.textContent='Level 4 completed';submit.textContent='COMPLETED';
+      }).catch(err=>{
+        result.textContent=err.message||'Submission failed.';result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT PAHELI';
+      });
+  });
+  root.append(submit,result);box.appendChild(root);
+}
+
 function renderIkonGameForm(ch,reg,level,items,box){
   if(!items.length){const p=document.createElement('p');p.textContent='Is level ke questions abhi available nahi hain.';box.appendChild(p);return;}
   const isFinal=level===5;
@@ -30559,137 +30609,36 @@ function renderIkonMcqForm(ch,reg,box){
       .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
   };form.appendChild(btn);box.appendChild(form);
 }
-const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V4-RANDOM-HORIZONTAL-VERTICAL';
 function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
   if(!next)return;
-  // Show the complete puzzle question list together; the active word grid below
-  // remains sequential so students unlock one answer at a time.
-  const questionList=document.createElement('div');
-  questionList.className='ikon-puzzle-question-list';
-  questionList.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0 16px';
-  (ch.puzzle||[]).forEach((q,i)=>{
-    const done=found.indexOf(String(q.questionNo))>=0;
-    const item=document.createElement('div');
-    item.style.cssText='padding:12px;border:1px solid '+(done?'#86d6a2':'#dbe4f0')+';border-radius:12px;background:'+(done?'#effcf3':'#f8faff')+';font-size:14px;line-height:1.45';
-    const heading=document.createElement('b');
-    heading.textContent=(done?'✓ ':'')+'Question '+q.questionNo;
-    const body=document.createElement('div');body.textContent=String(q.question||'');body.style.marginTop='5px';
-    item.append(heading,body);questionList.appendChild(item);
-  });
-  box.appendChild(questionList);
-  const prompt=document.createElement('p');prompt.innerHTML='<b>Find the answer for Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
+  const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');
-  grid.className='ikon-puzzle-grid';
-  const gridRows=Array.isArray(next.grid)?next.grid.map(r=>String(r||'')):[];
-  const gridWidth=gridRows.length?gridRows[0].length:0;
-  const gridValid=gridRows.length===15 && gridWidth===15 && gridRows.every(r=>r.length===15);
-  grid.style.setProperty('display','grid','important');
-  grid.style.setProperty('grid-template-columns','repeat(15,minmax(0,1fr))','important');
-  grid.style.setProperty('grid-template-rows','repeat(15,34px)','important');
-  grid.style.setProperty('grid-auto-rows','34px','important');
-  grid.style.setProperty('grid-auto-flow','row','important');
-  grid.style.setProperty('gap','4px','important');
-  grid.style.setProperty('width','min(100%,620px)','important');
-  grid.style.setProperty('max-width','620px','important');
-  grid.style.setProperty('box-sizing','border-box','important');
-  grid.style.setProperty('align-items','stretch','important');
-  grid.style.setProperty('touch-action','none','important');
-  grid.style.setProperty('user-select','none','important');
-  grid.style.setProperty('position','relative','important');
-  box.appendChild(grid);
-  if(!gridValid){
-    feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected exactly 15 x 15.';
-    feedback.style.color='#b42318';
-    return;
-  }
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{
-    const cell=document.createElement('button');
-    cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;
-    cell.style.setProperty('display','flex','important');
-    cell.style.setProperty('position','relative','important');
-    cell.style.setProperty('inset','auto','important');
-    cell.style.setProperty('width','100%','important');
-    cell.style.setProperty('height','34px','important');
-    cell.style.setProperty('min-height','34px','important');
-    cell.style.setProperty('max-height','34px','important');
-    cell.style.setProperty('min-width','0','important');
-    cell.style.setProperty('max-width','none','important');
-    cell.style.setProperty('margin','0','important');
-    cell.style.setProperty('padding','0','important');
-    cell.style.setProperty('box-sizing','border-box','important');
-    cell.style.setProperty('align-items','center','important');
-    cell.style.setProperty('justify-content','center','important');
-    cell.style.setProperty('line-height','1','important');
-    cell.style.setProperty('font-size','14px','important');
-    cell.style.setProperty('font-weight','900','important');
-    cell.style.setProperty('border','1px solid #d5deec','important');
-    cell.style.setProperty('border-radius','7px','important');
-    cell.style.setProperty('background','#fff','important');
-    cell.style.setProperty('color','#243b5b','important');
-    cell.style.setProperty('touch-action','none','important');
-    cell.style.setProperty('user-select','none','important');
-    cell.style.setProperty('transform','none','important');
-    cell.style.setProperty('z-index','1','important');
-    grid.appendChild(cell);cells.push(cell);
-  }));
-  function cellFromPoint(x,y){
-    const el=document.elementFromPoint(x,y);
-    const cell=el&&el.closest?el.closest('button[data-r][data-c]'):null;
-    return cell&&grid.contains(cell)?cell:null;
-  }
+  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
   function paint(){
     cells.forEach(c=>{
       const active=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c));
-      c.classList.toggle('is-word-selected',active);
-      c.style.setProperty('background',active?'#2457d6':'#fff','important');
-      c.style.setProperty('color',active?'#fff':'#243b5b','important');
-      c.style.setProperty('border',active?'2px solid #163eaa':'1px solid #d5deec','important');
-      c.style.setProperty('box-shadow',active?'0 5px 13px rgba(36,87,214,.35)':'0 1px 2px rgba(20,40,70,.04)','important');
-      c.style.setProperty('transform','none','important');c.style.setProperty('z-index',active?'3':'1','important');
+      c.classList.toggle('is-word-selected',active);c.style.background=active?'#2457d6':'#fff';
+      c.style.color=active?'#fff':'#243b5b';c.style.border=active?'2px solid #163eaa':'1px solid #d5deec';
+      c.style.boxShadow=active?'0 5px 13px rgba(36,87,214,.35)':'0 1px 2px rgba(20,40,70,.04)';
+      c.style.transform=active?'scale(1.07)':'scale(1)';c.style.zIndex=active?'2':'1';
     });
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
   }
   function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
-  let activePointerId=null;
-  function onDown(e){
-    if(checking)return;
-    const cell=e.target.closest('button[data-r][data-c]');
-    if(!cell||!grid.contains(cell))return;
-    e.preventDefault();
-    activePointerId=e.pointerId;
-    start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};
-    selected=[start];dragging=true;paint();
-    document.addEventListener('pointermove',onMove,{passive:false});
-    document.addEventListener('pointerup',onUp,{passive:false});
-    document.addEventListener('pointercancel',onUp,{passive:false});
-  }
-  function onMove(e){
-    if(!dragging||checking||(activePointerId!==null&&e.pointerId!==activePointerId))return;
-    const cell=cellFromPoint(e.clientX,e.clientY);
-    if(!cell)return;
-    e.preventDefault();
-    selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});
-    paint();
-  }
-  function onUp(e){
-    if(!dragging||checking||(activePointerId!==null&&e&&e.pointerId!==activePointerId))return;
-    if(e&&e.preventDefault)e.preventDefault();
-    dragging=false;activePointerId=null;
-    document.removeEventListener('pointermove',onMove);
-    document.removeEventListener('pointerup',onUp);
-    document.removeEventListener('pointercancel',onUp);
-    if(!selected.length)return;
-    const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+  function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
+  function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
+  function onUp(){if(!dragging||checking)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     checking=true;grid.style.pointerEvents='none';feedback.textContent='Checking...';
     const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
     fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){
@@ -30717,8 +30666,8 @@ function renderIkonPuzzle(ch,reg,box){
     }else{feedback.textContent='✗ Try Again';selected=[];paint();}}
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
-  grid.addEventListener('pointerdown',onDown);
-  const hint=document.createElement('small');hint.textContent='Answer left-to-right horizontal ya top-to-bottom vertical line mein chhupa hai. Letters par seedhi line mein drag karein.';box.appendChild(hint);
+  grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
+  const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
