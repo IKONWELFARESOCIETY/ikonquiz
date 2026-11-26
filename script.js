@@ -30559,7 +30559,7 @@ function renderIkonMcqForm(ch,reg,box){
       .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
   };form.appendChild(btn);box.appendChild(form);
 }
-const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V5-15X15-MOUSE-DRAG-BIDIRECTIONAL';
+const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V4-RANDOM-HORIZONTAL-VERTICAL';
 function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
@@ -30584,205 +30584,141 @@ function renderIkonPuzzle(ch,reg,box){
   const grid=document.createElement('div');
   grid.className='ikon-puzzle-grid';
   const gridRows=Array.isArray(next.grid)?next.grid.map(r=>String(r||'')):[];
-  const gridValid=gridRows.length===15 && gridRows.every(r=>r.length===15);
-  grid.style.cssText=[
-    'display:grid',
-    'grid-template-columns:repeat(15,minmax(0,1fr))',
-    'grid-template-rows:repeat(15,minmax(0,1fr))',
-    'grid-auto-flow:row',
-    'gap:3px',
-    'width:min(100%,560px)',
-    'aspect-ratio:1/1',
-    'box-sizing:border-box',
-    'padding:8px',
-    'margin:14px auto',
-    'overflow:hidden',
-    'touch-action:none',
-    'user-select:none'
-  ].join(';');
+  const gridWidth=gridRows.length?gridRows[0].length:0;
+  const gridValid=gridRows.length===15 && gridWidth===15 && gridRows.every(r=>r.length===15);
+  grid.style.setProperty('display','grid','important');
+  grid.style.setProperty('grid-template-columns','repeat(15,minmax(0,1fr))','important');
+  grid.style.setProperty('grid-template-rows','repeat(15,34px)','important');
+  grid.style.setProperty('grid-auto-rows','34px','important');
+  grid.style.setProperty('grid-auto-flow','row','important');
+  grid.style.setProperty('gap','4px','important');
+  grid.style.setProperty('width','min(100%,620px)','important');
+  grid.style.setProperty('max-width','620px','important');
+  grid.style.setProperty('box-sizing','border-box','important');
+  grid.style.setProperty('align-items','stretch','important');
+  grid.style.setProperty('touch-action','none','important');
+  grid.style.setProperty('user-select','none','important');
+  grid.style.setProperty('position','relative','important');
   box.appendChild(grid);
   if(!gridValid){
-    feedback.textContent='15×15 grid load nahi hua. Code.gs ko replace karke Apps Script ka New Version deploy karein.';
+    feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected exactly 15 x 15.';
     feedback.style.color='#b42318';
     return;
   }
-
-  const selectionBar=document.createElement('div');
-  selectionBar.className='ikon-puzzle-selection-bar';
-  const selectionCaption=document.createElement('span');
-  selectionCaption.textContent='YOUR SELECTION';
-  const selectionValue=document.createElement('strong');
-  selectionValue.textContent='Drag across the letters';
-  selectionBar.append(selectionCaption,selectionValue);
-  box.appendChild(selectionBar);
-
-  let start=null,dragging=false,selected=[],checking=false,activePointerId=null;
+  const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
+  const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
+  const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
+  selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
+  let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  gridRows.forEach((row,r)=>{
-    Array.from(row).forEach((letter,c)=>{
-      const cell=document.createElement('button');
-      cell.type='button';
-      cell.textContent=letter;
-      cell.dataset.r=String(r);
-      cell.dataset.c=String(c);
-      cell.style.cssText=[
-        'box-sizing:border-box',
-        'width:100%',
-        'height:100%',
-        'min-width:0',
-        'min-height:0',
-        'padding:0',
-        'margin:0',
-        'display:flex',
-        'align-items:center',
-        'justify-content:center',
-        'border:1px solid #d5deec',
-        'border-radius:5px',
-        'background:#fff',
-        'color:#243b5b',
-        'font-weight:900',
-        'font-size:clamp(10px,1.5vw,14px)',
-        'line-height:1',
-        'touch-action:none',
-        'user-select:none',
-        'cursor:crosshair'
-      ].join(';');
-      grid.appendChild(cell);
-      cells.push(cell);
-    });
-  });
-
+  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{
+    const cell=document.createElement('button');
+    cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;
+    cell.style.setProperty('display','flex','important');
+    cell.style.setProperty('position','relative','important');
+    cell.style.setProperty('inset','auto','important');
+    cell.style.setProperty('width','100%','important');
+    cell.style.setProperty('height','34px','important');
+    cell.style.setProperty('min-height','34px','important');
+    cell.style.setProperty('max-height','34px','important');
+    cell.style.setProperty('min-width','0','important');
+    cell.style.setProperty('max-width','none','important');
+    cell.style.setProperty('margin','0','important');
+    cell.style.setProperty('padding','0','important');
+    cell.style.setProperty('box-sizing','border-box','important');
+    cell.style.setProperty('align-items','center','important');
+    cell.style.setProperty('justify-content','center','important');
+    cell.style.setProperty('line-height','1','important');
+    cell.style.setProperty('font-size','14px','important');
+    cell.style.setProperty('font-weight','900','important');
+    cell.style.setProperty('border','1px solid #d5deec','important');
+    cell.style.setProperty('border-radius','7px','important');
+    cell.style.setProperty('background','#fff','important');
+    cell.style.setProperty('color','#243b5b','important');
+    cell.style.setProperty('touch-action','none','important');
+    cell.style.setProperty('user-select','none','important');
+    cell.style.setProperty('transform','none','important');
+    cell.style.setProperty('z-index','1','important');
+    grid.appendChild(cell);cells.push(cell);
+  }));
   function cellFromPoint(x,y){
     const el=document.elementFromPoint(x,y);
     const cell=el&&el.closest?el.closest('button[data-r][data-c]'):null;
     return cell&&grid.contains(cell)?cell:null;
   }
-
   function paint(){
     cells.forEach(c=>{
       const active=selected.some(p=>p.r===Number(c.dataset.r)&&p.c===Number(c.dataset.c));
-      c.style.background=active?'#2457d6':'#fff';
-      c.style.color=active?'#fff':'#243b5b';
-      c.style.border=active?'2px solid #163eaa':'1px solid #d5deec';
-      c.style.boxShadow=active?'0 2px 7px rgba(36,87,214,.22)':'none';
-      c.style.transform='none';
-      c.style.zIndex=active?'2':'1';
+      c.classList.toggle('is-word-selected',active);
+      c.style.setProperty('background',active?'#2457d6':'#fff','important');
+      c.style.setProperty('color',active?'#fff':'#243b5b','important');
+      c.style.setProperty('border',active?'2px solid #163eaa':'1px solid #d5deec','important');
+      c.style.setProperty('box-shadow',active?'0 5px 13px rgba(36,87,214,.35)':'0 1px 2px rgba(20,40,70,.04)','important');
+      c.style.setProperty('transform','none','important');c.style.setProperty('z-index',active?'3':'1','important');
     });
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
-    selectionValue.textContent=word||'Drag across the letters';
-    selectionBar.classList.toggle('has-selection',!!word);
+    selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
   }
-
-  function makePath(a,b){
-    const dr=b.r-a.r,dc=b.c-a.c;
-    // Horizontal and vertical only; diagonal paths are deliberately rejected.
-    if(dr!==0&&dc!==0)return [];
-    if(dr===0&&dc===0)return [a];
-    const n=Math.max(Math.abs(dr),Math.abs(dc));
-    const sr=Math.sign(dr),sc=Math.sign(dc),out=[];
-    for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});
-    return out;
-  }
-
-  function finishSelection(e){
-    if(!dragging || checking ||
-       (activePointerId!==null && e && e.pointerId!==activePointerId))return;
-    if(e&&e.preventDefault)e.preventDefault();
-    dragging=false;
-    activePointerId=null;
-    document.removeEventListener('pointermove',moveSelection);
-    document.removeEventListener('pointerup',finishSelection);
-    document.removeEventListener('pointercancel',finishSelection);
-
-    if(!selected.length)return;
-    const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
-    if(word.length<2){
-      feedback.textContent='Answer ke first aur last letter tak mouse drag karein.';
-      return;
-    }
-
-    checking=true;
-    grid.style.pointerEvents='none';
-    feedback.textContent='Checking...';
-    const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+
-      '&paper='+encodeURIComponent(ch.paper)+
-      '&challengeId='+encodeURIComponent(ch.challengeId)+
-      '&questionNo='+encodeURIComponent(next.questionNo)+
-      '&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
-
-    fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
-      if(!d.success)throw new Error(d.message||'Check failed');
-      if(d.correct){
-        feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';
-        selected.forEach(p=>{
-          const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);
-          if(c){c.style.background='#bbf7d0';c.style.color='#14532d';}
-        });
-        if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
-        if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)
-          ch.progress.level2Words.push(String(next.questionNo));
-        if(d.completed||d.level3Unlocked){
-          ch.level3Unlocked=true;
-          feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
-          setTimeout(function(){
-            if(typeof window.loadAssignmentsForStudent==='function')
-              window.loadAssignmentsForStudent();
-          },500);
-          return;
-        }
-        const card=box.closest('.ikon-mission-card');
-        if(card){
-          const fresh=document.createElement('div');
-          fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';
-          fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse se select karein.</p>';
-          renderIkonPuzzle(ch,reg,fresh);
-          const old=Array.from(card.children).find(el=>
-            el.querySelector&&el.querySelector('h4')&&
-            el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);
-          if(old)old.replaceWith(fresh);
-        }
-      }else{
-        feedback.textContent='✗ Wrong selection. Answer ko seedhi horizontal ya vertical line mein drag karein.';
-        selected=[];
-        paint();
-      }
-    }).catch(e=>{
-      feedback.textContent=e.message||'Answer check nahi ho paya.';
-    }).finally(()=>{
-      checking=false;
-      grid.style.pointerEvents='';
-    });
-  }
-
-  function moveSelection(e){
-    if(!dragging || (activePointerId!==null && e.pointerId!==activePointerId))return;
-    const cell=cellFromPoint(e.clientX,e.clientY);
-    if(!cell)return;
-    e.preventDefault();
-    const path=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});
-    if(path.length){
-      selected=path;
-      paint();
-    }
-  }
-
-  function startSelection(e){
-    if(checking || (e.pointerType==='mouse' && e.button!==0))return;
+  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
+  let activePointerId=null;
+  function onDown(e){
+    if(checking)return;
     const cell=e.target.closest('button[data-r][data-c]');
-    if(!cell || !grid.contains(cell))return;
+    if(!cell||!grid.contains(cell))return;
     e.preventDefault();
     activePointerId=e.pointerId;
     start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};
-    selected=[start];
-    dragging=true;
-    paint();
-    document.addEventListener('pointermove',moveSelection,{passive:false});
-    document.addEventListener('pointerup',finishSelection,{passive:false});
-    document.addEventListener('pointercancel',finishSelection,{passive:false});
+    selected=[start];dragging=true;paint();
+    document.addEventListener('pointermove',onMove,{passive:false});
+    document.addEventListener('pointerup',onUp,{passive:false});
+    document.addEventListener('pointercancel',onUp,{passive:false});
   }
+  function onMove(e){
+    if(!dragging||checking||(activePointerId!==null&&e.pointerId!==activePointerId))return;
+    const cell=cellFromPoint(e.clientX,e.clientY);
+    if(!cell)return;
+    e.preventDefault();
+    selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});
+    paint();
+  }
+  function onUp(e){
+    if(!dragging||checking||(activePointerId!==null&&e&&e.pointerId!==activePointerId))return;
+    if(e&&e.preventDefault)e.preventDefault();
+    dragging=false;activePointerId=null;
+    document.removeEventListener('pointermove',onMove);
+    document.removeEventListener('pointerup',onUp);
+    document.removeEventListener('pointercancel',onUp);
+    if(!selected.length)return;
+    const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
+    checking=true;grid.style.pointerEvents='none';feedback.textContent='Checking...';
+    const url=SCRIPT_URL+'?action=checkAssignmentPuzzle&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&questionNo='+encodeURIComponent(next.questionNo)+'&selectedWord='+encodeURIComponent(word)+'&_='+Date.now();
+    fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{if(!d.success)throw new Error(d.message||'Check failed');if(d.correct){
+      feedback.textContent='✓ Correct! '+d.foundCount+'/'+d.total+' words found.';
+      selected.forEach(p=>{const c=cells.find(x=>Number(x.dataset.r)===p.r&&Number(x.dataset.c)===p.c);if(c)c.style.background='#bbf7d0';});
+      // Update local progress immediately; do not refetch the whole portal after every word.
+      if(!Array.isArray(ch.progress.level2Words))ch.progress.level2Words=[];
+      if(ch.progress.level2Words.indexOf(String(next.questionNo))<0)ch.progress.level2Words.push(String(next.questionNo));
+     if(d.completed||d.level3Unlocked){
+  ch.level3Unlocked=true;
+  feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
 
-  grid.addEventListener('pointerdown',startSelection,{passive:false});
-  const hint=document.createElement('small');hint.textContent='15×15 grid: answer horizontal (left↔right) ya vertical (top↕bottom) ho sakta hai. First letter se last letter tak mouse button daba kar seedhi line mein drag karein; dono directions accepted hain.';box.appendChild(hint);
+  setTimeout(function(){
+    if(typeof window.loadAssignmentsForStudent==='function'){
+      window.loadAssignmentsForStudent();
+    }
+  },500);
+
+  return;
+}
+      const card=box.closest('.ikon-mission-card');
+      if(card){const fresh=document.createElement('div');fresh.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#f7fbf8';fresh.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
+        renderIkonPuzzle(ch,reg,fresh);const old=Array.from(card.children).find(el=>el.querySelector&&el.querySelector('h4')&&el.querySelector('h4').textContent.indexOf('LEVEL 2')===0);if(old)old.replaceWith(fresh);
+      }
+    }else{feedback.textContent='✗ Try Again';selected=[];paint();}}
+    ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
+  }
+  grid.addEventListener('pointerdown',onDown);
+  const hint=document.createElement('small');hint.textContent='Answer left-to-right horizontal ya top-to-bottom vertical line mein chhupa hai. Letters par seedhi line mein drag karein.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
