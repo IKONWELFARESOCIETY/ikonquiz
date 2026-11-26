@@ -30632,7 +30632,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Letters ko seedhi horizontal, vertical ya diagonal line mein drag karein.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Letters ko seedhi horizontal, vertical ya diagonal line mein drag karein. Word ko dono directions mein select kar sakte hain.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
