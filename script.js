@@ -29701,10 +29701,12 @@ function isIkonPracticalUploaded(a) {
 
 function level3DoneForDesign(practical, progress) {
   const tasks = Array.isArray(practical) ? practical : [];
-  const allAssignedApproved = tasks.length === 0 || tasks.every(a =>
-    String(a.status || '').trim().toUpperCase() === 'APPROVED'
+  // Unlock after every assigned practical has a submitted file; admin marks
+  // and review can be completed later in the evening.
+  const allAssignedSubmitted = tasks.length === 0 || tasks.every(a =>
+    a.uploaded === true || ['UNDER REVIEW','PENDING REVIEW','APPROVED'].includes(String(a.status || '').trim().toUpperCase())
   );
-  return !!(progress && progress.level3Complete) && allAssignedApproved;
+  return !!(progress && progress.level3FindErrorComplete && progress.level3ShuffleComplete) && allAssignedSubmitted;
 }
 
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
@@ -29842,7 +29844,10 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   l3.innerHTML='<h4>LEVEL 3 – Find Error & Practical Skill</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
   // Find Error MCQ unlocks after Level 1 and Level 2; practical uploads remain below.
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
-  else { renderIkonLevel3QuickFix(ch,reg,l3); }
+  else {
+    renderIkonLevel3QuickFix(ch,reg,l3);
+    renderIkonLevel3Shuffle(ch,reg,l3);
+  }
   if(ch.level3Unlocked && !practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
@@ -29853,7 +29858,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
   l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">🧩</span><div><small>LEVEL 04 · PAHELI CHALLENGE</small><h4>PAHELI</h4><p>Question padhein aur A/B/C/D mein se sahi option click karein.</p></div><span class="ikon-level-game-stamp">PAHELI</span></div>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Level 5 unlocked';l4.appendChild(done);}
-  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 complete karein aur assigned sabhi practical tasks admin se APPROVED karwayein.';l4.appendChild(lock);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke dono parts complete karein aur assigned sabhi practical files upload karein.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
@@ -29869,7 +29874,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   container.appendChild(card);
 }
 function loadIkonGameLevel(ch,reg,level,box){
-  const action=level===4?'assignmentLevel4Riddles':'assignmentUltimate';
+  const action=level===3?'assignmentLevel3Shuffle':(level===4?'assignmentLevel4Riddles':'assignmentUltimate');
   const url=SCRIPT_URL+'?action='+action+'&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   const loading=document.createElement('p');loading.textContent='Loading '+(level===4?'Paheli':'challenge')+'...';loading.style.cssText='padding:10px;color:#334155;font-weight:600';box.appendChild(loading);
   fetch(url,{cache:'no-store'}).then(async r=>{
@@ -29880,7 +29885,7 @@ function loadIkonGameLevel(ch,reg,level,box){
     return d;
   }).then(d=>{
     loading.remove();
-    if(d.completed){const done=document.createElement('p');done.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';done.style.cssText='padding:12px;color:#047857;font-weight:800';box.appendChild(done);return;}
+    if(d.completed){const done=document.createElement('p');done.textContent=level===3?'✓ Shuffle completed · '+d.score+'/'+d.total+' marks. Practical uploads ke baad Paheli unlock hogi.':'✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';done.style.cssText='padding:12px;color:#047857;font-weight:800';box.appendChild(done);return;}
     if(!Array.isArray(d.items)||!d.items.length)throw new Error('Is challenge ke questions nahi mile.');
     if(level===4)renderIkonLevel4Paheli(ch,reg,d.items,box);
     else renderIkonGameForm(ch,reg,level,d.items,box);
@@ -29985,9 +29990,11 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
   const stages=isFinal?[
     {id:'define',title:'DEFINE THE FEATURE',sub:'Har feature ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
+  ]:level===3?[
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']}
   ]:[
-    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein. 5 questions × 2 marks.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein. 5 questions × 2 marks.',icon:'🕵️',types:['SPOT_ERROR']}
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein.',icon:'🕵️',types:['SPOT_ERROR']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
@@ -30500,7 +30507,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
   });
 
   const submit=document.createElement('button');submit.type='button';submit.className='ikon-playable-submit';
-  submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';
+  submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':(level===3?'🧠 SUBMIT SHUFFLE':'⚔️ SUBMIT BRAIN BATTLE');
   submit.addEventListener('click',()=>{
     const missingItem=items.find(x=>{
       const value=answers[x.itemId];
@@ -30516,7 +30523,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
       alert('Har challenge ka answer select ya type karein. Missing: '+(missingItem.question||missingItem.itemId));return;
     }
     submit.disabled=true;submit.textContent=isFinal?'SUBMITTING FOR ADMIN REVIEW...':'VERIFYING YOUR RESULT...';
-    ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
+    ikonAssignmentPost({action:level===3?'submitLevel3Shuffle':(level===4?'submitBrainBattle':'submitUltimateChampion'),regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{
         if(level===5){
           root.replaceChildren();
@@ -30527,9 +30534,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
           const back=document.createElement('button');back.type='button';back.className='ikon-final-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());pending.appendChild(back);
           root.appendChild(pending);return;
         }
-        alert('Brain Battle complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
+        alert((level===3?'Shuffle':'Brain Battle')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
       })
-      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';});
+      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':(level===3?'🧠 SUBMIT SHUFFLE':'⚔️ SUBMIT BRAIN BATTLE');});
   });
   root.appendChild(submit);box.appendChild(root);
 }
@@ -30558,6 +30565,14 @@ function renderIkonLevel3QuickFix(ch,reg,box){
     submit.onclick=()=>{if(Object.keys(answers).length!==items.length){result.textContent='Har question ke liye A/B/C/D mein se ek option select karein.';result.style.color='#b91c1c';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3FindError',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Find Error complete · '+x.score+'/'+x.total+' marks. Ab practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Find Error submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT FIND ERROR';});};
     panel.append(form,submit,result);
   }).catch(e=>{state.textContent='Find Error error: '+e.message;state.style.color='#b91c1c';});
+}
+
+function renderIkonLevel3Shuffle(ch,reg,box){
+  const panel=document.createElement('section');panel.className='ikon-level3-shuffle-panel';
+  panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #c7d2fe;border-radius:14px;background:#f8faff';
+  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">7 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
+  panel.appendChild(head);box.appendChild(panel);
+  loadIkonGameLevel(ch,reg,3,panel);
 }
 
 function renderIkonLevel3Matching(ch,reg,box){
