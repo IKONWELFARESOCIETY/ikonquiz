@@ -29774,7 +29774,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     });
     if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Is paper/challenge ke students abhi assign nahi hue.';tr.appendChild(td);tbody.appendChild(tr);}
     table.appendChild(tbody);tableWrap.appendChild(table);panel.appendChild(tableWrap);
-    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total 45 marks mein se hai: MCQ 10, Word Find 10, Quick Fix 5, Shuffle 10 aur Error Find 10. Practical Upload (40) aur Define (15) ke admin marks include nahi hain.';
+    const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total 45 marks mein se hai: MCQ 10, Word Find 10, Find Error 5, Shuffle 10 aur Paheli 10. Practical Upload (40) aur Define (15) ke admin marks include nahi hain.';
     panel.appendChild(note);
   }).catch(err=>{panel.remove();console.error('Weekly leaderboard:',err);});
 }
@@ -29839,8 +29839,8 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   else renderIkonPuzzle(ch,reg,l2);
   card.appendChild(l2);
   const l3=document.createElement('div');l3.className='ikon-level-panel ikon-level-3';l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
-  l3.innerHTML='<h4>LEVEL 3 – Practical Skill Master</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
-  // Quick Fix unlocks after Level 1 and Level 2; practical uploads remain below.
+  l3.innerHTML='<h4>LEVEL 3 – Find Error & Practical Skill</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
+  // Find Error MCQ unlocks after Level 1 and Level 2; practical uploads remain below.
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
   else { renderIkonLevel3QuickFix(ch,reg,l3); }
   if(ch.level3Unlocked && !practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
@@ -30535,28 +30535,29 @@ function renderIkonGameForm(ch,reg,level,items,box){
 }
 
 function renderIkonLevel3QuickFix(ch,reg,box){
-  const panel=document.createElement('section');panel.className='ikon-level3-quickfix-panel';
+  const panel=document.createElement('section');panel.className='ikon-level3-finderror-panel';
   panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #d9e4f2;border-radius:14px;background:#fff';
-  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#2563eb">LEVEL 3 · QUICK FIX</span><h4 style="font-size:22px;margin:5px 0 7px">⚡ QUICK FIX CHALLENGE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">Question ko dhyan se padhein aur correction / formula / shortcut seedha type karein. Koi MCQ options nahi hain.</p>';panel.appendChild(head);
-  const state=document.createElement('p');state.textContent='Loading Quick Fix questions...';state.style.cssText='font-weight:700;color:#475569';panel.appendChild(state);box.appendChild(panel);
-  const url=SCRIPT_URL+'?action=assignmentLevel3QuickFix&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
+  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#2563eb">LEVEL 3 · PART 1</span><h4 style="font-size:22px;margin:5px 0 7px">🕵️ FIND ERROR MCQ</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">Question padhein aur A/B/C/D mein se ek sahi option click karein.</p>';panel.appendChild(head);
+  const state=document.createElement('p');state.textContent='Loading Find Error questions...';state.style.cssText='font-weight:700;color:#475569';panel.appendChild(state);box.appendChild(panel);
+  const url=SCRIPT_URL+'?action=assignmentLevel3FindError&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
-    if(!d.success)throw new Error(d.message||'Quick Fix load failed');
-    if(d.completed){state.textContent='✓ Quick Fix completed · '+d.score+'/'+d.total;state.style.color='#047857';return;}
-    const items=d.items||[];if(!items.length)throw new Error('Is challenge ke Quick Fix questions nahi mile.');
-    state.textContent=items.length+' short questions · Type your answer below';
-    const form=document.createElement('div');form.className='ikon-quickfix-form';const fields=[];
+    if(!d.success)throw new Error(d.message||'Find Error load failed');
+    if(d.completed){state.textContent='✓ Find Error completed · '+d.score+'/'+d.total;state.style.color='#047857';return;}
+    const items=d.items||[];if(!items.length)throw new Error('Is challenge ke Find Error MCQs nahi mile.');
+    state.textContent=items.length+' questions · Har question ka ek option select karein.';
+    const answers={},cards=[];const form=document.createElement('div');form.className='ikon-finderror-form';
     items.forEach((it,i)=>{
-      const card=document.createElement('label');card.style.cssText='display:block;margin:12px 0;padding:13px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc';
-      const q=document.createElement('div');q.textContent=(i+1)+'. '+it.question;q.style.cssText='font-size:17px;line-height:1.55;font-weight:800;color:#172554;margin-bottom:10px;white-space:pre-wrap';
-      const input=document.createElement('input');input.type='text';input.autocomplete='off';input.placeholder='Type your correction / answer';input.style.cssText='width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #94a3b8;border-radius:9px;font-size:16px;min-height:48px;background:#fff;color:#0f172a';
-      card.append(q,input);form.appendChild(card);fields.push({id:it.itemId,input});
+      const card=document.createElement('div');card.style.cssText='display:block;margin:12px 0;padding:13px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc';
+      const q=document.createElement('div');q.textContent=(i+1)+'. '+it.question;q.style.cssText='font-size:17px;line-height:1.55;font-weight:800;color:#172554;margin-bottom:10px;white-space:pre-wrap';card.appendChild(q);
+      const opts=document.createElement('div');opts.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px';const buttons=[];
+      ['A','B','C','D'].forEach((letter,j)=>{const b=document.createElement('button');b.type='button';b.textContent=letter+'. '+it.options[j];b.style.cssText='width:100%;box-sizing:border-box;padding:12px;text-align:left;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#1e293b;font-size:15px;font-weight:700;min-height:48px;cursor:pointer;white-space:normal';b.setAttribute('aria-pressed','false');b.onclick=()=>{answers[it.itemId]=letter;buttons.forEach(x=>{x.style.background='#fff';x.style.borderColor='#cbd5e1';x.style.color='#1e293b';x.setAttribute('aria-pressed','false');});b.style.background='#dbeafe';b.style.borderColor='#2563eb';b.style.color='#1d4ed8';b.setAttribute('aria-pressed','true');};buttons.push(b);opts.appendChild(b);});
+      card.appendChild(opts);form.appendChild(card);cards.push(card);
     });
-    const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT QUICK FIX';submit.className='primary';submit.style.cssText='font-size:15px;padding:13px 20px;min-height:48px';
+    const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT FIND ERROR';submit.className='primary';submit.style.cssText='font-size:15px;padding:13px 20px;min-height:48px';
     const result=document.createElement('p');result.style.cssText='font-size:14px;font-weight:700';
-    submit.onclick=()=>{const answers={};fields.forEach(f=>answers[f.id]=f.input.value.trim());if(fields.some(f=>!f.input.value.trim())){result.textContent='Please answer every question.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3QuickFix',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Quick Fix complete · '+x.score+'/'+x.total+' marks. Ab neeche assigned practical tasks upload karein; sabhi APPROVED hone par Level 4 unlock hoga.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Quick Fix submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT QUICK FIX';});};
+    submit.onclick=()=>{if(Object.keys(answers).length!==items.length){result.textContent='Har question ke liye A/B/C/D mein se ek option select karein.';result.style.color='#b91c1c';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3FindError',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Find Error complete · '+x.score+'/'+x.total+' marks. Ab practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Find Error submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT FIND ERROR';});};
     panel.append(form,submit,result);
-  }).catch(e=>{state.textContent='Quick Fix error: '+e.message;state.style.color='#b91c1c';});
+  }).catch(e=>{state.textContent='Find Error error: '+e.message;state.style.color='#b91c1c';});
 }
 
 function renderIkonLevel3Matching(ch,reg,box){
