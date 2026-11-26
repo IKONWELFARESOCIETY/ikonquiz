@@ -30559,6 +30559,7 @@ function renderIkonMcqForm(ch,reg,box){
       .catch(e=>{alert(e.message);btn.disabled=false;btn.textContent='Submit Level 1';});
   };form.appendChild(btn);box.appendChild(form);
 }
+const IKON_PUZZLE_GRID_RENDER_VERSION = 'IKON-GRID-V3-18X18';
 function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
@@ -30580,14 +30581,25 @@ function renderIkonPuzzle(ch,reg,box){
   box.appendChild(questionList);
   const prompt=document.createElement('p');prompt.innerHTML='<b>Find the answer for Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat('+((next.grid&&next.grid[0])?String(next.grid[0]).length:15)+',minmax(22px,1fr));gap:3px;max-width:620px;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');
+  grid.className='ikon-puzzle-grid';
+  const gridRows=Array.isArray(next.grid)?next.grid.map(r=>String(r||'')):[];
+  const gridWidth=gridRows.length?gridRows[0].length:0;
+  const gridValid=gridRows.length>=18 && gridWidth>=18 && gridRows.every(r=>r.length===gridWidth);
+  grid.style.cssText='display:grid;grid-template-columns:repeat('+Math.max(1,gridWidth)+',minmax(22px,1fr));gap:3px;width:100%;max-width:720px;touch-action:none;user-select:none';
+  box.appendChild(grid);
+  if(!gridValid){
+    feedback.textContent='Puzzle grid purane Apps Script version se aa raha hai. Code.gs replace karke New Version deploy karein; expected grid minimum 18 x 18.';
+    feedback.style.color='#b42318';
+    return;
+  }
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  gridRows.forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
   function paint(){
     cells.forEach(c=>{
@@ -30632,7 +30644,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Answer grid ke beech wali row mein left se right seedhi horizontal line mein chhupa hai. Letters par drag karein.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Answer grid ki beech wali row mein left se right seedhi horizontal line mein hai. Us poori line par drag karein.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
