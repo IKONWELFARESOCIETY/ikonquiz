@@ -30563,9 +30563,24 @@ function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
   if(!next)return;
-  const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
+  // Show the complete puzzle question list together; the active word grid below
+  // remains sequential so students unlock one answer at a time.
+  const questionList=document.createElement('div');
+  questionList.className='ikon-puzzle-question-list';
+  questionList.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0 16px';
+  (ch.puzzle||[]).forEach((q,i)=>{
+    const done=found.indexOf(String(q.questionNo))>=0;
+    const item=document.createElement('div');
+    item.style.cssText='padding:12px;border:1px solid '+(done?'#86d6a2':'#dbe4f0')+';border-radius:12px;background:'+(done?'#effcf3':'#f8faff')+';font-size:14px;line-height:1.45';
+    const heading=document.createElement('b');
+    heading.textContent=(done?'✓ ':'')+'Question '+q.questionNo;
+    const body=document.createElement('div');body.textContent=String(q.question||'');body.style.marginTop='5px';
+    item.append(heading,body);questionList.appendChild(item);
+  });
+  box.appendChild(questionList);
+  const prompt=document.createElement('p');prompt.innerHTML='<b>Find the answer for Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat('+((next.grid&&next.grid[0])?String(next.grid[0]).length:15)+',minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat('+((next.grid&&next.grid[0])?String(next.grid[0]).length:15)+',minmax(22px,1fr));gap:3px;max-width:620px;touch-action:none;user-select:none';box.appendChild(grid);
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
