@@ -29700,10 +29700,11 @@ function isIkonPracticalUploaded(a) {
 }
 
 function level3DoneForDesign(practical, progress) {
-  return !!(progress && progress.level3Complete) && Array.isArray(practical) &&
-    practical.length === 3 &&
-    new Set(practical.map(a => String(a.id || '').trim())).size === 3 &&
-    practical.every(isIkonPracticalUploaded);
+  const tasks = Array.isArray(practical) ? practical : [];
+  const allAssignedApproved = tasks.length === 0 || tasks.every(a =>
+    String(a.status || '').trim().toUpperCase() === 'APPROVED'
+  );
+  return !!(progress && progress.level3Complete) && allAssignedApproved;
 }
 
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
@@ -29789,9 +29790,11 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
     String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase() &&
     ikonAssignmentSamePaper(a.paper,ch.paper)
   );
-  const practicalDone=Array.isArray(practicalForChallenge) && practicalForChallenge.length===3 &&
-    new Set(practicalForChallenge.map(a=>String(a.id||'').trim())).size===3 &&
-    practicalForChallenge.every(isIkonPracticalUploaded);
+  // Only the number of practical tasks assigned in Assignment Record is required.
+  // Each assigned task must have an admin APPROVED status before final leaderboard.
+  const practicalDone=Array.isArray(practicalForChallenge) &&
+    new Set(practicalForChallenge.map(a=>String(a.id||'').trim())).size===practicalForChallenge.length &&
+    practicalForChallenge.every(a=>String(a.status||'').trim().toUpperCase()==='APPROVED');
   const quickFixDone=!!progressState.level3Complete;
   const level3CompleteForGate=quickFixDone && practicalDone;
   const level5Submitted=!!(progressState.level5Complete||progressState.level5Pending);
@@ -29850,7 +29853,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
   l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">⚡</span><div><small>LEVEL 04 · THE STRATEGY ARENA</small><h4>BRAIN BATTLE</h4><p>Four rounds. One mission. Beat the arena.</p></div><span class="ikon-level-game-stamp">BATTLE</span></div>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Ultimate Champion unlocked';l4.appendChild(done);}
-  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 Quick Fix complete karein aur teeno practical tasks upload karein.';l4.appendChild(lock);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 Quick Fix complete karein aur assigned sabhi practical tasks admin se APPROVED karwayein.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
@@ -30504,7 +30507,7 @@ function renderIkonLevel3QuickFix(ch,reg,box){
     });
     const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT QUICK FIX';submit.className='primary';submit.style.cssText='font-size:15px;padding:13px 20px;min-height:48px';
     const result=document.createElement('p');result.style.cssText='font-size:14px;font-weight:700';
-    submit.onclick=()=>{const answers={};fields.forEach(f=>answers[f.id]=f.input.value.trim());if(fields.some(f=>!f.input.value.trim())){result.textContent='Please answer every question.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3QuickFix',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Quick Fix complete · '+x.score+'/'+x.total+' marks. Ab neeche teeno practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Quick Fix submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT QUICK FIX';});};
+    submit.onclick=()=>{const answers={};fields.forEach(f=>answers[f.id]=f.input.value.trim());if(fields.some(f=>!f.input.value.trim())){result.textContent='Please answer every question.';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3QuickFix',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Quick Fix complete · '+x.score+'/'+x.total+' marks. Ab neeche assigned practical tasks upload karein; sabhi APPROVED hone par Level 4 unlock hoga.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Quick Fix submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT QUICK FIX';});};
     panel.append(form,submit,result);
   }).catch(e=>{state.textContent='Quick Fix error: '+e.message;state.style.color='#b91c1c';});
 }
