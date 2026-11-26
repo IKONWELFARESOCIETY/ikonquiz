@@ -30600,7 +30600,7 @@ function renderIkonPuzzle(ch,reg,box){
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
   }
-  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr===0&&dc===0)return [a];if(dr!==0&&dc!==0&&Math.abs(dr)!==Math.abs(dc))return [];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
+  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.abs(dc),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r,c:a.c+sc*i});return out;}
   function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
   function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
   function onUp(){if(!dragging||checking)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
@@ -30632,7 +30632,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Letters ko seedhi horizontal, vertical ya diagonal line mein drag karein. Word ko dono directions mein select kar sakte hain.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Answer grid ke beech wali row mein left se right seedhi horizontal line mein chhupa hai. Letters par drag karein.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
