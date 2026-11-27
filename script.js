@@ -29895,8 +29895,9 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   // Find Error MCQ unlocks after Level 1 and Level 2; practical uploads remain below.
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
   else {
+    // Part 1 (Find Error) controls the unlock; Shuffle appears only after
+    // the server confirms Part 1 completion.
     renderIkonLevel3QuickFix(ch,reg,l3);
-    renderIkonLevel3Shuffle(ch,reg,l3);
   }
   if(ch.level3Unlocked && !practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
@@ -30041,9 +30042,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const stages=isFinal?[
     {id:'define',title:'DEFINE THE FEATURE',sub:'Har feature ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
   ]:level===3?[
-    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']}
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'15 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']}
   ]:[
-    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'15 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']},
     {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein.',icon:'🕵️',types:['SPOT_ERROR']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
@@ -30106,7 +30107,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
 
     const shell=document.createElement('div');shell.className='ikon-memory-shuffle-game';
     const guide=document.createElement('p');guide.className='ikon-memory-shuffle-guide';
-    guide.textContent='Pehle 7 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
+    guide.textContent='Pehle 15 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
     const bar=document.createElement('div');bar.className='ikon-memory-shuffle-bar';
     const phaseText=document.createElement('strong');phaseText.className='ikon-memory-shuffle-phase';phaseText.textContent='READY TO MEMORIZE';
     const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='15 SEC';
@@ -30115,7 +30116,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     const startBtn=document.createElement('button');startBtn.type='button';startBtn.className='ikon-memory-shuffle-start';
     startBtn.textContent='START MEMORY CHALLENGE';
     const hint=document.createElement('p');hint.className='ikon-memory-shuffle-hint';
-    hint.textContent='Ready hone par START dabayein. 7-second observation uske baad shuru hoga.';
+    hint.textContent='Ready hone par START dabayein. 15-second observation uske baad shuru hoga.';
     shell.append(guide,bar,grid,startBtn,hint);
 
     const entries=(item.options||[]).filter(v=>String(v||'').trim()!=='')
@@ -30237,7 +30238,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
       phase='observe';startBtn.hidden=true;
       tiles.forEach(t=>t.faceUp());
       phaseText.textContent='OBSERVE & REMEMBER';
-      hint.textContent='Options ki positions yaad karein. Cards 7 seconds baad hide ho jayenge.';
+      hint.textContent='Options ki positions yaad karein. Cards 15 seconds baad hide ho jayenge.';
       const deadline=Date.now()+15000;
       function updateCountdown(){countText.textContent=Math.max(0,Math.ceil((deadline-Date.now())/1000))+'s';}
       updateCountdown();
@@ -30598,7 +30599,13 @@ function renderIkonLevel3QuickFix(ch,reg,box){
   const url=SCRIPT_URL+'?action=assignmentLevel3FindError&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   fetch(url,{cache:'no-store'}).then(r=>r.json()).then(d=>{
     if(!d.success)throw new Error(d.message||'Find Error load failed');
-    if(d.completed){state.textContent='✓ Find Error completed · '+d.score+'/'+d.total;state.style.color='#047857';return;}
+    if(d.completed){
+      state.textContent='✓ Find Error completed · '+d.score+'/'+d.total;
+      state.style.color='#047857';
+      // Find Error is complete: unlock and render Shuffle immediately.
+      renderIkonLevel3Shuffle(ch,reg,box);
+      return;
+    }
     const items=d.items||[];if(!items.length)throw new Error('Is challenge ke Find Error MCQs nahi mile.');
     state.textContent=items.length+' questions · Har question ka ek option select karein.';
     const answers={},cards=[];const form=document.createElement('div');form.className='ikon-finderror-form';
@@ -30611,7 +30618,13 @@ function renderIkonLevel3QuickFix(ch,reg,box){
     });
     const submit=document.createElement('button');submit.type='button';submit.textContent='SUBMIT FIND ERROR';submit.className='primary';submit.style.cssText='font-size:15px;padding:13px 20px;min-height:48px';
     const result=document.createElement('p');result.style.cssText='font-size:14px;font-weight:700';
-    submit.onclick=()=>{if(Object.keys(answers).length!==items.length){result.textContent='Har question ke liye A/B/C/D mein se ek option select karein.';result.style.color='#b91c1c';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3FindError',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Find Error complete · '+x.score+'/'+x.total+' marks. Ab practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Find Error submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT FIND ERROR';});};
+    submit.onclick=()=>{if(Object.keys(answers).length!==items.length){result.textContent='Har question ke liye A/B/C/D mein se ek option select karein.';result.style.color='#b91c1c';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3FindError',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{
+      result.textContent='✓ Find Error complete · '+x.score+'/'+x.total+' marks. Shuffle unlock ho raha hai...';
+      result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Find Error submitted';
+      // Re-fetch the server progress and rebuild this challenge immediately.
+      // This replaces the old F5 workaround and keeps the current page/session.
+      if(typeof window.loadAssignmentsForStudent==='function') window.loadAssignmentsForStudent();
+    }).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT FIND ERROR';});};
     panel.append(form,submit,result);
   }).catch(e=>{state.textContent='Find Error error: '+e.message;state.style.color='#b91c1c';});
 }
@@ -30619,7 +30632,7 @@ function renderIkonLevel3QuickFix(ch,reg,box){
 function renderIkonLevel3Shuffle(ch,reg,box){
   const panel=document.createElement('section');panel.className='ikon-level3-shuffle-panel';
   panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #c7d2fe;border-radius:14px;background:#f8faff';
-  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">7 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
+  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">15 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
   panel.appendChild(head);box.appendChild(panel);
   loadIkonGameLevel(ch,reg,3,panel);
 }
