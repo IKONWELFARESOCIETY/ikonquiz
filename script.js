@@ -29888,7 +29888,7 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   l2.innerHTML='<h4>LEVEL 2 – Question-Based Word Detective</h4><p>Question padhein aur grid mein answer ko mouse/touch se select karein.</p>';
   if(!mcqDone){const lock=document.createElement('p');lock.textContent='🔒 Level 1 complete karne ke baad unlock hoga.';l2.appendChild(lock);}
   else if(puzzleDone){const done=document.createElement('b');done.textContent='All words found · Level 3 unlocked';l2.appendChild(done);}
-  else renderIkonPuzzle(ch,reg,l2,practical,container);
+  else renderIkonPuzzle(ch,reg,l2,allPractical,container);
   card.appendChild(l2);
   const l3=document.createElement('div');l3.className='ikon-level-panel ikon-level-3';l3.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff9ef';
   l3.innerHTML='<h4>LEVEL 3 – Find Error & Practical Skill</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
@@ -30106,10 +30106,10 @@ function renderIkonGameForm(ch,reg,level,items,box){
 
     const shell=document.createElement('div');shell.className='ikon-memory-shuffle-game';
     const guide=document.createElement('p');guide.className='ikon-memory-shuffle-guide';
-    guide.textContent='Pehle 10 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
+    guide.textContent='Pehle 7 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
     const bar=document.createElement('div');bar.className='ikon-memory-shuffle-bar';
     const phaseText=document.createElement('strong');phaseText.className='ikon-memory-shuffle-phase';phaseText.textContent='READY TO MEMORIZE';
-    const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='15 SEC';
+    const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='7 SEC';
     bar.append(phaseText,countText);
     const grid=document.createElement('div');grid.className='ikon-memory-shuffle-grid';
     const startBtn=document.createElement('button');startBtn.type='button';startBtn.className='ikon-memory-shuffle-start';
@@ -30237,12 +30237,12 @@ function renderIkonGameForm(ch,reg,level,items,box){
       phase='observe';startBtn.hidden=true;
       tiles.forEach(t=>t.faceUp());
       phaseText.textContent='OBSERVE & REMEMBER';
-      hint.textContent='Options ki positions yaad karein. Cards 10 seconds baad hide ho jayenge.';
-      const deadline=Date.now()+15000;
+      hint.textContent='Options ki positions yaad karein. Cards 7 seconds baad hide ho jayenge.';
+      const deadline=Date.now()+7000;
       function updateCountdown(){countText.textContent=Math.max(0,Math.ceil((deadline-Date.now())/1000))+'s';}
       updateCountdown();
       const ticker=setInterval(updateCountdown,100);
-      await wait(15000);
+      await wait(7000);
       clearInterval(ticker);
       if(!shell.isConnected)return;
       phase='shuffle';
@@ -30576,13 +30576,12 @@ function renderIkonGameForm(ch,reg,level,items,box){
     ikonAssignmentPost({action:level===3?'submitLevel3Shuffle':(level===4?'submitBrainBattle':'submitUltimateChampion'),regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{
         if(level===5){
-          root.replaceChildren();
-          const pending=document.createElement('section');pending.className='ikon-final-scoreboard';
-          const title=document.createElement('h3');title.textContent='✓ DEFINITIONS SUBMITTED';
-          const note=document.createElement('p');note.textContent='Aapke answers save ho gaye hain. Admin manually definitions check karke marks dega. Review complete hone ke baad Level 5 result update hoga.';
-          pending.append(title,note);
-          const back=document.createElement('button');back.type='button';back.className='ikon-final-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());pending.appendChild(back);
-          root.appendChild(pending);return;
+          // Level 5 submission is the student's final action: show the live
+          // leaderboard immediately, without requiring a manual page refresh.
+          const missionCard=box.closest('.ikon-mission-card')||box;
+          root.remove();
+          renderIkonCompletedChallengeLeaderboard(ch,reg,missionCard);
+          return;
         }
         alert((level===3?'Shuffle':'Brain Battle')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
       })
@@ -30620,7 +30619,7 @@ function renderIkonLevel3QuickFix(ch,reg,box){
 function renderIkonLevel3Shuffle(ch,reg,box){
   const panel=document.createElement('section');panel.className='ikon-level3-shuffle-panel';
   panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #c7d2fe;border-radius:14px;background:#f8faff';
-  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">10 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
+  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">7 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
   panel.appendChild(head);box.appendChild(panel);
   loadIkonGameLevel(ch,reg,3,panel);
 }
@@ -30717,15 +30716,14 @@ function renderIkonPuzzle(ch,reg,box,allPractical,challengeContainer){
   ch.level3Unlocked=true;
   feedback.textContent='✓ Level 2 complete! Level 3 unlocked. Loading Level 3...';
 
+  // Rebuild only this challenge card from the already-loaded practical list.
+  // This avoids the extra two network requests and the visible delay caused by
+  // reloading the complete assignment portal after the final puzzle word.
   const currentCard=box.closest('.ikon-mission-card');
-  const targetContainer=challengeContainer || (currentCard && currentCard.parentElement);
-  if(currentCard && targetContainer){
-    const replacementHost=document.createElement('div');
-    renderIkonWeeklyChallenge(ch,Array.isArray(allPractical)?allPractical:[],reg,replacementHost);
-    const replacementCard=replacementHost.firstElementChild;
-    if(replacementCard) currentCard.replaceWith(replacementCard);
-    else feedback.textContent='Level 3 unlock ho gaya. Page refresh karke Level 3 open karein.';
-  } else if(typeof window.loadAssignmentsForStudent==='function'){
+  if(currentCard && challengeContainer && Array.isArray(allPractical)){
+    currentCard.remove();
+    renderIkonWeeklyChallenge(ch,allPractical,reg,challengeContainer);
+  }else if(typeof window.loadAssignmentsForStudent==='function'){
     window.loadAssignmentsForStudent();
   }
   return;
@@ -30972,4 +30970,45 @@ window.submitIkonAssignment = window.submitIkonAssignment;
     var logo=el('ikonLogo');if(!logo)return;var taps=0,timer=null;
     logo.addEventListener('click',function(){taps++;clearTimeout(timer);timer=setTimeout(function(){taps=0;},1800);if(taps>=5){taps=0;window.openIkonAssignmentAdminLogin();}});
   });
+})();
+/* IKON UPDATE: Larger puzzle and practical question text */
+(function(){
+  if(document.getElementById('ikon-large-puzzle-practical-question-text')) return;
+  var style=document.createElement('style');
+  style.id='ikon-large-puzzle-practical-question-text';
+  style.textContent=`
+    /* Word-grid / puzzle question prompt */
+    .ikon-weekly-shell .ikon-puzzle-question,
+    .ikon-weekly-shell .ikon-level-panel .ikon-puzzle-question {
+      font-size:clamp(21px,2.5vw,25px)!important;
+      font-weight:800!important;
+      line-height:1.65!important;
+      color:#17365f!important;
+    }
+    /* Practical task title and instruction */
+    .ikon-weekly-shell .ikon-practical-task-card>b {
+      font-size:clamp(21px,2.3vw,24px)!important;
+      line-height:1.55!important;
+    }
+    .ikon-weekly-shell .ikon-practical-task-card>p {
+      font-size:clamp(19px,2.1vw,22px)!important;
+      line-height:1.8!important;
+    }
+    /* Other game question prompts, including shuffle/riddle-style tasks */
+    .ikon-weekly-shell .ikon-game-question {
+      font-size:clamp(20px,2.3vw,23px)!important;
+      line-height:1.7!important;
+      font-weight:750!important;
+    }
+    @media(max-width:600px){
+      .ikon-weekly-shell .ikon-puzzle-question,
+      .ikon-weekly-shell .ikon-level-panel .ikon-puzzle-question {
+        font-size:20px!important;line-height:1.65!important;
+      }
+      .ikon-weekly-shell .ikon-practical-task-card>b {font-size:20px!important;}
+      .ikon-weekly-shell .ikon-practical-task-card>p {font-size:19px!important;}
+      .ikon-weekly-shell .ikon-game-question {font-size:19px!important;}
+    }
+  `;
+  (document.head||document.documentElement).appendChild(style);
 })();
