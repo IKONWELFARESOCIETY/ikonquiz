@@ -29701,12 +29701,10 @@ function isIkonPracticalUploaded(a) {
 
 function level3DoneForDesign(practical, progress) {
   const tasks = Array.isArray(practical) ? practical : [];
-  // Unlock after every assigned practical has a submitted file; admin marks
-  // and review can be completed later in the evening.
-  const allAssignedSubmitted = tasks.length === 0 || tasks.every(a =>
-    a.uploaded === true || ['UNDER REVIEW','PENDING REVIEW','APPROVED'].includes(String(a.status || '').trim().toUpperCase())
+  const allAssignedApproved = tasks.length === 0 || tasks.every(a =>
+    String(a.status || '').trim().toUpperCase() === 'APPROVED'
   );
-  return !!(progress && progress.level3FindErrorComplete && progress.level3ShuffleComplete) && allAssignedSubmitted;
+  return !!(progress && progress.level3Complete) && allAssignedApproved;
 }
 
 function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
@@ -29778,16 +29776,7 @@ function renderIkonCompletedChallengeLeaderboard(ch,reg,container){
     table.appendChild(tbody);tableWrap.appendChild(table);panel.appendChild(tableWrap);
     const note=document.createElement('p');note.className='ikon-final-score-note';note.textContent='Same paper + same Challenge ID ke sabhi assigned students. Total 45 marks mein se hai: MCQ 10, Word Find 10, Find Error 5, Shuffle 10 aur Paheli 10. Practical Upload (40) aur Define (15) ke admin marks include nahi hain.';
     panel.appendChild(note);
-  }).catch(err=>{
-    console.error('Weekly leaderboard:',err);
-    status.textContent='Leaderboard load error: '+String(err && err.message || err)+'. Page refresh karke dobara try karein.';
-    status.style.cssText='display:block;color:#fee2e2;background:rgba(127,29,29,.35);padding:12px;border-radius:10px;font-weight:800;line-height:1.5';
-    const retry=document.createElement('button');
-    retry.type='button';retry.textContent='RETRY LEADERBOARD';retry.className='ikon-final-back';
-    retry.onclick=()=>{panel.remove();renderIkonCompletedChallengeLeaderboard(ch,reg,container);};
-    panel.appendChild(retry);
-    if(!panel.isConnected) container.appendChild(panel);
-  });
+  }).catch(err=>{panel.remove();console.error('Weekly leaderboard:',err);});
 }
 function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
   const challengeKey=String(ch.paper||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'')+'||'+String(ch.challengeId||'').trim().toUpperCase();
@@ -29801,11 +29790,11 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
     String(a.challengeId||'').trim().toUpperCase()===String(ch.challengeId||'').trim().toUpperCase() &&
     ikonAssignmentSamePaper(a.paper,ch.paper)
   );
-  // Practical upload completion is based on file submission, not admin review.
-  // PENDING / UNDER REVIEW / SUBMITTED / APPROVED all mean the student has uploaded.
+  // Only the number of practical tasks assigned in Assignment Record is required.
+  // Each assigned task must have an admin APPROVED status before final leaderboard.
   const practicalDone=Array.isArray(practicalForChallenge) &&
     new Set(practicalForChallenge.map(a=>String(a.id||'').trim())).size===practicalForChallenge.length &&
-    practicalForChallenge.every(a=>['PENDING','PENDING_REVIEW','UNDER REVIEW','SUBMITTED','APPROVED'].includes(String(a.status||'').trim().toUpperCase()));
+    practicalForChallenge.every(a=>String(a.status||'').trim().toUpperCase()==='APPROVED');
   const quickFixDone=!!progressState.level3Complete;
   const level3CompleteForGate=quickFixDone && practicalDone;
   const level5Submitted=!!(progressState.level5Complete||progressState.level5Pending);
@@ -29822,48 +29811,7 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
- st.textContent=`
-/* GLOBAL LEVEL READABILITY */
-.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(21px,2.5vw,25px)!important;line-height:1.4!important}
-.ikon-weekly-shell .ikon-level-panel p{font-size:17px!important;line-height:1.7!important}
-.ikon-weekly-shell .ikon-level-panel small{font-size:14px!important;line-height:1.55!important}
-/* OBJECTIVE MCQ: clear question and large clickable options */
-.ikon-weekly-shell .ikon-mcq-question{padding:16px 14px!important;margin:12px 0!important;border:1px solid #d9e4f2!important;border-radius:13px!important;background:#f8fbff!important}
-.ikon-weekly-shell .ikon-mcq-question>p{font-size:clamp(20px,2.3vw,23px)!important;font-weight:850!important;line-height:1.6!important;margin:0 0 13px!important;color:#17365f!important}
-.ikon-weekly-shell .ikon-mcq-question label{display:flex!important;align-items:flex-start!important;gap:10px!important;padding:11px 13px!important;margin:8px 0!important;border:1px solid #dce5f0!important;border-radius:10px!important;background:#fff!important;font-size:clamp(18px,2vw,20px)!important;font-weight:650!important;line-height:1.55!important;min-height:48px!important}
-.ikon-weekly-shell .ikon-mcq-question label input[type=radio]{width:20px!important;height:20px!important;min-width:20px!important;margin:3px 2px 0 0!important;accent-color:#1769c2!important}
-/* PRACTICAL TASK PROMPTS */
-.ikon-weekly-shell .ikon-practical-task-card{padding:17px!important;border-radius:14px!important}
-.ikon-weekly-shell .ikon-practical-task-card>b{display:block!important;font-size:19px!important;line-height:1.5!important;font-weight:850!important;color:#1d3c66!important;margin-bottom:10px!important}
-.ikon-weekly-shell .ikon-practical-task-card>p{font-size:18px!important;line-height:1.75!important;color:#334155!important;margin:10px 0!important}
-.ikon-weekly-shell .ikon-practical-task-card .ikon-practical-file-input{font-size:16px!important;min-height:48px!important}
-.ikon-weekly-shell .ikon-practical-task-card .assignmentUploadMsg{font-size:15px!important;line-height:1.5!important}
-/* WORD GRID: larger letters, clearer cells and readable question */
-.ikon-weekly-shell .ikon-puzzle-question{font-size:clamp(19px,2.2vw,23px)!important;font-weight:750!important;line-height:1.7!important;color:#17365f!important;margin:14px 0 18px!important}
-.ikon-weekly-shell .ikon-puzzle-grid{width:100%!important;max-width:760px!important;gap:4px!important;margin:16px auto!important;grid-template-columns:repeat(15,minmax(0,1fr))!important}
-.ikon-weekly-shell .ikon-puzzle-grid button{font-size:clamp(15px,2.1vw,22px)!important;font-weight:900!important;line-height:1!important;min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;padding:2px!important;border-radius:8px!important;display:flex!important;align-items:center!important;justify-content:center!important;touch-action:none!important}
-.ikon-weekly-shell .ikon-puzzle-selection-bar{max-width:680px!important;margin:12px auto!important;padding:12px 15px!important;border-radius:12px!important;background:#eef5ff!important;border:1px solid #c9dcf7!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px 14px!important}
-.ikon-weekly-shell .ikon-puzzle-selection-bar span{font-size:13px!important;font-weight:850!important;letter-spacing:.06em!important}
-.ikon-weekly-shell .ikon-puzzle-selection-bar strong{font-size:clamp(17px,2vw,21px)!important;line-height:1.5!important;letter-spacing:.08em!important}
-@media(max-width:600px){
- .ikon-weekly-shell .ikon-puzzle-grid{gap:2px!important;max-width:100%!important}
- .ikon-weekly-shell .ikon-puzzle-grid button{font-size:clamp(11px,2.8vw,16px)!important;border-radius:5px!important;padding:1px!important}
- .ikon-weekly-shell .ikon-puzzle-question{font-size:19px!important;line-height:1.65!important}
- .ikon-weekly-shell .ikon-puzzle-selection-bar strong{font-size:18px!important}
-}
-/* OTHER GAME LEVELS / WORD GRID / SHUFFLE / RIDDLE / DEFINE */
-.ikon-weekly-shell .ikon-game-question,.ikon-weekly-shell .ikon-level-panel .ikon-puzzle-question{font-size:19px!important;line-height:1.7!important}
-.ikon-weekly-shell .ikon-level-panel button{font-size:17px!important;line-height:1.45!important;min-height:44px}
-.ikon-quickfix-form input{font-size:17px!important;min-height:50px!important}
-@media(max-width:600px){
- .ikon-weekly-shell .ikon-level-panel{padding:15px!important}
- .ikon-weekly-shell .ikon-mcq-question>p{font-size:20px!important}
- .ikon-weekly-shell .ikon-mcq-question label{font-size:18px!important;padding:12px!important}
- .ikon-weekly-shell .ikon-practical-task-card>b{font-size:18px!important}
- .ikon-weekly-shell .ikon-practical-task-card>p{font-size:17px!important}
- .ikon-weekly-shell .ikon-level-panel p{font-size:16px!important}
- .ikon-quickfix-form input{font-size:17px!important}
-}`;document.head.appendChild(st);
+ st.textContent='.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(19px,2.4vw,23px)!important;line-height:1.4!important}.ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:16px!important;line-height:1.6!important}.ikon-weekly-shell .ikon-mcq-question>p{font-size:18px!important;font-weight:800!important;line-height:1.55!important}.ikon-quickfix-form input{font-size:16px!important;min-height:48px!important}@media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:15px!important}.ikon-quickfix-form input{font-size:16px!important}}';document.head.appendChild(st);
 }
 
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.dataset.challengeKey=challengeKey;card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
@@ -29894,10 +29842,7 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
   l3.innerHTML='<h4>LEVEL 3 – Find Error & Practical Skill</h4><p>'+practical.length+' practical tasks · Har task ki file alag upload karein. Beginner, Intermediate aur Advanced difficulty ke teeno tasks yahin submit honge. Admin review ke baad marks aur feedback milega.</p>';
   // Find Error MCQ unlocks after Level 1 and Level 2; practical uploads remain below.
   if(!ch.level3Unlocked){const lock=document.createElement('p');lock.textContent='🔒 Level 1 ke sabhi MCQs aur Level 2 ke sabhi words complete karein.';l3.appendChild(lock);}
-  else {
-    renderIkonLevel3QuickFix(ch,reg,l3);
-    renderIkonLevel3Shuffle(ch,reg,l3);
-  }
+  else { renderIkonLevel3QuickFix(ch,reg,l3); }
   if(ch.level3Unlocked && !practical.length){const no=document.createElement('p');no.textContent='Is Challenge ID ke liye Assignment Record mein practical tasks nahi mile. Admin se contact karein.';l3.appendChild(no);}
   else practical.forEach((a,index)=>renderIkonPracticalTask(a,reg,l3,index));
   card.appendChild(l3);
@@ -29908,7 +29853,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   l4.classList.add('ikon-level-game-hub','ikon-level-game-battle');
   l4.innerHTML='<div class="ikon-level-game-heading"><span class="ikon-level-game-icon">🧩</span><div><small>LEVEL 04 · PAHELI CHALLENGE</small><h4>PAHELI</h4><p>Question padhein aur A/B/C/D mein se sahi option click karein.</p></div><span class="ikon-level-game-stamp">PAHELI</span></div>';
   if(p1.level4Complete){const done=document.createElement('b');done.textContent='Completed · Level 5 unlocked';l4.appendChild(done);}
-  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 ke dono parts complete karein aur assigned sabhi practical files upload karein.';l4.appendChild(lock);}
+  else if(!level3Done){const lock=document.createElement('p');lock.textContent='🔒 Level 3 complete karein aur assigned sabhi practical tasks admin se APPROVED karwayein.';l4.appendChild(lock);}
   else loadIkonGameLevel(ch,reg,4,l4);
   card.appendChild(l4);
   const l5=document.createElement('div');l5.className='ikon-level-panel ikon-level-5';l5.style.cssText='padding:14px;margin:10px 0;border-radius:12px;background:#fff1f5';
@@ -29924,7 +29869,7 @@ const level3Done = level3DoneForDesign(practical,p1);
   container.appendChild(card);
 }
 function loadIkonGameLevel(ch,reg,level,box){
-  const action=level===3?'assignmentLevel3Shuffle':(level===4?'assignmentLevel4Riddles':'assignmentUltimate');
+  const action=level===4?'assignmentLevel4Riddles':'assignmentUltimate';
   const url=SCRIPT_URL+'?action='+action+'&regNo='+encodeURIComponent(reg)+'&paper='+encodeURIComponent(ch.paper)+'&challengeId='+encodeURIComponent(ch.challengeId)+'&_='+Date.now();
   const loading=document.createElement('p');loading.textContent='Loading '+(level===4?'Paheli':'challenge')+'...';loading.style.cssText='padding:10px;color:#334155;font-weight:600';box.appendChild(loading);
   fetch(url,{cache:'no-store'}).then(async r=>{
@@ -29935,7 +29880,7 @@ function loadIkonGameLevel(ch,reg,level,box){
     return d;
   }).then(d=>{
     loading.remove();
-    if(d.completed){const done=document.createElement('p');done.textContent=level===3?'✓ Shuffle completed · '+d.score+'/'+d.total+' marks. Practical uploads ke baad Paheli unlock hogi.':'✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';done.style.cssText='padding:12px;color:#047857;font-weight:800';box.appendChild(done);return;}
+    if(d.completed){const done=document.createElement('p');done.textContent='✓ Paheli completed · '+d.score+'/'+d.total+' marks. Level 5 unlocked.';done.style.cssText='padding:12px;color:#047857;font-weight:800';box.appendChild(done);return;}
     if(!Array.isArray(d.items)||!d.items.length)throw new Error('Is challenge ke questions nahi mile.');
     if(level===4)renderIkonLevel4Paheli(ch,reg,d.items,box);
     else renderIkonGameForm(ch,reg,level,d.items,box);
@@ -30040,11 +29985,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
   const group=(types)=>items.filter(x=>types.includes(typeOf(x)));
   const stages=isFinal?[
     {id:'define',title:'DEFINE THE FEATURE',sub:'Har feature ki definition apne words mein likhein. Admin manually marks verify karega.',icon:'✍️',types:['DEFINE_FEATURE']}
-  ]:level===3?[
-    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']}
   ]:[
-    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein.',icon:'🧠',types:['MATCH_PAIRS']},
-    {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein.',icon:'🕵️',types:['SPOT_ERROR']}
+    {id:'memory',title:'FLIP & SHUFFLE',sub:'7 seconds cards dekhein, 3 shuffle rounds follow karein aur sahi option select karein. 5 questions × 2 marks.',icon:'🧠',types:['MATCH_PAIRS']},
+    {id:'spot',title:'ERROR FIND',sub:'Diye gaye statements mein galat statement identify karein. 5 questions × 2 marks.',icon:'🕵️',types:['SPOT_ERROR']}
   ];
   const activeStages=stages.map(s=>({...s,items:group(s.types)})).filter(s=>s.items.length);
   const top=document.createElement('div');top.className='ikon-playable-hero';
@@ -30557,7 +30500,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
   });
 
   const submit=document.createElement('button');submit.type='button';submit.className='ikon-playable-submit';
-  submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':(level===3?'🧠 SUBMIT SHUFFLE':'⚔️ SUBMIT BRAIN BATTLE');
+  submit.innerHTML=isFinal?'✍️ SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';
   submit.addEventListener('click',()=>{
     const missingItem=items.find(x=>{
       const value=answers[x.itemId];
@@ -30573,7 +30516,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
       alert('Har challenge ka answer select ya type karein. Missing: '+(missingItem.question||missingItem.itemId));return;
     }
     submit.disabled=true;submit.textContent=isFinal?'SUBMITTING FOR ADMIN REVIEW...':'VERIFYING YOUR RESULT...';
-    ikonAssignmentPost({action:level===3?'submitLevel3Shuffle':(level===4?'submitBrainBattle':'submitUltimateChampion'),regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
+    ikonAssignmentPost({action:level===4?'submitBrainBattle':'submitUltimateChampion',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers:answers})
       .then(d=>{
         if(level===5){
           root.replaceChildren();
@@ -30584,9 +30527,9 @@ function renderIkonGameForm(ch,reg,level,items,box){
           const back=document.createElement('button');back.type='button';back.className='ikon-final-back';back.textContent='BACK TO ASSIGNMENTS';back.addEventListener('click',()=>window.loadAssignmentsForStudent());pending.appendChild(back);
           root.appendChild(pending);return;
         }
-        alert((level===3?'Shuffle':'Brain Battle')+' complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
+        alert('Brain Battle complete! Score: '+d.score+'/'+d.total+'. '+(d.message||''));window.loadAssignmentsForStudent();
       })
-      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':(level===3?'🧠 SUBMIT SHUFFLE':'⚔️ SUBMIT BRAIN BATTLE');});
+      .catch(e=>{alert(e.message);submit.disabled=false;submit.textContent=isFinal?'SUBMIT FOR ADMIN REVIEW':'⚔️ SUBMIT BRAIN BATTLE';});
   });
   root.appendChild(submit);box.appendChild(root);
 }
@@ -30615,14 +30558,6 @@ function renderIkonLevel3QuickFix(ch,reg,box){
     submit.onclick=()=>{if(Object.keys(answers).length!==items.length){result.textContent='Har question ke liye A/B/C/D mein se ek option select karein.';result.style.color='#b91c1c';return;}submit.disabled=true;submit.textContent='CHECKING...';ikonAssignmentPost({action:'submitLevel3FindError',regNo:reg,paper:ch.paper,challengeId:ch.challengeId,answers}).then(x=>{result.textContent='✓ Find Error complete · '+x.score+'/'+x.total+' marks. Ab practical tasks upload karein.';result.style.color='#047857';submit.textContent='COMPLETED';state.textContent='Find Error submitted';}).catch(e=>{result.textContent=e.message;result.style.color='#b91c1c';submit.disabled=false;submit.textContent='SUBMIT FIND ERROR';});};
     panel.append(form,submit,result);
   }).catch(e=>{state.textContent='Find Error error: '+e.message;state.style.color='#b91c1c';});
-}
-
-function renderIkonLevel3Shuffle(ch,reg,box){
-  const panel=document.createElement('section');panel.className='ikon-level3-shuffle-panel';
-  panel.style.cssText='margin:12px 0;padding:16px;border:1px solid #c7d2fe;border-radius:14px;background:#f8faff';
-  const head=document.createElement('div');head.innerHTML='<span style="font-size:12px;font-weight:900;letter-spacing:1px;color:#4f46e5">LEVEL 3 · PART 2</span><h4 style="font-size:22px;margin:5px 0 7px">🧠 FLIP & SHUFFLE</h4><p style="font-size:15px;line-height:1.6;margin:0;color:#475569">7 seconds options yaad karein, phir cards 3 rounds shuffle honge. Sahi card select karein.</p>';
-  panel.appendChild(head);box.appendChild(panel);
-  loadIkonGameLevel(ch,reg,3,panel);
 }
 
 function renderIkonLevel3Matching(ch,reg,box){
@@ -30679,16 +30614,16 @@ function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
   if(!next)return;
-  const prompt=document.createElement('p');prompt.className='ikon-puzzle-question';prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');prompt.style.cssText='font-size:clamp(19px,2.2vw,23px);font-weight:750;line-height:1.7;margin:14px 0 18px;color:#17365f';box.appendChild(prompt);
+  const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';const gridColumns=15;grid.style.cssText='display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:4px;width:100%;max-width:760px;margin:14px auto;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:3px;width:100%;max-width:680px;touch-action:none;user-select:none';box.appendChild(grid);
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
   selectionBar.append(selectionCaption,selectionValue);box.appendChild(selectionBar);
   let start=null,dragging=false,selected=[],checking=false;
   const cells=[];
-  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='padding:9px 1px;border:1px solid #d5deec;border-radius:8px;background:#fff;font-weight:900;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
+  (next.grid||[]).forEach((row,r)=>String(row).split('').forEach((letter,c)=>{const cell=document.createElement('button');cell.type='button';cell.textContent=letter;cell.dataset.r=r;cell.dataset.c=c;cell.style.cssText='width:100%;min-width:0;aspect-ratio:1/1;padding:0;border:1px solid #d5deec;border-radius:6px;background:#fff;font-weight:900;font-size:clamp(10px,1.35vw,15px);display:flex;align-items:center;justify-content:center;touch-action:none';grid.appendChild(cell);cells.push(cell);}));
   function cellFromPoint(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest('button[data-r]'):null;}
   function paint(){
     cells.forEach(c=>{
@@ -30733,7 +30668,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Letters ko 8 directions mein seedhi line par drag karein: left-right, up-down aur diagonally.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Letters ko seedhi line mein 8 directions (horizontal, vertical ya diagonal) mein drag karein. Ulti direction se bhi select kar sakte hain.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
