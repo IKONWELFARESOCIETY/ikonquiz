@@ -30109,7 +30109,7 @@ function renderIkonGameForm(ch,reg,level,items,box){
     guide.textContent='Pehle 7 seconds options yaad karein. Cards hide hone ke baad 3 baar position change hogi. Phir memory se sahi card choose karein.';
     const bar=document.createElement('div');bar.className='ikon-memory-shuffle-bar';
     const phaseText=document.createElement('strong');phaseText.className='ikon-memory-shuffle-phase';phaseText.textContent='READY TO MEMORIZE';
-    const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='7 SEC';
+    const countText=document.createElement('span');countText.className='ikon-memory-shuffle-count';countText.textContent='15 SEC';
     bar.append(phaseText,countText);
     const grid=document.createElement('div');grid.className='ikon-memory-shuffle-grid';
     const startBtn=document.createElement('button');startBtn.type='button';startBtn.className='ikon-memory-shuffle-start';
@@ -30238,11 +30238,11 @@ function renderIkonGameForm(ch,reg,level,items,box){
       tiles.forEach(t=>t.faceUp());
       phaseText.textContent='OBSERVE & REMEMBER';
       hint.textContent='Options ki positions yaad karein. Cards 7 seconds baad hide ho jayenge.';
-      const deadline=Date.now()+7000;
+      const deadline=Date.now()+15000;
       function updateCountdown(){countText.textContent=Math.max(0,Math.ceil((deadline-Date.now())/1000))+'s';}
       updateCountdown();
       const ticker=setInterval(updateCountdown,100);
-      await wait(7000);
+      await wait(15000);
       clearInterval(ticker);
       if(!shell.isConnected)return;
       phase='shuffle';
