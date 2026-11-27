@@ -29838,6 +29838,19 @@ if(!document.getElementById('ikon-weekly-readable-levels')){
 .ikon-weekly-shell .ikon-practical-task-card>p{font-size:18px!important;line-height:1.75!important;color:#334155!important;margin:10px 0!important}
 .ikon-weekly-shell .ikon-practical-task-card .ikon-practical-file-input{font-size:16px!important;min-height:48px!important}
 .ikon-weekly-shell .ikon-practical-task-card .assignmentUploadMsg{font-size:15px!important;line-height:1.5!important}
+/* WORD GRID: larger letters, clearer cells and readable question */
+.ikon-weekly-shell .ikon-puzzle-question{font-size:clamp(19px,2.2vw,23px)!important;font-weight:750!important;line-height:1.7!important;color:#17365f!important;margin:14px 0 18px!important}
+.ikon-weekly-shell .ikon-puzzle-grid{width:100%!important;max-width:760px!important;gap:4px!important;margin:16px auto!important;grid-template-columns:repeat(15,minmax(0,1fr))!important}
+.ikon-weekly-shell .ikon-puzzle-grid button{font-size:clamp(15px,2.1vw,22px)!important;font-weight:900!important;line-height:1!important;min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;padding:2px!important;border-radius:8px!important;display:flex!important;align-items:center!important;justify-content:center!important;touch-action:none!important}
+.ikon-weekly-shell .ikon-puzzle-selection-bar{max-width:680px!important;margin:12px auto!important;padding:12px 15px!important;border-radius:12px!important;background:#eef5ff!important;border:1px solid #c9dcf7!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px 14px!important}
+.ikon-weekly-shell .ikon-puzzle-selection-bar span{font-size:13px!important;font-weight:850!important;letter-spacing:.06em!important}
+.ikon-weekly-shell .ikon-puzzle-selection-bar strong{font-size:clamp(17px,2vw,21px)!important;line-height:1.5!important;letter-spacing:.08em!important}
+@media(max-width:600px){
+ .ikon-weekly-shell .ikon-puzzle-grid{gap:2px!important;max-width:100%!important}
+ .ikon-weekly-shell .ikon-puzzle-grid button{font-size:clamp(11px,2.8vw,16px)!important;border-radius:5px!important;padding:1px!important}
+ .ikon-weekly-shell .ikon-puzzle-question{font-size:19px!important;line-height:1.65!important}
+ .ikon-weekly-shell .ikon-puzzle-selection-bar strong{font-size:18px!important}
+}
 /* OTHER GAME LEVELS / WORD GRID / SHUFFLE / RIDDLE / DEFINE */
 .ikon-weekly-shell .ikon-game-question,.ikon-weekly-shell .ikon-level-panel .ikon-puzzle-question{font-size:19px!important;line-height:1.7!important}
 .ikon-weekly-shell .ikon-level-panel button{font-size:17px!important;line-height:1.45!important;min-height:44px}
@@ -30666,9 +30679,9 @@ function renderIkonPuzzle(ch,reg,box){
   const found=(ch.progress&&ch.progress.level2Words)||[];
   const next=(ch.puzzle||[]).find(q=>found.indexOf(String(q.questionNo))<0);
   if(!next)return;
-  const prompt=document.createElement('p');prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');box.appendChild(prompt);
+  const prompt=document.createElement('p');prompt.className='ikon-puzzle-question';prompt.innerHTML='<b>Question '+next.questionNo+':</b> '+String(next.question||'');prompt.style.cssText='font-size:clamp(19px,2.2vw,23px);font-weight:750;line-height:1.7;margin:14px 0 18px;color:#17365f';box.appendChild(prompt);
   const feedback=document.createElement('p');feedback.style.minHeight='24px';box.appendChild(feedback);
-  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';grid.style.cssText='display:grid;grid-template-columns:repeat(12,minmax(22px,1fr));gap:3px;max-width:520px;touch-action:none;user-select:none';box.appendChild(grid);
+  const grid=document.createElement('div');grid.className='ikon-puzzle-grid';const gridColumns=15;grid.style.cssText='display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:4px;width:100%;max-width:760px;margin:14px auto;touch-action:none;user-select:none';box.appendChild(grid);
   const selectionBar=document.createElement('div');selectionBar.className='ikon-puzzle-selection-bar';
   const selectionCaption=document.createElement('span');selectionCaption.textContent='YOUR SELECTION';
   const selectionValue=document.createElement('strong');selectionValue.textContent='Drag across the letters';
@@ -30688,7 +30701,7 @@ function renderIkonPuzzle(ch,reg,box){
     const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
     selectionValue.textContent=word||'Drag across the letters';selectionBar.classList.toggle('has-selection',!!word);
   }
-  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr!==0&&dc!==0)return [];if(dr===0&&dc===0)return [a];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
+  function makePath(a,b){const dr=b.r-a.r,dc=b.c-a.c;if(dr===0&&dc===0)return [a];if(dr!==0&&dc!==0&&Math.abs(dr)!==Math.abs(dc))return [];const n=Math.max(Math.abs(dr),Math.abs(dc)),sr=Math.sign(dr),sc=Math.sign(dc),out=[];for(let i=0;i<=n;i++)out.push({r:a.r+sr*i,c:a.c+sc*i});return out;}
   function onDown(e){if(checking)return;const cell=e.target.closest('button[data-r]');if(!cell)return;e.preventDefault();start={r:Number(cell.dataset.r),c:Number(cell.dataset.c)};selected=[start];dragging=true;try{grid.setPointerCapture(e.pointerId);}catch(_){}paint();}
   function onMove(e){if(!dragging)return;const cell=cellFromPoint(e.clientX,e.clientY);if(!cell)return;selected=makePath(start,{r:Number(cell.dataset.r),c:Number(cell.dataset.c)});paint();}
   function onUp(){if(!dragging||checking)return;dragging=false;if(!selected.length)return;const word=selected.map(p=>String((next.grid[p.r]||'')[p.c]||'')).join('');
@@ -30720,7 +30733,7 @@ function renderIkonPuzzle(ch,reg,box){
     ).catch(e=>{feedback.textContent=e.message;}).finally(()=>{checking=false;grid.style.pointerEvents='';});
   }
   grid.addEventListener('pointerdown',onDown);grid.addEventListener('pointermove',onMove);grid.addEventListener('pointerup',onUp);grid.addEventListener('pointercancel',onUp);
-  const hint=document.createElement('small');hint.textContent='Letters ko ek seedhi horizontal ya vertical line mein drag karein.';box.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Letters ko 8 directions mein seedhi line par drag karein: left-right, up-down aur diagonally.';box.appendChild(hint);
 }
 function renderIkonPracticalTask(a,reg,box,index){
   const item=document.createElement('div');
