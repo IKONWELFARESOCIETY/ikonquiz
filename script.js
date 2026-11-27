@@ -29498,6 +29498,66 @@ function applyMarksheetResultStyle(root, grade, result){
 })();
 
 //====================================================
+// ASSIGNMENT ACCESS: Settings!B26
+//====================================================
+let ikonAssignmentAccessTimer = null;
+let ikonAssignmentIsEnabled = false;
+
+function renderIkonAssignmentAccessWaiting() {
+    const login = document.getElementById('assignmentLoginPanel');
+    const list = document.getElementById('assignmentList');
+    const status = document.getElementById('assignmentStatus');
+    let waiting = document.getElementById('ikonAssignmentWaiting');
+
+    if (!waiting) {
+        waiting = document.createElement('div');
+        waiting.id = 'ikonAssignmentWaiting';
+        waiting.style.cssText = 'max-width:620px;margin:8vh auto;padding:42px 24px;text-align:center;background:#fff;border-radius:18px;box-shadow:0 10px 35px rgba(20,40,80,.10);font-size:18px;';
+        waiting.innerHTML = '<div style="font-size:48px;margin-bottom:14px;">⏳</div><h2 style="margin:0 0 10px;">Assignment will be available soon</h2><p style="margin:0;color:#64748b;">Please wait. IKON Institute will open the assignment shortly.</p>';
+        const portal = document.getElementById('assignmentPortal');
+        if (portal) portal.insertBefore(waiting, portal.firstChild);
+    }
+    waiting.style.display = 'block';
+    if (login) login.style.display = 'none';
+    if (list) list.style.display = 'none';
+    if (status) status.textContent = '';
+}
+
+function renderIkonAssignmentAccessOpen() {
+    const waiting = document.getElementById('ikonAssignmentWaiting');
+    const login = document.getElementById('assignmentLoginPanel');
+    const list = document.getElementById('assignmentList');
+    if (waiting) waiting.style.display = 'none';
+    if (login) login.style.display = '';
+    if (list) list.style.display = '';
+}
+
+function checkIkonAssignmentAccess() {
+    return fetch(SCRIPT_URL + '?action=assignmentAccessStatus&_=' + Date.now(), {cache:'no-store'})
+      .then(r => r.json())
+      .then(data => {
+          ikonAssignmentIsEnabled = !!(data && data.enabled && data.status === 'ON');
+          if (ikonAssignmentIsEnabled) {
+              renderIkonAssignmentAccessOpen();
+          } else {
+              renderIkonAssignmentAccessWaiting();
+          }
+          return ikonAssignmentIsEnabled;
+      })
+      .catch(() => {
+          ikonAssignmentIsEnabled = false;
+          renderIkonAssignmentAccessWaiting();
+          return false;
+      });
+}
+
+function startIkonAssignmentAccessPolling() {
+    if (ikonAssignmentAccessTimer) clearInterval(ikonAssignmentAccessTimer);
+    checkIkonAssignmentAccess();
+    ikonAssignmentAccessTimer = setInterval(checkIkonAssignmentAccess, 5000);
+}
+
+//====================================================
 // IKON ASSIGNMENT PORTAL - FIXED GLOBAL FUNCTIONS
 //====================================================
 window.openAssignmentPortal = function(){
@@ -29519,6 +29579,8 @@ window.openAssignmentPortal = function(){
 
     // Show Assignment Portal as a standalone full-page screen.
     portal.style.display = 'block';
+    renderIkonAssignmentAccessWaiting();
+    startIkonAssignmentAccessPolling();
     portal.style.visibility = 'visible';
     portal.style.width = '100%';
     portal.style.maxWidth = 'none';
@@ -29533,6 +29595,10 @@ window.openAssignmentPortal = function(){
 };
 
 window.closeAssignmentPortal = function(){
+    if (ikonAssignmentAccessTimer) {
+        clearInterval(ikonAssignmentAccessTimer);
+        ikonAssignmentAccessTimer = null;
+    }
     const portal = document.getElementById('assignmentPortal');
     if(portal) portal.style.display = 'none';
 
@@ -29548,6 +29614,11 @@ window.closeAssignmentPortal = function(){
 };
 
 window.loadAssignmentsForStudent = function(){
+    if (!ikonAssignmentIsEnabled) {
+        checkIkonAssignmentAccess();
+        renderIkonAssignmentAccessWaiting();
+        return;
+    }
     const input=document.getElementById('assignmentRegNo');
     const reg=(input&&input.value?input.value:'').trim().toUpperCase();
     const status=document.getElementById('assignmentStatus');
@@ -29558,6 +29629,11 @@ window.loadAssignmentsForStudent = function(){
       fetch(base+'?action=assignmentList&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Server error '+r.status);return r.json();}),
       fetch(base+'?action=assignmentChallenge&regNo='+encodeURIComponent(reg)+'&_='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Server error '+r.status);return r.json();})
     ]).then(([data,challengeData])=>{
+      if ((data && data.status === 'ASSIGNMENT_WAITING') || (challengeData && challengeData.status === 'ASSIGNMENT_WAITING')) {
+        ikonAssignmentIsEnabled = false;
+        renderIkonAssignmentAccessWaiting();
+        return;
+      }
       if(!data.success)throw new Error(data.message||'Student record not found.');
       if(!challengeData.success)throw new Error(challengeData.message||'Weekly challenge load nahi hua.');
       const login=document.getElementById('assignmentLoginPanel');if(login)login.style.display='none';
