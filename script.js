@@ -29822,7 +29822,35 @@ function renderIkonWeeklyChallenge(ch,allPractical,reg,container){
 
 if(!document.getElementById('ikon-weekly-readable-levels')){
  const st=document.createElement('style');st.id='ikon-weekly-readable-levels';
- st.textContent='.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(19px,2.4vw,23px)!important;line-height:1.4!important}.ikon-weekly-shell .ikon-level-panel p,.ikon-weekly-shell .ikon-mcq-question,.ikon-weekly-shell .ikon-mcq-question label{font-size:16px!important;line-height:1.6!important}.ikon-weekly-shell .ikon-mcq-question>p{font-size:18px!important;font-weight:800!important;line-height:1.55!important}.ikon-quickfix-form input{font-size:16px!important;min-height:48px!important}@media(max-width:600px){.ikon-weekly-shell .ikon-level-panel{padding:15px!important}.ikon-quickfix-form input{font-size:16px!important}}';document.head.appendChild(st);
+ st.textContent=`
+/* GLOBAL LEVEL READABILITY */
+.ikon-weekly-shell .ikon-level-panel h4{font-size:clamp(21px,2.5vw,25px)!important;line-height:1.4!important}
+.ikon-weekly-shell .ikon-level-panel p{font-size:17px!important;line-height:1.7!important}
+.ikon-weekly-shell .ikon-level-panel small{font-size:14px!important;line-height:1.55!important}
+/* OBJECTIVE MCQ: clear question and large clickable options */
+.ikon-weekly-shell .ikon-mcq-question{padding:16px 14px!important;margin:12px 0!important;border:1px solid #d9e4f2!important;border-radius:13px!important;background:#f8fbff!important}
+.ikon-weekly-shell .ikon-mcq-question>p{font-size:clamp(20px,2.3vw,23px)!important;font-weight:850!important;line-height:1.6!important;margin:0 0 13px!important;color:#17365f!important}
+.ikon-weekly-shell .ikon-mcq-question label{display:flex!important;align-items:flex-start!important;gap:10px!important;padding:11px 13px!important;margin:8px 0!important;border:1px solid #dce5f0!important;border-radius:10px!important;background:#fff!important;font-size:clamp(18px,2vw,20px)!important;font-weight:650!important;line-height:1.55!important;min-height:48px!important}
+.ikon-weekly-shell .ikon-mcq-question label input[type=radio]{width:20px!important;height:20px!important;min-width:20px!important;margin:3px 2px 0 0!important;accent-color:#1769c2!important}
+/* PRACTICAL TASK PROMPTS */
+.ikon-weekly-shell .ikon-practical-task-card{padding:17px!important;border-radius:14px!important}
+.ikon-weekly-shell .ikon-practical-task-card>b{display:block!important;font-size:19px!important;line-height:1.5!important;font-weight:850!important;color:#1d3c66!important;margin-bottom:10px!important}
+.ikon-weekly-shell .ikon-practical-task-card>p{font-size:18px!important;line-height:1.75!important;color:#334155!important;margin:10px 0!important}
+.ikon-weekly-shell .ikon-practical-task-card .ikon-practical-file-input{font-size:16px!important;min-height:48px!important}
+.ikon-weekly-shell .ikon-practical-task-card .assignmentUploadMsg{font-size:15px!important;line-height:1.5!important}
+/* OTHER GAME LEVELS / WORD GRID / SHUFFLE / RIDDLE / DEFINE */
+.ikon-weekly-shell .ikon-game-question,.ikon-weekly-shell .ikon-level-panel .ikon-puzzle-question{font-size:19px!important;line-height:1.7!important}
+.ikon-weekly-shell .ikon-level-panel button{font-size:17px!important;line-height:1.45!important;min-height:44px}
+.ikon-quickfix-form input{font-size:17px!important;min-height:50px!important}
+@media(max-width:600px){
+ .ikon-weekly-shell .ikon-level-panel{padding:15px!important}
+ .ikon-weekly-shell .ikon-mcq-question>p{font-size:20px!important}
+ .ikon-weekly-shell .ikon-mcq-question label{font-size:18px!important;padding:12px!important}
+ .ikon-weekly-shell .ikon-practical-task-card>b{font-size:18px!important}
+ .ikon-weekly-shell .ikon-practical-task-card>p{font-size:17px!important}
+ .ikon-weekly-shell .ikon-level-panel p{font-size:16px!important}
+ .ikon-quickfix-form input{font-size:17px!important}
+}`;document.head.appendChild(st);
 }
 
   const card=document.createElement('section');card.className='ikon-mission-card ikon-weekly-shell';card.dataset.challengeKey=challengeKey;card.style.cssText='margin:18px 0;padding:18px;border:1px solid #d8e2f0;border-radius:16px;background:#fff';
